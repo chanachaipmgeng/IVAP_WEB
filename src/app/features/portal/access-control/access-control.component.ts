@@ -24,7 +24,7 @@ import { TabsComponent, Tab } from '../../../shared/components/tabs/tabs.compone
 import { AccessControlService, AccessPoint, AccessPermission, AccessEvent, AccessSchedule, AccessRule, AccessMetrics } from '../../../core/services/access-control.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { I18nService } from '../../../core/services/i18n.service';
-import { EmployeeService } from '../../../core/services/employee.service';
+import { CompanyEmployeeService } from '../../../core/services/company-employee.service';
 import { BaseComponent } from '../../../core/base/base.component';
 
 @Component({
@@ -49,7 +49,7 @@ export class AccessControlComponent extends BaseComponent implements OnInit {
   private accessControlService = inject(AccessControlService);
   private authService = inject(AuthService);
   private i18nService = inject(I18nService);
-  private employeeService = inject(EmployeeService);
+  private employeeService = inject(CompanyEmployeeService);
 
   // Tab management
   selectedTab = signal<'overview' | 'access-points' | 'permissions' | 'logs' | 'rules' | 'schedules'>('overview');

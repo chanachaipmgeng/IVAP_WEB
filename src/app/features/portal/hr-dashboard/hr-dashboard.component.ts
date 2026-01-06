@@ -16,7 +16,7 @@ import { FormsModule } from '@angular/forms';
 import { GlassCardComponent } from '../../../shared/components/glass-card/glass-card.component';
 import { GlassButtonComponent } from '../../../shared/components/glass-button/glass-button.component';
 import { GlassInputComponent } from '../../../shared/components/glass-input/glass-input.component';
-import { EmployeeService } from '../../../core/services/employee.service';
+import { CompanyEmployeeService } from '../../../core/services/company-employee.service';
 import { EmployeeDisplay as Employee, EmployeeStatistics } from '../../../core/models/employee-display.model';
 import { CompanyService } from '../../../core/services/company.service';
 import { Company } from '../../../core/models/company.model';
@@ -129,7 +129,7 @@ export class HrDashboardComponent extends BaseComponent implements OnInit {
   };
 
   constructor(
-    private employeeService: EmployeeService,
+    private employeeService: CompanyEmployeeService,
     private companyService: CompanyService,
     private approvalService: ApprovalService,
     private subordinateService: SubordinateManagementService
@@ -151,7 +151,7 @@ export class HrDashboardComponent extends BaseComponent implements OnInit {
     this.subscribe(
       this.employeeService.getEmployees(),
       (response) => {
-        this.employees = response.data || [];
+        this.employees = response.data || response.items || [];
         this.calculateStats();
       },
       (error) => {
@@ -489,7 +489,7 @@ export class HrDashboardComponent extends BaseComponent implements OnInit {
    */
   exportData(): void {
     const data = {
-      employees: this.employeeService.exportEmployees(),
+      employees: this.employees, // Use already loaded employees data
       company: this.company,
       approvals: this.approvalService.exportApprovalData(),
       subordinates: this.subordinateService.exportSubordinateData(),

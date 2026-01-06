@@ -52,7 +52,8 @@ export class CompanyEmployeeService extends BaseCrudService<CompanyEmployee, Com
     this.loading.set(true);
     const options = { skipTransform: true };
     
-    return this.api.get<any>(this.baseEndpoint, filters, options).pipe(
+    // Backend route requires trailing slash for GET list
+    return this.api.get<any>(`${this.baseEndpoint}/`, filters, options).pipe(
       map((response: any) => {
         // Backend returns PaginatedResponse with items array
         const items = response.items || response.data || [];
@@ -95,7 +96,8 @@ export class CompanyEmployeeService extends BaseCrudService<CompanyEmployee, Com
    */
   createEmployee(data: CompanyEmployeeCreate): Observable<EmployeeDisplay> {
     const options = { skipTransform: true };
-    return this.api.post<CompanyEmployee>(this.baseEndpoint, data, undefined, options).pipe(
+    // Backend route requires trailing slash for POST
+    return this.api.post<CompanyEmployee>(`${this.baseEndpoint}/`, data, undefined, options).pipe(
       map(companyEmployee => companyEmployeeToDisplay(companyEmployee)),
       tap((employee) => {
         // Update local state
