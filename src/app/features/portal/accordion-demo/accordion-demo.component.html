@@ -1,0 +1,220 @@
+<div class="min-h-screen p-4 md:p-8 bg-gradient-to-br from-blue-500/10 to-purple-500/10">
+  <!-- Header -->
+  <div class="text-center mb-10">
+    <h1
+      class="text-3xl md:text-4xl font-bold mb-4 flex items-center justify-center gap-4 text-gray-900 dark:text-gray-100">
+      <i class="fas fa-list-alt text-blue-500"></i>
+      Accordion Component Demo
+    </h1>
+    <p class="text-lg text-gray-600 dark:text-gray-400">
+      ทดสอบ Accordion Component ที่มีฟีเจอร์ครบถ้วน
+    </p>
+  </div>
+
+  <!-- Demo Controls -->
+  <div class="mb-8">
+    <app-glass-card>
+      <div class="p-6">
+        <h3 class="text-xl font-semibold mb-6 text-gray-900 dark:text-gray-100">การตั้งค่า Accordion</h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">ประเภท:</label>
+            <select [(ngModel)]="selectedVariant" (change)="updateConfig()" class="w-full glass-input">
+              <option value="default">Default</option>
+              <option value="bordered">Bordered</option>
+              <option value="flush">Flush</option>
+              <option value="minimal">Minimal</option>
+            </select>
+          </div>
+
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">ขนาด:</label>
+            <select [(ngModel)]="selectedSize" (change)="updateConfig()" class="w-full glass-input">
+              <option value="sm">Small</option>
+              <option value="md">Medium</option>
+              <option value="lg">Large</option>
+            </select>
+          </div>
+
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">ตำแหน่งไอคอน:</label>
+            <select [(ngModel)]="iconPosition" (change)="updateConfig()" class="w-full glass-input">
+              <option value="left">ซ้าย</option>
+              <option value="right">ขวา</option>
+            </select>
+          </div>
+
+          <div class="flex items-center space-x-3">
+            <input type="checkbox" id="allowMultiple" [(ngModel)]="allowMultiple" (change)="updateConfig()"
+              class="accent-blue-500 w-5 h-5">
+            <label for="allowMultiple" class="text-gray-700 dark:text-gray-300">อนุญาตให้เปิดหลายรายการ</label>
+          </div>
+
+          <div class="flex items-center space-x-3">
+            <input type="checkbox" id="showIcons" [(ngModel)]="showIcons" (change)="updateConfig()"
+              class="accent-blue-500 w-5 h-5">
+            <label for="showIcons" class="text-gray-700 dark:text-gray-300">แสดงไอคอน</label>
+          </div>
+
+          <div class="flex items-center space-x-3">
+            <input type="checkbox" id="animation" [(ngModel)]="animation" (change)="updateConfig()"
+              class="accent-blue-500 w-5 h-5">
+            <label for="animation" class="text-gray-700 dark:text-gray-300">เปิดใช้แอนิเมชัน</label>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Demo Actions -->
+  <div class="mb-8">
+    <app-glass-card>
+      <div class="p-6">
+        <h3 class="text-xl font-semibold mb-6 text-gray-900 dark:text-gray-100">การจัดการข้อมูล</h3>
+
+        <div class="space-y-6">
+          <!-- Load Data -->
+          <div class="flex flex-wrap gap-4">
+            <app-glass-button variant="primary" (click)="loadFAQItems()" class="flex-1 min-w-[150px]">
+              <i class="fas fa-question-circle mr-2"></i> FAQ Items
+            </app-glass-button>
+            <app-glass-button variant="secondary" (click)="loadHelpItems()" class="flex-1 min-w-[150px]">
+              <i class="fas fa-question-circle mr-2"></i> Help Items
+            </app-glass-button>
+            <app-glass-button variant="secondary" (click)="loadFeatureItems()" class="flex-1 min-w-[150px]">
+              <i class="fas fa-star mr-2"></i> Feature Items
+            </app-glass-button>
+          </div>
+
+          <!-- Controls -->
+          <div class="flex flex-wrap gap-4">
+            <app-glass-button variant="primary" (click)="toggleAllItems()" class="flex-1 min-w-[150px]">
+              <i class="fas fa-toggle-on mr-2"></i> Toggle All
+            </app-glass-button>
+            <app-glass-button variant="secondary" (click)="resetAllItems()" class="flex-1 min-w-[150px]">
+              <i class="fas fa-undo mr-2"></i> Reset All
+            </app-glass-button>
+          </div>
+
+          <!-- Add/Remove -->
+          <div class="flex flex-wrap gap-4">
+            <app-glass-button variant="primary" (click)="addNewItem()" class="flex-1 min-w-[150px]">
+              <i class="fas fa-plus mr-2"></i> Add Item
+            </app-glass-button>
+            <app-glass-button variant="danger" (click)="removeLastItem()" class="flex-1 min-w-[150px]">
+              <i class="fas fa-trash mr-2"></i> Remove Last
+            </app-glass-button>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Accordion Demo -->
+  <div class="mb-8">
+    <app-glass-card>
+      <div class="p-6">
+        <h3 class="text-xl font-semibold mb-6 text-gray-900 dark:text-gray-100">Accordion Component</h3>
+
+        <app-accordion [items]="accordionItems" [config]="accordionConfig" (itemToggle)="onItemToggle($event)"
+          (itemClick)="onItemClick($event)">
+        </app-accordion>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Statistics -->
+  <div class="mb-8">
+    <app-glass-card>
+      <div class="p-6">
+        <h3 class="text-xl font-semibold mb-6 text-gray-900 dark:text-gray-100">สถิติ Accordion</h3>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div class="p-4 bg-white/5 rounded-xl border border-white/10 text-center">
+            <div class="text-2xl font-bold text-blue-500 mb-1">{{ getAccordionStats().totalItems }}</div>
+            <div class="text-sm text-gray-500 dark:text-gray-400">รายการทั้งหมด</div>
+          </div>
+
+          <div class="p-4 bg-white/5 rounded-xl border border-white/10 text-center">
+            <div class="text-2xl font-bold text-green-500 mb-1">{{ getAccordionStats().openItems }}</div>
+            <div class="text-sm text-gray-500 dark:text-gray-400">รายการที่เปิด</div>
+          </div>
+
+          <div class="p-4 bg-white/5 rounded-xl border border-white/10 text-center">
+            <div class="text-2xl font-bold text-gray-500 mb-1">{{ getAccordionStats().closedItems }}</div>
+            <div class="text-sm text-gray-500 dark:text-gray-400">รายการที่ปิด</div>
+          </div>
+
+          <div class="p-4 bg-white/5 rounded-xl border border-white/10 text-center">
+            <div class="text-2xl font-bold text-yellow-500 mb-1">{{ getAccordionStats().itemsWithBadges }}</div>
+            <div class="text-sm text-gray-500 dark:text-gray-400">มี Badge</div>
+          </div>
+
+          <div class="p-4 bg-white/5 rounded-xl border border-white/10 text-center">
+            <div class="text-2xl font-bold text-purple-500 mb-1">{{ getAccordionStats().itemsWithIcons }}</div>
+            <div class="text-sm text-gray-500 dark:text-gray-400">มีไอคอน</div>
+          </div>
+
+          <div class="p-4 bg-white/5 rounded-xl border border-white/10 text-center">
+            <div class="text-2xl font-bold text-red-500 mb-1">{{ getAccordionStats().disabledItems }}</div>
+            <div class="text-sm text-gray-500 dark:text-gray-400">ปิดการใช้งาน</div>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Features Overview -->
+  <div class="mb-8">
+    <app-glass-card>
+      <div class="p-6">
+        <h3 class="text-xl font-semibold mb-6 text-gray-900 dark:text-gray-100">ฟีเจอร์ Accordion Component</h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div
+            class="p-6 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all text-center group">
+            <i class="fas fa-check-circle text-3xl text-green-500 mb-4 group-hover:scale-110 transition-transform"></i>
+            <h4 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Responsive Design</h4>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">รองรับการใช้งานบนอุปกรณ์ทุกขนาด</p>
+          </div>
+
+          <div
+            class="p-6 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all text-center group">
+            <i class="fas fa-check-circle text-3xl text-green-500 mb-4 group-hover:scale-110 transition-transform"></i>
+            <h4 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Animation Support</h4>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">รองรับแอนิเมชันที่ลื่นไหล</p>
+          </div>
+
+          <div
+            class="p-6 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all text-center group">
+            <i class="fas fa-check-circle text-3xl text-green-500 mb-4 group-hover:scale-110 transition-transform"></i>
+            <h4 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Multiple Variants</h4>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">มีหลายรูปแบบให้เลือกใช้</p>
+          </div>
+
+          <div
+            class="p-6 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all text-center group">
+            <i class="fas fa-check-circle text-3xl text-green-500 mb-4 group-hover:scale-110 transition-transform"></i>
+            <h4 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Icon Support</h4>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">รองรับไอคอนและ Badge</p>
+          </div>
+
+          <div
+            class="p-6 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all text-center group">
+            <i class="fas fa-check-circle text-3xl text-green-500 mb-4 group-hover:scale-110 transition-transform"></i>
+            <h4 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Accessibility</h4>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">รองรับการใช้งานด้วยคีย์บอร์ด</p>
+          </div>
+
+          <div
+            class="p-6 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all text-center group">
+            <i class="fas fa-check-circle text-3xl text-green-500 mb-4 group-hover:scale-110 transition-transform"></i>
+            <h4 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Customizable</h4>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">ปรับแต่งได้ตามต้องการ</p>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+</div>

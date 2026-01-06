@@ -1,0 +1,126 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+        🚗 Vehicle Entry
+      </h1>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+        Record vehicle entry and auto-assign parking space
+      </p>
+    </div>
+    <app-glass-button variant="primary" (clicked)="openModal()">
+      ➕ New Entry
+    </app-glass-button>
+  </div>
+
+  <!-- Quick Info -->
+  <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 text-white">
+    <div class="flex items-center space-x-4">
+      <div class="text-5xl">🚦</div>
+      <div>
+        <h3 class="text-xl font-bold">Smart Parking Entry</h3>
+        <p class="text-blue-100">
+          Our system automatically finds the best parking space for your vehicle
+        </p>
+        <div class="mt-3 flex flex-wrap gap-4 text-sm">
+          <div class="flex items-center space-x-2">
+            <span>✅</span>
+            <span>Auto-assign best space</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span>⚡</span>
+            <span>Instant processing</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span>🔍</span>
+            <span>License plate detection</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Entry Modal -->
+<app-modal
+  [isOpen]="showModal()"
+  [title]="success() ? '✅ Entry Successful' : '🚗 Record Vehicle Entry'"
+  [loading]="processing()"
+  (closed)="closeModal()"
+>
+  <div class="space-y-4">
+    <!-- Success Message -->
+    @if (success() && entryResult()) {
+      <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+        <div class="flex items-start space-x-3">
+          <div class="text-3xl">✅</div>
+          <div class="flex-1">
+            <h4 class="font-bold text-green-800">Entry Recorded Successfully!</h4>
+            <div class="mt-2 space-y-1 text-sm text-green-700">
+              @if (entryResult()?.spaceId) {
+                <p><strong>Assigned Space:</strong> {{ entryResult()?.spaceId }}</p>
+              }
+              @if (entryResult()?.entryTime) {
+                <p><strong>Entry Time:</strong> {{ formatDateTime(entryResult()!.entryTime!) }}</p>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Form -->
+    @if (!success()) {
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          License Plate Number *
+        </label>
+        <input
+          [(ngModel)]="entryData.plateNumber"
+          type="text"
+          class="glass-input w-full"
+          placeholder="e.g., ABC-1234"
+          required
+          [disabled]="processing()"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Notes
+        </label>
+        <textarea
+          [(ngModel)]="entryData.notes"
+          class="glass-input w-full"
+          rows="3"
+          placeholder="Additional notes (optional)"
+          [disabled]="processing()"
+        ></textarea>
+      </div>
+
+      <!-- Error Message -->
+      @if (errorMessage()) {
+        <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+          <p class="text-sm text-red-600">⚠️ {{ errorMessage() }}</p>
+        </div>
+      }
+
+      <!-- Info -->
+      <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
+        <p class="text-sm text-blue-700">
+          💡 The system will automatically find the best available parking space for this vehicle.
+        </p>
+      </div>
+    }
+  </div>
+
+  @if (!success()) {
+    <div slot="actions">
+      <app-glass-button variant="primary" (clicked)="processEntry()" [disabled]="processing()">
+        {{ processing() ? 'Processing...' : '✅ Record Entry' }}
+      </app-glass-button>
+    </div>
+  }
+</app-modal>
+

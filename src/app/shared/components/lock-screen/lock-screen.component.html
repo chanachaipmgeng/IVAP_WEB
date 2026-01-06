@@ -1,0 +1,172 @@
+<div class="lock-screen-container min-h-screen flex items-center justify-center p-8 relative overflow-hidden" [class.animate-pulse-slow]="isLocked" [class]="customClass || ''" role="dialog" [attr.aria-label]="ariaLabel || 'Lock screen'" [attr.aria-modal]="'true'">
+  <div class="lock-screen-content bg-white/95 backdrop-blur-sm rounded-3xl p-12 max-w-lg w-full text-center shadow-2xl relative z-10 animate-slide-in md:p-8">
+    <!-- Header -->
+    <div class="lock-header mb-8">
+      <div class="lock-icon text-primary-500 mb-4 animate-shake">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <circle cx="12" cy="16" r="1"></circle>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+      </div>
+      <h1 class="lock-title text-4xl font-bold text-gray-800 mb-2 leading-tight md:text-3xl md:text-2xl">Screen Locked</h1>
+      <p class="lock-subtitle text-base text-gray-500 leading-relaxed">{{ getStatusMessage() }}</p>
+    </div>
+
+    <!-- User Info -->
+    <div class="user-info flex items-center gap-4 mb-8 p-6 bg-gray-50 rounded-2xl border border-gray-200 md:flex-col md:text-center">
+      <div class="user-avatar flex-shrink-0">
+        <img appImageOptimization *ngIf="userInfo.avatar" [ngSrc]="userInfo.avatar" [alt]="userInfo.name" class="avatar-image w-15 h-15 rounded-full object-cover border-3 border-primary-500 md:w-12 md:h-12" loading="lazy">
+        <div *ngIf="!userInfo.avatar" class="avatar-placeholder w-15 h-15 rounded-full bg-primary-500 text-white flex items-center justify-center text-2xl font-bold border-3 border-primary-500 md:w-12 md:h-12 md:text-xl">
+          {{ userInfo.name.charAt(0).toUpperCase() }}
+        </div>
+      </div>
+      <div class="user-details text-left flex-1 md:text-center">
+        <h2 class="user-name text-xl font-semibold text-gray-800 m-0 mb-1">{{ userInfo.name }}</h2>
+        <p class="user-email text-sm text-gray-500 m-0">{{ userInfo.email }}</p>
+      </div>
+    </div>
+
+    <!-- Lock Time Info -->
+    <div class="lock-time-info mb-8" *ngIf="lockDuration > 0">
+      <div class="time-display inline-flex items-center gap-2 bg-teal-50 text-teal-900 px-6 py-3 rounded-xl text-sm font-semibold border border-teal-200">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-teal-600">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12,6 12,12 16,14"></polyline>
+        </svg>
+        <span>Auto-unlock in {{ timeRemaining }}</span>
+      </div>
+    </div>
+
+    <!-- Unlock Form -->
+    <div class="unlock-form mb-8" *ngIf="!isLockedOut">
+      <div class="form-group mb-6">
+        <label for="password" class="form-label block text-sm font-semibold text-gray-700 mb-2 text-left">Enter Password</label>
+        <div class="password-input-wrapper relative flex items-center bg-white border-2 border-gray-200 rounded-lg transition-all focus-within:border-primary-500 focus-within:ring-4 focus-within:ring-primary-500/10">
+          <input
+            type="{{ showPassword ? 'text' : 'password' }}"
+            id="password"
+            [(ngModel)]="password"
+            (keypress)="onKeyPress($event)"
+            placeholder="Enter your password"
+            class="password-input flex-1 border-none outline-none px-4 py-3 text-base text-gray-800 bg-transparent placeholder:text-gray-400 disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed"
+            [disabled]="isUnlocking"
+            autocomplete="current-password"
+          />
+          <button
+            type="button"
+            (click)="togglePasswordVisibility()"
+            class="password-toggle bg-none border-none p-3 text-gray-400 cursor-pointer transition-colors hover:text-primary-500 disabled:cursor-not-allowed disabled:opacity-50"
+            [disabled]="isUnlocking"
+          >
+            <svg *ngIf="!showPassword" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <svg *ngIf="showPassword" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+              <line x1="1" y1="1" x2="23" y2="23"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        (click)="onUnlock()"
+        [disabled]="!password.trim() || isUnlocking || !canAttemptUnlock()"
+        class="unlock-button w-full bg-primary-500 text-white border-none rounded-xl px-6 py-3 text-base font-semibold cursor-pointer transition-all flex items-center justify-center gap-2 hover:bg-primary-600 hover:-translate-y-0.5 hover:shadow-lg disabled:bg-gray-300 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
+        [class.loading]="isUnlocking"
+      >
+        <svg *ngIf="!isUnlocking" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <circle cx="12" cy="16" r="1"></circle>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+        <svg *ngIf="isUnlocking" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spinning animate-spin">
+          <path d="M1 4v6h6"></path>
+          <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+        </svg>
+        {{ isUnlocking ? 'Unlocking...' : 'Unlock' }}
+      </button>
+    </div>
+
+    <!-- Lockout Message -->
+    <div class="lockout-message p-8 bg-error-100 border border-error-200 rounded-xl mb-8 text-error-800" *ngIf="isLockedOut">
+      <div class="lockout-icon text-error-600 mb-4">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="15" y1="9" x2="9" y2="15"></line>
+          <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+      </div>
+      <h3 class="lockout-title text-xl font-bold m-0 mb-2">Account Locked</h3>
+      <p class="lockout-description text-sm m-0 leading-relaxed">
+        Too many failed attempts. Please try again in {{ getLockoutTimeRemaining() }}.
+      </p>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons flex gap-4 justify-center flex-wrap mb-8 md:flex-col md:items-center">
+      <button
+        type="button"
+        (click)="onForgotPassword()"
+        class="btn btn-link inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold no-underline border-none cursor-pointer transition-all text-sm bg-transparent text-primary-500 underline hover:text-primary-600 hover:no-underline disabled:text-gray-400 disabled:cursor-not-allowed md:w-full md:max-w-xs md:justify-center"
+        [disabled]="isUnlocking"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"></path>
+        </svg>
+        Forgot Password?
+      </button>
+
+      <button
+        type="button"
+        (click)="onLogout()"
+        class="btn btn-outline inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold no-underline border-none cursor-pointer transition-all text-sm bg-transparent text-primary-500 border-2 border-primary-500 hover:bg-primary-500 hover:text-white hover:-translate-y-0.5 disabled:bg-gray-50 disabled:text-gray-400 disabled:border-gray-200 disabled:cursor-not-allowed disabled:transform-none md:w-full md:max-w-xs md:justify-center"
+        [disabled]="isUnlocking"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16,17 21,12 16,7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        Logout
+      </button>
+    </div>
+
+    <!-- Security Tips -->
+    <div class="security-tips mb-8 text-left bg-gray-50 border border-gray-200 rounded-2xl p-6" *ngIf="!isLockedOut">
+      <h4 class="tips-title text-base font-semibold text-gray-800 m-0 mb-4 text-center">Security Tips</h4>
+      <ul class="tips-list list-none p-0 m-0">
+        <li class="tip-item flex items-center gap-3 py-2 text-sm text-gray-700 border-b border-gray-200 last:border-b-0">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-success-500 flex-shrink-0">
+            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          Use a strong, unique password
+        </li>
+        <li class="tip-item flex items-center gap-3 py-2 text-sm text-gray-700 border-b border-gray-200 last:border-b-0">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-success-500 flex-shrink-0">
+            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          Enable two-factor authentication
+        </li>
+        <li class="tip-item flex items-center gap-3 py-2 text-sm text-gray-700 border-b border-gray-200 last:border-b-0">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-success-500 flex-shrink-0">
+            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          Keep your device secure
+        </li>
+      </ul>
+    </div>
+
+    <!-- Footer -->
+    <div class="lock-footer">
+      <p class="footer-text text-xs text-gray-400 m-0">
+        {{ currentTime.toLocaleString() }}
+      </p>
+    </div>
+  </div>
+</div>
+

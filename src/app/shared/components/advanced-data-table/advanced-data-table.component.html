@@ -1,0 +1,264 @@
+<div class="advanced-data-table w-full bg-white rounded-lg shadow-sm overflow-hidden" [ngClass]="getContainerClasses()" [class]="customClass || ''" role="region" [attr.aria-label]="ariaLabel || 'Data table'" [attr.aria-busy]="loading ? 'true' : null">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="table-loading flex flex-col items-center justify-center p-12 text-gray-500" role="status" [attr.aria-live]="'polite'">
+    <div class="loading-spinner w-8 h-8 border-2 border-black/10 border-t-primary-500 rounded-full animate-spin mb-4" [attr.aria-hidden]="'true'"></div>
+    <p class="m-0 text-sm">{{ mergedConfig.loadingText }}</p>
+  </div>
+
+  <!-- Table Controls -->
+  <div *ngIf="!loading" class="table-controls flex justify-between items-center p-4 bg-gray-50 border-b border-gray-200 gap-4 md:flex-col md:items-stretch md:gap-3">
+    <!-- Global Filter -->
+    <div *ngIf="mergedConfig.globalFilter" class="global-filter flex-1 max-w-[300px] md:max-w-none">
+      <div class="search-input relative flex items-center">
+        <i class="fas fa-search absolute left-3 text-gray-500 z-10"></i>
+        <input
+          type="text"
+          [(ngModel)]="globalFilter"
+          (ngModelChange)="onGlobalFilter($event)"
+          placeholder="ค้นหาทั้งหมด..."
+          class="filter-input w-full px-4 py-2 pl-10 border border-gray-200 rounded-lg bg-white text-gray-700 text-sm transition-all focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/10 placeholder-gray-500"
+          [attr.aria-label]="'Search table'"
+          [attr.aria-describedby]="'table-search-description'">
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="table-actions flex gap-2">
+      <button
+        *ngIf="mergedConfig.exportable"
+        type="button"
+        class="btn btn-secondary btn-sm px-3 py-1.5 text-sm font-medium rounded border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 transition-all"
+        (click)="exportData()">
+        <i class="fas fa-download"></i>
+        Export
+      </button>
+    </div>
+  </div>
+
+  <!-- Table Container -->
+  <div *ngIf="!loading" #tableContainer class="table-wrapper overflow-x-auto relative" [ngClass]="getContainerClasses()">
+    <table class="table w-full border-collapse text-sm leading-relaxed text-gray-700 m-0" [ngClass]="getTableClasses()" role="table" [attr.aria-label]="ariaLabel || 'Data table'">
+      <!-- Table Header -->
+      <thead class="table-header bg-gray-50 text-gray-900 font-semibold">
+        <tr>
+          <!-- Selection Column -->
+          <th *ngIf="mergedConfig.selectable && mergedConfig.multiSelect" class="selection-column w-12 text-center align-middle">
+            <input
+              type="checkbox"
+              [checked]="isAllSelected()"
+              [indeterminate]="isSomeSelected()"
+              (change)="onSelectAll($event.target.checked)"
+              class="form-check-input m-0"
+              [attr.aria-label]="'Select all rows'">
+          </th>
+
+          <!-- Data Columns -->
+          <th
+            *ngFor="let column of getVisibleColumns(); trackBy: trackByColumn"
+            [class]="'column-' + column.key + ' px-3 py-3 text-left border-b-2 border-gray-200 relative whitespace-nowrap'"
+            [class.text-left]="column.align === 'left' || !column.align"
+            [class.text-center]="column.align === 'center'"
+            [class.text-right]="column.align === 'right'"
+            [style.width]="column.width"
+            [style.min-width]="column.minWidth"
+            [style.max-width]="column.maxWidth"
+            [class.cursor-pointer]="column.sortable && mergedConfig.sortable"
+            [class.select-none]="column.sortable && mergedConfig.sortable"
+            [class.transition-all]="column.sortable && mergedConfig.sortable"
+            [class.hover:bg-gray-100]="column.sortable && mergedConfig.sortable"
+            [class.sticky]="column.sticky"
+            [class.left-0]="column.sticky"
+            [class.z-10]="column.sticky"
+            [class.bg-gray-50]="column.sticky"
+            (click)="onSort(column)">
+
+            <div class="column-header flex items-center justify-between gap-2">
+              <span class="column-title flex-1 min-w-0">{{ column.title }}</span>
+
+              <!-- Sort Indicator -->
+              <span *ngIf="column.sortable && mergedConfig.sortable" class="sort-indicator text-gray-500 text-xs flex-shrink-0">
+                <i *ngIf="getSortDirection(column) === 'asc'" class="fas fa-sort-up"></i>
+                <i *ngIf="getSortDirection(column) === 'desc'" class="fas fa-sort-down"></i>
+                <i *ngIf="!getSortDirection(column)" class="fas fa-sort"></i>
+              </span>
+            </div>
+
+            <!-- Column Filter -->
+            <div *ngIf="column.filterable && mergedConfig.columnFilters" class="column-filter mt-2">
+              <input
+                *ngIf="column.filterType === 'text'"
+                type="text"
+                [(ngModel)]="columnFilters[column.key]"
+                (ngModelChange)="onColumnFilter(column, $event)"
+                [placeholder]="'ค้นหา ' + column.title"
+                class="filter-input w-full px-2 py-1 border border-gray-200 rounded bg-white text-gray-700 text-xs transition-all focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/10">
+
+              <select
+                *ngIf="column.filterType === 'select'"
+                [(ngModel)]="columnFilters[column.key]"
+                (ngModelChange)="onColumnFilter(column, $event)"
+                class="filter-select w-full px-2 py-1 border border-gray-200 rounded bg-white text-gray-700 text-xs transition-all focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/10">
+                <option value="">ทั้งหมด</option>
+                <option *ngFor="let option of column.filterOptions" [value]="option.value">
+                  {{ option.label }}
+                </option>
+              </select>
+            </div>
+          </th>
+
+          <!-- Actions Column -->
+          <th *ngIf="mergedConfig.actions && actions.length > 0" class="actions-column text-center align-middle px-3 py-3 border-b-2 border-gray-200" [style.width]="mergedConfig.actionColumnWidth">
+            <span class="column-title">การดำเนินการ</span>
+          </th>
+        </tr>
+      </thead>
+
+      <!-- Table Body -->
+      <tbody class="table-body">
+        <tr
+          *ngFor="let row of paginatedData; trackBy: trackByRow; let i = index"
+          class="transition-all"
+          [class.bg-blue-50]="isRowSelected(row)"
+          [class.bg-gray-50]="i % 2 === 0"
+          [class.hover:bg-gray-100]="mergedConfig.hover !== false">
+
+          <!-- Selection Cell -->
+          <td *ngIf="mergedConfig.selectable" class="selection-cell w-12 text-center align-middle px-3 py-3 border-b border-gray-200">
+            <input
+              *ngIf="mergedConfig.multiSelect"
+              type="checkbox"
+              [checked]="isRowSelected(row)"
+              (change)="onRowSelect(row, $event.target.checked)"
+              class="form-check-input m-0">
+
+            <input
+              *ngIf="!mergedConfig.multiSelect"
+              type="radio"
+              [checked]="isRowSelected(row)"
+              (change)="onRowSelect(row, $event.target.checked)"
+              [name]="'row-selection'"
+              class="form-check-input m-0">
+          </td>
+
+          <!-- Data Cells -->
+          <td
+            *ngFor="let column of getVisibleColumns(); trackBy: trackByColumn"
+            [class]="'cell-' + column.key + ' px-3 py-3 border-b border-gray-200 align-middle'"
+            [class.text-left]="column.align === 'left' || !column.align"
+            [class.text-center]="column.align === 'center'"
+            [class.text-right]="column.align === 'right'"
+            [class.sticky]="column.sticky"
+            [class.left-0]="column.sticky"
+            [class.z-5]="column.sticky"
+            [style.background]="column.sticky ? 'inherit' : null">
+
+            <!-- Custom Template -->
+            <ng-container *ngIf="column.template; else defaultCell">
+              <ng-container *ngTemplateOutlet="column.template; context: {$implicit: row, column: column}"></ng-container>
+            </ng-container>
+
+            <!-- Default Cell -->
+            <ng-template #defaultCell>
+              <span [class]="'cell-value block min-w-0 break-words cell-type-' + (column.type || 'text')"
+                [class.text-right]="column.type === 'number'"
+                [class.font-mono]="column.type === 'number'"
+                [class.whitespace-nowrap]="column.type === 'date'"
+                [class.text-center]="column.type === 'boolean'">
+                {{ getCellValue(row, column) }}
+              </span>
+            </ng-template>
+          </td>
+
+          <!-- Actions Cell -->
+          <td *ngIf="mergedConfig.actions && actions.length > 0" class="actions-cell text-center align-middle px-3 py-3 border-b border-gray-200">
+            <div class="action-buttons flex gap-1 justify-center flex-wrap md:flex-col md:gap-0.5">
+              <ng-container *ngFor="let action of actions">
+                <button
+                  *ngIf="!action.visible || action.visible(row)"
+                  type="button"
+                  [class]="'btn btn-sm px-2 py-1 text-xs leading-tight rounded transition-all' + (action.variant === 'primary' ? ' bg-primary-500 text-white hover:bg-primary-600' : action.variant === 'danger' ? ' bg-error-500 text-white hover:bg-error-600' : ' border border-gray-300 bg-white text-gray-700 hover:bg-gray-50')"
+                  [disabled]="action.disabled"
+                  [title]="action.label"
+                  (click)="onActionClick(action, row)">
+                  <i *ngIf="action.icon" [class]="action.icon + ' text-[10px]'"></i>
+                  <span *ngIf="!action.icon">{{ action.label }}</span>
+                </button>
+              </ng-container>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Empty State -->
+    <div *ngIf="paginatedData.length === 0" class="empty-state flex flex-col items-center justify-center p-12 text-gray-500 text-center">
+      <i [class]="emptyIcon + ' text-5xl mb-4 opacity-50'"></i>
+      <p class="m-0 text-base">{{ emptyText }}</p>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div *ngIf="!loading && mergedConfig.pagination && totalPages > 1" class="table-pagination flex justify-between items-center p-4 bg-gray-50 border-t border-gray-200 gap-4 flex-wrap md:flex-col md:items-stretch md:gap-3">
+    <!-- Page Size Selector -->
+    <div *ngIf="mergedConfig.showPageSizeSelector" class="page-size-selector flex items-center gap-2 text-sm text-gray-500">
+      <label>แสดง:</label>
+      <select
+        [(ngModel)]="pageSize"
+        (ngModelChange)="onPageSizeChange($event)"
+        class="form-select px-2 py-1 border border-gray-200 rounded bg-white text-gray-700 text-sm min-w-[60px] focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/10">
+        <option *ngFor="let size of mergedConfig.pageSizeOptions" [value]="size">
+          {{ size }}
+        </option>
+      </select>
+      <span>รายการ</span>
+    </div>
+
+    <!-- Page Info -->
+    <div *ngIf="mergedConfig.showPageInfo" class="page-info text-sm text-gray-500">
+      {{ getPaginationInfo() }}
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="pagination-controls flex gap-1 items-center md:justify-center">
+      <button
+        type="button"
+        class="btn btn-sm px-3 py-1.5 text-sm leading-tight rounded border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 transition-all min-w-[2.5rem] disabled:opacity-50 disabled:cursor-not-allowed"
+        [disabled]="currentPage === 1"
+        (click)="onPageChange(1)">
+        <i class="fas fa-angle-double-left text-xs"></i>
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-sm px-3 py-1.5 text-sm leading-tight rounded border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 transition-all min-w-[2.5rem] disabled:opacity-50 disabled:cursor-not-allowed"
+        [disabled]="currentPage === 1"
+        (click)="onPageChange(currentPage - 1)">
+        <i class="fas fa-angle-left text-xs"></i>
+      </button>
+
+      <button
+        *ngFor="let page of getPageNumbers()"
+        type="button"
+        [class]="'btn btn-sm px-3 py-1.5 text-sm leading-tight rounded transition-all min-w-[2.5rem]' + (page === currentPage ? ' bg-primary-500 text-white hover:bg-primary-600' : ' border border-gray-300 bg-white text-gray-700 hover:bg-gray-50')"
+        (click)="onPageChange(page)">
+        {{ page }}
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-sm px-3 py-1.5 text-sm leading-tight rounded border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 transition-all min-w-[2.5rem] disabled:opacity-50 disabled:cursor-not-allowed"
+        [disabled]="currentPage === totalPages"
+        (click)="onPageChange(currentPage + 1)">
+        <i class="fas fa-angle-right text-xs"></i>
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-sm px-3 py-1.5 text-sm leading-tight rounded border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 transition-all min-w-[2.5rem] disabled:opacity-50 disabled:cursor-not-allowed"
+        [disabled]="currentPage === totalPages"
+        (click)="onPageChange(totalPages)">
+        <i class="fas fa-angle-double-right text-xs"></i>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,293 @@
+<div class="face-recognition-container p-6 max-w-[1200px] mx-auto md:p-4" [class]="customClass || ''" role="group" [attr.aria-label]="ariaLabel || 'Face recognition'">
+  <!-- Header -->
+  <div class="header flex justify-between items-center mb-8 md:flex-col md:gap-4 md:text-center">
+    <h2 class="title text-3xl font-semibold text-white m-0">ระบบจดจำใบหน้า</h2>
+    <div class="status-indicator flex items-center gap-2 px-4 py-2 rounded-2xl bg-error-500/10 border border-error-500/20" [class.bg-success-500/10]="isInitialized" [class.border-success-500/20]="isInitialized" role="status" [attr.aria-live]="'polite'">
+      <span class="status-dot w-2 h-2 rounded-full bg-error-500 animate-pulse" [class.bg-success-500]="isInitialized" [attr.aria-hidden]="true"></span>
+      <span class="status-text text-sm font-medium text-gray-400">{{ isInitialized ? 'พร้อมใช้งาน' : 'กำลังโหลด...' }}</span>
+    </div>
+  </div>
+
+  <!-- Mode Selection -->
+  <div class="mode-selection flex gap-4 mb-8 justify-center md:flex-col">
+    <app-glass-button
+      [variant]="mode === 'camera' ? 'primary' : 'secondary'"
+      (click)="mode = 'camera'"
+      [disabled]="!isInitialized">
+      <i class="fas fa-camera"></i>
+      กล้อง
+    </app-glass-button>
+    <app-glass-button
+      [variant]="mode === 'upload' ? 'primary' : 'secondary'"
+      (click)="mode = 'upload'"
+      [disabled]="!isInitialized">
+      <i class="fas fa-upload"></i>
+      อัปโหลดรูป
+    </app-glass-button>
+  </div>
+
+  <!-- Camera Mode -->
+  <div *ngIf="mode === 'camera'" class="camera-section mb-8">
+    <app-glass-card class="camera-card">
+      <div *ngIf="showControls" class="camera-controls flex gap-4 mb-6 flex-wrap justify-center md:flex-col">
+        <app-glass-button
+          [variant]="isStreaming ? 'danger' : 'primary'"
+          (click)="isStreaming ? stopCamera() : startCamera()"
+          [disabled]="!isInitialized">
+          <i class="fas" [class.fa-stop]="isStreaming" [class.fa-play]="!isStreaming"></i>
+          {{ isStreaming ? 'หยุดกล้อง' : 'เริ่มกล้อง' }}
+        </app-glass-button>
+
+        <app-glass-button
+          variant="secondary"
+          (click)="toggleDetection()"
+          [disabled]="!isStreaming">
+          <i class="fas" [class.fa-pause]="autoDetect" [class.fa-play]="!autoDetect"></i>
+          {{ autoDetect ? 'หยุดตรวจจับ' : 'เริ่มตรวจจับ' }}
+        </app-glass-button>
+
+        <app-glass-button
+          variant="secondary"
+          (click)="detectFaces()"
+          [disabled]="!isStreaming || isDetecting">
+          <i class="fas fa-search"></i>
+          ตรวจจับทันที
+        </app-glass-button>
+
+        <app-glass-button
+          variant="secondary"
+          (click)="showLandmarks = !showLandmarks"
+          [disabled]="!isStreaming">
+          <i class="fas" [class.fa-eye]="showLandmarks" [class.fa-eye-slash]="!showLandmarks"></i>
+          {{ showLandmarks ? 'ซ่อน Landmarks' : 'แสดง Landmarks' }}
+        </app-glass-button>
+      </div>
+
+      <div class="video-container relative w-full max-w-[640px] mx-auto rounded-2xl overflow-hidden bg-gray-900">
+        <video
+          #videoElement
+          class="video-element w-full h-auto block"
+          [class.hidden]="!isStreaming"
+          autoplay
+          muted
+          playsinline>
+        </video>
+        <canvas
+          #canvasElement
+          class="canvas-overlay absolute top-0 left-0 w-full h-full pointer-events-none z-10"
+          [class.hidden]="!isStreaming">
+        </canvas>
+        <div *ngIf="!isStreaming" class="placeholder flex flex-col items-center justify-center p-12 text-gray-500 text-center">
+          <i class="fas fa-camera fa-3x mb-4 opacity-50"></i>
+          <p class="m-0 text-lg">กดปุ่ม "เริ่มกล้อง" เพื่อเริ่มใช้งาน</p>
+        </div>
+      </div>
+
+      <!-- Image Quality Feedback -->
+      <div *ngIf="showQualityFeedback && isStreaming" class="quality-feedback absolute top-4 right-4 max-w-[300px] bg-black/80 backdrop-blur-sm rounded-xl p-4 border border-white/10 z-10">
+        <div class="quality-status flex items-center gap-2 mb-3 font-semibold" [ngClass]="getQualityStatusClass()"
+          [class.text-success-500]="getQualityStatusClass().includes('excellent')"
+          [class.text-primary-500]="getQualityStatusClass().includes('good')"
+          [class.text-warning-500]="getQualityStatusClass().includes('fair')"
+          [class.text-error-500]="getQualityStatusClass().includes('poor')"
+          [class.text-gray-500]="getQualityStatusClass().includes('unknown')">
+          <i class="fas fa-info-circle text-base"></i>
+          <span class="quality-text text-sm">{{ getQualityStatusText() }}</span>
+        </div>
+        <div class="quality-message">
+          <p class="m-0 mb-2 text-gray-400 text-sm leading-relaxed">{{ qualityFeedbackMessage }}</p>
+          <ul *ngIf="qualityRecommendations.length > 0" class="quality-recommendations list-none p-0 m-0">
+            <li *ngFor="let recommendation of qualityRecommendations" class="flex items-start gap-2 mb-1 text-gray-500 text-xs leading-snug">
+              <i class="fas fa-lightbulb text-warning-500 text-xs mt-0.5 flex-shrink-0"></i>
+              {{ recommendation }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Upload Mode -->
+  <div *ngIf="mode === 'upload'" class="upload-section mb-8">
+    <app-glass-card class="upload-card">
+      <div class="file-upload">
+        <input
+          #fileInput
+          type="file"
+          accept="image/*"
+          (change)="onFileSelected($event)"
+          class="file-input hidden">
+
+        <div class="upload-area border-2 border-dashed border-white/20 rounded-2xl p-12 text-center cursor-pointer transition-all bg-white/2 hover:border-white/40 hover:bg-white/5" (click)="fileInput.click()">
+          <i class="fas fa-cloud-upload-alt fa-3x text-gray-500 mb-4"></i>
+          <p class="m-0 mb-2 text-lg text-white">คลิกเพื่อเลือกไฟล์รูปภาพ</p>
+          <small class="text-gray-500 text-sm">รองรับไฟล์: JPG, PNG, GIF</small>
+        </div>
+
+        <div *ngIf="previewImage" class="preview-container mt-6 text-center">
+          <img appImageOptimization [ngSrc]="previewImage" alt="Preview" class="preview-image max-w-full max-h-[400px] rounded-xl mb-4" loading="lazy">
+          <app-glass-button
+            variant="primary"
+            (click)="detectInImage()"
+            [disabled]="isDetecting">
+            <i class="fas fa-search"></i>
+            ตรวจจับใบหน้า
+          </app-glass-button>
+        </div>
+      </div>
+
+      <div class="canvas-container mt-6 text-center">
+        <canvas #canvasElement class="result-canvas max-w-full rounded-xl"></canvas>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Detection Results -->
+  <div *ngIf="currentDetections.length > 0" class="detection-results mb-8">
+    <app-glass-card>
+      <h3 class="m-0 mb-6 text-white">ผลการตรวจจับ</h3>
+      <div class="detection-stats grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 mb-6 md:grid-cols-1">
+        <div class="stat-item flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/10">
+          <span class="stat-label text-gray-400 font-medium">จำนวนใบหน้า:</span>
+          <span class="stat-value text-white font-semibold text-lg">{{ currentDetections.length }}</span>
+        </div>
+        <div class="stat-item flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/10">
+          <span class="stat-label text-gray-400 font-medium">การจดจำสำเร็จ:</span>
+          <span class="stat-value text-white font-semibold text-lg">{{ detectionStats.successfulRecognitions }}</span>
+        </div>
+        <div class="stat-item flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/10">
+          <span class="stat-label text-gray-400 font-medium">ความแม่นยำเฉลี่ย:</span>
+          <span class="stat-value text-white font-semibold text-lg">{{ (detectionStats.averageConfidence * 100) | number:'1.1-1' }}%</span>
+        </div>
+      </div>
+
+      <div class="detection-list">
+        <div
+          *ngFor="let detection of currentDetections; let i = index"
+          class="detection-item p-4 bg-white/2 rounded-xl border border-white/10 mb-4">
+          <div class="detection-info flex items-center gap-4">
+            <div class="face-box w-[60px] h-[60px] rounded-xl bg-white/10 border-2 border-white/20 relative overflow-hidden" [style]="getFaceBoxStyle(detection)"></div>
+            <div class="face-details flex-1">
+              <div class="confidence flex items-center gap-2 mb-1 text-gray-400 text-sm">
+                <i class="fas fa-eye w-4 text-center"></i>
+                ความมั่นใจ: {{ (detection.confidence * 100) | number:'1.1-1' }}%
+              </div>
+              <div *ngIf="currentRecognitions[i]?.isRecognized" class="recognition flex items-center gap-2 text-success-500 font-medium">
+                <i class="fas fa-user-check w-4 text-center"></i>
+                {{ currentRecognitions[i].name }} ({{ (currentRecognitions[i].confidence * 100) | number:'1.1-1' }}%)
+              </div>
+              <div *ngIf="!currentRecognitions[i]?.isRecognized" class="unknown flex items-center gap-2 text-error-500 font-medium">
+                <i class="fas fa-user-question w-4 text-center"></i>
+                ไม่รู้จัก
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Enrollment Section -->
+  <div *ngIf="showEnrollment" class="enrollment-section">
+    <app-glass-card>
+      <div class="enrollment-header flex justify-between items-center mb-6 flex-wrap gap-4">
+        <h3 class="m-0 text-white">การลงทะเบียนใบหน้า</h3>
+        <app-glass-button
+          variant="primary"
+          (click)="startEnrollment()"
+          [disabled]="!isStreaming && !previewImage">
+          <i class="fas fa-user-plus"></i>
+          ลงทะเบียนใบหน้าใหม่
+        </app-glass-button>
+      </div>
+
+      <!-- Enrollment Form -->
+      <div *ngIf="showEnrollmentForm" class="enrollment-form bg-white/2 rounded-xl p-6 border border-white/10 mb-6">
+        <div class="form-group mb-4">
+          <label class="block mb-2 text-gray-400 font-medium">ชื่อ:</label>
+          <app-glass-input
+            [(ngModel)]="enrollmentName"
+            placeholder="กรอกชื่อผู้ใช้"
+            [disabled]="isEnrolling">
+          </app-glass-input>
+        </div>
+        <div class="form-group mb-4">
+          <label class="block mb-2 text-gray-400 font-medium">รหัส (ไม่บังคับ):</label>
+          <app-glass-input
+            [(ngModel)]="enrollmentId"
+            placeholder="กรอกรหัสผู้ใช้"
+            [disabled]="isEnrolling">
+          </app-glass-input>
+        </div>
+        <div class="form-actions flex gap-4 justify-end mt-6 md:flex-col">
+          <app-glass-button
+            variant="primary"
+            (click)="enrollFace()"
+            [disabled]="!enrollmentName.trim() || isEnrolling">
+            <i class="fas fa-save"></i>
+            {{ isEnrolling ? 'กำลังลงทะเบียน...' : 'บันทึก' }}
+          </app-glass-button>
+          <app-glass-button
+            variant="secondary"
+            (click)="cancelEnrollment()"
+            [disabled]="isEnrolling">
+            <i class="fas fa-times"></i>
+            ยกเลิก
+          </app-glass-button>
+        </div>
+      </div>
+
+      <!-- Enrolled Faces List -->
+      <div *ngIf="enrolledFaces.length > 0" class="enrolled-faces">
+        <h4 class="m-0 mb-4 text-white">ใบหน้าที่ลงทะเบียนแล้ว ({{ enrolledFaces.length }})</h4>
+        <div class="faces-grid grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4 mb-6 md:grid-cols-1">
+          <div *ngFor="let face of enrolledFaces" class="face-card bg-white/2 rounded-xl p-4 border border-white/10 relative">
+            <img appImageOptimization [ngSrc]="face.imageData" [alt]="face.name" class="face-image w-full h-[120px] object-cover rounded-xl mb-3" loading="lazy">
+            <div class="face-info">
+              <h5 class="m-0 mb-2 text-white text-base">{{ face.name }}</h5>
+              <p class="m-0 mb-1 text-gray-400 text-sm">ลงทะเบียน: {{ face.enrolledAt | date:'dd/MM/yyyy HH:mm' }}</p>
+              <p class="m-0 text-gray-400 text-sm">จำนวนข้อมูล: {{ face.descriptors.length }}</p>
+            </div>
+            <div class="face-actions absolute top-3 right-3">
+              <app-glass-button
+                variant="danger"
+                size="sm"
+                (click)="removeFace(face.id)">
+                <i class="fas fa-trash"></i>
+              </app-glass-button>
+            </div>
+          </div>
+        </div>
+
+        <div class="bulk-actions flex gap-4 justify-center flex-wrap md:flex-col">
+          <app-glass-button
+            variant="secondary"
+            (click)="exportEnrollments()">
+            <i class="fas fa-download"></i>
+            ส่งออกข้อมูล
+          </app-glass-button>
+          <app-glass-button
+            variant="secondary"
+            (click)="fileInput.click()">
+            <i class="fas fa-upload"></i>
+            นำเข้าข้อมูล
+          </app-glass-button>
+          <app-glass-button
+            variant="danger"
+            (click)="clearAllFaces()">
+            <i class="fas fa-trash-alt"></i>
+            ลบทั้งหมด
+          </app-glass-button>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Hidden file input for import -->
+  <input
+    #fileInput
+    type="file"
+    accept=".json"
+    (change)="onImportFile($event)"
+    style="display: none;">
+</div>

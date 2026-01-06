@@ -1,0 +1,194 @@
+// Offcanvas Component Styles
+// Most styles migrated to Tailwind classes in HTML template
+// Keeping only complex styles that require SCSS (position variants, size variants, animations, scrollbar)
+
+// Position variants - keeping in SCSS for complex transforms
+.offcanvas {
+  &.offcanvas-start {
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 100vh;
+    transform: translateX(-100%);
+
+    &.show {
+      transform: translateX(0);
+    }
+  }
+
+  &.offcanvas-end {
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100vh;
+    transform: translateX(100%);
+
+    &.show {
+      transform: translateX(0);
+    }
+  }
+
+  &.offcanvas-top {
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100vw;
+    height: 300px;
+    transform: translateY(-100%);
+
+    &.show {
+      transform: translateY(0);
+    }
+  }
+
+  &.offcanvas-bottom {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100vw;
+    height: 300px;
+    transform: translateY(100%);
+
+    &.show {
+      transform: translateY(0);
+    }
+  }
+
+  // Size variants - keeping in SCSS for dynamic widths/heights
+  &.offcanvas-sm {
+    &.offcanvas-start,
+    &.offcanvas-end {
+      width: 250px;
+    }
+
+    &.offcanvas-top,
+    &.offcanvas-bottom {
+      height: 250px;
+    }
+  }
+
+  &.offcanvas-md {
+    &.offcanvas-start,
+    &.offcanvas-end {
+      width: 300px;
+    }
+
+    &.offcanvas-top,
+    &.offcanvas-bottom {
+      height: 300px;
+    }
+  }
+
+  &.offcanvas-lg {
+    &.offcanvas-start,
+    &.offcanvas-end {
+      width: 400px;
+    }
+
+    &.offcanvas-top,
+    &.offcanvas-bottom {
+      height: 400px;
+    }
+  }
+
+  &.offcanvas-xl {
+    &.offcanvas-start,
+    &.offcanvas-end {
+      width: 500px;
+    }
+
+    &.offcanvas-top,
+    &.offcanvas-bottom {
+      height: 500px;
+    }
+  }
+
+  &.offcanvas-full {
+    &.offcanvas-start,
+    &.offcanvas-end {
+      width: 100vw;
+    }
+
+    &.offcanvas-top,
+    &.offcanvas-bottom {
+      height: 100vh;
+    }
+  }
+}
+
+// Scrollbar styling - keeping in SCSS for custom scrollbar
+.offcanvas-body {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.5);
+    }
+  }
+}
+
+// Animation keyframes
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Dark theme adjustments
+@media (prefers-color-scheme: dark) {
+  :root {
+    --offcanvas-bg: rgba(0, 0, 0, 0.95);
+    --offcanvas-border: rgba(255, 255, 255, 0.1);
+    --offcanvas-text: #ffffff;
+    --offcanvas-text-muted: #a1a1aa;
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .offcanvas {
+    border: 2px solid #ffffff;
+  }
+
+  .offcanvas-header {
+    border-bottom: 2px solid #ffffff;
+  }
+
+  .btn-close {
+    border: 1px solid #ffffff;
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .offcanvas,
+  .offcanvas-backdrop,
+  .btn-close {
+    transition: none;
+  }
+
+  .offcanvas.animating,
+  .offcanvas-backdrop.animating {
+    transition: none;
+  }
+}
+
+// Print styles
+@media print {
+  .offcanvas-backdrop,
+  .offcanvas {
+    display: none !important;
+  }
+}
+
+// Responsive styles migrated to Tailwind responsive classes in HTML template
+// Using md: breakpoint for mobile-first responsive design

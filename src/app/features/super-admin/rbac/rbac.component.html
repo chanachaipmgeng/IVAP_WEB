@@ -1,0 +1,434 @@
+<app-page-layout
+  [title]="'pages.rbac.title' | translate"
+  [description]="'pages.rbac.description' | translate"
+  icon="🔐"
+  [actions]="pageActions()">
+  
+  <!-- Statistics Cards -->
+  <app-statistics-grid [stats]="statisticsCards()" [columns]="5" />
+
+  <!-- Tabs -->
+  <app-tabs [tabs]="tabs()" [activeTab]="activeTab()" (activeTabChange)="onTabChange($event)">
+    
+    <!-- Roles Tab -->
+    <div *ngIf="activeTab() === 'roles'" class="space-y-6">
+      <!-- Filters -->
+      <app-filter-section
+        [fields]="roleFilterFields()"
+        [actionButton]="{ label: ('pages.rbac.addRole' | translate), variant: 'primary', onClick: openAddRoleModal.bind(this) }"
+        (filterChange)="onFilterChange($event)"
+      />
+
+      <!-- Roles Table -->
+      <app-data-table
+        [columns]="roleColumns"
+        [data]="filteredRoles()"
+        [actions]="roleActions"
+        [searchable]="false"
+      />
+    </div>
+
+    <!-- Permissions Tab -->
+    <div *ngIf="activeTab() === 'permissions'" class="space-y-6">
+      <!-- Filters -->
+      <app-filter-section
+        [fields]="permissionFilterFields()"
+        [actionButton]="{ label: ('pages.rbac.addPermission' | translate), variant: 'primary', onClick: openAddPermissionModal.bind(this) }"
+        (filterChange)="onFilterChange($event)"
+      />
+
+      <!-- Permissions by Category -->
+      <div class="space-y-6">
+        <div *ngFor="let category of getPermissionsByCategory()" class="app-glass-card p-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+            {{ category.name | titlecase }} Permissions
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div *ngFor="let permission of category.permissions" class="flex items-center justify-between p-3 border rounded-lg">
+              <div>
+                <h4 class="font-medium text-gray-900 dark:text-gray-100">{{ permission.name }}</h4>
+                <p class="text-sm text-gray-600 dark:text-gray-400">{{ permission.description }}</p>
+                <p class="text-xs text-gray-500 dark:text-gray-500">{{ permission.resource }}.{{ permission.action }}</p>
+              </div>
+              <div class="flex space-x-2">
+                <app-glass-button variant="secondary" (clicked)="viewPermissionDetails(permission)">
+                  👁️
+                </app-glass-button>
+                <app-glass-button variant="secondary" (clicked)="editPermission(permission)">
+                  ✏️
+                </app-glass-button>
+                <app-glass-button variant="danger" (clicked)="deletePermission(permission)">
+                  🗑️
+                </app-glass-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Roles Tab -->
+    <div *ngIf="activeTab() === 'user-roles'" class="space-y-6">
+      <!-- Filters -->
+      <app-filter-section
+        [fields]="userRoleFilterFields()"
+        [actionButton]="{ label: ('pages.rbac.assignRole' | translate), variant: 'primary', onClick: openAssignRoleModal.bind(this) }"
+        (filterChange)="onFilterChange($event)"
+      />
+
+      <!-- User Roles Table -->
+      <app-data-table
+        [columns]="userRoleColumns"
+        [data]="filteredUserRoles()"
+        [actions]="userRoleActions"
+        [searchable]="false"
+      />
+    </div>
+  </app-tabs>
+
+  <!-- Add/Edit Role Modal -->
+  <app-modal
+    [isOpen]="showRoleModal()"
+    [title]="(editingRole() ? 'pages.rbac.editRole' : 'pages.rbac.addRole') | translate"
+    [loading]="saving()"
+    (closed)="closeRoleModal()"
+  >
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            {{ 'pages.rbac.roleNameRequired' | translate }}
+        </label>
+        <input
+          [(ngModel)]="roleForm.name"
+          type="text"
+          class="glass-input w-full"
+          [placeholder]="'pages.rbac.enterRoleName' | translate"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            {{ 'pages.rbac.descriptionLabel' | translate }}
+        </label>
+        <textarea
+          [(ngModel)]="roleForm.description"
+          class="glass-input w-full"
+          rows="3"
+          [placeholder]="'pages.rbac.enterDescription' | translate"
+        ></textarea>
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            {{ 'pages.rbac.permissions' | translate }}
+        </label>
+        <div class="space-y-2 max-h-64 overflow-y-auto border rounded-lg p-4">
+          <div *ngFor="let category of getPermissionsByCategory()" class="space-y-2">
+            <h4 class="font-medium text-gray-900 dark:text-gray-100">{{ category.name | titlecase }}</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+              <label *ngFor="let permission of category.permissions" class="flex items-center space-x-2">
+                <input
+                  [(ngModel)]="roleForm.permissions"
+                  [value]="permission.id"
+                  type="checkbox"
+                  class="rounded"
+                />
+                <span class="text-sm text-gray-700 dark:text-gray-300">{{ permission.name }}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div slot="footer">
+      <app-glass-button variant="secondary" (clicked)="closeRoleModal()">
+        {{ 'Cancel' | translate }}
+      </app-glass-button>
+      <app-glass-button variant="primary" [loading]="saving()" (clicked)="saveRole()">
+        {{ 'Save' | translate }}
+      </app-glass-button>
+    </div>
+  </app-modal>
+
+  <!-- Add/Edit Permission Modal -->
+  <app-modal
+    [isOpen]="showPermissionModal()"
+    [title]="(editingPermission() ? 'pages.rbac.editPermission' : 'pages.rbac.addPermission') | translate"
+    [loading]="saving()"
+    (closed)="closePermissionModal()"
+  >
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            {{ 'pages.rbac.permissionNameRequired' | translate }}
+        </label>
+        <input
+          [(ngModel)]="permissionForm.name"
+          type="text"
+          class="glass-input w-full"
+          [placeholder]="'pages.rbac.enterPermissionName' | translate"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            {{ 'pages.rbac.descriptionLabel' | translate }}
+        </label>
+        <textarea
+          [(ngModel)]="permissionForm.description"
+          class="glass-input w-full"
+          rows="3"
+          [placeholder]="'pages.rbac.enterPermissionDescription' | translate"
+        ></textarea>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            {{ 'pages.rbac.resourceRequired' | translate }}
+          </label>
+          <input
+            [(ngModel)]="permissionForm.resource"
+            type="text"
+            class="glass-input w-full"
+            [placeholder]="'pages.rbac.resourcePlaceholder' | translate"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            {{ 'pages.rbac.actionRequired' | translate }}
+          </label>
+          <input
+            [(ngModel)]="permissionForm.action"
+            type="text"
+            class="glass-input w-full"
+            [placeholder]="'pages.rbac.actionPlaceholder' | translate"
+          />
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            {{ 'pages.rbac.categoryRequired' | translate }}
+        </label>
+        <select [(ngModel)]="permissionForm.category" class="glass-input w-full">
+          <option value="admin">{{ 'pages.rbac.admin' | translate }}</option>
+          <option value="user">{{ 'pages.rbac.user' | translate }}</option>
+          <option value="company">{{ 'pages.rbac.company' | translate }}</option>
+          <option value="system">{{ 'pages.rbac.system' | translate }}</option>
+        </select>
+      </div>
+    </div>
+    <div slot="footer">
+      <app-glass-button variant="secondary" (clicked)="closePermissionModal()">
+        {{ 'Cancel' | translate }}
+      </app-glass-button>
+      <app-glass-button variant="primary" [loading]="saving()" (clicked)="savePermission()">
+        {{ 'Save' | translate }}
+      </app-glass-button>
+    </div>
+  </app-modal>
+
+  <!-- Assign Role Modal -->
+  <app-modal
+    [isOpen]="showAssignRoleModal()"
+    [title]="'pages.rbac.assignRoleToUser' | translate"
+    [loading]="saving()"
+    (closed)="closeAssignRoleModal()"
+  >
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            {{ 'pages.rbac.userIdRequired' | translate }}
+        </label>
+        <input
+          [(ngModel)]="userRoleForm.userId"
+          type="text"
+          class="glass-input w-full"
+          [placeholder]="'pages.rbac.enterUserId' | translate"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            {{ 'pages.rbac.roleRequired' | translate }}
+        </label>
+        <select [(ngModel)]="userRoleForm.roleId" class="glass-input w-full">
+          <option value="">{{ 'pages.rbac.selectRole' | translate }}</option>
+          <option *ngFor="let role of rbacService.getRoles()()" [value]="role.id">
+            {{ role.name }}
+          </option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            {{ 'pages.rbac.companyIdRequired' | translate }}
+        </label>
+        <input
+          [(ngModel)]="userRoleForm.companyId"
+          type="text"
+          class="glass-input w-full"
+          [placeholder]="'pages.rbac.enterCompanyId' | translate"
+        />
+      </div>
+    </div>
+    <div slot="footer">
+      <app-glass-button variant="secondary" (clicked)="closeAssignRoleModal()">
+        {{ 'Cancel' | translate }}
+      </app-glass-button>
+      <app-glass-button variant="primary" [loading]="saving()" (clicked)="assignRole()">
+        {{ 'Assign' | translate }}
+      </app-glass-button>
+    </div>
+  </app-modal>
+
+  <!-- Role Detail Modal -->
+  <app-modal
+    [isOpen]="showRoleDetailModal()"
+    [title]="'Role Details - ' + (viewingRole()?.name || '')"
+    [closable]="true"
+    (closed)="closeRoleDetailModal()"
+  >
+    <div class="space-y-4" *ngIf="viewingRole()">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Role Name
+        </label>
+        <p class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+          {{ viewingRole()?.name }}
+        </p>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Description
+        </label>
+        <p class="text-gray-700 dark:text-gray-300">
+          {{ viewingRole()?.description || 'No description' }}
+        </p>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Type
+        </label>
+        <p class="text-gray-700 dark:text-gray-300">
+          <span [class]="viewingRole()?.isSystem ? 'text-blue-600' : 'text-green-600'">
+            {{ viewingRole()?.isSystem ? 'System Role' : 'Custom Role' }}
+          </span>
+        </p>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Permissions ({{ viewingRole()?.permissions?.length || 0 }})
+        </label>
+        <div class="max-h-64 overflow-y-auto border rounded-lg p-4 space-y-2">
+          <div *ngIf="!viewingRole()?.permissions || (viewingRole()?.permissions && viewingRole()!.permissions.length === 0)" class="text-gray-500 text-center py-4">
+            No permissions assigned
+          </div>
+          <div *ngFor="let permissionId of viewingRole()?.permissions" class="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded">
+            <div>
+              <p class="font-medium text-gray-900 dark:text-gray-100">{{ getPermissionName(permissionId) }}</p>
+              <p class="text-xs text-gray-600 dark:text-gray-400">{{ permissionId }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 pt-4 border-t">
+        <div>
+          <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Created</label>
+          <p class="text-sm text-gray-700 dark:text-gray-300">
+            {{ viewingRole()?.createdAt ? formatDate(viewingRole()!.createdAt) : 'N/A' }}
+          </p>
+        </div>
+        <div>
+          <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Updated</label>
+          <p class="text-sm text-gray-700 dark:text-gray-300">
+            {{ viewingRole()?.updatedAt ? formatDate(viewingRole()!.updatedAt) : 'N/A' }}
+          </p>
+        </div>
+      </div>
+
+      <div class="flex justify-end space-x-3 pt-4 border-t">
+        <app-glass-button variant="secondary" (clicked)="closeRoleDetailModal()">
+          Close
+        </app-glass-button>
+        <app-glass-button variant="primary" (clicked)="editRole(viewingRole()!); closeRoleDetailModal()">
+          ✏️ Edit Role
+        </app-glass-button>
+      </div>
+    </div>
+  </app-modal>
+
+  <!-- Permission Detail Modal -->
+  <app-modal
+    [isOpen]="showPermissionDetailModal()"
+    [title]="'Permission Details - ' + (viewingPermission()?.name || '')"
+    [closable]="true"
+    (closed)="closePermissionDetailModal()"
+  >
+    <div class="space-y-4" *ngIf="viewingPermission()">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Permission Name
+        </label>
+        <p class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+          {{ viewingPermission()?.name }}
+        </p>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Description
+        </label>
+        <p class="text-gray-700 dark:text-gray-300">
+          {{ viewingPermission()?.description || 'No description' }}
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Resource
+          </label>
+          <p class="text-gray-900 dark:text-gray-100 font-mono text-sm">
+            {{ viewingPermission()?.resource }}
+          </p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Action
+          </label>
+          <p class="text-gray-900 dark:text-gray-100 font-mono text-sm">
+            {{ viewingPermission()?.action }}
+          </p>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Full Permission
+        </label>
+        <p class="text-gray-900 dark:text-gray-100 font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded">
+          {{ viewingPermission()?.resource }}.{{ viewingPermission()?.action }}
+        </p>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Category
+        </label>
+        <p class="text-gray-700 dark:text-gray-300">
+          <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900 rounded text-sm">
+            {{ viewingPermission()?.category | titlecase }}
+          </span>
+        </p>
+      </div>
+
+      <div class="flex justify-end space-x-3 pt-4 border-t">
+        <app-glass-button variant="secondary" (clicked)="closePermissionDetailModal()">
+          Close
+        </app-glass-button>
+        <app-glass-button variant="primary" (clicked)="editPermission(viewingPermission()!); closePermissionDetailModal()">
+          ✏️ Edit Permission
+        </app-glass-button>
+      </div>
+    </div>
+  </app-modal>
+</app-page-layout>

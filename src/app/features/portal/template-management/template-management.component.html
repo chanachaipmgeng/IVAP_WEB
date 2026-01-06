@@ -1,0 +1,206 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+      Template Management
+    </h1>
+    <app-glass-button variant="primary" (clicked)="openAddModal()">
+      ➕ Create Template
+    </app-glass-button>
+  </div>
+
+  <!-- Info Card -->
+  <app-glass-card>
+    <div class="flex items-start space-x-4">
+      <span class="text-3xl">📝</span>
+      <div>
+        <h3 class="font-medium text-gray-900 dark:text-gray-100 mb-1">Template Management System</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-400">
+          Create and manage templates for emails, SMS, notifications, reports, and documents. Use variables with double curly braces for dynamic content.
+        </p>
+      </div>
+    </div>
+  </app-glass-card>
+
+  <!-- Filters -->
+  <app-glass-card>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Category</label>
+        <select
+          [(ngModel)]="selectedCategory"
+          class="glass-input w-full"
+        >
+          <option value="all">All Categories</option>
+          <option *ngFor="let cat of categories()" [value]="cat">{{ getCategoryLabel(cat) }}</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Search</label>
+        <input
+          [(ngModel)]="searchQuery"
+          type="text"
+          class="glass-input w-full"
+          placeholder="Search templates..."
+        />
+      </div>
+    </div>
+  </app-glass-card>
+
+  <!-- Templates Table -->
+  <app-data-table
+    [columns]="columns"
+    [data]="templates()"
+    [actions]="actions"
+    [searchable]="false"
+  >
+    <div actions>
+      <app-glass-button (clicked)="ngOnInit()">
+        🔄 Refresh
+      </app-glass-button>
+    </div>
+  </app-data-table>
+
+  <!-- Add/Edit Modal -->
+  <app-modal
+    [isOpen]="showModal()"
+    [title]="editingTemplate() ? 'Edit Template' : 'Create Template'"
+    [loading]="saving()"
+    (closed)="closeModal()"
+    (confirmed)="saveTemplate()"
+  >
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Template Name <span class="text-red-500">*</span>
+        </label>
+        <input
+          [(ngModel)]="formData.name"
+          type="text"
+          class="glass-input w-full"
+          placeholder="Welcome Email Template"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Type <span class="text-red-500">*</span>
+        </label>
+        <select
+          [(ngModel)]="formData.type"
+          class="glass-input w-full"
+        >
+          <option value="email">Email</option>
+          <option value="page">Page</option>
+          <option value="component">Component</option>
+          <option value="layout">Layout</option>
+          <option value="report">Report</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Category
+        </label>
+        <input
+          [(ngModel)]="formData.category"
+          type="text"
+          class="glass-input w-full"
+          placeholder="Category (e.g., email, sms, notification)"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Description
+        </label>
+        <textarea
+          [(ngModel)]="formData.description"
+          class="glass-input w-full"
+          rows="2"
+          placeholder="Template description..."
+        ></textarea>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Content <span class="text-red-500">*</span>
+        </label>
+        <app-rich-text
+          [(ngModel)]="formData.content.html"
+          placeholder="Enter template content... Use double curly braces for dynamic values"
+          [height]="'300px'"
+          [showEditorSelector]="true"
+          [showCharCount]="true"
+          [maxLength]="5000"
+          [editorType]="'angular-editor'"
+          [customClass]="'gemini-rich-text'">
+        </app-rich-text>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+          Use variables like double curly braces with variable names for dynamic content
+        </p>
+      </div>
+
+      <div *ngIf="extractVariables(formData.content.html).length > 0">
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Variables Used</label>
+        <div class="flex flex-wrap gap-2">
+          <span
+            *ngFor="let variable of extractVariables(formData.content.html)"
+            class="px-2 py-1 bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 rounded text-sm"
+          >
+            {{ formatVariableDisplay(variable) }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </app-modal>
+
+  <!-- Preview Modal -->
+  <app-modal
+    [isOpen]="showPreviewModal()"
+    title="Template Preview"
+    (closed)="closePreviewModal()"
+  >
+    @if (previewingTemplate(); as template) {
+      <div class="space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Template Name</label>
+            <p class="text-sm text-gray-900 dark:text-gray-100 font-semibold">{{ template.name }}</p>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
+            <p class="text-sm text-gray-900 dark:text-gray-100">{{ getCategoryLabel(template.category) }}</p>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Content</label>
+          <div class="text-sm text-gray-900 dark:text-gray-100 bg-gray-100 dark:bg-gray-800 p-4 rounded border max-h-96 overflow-y-auto">
+            <div [innerHTML]="template.content.html || ''"></div>
+          </div>
+        </div>
+        @if (template.variables && template.variables.length > 0) {
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Variables</label>
+            <div class="flex flex-wrap gap-2">
+              @for (variable of template.variables; track variable) {
+                <span
+                  class="px-2 py-1 bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 rounded text-sm"
+                >
+                  {{ formatVariableDisplay(variable) }}
+                </span>
+              }
+            </div>
+          </div>
+        }
+        <div class="flex justify-end pt-4 border-t">
+          <app-glass-button
+            variant="secondary"
+            (clicked)="closePreviewModal()"
+          >
+            Close
+          </app-glass-button>
+        </div>
+      </div>
+    }
+  </app-modal>
+</div>
+

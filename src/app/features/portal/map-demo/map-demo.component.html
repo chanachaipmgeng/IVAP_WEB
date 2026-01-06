@@ -1,0 +1,237 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+      Interactive Maps Demo
+    </h1>
+    <div class="flex space-x-2">
+      <app-glass-button (clicked)="clearAllMarkers()">
+        🗑️ Clear All
+      </app-glass-button>
+      <app-glass-button (clicked)="exportMarkers()">
+        📤 Export
+      </app-glass-button>
+      <label class="glass-button cursor-pointer">
+        📥 Import
+        <input
+          type="file"
+          accept=".json"
+          (change)="importMarkers($event)"
+          class="hidden">
+      </label>
+    </div>
+  </div>
+
+  <!-- Map Stats -->
+  <app-glass-card customClass="p-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="text-center">
+        <div class="text-3xl font-bold text-blue-400">{{ demoData().totalMarkers }}</div>
+        <div class="text-gray-400">Total Markers</div>
+      </div>
+      <div class="text-center">
+        <div class="text-3xl font-bold text-green-400">{{ demoData().selectedMarkers }}</div>
+        <div class="text-gray-400">Selected</div>
+      </div>
+      <div class="text-center">
+        <div class="text-3xl font-bold text-purple-400">{{ presetLocations.length }}</div>
+        <div class="text-gray-400">Preset Locations</div>
+      </div>
+      <div class="text-center">
+        <div class="text-3xl font-bold text-orange-400">
+          {{ demoData().lastUpdated | date:'HH:mm:ss' }}
+        </div>
+        <div class="text-gray-400">Last Updated</div>
+      </div>
+    </div>
+  </app-glass-card>
+
+  <!-- Main Content -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+    <!-- Map -->
+    <app-glass-card customClass="lg:col-span-2 p-6">
+      <h3 class="text-xl font-semibold text-white mb-4">🗺️ Interactive Map</h3>
+      <app-leaflet-map
+        [(ngModel)]="mapMarkers"
+        (ngModelChange)="onMarkersChange($event)"
+        [showControls]="true"
+        [showInfo]="true"
+        [height]="'500px'"
+        customClass="map-container">
+      </app-leaflet-map>
+    </app-glass-card>
+
+    <!-- Controls -->
+    <app-glass-card customClass="lg:col-span-1 p-6">
+      <h3 class="text-xl font-semibold text-white mb-4">🎛️ Map Controls</h3>
+
+      <!-- Add New Marker -->
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            Add New Marker
+          </label>
+          <div class="space-y-3">
+            <input
+              [(ngModel)]="newMarker().title"
+              type="text"
+              class="glass-input w-full"
+              placeholder="Marker title">
+
+            <textarea
+              [(ngModel)]="newMarker().description"
+              rows="2"
+              class="glass-input w-full"
+              placeholder="Marker description">
+            </textarea>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-xs text-gray-500 mb-1">Latitude</label>
+                <input
+                  [(ngModel)]="newMarker().lat"
+                  type="number"
+                  step="0.0001"
+                  class="glass-input w-full text-sm">
+              </div>
+              <div>
+                <label class="block text-xs text-gray-500 mb-1">Longitude</label>
+                <input
+                  [(ngModel)]="newMarker().lng"
+                  type="number"
+                  step="0.0001"
+                  class="glass-input w-full text-sm">
+              </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+              <input
+                [(ngModel)]="newMarker().draggable"
+                type="checkbox"
+                id="draggable"
+                class="w-4 h-4 text-blue-600">
+              <label for="draggable" class="text-sm text-gray-700 dark:text-gray-300">
+                Draggable
+              </label>
+            </div>
+
+            <app-glass-button (clicked)="addMarker()" [disabled]="!newMarker().title">
+              ➕ Add Marker
+            </app-glass-button>
+          </div>
+        </div>
+
+        <!-- Preset Locations -->
+        <div>
+          <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            Preset Locations
+          </label>
+          <div class="space-y-2">
+            <button
+              *ngFor="let location of presetLocations"
+              (click)="addPresetLocation(location)"
+              class="w-full text-left p-2 rounded-lg bg-gray-800 hover:bg-blue-900 border border-gray-700 hover:border-blue-500 transition-colors duration-200">
+              <div class="font-medium text-white">{{ location.name }}</div>
+              <div class="text-xs text-gray-400">
+                {{ location.lat }}, {{ location.lng }}
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Markers List -->
+  <app-glass-card customClass="p-6">
+    <h3 class="text-xl font-semibold text-white mb-4">📍 Markers List</h3>
+
+    <div *ngIf="mapMarkers().length === 0" class="text-center py-8">
+      <div class="text-6xl mb-4">📍</div>
+      <h3 class="text-xl font-medium text-gray-700 dark:text-gray-300 mb-2">
+        No Markers
+      </h3>
+      <p class="text-gray-500 dark:text-gray-400">
+        Click on the map or add a marker to get started
+      </p>
+    </div>
+
+    <div *ngIf="mapMarkers().length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div
+        *ngFor="let marker of mapMarkers()"
+        (click)="selectMarker(marker)"
+        [class.selected-marker]="selectedMarker()?.id === marker.id"
+        class="marker-card p-4 rounded-lg cursor-pointer transition-all duration-200
+               bg-gray-800 hover:bg-blue-900 border border-gray-700 hover:border-blue-500">
+
+        <div class="flex items-start justify-between">
+          <div class="flex-1">
+            <h4 class="font-medium text-white">{{ marker.title }}</h4>
+            <p class="text-sm text-gray-400 mt-1">{{ marker.description }}</p>
+            <div class="text-xs text-gray-500 mt-2">
+              {{ marker.lat.toFixed(4) }}, {{ marker.lng.toFixed(4) }}
+            </div>
+            <div class="flex items-center space-x-2 mt-2">
+              <span class="text-xs px-2 py-1 rounded bg-blue-900 text-blue-300">
+                {{ marker.draggable ? 'Draggable' : 'Fixed' }}
+              </span>
+              <span class="text-xs px-2 py-1 rounded" [style.background-color]="marker.color + '20'" [style.color]="marker.color">
+                {{ marker.color }}
+              </span>
+            </div>
+          </div>
+          <button
+            (click)="removeMarker(marker.id); $event.stopPropagation()"
+            class="text-red-400 hover:text-red-300 text-sm">
+            🗑️
+          </button>
+        </div>
+      </div>
+    </div>
+  </app-glass-card>
+
+  <!-- Selected Marker Details -->
+  <app-glass-card *ngIf="selectedMarker()" customClass="p-6">
+    <h3 class="text-xl font-semibold text-white mb-4">📍 Selected Marker Details</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <h4 class="font-medium text-white mb-2">{{ selectedMarker()?.title }}</h4>
+        <p class="text-gray-400 mb-4">{{ selectedMarker()?.description }}</p>
+        <div class="space-y-2">
+          <div class="flex justify-between">
+            <span class="text-gray-500">ID:</span>
+            <span class="text-white">{{ selectedMarker()?.id }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-500">Latitude:</span>
+            <span class="text-white">{{ selectedMarker()?.lat?.toFixed(6) }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-500">Longitude:</span>
+            <span class="text-white">{{ selectedMarker()?.lng?.toFixed(6) }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-500">Draggable:</span>
+            <span class="text-white">{{ selectedMarker()?.draggable ? 'Yes' : 'No' }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-500">Color:</span>
+            <span class="text-white">{{ selectedMarker()?.color }}</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h4 class="font-medium text-white mb-2">Actions</h4>
+        <div class="space-y-2">
+          <app-glass-button (clicked)="removeMarker(selectedMarker()!.id)">
+            🗑️ Remove Marker
+          </app-glass-button>
+          <app-glass-button (clicked)="selectedMarker.set(null)">
+            ❌ Deselect
+          </app-glass-button>
+        </div>
+      </div>
+    </div>
+  </app-glass-card>
+</div>

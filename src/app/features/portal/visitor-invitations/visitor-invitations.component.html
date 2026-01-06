@@ -1,0 +1,246 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+        📧 Visitor Invitations
+      </h1>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+        Send invitations to visitors in advance
+      </p>
+    </div>
+    <app-glass-button variant="primary" (clicked)="openModal()">
+      ➕ Create Invitation
+    </app-glass-button>
+  </div>
+
+  <!-- Quick Info -->
+  <div class="bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-lg shadow-lg p-6 text-white">
+    <div class="flex items-center space-x-4">
+      <div class="text-5xl">📬</div>
+      <div>
+        <h3 class="text-xl font-bold">Advance Visitor Invitations</h3>
+        <p class="text-indigo-100">
+          Send professional invitations via email or SMS
+        </p>
+        <div class="mt-3 flex flex-wrap gap-4 text-sm">
+          <div class="flex items-center space-x-2">
+            <span>📧</span>
+            <span>Email invitations</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span>📱</span>
+            <span>SMS notifications</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span>🔐</span>
+            <span>Secure codes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Invitations List -->
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+    <h3 class="text-lg font-semibold mb-4">📋 Recent Invitations</h3>
+    @if (invitations().length === 0) {
+      <p class="text-gray-500 text-center py-8">No invitations sent yet</p>
+    } @else {
+      <div class="space-y-3">
+        @for (invitation of invitations().slice(0, 10); track invitation.invitationId) {
+          <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+            <div class="flex items-center space-x-4">
+              <div class="text-3xl">{{ getInvitationStatusIcon(invitation.invitationStatus) }}</div>
+              <div>
+                <p class="font-semibold text-gray-900 dark:text-gray-100">
+                  {{ invitation.guestName || invitation.guestEmail }}
+                </p>
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                  {{ formatDateTime(invitation.visitDate) }} | 
+                  {{ invitation.visitPurpose }} | 
+                  Status: {{ invitation.invitationStatus }}
+                </p>
+              </div>
+            </div>
+            <div class="text-sm text-gray-500">
+              Code: {{ invitation.invitationCode }}
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Invitation Modal -->
+<app-modal
+  [isOpen]="showModal()"
+  [title]="success() ? '✅ Invitation Sent' : '📧 Create Visitor Invitation'"
+  [loading]="processing()"
+  (closed)="closeModal()"
+>
+  <div class="space-y-4">
+    <!-- Success Message -->
+    @if (success() && invitationResult()) {
+      <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+        <div class="flex items-start space-x-3">
+          <div class="text-3xl">✅</div>
+          <div class="flex-1">
+            <h4 class="font-bold text-green-800">Invitation Sent Successfully!</h4>
+            <div class="mt-2 space-y-1 text-sm text-green-700">
+              @if (invitationResult()?.invitationCode) {
+                <p><strong>Invitation Code:</strong> {{ invitationResult()?.invitationCode }}</p>
+              }
+              @if (invitationResult()?.guestEmail) {
+                <p><strong>Guest Email:</strong> {{ invitationResult()?.guestEmail }}</p>
+              }
+              @if (invitationResult()?.visitDate) {
+                <p><strong>Visit Date:</strong> {{ formatDateTime(invitationResult()!.visitDate) }}</p>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Form -->
+    @if (!success()) {
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Invitation Type *
+        </label>
+        <select
+          [(ngModel)]="invitationData.invitationType"
+          class="glass-input w-full"
+          required
+          [disabled]="processing()"
+        >
+          @for (type of invitationTypes; track type.value) {
+            <option [value]="type.value">{{ type.label }}</option>
+          }
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Guest Name *
+        </label>
+        <input
+          [(ngModel)]="invitationData.guestName"
+          type="text"
+          class="glass-input w-full"
+          placeholder="John Doe"
+          required
+          [disabled]="processing()"
+        />
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            Email
+          </label>
+          <input
+            [(ngModel)]="invitationData.guestEmail"
+            type="email"
+            class="glass-input w-full"
+            placeholder="john@example.com"
+            [disabled]="processing()"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            Phone
+          </label>
+          <input
+            [(ngModel)]="invitationData.guestPhone"
+            type="tel"
+            class="glass-input w-full"
+            placeholder="08X-XXX-XXXX"
+            [disabled]="processing()"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Visit Date *
+        </label>
+        <input
+          [(ngModel)]="invitationData.visitDate"
+          type="datetime-local"
+          class="glass-input w-full"
+          required
+          [disabled]="processing()"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Purpose *
+        </label>
+        <select
+          [(ngModel)]="invitationData.visitPurpose"
+          class="glass-input w-full"
+          required
+          [disabled]="processing()"
+        >
+          @for (purpose of visitPurposes; track purpose) {
+            <option [value]="purpose">{{ purpose }}</option>
+          }
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Meeting Room
+        </label>
+        <input
+          [(ngModel)]="invitationData.meetingRoom"
+          type="text"
+          class="glass-input w-full"
+          placeholder="e.g., Conference Room A"
+          [disabled]="processing()"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Notes
+        </label>
+        <textarea
+          [(ngModel)]="invitationData.notes"
+          class="glass-input w-full"
+          rows="2"
+          placeholder="Additional information (optional)"
+          [disabled]="processing()"
+        ></textarea>
+      </div>
+
+      <!-- Error Message -->
+      @if (errorMessage()) {
+        <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+          <p class="text-sm text-red-600">⚠️ {{ errorMessage() }}</p>
+        </div>
+      }
+
+      <!-- Info -->
+      <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
+        <p class="text-sm text-blue-700">
+          💡 An invitation code will be generated and sent to the guest
+        </p>
+      </div>
+    }
+  </div>
+
+  @if (!success()) {
+    <div slot="actions">
+      <app-glass-button variant="primary" (clicked)="createInvitation()" [disabled]="processing()">
+        {{ processing() ? 'Processing...' : '📧 Send Invitation' }}
+      </app-glass-button>
+    </div>
+  }
+</app-modal>
+

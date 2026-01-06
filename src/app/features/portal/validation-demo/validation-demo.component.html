@@ -1,0 +1,401 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+      Advanced Form Validation Demo
+    </h1>
+    <div class="flex space-x-2">
+      <app-glass-button (clicked)="onSubmit()" variant="primary">
+        <i class="fas fa-check mr-2"></i> Validate Form
+      </app-glass-button>
+      <app-glass-button (clicked)="resetForm()" variant="secondary">
+        <i class="fas fa-undo mr-2"></i> Reset
+      </app-glass-button>
+    </div>
+  </div>
+
+  <!-- Demo Selection -->
+  <app-glass-card class="p-6">
+    <h3 class="text-xl font-semibold text-white mb-4">Select Validation Demo</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <button
+        *ngFor="let demo of validationDemos()"
+        (click)="selectDemo(demo)"
+        [class]="'p-4 rounded-lg border transition-all ' + (selectedDemo()?.name === demo.name ? 'border-blue-500 bg-blue-500/20' : 'border-gray-600 bg-gray-800 hover:bg-gray-700')"
+      >
+        <h4 class="text-lg font-medium text-white mb-2">{{ demo.name }}</h4>
+        <p class="text-sm text-gray-400">{{ demo.description }}</p>
+      </button>
+    </div>
+  </app-glass-card>
+
+  <!-- Validation Summary -->
+  <app-glass-card *ngIf="validationSummary()" class="p-6">
+    <h3 class="text-xl font-semibold text-white mb-4">Validation Summary</h3>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="text-center">
+        <div class="text-2xl font-bold text-white">{{ validationSummary()?.totalFields }}</div>
+        <div class="text-sm text-gray-400">Total Fields</div>
+      </div>
+      <div class="text-center">
+        <div class="text-2xl font-bold text-green-400">{{ validationSummary()?.validFields }}</div>
+        <div class="text-sm text-gray-400">Valid Fields</div>
+      </div>
+      <div class="text-center">
+        <div class="text-2xl font-bold text-red-400">{{ validationSummary()?.invalidFields }}</div>
+        <div class="text-sm text-gray-400">Invalid Fields</div>
+      </div>
+      <div class="text-center">
+        <div class="text-2xl font-bold text-yellow-400">{{ validationSummary()?.errorCount }}</div>
+        <div class="text-sm text-gray-400">Total Errors</div>
+      </div>
+    </div>
+  </app-glass-card>
+
+  <!-- Form Demo -->
+  <div *ngIf="selectedDemo()" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Form -->
+    <app-glass-card class="p-6">
+      <h3 class="text-xl font-semibold text-white mb-4">{{ selectedDemo()?.name }}</h3>
+      <form [formGroup]="selectedDemo()!.form" (ngSubmit)="onSubmit()" class="space-y-4">
+
+        <!-- Basic Validation Form -->
+        <div *ngIf="selectedDemo()?.name === 'Basic Validation'">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
+              <input
+                type="email"
+                formControlName="email"
+                (blur)="onFieldChange('email')"
+                class="glass-input w-full"
+                [class.border-red-500]="isFieldInvalid('email')"
+                [class.border-green-500]="isFieldValid('email')"
+                placeholder="Enter email address">
+              <div *ngIf="isFieldInvalid('email')" class="text-red-400 text-sm mt-1">
+                {{ getFieldError('email') }}
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">Username</label>
+              <input
+                type="text"
+                formControlName="username"
+                (blur)="onFieldChange('username')"
+                class="glass-input w-full"
+                [class.border-red-500]="isFieldInvalid('username')"
+                [class.border-green-500]="isFieldValid('username')"
+                placeholder="Enter username">
+              <div *ngIf="isFieldInvalid('username')" class="text-red-400 text-sm mt-1">
+                {{ getFieldError('username') }}
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">Phone Number</label>
+              <input
+                type="tel"
+                formControlName="phoneNumber"
+                (blur)="onFieldChange('phoneNumber')"
+                class="glass-input w-full"
+                [class.border-red-500]="isFieldInvalid('phoneNumber')"
+                [class.border-green-500]="isFieldValid('phoneNumber')"
+                placeholder="Enter phone number">
+              <div *ngIf="isFieldInvalid('phoneNumber')" class="text-red-400 text-sm mt-1">
+                {{ getFieldError('phoneNumber') }}
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">Website (Optional)</label>
+              <input
+                type="url"
+                formControlName="website"
+                (blur)="onFieldChange('website')"
+                class="glass-input w-full"
+                [class.border-red-500]="isFieldInvalid('website')"
+                [class.border-green-500]="isFieldValid('website')"
+                placeholder="Enter website URL">
+              <div *ngIf="isFieldInvalid('website')" class="text-red-400 text-sm mt-1">
+                {{ getFieldError('website') }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Advanced Validation Form -->
+        <div *ngIf="selectedDemo()?.name === 'Advanced Validation'">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">Thai ID</label>
+              <input
+                type="text"
+                formControlName="thaiId"
+                (blur)="onFieldChange('thaiId')"
+                class="glass-input w-full"
+                [class.border-red-500]="isFieldInvalid('thaiId')"
+                [class.border-green-500]="isFieldValid('thaiId')"
+                placeholder="Enter Thai ID">
+              <div *ngIf="isFieldInvalid('thaiId')" class="text-red-400 text-sm mt-1">
+                {{ getFieldError('thaiId') }}
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">Credit Card</label>
+              <input
+                type="text"
+                formControlName="creditCard"
+                (blur)="onFieldChange('creditCard')"
+                class="glass-input w-full"
+                [class.border-red-500]="isFieldInvalid('creditCard')"
+                [class.border-green-500]="isFieldValid('creditCard')"
+                placeholder="Enter credit card number">
+              <div *ngIf="isFieldInvalid('creditCard')" class="text-red-400 text-sm mt-1">
+                {{ getFieldError('creditCard') }}
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">IP Address</label>
+              <input
+                type="text"
+                formControlName="ipAddress"
+                (blur)="onFieldChange('ipAddress')"
+                class="glass-input w-full"
+                [class.border-red-500]="isFieldInvalid('ipAddress')"
+                [class.border-green-500]="isFieldValid('ipAddress')"
+                placeholder="Enter IP address">
+              <div *ngIf="isFieldInvalid('ipAddress')" class="text-red-400 text-sm mt-1">
+                {{ getFieldError('ipAddress') }}
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">MAC Address</label>
+              <input
+                type="text"
+                formControlName="macAddress"
+                (blur)="onFieldChange('macAddress')"
+                class="glass-input w-full"
+                [class.border-red-500]="isFieldInvalid('macAddress')"
+                [class.border-green-500]="isFieldValid('macAddress')"
+                placeholder="Enter MAC address">
+              <div *ngIf="isFieldInvalid('macAddress')" class="text-red-400 text-sm mt-1">
+                {{ getFieldError('macAddress') }}
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">Birth Date (Age 18+)</label>
+              <input
+                type="date"
+                formControlName="age"
+                (blur)="onFieldChange('age')"
+                class="glass-input w-full"
+                [class.border-red-500]="isFieldInvalid('age')"
+                [class.border-green-500]="isFieldValid('age')">
+              <div *ngIf="isFieldInvalid('age')" class="text-red-400 text-sm mt-1">
+                {{ getFieldError('age') }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- File Validation Form -->
+        <div *ngIf="selectedDemo()?.name === 'File Validation'">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">Profile Image (Max 5MB)</label>
+              <input
+                type="file"
+                formControlName="profileImage"
+                (change)="onFileSelect($event, 'profileImage')"
+                accept="image/*"
+                class="glass-input w-full"
+                [class.border-red-500]="isFieldInvalid('profileImage')"
+                [class.border-green-500]="isFieldValid('profileImage')">
+              <div *ngIf="isFieldInvalid('profileImage')" class="text-red-400 text-sm mt-1">
+                {{ getFieldError('profileImage') }}
+              </div>
+              <div *ngIf="filePreview()" class="mt-2">
+                <img *ngIf="filePreview() && !isBase64Image(filePreview()!)"
+                     appImageOptimization [ngSrc]="filePreview()!" alt="Preview" class="w-20 h-20 object-cover rounded" loading="lazy">
+                <img *ngIf="filePreview() && isBase64Image(filePreview()!)"
+                     [src]="filePreview()!" alt="Preview" class="w-20 h-20 object-cover rounded" loading="lazy">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">Document (PDF/DOC, Max 10MB)</label>
+              <input
+                type="file"
+                formControlName="document"
+                (change)="onFileSelect($event, 'document')"
+                accept=".pdf,.doc,.docx"
+                class="glass-input w-full"
+                [class.border-red-500]="isFieldInvalid('document')"
+                [class.border-green-500]="isFieldValid('document')">
+              <div *ngIf="isFieldInvalid('document')" class="text-red-400 text-sm mt-1">
+                {{ getFieldError('document') }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Date Validation Form -->
+        <div *ngIf="selectedDemo()?.name === 'Date Validation'">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">Start Date</label>
+              <input
+                type="date"
+                formControlName="startDate"
+                (blur)="onFieldChange('startDate')"
+                class="glass-input w-full"
+                [class.border-red-500]="isFieldInvalid('startDate')"
+                [class.border-green-500]="isFieldValid('startDate')">
+              <div *ngIf="isFieldInvalid('startDate')" class="text-red-400 text-sm mt-1">
+                {{ getFieldError('startDate') }}
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">End Date</label>
+              <input
+                type="date"
+                formControlName="endDate"
+                (blur)="onFieldChange('endDate')"
+                class="glass-input w-full"
+                [class.border-red-500]="isFieldInvalid('endDate')"
+                [class.border-green-500]="isFieldValid('endDate')">
+              <div *ngIf="isFieldInvalid('endDate')" class="text-red-400 text-sm mt-1">
+                {{ getFieldError('endDate') }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Password Validation Form -->
+        <div *ngIf="selectedDemo()?.name === 'Password Validation'">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+              <input
+                type="password"
+                formControlName="password"
+                (blur)="onFieldChange('password')"
+                class="glass-input w-full"
+                [class.border-red-500]="isFieldInvalid('password')"
+                [class.border-green-500]="isFieldValid('password')"
+                placeholder="Enter strong password">
+              <div *ngIf="isFieldInvalid('password')" class="text-red-400 text-sm mt-1">
+                {{ getFieldError('password') }}
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">Confirm Password</label>
+              <input
+                type="password"
+                formControlName="confirmPassword"
+                (blur)="onFieldChange('confirmPassword')"
+                class="glass-input w-full"
+                [class.border-red-500]="isFieldInvalid('confirmPassword')"
+                [class.border-green-500]="isFieldValid('confirmPassword')"
+                placeholder="Confirm password">
+              <div *ngIf="isFieldInvalid('confirmPassword')" class="text-red-400 text-sm mt-1">
+                {{ getFieldError('confirmPassword') }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end space-x-2">
+          <app-glass-button type="button" (clicked)="resetForm()" variant="secondary">
+            <i class="fas fa-undo mr-2"></i> Reset
+          </app-glass-button>
+          <app-glass-button type="submit" variant="primary">
+            <i class="fas fa-check mr-2"></i> Validate
+          </app-glass-button>
+        </div>
+      </form>
+    </app-glass-card>
+
+    <!-- Examples and Documentation -->
+    <app-glass-card class="p-6">
+      <h3 class="text-xl font-semibold text-white mb-4">Examples & Documentation</h3>
+
+      <!-- Examples -->
+      <div class="mb-6">
+        <h4 class="text-lg font-medium text-gray-300 mb-3">Try Examples</h4>
+        <div class="space-y-2">
+          <button
+            *ngFor="let example of selectedDemo()?.examples"
+            (click)="fillExampleData(example)"
+            [class]="'w-full text-left p-3 rounded-lg border transition-all ' + (example.valid ? 'border-green-500 bg-green-500/10 hover:bg-green-500/20' : 'border-red-500 bg-red-500/10 hover:bg-red-500/20')"
+          >
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="font-medium text-white">{{ example.field }}: {{ example.value }}</div>
+                <div class="text-sm text-gray-400">{{ example.valid ? 'Valid' : 'Invalid' }}</div>
+              </div>
+              <div class="text-sm">
+                <i [class]="example.valid ? 'fas fa-check text-green-400' : 'fas fa-times text-red-400'"></i>
+              </div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Field Status -->
+      <div class="mb-6">
+        <h4 class="text-lg font-medium text-gray-300 mb-3">Field Status</h4>
+        <div class="space-y-2">
+          <div *ngFor="let field of validationSummary()?.fields" class="flex items-center justify-between p-2 rounded bg-gray-800">
+            <span class="text-white">{{ field.name }}</span>
+            <div class="flex items-center space-x-2">
+              <span [class]="field.isValid ? 'text-green-400' : 'text-red-400'">
+                {{ field.isValid ? 'Valid' : 'Invalid' }}
+              </span>
+              <i [class]="field.isValid ? 'fas fa-check text-green-400' : 'fas fa-times text-red-400'"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Validation Rules -->
+      <div>
+        <h4 class="text-lg font-medium text-gray-300 mb-3">Validation Rules</h4>
+        <div class="space-y-2 text-sm text-gray-400">
+          <div *ngIf="selectedDemo()?.name === 'Basic Validation'">
+            <div>• Email: Valid email format</div>
+            <div>• Username: 3-20 characters, alphanumeric and underscore</div>
+            <div>• Phone: Thai phone number format</div>
+            <div>• Website: Valid URL format</div>
+          </div>
+          <div *ngIf="selectedDemo()?.name === 'Advanced Validation'">
+            <div>• Thai ID: 13 digits with check digit validation</div>
+            <div>• Credit Card: Luhn algorithm validation</div>
+            <div>• IP Address: Valid IPv4 format</div>
+            <div>• MAC Address: Valid MAC address format</div>
+            <div>• Age: Minimum 18 years old</div>
+          </div>
+          <div *ngIf="selectedDemo()?.name === 'File Validation'">
+            <div>• Profile Image: Max 5MB, image files only</div>
+            <div>• Document: Max 10MB, PDF/DOC files only</div>
+          </div>
+          <div *ngIf="selectedDemo()?.name === 'Date Validation'">
+            <div>• Start Date: Required</div>
+            <div>• End Date: Required, must be after start date</div>
+          </div>
+          <div *ngIf="selectedDemo()?.name === 'Password Validation'">
+            <div>• Password: 8+ chars, uppercase, lowercase, digit, special char</div>
+            <div>• Confirm Password: Must match password</div>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+</div>

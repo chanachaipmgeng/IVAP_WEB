@@ -1,0 +1,48 @@
+<app-page-layout
+  [title]="'pages.vehicles.title' | translate"
+  [description]="'pages.vehicles.description' | translate"
+  icon="🚗"
+  [actions]="pageActions()">
+  
+  <!-- Statistics Cards -->
+  <app-statistics-grid [stats]="statisticsCards()" [columns]="3" />
+
+  <!-- Tabs -->
+  <app-tabs [tabs]="tabs()" [activeTab]="activeTab()" (activeTabChange)="onTabChange($event)">
+    
+    <!-- Vehicles Tab -->
+    <div *ngIf="activeTab() === 'vehicles'" class="space-y-6">
+      <!-- Filters -->
+      <app-filter-section
+        [fields]="filterFields()"
+        [columns]="3"
+        (filterChange)="onFilterChange($event)"
+      />
+
+      <!-- Vehicles Table -->
+      <app-data-table
+        [columns]="columns"
+        [data]="vehicles()"
+        [actions]="actions"
+        [searchable]="false"
+      />
+    </div>
+
+    <!-- Parking Tab -->
+    <div *ngIf="activeTab() === 'parking'" class="space-y-6">
+      <!-- Parking content -->
+      <p class="text-gray-600 dark:text-gray-400">{{ 'pages.vehicles.parkingManagement' | translate }}</p>
+    </div>
+  </app-tabs>
+
+  <!-- Add/Edit Vehicle Modal -->
+  <app-modal
+    [isOpen]="showModal()"
+    [title]="(editingVehicle() ? ('pages.vehicles.editVehicle' | translate) : ('pages.vehicles.addVehicle' | translate))"
+    [loading]="saving()"
+    (closed)="closeModal()"
+    (confirmed)="saveVehicle()"
+  >
+    <!-- Vehicle form content -->
+  </app-modal>
+</app-page-layout>

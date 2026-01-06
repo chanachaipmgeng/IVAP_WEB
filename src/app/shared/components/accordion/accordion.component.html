@@ -1,0 +1,106 @@
+<div
+  class="accordion-container w-full relative"
+  [ngClass]="getAccordionClasses()"
+  [class]="customClass || ''"
+  role="group"
+  [attr.aria-label]="ariaLabel || 'Accordion'">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="accordion-loading flex flex-col items-center justify-center p-12 text-gray-400">
+    <div class="loading-spinner w-8 h-8 border-2 border-white/10 border-t-primary-500 rounded-full animate-spin mb-4"></div>
+    <p class="m-0 text-sm">กำลังโหลดข้อมูล...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && items.length === 0" class="accordion-empty flex flex-col items-center justify-center p-12 text-gray-400">
+    <i class="fas fa-list text-5xl mb-4 opacity-50"></i>
+    <p class="m-0 text-base">ไม่มีข้อมูล Accordion</p>
+  </div>
+
+  <!-- Accordion Items -->
+  <div *ngIf="!loading && items.length > 0" class="accordion-items">
+    <div
+      *ngFor="let item of items; trackBy: trackByItemId"
+      class="accordion-item relative transition-all hover:-translate-y-0.5 hover:shadow-lg"
+      [ngClass]="getItemClasses(item)"
+      [class.opacity-60]="item.disabled"
+      [class.cursor-not-allowed]="item.disabled">
+
+      <!-- Accordion Header -->
+      <div
+        class="accordion-header flex items-center justify-between px-4 py-3 bg-white/5 cursor-pointer transition-all select-none hover:bg-white/8 focus:outline-2 focus:outline-primary-500 focus:outline-offset-2"
+        [ngClass]="getHeaderClasses(item)"
+        [class.bg-white/8]="isItemOpen(item.id)"
+        [class.border-b]="isItemOpen(item.id)"
+        [class.border-white/10]="isItemOpen(item.id)"
+        [class.cursor-not-allowed]="item.disabled"
+        [class.opacity-60]="item.disabled"
+        (click)="toggleItem(item)"
+        [attr.aria-expanded]="isItemOpen(item.id)"
+        [attr.aria-disabled]="item.disabled ? 'true' : null"
+        [attr.aria-controls]="'accordion-content-' + item.id"
+        [attr.id]="'accordion-header-' + item.id"
+        role="button"
+        [attr.tabindex]="item.disabled ? -1 : 0"
+        (keydown.enter)="toggleItem(item)"
+        (keydown.space)="toggleItem(item); $event.preventDefault()">
+
+        <!-- Left Icon -->
+        <div *ngIf="mergedConfig.showIcons && mergedConfig.iconPosition === 'left'" class="accordion-icon-left flex items-center justify-center w-6 h-6 text-gray-400 transition-all mr-3" [class.rotate-90]="isItemOpen(item.id)">
+          <i *ngIf="item.icon" [class]="item.icon"></i>
+          <i *ngIf="!item.icon" class="fas fa-chevron-right text-sm"></i>
+        </div>
+
+        <!-- Title and Badge -->
+        <div class="accordion-title-container flex items-center flex-1 gap-2 md:flex-col md:items-start md:gap-1">
+          <h3 class="accordion-title m-0 text-base font-semibold text-white leading-relaxed">{{ item.title }}</h3>
+          <span *ngIf="item.badge" class="accordion-badge px-2 py-1 rounded text-xs font-medium text-white bg-primary-500 md:text-[10px] md:px-1.5 md:py-0.5" [ngClass]="getBadgeClasses(item)"
+            [class.bg-success-500]="getBadgeClasses(item).includes('accordion-badge-success')"
+            [class.bg-warning-500]="getBadgeClasses(item).includes('accordion-badge-warning')"
+            [class.bg-error-500]="getBadgeClasses(item).includes('accordion-badge-danger')"
+            [class.bg-info-500]="getBadgeClasses(item).includes('accordion-badge-info')"
+            [class.bg-gray-500]="getBadgeClasses(item).includes('accordion-badge-secondary')">
+            {{ item.badge }}
+          </span>
+        </div>
+
+        <!-- Right Icon -->
+        <div *ngIf="mergedConfig.showIcons && mergedConfig.iconPosition === 'right'" class="accordion-icon-right flex items-center justify-center w-6 h-6 text-gray-400 transition-all ml-3" [class.rotate-180]="isItemOpen(item.id)" [class.opacity-50]="item.disabled">
+          <i *ngIf="item.icon" [class]="item.icon"></i>
+          <i *ngIf="!item.icon" class="fas fa-chevron-down text-sm" [ngClass]="getIconClasses(item)"></i>
+        </div>
+      </div>
+
+      <!-- Accordion Content -->
+      <div
+        [id]="'accordion-content-' + item.id"
+        class="accordion-content max-h-0 overflow-hidden opacity-0 transition-all bg-white/2"
+        [ngClass]="getContentClasses(item)"
+        [class.max-h-[1000px]]="isItemOpen(item.id)"
+        [class.opacity-100]="isItemOpen(item.id)"
+        [class.px-4]="isItemOpen(item.id)"
+        [class.py-3]="isItemOpen(item.id)"
+        [style]="getContentStyles(item)"
+        [attr.aria-hidden]="!isItemOpen(item.id)"
+        [attr.aria-labelledby]="'accordion-header-' + item.id"
+        role="region">
+
+        <div class="accordion-content-inner px-4 py-3">
+          <div class="accordion-content-body text-white leading-relaxed" [innerHTML]="item.content"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accordion Controls -->
+  <div *ngIf="!loading && items.length > 0" class="accordion-controls flex justify-center mt-4 pt-4 border-t border-white/10">
+    <button
+      type="button"
+      class="accordion-control-btn flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-white text-sm cursor-pointer transition-all hover:bg-white/10 hover:-translate-y-0.5 focus:outline-2 focus:outline-primary-500 focus:outline-offset-2"
+      (click)="toggleAll()"
+      [title]="openItems.size > 0 ? 'ปิดทั้งหมด' : 'เปิดทั้งหมด'">
+      <i class="fas" [class.fa-chevron-up]="openItems.size > 0" [class.fa-chevron-down]="openItems.size === 0"></i>
+      {{ openItems.size > 0 ? 'ปิดทั้งหมด' : 'เปิดทั้งหมด' }}
+    </button>
+  </div>
+</div>
+

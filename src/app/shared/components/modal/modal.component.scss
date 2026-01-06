@@ -1,0 +1,493 @@
+// Modal Component Styles
+// Most styles migrated to Tailwind classes in HTML template
+// Keeping only complex styles that require SCSS (animations, variants, complex selectors)
+
+// CSS Variables - Using Design Tokens
+:host {
+  --modal-transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --modal-section-gap: var(--spacing-lg); /* 24px */
+}
+
+:root {
+  --modal-transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --modal-section-gap: var(--spacing-lg); /* 24px */
+}
+
+// Body scroll lock
+body.modal-open {
+  overflow: hidden;
+}
+
+// Modal Overlay (Backdrop) - keeping complex gradients and animations
+.modal-overlay {
+  &.modal-backdrop-animated {
+    animation: modal-backdrop-fade-in 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  // Dark mode backdrop - keeping complex gradients
+  :root.dark &,
+  html.dark & {
+    background: radial-gradient(
+      circle at center,
+      rgba(0, 0, 0, 0.6) 0%,
+      rgba(0, 0, 0, 0.85) 100%
+    );
+  }
+
+  // Light mode backdrop - keeping complex gradients
+  :root.light &,
+  html.light & {
+    background: radial-gradient(
+      circle at center,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
+  }
+}
+
+// Modal - keeping size variants and complex variants
+.modal {
+  // Size variants - keeping in SCSS for dynamic max-width
+  &.modal-sm {
+    .modal-dialog {
+      max-width: 300px;
+    }
+  }
+
+  &.modal-md {
+    .modal-dialog {
+      max-width: 600px;
+    }
+  }
+
+  &.modal-lg {
+    .modal-dialog {
+      max-width: 800px;
+    }
+  }
+
+  &.modal-xl {
+    .modal-dialog {
+      max-width: 1140px;
+    }
+  }
+
+  &.modal-full {
+    padding: 0;
+
+    .modal-dialog {
+      max-width: 100%;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+
+    .modal-content-glass {
+      height: 100%;
+      border-radius: 0;
+      max-height: 100vh;
+    }
+
+    ::ng-deep .glass-card {
+      height: 100%;
+      border-radius: 0;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  // Scrollable variant - keeping in SCSS for complex layout
+  &.modal-scrollable {
+    .modal-dialog {
+      max-height: calc(100% - 2rem);
+    }
+
+    .modal-content {
+      max-height: calc(100vh - 2rem);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-body {
+      overflow-y: auto;
+    }
+  }
+
+  // Enhanced Animation
+  &.modal-animated {
+    .modal-dialog {
+      animation: modal-dialog-fade-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+  }
+}
+
+// Modal Dialog - keeping size variants
+.modal-dialog {
+  // Size variants - keeping in SCSS for dynamic max-width
+  &.modal-dialog-sm {
+    max-width: 300px;
+  }
+
+  &.modal-dialog-md {
+    max-width: 600px;
+  }
+
+  &.modal-dialog-lg {
+    max-width: 800px;
+  }
+
+  &.modal-dialog-xl {
+    max-width: 1140px;
+  }
+
+  // Centered variant - keeping in SCSS for complex layout
+  &.modal-dialog-centered {
+    display: flex;
+    align-items: center;
+    min-height: calc(100% - 2rem);
+  }
+
+  // Scrollable variant
+  &.modal-dialog-scrollable {
+    max-height: calc(100% - 2rem);
+  }
+}
+
+// Modal Content - keeping complex selectors and ::ng-deep
+.modal-content-glass {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  pointer-events: auto;
+  outline: 0;
+  isolation: isolate;
+  transition: var(--modal-transition);
+  overflow: hidden;
+  max-width: 100%;
+  max-height: 90vh;
+  margin: auto;
+
+  &.modal-content-animating {
+    transform: scale(0.95) translateY(20px);
+    opacity: 0;
+    transition: var(--modal-transition);
+  }
+
+  // Override glass-card padding when used in modal
+  padding: 0 !important;
+
+  // Ensure glass-card styles are applied and enable pointer events
+  ::ng-deep .glass-card {
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    pointer-events: auto !important;
+  }
+}
+
+// Modal Header - keeping complex gradients and pseudo-elements
+.modal-header {
+  // Full screen modal header
+  .modal-full & {
+    padding: 2rem 3rem;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  // Subtle border with gradient - keeping pseudo-element
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(59, 130, 246, 0.3),
+      transparent
+    );
+  }
+
+  .modal-title {
+    // Fallback for browsers that don't support gradient text
+    :root.light &,
+    html.light & {
+      background: none;
+      -webkit-text-fill-color: var(--color-gray-900);
+      color: var(--color-gray-900);
+    }
+
+    :root.dark &,
+    html.dark & {
+      background: linear-gradient(135deg, var(--color-primary-400), var(--color-secondary-400));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+
+  .modal-close-button {
+    // Light mode - Using Design Tokens
+    :root.light &,
+    html.light & {
+      color: var(--color-gray-500);
+      background: rgba(0, 0, 0, 0.05);
+
+      &:hover {
+        color: var(--color-gray-700);
+        background: rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+}
+
+// Modal Body - keeping complex selectors and custom scrollbar
+.modal-body {
+  // Enhanced smooth scrolling with modern scrollbar - keeping custom scrollbar
+  // Moved before ALL nested rules to fix Sass deprecation warning
+  scrollbar-width: thin;
+  scrollbar-color: rgba(59, 130, 246, 0.4) transparent;
+
+  // Full screen modal body
+  .modal-full & {
+    padding: 2.5rem 3rem;
+    max-height: calc(100vh - 12rem);
+    overflow-y: auto;
+  }
+
+  // Enhanced spacing for content
+  > * + * {
+    margin-top: var(--modal-section-gap);
+  }
+
+  // Form elements spacing
+  > form > * + * {
+    margin-top: 1.25rem;
+  }
+
+  // Ensure form fields don't touch edges - prevent overflow
+  > * {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+      to bottom,
+      rgba(59, 130, 246, 0.4),
+      rgba(139, 92, 246, 0.3)
+    );
+    border-radius: 4px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+
+    &:hover {
+      background: linear-gradient(
+        to bottom,
+        rgba(59, 130, 246, 0.6),
+        rgba(139, 92, 246, 0.5)
+      );
+      background-clip: padding-box;
+    }
+  }
+}
+
+// Modal Footer - keeping complex gradients and pseudo-elements
+.modal-footer {
+  // Full screen modal footer
+  .modal-full & {
+    padding: 2rem 3rem;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  // Subtle border with gradient - keeping pseudo-element
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(59, 130, 246, 0.3),
+      transparent
+    );
+  }
+
+  // Button spacing
+  > * {
+    margin: 0;
+  }
+
+  // Ensure buttons are properly spaced
+  app-glass-button,
+  button {
+    margin: 0.25rem;
+    min-width: 100px;
+  }
+
+  // Stack buttons on mobile - keeping responsive
+  @media (max-width: 640px) {
+    flex-direction: column-reverse;
+    align-items: stretch;
+
+    > * {
+      width: 100%;
+    }
+  }
+}
+
+// Enhanced Animations with modern easing
+@keyframes modal-backdrop-fade-in {
+  0% {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    backdrop-filter: blur(12px);
+  }
+}
+
+@keyframes modal-dialog-fade-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.96) translateY(30px);
+    filter: blur(4px);
+  }
+  50% {
+    transform: scale(1.02) translateY(-5px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0px);
+  }
+}
+
+@keyframes modal-content-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+// Dark/Light theme support - Already handled in .modal-content above
+
+// Modal Header - consistent with glass-card theme
+:root.dark .modal-header,
+html.dark .modal-header {
+  border-bottom-color: rgba(59, 130, 246, 0.2); /* Using primary-500 */
+
+  .modal-title {
+    color: #ffffff;
+  }
+
+  .modal-close {
+    color: var(--color-gray-300);
+
+    &:hover {
+      color: #ffffff;
+    }
+  }
+}
+
+:root.light .modal-header,
+html.light .modal-header {
+  border-bottom-color: rgba(59, 130, 246, 0.2); /* Using primary-500 */
+
+  .modal-title {
+    color: var(--color-gray-900);
+  }
+
+  .modal-close {
+    color: var(--color-gray-500);
+
+    &:hover {
+      color: var(--color-gray-700);
+    }
+  }
+}
+
+// Modal Body - consistent with glass-card theme
+:root.dark .modal-body,
+html.dark .modal-body {
+  color: #ffffff;
+}
+
+:root.light .modal-body,
+html.light .modal-body {
+  color: #374151;
+}
+
+:root.dark .modal-footer,
+html.dark .modal-footer,
+:root.light .modal-footer,
+html.light .modal-footer {
+  border-top-color: rgba(59, 130, 246, 0.2); /* Using primary-500 */
+}
+
+// Responsive styles migrated to Tailwind responsive classes in HTML template
+// Using md: breakpoint for mobile-first responsive design
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .modal-content {
+    border: 2px solid #000000;
+  }
+
+  .modal-header {
+    border-bottom: 2px solid #000000;
+  }
+
+  .modal-footer {
+    border-top: 2px solid #000000;
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .modal-backdrop,
+  .modal-content {
+    transition: none;
+  }
+
+  .modal-backdrop-animated,
+  .modal-animated {
+    animation: none;
+  }
+}
+
+// Focus styles for accessibility
+.modal {
+  &:focus {
+    outline: none;
+  }
+}
+
+.modal-content {
+  &:focus {
+    outline: 2px solid #3B82F6;
+    outline-offset: 2px;
+  }
+}

@@ -1,0 +1,55 @@
+<div class="space-y-6 p-6">
+  <!-- Header -->
+  <div>
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">จัดการ AI Models</h1>
+    <p class="text-gray-600 dark:text-gray-400 mt-2">จัดการและติดตาม AI Models สำหรับการวิเคราะห์วิดีโอ</p>
+  </div>
+
+  <!-- Error Message -->
+  @if (errorMessage()) {
+    <div class="glass p-4 rounded-lg border border-red-500/30">
+      <p class="text-red-600 dark:text-red-400 text-sm">{{ errorMessage() }}</p>
+    </div>
+  }
+
+  <!-- Loading State -->
+  <app-loading *ngIf="isLoading()" [message]="'กำลังโหลดข้อมูล...'" />
+
+  <!-- AI Models Grid -->
+  @if (!isLoading() && models().length > 0) {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      @for (model of models(); track model.modelId) {
+        <app-glass-card customClass="p-6 hover:shadow-md transition-shadow">
+          <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">{{ model.modelName }}</h3>
+          <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">{{ model.description }}</p>
+          <div class="space-y-2">
+            <p class="text-sm">
+              <span class="font-semibold text-gray-700 dark:text-gray-300">ประเภท:</span>
+              <span class="text-gray-600 dark:text-gray-400"> {{ model.modelType }}</span>
+            </p>
+            <p class="text-sm">
+              <span class="font-semibold text-gray-700 dark:text-gray-300">สถานะ:</span>
+              <span class="text-gray-600 dark:text-gray-400"> {{ model.status }}</span>
+            </p>
+            <p class="text-sm">
+              <span class="font-semibold text-gray-700 dark:text-gray-300">Confidence Threshold:</span>
+              <span class="text-gray-600 dark:text-gray-400"> {{ model.confidenceThreshold }}</span>
+            </p>
+            <p class="text-sm">
+              <span class="font-semibold text-gray-700 dark:text-gray-300">Classes:</span>
+              <span class="text-gray-600 dark:text-gray-400"> {{ model.classes.join(', ') }}</span>
+            </p>
+          </div>
+        </app-glass-card>
+      }
+    </div>
+  }
+
+  <!-- Empty State -->
+  @if (!isLoading() && models().length === 0 && !errorMessage()) {
+    <div class="text-center py-12">
+      <div class="text-6xl mb-4">🤖</div>
+      <p class="text-gray-500 dark:text-gray-400 text-lg">ไม่พบ AI Models</p>
+    </div>
+  }
+</div>

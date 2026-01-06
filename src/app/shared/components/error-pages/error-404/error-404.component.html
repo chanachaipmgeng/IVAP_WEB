@@ -1,0 +1,162 @@
+<div class="error-404-container min-h-screen flex items-center justify-center p-8 relative overflow-hidden" [class]="customClass || ''" role="main" [attr.aria-label]="ariaLabel || 'Page not found'">
+  <div class="error-404-content bg-white/95 backdrop-blur-sm rounded-3xl p-12 max-w-4xl w-full text-center shadow-2xl relative z-10 md:p-8">
+      <!-- Error Illustration -->
+      <div class="error-illustration mb-8 relative" [attr.aria-hidden]="'true'">
+        <div class="error-number text-9xl font-black bg-gradient-to-br from-primary-500 to-purple-600 bg-clip-text text-transparent leading-none mb-4 drop-shadow-md md:text-6xl">404</div>
+        <div class="error-icon text-primary-500 opacity-80 animate-float">
+          <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" [attr.aria-hidden]="'true'">
+          <circle cx="100" cy="100" r="80" stroke="currentColor" stroke-width="2" fill="none" opacity="0.1"/>
+          <path d="M60 60L140 140M140 60L60 140" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="100" cy="100" r="20" stroke="currentColor" stroke-width="2" fill="none"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Error Message -->
+    <div class="error-message mb-10" role="alert">
+      <h1 class="error-title text-5xl font-bold text-gray-800 mb-4 leading-tight md:text-4xl md:text-2xl">{{ i18n.t('pages.errorPages.notFound.title') }}</h1>
+      <p class="error-description text-lg text-gray-500 leading-relaxed max-w-2xl mx-auto">
+        {{ i18n.t('pages.errorPages.notFound.message') }}
+      </p>
+    </div>
+
+    <!-- Search Box -->
+    <div class="search-section mb-10">
+      <h3 class="search-title text-xl font-semibold text-gray-800 mb-4">{{ i18n.t('pages.errorPages.notFound.lookingForSomething') }}</h3>
+      <div class="search-container relative max-w-lg mx-auto">
+        <div class="search-input-wrapper relative flex items-center bg-white border-2 border-gray-200 rounded-xl px-4 py-3 transition-all shadow-sm focus-within:border-primary-500 focus-within:ring-4 focus-within:ring-primary-500/10">
+          <input
+            type="text"
+            [(ngModel)]="searchQuery"
+            [attr.aria-label]="'Search for page'"
+            [attr.aria-describedby]="'search-description'"
+            (input)="onSearchInput()"
+            (focus)="showSuggestions = true"
+            (blur)="onSearchBlur()"
+            [placeholder]="i18n.t('pages.errorPages.notFound.searchPlaceholder')"
+            class="search-input flex-1 border-none outline-none text-base text-gray-800 bg-transparent placeholder:text-gray-400"
+          />
+          <button (click)="onSearchSubmit()" class="search-button bg-primary-500 border-none rounded-lg p-2 text-white cursor-pointer transition-all ml-2 hover:bg-primary-600 hover:-translate-y-0.5">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Search Suggestions -->
+        <div class="suggestions-dropdown" *ngIf="showSuggestions && filteredSuggestions.length > 0">
+          <div
+            *ngFor="let suggestion of filteredSuggestions"
+            (click)="onSuggestionClick(suggestion)"
+            class="suggestion-item"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-gray-400">
+              <path d="m21 21-4.35-4.35"></path>
+              <circle cx="11" cy="11" r="8"></circle>
+            </svg>
+            <span>{{ suggestion }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="quick-links mb-10">
+      <h3 class="quick-links-title text-xl font-semibold text-gray-800 mb-6">{{ i18n.t('pages.errorPages.notFound.quickLinks') }}</h3>
+      <div class="quick-links-grid grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 max-w-2xl mx-auto md:grid-cols-1">
+        <a routerLink="/dashboard" class="quick-link flex items-center p-4 bg-gray-50 border border-gray-200 rounded-xl no-underline text-gray-700 transition-all hover:bg-gray-100 hover:border-gray-300 hover:-translate-y-0.5 hover:shadow-md">
+          <div class="quick-link-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+          </div>
+          <div class="quick-link-content">
+            <h4>{{ i18n.t('pages.errorPages.notFound.dashboard') }}</h4>
+            <p>{{ i18n.t('pages.errorPages.notFound.goToDashboard') }}</p>
+          </div>
+        </a>
+
+        <a routerLink="/profile" class="quick-link">
+          <div class="quick-link-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <div class="quick-link-content">
+            <h4>{{ i18n.t('pages.errorPages.notFound.profile') }}</h4>
+            <p>{{ i18n.t('pages.errorPages.notFound.goToProfile') }}</p>
+          </div>
+        </a>
+
+        <a routerLink="/settings" class="quick-link">
+          <div class="quick-link-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+          </div>
+          <div class="quick-link-content">
+            <h4>{{ i18n.t('pages.errorPages.notFound.settings') }}</h4>
+            <p>{{ i18n.t('pages.errorPages.notFound.manageSettings') }}</p>
+          </div>
+        </a>
+
+        <a routerLink="/help" class="quick-link">
+          <div class="quick-link-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+          </div>
+          <div class="quick-link-content">
+            <h4>{{ i18n.t('pages.errorPages.notFound.helpCenter') }}</h4>
+            <p>{{ i18n.t('pages.errorPages.notFound.getHelp') }}</p>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons flex gap-4 justify-center flex-wrap mb-8 md:flex-col md:items-center">
+      <button (click)="goBack()" class="btn btn-outline inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold no-underline border-none cursor-pointer transition-all text-base bg-transparent text-primary-500 border-2 border-primary-500 hover:bg-primary-500 hover:text-white hover:-translate-y-0.5">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"></path>
+        </svg>
+        {{ i18n.t('pages.errorPages.notFound.goBack') }}
+      </button>
+      <button (click)="goHome()" class="btn btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9,22 9,12 15,12 15,22"></polyline>
+        </svg>
+        {{ i18n.t('pages.errorPages.notFound.backHome') }}
+      </button>
+      <button (click)="reportIssue()" class="btn btn-secondary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14,2 14,8 20,8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10,9 9,9 8,9"></polyline>
+        </svg>
+        {{ i18n.t('pages.errorPages.notFound.reportIssue') }}
+      </button>
+    </div>
+
+    <!-- Additional Help -->
+    <div class="additional-help">
+      <p class="help-text text-gray-500 text-sm leading-relaxed">
+        If you believe this is an error, please
+        <a routerLink="/support/contact" class="help-link text-primary-500 no-underline font-semibold hover:underline">{{ i18n.t('pages.errorPages.notFound.contactSupport') }}</a>
+        or check our
+        <a routerLink="/help" class="help-link text-primary-500 no-underline font-semibold hover:underline">{{ i18n.t('pages.errorPages.notFound.checkHelp') }}</a>.
+      </p>
+    </div>
+  </div>
+</div>

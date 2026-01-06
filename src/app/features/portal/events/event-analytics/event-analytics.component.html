@@ -1,0 +1,242 @@
+<app-page-layout
+  [title]="'Event Analytics'"
+  [actions]="pageActions()"
+>
+  <div class="space-y-6">
+    <!-- Filters -->
+    <app-filter-section
+      [fields]="filterFields()"
+      (filterChange)="onFilterChange($event)"
+      (clearFilters)="clearFilters()"
+    ></app-filter-section>
+
+    @if (loading()) {
+      <div class="text-center py-12">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto"></div>
+        <p class="mt-2 text-gray-600 dark:text-gray-400">Loading analytics...</p>
+      </div>
+    } @else if (errorMessage()) {
+      <div class="glass-card bg-red-500/20 border-red-500 p-4 rounded-lg">
+        <p class="text-red-700 dark:text-red-400 font-medium">
+          ✗ {{ errorMessage() }}
+        </p>
+      </div>
+    } @else if (data()) {
+      <!-- Summary Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="glass-card p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Total Events</p>
+              <p class="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-2">
+                {{ data()?.totalEvents || 0 }}
+              </p>
+            </div>
+            <div class="text-4xl">📅</div>
+          </div>
+        </div>
+
+        <div class="glass-card p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Total Registrations</p>
+              <p class="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-2">
+                {{ data()?.totalRegistrations || 0 }}
+              </p>
+            </div>
+            <div class="text-4xl">👥</div>
+          </div>
+        </div>
+
+        <div class="glass-card p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Total Checked In</p>
+              <p class="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-2">
+                {{ data()?.totalCheckedIn || 0 }}
+              </p>
+            </div>
+            <div class="text-4xl">✅</div>
+          </div>
+        </div>
+
+        <div class="glass-card p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Average Attendance Rate</p>
+              <p class="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-2">
+                {{ data()?.averageAttendanceRate || 0 }}%
+              </p>
+            </div>
+            <div class="text-4xl">📊</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Section -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Events by Status -->
+        <div class="glass-card p-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+            Events by Status
+          </h3>
+          <div class="space-y-3">
+            @for (status of getObjectKeys(data()?.eventsByStatus || {}); track status) {
+              <div>
+                <div class="flex justify-between items-center mb-1">
+                  <span class="text-sm text-gray-700 dark:text-gray-300 capitalize">{{ status }}</span>
+                  <span class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                    {{ getEventsByStatus(status) }}
+                  </span>
+                </div>
+                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                  <div
+                    class="h-2 rounded-full transition-all"
+                    [class]="getStatusColor(status)"
+                    [style.width.%]="getStatusPercentage(status)"
+                  ></div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Events by Type -->
+        <div class="glass-card p-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+            Events by Type
+          </h3>
+          <div class="space-y-3">
+            @for (type of getObjectKeys(data()?.eventsByType || {}); track type) {
+              <div>
+                <div class="flex justify-between items-center mb-1">
+                  <span class="text-sm text-gray-700 dark:text-gray-300 capitalize">{{ type }}</span>
+                  <span class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                    {{ getEventsByType(type) }}
+                  </span>
+                </div>
+                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                  <div
+                    class="h-2 rounded-full bg-primary-500 transition-all"
+                    [style.width.%]="getTypePercentage(type)"
+                  ></div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Trends Section -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Registration Trend -->
+        <div class="glass-card p-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+            Registration Trend
+          </h3>
+          @if (getRegistrationTrend().length > 0) {
+            <div class="flex items-end justify-between h-48 gap-2">
+              @for (item of getRegistrationTrend(); track item.date) {
+                <div class="flex-1 flex flex-col items-center">
+                  <div class="w-full flex items-end justify-center" [style.height.px]="200">
+                    <div
+                      class="w-full bg-primary-500 rounded-t transition-all hover:bg-primary-600"
+                      [style.height.%]="getRegistrationBarHeight(item.count)"
+                      [title]="item.count + ' registrations'"
+                    ></div>
+                  </div>
+                  <p class="text-xs text-gray-600 dark:text-gray-400 mt-2 text-center">
+                    {{ item.date }}
+                  </p>
+                </div>
+              }
+            </div>
+          } @else {
+            <p class="text-center text-gray-500 dark:text-gray-400 py-8">No data available</p>
+          }
+        </div>
+
+        <!-- Attendance Trend -->
+        <div class="glass-card p-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+            Attendance Trend
+          </h3>
+          @if (getAttendanceTrend().length > 0) {
+            <div class="flex items-end justify-between h-48 gap-2">
+              @for (item of getAttendanceTrend(); track item.date) {
+                <div class="flex-1 flex flex-col items-center">
+                  <div class="w-full flex items-end justify-center" [style.height.px]="200">
+                    <div
+                      class="w-full bg-green-500 rounded-t transition-all hover:bg-green-600"
+                      [style.height.%]="getAttendanceBarHeight(item.count)"
+                      [title]="item.count + ' check-ins'"
+                    ></div>
+                  </div>
+                  <p class="text-xs text-gray-600 dark:text-gray-400 mt-2 text-center">
+                    {{ item.date }}
+                  </p>
+                </div>
+              }
+            </div>
+          } @else {
+            <p class="text-center text-gray-500 dark:text-gray-400 py-8">No data available</p>
+          }
+        </div>
+      </div>
+
+      <!-- Top Events -->
+      <div class="glass-card p-6">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+          Top Events by Attendance Rate
+        </h3>
+        @if (getTopEvents().length > 0) {
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead>
+                <tr class="bg-gray-50 dark:bg-gray-800">
+                  <th class="px-4 py-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">Event Name</th>
+                  <th class="px-4 py-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">Registrations</th>
+                  <th class="px-4 py-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">Checked In</th>
+                  <th class="px-4 py-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">Attendance Rate</th>
+                  <th class="px-4 py-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (event of getTopEvents(); track event.eventId) {
+                  <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td class="px-4 py-2 text-sm text-gray-900 dark:text-gray-100">
+                      {{ event.eventName }}
+                    </td>
+                    <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
+                      {{ event.totalRegistrations }}
+                    </td>
+                    <td class="px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
+                      {{ event.checkedIn }}
+                    </td>
+                    <td class="px-4 py-2 text-sm">
+                      <span class="font-medium" [class.text-green-600]="event.attendanceRate >= 80" [class.text-yellow-600]="event.attendanceRate >= 50 && event.attendanceRate < 80" [class.text-red-600]="event.attendanceRate < 50">
+                        {{ event.attendanceRate }}%
+                      </span>
+                    </td>
+                    <td class="px-4 py-2 text-sm">
+                      <span class="px-2 py-1 rounded text-xs font-medium" [class]="getStatusColor(event.status)">
+                        {{ event.status }}
+                      </span>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <p class="text-center text-gray-500 dark:text-gray-400 py-8">No events available</p>
+        }
+      </div>
+    } @else {
+      <div class="text-center py-12">
+        <p class="text-gray-600 dark:text-gray-400">No analytics data available</p>
+      </div>
+    }
+  </div>
+</app-page-layout>
+

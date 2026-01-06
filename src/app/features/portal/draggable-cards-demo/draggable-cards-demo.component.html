@@ -1,0 +1,213 @@
+<div class="min-h-screen p-4 md:p-8 bg-gradient-to-br from-blue-500/10 to-purple-500/10">
+  <!-- Header -->
+  <div class="text-center mb-10">
+    <h1
+      class="text-3xl md:text-4xl font-bold mb-4 flex items-center justify-center gap-4 text-gray-900 dark:text-gray-100">
+      <i class="fas fa-th-large text-blue-500"></i>
+      Draggable Cards Demo
+    </h1>
+    <p class="text-lg text-gray-600 dark:text-gray-400">
+      ทดสอบ Draggable Cards Component ที่สามารถลากและปรับขนาดได้
+    </p>
+  </div>
+
+  <!-- Demo Controls -->
+  <div class="mb-8">
+    <app-glass-card>
+      <div class="p-6">
+        <h3 class="text-xl font-semibold mb-6 text-gray-900 dark:text-gray-100">การตั้งค่า Cards</h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">ขนาด Grid: <span
+                class="text-blue-500 font-bold ml-2">{{ gridSize }}px</span></label>
+            <input type="range" min="10" max="50" [(ngModel)]="gridSize" (change)="updateConfig()"
+              class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+          </div>
+
+          <div class="flex items-center space-x-3">
+            <input type="checkbox" id="snapToGrid" [(ngModel)]="snapToGrid" (change)="updateConfig()"
+              class="accent-blue-500 w-5 h-5">
+            <label for="snapToGrid" class="text-gray-700 dark:text-gray-300">Snap to Grid</label>
+          </div>
+
+          <div class="flex items-center space-x-3">
+            <input type="checkbox" id="allowOverlap" [(ngModel)]="allowOverlap" (change)="updateConfig()"
+              class="accent-blue-500 w-5 h-5">
+            <label for="allowOverlap" class="text-gray-700 dark:text-gray-300">อนุญาตให้ทับซ้อน</label>
+          </div>
+
+          <div class="flex items-center space-x-3">
+            <input type="checkbox" id="animation" [(ngModel)]="animation" (change)="updateConfig()"
+              class="accent-blue-500 w-5 h-5">
+            <label for="animation" class="text-gray-700 dark:text-gray-300">เปิดใช้แอนิเมชัน</label>
+          </div>
+
+          <div class="flex items-center space-x-3">
+            <input type="checkbox" id="autoSave" [(ngModel)]="autoSave" (change)="updateConfig()"
+              class="accent-blue-500 w-5 h-5">
+            <label for="autoSave" class="text-gray-700 dark:text-gray-300">บันทึกอัตโนมัติ</label>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Demo Actions -->
+  <div class="mb-8">
+    <app-glass-card>
+      <div class="p-6">
+        <h3 class="text-xl font-semibold mb-6 text-gray-900 dark:text-gray-100">การจัดการ Cards</h3>
+
+        <div class="space-y-6">
+          <!-- Add/Reset/Delete -->
+          <div class="flex flex-wrap gap-4">
+            <app-glass-button variant="primary" (click)="addSampleCard()" class="flex-1 min-w-[150px]">
+              <i class="fas fa-plus mr-2"></i> เพิ่ม Card
+            </app-glass-button>
+            <app-glass-button variant="secondary" (click)="resetToSampleCards()" class="flex-1 min-w-[150px]">
+              <i class="fas fa-undo mr-2"></i> รีเซ็ต
+            </app-glass-button>
+            <app-glass-button variant="danger" (click)="clearAllCards()" class="flex-1 min-w-[150px]">
+              <i class="fas fa-trash mr-2"></i> ลบทั้งหมด
+            </app-glass-button>
+          </div>
+
+          <!-- Lock/Unlock -->
+          <div class="flex flex-wrap gap-4">
+            <app-glass-button variant="primary" (click)="lockAllCards()" class="flex-1 min-w-[150px]">
+              <i class="fas fa-lock mr-2"></i> ล็อคทั้งหมด
+            </app-glass-button>
+            <app-glass-button variant="secondary" (click)="unlockAllCards()" class="flex-1 min-w-[150px]">
+              <i class="fas fa-unlock mr-2"></i> ปลดล็อคทั้งหมด
+            </app-glass-button>
+          </div>
+
+          <!-- Import/Export -->
+          <div class="flex flex-wrap gap-4">
+            <app-glass-button variant="primary" (click)="exportCardsData()" class="flex-1 min-w-[150px]">
+              <i class="fas fa-download mr-2"></i> ส่งออกข้อมูล
+            </app-glass-button>
+
+            <label class="flex-1 min-w-[150px] cursor-pointer">
+              <input type="file" accept=".json" (change)="importCardsData($event)" class="hidden">
+              <app-glass-button variant="secondary" class="w-full">
+                <i class="fas fa-upload mr-2"></i> นำเข้าข้อมูล
+              </app-glass-button>
+            </label>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Draggable Cards Demo -->
+  <div class="mb-8">
+    <app-glass-card>
+      <div class="p-6">
+        <h3 class="text-xl font-semibold mb-6 text-gray-900 dark:text-gray-100">Draggable Cards</h3>
+
+        <div class="h-[500px] border border-white/10 rounded-xl overflow-hidden bg-black/20">
+          <app-draggable-cards [cards]="cards" [config]="config" (cardMove)="onCardMove($event)"
+            (cardResize)="onCardResize($event)" (cardSelect)="onCardSelect($event)"
+            (cardDeselect)="onCardDeselect($event)" (cardsChange)="onCardsChange($event)">
+          </app-draggable-cards>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Statistics -->
+  <div class="mb-8">
+    <app-glass-card>
+      <div class="p-6">
+        <h3 class="text-xl font-semibold mb-6 text-gray-900 dark:text-gray-100">สถิติ Cards</h3>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div class="p-4 bg-white/5 rounded-xl border border-white/10 text-center">
+            <div class="text-2xl font-bold text-blue-500 mb-1">{{ getCardsStats().totalCards }}</div>
+            <div class="text-sm text-gray-500 dark:text-gray-400">Cards ทั้งหมด</div>
+          </div>
+
+          <div class="p-4 bg-white/5 rounded-xl border border-white/10 text-center">
+            <div class="text-2xl font-bold text-green-500 mb-1">{{ getCardsStats().lockedCards }}</div>
+            <div class="text-sm text-gray-500 dark:text-gray-400">Cards ที่ล็อค</div>
+          </div>
+
+          <div class="p-4 bg-white/5 rounded-xl border border-white/10 text-center">
+            <div class="text-2xl font-bold text-gray-500 mb-1">{{ getCardsStats().unlockedCards }}</div>
+            <div class="text-sm text-gray-500 dark:text-gray-400">Cards ที่ปลดล็อค</div>
+          </div>
+
+          <div class="p-4 bg-white/5 rounded-xl border border-white/10 text-center">
+            <div class="text-2xl font-bold text-yellow-500 mb-1">{{ getCardsStats().cardsWithIcons }}</div>
+            <div class="text-sm text-gray-500 dark:text-gray-400">มีไอคอน</div>
+          </div>
+
+          <div class="p-4 bg-white/5 rounded-xl border border-white/10 text-center">
+            <div class="text-2xl font-bold text-purple-500 mb-1">{{ getCardsStats().cardsWithBadges }}</div>
+            <div class="text-sm text-gray-500 dark:text-gray-400">มี Badge</div>
+          </div>
+
+          <div class="p-4 bg-white/5 rounded-xl border border-white/10 text-center">
+            <div class="text-2xl font-bold text-red-500 mb-1">{{ getCardsStats().selectedCard }}</div>
+            <div class="text-sm text-gray-500 dark:text-gray-400">Card ที่เลือก</div>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Features Overview -->
+  <div class="mb-8">
+    <app-glass-card>
+      <div class="p-6">
+        <h3 class="text-xl font-semibold mb-6 text-gray-900 dark:text-gray-100">ฟีเจอร์ Draggable Cards</h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div
+            class="p-6 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all text-center group">
+            <i class="fas fa-check-circle text-3xl text-green-500 mb-4 group-hover:scale-110 transition-transform"></i>
+            <h4 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Drag & Drop</h4>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">ลาก Cards ได้อย่างอิสระ</p>
+          </div>
+
+          <div
+            class="p-6 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all text-center group">
+            <i class="fas fa-check-circle text-3xl text-green-500 mb-4 group-hover:scale-110 transition-transform"></i>
+            <h4 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Resize</h4>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">ปรับขนาด Cards ได้</p>
+          </div>
+
+          <div
+            class="p-6 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all text-center group">
+            <i class="fas fa-check-circle text-3xl text-green-500 mb-4 group-hover:scale-110 transition-transform"></i>
+            <h4 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Grid Snap</h4>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">จัดเรียงตาม Grid</p>
+          </div>
+
+          <div
+            class="p-6 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all text-center group">
+            <i class="fas fa-check-circle text-3xl text-green-500 mb-4 group-hover:scale-110 transition-transform"></i>
+            <h4 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Lock/Unlock</h4>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">ล็อค Cards ได้</p>
+          </div>
+
+          <div
+            class="p-6 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all text-center group">
+            <i class="fas fa-check-circle text-3xl text-green-500 mb-4 group-hover:scale-110 transition-transform"></i>
+            <h4 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Icons & Badges</h4>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">รองรับไอคอนและ Badge</p>
+          </div>
+
+          <div
+            class="p-6 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all text-center group">
+            <i class="fas fa-check-circle text-3xl text-green-500 mb-4 group-hover:scale-110 transition-transform"></i>
+            <h4 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Auto Save</h4>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">บันทึกอัตโนมัติ</p>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+</div>

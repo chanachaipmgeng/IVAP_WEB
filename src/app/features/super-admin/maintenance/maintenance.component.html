@@ -1,0 +1,123 @@
+<app-page-layout
+  [title]="'pages.maintenance.title' | translate"
+  [description]="'pages.maintenance.description' | translate"
+  icon="⚙️"
+  [actions]="pageActions()">
+  
+  <!-- System Health Overview -->
+  <app-glass-card customClass="p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ 'pages.maintenance.overallStatus' | translate }}</h2>
+      <app-glass-button variant="secondary" (clicked)="runSystemCheck()">
+        🔍 {{ 'pages.maintenance.checkHealth' | translate }}
+      </app-glass-button>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div class="text-center">
+        <div class="text-3xl font-bold" [class]="maintenanceService.getHealthStatusClass(getSystemHealth()().status)">
+          {{ getSystemHealth()().status.toUpperCase() }}
+        </div>
+        <div class="text-sm text-gray-600 dark:text-gray-400">{{ 'pages.maintenance.overallStatus' | translate }}</div>
+      </div>
+      <div class="text-center">
+        <div class="text-3xl font-bold text-blue-600 dark:text-blue-400">
+          {{ getSystemHealth()().cpuUsage }}%
+        </div>
+        <div class="text-sm text-gray-600 dark:text-gray-400">{{ 'pages.maintenance.cpuUsage' | translate }}</div>
+      </div>
+      <div class="text-center">
+        <div class="text-3xl font-bold text-green-600 dark:text-green-400">
+          {{ getSystemHealth()().memoryUsage }}%
+        </div>
+        <div class="text-sm text-gray-600 dark:text-gray-400">{{ 'pages.maintenance.memoryUsage' | translate }}</div>
+      </div>
+      <div class="text-center">
+        <div class="text-3xl font-bold text-purple-600 dark:text-purple-400">
+          {{ getSystemHealth()().uptime }}
+        </div>
+        <div class="text-sm text-gray-600 dark:text-gray-400">{{ 'pages.maintenance.uptime' | translate }}</div>
+      </div>
+    </div>
+  </app-glass-card>
+
+  <!-- Statistics Cards -->
+  <app-statistics-grid [stats]="statisticsCards()" [columns]="6" />
+
+  <!-- Tabs -->
+  <app-tabs [tabs]="tabs()" [activeTab]="activeTab()" (activeTabChange)="onTabChange($event)">
+    
+    <!-- Tasks Tab -->
+    <div *ngIf="activeTab() === 'tasks'" class="space-y-6">
+      <!-- Filters -->
+      <app-filter-section
+        [fields]="filterFields()"
+        [columns]="4"
+        (filterChange)="onFilterChange($event)"
+      />
+
+      <!-- Tasks Table -->
+      <app-data-table
+        [columns]="taskColumns"
+        [data]="filteredTasks()"
+        [actions]="taskActions"
+        [searchable]="false"
+      />
+    </div>
+
+    <!-- Schedules Tab -->
+    <div *ngIf="activeTab() === 'schedules'" class="space-y-6">
+      <!-- Schedules content here -->
+      <p class="text-gray-600 dark:text-gray-400">{{ 'pages.maintenance.scheduledTasks' | translate }}</p>
+    </div>
+  </app-tabs>
+
+  <!-- Add/Edit Task Modal -->
+  <app-modal
+    [isOpen]="showTaskModal()"
+    [title]="(editingTask() ? 'pages.maintenance.edit' : 'pages.maintenance.addTask') | translate"
+    [loading]="saving()"
+    (closed)="closeTaskModal()"
+  >
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          {{ 'pages.maintenance.taskName' | translate }} <span class="text-red-500">*</span>
+        </label>
+        <input
+          [(ngModel)]="taskForm.name"
+          type="text"
+          class="glass-input w-full"
+          [placeholder]="'pages.maintenance.taskName' | translate"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          {{ 'pages.maintenance.type' | translate }}
+        </label>
+        <select [(ngModel)]="taskForm.type" class="glass-input w-full">
+          <option value="backup">Backup</option>
+          <option value="cleanup">Cleanup</option>
+          <option value="update">Update</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          {{ 'pages.maintenance.priority' | translate }}
+        </label>
+        <select [(ngModel)]="taskForm.priority" class="glass-input w-full">
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+      </div>
+    </div>
+    <div slot="footer">
+      <app-glass-button variant="secondary" (clicked)="closeTaskModal()">
+        {{ 'common.cancel' | translate }}
+      </app-glass-button>
+      <app-glass-button variant="primary" [loading]="saving()" (clicked)="saveTask()">
+        {{ 'common.save' | translate }}
+      </app-glass-button>
+    </div>
+  </app-modal>
+</app-page-layout>

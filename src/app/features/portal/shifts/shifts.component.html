@@ -1,0 +1,151 @@
+<app-page-layout
+  [title]="'pages.shifts.title' | translate"
+  [description]="'pages.shifts.description' | translate"
+  icon="⏰"
+  [actions]="pageActions()">
+
+  <!-- Shifts Table -->
+  <app-data-table
+    [columns]="columns"
+    [data]="shifts()"
+    [actions]="actions"
+    [searchable]="true"
+  >
+    <div actions>
+      <app-glass-button (clicked)="loadShifts()">
+        🔄 {{ 'common.refresh' | translate }}
+      </app-glass-button>
+    </div>
+  </app-data-table>
+
+  <!-- Add/Edit Shift Modal Form -->
+  <app-modal-form
+    [isOpen]="showModal()"
+    [title]="editingShift() ? ('pages.shifts.editShift' | translate) : ('pages.shifts.addShift' | translate)"
+    [fields]="shiftFormFields()"
+    [loading]="saving()"
+    [submitLabel]="'common.save' | translate"
+    [cancelLabel]="'common.cancel' | translate"
+    (closed)="closeModal()"
+    (submitted)="onShiftFormSubmitted($event)"
+  />
+
+  <!-- Assignment Modal -->
+  <app-modal
+    [isOpen]="showAssignmentModal()"
+    [title]="('pages.shifts.assignEmployees' | translate) + ' - ' + (selectedShiftForAssignment()?.shiftName || '')"
+    [loading]="saving()"
+    (closed)="closeAssignmentModal()"
+  >
+    <div class="space-y-6">
+      @if (loadingAssignments()) {
+        <div class="text-center py-8">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-sky-500 mx-auto"></div>
+          <p class="mt-2 text-gray-600 dark:text-gray-400">{{ 'pages.shifts.loadingAssignments' | translate }}</p>
+        </div>
+      } @else {
+        <!-- Shift Info -->
+        <div class="bg-sky-50 dark:bg-sky-900/20 p-4 rounded-lg">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="font-medium text-gray-900 dark:text-gray-100">
+                {{ selectedShiftForAssignment()?.shiftName }}
+              </p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">
+                ⏰ {{ selectedShiftForAssignment()?.startTime }} - {{ selectedShiftForAssignment()?.endTime }}
+              </p>
+            </div>
+            <div class="text-right">
+              <p class="text-2xl font-bold text-sky-600 dark:text-sky-400">
+                {{ shiftAssignments().length }}
+              </p>
+              <p class="text-xs text-gray-600 dark:text-gray-400">Employees</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Current Assignments -->
+        <div>
+            <h3 class="text-lg font-semibold mb-3 text-gray-900 dark:text-gray-100">
+            👥 {{ 'pages.shifts.assignedEmployees' | translate }} ({{ shiftAssignments().length }})
+          </h3>
+          @if (shiftAssignments().length === 0) {
+            <div class="text-center py-6 bg-gray-50 dark:bg-gray-800 rounded-lg">
+              <p class="text-gray-500 dark:text-gray-400">{{ 'pages.shifts.noEmployeesAssigned' | translate }}</p>
+            </div>
+          } @else {
+            <div class="space-y-2 max-h-60 overflow-y-auto">
+              @for (assignment of shiftAssignments(); track assignment.id) {
+                <div class="flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                  <div class="flex items-center space-x-3">
+                    <span class="text-2xl">👤</span>
+                    <div>
+                      <p class="font-medium text-gray-900 dark:text-gray-100">
+                        {{ getEmployeeName(assignment.companyEmployeeId) }}
+                      </p>
+                      <p class="text-sm text-gray-500 dark:text-gray-400">
+                        {{ getEmployeeDetails(assignment.companyEmployeeId) }}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    (click)="unassignShift(assignment)"
+                    class="px-3 py-1 text-sm text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 font-medium transition-colors"
+                  >
+                    🗑️ {{ 'pages.shifts.remove' | translate }}
+                  </button>
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Assign New Employees -->
+        <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
+          <h3 class="text-lg font-semibold mb-3 text-gray-900 dark:text-gray-100">
+            ➕ {{ 'pages.shifts.assignMoreEmployees' | translate }}
+          </h3>
+          @if (availableEmployees().length === 0) {
+            <div class="text-center py-6 bg-gray-50 dark:bg-gray-800 rounded-lg">
+              <p class="text-gray-500 dark:text-gray-400">{{ 'pages.shifts.allEmployeesAssigned' | translate }}</p>
+            </div>
+          } @else {
+            <div class="space-y-2 max-h-60 overflow-y-auto mb-4">
+              @for (employee of availableEmployees(); track employee.id) {
+                <label class="flex items-center p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-sky-50 dark:hover:bg-sky-900/20 cursor-pointer transition-colors">
+                  <input
+                    type="checkbox"
+                    [checked]="selectedEmployees().includes(employee.id)"
+                    (change)="toggleEmployeeSelection(employee.id)"
+                    class="w-4 h-4 text-sky-600 bg-gray-100 border-gray-300 rounded focus:ring-sky-500 dark:focus:ring-sky-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <div class="ml-3">
+                    <p class="font-medium text-gray-900 dark:text-gray-100">
+                      {{ employee.first_name }} {{ employee.last_name }}
+                    </p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                      {{ employee.department }} - {{ employee.position }}
+                    </p>
+                  </div>
+                </label>
+              }
+            </div>
+
+            <div class="flex items-center justify-between pt-2">
+              <p class="text-sm text-gray-600 dark:text-gray-400">
+                {{ selectedEmployees().length }} {{ 'pages.shifts.employeesSelected' | translate }}
+              </p>
+              <app-glass-button
+                variant="primary"
+                [disabled]="selectedEmployees().length === 0 || saving()"
+                (clicked)="assignShift()"
+              >
+                {{ saving() ? ('⏳ ' + ('pages.shifts.assigning' | translate)) : ('✅ ' + ('pages.shifts.assignShift' | translate)) }}
+              </app-glass-button>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </app-modal>
+</app-page-layout>

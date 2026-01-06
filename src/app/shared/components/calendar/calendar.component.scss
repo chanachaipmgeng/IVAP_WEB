@@ -1,0 +1,101 @@
+/* calendar.component.scss - Using Design Tokens */
+// Most styles migrated to Tailwind classes in HTML template
+// Keeping only complex styles that require SCSS (Angular Calendar overrides)
+
+.calendar-content {
+  position: relative;
+}
+
+/* Angular Calendar Overrides - keeping in SCSS for ::ng-deep selectors */
+:host ::ng-deep .cal-month-view,
+:host ::ng-deep .cal-week-view,
+:host ::ng-deep .cal-day-view {
+  background: rgba(31, 41, 55, 0.8);
+  border-radius: var(--radius-lg); /* 12px */
+  border: 1px solid rgba(59, 130, 246, 0.2); /* Using primary-500 */
+}
+
+:host ::ng-deep .cal-header {
+  background: rgba(55, 65, 81, 0.8);
+  color: #e5e7eb;
+}
+
+:host ::ng-deep .cal-cell-row {
+  border-bottom: 1px solid #374151;
+}
+
+:host ::ng-deep .cal-cell-row:last-child {
+  border-bottom: none;
+}
+
+:host ::ng-deep .cal-day-cell,
+:host ::ng-deep .cal-hour-segment {
+  border-right: 1px solid #374151;
+}
+
+:host ::ng-deep .cal-day-cell:last-child,
+:host ::ng-deep .cal-hour-segment:last-child {
+  border-right: none;
+}
+
+:host ::ng-deep .cal-day-number {
+  color: #d1d5db;
+}
+
+:host ::ng-deep .cal-today {
+  background: rgba(30, 58, 138, 0.3);
+}
+
+:host ::ng-deep .cal-weekend {
+  background: rgba(31, 41, 55, 0.5);
+}
+
+:host ::ng-deep .cal-event {
+  background: #2563eb;
+  color: white;
+  border-radius: 0.375rem;
+  padding: 0.25rem;
+  font-size: 0.875rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+:host ::ng-deep .cal-event-title {
+  color: white;
+}
+
+:host ::ng-deep .cal-drag-active .cal-event {
+  opacity: 0.5;
+}
+
+/* Event Colors */
+:host ::ng-deep .cal-event.category-meeting { background: var(--color-primary-500); }
+:host ::ng-deep .cal-event.category-task { background: var(--color-success-500); }
+:host ::ng-deep .cal-event.category-personal { background: var(--color-secondary-500); }
+:host ::ng-deep .cal-event.category-holiday { background: var(--color-error-500); }
+
+/* Priority Colors */
+:host ::ng-deep .cal-event.priority-high { border-left: 4px solid #ef4444; }
+:host ::ng-deep .cal-event.priority-medium { border-left: 4px solid #f59e0b; }
+:host ::ng-deep .cal-event.priority-low { border-left: 4px solid #10b981; }
+
+/* Status Colors */
+:host ::ng-deep .cal-event.status-completed {
+  opacity: 0.7;
+  text-decoration: line-through;
+  background: var(--color-gray-500);
+}
+:host ::ng-deep .cal-event.status-cancelled {
+  opacity: 0.5;
+  text-decoration: line-through;
+  background: #ef4444;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .calendar-toolbar {
+    flex-direction: column;
+    gap: var(--spacing-sm); /* 8px */
+  }
+}

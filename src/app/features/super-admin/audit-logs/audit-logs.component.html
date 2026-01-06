@@ -1,0 +1,89 @@
+<app-page-layout
+  [title]="'pages.auditLogs.title' | translate"
+  [description]="'pages.auditLogs.description' | translate"
+  icon="📋"
+  [actions]="pageActions()">
+  
+  <!-- Statistics Cards -->
+  <app-statistics-grid [stats]="statisticsCards()" [columns]="4" />
+
+  <!-- Filters -->
+  <app-filter-section
+    [fields]="filterFields()"
+    [columns]="7"
+    (filterChange)="onFilterChange($event)"
+  />
+
+  <!-- Logs Table -->
+  <app-data-table
+    [columns]="columns"
+    [data]="filteredLogs()"
+    [actions]="actions"
+    [searchable]="false"
+  >
+    <div actions>
+      <app-glass-button variant="secondary" (clicked)="clearOldLogs()">
+        🗑️ {{ 'pages.auditLogs.clearOld' | translate }}
+      </app-glass-button>
+    </div>
+  </app-data-table>
+
+  <!-- Log Details Modal -->
+  <app-modal
+    [isOpen]="showModal()"
+    [title]="'pages.auditLogs.logDetails' | translate"
+    (closed)="closeModal()"
+  >
+    <div *ngIf="selectedLog()" class="space-y-4">
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'pages.auditLogs.timestamp' | translate }}</label>
+          <p class="text-sm text-gray-900 dark:text-gray-100">{{ formatDateTime(selectedLog()!.timestamp) }}</p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'pages.auditLogs.userName' | translate }}</label>
+          <p class="text-sm text-gray-900 dark:text-gray-100">{{ selectedLog()!.userName }}</p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'pages.auditLogs.action' | translate }}</label>
+          <p class="text-sm text-gray-900 dark:text-gray-100">{{ selectedLog()!.action }}</p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'pages.auditLogs.resource' | translate }}</label>
+          <p class="text-sm text-gray-900 dark:text-gray-100">{{ selectedLog()!.resource }}</p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'pages.auditLogs.severity' | translate }}</label>
+          <span [class]="auditService.getSeverityClass(selectedLog()!.severity)" class="text-sm font-semibold">
+            {{ selectedLog()!.severity.toUpperCase() }}
+          </span>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'pages.auditLogs.status' | translate }}</label>
+          <span [class]="auditService.getStatusClass(selectedLog()!.status)" class="text-sm font-semibold">
+            {{ selectedLog()!.status.toUpperCase() }}
+          </span>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'pages.auditLogs.ipAddress' | translate }}</label>
+          <p class="text-sm text-gray-900 dark:text-gray-100">{{ selectedLog()!.ipAddress }}</p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'pages.auditLogs.userAgent' | translate }}</label>
+          <p class="text-sm text-gray-900 dark:text-gray-100 truncate">{{ selectedLog()!.userAgent }}</p>
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'pages.auditLogs.details' | translate }}</label>
+        <p class="text-sm text-gray-900 dark:text-gray-100 bg-gray-100 dark:bg-gray-800 p-3 rounded">
+          {{ selectedLog()!.details }}
+        </p>
+      </div>
+    </div>
+    <div slot="footer">
+      <app-glass-button variant="secondary" (clicked)="closeModal()">
+        {{ 'common.close' | translate }}
+      </app-glass-button>
+    </div>
+  </app-modal>
+</app-page-layout>

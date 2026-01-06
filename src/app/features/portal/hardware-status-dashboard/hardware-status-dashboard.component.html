@@ -1,0 +1,444 @@
+<div class="space-y-6 p-6 min-h-screen bg-gradient-to-br from-primary-500 to-secondary-500">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">Hardware Status Dashboard</h1>
+      <p class="text-gray-600 dark:text-gray-400 mt-2">Monitor and manage hardware devices</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <label class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer">
+        <input type="checkbox" [ngModel]="autoRefresh()" (ngModelChange)="toggleAutoRefresh()"
+          class="w-4 h-4 cursor-pointer">
+        Auto Refresh
+      </label>
+      <select [ngModel]="refreshInterval" (ngModelChange)="setRefreshInterval($event)" class="glass-input w-24">
+        <option [value]="10">10s</option>
+        <option [value]="30">30s</option>
+        <option [value]="60">1m</option>
+        <option [value]="300">5m</option>
+      </select>
+      <app-glass-button variant="secondary" (clicked)="refreshData()" [disabled]="isRefreshing()">
+        <span class="flex items-center gap-2">
+          <app-icon name="refresh" [customClass]="isRefreshing() ? 'animate-spin' : ''" size="18"></app-icon>
+          {{ isRefreshing() ? 'Refreshing...' : 'Refresh' }}
+        </span>
+      </app-glass-button>
+    </div>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <div class="glass rounded-lg p-1 flex space-x-1">
+    <button *ngFor="let tab of ['overview', 'devices', 'monitoring', 'alerts', 'configuration']" [class]="selectedTab() === tab
+        ? 'bg-primary-500/20 text-primary-600 dark:text-primary-400 shadow-sm'
+        : 'text-gray-600 dark:text-gray-400 hover:bg-white/10 dark:hover:bg-gray-800/10'"
+      (click)="onSelectTab($any(tab))"
+      class="flex-1 py-2 px-4 rounded-lg font-medium transition-all duration-200 capitalize flex items-center justify-center gap-2">
+      <!-- Optional: Add icons for tabs if desired, e.g. -->
+      <!-- <app-icon *ngIf="tab === 'overview'" name="menu" size="16"></app-icon> -->
+      {{ tab }}
+    </button>
+  </div>
+
+  <!-- Overview Tab -->
+  <div *ngIf="selectedTab() === 'overview'" class="space-y-6">
+    <!-- System Overview Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <app-glass-card customClass="p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Total Devices</p>
+            <p class="text-3xl font-bold text-primary-600 dark:text-primary-400">{{ systemOverview().totalDevices }}</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Hardware devices</p>
+          </div>
+          <div
+            class="w-12 h-12 bg-primary-500/20 rounded-full flex items-center justify-center text-primary-600 dark:text-primary-400">
+            <app-icon name="devices" size="24"></app-icon>
+          </div>
+        </div>
+      </app-glass-card>
+
+      <app-glass-card customClass="p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Online Devices</p>
+            <p class="text-3xl font-bold text-green-600 dark:text-green-400">{{ systemOverview().onlineDevices }}</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              {{ (systemOverview().onlineDevices / (systemOverview().totalDevices || 1) * 100) | number:'1.1-1' }}%
+              online
+            </p>
+          </div>
+          <div
+            class="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center text-green-600 dark:text-green-400">
+            <app-icon name="check" size="24"></app-icon>
+            <!-- Or 'online' icon if added to registry -->
+          </div>
+        </div>
+      </app-glass-card>
+
+      <app-glass-card customClass="p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm text-gray-600 dark:text-gray-400">System Health</p>
+            <p class="text-3xl font-bold text-blue-600 dark:text-blue-400">{{ systemOverview().averageHealth |
+              number:'1.0-0' }}%</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Average health score</p>
+          </div>
+          <div
+            class="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400">
+            <app-icon name="health" size="24"></app-icon>
+          </div>
+        </div>
+      </app-glass-card>
+
+      <app-glass-card customClass="p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Active Alerts</p>
+            <p class="text-3xl font-bold" [class.text-red-600]="systemOverview().criticalAlerts > 0"
+              [class.text-primary-600]="systemOverview().criticalAlerts === 0"
+              [class.dark:text-red-400]="systemOverview().criticalAlerts > 0"
+              [class.dark:text-primary-400]="systemOverview().criticalAlerts === 0">
+              {{ systemOverview().totalAlerts }}
+            </p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ systemOverview().criticalAlerts }} critical</p>
+          </div>
+          <div
+            class="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center text-red-600 dark:text-red-400">
+            <app-icon name="alerts" size="24"></app-icon>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+
+    <!-- Performance Charts -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <app-glass-card customClass="p-6">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+          <app-icon name="cpu" size="20" class="text-primary-500"></app-icon> CPU Usage Trend
+        </h3>
+        <div class="h-64">
+          <app-echarts-chart [options]="cpuChartOptions()" height="256px" [showControls]="false"
+            [showInfo]="false"></app-echarts-chart>
+        </div>
+      </app-glass-card>
+      <app-glass-card customClass="p-6">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+          <app-icon name="memory" size="20" class="text-pink-500"></app-icon> Memory Usage Trend
+        </h3>
+        <div class="h-64">
+          <app-echarts-chart [options]="memoryChartOptions()" height="256px" [showControls]="false"
+            [showInfo]="false"></app-echarts-chart>
+        </div>
+      </app-glass-card>
+      <app-glass-card customClass="p-6">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+          <app-icon name="thermometer" size="20" class="text-orange-500"></app-icon> Temperature Trend
+        </h3>
+        <div class="h-64">
+          <app-echarts-chart [options]="temperatureChartOptions()" height="256px" [showControls]="false"
+            [showInfo]="false"></app-echarts-chart>
+        </div>
+      </app-glass-card>
+      <app-glass-card customClass="p-6">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+          <app-icon name="network" size="20" class="text-purple-500"></app-icon> Network Usage Trend
+        </h3>
+        <div class="h-64">
+          <app-echarts-chart [options]="networkChartOptions()" height="256px" [showControls]="false"
+            [showInfo]="false"></app-echarts-chart>
+        </div>
+      </app-glass-card>
+    </div>
+  </div>
+
+  <!-- Devices Tab -->
+  <div *ngIf="selectedTab() === 'devices'" class="space-y-6">
+    <!-- Filters -->
+    <app-glass-card customClass="p-4">
+      <div class="flex flex-col md:flex-row gap-3">
+        <div class="relative flex-1">
+          <app-icon name="search" size="18"
+            customClass="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></app-icon>
+          <input type="text" [ngModel]="searchQuery()" (ngModelChange)="setSearchQuery($event)"
+            placeholder="Search devices..." class="glass-input pl-10" />
+        </div>
+        <select [ngModel]="statusFilter()" (ngModelChange)="setStatusFilter($event)" class="glass-input">
+          <option value="all">All Status</option>
+          <option value="online">Online</option>
+          <option value="offline">Offline</option>
+          <option value="error">Error</option>
+          <option value="maintenance">Maintenance</option>
+        </select>
+        <select [ngModel]="healthFilter()" (ngModelChange)="setHealthFilter($event)" class="glass-input">
+          <option value="all">All Health</option>
+          <option value="excellent">Excellent</option>
+          <option value="good">Good</option>
+          <option value="fair">Fair</option>
+          <option value="poor">Poor</option>
+          <option value="critical">Critical</option>
+        </select>
+        <select [ngModel]="typeFilter()" (ngModelChange)="setTypeFilter($event)" class="glass-input">
+          <option value="all">All Types</option>
+          <option value="camera">Camera</option>
+          <option value="nvr">NVR</option>
+          <option value="dvr">DVR</option>
+          <option value="access_control">Access Control</option>
+          <option value="sensor">Sensor</option>
+          <option value="alarm">Alarm</option>
+          <option value="network_switch">Network Switch</option>
+          <option value="router">Router</option>
+          <option value="server">Server</option>
+        </select>
+      </div>
+    </app-glass-card>
+
+    <!-- Devices Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <app-glass-card *ngFor="let device of filteredDevices()" (click)="onSelectDevice(device)"
+        [customClass]="'p-6 cursor-pointer hover:shadow-lg transition-all ' + (selectedDevice()?.id === device.id ? 'ring-2 ring-primary-500' : '')">
+        <div class="space-y-4">
+          <div class="flex justify-between items-start">
+            <div>
+              <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                {{ device.name }}
+              </h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{{ device.type | titlecase }}</p>
+            </div>
+            <div class="flex flex-col gap-1">
+              <span class="px-2 py-1 rounded-full text-xs flex items-center gap-1"
+                [ngClass]="getStatusClass(device.status)">
+                <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
+                {{ device.status | titlecase }}
+              </span>
+              <span class="px-2 py-1 rounded-full text-xs" [ngClass]="getHealthClass(device.health)">
+                {{ device.health | titlecase }}
+              </span>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <p class="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-1">
+                <app-icon name="cpu" size="12"></app-icon> CPU
+              </p>
+              <p class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ device.metrics.cpu.usage |
+                number:'1.0-0' }}%</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-1">
+                <app-icon name="memory" size="12"></app-icon> RAM
+              </p>
+              <p class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ device.metrics.memory.usage |
+                number:'1.0-0' }}%</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-1">
+                <app-icon name="thermometer" size="12"></app-icon> Temp
+              </p>
+              <p class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ device.metrics.temperature.cpu |
+                number:'1.0-0' }}°C</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-1">
+                <app-icon name="health" size="12"></app-icon> Uptime
+              </p>
+              <p class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ formatUptime(device.uptime) }}</p>
+            </div>
+          </div>
+          <div class="flex justify-between items-center pt-3 border-t border-gray-200 dark:border-gray-700">
+            <div>
+              <p class="text-xs text-gray-600 dark:text-gray-400">Performance</p>
+              <p class="text-lg font-bold" [ngClass]="getPerformanceClass(device.performance.grade)">
+                {{ device.performance.grade }}
+              </p>
+            </div>
+            <div class="flex items-center gap-1 text-red-600 dark:text-red-400" *ngIf="device.alerts > 0">
+              <app-icon name="alert-triangle" size="16"></app-icon>
+              <span class="font-semibold">{{ device.alerts }}</span>
+            </div>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+  </div>
+
+  <!-- Monitoring Tab -->
+  <div *ngIf="selectedTab() === 'monitoring'"
+    class="tab-content bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
+    <div class="monitoring-section">
+      <h2 class="m-0 mb-2 text-2xl font-bold text-gray-800">Real-time Monitoring</h2>
+      <p class="m-0 mb-6 text-gray-600 text-base">Monitor device performance and health in real-time</p>
+
+      <div class="monitoring-grid grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-5">
+        <div
+          class="monitoring-card bg-white rounded-xl p-6 border border-gray-200 transition-all hover:-translate-y-0.5 hover:shadow-lg">
+          <h3 class="m-0 mb-4 text-base font-semibold text-gray-700 flex items-center gap-2">
+            <app-icon name="cpu" size="18" class="text-primary-500"></app-icon> CPU Usage
+          </h3>
+          <div class="metric-chart">
+            <div class="metric-value text-3xl font-bold text-gray-800 mb-2">{{ systemOverview().averagePerformance |
+              number:'1.0-0' }}%</div>
+            <div class="metric-trend text-sm text-green-600 font-medium">↗ +2.5%</div>
+          </div>
+        </div>
+
+        <div
+          class="monitoring-card bg-white rounded-xl p-6 border border-gray-200 transition-all hover:-translate-y-0.5 hover:shadow-lg">
+          <h3 class="m-0 mb-4 text-base font-semibold text-gray-700 flex items-center gap-2">
+            <app-icon name="memory" size="18" class="text-pink-500"></app-icon> Memory Usage
+          </h3>
+          <div class="metric-chart">
+            <div class="metric-value text-3xl font-bold text-gray-800 mb-2">75%</div>
+            <div class="metric-trend text-sm text-green-600 font-medium">↘ -1.2%</div>
+          </div>
+        </div>
+
+        <div
+          class="monitoring-card bg-white rounded-xl p-6 border border-gray-200 transition-all hover:-translate-y-0.5 hover:shadow-lg">
+          <h3 class="m-0 mb-4 text-base font-semibold text-gray-700 flex items-center gap-2">
+            <app-icon name="network" size="18" class="text-purple-500"></app-icon> Network Traffic
+          </h3>
+          <div class="metric-chart">
+            <div class="metric-value text-3xl font-bold text-gray-800 mb-2">1.2 Gbps</div>
+            <div class="metric-trend text-sm text-green-600 font-medium">↗ +0.3 Gbps</div>
+          </div>
+        </div>
+
+        <div
+          class="monitoring-card bg-white rounded-xl p-6 border border-gray-200 transition-all hover:-translate-y-0.5 hover:shadow-lg">
+          <h3 class="m-0 mb-4 text-base font-semibold text-gray-700 flex items-center gap-2">
+            <app-icon name="thermometer" size="18" class="text-orange-500"></app-icon> Temperature
+          </h3>
+          <div class="metric-chart">
+            <div class="metric-value text-3xl font-bold text-gray-800 mb-2">45°C</div>
+            <div class="metric-trend text-sm text-green-600 font-medium">↗ +2°C</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alerts Tab -->
+  <div *ngIf="selectedTab() === 'alerts'"
+    class="tab-content bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
+    <div class="alerts-section">
+      <h2 class="m-0 mb-2 text-2xl font-bold text-gray-800">System Alerts</h2>
+      <p class="m-0 mb-6 text-gray-600 text-base">Monitor and manage system alerts and notifications</p>
+
+      <div class="alerts-list flex flex-col gap-4">
+        <div
+          class="alert-item critical flex items-center gap-4 p-5 bg-red-50 rounded-xl border-l-4 border-red-600 shadow-sm">
+          <div class="alert-icon flex-shrink-0 text-red-600">
+            <app-icon name="alert-triangle" size="24"></app-icon>
+          </div>
+          <div class="alert-content flex-1">
+            <h4 class="m-0 mb-1 text-base font-semibold text-gray-800">High CPU Usage</h4>
+            <p class="m-0 mb-2 text-gray-700 text-sm">Device cam-001 CPU usage is at 95%, exceeding critical threshold
+            </p>
+            <span class="alert-time text-xs text-gray-500">2 minutes ago</span>
+          </div>
+          <div class="alert-actions flex gap-2 flex-shrink-0">
+            <button
+              class="btn btn-sm btn-primary inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium rounded-lg bg-gradient-to-r from-primary-500 to-purple-600 text-white border-none cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md">
+              Acknowledge
+            </button>
+            <button
+              class="btn btn-sm btn-secondary inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-50 text-gray-700 border border-gray-200 cursor-pointer transition-all hover:bg-gray-100 hover:border-gray-300">
+              Resolve
+            </button>
+          </div>
+        </div>
+
+        <div
+          class="alert-item warning flex items-center gap-4 p-5 bg-orange-50 rounded-xl border-l-4 border-orange-500 shadow-sm">
+          <div class="alert-icon flex-shrink-0 text-orange-600">
+            <app-icon name="info" size="24"></app-icon>
+          </div>
+          <div class="alert-content flex-1">
+            <h4 class="m-0 mb-1 text-base font-semibold text-gray-800">Memory Usage Warning</h4>
+            <p class="m-0 mb-2 text-gray-700 text-sm">Device cam-002 memory usage is at 85%, approaching threshold</p>
+            <span class="alert-time text-xs text-gray-500">5 minutes ago</span>
+          </div>
+          <div class="alert-actions flex gap-2 flex-shrink-0">
+            <button
+              class="btn btn-sm btn-primary inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium rounded-lg bg-gradient-to-r from-primary-500 to-purple-600 text-white border-none cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md">
+              Acknowledge
+            </button>
+            <button
+              class="btn btn-sm btn-secondary inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-50 text-gray-700 border border-gray-200 cursor-pointer transition-all hover:bg-gray-100 hover:border-gray-300">
+              Resolve
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Configuration Tab -->
+  <div *ngIf="selectedTab() === 'configuration'"
+    class="tab-content bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
+    <div class="configuration-section">
+      <h2 class="m-0 mb-2 text-2xl font-bold text-gray-800">Device Configuration</h2>
+      <p class="m-0 mb-6 text-gray-600 text-base">Manage device configurations and settings</p>
+
+      <div class="configuration-actions flex gap-3 mb-6 flex-wrap">
+        <button
+          class="btn btn-primary inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg bg-gradient-to-r from-primary-500 to-purple-600 text-white border-none cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md">
+          <app-icon name="plus" size="16"></app-icon>
+          Add Device
+        </button>
+        <button
+          class="btn btn-secondary inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg bg-gray-50 text-gray-700 border border-gray-200 cursor-pointer transition-all hover:bg-gray-100 hover:border-gray-300">
+          <app-icon name="download" size="16"></app-icon>
+          Export Config
+        </button>
+        <button
+          class="btn btn-secondary inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg bg-gray-50 text-gray-700 border border-gray-200 cursor-pointer transition-all hover:bg-gray-100 hover:border-gray-300">
+          <app-icon name="upload" size="16"></app-icon>
+          Import Config
+        </button>
+      </div>
+
+      <div class="configuration-grid grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-5">
+        <div
+          class="config-card bg-white rounded-xl p-6 border border-gray-200 transition-all hover:-translate-y-0.5 hover:shadow-lg">
+          <h3 class="m-0 mb-2 text-lg font-semibold text-gray-800">Network Settings</h3>
+          <p class="m-0 mb-4 text-gray-600 text-sm">Configure IP addresses, DNS, and network protocols</p>
+          <button
+            class="btn btn-outline inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg bg-transparent text-primary-500 border-2 border-primary-500 cursor-pointer transition-all hover:bg-primary-500 hover:text-white">
+            <app-icon name="settings" size="16"></app-icon> Configure
+          </button>
+        </div>
+
+        <div
+          class="config-card bg-white rounded-xl p-6 border border-gray-200 transition-all hover:-translate-y-0.5 hover:shadow-lg">
+          <h3 class="m-0 mb-2 text-lg font-semibold text-gray-800">Video Settings</h3>
+          <p class="m-0 mb-4 text-gray-600 text-sm">Adjust resolution, codec, and streaming parameters</p>
+          <button
+            class="btn btn-outline inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg bg-transparent text-primary-500 border-2 border-primary-500 cursor-pointer transition-all hover:bg-primary-500 hover:text-white">
+            <app-icon name="settings" size="16"></app-icon> Configure
+          </button>
+        </div>
+
+        <div
+          class="config-card bg-white rounded-xl p-6 border border-gray-200 transition-all hover:-translate-y-0.5 hover:shadow-lg">
+          <h3 class="m-0 mb-2 text-lg font-semibold text-gray-800">Recording Settings</h3>
+          <p class="m-0 mb-4 text-gray-600 text-sm">Set up recording schedules and storage options</p>
+          <button
+            class="btn btn-outline inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg bg-transparent text-primary-500 border-2 border-primary-500 cursor-pointer transition-all hover:bg-primary-500 hover:text-white">
+            <app-icon name="settings" size="16"></app-icon> Configure
+          </button>
+        </div>
+
+        <div
+          class="config-card bg-white rounded-xl p-6 border border-gray-200 transition-all hover:-translate-y-0.5 hover:shadow-lg">
+          <h3 class="m-0 mb-2 text-lg font-semibold text-gray-800">Analytics Settings</h3>
+          <p class="m-0 mb-4 text-gray-600 text-sm">Configure motion detection and AI analytics</p>
+          <button
+            class="btn btn-outline inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg bg-transparent text-primary-500 border-2 border-primary-500 cursor-pointer transition-all hover:bg-primary-500 hover:text-white">
+            <app-icon name="settings" size="16"></app-icon> Configure
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

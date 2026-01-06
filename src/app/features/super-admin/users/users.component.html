@@ -1,0 +1,391 @@
+<app-page-layout [title]="'pages.users.title' | translate" [description]="'pages.users.description' | translate"
+  icon="👥" [actions]="pageActions()">
+
+  <!-- Statistics Cards -->
+  <app-statistics-grid [stats]="statisticsCards()" [columns]="4" />
+
+  <!-- Filters -->
+  <app-filter-section [fields]="filterFields()" [columns]="4" (filterChange)="onFilterChange($event)" />
+
+  <!-- Users Table -->
+  <app-data-table [columns]="columns" [data]="filteredUsers()" [actions]="actions" [searchable]="false">
+    <div actions>
+      <app-glass-button variant="secondary" (clicked)="exportUsers()">
+        {{ 'pages.users.export' | translate }}
+      </app-glass-button>
+    </div>
+  </app-data-table>
+
+  <!-- Add/Edit User Modal -->
+  <app-modal
+    [isOpen]="showModal()"
+    [title]="(editingUser() ? ('pages.users.editUser' | translate) : ('pages.users.addUserModal' | translate))"
+    [loading]="saving()"
+    [config]="{ size: 'xl', scrollable: true, centered: true, animation: true }"
+    (closed)="closeModal()"
+  >
+    <div class="modal-form-container">
+      <!-- Basic Information Section -->
+      <div class="form-section">
+        <h3 class="form-section-title">
+          {{ 'pages.users.basicInformation' | translate }}
+        </h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">
+              {{ 'pages.users.firstName' | translate }}
+              <span class="required-indicator">*</span>
+            </label>
+            <input
+              [(ngModel)]="formData.firstName"
+              type="text"
+              class="glass-input w-full"
+              placeholder="John"
+              required
+              [attr.aria-label]="'pages.users.firstName' | translate"
+              [attr.aria-required]="true"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label">
+              {{ 'pages.users.lastName' | translate }}
+              <span class="required-indicator">*</span>
+            </label>
+            <input
+              [(ngModel)]="formData.lastName"
+              type="text"
+              class="glass-input w-full"
+              placeholder="Doe"
+              required
+              [attr.aria-label]="'pages.users.lastName' | translate"
+              [attr.aria-required]="true"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Account Information Section -->
+      <div class="form-section">
+        <h3 class="form-section-title">
+          {{ 'pages.users.accountInformation' | translate }}
+        </h3>
+        <div class="form-grid">
+          <div class="form-group form-group-full">
+            <label class="form-label">
+              {{ 'pages.users.username' | translate }}
+              <span class="required-indicator">*</span>
+            </label>
+            <input
+              [(ngModel)]="formData.username"
+              type="text"
+              class="glass-input w-full"
+              placeholder="johndoe"
+              required
+              [attr.aria-label]="'pages.users.username' | translate"
+              [attr.aria-required]="true"
+            />
+          </div>
+
+          <div class="form-group form-group-full">
+            <label class="form-label">
+              {{ 'pages.users.email' | translate }}
+              <span class="required-indicator">*</span>
+            </label>
+            <input
+              [(ngModel)]="formData.email"
+              type="email"
+              class="glass-input w-full"
+              placeholder="john@example.com"
+              required
+              [attr.aria-label]="'pages.users.email' | translate"
+              [attr.aria-required]="true"
+            />
+          </div>
+
+          <div class="form-group form-group-full">
+            <label class="form-label">
+              {{ 'pages.users.phoneNumber' | translate }}
+            </label>
+            <input
+              [(ngModel)]="formData.phoneNumber"
+              type="tel"
+              class="glass-input w-full"
+              placeholder="+66 123 456 789"
+              [attr.aria-label]="'pages.users.phoneNumber' | translate"
+            />
+          </div>
+
+          <div class="form-group form-group-full" *ngIf="!editingUser()">
+            <label class="form-label">
+              {{ 'pages.users.password' | translate }}
+              <span class="required-indicator">*</span>
+            </label>
+            <input
+              [(ngModel)]="formData.password"
+              type="password"
+              class="glass-input w-full"
+              [placeholder]="'pages.users.enterPassword' | translate"
+              required
+              [attr.aria-label]="'pages.users.password' | translate"
+              [attr.aria-required]="true"
+            />
+          </div>
+
+          <div class="form-group form-group-full" *ngIf="editingUser()">
+            <label class="form-label">
+              {{ 'pages.users.password' | translate }} ({{ 'pages.users.optional' | translate }})
+            </label>
+            <input
+              [(ngModel)]="formData.password"
+              type="password"
+              class="glass-input w-full"
+              [placeholder]="'pages.users.enterNewPassword' | translate"
+              [attr.aria-label]="'pages.users.password' | translate"
+            />
+            <p class="form-hint">{{ 'pages.users.passwordUpdateHint' | translate }}</p>
+          </div>
+
+          <div class="form-group form-group-full">
+            <label class="form-label">
+              {{ 'pages.users.picture' | translate }} ({{ 'pages.users.optional' | translate }})
+            </label>
+            <input
+              [(ngModel)]="formData.picture"
+              type="url"
+              class="glass-input w-full"
+              placeholder="https://example.com/avatar.jpg"
+              [attr.aria-label]="'pages.users.picture' | translate"
+            />
+            <p class="form-hint">{{ 'pages.users.pictureHint' | translate }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Type & Classification Section -->
+      <div class="form-section">
+        <h3 class="form-section-title">
+          {{ 'pages.users.typeAndClassification' | translate }}
+        </h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">
+              {{ 'pages.users.actorType' | translate }}
+              <span class="required-indicator">*</span>
+            </label>
+            <select
+              [(ngModel)]="formData.actorType"
+              class="glass-input w-full"
+              required
+              [attr.aria-label]="'pages.users.actorType' | translate"
+              [attr.aria-required]="true"
+            >
+              <option value="member">Member</option>
+              <option value="admin_system">Admin System</option>
+              <option value="guest">Guest</option>
+              <option value="public">Public</option>
+              <option value="device">Device</option>
+              <option value="api">API</option>
+              <option value="system">System</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">
+              {{ 'pages.users.memberType' | translate }}
+            </label>
+            <select
+              [(ngModel)]="formData.memberType"
+              class="glass-input w-full"
+              [attr.aria-label]="'pages.users.memberType' | translate"
+            >
+              <option value="">{{ 'pages.users.selectMemberType' | translate }}</option>
+              <option value="admin">Admin</option>
+              <option value="employee">Employee</option>
+              <option value="manager">Manager</option>
+              <option value="security">Security</option>
+              <option value="it">IT</option>
+              <option value="hr">HR</option>
+              <option value="contractor">Contractor</option>
+              <option value="system">System</option>
+              <option value="default">Default</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Role & Company Assignment Section -->
+      <div class="form-section">
+        <h3 class="form-section-title">
+          {{ 'pages.users.roleAndCompany' | translate }}
+        </h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">
+              {{ 'pages.users.role' | translate }}
+            </label>
+            <select
+              [(ngModel)]="formData.role"
+              class="glass-input w-full"
+              [attr.aria-label]="'pages.users.role' | translate"
+              [disabled]="userService.getRoles()().length === 0"
+            >
+              <option value="">{{ 'pages.users.selectRole' | translate }}</option>
+              <option *ngFor="let role of userService.getRoles()()" [value]="role.id">{{ role.name }}</option>
+            </select>
+            <p class="form-hint">{{ 'pages.users.roleHint' | translate }}</p>
+            <p *ngIf="userService.getRoles()().length === 0" class="form-hint text-amber-600 dark:text-amber-400">
+              {{ 'pages.users.noRolesAvailable' | translate }}
+            </p>
+          </div>
+          <div class="form-group">
+            <label class="form-label">
+              {{ 'pages.users.company' | translate }}
+            </label>
+            <select
+              [(ngModel)]="formData.companyId"
+              class="glass-input w-full"
+              [attr.aria-label]="'pages.users.company' | translate"
+              [disabled]="userService.getCompanies()().length === 0"
+            >
+              <option value="">{{ 'pages.users.selectCompany' | translate }}</option>
+              <option *ngFor="let company of userService.getCompanies()()" 
+                [value]="company.company_id || company.id">
+                {{ company.company_name || company.name }}
+              </option>
+            </select>
+            <p class="form-hint">{{ 'pages.users.companyHint' | translate }}</p>
+            <p *ngIf="userService.getCompanies()().length === 0" class="form-hint text-amber-600 dark:text-amber-400">
+              {{ 'pages.users.noCompaniesAvailable' | translate }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Status Section -->
+      <div class="form-section">
+        <h3 class="form-section-title">
+          {{ 'pages.users.status' | translate }}
+        </h3>
+        <div class="form-grid">
+          <div class="form-group form-group-full">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input
+                [(ngModel)]="formData.isActive"
+                type="checkbox"
+                id="isActive"
+                class="glass-checkbox"
+              />
+              <span>{{ 'pages.users.activeUser' | translate }}</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div slot="footer" class="modal-footer-actions">
+      <app-glass-button variant="secondary" (clicked)="closeModal()">
+        {{ 'common.cancel' | translate }}
+      </app-glass-button>
+      <app-glass-button variant="primary" [loading]="saving()" (clicked)="saveUser()">
+        {{ 'common.save' | translate }}
+      </app-glass-button>
+    </div>
+  </app-modal>
+
+  <!-- Role Management Modal -->
+  <app-modal 
+    [isOpen]="showRoleModal()" 
+    [title]="'pages.users.manageRoles' | translate"
+    [config]="{ size: 'lg', scrollable: true, centered: true, animation: true }"
+    (closed)="closeRoleModal()">
+    <div class="space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">{{ 'pages.users.availableRoles' | translate }}
+        </h3>
+        <app-glass-button variant="primary" (clicked)="openAddRoleModal()">
+          {{ 'pages.users.addRole' | translate }}
+        </app-glass-button>
+      </div>
+
+      <div class="space-y-2">
+        <div *ngFor="let role of userService.getRoles()()"
+          class="p-4 border border-gray-100 dark:border-slate-700 rounded-2xl bg-white/70 dark:bg-slate-900/40">
+          <div class="flex items-start justify-between">
+            <div>
+              <h4 class="font-medium text-gray-900 dark:text-gray-100">{{ role.name }}</h4>
+              <p class="text-sm text-gray-600 dark:text-gray-400">{{ role.description || ('pages.users.noDescription' |
+                translate) }}</p>
+            </div>
+            <div class="flex space-x-2">
+              <app-glass-button variant="secondary" (clicked)="editRole(role)">
+                {{ 'pages.users.editRole' | translate }}
+              </app-glass-button>
+              <app-glass-button variant="danger" (clicked)="deleteRole(role)">
+                {{ 'pages.users.deleteRole' | translate }}
+              </app-glass-button>
+            </div>
+          </div>
+          <div class="mt-3">
+            <h5 class="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-1">
+              {{ 'pages.users.permissions' | translate }}
+            </h5>
+            <div *ngIf="role.permissions?.length; else noPermissions" class="flex flex-wrap gap-2">
+              <span *ngFor="let permission of role.permissions"
+                class="px-2 py-1 text-xs rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-200">
+                {{ permission }}
+              </span>
+            </div>
+            <ng-template #noPermissions>
+              <p class="text-xs text-gray-400 dark:text-gray-500">{{ 'pages.users.noPermissionsAssigned' | translate }}
+              </p>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-modal>
+
+  <!-- Create/Edit Role Modal -->
+  <app-modal 
+    [isOpen]="showRoleFormModal()"
+    [title]="(editingRoleRecord() ? 'pages.users.editRoleModal' : 'pages.users.addRoleModal') | translate"
+    [loading]="roleSaving()"
+    [config]="{ size: 'md', scrollable: true, centered: true, animation: true }"
+    (closed)="closeRoleFormModal()">
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          {{ 'pages.users.roleName' | translate }} <span class="text-red-500">*</span>
+        </label>
+        <input [(ngModel)]="roleFormData.name" type="text" class="glass-input w-full"
+          [placeholder]="'pages.users.roleNamePlaceholder' | translate" />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          {{ 'pages.users.descriptionLabel' | translate }}
+        </label>
+        <textarea [(ngModel)]="roleFormData.description" rows="3" class="glass-input w-full"
+          [placeholder]="'pages.users.describeRole' | translate"></textarea>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          {{ 'pages.users.permissionsInput' | translate }}
+        </label>
+        <textarea [(ngModel)]="roleFormData.permissionsInput" rows="4" class="glass-input w-full"
+          [placeholder]="'pages.users.permissionsPlaceholder' | translate"></textarea>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
+          {{ 'pages.users.permissionsHint' | translate }}
+          <code>{{ 'pages.users.permissionsExample' | translate }}</code>
+        </p>
+      </div>
+    </div>
+    <div slot="footer">
+      <app-glass-button variant="secondary" (clicked)="closeRoleFormModal()">
+        {{ 'Cancel' | translate }}
+      </app-glass-button>
+      <app-glass-button variant="primary" [loading]="roleSaving()" (clicked)="saveRole()">
+        {{ 'Save' | translate }}
+      </app-glass-button>
+    </div>
+  </app-modal>
+</app-page-layout>

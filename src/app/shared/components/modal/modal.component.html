@@ -1,0 +1,70 @@
+<!-- Modal Overlay (Backdrop) -->
+<div
+  *ngIf="isOpen"
+  class="modal-overlay fixed top-0 left-0 z-[1040] w-screen h-screen bg-gradient-to-br from-black/50 to-black/70 backdrop-blur-[12px] opacity-0 transition-opacity duration-300"
+  [class.modal-backdrop-static]="isBackdropStatic()"
+  [class.modal-backdrop-animated]="mergedConfig.animation"
+  [class.opacity-100]="mergedConfig.animation"
+  [class.pointer-events-none]="isBackdropStatic()"
+  (click)="onBackdropClick($event)">
+</div>
+
+<!-- Modal -->
+<div
+  *ngIf="isOpen"
+  class="modal fixed top-0 left-0 z-[1050] w-full h-full overflow-x-hidden overflow-y-auto outline-0 flex items-center justify-center p-6 scroll-smooth"
+  [ngClass]="getModalClasses().concat(customClass ? [customClass] : [])"
+  [style]="getModalStyles()"
+  role="dialog"
+  [attr.aria-modal]="true"
+  [attr.aria-labelledby]="title ? 'modal-title' : null"
+  [attr.aria-label]="ariaLabel || title"
+  [attr.aria-hidden]="!isOpen"
+  tabindex="-1">
+
+  <!-- Modal Dialog -->
+  <div
+    #modalDialog
+    class="modal-dialog relative w-auto my-8 mx-auto pointer-events-none max-w-[800px] flex items-center justify-center"
+    [ngClass]="getModalDialogClasses()"
+    role="document">
+
+    <!-- Modal Content - Using Glass Card -->
+    <app-glass-card
+      #glassCard
+      [customClass]="getModalContentClasses().join(' ') + ' modal-content-glass'"
+      [padding]="'none'">
+
+      <!-- Modal Header -->
+      <div *ngIf="title || closable" class="modal-header flex items-center justify-between px-8 py-6 border-b border-transparent bg-gradient-to-b from-primary-500/5 to-transparent rounded-t-3xl mb-0 gap-6 relative flex-shrink-0">
+        <h4 *ngIf="title" id="modal-title" class="modal-title m-0 leading-tight text-[1.75rem] font-bold tracking-tight bg-gradient-to-br from-primary-500 to-secondary-500 bg-clip-text text-transparent">
+          {{ title }}
+        </h4>
+        <button
+          *ngIf="closable && !loading"
+          type="button"
+          class="modal-close-button min-w-[2.5rem] w-10 h-10 p-0 flex items-center justify-center flex-shrink-0 bg-primary-500/8 border border-transparent rounded-xl cursor-pointer transition-all text-gray-400 opacity-70 hover:text-white hover:opacity-100 hover:border-primary-500/30 hover:scale-105 hover:rotate-90 hover:shadow-lg hover:shadow-primary-500/20 hover:bg-primary-500/15 active:scale-95 active:rotate-90 focus:outline-2 focus:outline-primary-500 focus:outline-offset-2 focus:border-primary-500/50"
+          (click)="closeModal()"
+          [attr.aria-label]="'Close ' + (title || 'modal')"
+          [attr.aria-describedby]="title ? 'modal-title' : null">
+          <svg class="modal-close-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+        <div *ngIf="loading" class="modal-loading flex items-center justify-center -my-0.5 -mr-0.5 -ml-0 text-xl text-primary-500 w-8 h-8">
+          <i class="fas fa-spinner fa-spin"></i>
+        </div>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body relative flex-1 flex-auto text-white leading-relaxed overflow-y-auto max-h-[calc(100vh-24rem)] min-h-0 pointer-events-auto" [attr.aria-describedby]="title ? 'modal-title' : null">
+        <ng-content></ng-content>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer flex flex-wrap items-center justify-end px-8 py-6 border-t border-transparent bg-gradient-to-t from-primary-500/5 to-transparent rounded-b-3xl gap-4 mt-0 relative flex-shrink-0 pointer-events-auto">
+        <ng-content select="[slot=footer]"></ng-content>
+      </div>
+    </app-glass-card>
+  </div>
+</div>

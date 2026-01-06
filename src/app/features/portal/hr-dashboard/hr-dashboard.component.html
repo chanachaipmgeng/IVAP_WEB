@@ -1,0 +1,485 @@
+<div class="hr-dashboard p-8 max-w-[1400px] mx-auto">
+  <!-- Header -->
+  <div class="dashboard-header text-center mb-12">
+    <h1
+      class="text-5xl font-bold text-white m-0 mb-4 bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent">
+      HR Management Dashboard</h1>
+    <p class="dashboard-description text-xl text-gray-400 m-0 max-w-[600px] mx-auto">
+      ระบบจัดการทรัพยากรบุคคลแบบครบวงจร
+    </p>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <div class="dashboard-navigation mb-8">
+    <app-glass-card>
+      <div class="nav-tabs flex gap-4 justify-center flex-wrap">
+        <app-glass-button *ngFor="let tab of ['overview', 'employees', 'approvals', 'tasks', 'reports']"
+          [variant]="selectedTab === tab ? 'primary' : 'secondary'" (click)="selectTab(tab)">
+          <i class="fas" [class]="getTabIcon(tab)"></i>
+          {{ getTabLabel(tab) }}
+        </app-glass-button>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Overview Tab -->
+  <div *ngIf="selectedTab === 'overview'" class="overview-tab">
+    <!-- Key Metrics -->
+    <div class="metrics-section mb-8">
+      <div class="metrics-grid grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6">
+        <!-- Employee Metrics -->
+        <app-glass-card class="metric-card">
+          <div class="metric-header flex justify-between items-center mb-4">
+            <h3 class="m-0 text-white text-lg">พนักงาน</h3>
+            <i class="fas fa-users metric-icon text-2xl text-primary-500"></i>
+          </div>
+          <div class="metric-content">
+            <div class="metric-value text-5xl font-bold text-white mb-2 leading-none">{{ employeeStats.totalEmployees }}
+            </div>
+            <div class="metric-label text-gray-400 text-sm mb-4">ทั้งหมด</div>
+            <div class="metric-details flex flex-col gap-2">
+              <div class="metric-detail flex justify-between items-center">
+                <span class="detail-label text-gray-500 text-sm">ใช้งาน:</span>
+                <span class="detail-value text-white font-medium text-sm">{{ employeeStats.activeEmployees }}</span>
+              </div>
+              <div class="metric-detail flex justify-between items-center">
+                <span class="detail-label text-gray-500 text-sm">ลาพัก:</span>
+                <span class="detail-value text-white font-medium text-sm">{{ employeeStats.onLeaveEmployees }}</span>
+              </div>
+            </div>
+          </div>
+        </app-glass-card>
+
+        <!-- Approval Metrics -->
+        <app-glass-card class="metric-card">
+          <div class="metric-header flex justify-between items-center mb-4">
+            <h3 class="m-0 text-white text-lg">การอนุมัติ</h3>
+            <i class="fas fa-check-circle metric-icon text-2xl text-primary-500"></i>
+          </div>
+          <div class="metric-content">
+            <div class="metric-value text-5xl font-bold text-white mb-2 leading-none">{{ approvalStats.pendingRequests
+              }}</div>
+            <div class="metric-label text-gray-400 text-sm mb-4">รออนุมัติ</div>
+            <div class="metric-details flex flex-col gap-2">
+              <div class="metric-detail flex justify-between items-center">
+                <span class="detail-label text-gray-500 text-sm">อนุมัติแล้ว:</span>
+                <span class="detail-value text-white font-medium text-sm">{{ approvalStats.approvedRequests }}</span>
+              </div>
+              <div class="metric-detail flex justify-between items-center">
+                <span class="detail-label text-gray-500 text-sm">ปฏิเสธ:</span>
+                <span class="detail-value text-white font-medium text-sm">{{ approvalStats.rejectedRequests }}</span>
+              </div>
+            </div>
+          </div>
+        </app-glass-card>
+
+        <!-- Task Metrics -->
+        <app-glass-card class="metric-card">
+          <div class="metric-header flex justify-between items-center mb-4">
+            <h3 class="m-0 text-white text-lg">งาน</h3>
+            <i class="fas fa-tasks metric-icon text-2xl text-primary-500"></i>
+          </div>
+          <div class="metric-content">
+            <div class="metric-value text-5xl font-bold text-white mb-2 leading-none">{{ teamStats.totalTasks }}</div>
+            <div class="metric-label text-gray-400 text-sm mb-4">ทั้งหมด</div>
+            <div class="metric-details flex flex-col gap-2">
+              <div class="metric-detail flex justify-between items-center">
+                <span class="detail-label text-gray-500 text-sm">เสร็จสิ้น:</span>
+                <span class="detail-value text-white font-medium text-sm">{{ teamStats.completedTasks }}</span>
+              </div>
+              <div class="metric-detail flex justify-between items-center">
+                <span class="detail-label text-gray-500 text-sm">กำลังทำ:</span>
+                <span class="detail-value text-white font-medium text-sm">{{ teamStats.pendingTasks }}</span>
+              </div>
+            </div>
+          </div>
+        </app-glass-card>
+
+        <!-- Performance Metrics -->
+        <app-glass-card class="metric-card">
+          <div class="metric-header flex justify-between items-center mb-4">
+            <h3 class="m-0 text-white text-lg">ประสิทธิภาพ</h3>
+            <i class="fas fa-chart-line metric-icon text-2xl text-primary-500"></i>
+          </div>
+          <div class="metric-content">
+            <div class="metric-value text-5xl font-bold text-white mb-2 leading-none">{{ teamStats.averagePerformance |
+              number:'1.1-1' }}</div>
+            <div class="metric-label text-gray-400 text-sm mb-4">คะแนนเฉลี่ย</div>
+            <div class="metric-details flex flex-col gap-2">
+              <div class="metric-detail flex justify-between items-center">
+                <span class="detail-label text-gray-500 text-sm">ผลิตภาพ:</span>
+                <span class="detail-value text-white font-medium text-sm">{{
+                  formatPercentage(teamStats.teamProductivity) }}</span>
+              </div>
+              <div class="metric-detail flex justify-between items-center">
+                <span class="detail-label text-gray-500 text-sm">สมาชิก:</span>
+                <span class="detail-value text-white font-medium text-sm">{{ teamStats.activeMembers }}</span>
+              </div>
+            </div>
+          </div>
+        </app-glass-card>
+      </div>
+    </div>
+
+    <!-- Recent Activities -->
+    <div class="activities-section">
+      <app-glass-card>
+        <h3 class="m-0 mb-4 text-white text-lg">กิจกรรมล่าสุด</h3>
+        <div class="activities-list">
+          <div *ngFor="let activity of getRecentActivities()"
+            class="activity-item flex items-center gap-4 p-4 border-b border-white/10 transition-all hover:bg-white/5 last:border-b-0">
+            <div
+              class="activity-icon w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-primary-500">
+              <i class="fas" [class]="activity.icon"></i>
+            </div>
+            <div class="activity-content flex-1">
+              <div class="activity-title text-white font-medium mb-1">{{ activity.title }}</div>
+              <div class="activity-description text-gray-400 text-sm mb-1">{{ activity.description }}</div>
+              <div class="activity-date text-gray-500 text-xs">{{ formatDate(activity.date) }}</div>
+            </div>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+  </div>
+
+  <!-- Employees Tab -->
+  <div *ngIf="selectedTab === 'employees'" class="employees-tab">
+    <!-- Filters -->
+    <app-glass-card class="filters-card">
+      <div class="filters-header">
+        <h3>ตัวกรอง</h3>
+        <app-glass-button variant="secondary" (click)="toggleAdvancedFilters()">
+          <i class="fas" [class.fa-chevron-down]="!showAdvancedFilters" [class.fa-chevron-up]="showAdvancedFilters"></i>
+          {{ showAdvancedFilters ? 'ซ่อน' : 'แสดง' }} ตัวกรองขั้นสูง
+        </app-glass-button>
+      </div>
+
+      <div class="filters-content">
+        <div class="filter-row">
+          <div class="filter-group">
+            <label>ค้นหา:</label>
+            <app-glass-input [(ngModel)]="employeeFilters.search" placeholder="ชื่อ, รหัสพนักงาน, ตำแหน่ง...">
+            </app-glass-input>
+          </div>
+          <div class="filter-group">
+            <label>แผนก:</label>
+            <select [(ngModel)]="employeeFilters.department" class="filter-select">
+              <option value="">ทั้งหมด</option>
+              <option *ngFor="let dept of departments" [value]="dept.id">{{ dept.name }}</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>สถานะ:</label>
+            <select [(ngModel)]="employeeFilters.status" class="filter-select">
+              <option value="">ทั้งหมด</option>
+              <option value="active">ใช้งาน</option>
+              <option value="inactive">ไม่ใช้งาน</option>
+              <option value="terminated">สิ้นสุดการทำงาน</option>
+              <option value="on_leave">ลาพัก</option>
+            </select>
+          </div>
+        </div>
+
+        <div *ngIf="showAdvancedFilters" class="advanced-filters">
+          <div class="filter-row">
+            <div class="filter-group">
+              <label>ตำแหน่ง:</label>
+              <select [(ngModel)]="employeeFilters.position" class="filter-select">
+                <option value="">ทั้งหมด</option>
+                <option *ngFor="let pos of positions" [value]="pos.id">{{ pos.title }}</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>ประเภทงาน:</label>
+              <select [(ngModel)]="employeeFilters.workType" class="filter-select">
+                <option value="">ทั้งหมด</option>
+                <option value="full_time">เต็มเวลา</option>
+                <option value="part_time">ไม่เต็มเวลา</option>
+                <option value="contract">สัญญา</option>
+                <option value="intern">ฝึกงาน</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-actions">
+          <app-glass-button variant="secondary" (click)="clearFilters()">
+            <i class="fas fa-refresh"></i>
+            รีเซ็ต
+          </app-glass-button>
+        </div>
+      </div>
+    </app-glass-card>
+
+    <!-- Employees List -->
+    <app-glass-card>
+      <div class="employees-header">
+        <h3>รายชื่อพนักงาน ({{ getFilteredEmployees().length }})</h3>
+        <app-glass-button variant="primary" (click)="exportData()">
+          <i class="fas fa-download"></i>
+          ส่งออกข้อมูล
+        </app-glass-button>
+      </div>
+
+      <div class="employees-list">
+        <div *ngFor="let employee of getFilteredEmployees()" class="employee-card">
+          <div class="employee-avatar">
+            <img appImageOptimization *ngIf="employee.avatar" [ngSrc]="employee.avatar" [alt]="employee.firstName"
+              loading="lazy">
+            <div *ngIf="!employee.avatar"
+              class="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary-500 to-secondary-500 text-white font-bold rounded-full">
+              {{ employee.firstName.charAt(0) }}{{ employee.lastName.charAt(0) }}
+            </div>
+          </div>
+
+          <div class="employee-info">
+            <div class="employee-name">{{ employee.firstName }} {{ employee.lastName }}</div>
+            <div class="employee-position">{{ employee.position || employee.positionName || 'N/A' }}</div>
+            <div class="employee-department">{{ employee.department || employee.departmentName || 'N/A' }}</div>
+            <div class="employee-details">
+              <span class="employee-id">{{ employee.employeeId }}</span>
+              <span class="employee-email">{{ employee.email }}</span>
+            </div>
+          </div>
+
+          <div class="employee-status">
+            <span class="status-badge" [style.background-color]="getStatusColor(employee.status || 'inactive')">
+              {{ getStatusLabel(employee.status || 'inactive') }}
+            </span>
+            <div class="employee-salary">{{ formatCurrency(employee.salary || 0) }}</div>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Approvals Tab -->
+  <div *ngIf="selectedTab === 'approvals'" class="approvals-tab">
+    <!-- Approval Filters -->
+    <app-glass-card class="filters-card">
+      <div class="filters-header">
+        <h3>ตัวกรองการอนุมัติ</h3>
+      </div>
+
+      <div class="filters-content">
+        <div class="filter-row">
+          <div class="filter-group">
+            <label>ค้นหา:</label>
+            <app-glass-input [(ngModel)]="approvalFilters.search" placeholder="หัวข้อ, คำอธิบาย...">
+            </app-glass-input>
+          </div>
+          <div class="filter-group">
+            <label>ประเภท:</label>
+            <select [(ngModel)]="approvalFilters.type" class="filter-select">
+              <option value="">ทั้งหมด</option>
+              <option value="leave">การลา</option>
+              <option value="overtime">ล่วงเวลา</option>
+              <option value="expense">ค่าใช้จ่าย</option>
+              <option value="attendance">การเข้างาน</option>
+              <option value="salary">เงินเดือน</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>สถานะ:</label>
+            <select [(ngModel)]="approvalFilters.status" class="filter-select">
+              <option value="">ทั้งหมด</option>
+              <option value="pending">รออนุมัติ</option>
+              <option value="approved">อนุมัติแล้ว</option>
+              <option value="rejected">ปฏิเสธ</option>
+              <option value="cancelled">ยกเลิก</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>ความสำคัญ:</label>
+            <select [(ngModel)]="approvalFilters.priority" class="filter-select">
+              <option value="">ทั้งหมด</option>
+              <option value="low">ต่ำ</option>
+              <option value="medium">ปานกลาง</option>
+              <option value="high">สูง</option>
+              <option value="urgent">เร่งด่วน</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+
+    <!-- Approval Requests List -->
+    <app-glass-card>
+      <div class="approvals-header">
+        <h3>คำขออนุมัติ ({{ getFilteredApprovalRequests().length }})</h3>
+      </div>
+
+      <div class="approvals-list">
+        <div *ngFor="let request of getFilteredApprovalRequests()" class="approval-card">
+          <div class="approval-header">
+            <div class="approval-title">{{ request.title }}</div>
+            <div class="approval-meta">
+              <span class="approval-type">{{ getStatusLabel(request.type) }}</span>
+              <span class="approval-priority" [style.color]="getPriorityColor(request.priority)">
+                {{ getPriorityLabel(request.priority) }}
+              </span>
+            </div>
+          </div>
+
+          <div class="approval-content">
+            <div class="approval-description">{{ request.description }}</div>
+            <div class="approval-details">
+              <div class="approval-detail">
+                <span class="detail-label">ผู้ขอ:</span>
+                <span class="detail-value">{{ request.requesterName }}</span>
+              </div>
+              <div class="approval-detail">
+                <span class="detail-label">ผู้อนุมัติ:</span>
+                <span class="detail-value">{{ request.approverName }}</span>
+              </div>
+              <div class="approval-detail">
+                <span class="detail-label">วันที่ขอ:</span>
+                <span class="detail-value">{{ formatDate(request.requestDate) }}</span>
+              </div>
+              <div class="approval-detail">
+                <span class="detail-label">กำหนดตอบ:</span>
+                <span class="detail-value">{{ formatDate(request.dueDate) }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="approval-status">
+            <span class="status-badge" [style.background-color]="getStatusColor(request.status)">
+              {{ getStatusLabel(request.status) }}
+            </span>
+            <div *ngIf="request.comments" class="approval-comments">
+              <i class="fas fa-comment"></i>
+              {{ request.comments }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Tasks Tab -->
+  <div *ngIf="selectedTab === 'tasks'" class="tasks-tab">
+    <!-- Task Filters -->
+    <app-glass-card class="filters-card">
+      <div class="filters-header">
+        <h3>ตัวกรองงาน</h3>
+      </div>
+
+      <div class="filters-content">
+        <div class="filter-row">
+          <div class="filter-group">
+            <label>ค้นหา:</label>
+            <app-glass-input [(ngModel)]="taskFilters.search" placeholder="หัวข้องาน, คำอธิบาย...">
+            </app-glass-input>
+          </div>
+          <div class="filter-group">
+            <label>สถานะ:</label>
+            <select [(ngModel)]="taskFilters.status" class="filter-select">
+              <option value="">ทั้งหมด</option>
+              <option value="pending">รอดำเนินการ</option>
+              <option value="in_progress">กำลังดำเนินการ</option>
+              <option value="completed">เสร็จสิ้น</option>
+              <option value="cancelled">ยกเลิก</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>ความสำคัญ:</label>
+            <select [(ngModel)]="taskFilters.priority" class="filter-select">
+              <option value="">ทั้งหมด</option>
+              <option value="low">ต่ำ</option>
+              <option value="medium">ปานกลาง</option>
+              <option value="high">สูง</option>
+              <option value="urgent">เร่งด่วน</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>ผู้รับผิดชอบ:</label>
+            <select [(ngModel)]="taskFilters.assignee" class="filter-select">
+              <option value="">ทั้งหมด</option>
+              <option *ngFor="let member of teamMembers" [value]="member.id">{{ member.name }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+
+    <!-- Tasks List -->
+    <app-glass-card>
+      <div class="tasks-header">
+        <h3>รายการงาน ({{ getFilteredTasks().length }})</h3>
+      </div>
+
+      <div class="tasks-list">
+        <div *ngFor="let task of getFilteredTasks()" class="task-card">
+          <div class="task-header">
+            <div class="task-title">{{ task.title }}</div>
+            <div class="task-meta">
+              <span class="task-priority" [style.color]="getPriorityColor(task.priority)">
+                {{ getPriorityLabel(task.priority) }}
+              </span>
+              <span class="task-progress" [style.color]="getTaskProgressColor(task.progress)">
+                {{ task.progress }}%
+              </span>
+            </div>
+          </div>
+
+          <div class="task-content">
+            <div class="task-description">{{ task.description }}</div>
+            <div class="task-details">
+              <div class="task-detail">
+                <span class="detail-label">ผู้มอบหมาย:</span>
+                <span class="detail-value">{{ task.assignerName }}</span>
+              </div>
+              <div class="task-detail">
+                <span class="detail-label">ผู้รับผิดชอบ:</span>
+                <span class="detail-value">{{ task.assigneeName }}</span>
+              </div>
+              <div class="task-detail">
+                <span class="detail-label">กำหนดเสร็จ:</span>
+                <span class="detail-value">{{ formatDate(task.dueDate) }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="task-status">
+            <span class="status-badge" [style.background-color]="getStatusColor(task.status)">
+              {{ getStatusLabel(task.status) }}
+            </span>
+            <div class="task-progress-bar">
+              <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="task.progress"
+                  [style.background-color]="getTaskProgressColor(task.progress)">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Reports Tab -->
+  <div *ngIf="selectedTab === 'reports'" class="reports-tab">
+    <app-glass-card>
+      <h3>รายงานและสถิติ</h3>
+      <div class="reports-content">
+        <p>รายงานและสถิติต่างๆ จะแสดงที่นี่</p>
+        <div class="reports-grid">
+          <div class="report-card">
+            <h4>รายงานพนักงาน</h4>
+            <p>สถิติพนักงานตามแผนกและตำแหน่ง</p>
+          </div>
+          <div class="report-card">
+            <h4>รายงานการอนุมัติ</h4>
+            <p>สถิติการอนุมัติและเวลาการประมวลผล</p>
+          </div>
+          <div class="report-card">
+            <h4>รายงานประสิทธิภาพ</h4>
+            <p>ประสิทธิภาพการทำงานของทีม</p>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+</div>

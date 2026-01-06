@@ -1,0 +1,299 @@
+<div class="space-y-6 p-6">
+  <!-- Header -->
+  <div>
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">จัดการการลา</h1>
+    <p class="text-gray-600 dark:text-gray-400 mt-2">ขอลา อนุมัติการลา และดูประวัติการลา</p>
+  </div>
+
+  <!-- Statistics Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <app-glass-card customClass="p-6 hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-600 dark:text-gray-400">ทั้งหมด</p>
+          <p class="text-3xl font-bold text-primary-600 dark:text-primary-400">{{ statistics().total }}</p>
+        </div>
+        <div class="w-12 h-12 bg-primary-500/20 rounded-full flex items-center justify-center text-2xl">📋</div>
+      </div>
+    </app-glass-card>
+
+    <app-glass-card customClass="p-6 hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-600 dark:text-gray-400">รออนุมัติ</p>
+          <p class="text-3xl font-bold text-yellow-600 dark:text-yellow-400">{{ statistics().pending }}</p>
+        </div>
+        <div class="w-12 h-12 bg-yellow-500/20 rounded-full flex items-center justify-center text-2xl">⏰</div>
+      </div>
+    </app-glass-card>
+
+    <app-glass-card customClass="p-6 hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-600 dark:text-gray-400">อนุมัติแล้ว</p>
+          <p class="text-3xl font-bold text-green-600 dark:text-green-400">{{ statistics().approved }}</p>
+        </div>
+        <div class="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center text-2xl">✅</div>
+      </div>
+    </app-glass-card>
+
+    <app-glass-card customClass="p-6 hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-600 dark:text-gray-400">ปฏิเสธ</p>
+          <p class="text-3xl font-bold text-red-600 dark:text-red-400">{{ statistics().rejected }}</p>
+        </div>
+        <div class="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center text-2xl">❌</div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Leave Balance -->
+  <app-glass-card customClass="p-6">
+    <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">ยอดวันลาคงเหลือ</h2>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      @for (balance of leaveBalances(); track balance.leaveType) {
+        <div class="glass p-4 rounded-lg">
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">{{ LEAVE_TYPE_LABELS[balance.leaveType] }}</p>
+          <p class="text-2xl font-bold text-primary-600 dark:text-primary-400">{{ balance.remainingDays }} วัน</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">จาก {{ balance.totalDays }} วัน</p>
+        </div>
+      }
+      @empty {
+        <p class="text-gray-500 dark:text-gray-400 col-span-4 text-center py-4">ไม่มีข้อมูลยอดวันลา</p>
+      }
+    </div>
+  </app-glass-card>
+
+  <!-- Main Content -->
+  <app-glass-card customClass="p-6">
+    <!-- Toolbar -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+      <div class="flex flex-col md:flex-row gap-3 w-full md:w-auto">
+        <input
+          type="text"
+          placeholder="ค้นหา..."
+          [ngModel]="filters().search"
+          (ngModelChange)="updateFilterSearch($event)"
+          class="glass-input w-full md:w-auto"
+        />
+        <select
+          [ngModel]="filters().status"
+          (ngModelChange)="updateFilterStatus($event)"
+          class="glass-input w-full md:w-auto"
+        >
+          <option [value]="undefined">ทุกสถานะ</option>
+          @for (status of leaveStatuses(); track status) {
+            <option [value]="status">{{ LEAVE_STATUS_LABELS[status] }}</option>
+          }
+        </select>
+        <select
+          [ngModel]="filters().leaveType"
+          (ngModelChange)="updateFilterLeaveType($event)"
+          class="glass-input w-full md:w-auto"
+        >
+          <option [value]="undefined">ทุกประเภท</option>
+          @for (type of leaveTypes(); track type) {
+            <option [value]="type">{{ LEAVE_TYPE_LABELS[type] }}</option>
+          }
+        </select>
+      </div>
+      <app-glass-button variant="primary" (clicked)="openCreateModal()">
+        ➕ ขอลา
+      </app-glass-button>
+    </div>
+
+    <!-- Loading State -->
+    <app-loading *ngIf="isLoading()" [message]="'กำลังโหลดข้อมูล...'" />
+
+    <!-- Leaves Table -->
+    @if (!isLoading()) {
+      <div class="overflow-x-auto">
+        <div class="min-w-full">
+          <!-- Desktop Table -->
+          <div class="hidden md:block">
+            @if (filteredLeaves().length > 0) {
+              <div class="grid grid-cols-7 gap-4 p-4 glass rounded-lg mb-2 font-semibold text-gray-900 dark:text-gray-100">
+                <div>พนักงาน</div>
+                <div>ประเภท</div>
+                <div>วันที่</div>
+                <div>จำนวนวัน</div>
+                <div>เหตุผล</div>
+                <div>สถานะ</div>
+                <div>จัดการ</div>
+              </div>
+              @for (leave of filteredLeaves(); track leave.id) {
+                <div class="grid grid-cols-7 gap-4 p-4 glass rounded-lg mb-2 hover:bg-white/50 dark:hover:bg-gray-800/50 transition-all">
+                  <div class="text-gray-900 dark:text-gray-100">{{ leave.employeeName }}</div>
+                  <div class="text-gray-900 dark:text-gray-100">{{ LEAVE_TYPE_LABELS[leave.leaveType] }}</div>
+                  <div class="text-sm text-gray-600 dark:text-gray-400">{{ formatDate(leave.startDate) }} - {{ formatDate(leave.endDate) }}</div>
+                  <div class="text-gray-900 dark:text-gray-100">{{ leave.days }} วัน</div>
+                  <div class="text-sm text-gray-600 dark:text-gray-400 truncate" [title]="leave.reason">{{ leave.reason }}</div>
+                  <div>
+                    <span class="px-2 py-1 rounded-full text-xs" [ngClass]="getStatusClass(leave.status)">
+                      {{ LEAVE_STATUS_LABELS[leave.status] }}
+                    </span>
+                  </div>
+                  <div class="flex gap-2">
+                    @if (canApprove(leave)) {
+                      <app-glass-button variant="primary" size="sm" (clicked)="approveLeave(leave)">✅ อนุมัติ</app-glass-button>
+                      <app-glass-button variant="danger" size="sm" (clicked)="openRejectModal(leave)">❌ ปฏิเสธ</app-glass-button>
+                    }
+                    @if (canCancel(leave)) {
+                      <app-glass-button variant="secondary" size="sm" (clicked)="deleteLeave(leave)">🗑️ ยกเลิก</app-glass-button>
+                    }
+                  </div>
+                </div>
+              }
+            } @else {
+              <div class="text-center py-12 text-gray-500 dark:text-gray-400">ไม่มีข้อมูลการลา</div>
+            }
+          </div>
+
+          <!-- Mobile Card View -->
+          <div class="md:hidden space-y-4">
+            @if (filteredLeaves().length > 0) {
+              @for (leave of filteredLeaves(); track leave.id) {
+                <app-glass-card customClass="p-4">
+                  <div class="space-y-3">
+                    <div class="flex justify-between items-start">
+                      <div>
+                        <div class="font-medium text-gray-900 dark:text-gray-100">{{ leave.employeeName }}</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">{{ LEAVE_TYPE_LABELS[leave.leaveType] }}</div>
+                      </div>
+                      <span class="px-2 py-1 rounded-full text-xs" [ngClass]="getStatusClass(leave.status)">
+                        {{ LEAVE_STATUS_LABELS[leave.status] }}
+                      </span>
+                    </div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">
+                      {{ formatDate(leave.startDate) }} - {{ formatDate(leave.endDate) }} ({{ leave.days }} วัน)
+                    </div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">{{ leave.reason }}</div>
+                    <div class="flex gap-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                      @if (canApprove(leave)) {
+                        <app-glass-button variant="primary" size="sm" (clicked)="approveLeave(leave)">✅ อนุมัติ</app-glass-button>
+                        <app-glass-button variant="danger" size="sm" (clicked)="openRejectModal(leave)">❌ ปฏิเสธ</app-glass-button>
+                      }
+                      @if (canCancel(leave)) {
+                        <app-glass-button variant="secondary" size="sm" (clicked)="deleteLeave(leave)">🗑️ ยกเลิก</app-glass-button>
+                      }
+                    </div>
+                  </div>
+                </app-glass-card>
+              }
+            } @else {
+              <div class="text-center py-12 text-gray-500 dark:text-gray-400">ไม่มีข้อมูลการลา</div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+  </app-glass-card>
+</div>
+
+<!-- Create/Edit Modal -->
+@if (showModal()) {
+  <div class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4" (click)="closeModal()">
+    <div class="glass-modal rounded-2xl p-6 max-w-md w-full shadow-2xl" (click)="$event.stopPropagation()">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">ขอลา</h2>
+      <form (ngSubmit)="submitLeave()" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">ประเภทการลา</label>
+          <select
+            [ngModel]="leaveForm().leaveType"
+            (ngModelChange)="updateFormLeaveType($event)"
+            name="leaveType"
+            class="glass-input w-full"
+            required
+          >
+            @for (type of leaveTypes(); track type) {
+              <option [value]="type">
+                {{ LEAVE_TYPE_LABELS[type] }} (คงเหลือ {{ getRemainingDays(type) }} วัน)
+              </option>
+            }
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">วันที่เริ่มต้น</label>
+          <input
+            type="date"
+            [ngModel]="leaveForm().startDate"
+            (ngModelChange)="updateFormStartDate($event)"
+            name="startDate"
+            class="glass-input w-full"
+            required
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">วันที่สิ้นสุด</label>
+          <input
+            type="date"
+            [ngModel]="leaveForm().endDate"
+            (ngModelChange)="updateFormEndDate($event)"
+            name="endDate"
+            class="glass-input w-full"
+            required
+          />
+        </div>
+        @if (calculatedDays() > 0) {
+          <div class="glass p-3 rounded-lg border border-primary-500/30">
+            <p class="text-sm text-primary-600 dark:text-primary-400">
+              จำนวนวันที่ลา: <span class="font-bold">{{ calculatedDays() }} วัน</span>
+            </p>
+          </div>
+        }
+        <div>
+          <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">เหตุผล</label>
+          <textarea
+            [ngModel]="leaveForm().reason"
+            (ngModelChange)="updateFormReason($event)"
+            name="reason"
+            rows="3"
+            class="glass-input w-full"
+            placeholder="ระบุเหตุผลในการลา..."
+            required
+          ></textarea>
+        </div>
+        <div class="flex gap-3 mt-6">
+          <app-glass-button variant="secondary" type="button" (clicked)="closeModal()" customClass="flex-1">ยกเลิก</app-glass-button>
+          <button
+            type="submit"
+            [disabled]="isLoading()"
+            class="flex-1 px-4 py-2 glass-button rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {{ isLoading() ? 'กำลังบันทึก...' : 'บันทึก' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+
+<!-- Reject Modal -->
+@if (showRejectModal()) {
+  <div class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4" (click)="closeRejectModal()">
+    <div class="glass-modal rounded-2xl p-6 max-w-md w-full shadow-2xl" (click)="$event.stopPropagation()">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">ปฏิเสธการลา</h2>
+      <p class="text-gray-600 dark:text-gray-400 mb-4">กรุณาระบุเหตุผลในการปฏิเสธการลา</p>
+      <textarea
+        [ngModel]="rejectReason()"
+        (ngModelChange)="updateRejectReason($event)"
+        rows="4"
+        class="glass-input w-full mb-4"
+        placeholder="เหตุผลในการปฏิเสธ..."
+      ></textarea>
+      <div class="flex gap-3">
+        <app-glass-button variant="secondary" (clicked)="closeRejectModal()" customClass="flex-1">ยกเลิก</app-glass-button>
+        <app-glass-button
+          variant="danger"
+          (clicked)="submitReject()"
+          [disabled]="isLoading()"
+          [loading]="isLoading()"
+          customClass="flex-1"
+        >
+          {{ isLoading() ? 'กำลังบันทึก...' : 'ปฏิเสธ' }}
+        </app-glass-button>
+      </div>
+    </div>
+  </div>
+}

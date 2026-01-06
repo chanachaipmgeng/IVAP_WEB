@@ -1,0 +1,125 @@
+// Draggable Cards Component Styles
+// Most styles migrated to Tailwind classes in HTML template
+// Keeping only complex styles that require SCSS (card content typography, resize handle visibility, complex selectors)
+
+.draggable-card {
+  &.card-locked {
+    .card-header {
+      cursor: not-allowed;
+    }
+  }
+
+  &.card-not-resizable {
+    .resize-handle {
+      display: none;
+    }
+  }
+
+  // Show resize handle on hover
+  &:hover {
+    .resize-handle {
+      display: flex;
+    }
+  }
+}
+
+.card-content {
+  .card-content-body {
+    p {
+      margin: 0 0 var(--spacing-md) 0; /* 0 0 16px 0 */
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    ul, ol {
+      margin: 0 0 var(--spacing-md) 0; /* 0 0 16px 0 */
+      padding-left: 1.5rem;
+    }
+
+    li {
+      margin: var(--spacing-xs) 0; /* 4px 0 */
+    }
+
+    code {
+      background: rgba(0, 0, 0, 0.2);
+      padding: calc(var(--spacing-xs) / 2) var(--spacing-xs); /* 2px 4px */
+      border-radius: var(--radius-sm); /* 4px */
+      font-family: 'Courier New', monospace;
+      font-size: var(--font-size-xs); /* 12px */
+    }
+
+    pre {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      margin: var(--spacing-md) 0; /* 16px 0 */
+
+      code {
+        background: none;
+        padding: 0;
+      }
+    }
+  }
+}
+
+// Animation keyframes
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .draggable-card {
+    border: 2px solid #ffffff;
+  }
+
+  .card-selected {
+    border-color: var(--color-primary-500);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .draggable-card,
+  .card-action-btn,
+  .add-card-btn {
+    transition: none;
+  }
+
+  .draggable-card:hover {
+    transform: none;
+  }
+}
+
+// Touch device optimizations - keeping complex touch device styles
+@media (hover: none) and (pointer: coarse) {
+  .draggable-card {
+    &:hover {
+      transform: none;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    &.card-selected {
+      transform: none;
+    }
+  }
+
+  .card-action-btn {
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+  }
+
+  .resize-handle {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+// Responsive styles migrated to Tailwind responsive classes in HTML template
+// Using md: breakpoint for mobile-first responsive design
+

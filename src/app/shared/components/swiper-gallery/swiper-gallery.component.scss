@@ -1,0 +1,208 @@
+// Swiper Gallery Component Styles
+// Most styles migrated to Tailwind classes in HTML template
+// Keeping only complex styles that require SCSS (Swiper imports, effect-specific styles, complex selectors)
+
+// Import Swiper styles - keeping Swiper library imports
+@use 'swiper/css';
+@use 'swiper/css/navigation';
+@use 'swiper/css/pagination';
+@use 'swiper/css/autoplay';
+@use 'swiper/css/thumbs';
+@use 'swiper/css/zoom';
+@use 'swiper/css/effect-fade';
+@use 'swiper/css/effect-cube';
+@use 'swiper/css/effect-flip';
+@use 'swiper/css/effect-coverflow';
+@use 'swiper/css/effect-cards';
+
+// CSS Variables - Using Design Tokens
+:root {
+  --gallery-accent: var(--color-primary-500);
+}
+
+// Swiper Container - keeping Swiper-specific styles
+.swiper {
+  .swiper-wrapper {
+    align-items: stretch;
+  }
+
+  .swiper-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: var(--transition-normal);
+
+    &:hover {
+      transform: scale(1.02);
+    }
+
+    &.slide-image {
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    &.slide-video {
+      background: #000;
+    }
+  }
+}
+
+// Slide Overlay - keeping complex hover transform
+.slide-overlay {
+  .swiper-slide:hover & {
+    transform: translateY(0);
+  }
+}
+
+// Zoom Button - keeping complex hover opacity
+.slide-zoom-btn {
+  .swiper-slide:hover & {
+    opacity: 1;
+  }
+}
+
+// Pagination - keeping Swiper pagination styles
+.swiper-pagination {
+  .swiper-pagination-bullet {
+    width: 0.75rem;
+    height: 0.75rem;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    margin: 0 0.25rem;
+    transition: var(--transition-normal);
+
+    &.swiper-pagination-bullet-active {
+      background: var(--gallery-accent);
+      transform: scale(1.2);
+    }
+  }
+
+  .swiper-pagination-fraction {
+    color: white;
+    font-size: 0.875rem;
+    font-weight: var(--font-weight-semibold); /* 600 */
+    background: rgba(0, 0, 0, 0.6);
+    padding: var(--spacing-sm) var(--spacing-md); /* 8px 16px */
+    border-radius: var(--spacing-md); /* 16px */
+  }
+
+  .swiper-pagination-progressbar {
+    background: rgba(255, 255, 255, 0.2);
+    height: 0.25rem;
+    border-radius: 0.125rem;
+
+    .swiper-pagination-progressbar-fill {
+      background: var(--gallery-accent);
+      border-radius: calc(var(--spacing-xs) / 2); /* 2px */
+    }
+  }
+}
+
+// Thumbs - keeping Swiper thumbs styles
+.swiper-thumbs {
+  .swiper-wrapper {
+    align-items: center;
+  }
+
+  .thumb-slide {
+    &.swiper-slide-thumb-active {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+  }
+}
+
+// Effect-specific styles - keeping Swiper effect styles
+.swiper-effect-fade {
+  .swiper-slide {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+
+    &.swiper-slide-active {
+      opacity: 1;
+    }
+  }
+}
+
+.swiper-effect-cube {
+  .swiper-slide {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.swiper-effect-flip {
+  .swiper-slide {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.swiper-effect-coverflow {
+  .swiper-slide {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.swiper-effect-cards {
+  .swiper-slide {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-xl); /* 16px */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Animation keyframes
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .swiper-gallery-container {
+    border: 2px solid #ffffff;
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next,
+  .control-btn {
+    border: 2px solid #ffffff;
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .swiper-slide,
+  .slide-overlay,
+  .control-btn,
+  .thumb-slide {
+    transition: none;
+  }
+
+  .swiper-slide:hover {
+    transform: none;
+  }
+}
+
+// Touch device optimizations - keeping complex touch device styles
+@media (hover: none) and (pointer: coarse) {
+  .slide-overlay {
+    transform: translateY(0);
+    position: relative;
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  .slide-zoom-btn {
+    opacity: 1;
+  }
+
+  .swiper-slide:hover {
+    transform: none;
+  }
+}
+
+// Responsive styles migrated to Tailwind responsive classes in HTML template
+// Using md: breakpoint for mobile-first responsive design

@@ -1,0 +1,116 @@
+<app-page-layout
+  title="Access Control Management"
+  description="Manage access points, permissions, and monitor access logs. Configure access rules and schedules."
+  icon="🔐"
+  [actions]="pageActions()">
+  
+  <!-- Statistics Cards (Overview Tab) -->
+  <app-statistics-grid *ngIf="selectedTab() === 'overview'" [stats]="statisticsCards()" [columns]="4" />
+
+  <!-- Tabs -->
+  <app-tabs [tabs]="tabs()" [activeTab]="selectedTab()" (activeTabChange)="onTabChange($event)">
+    
+    <!-- Overview Tab -->
+    <div *ngIf="selectedTab() === 'overview'" class="space-y-6">
+      <!-- Recent Events -->
+      <app-glass-card customClass="p-6">
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Recent Access Events</h2>
+        <app-data-table
+          [columns]="eventColumns"
+          [data]="events().slice(0, 10)"
+          [actions]="eventActions"
+          [searchable]="false"
+        ></app-data-table>
+      </app-glass-card>
+    </div>
+
+    <!-- Access Points Tab -->
+    <div *ngIf="selectedTab() === 'access-points'" class="space-y-6">
+      <!-- Filters -->
+      <app-filter-section
+        [fields]="accessPointFilterFields()"
+        [columns]="3"
+        (filterChange)="onAccessPointFilterChange($event)"
+      />
+
+      <!-- Access Points Table -->
+      <app-data-table
+        [columns]="accessPointColumns"
+        [data]="filteredAccessPoints()"
+        [actions]="accessPointActions"
+        [searchable]="false"
+      />
+    </div>
+
+    <!-- Permissions Tab -->
+    <div *ngIf="selectedTab() === 'permissions'" class="space-y-6">
+      <!-- Filters -->
+      <app-filter-section
+        [fields]="permissionFilterFields()"
+        [columns]="3"
+        (filterChange)="onPermissionFilterChange($event)"
+      />
+
+      <!-- Permissions Table -->
+      <app-data-table
+        [columns]="permissionColumns"
+        [data]="filteredPermissions()"
+        [actions]="permissionActions"
+        [searchable]="false"
+      />
+    </div>
+
+    <!-- Logs Tab -->
+    <div *ngIf="selectedTab() === 'logs'" class="space-y-6">
+      <!-- Filters -->
+      <app-filter-section
+        [fields]="logFilterFields()"
+        [columns]="5"
+        (filterChange)="onLogFilterChange($event)"
+      />
+
+      <!-- Events Table -->
+      <app-data-table
+        [columns]="eventColumns"
+        [data]="filteredEvents()"
+        [actions]="eventActions"
+        [searchable]="false"
+      />
+    </div>
+
+    <!-- Rules Tab -->
+    <div *ngIf="selectedTab() === 'rules'" class="space-y-6">
+      <!-- Rules content -->
+      <p class="text-gray-600 dark:text-gray-400">Rules management</p>
+    </div>
+
+    <!-- Schedules Tab -->
+    <div *ngIf="selectedTab() === 'schedules'" class="space-y-6">
+      <!-- Schedules content -->
+      <p class="text-gray-600 dark:text-gray-400">Schedules management</p>
+    </div>
+  </app-tabs>
+
+  <!-- Modals -->
+  <!-- Access Point Modal -->
+  <app-modal
+    [isOpen]="showAccessPointModal()"
+    [title]="(selectedAccessPoint() ? 'Edit Access Point' : 'Add Access Point') | translate"
+    [loading]="saving()"
+    (closed)="closeAccessPointModal()"
+    (confirmed)="saveAccessPoint()"
+  >
+    <!-- Access Point form content -->
+  </app-modal>
+
+  <!-- Permission Modal -->
+  <app-modal
+    [isOpen]="showPermissionModal()"
+    [title]="(selectedPermission() ? 'Edit Permission' : 'Grant Permission') | translate"
+    [loading]="saving()"
+    (closed)="closePermissionModal()"
+    (confirmed)="savePermission()"
+  >
+    <!-- Permission form content -->
+  </app-modal>
+</app-page-layout>

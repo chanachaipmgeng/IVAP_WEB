@@ -1,0 +1,295 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div>
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ i18n.t('pages.profile.title') }}</h1>
+    <p class="text-gray-600 dark:text-gray-400 mt-2">{{ i18n.t('pages.profile.description') }}</p>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="glass rounded-lg p-1 flex space-x-1">
+    <button
+      [class]="activeTab() === 'profile' 
+        ? 'bg-primary-500/20 text-primary-600 dark:text-primary-400' 
+        : 'text-gray-600 dark:text-gray-400'"
+      (click)="selectTab('profile')"
+      class="flex-1 py-2 px-4 rounded-lg font-medium transition-colors"
+    >
+      {{ i18n.t('pages.profile.profileInformation') }}
+    </button>
+    <button
+      [class]="activeTab() === 'security' 
+        ? 'bg-primary-500/20 text-primary-600 dark:text-primary-400' 
+        : 'text-gray-600 dark:text-gray-400'"
+      (click)="selectTab('security')"
+      class="flex-1 py-2 px-4 rounded-lg font-medium transition-colors"
+    >
+      {{ i18n.t('pages.profile.security') }}
+    </button>
+    <button
+      [class]="activeTab() === 'notifications' 
+        ? 'bg-primary-500/20 text-primary-600 dark:text-primary-400' 
+        : 'text-gray-600 dark:text-gray-400'"
+      (click)="selectTab('notifications')"
+      class="flex-1 py-2 px-4 rounded-lg font-medium transition-colors"
+    >
+      {{ i18n.t('pages.profile.notifications') }}
+    </button>
+  </div>
+
+  <!-- Profile Tab -->
+  <div *ngIf="activeTab() === 'profile'">
+    <app-glass-card customClass="p-6">
+      <div class="space-y-6">
+        <!-- Avatar Section -->
+        <div class="flex flex-col items-center mb-6">
+          <div class="w-24 h-24 rounded-full bg-primary-500/20 flex items-center justify-center mb-4">
+            <span class="text-3xl font-bold text-primary-600 dark:text-primary-400">
+              {{ (profile.firstName && profile.firstName[0]) || '' }}{{ (profile.lastName && profile.lastName[0]) || '' }}
+            </span>
+          </div>
+          <div class="flex space-x-2">
+            <label for="avatar-upload" class="cursor-pointer">
+              <app-glass-button variant="secondary" size="sm">
+                {{ i18n.t('pages.profile.changePhoto') }}
+              </app-glass-button>
+            </label>
+            <input
+              type="file"
+              id="avatar-upload"
+              accept="image/*"
+              (change)="onFileSelected($event)"
+              style="display: none;"
+            />
+            <app-glass-button variant="danger" size="sm">
+              {{ i18n.t('pages.profile.remove') }}
+            </app-glass-button>
+          </div>
+        </div>
+
+        <!-- Form Section -->
+        <div class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+                {{ i18n.t('pages.profile.firstName') }}
+              </label>
+              <input
+                type="text"
+                [(ngModel)]="profile.firstName"
+                [placeholder]="i18n.t('pages.profile.enterFirstName')"
+                class="glass-input w-full"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+                {{ i18n.t('pages.profile.lastName') }}
+              </label>
+              <input
+                type="text"
+                [(ngModel)]="profile.lastName"
+                [placeholder]="i18n.t('pages.profile.enterLastName')"
+                class="glass-input w-full"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+              {{ i18n.t('pages.profile.email') }}
+            </label>
+            <input
+              type="email"
+              [(ngModel)]="profile.email"
+              [placeholder]="i18n.t('pages.profile.enterEmail')"
+              class="glass-input w-full"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+              {{ i18n.t('pages.profile.phone') }}
+            </label>
+            <input
+              type="tel"
+              [(ngModel)]="profile.phone"
+              [placeholder]="i18n.t('pages.profile.enterPhone')"
+              class="glass-input w-full"
+            />
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+                {{ i18n.t('pages.profile.department') }}
+              </label>
+              <input
+                type="text"
+                [(ngModel)]="profile.department"
+                [placeholder]="i18n.t('pages.profile.enterDepartment')"
+                class="glass-input w-full"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+                {{ i18n.t('pages.profile.position') }}
+              </label>
+              <input
+                type="text"
+                [(ngModel)]="profile.position"
+                [placeholder]="i18n.t('pages.profile.enterPosition')"
+                class="glass-input w-full"
+              />
+            </div>
+          </div>
+
+          <div class="flex justify-end space-x-2 pt-4">
+            <app-glass-button variant="secondary" (clicked)="selectTab('security')">
+              {{ i18n.t('pages.profile.cancel') }}
+            </app-glass-button>
+            <app-glass-button 
+              variant="primary" 
+              (clicked)="updateProfile()"
+              [loading]="saving()"
+              [disabled]="saving()"
+            >
+              {{ i18n.t('pages.profile.saveChanges') }}
+            </app-glass-button>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Security Tab -->
+  <div *ngIf="activeTab() === 'security'">
+    <app-glass-card customClass="p-6">
+      <div class="space-y-4">
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">{{ i18n.t('pages.profile.changePassword') }}</h2>
+        
+        <div>
+          <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            {{ i18n.t('pages.profile.currentPassword') }}
+          </label>
+          <input
+            type="password"
+            [(ngModel)]="currentPassword"
+            [placeholder]="i18n.t('pages.profile.enterCurrentPassword')"
+            class="glass-input w-full"
+          />
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            {{ i18n.t('pages.profile.newPassword') }}
+          </label>
+          <input
+            type="password"
+            [(ngModel)]="newPassword"
+            (input)="checkPasswordStrength(newPassword)"
+            [placeholder]="i18n.t('pages.profile.enterNewPassword')"
+            class="glass-input w-full"
+          />
+          <div class="mt-2" *ngIf="newPassword">
+            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+              <div 
+                class="h-2 rounded-full transition-all"
+                [class.bg-red-500]="passwordStrength < 40"
+                [class.bg-yellow-500]="passwordStrength >= 40 && passwordStrength < 80"
+                [class.bg-green-500]="passwordStrength >= 80"
+                [style.width.%]="passwordStrength"
+              ></div>
+            </div>
+            <span class="text-xs mt-1 text-gray-600 dark:text-gray-400">
+              {{ getPasswordStrengthText() }}
+            </span>
+          </div>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            {{ i18n.t('pages.profile.confirmPassword') }}
+          </label>
+          <input
+            type="password"
+            [(ngModel)]="confirmPassword"
+            [placeholder]="i18n.t('pages.profile.confirmNewPassword')"
+            class="glass-input w-full"
+          />
+        </div>
+        
+        <div class="flex justify-end space-x-2 pt-4">
+          <app-glass-button 
+            variant="primary" 
+            (clicked)="changePassword()"
+            [loading]="saving()"
+            [disabled]="saving()"
+          >
+            🔒 {{ i18n.t('pages.profile.changePassword') }}
+          </app-glass-button>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Notifications Tab -->
+  <div *ngIf="activeTab() === 'notifications'">
+    <app-glass-card customClass="p-6">
+      <div class="space-y-4">
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">{{ i18n.t('pages.profile.notificationPreferences') }}</h2>
+        
+        <div class="space-y-4">
+          <div class="flex items-center justify-between p-4 glass rounded-lg">
+            <div>
+              <h3 class="font-medium text-gray-900 dark:text-gray-100">{{ i18n.t('pages.profile.emailNotifications') }}</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">{{ i18n.t('pages.profile.emailNotificationsDesc') }}</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                [(ngModel)]="emailNotifications"
+                class="sr-only peer"
+              />
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 dark:peer-focus:ring-primary-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600"></div>
+            </label>
+          </div>
+          
+          <div class="flex items-center justify-between p-4 glass rounded-lg">
+            <div>
+              <h3 class="font-medium text-gray-900 dark:text-gray-100">{{ i18n.t('pages.profile.pushNotifications') }}</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">{{ i18n.t('pages.profile.pushNotificationsDesc') }}</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                [(ngModel)]="pushNotifications"
+                class="sr-only peer"
+              />
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 dark:peer-focus:ring-primary-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600"></div>
+            </label>
+          </div>
+          
+          <div class="flex items-center justify-between p-4 glass rounded-lg">
+            <div>
+              <h3 class="font-medium text-gray-900 dark:text-gray-100">{{ i18n.t('pages.profile.smsNotifications') }}</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">{{ i18n.t('pages.profile.smsNotificationsDesc') }}</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                [(ngModel)]="smsNotifications"
+                class="sr-only peer"
+              />
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 dark:peer-focus:ring-primary-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600"></div>
+            </label>
+          </div>
+        </div>
+        
+        <div class="flex justify-end space-x-2 pt-4">
+          <app-glass-button variant="primary" (clicked)="saveNotificationSettings()">
+            {{ i18n.t('pages.profile.savePreferences') }}
+          </app-glass-button>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+</div>

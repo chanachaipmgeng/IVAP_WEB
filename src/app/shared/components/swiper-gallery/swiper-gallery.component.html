@@ -1,0 +1,172 @@
+<div class="swiper-gallery-container relative w-full bg-white/5 rounded-xl overflow-hidden backdrop-blur-sm" [class]="customClass || ''" [style.height]="height" role="group" [attr.aria-label]="ariaLabel || 'Image gallery'">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="gallery-loading flex flex-col items-center justify-center h-full min-h-[300px] text-gray-400" role="status" [attr.aria-live]="'polite'">
+    <div class="loading-spinner w-12 h-12 border-3 border-white/10 border-t-primary-500 rounded-full animate-spin mb-4" [attr.aria-hidden]="true"></div>
+    <p class="m-0 text-base">กำลังโหลดรูปภาพ...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && slides.length === 0" class="gallery-empty flex flex-col items-center justify-center h-full min-h-[300px] text-gray-400" role="status" [attr.aria-live]="'polite'">
+    <i class="fas fa-images fa-3x mb-4 opacity-50" [attr.aria-hidden]="true"></i>
+    <p class="m-0 text-lg">ไม่มีรูปภาพในแกลเลอรี่</p>
+  </div>
+
+  <!-- Swiper Container -->
+  <div
+    *ngIf="!loading && slides.length > 0"
+    #swiperContainer
+    class="swiper w-full h-full rounded-xl overflow-hidden"
+    [class]="'swiper-' + mergedConfig.effect"
+    role="region"
+    [attr.aria-label]="ariaLabel || 'Image gallery'">
+
+    <!-- Swiper Wrapper -->
+    <div class="swiper-wrapper">
+      <!-- Swiper Slides -->
+      <div
+        *ngFor="let slide of slides; trackBy: trackBySlideId; let i = index"
+        class="swiper-slide"
+        [ngClass]="getSlideClasses(slide)"
+        [style]="getSlideStyles(slide)"
+        role="group"
+        [attr.aria-label]="slide.title || slide.alt || 'Slide ' + (i + 1)"
+        [attr.aria-current]="currentSlide === slide ? 'true' : null"
+        [attr.tabindex]="0"
+        (click)="onSlideClick(i, slide)"
+        (keydown.enter)="onSlideClick(i, slide)"
+        (keydown.space)="onSlideClick(i, slide); $event.preventDefault()">
+
+        <!-- Image Slide -->
+        <div *ngIf="slide.type === 'image'" class="slide-content relative w-full h-full flex items-center justify-center">
+          <img appImageOptimization
+            [ngSrc]="slide.src"
+            [alt]="slide.alt"
+            class="slide-image w-full h-full object-cover rounded-xl"
+            loading="lazy">
+
+          <div *ngIf="slide.title || slide.description" class="slide-overlay absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-8 px-6 text-white transform translate-y-full transition-transform group-hover:translate-y-0">
+            <div class="slide-info">
+              <h3 *ngIf="slide.title" class="slide-title text-xl font-semibold m-0 mb-2 text-white">{{ slide.title }}</h3>
+              <p *ngIf="slide.description" class="slide-description text-sm leading-relaxed m-0 text-white/90">{{ slide.description }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Video Slide -->
+        <div *ngIf="slide.type === 'video'" class="slide-content relative w-full h-full flex items-center justify-center">
+          <video
+            [src]="slide.video"
+            class="slide-video w-full h-full object-cover rounded-xl"
+            controls
+            preload="metadata">
+            <source [src]="slide.video" type="video/mp4">
+            เบราว์เซอร์ของคุณไม่รองรับการเล่นวิดีโอ
+          </video>
+
+          <div *ngIf="slide.title || slide.description" class="slide-overlay absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-8 px-6 text-white transform translate-y-full transition-transform group-hover:translate-y-0">
+            <div class="slide-info">
+              <h3 *ngIf="slide.title" class="slide-title text-xl font-semibold m-0 mb-2 text-white">{{ slide.title }}</h3>
+              <p *ngIf="slide.description" class="slide-description text-sm leading-relaxed m-0 text-white/90">{{ slide.description }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content Slide -->
+        <div *ngIf="slide.type === 'content'" class="slide-content relative w-full h-full flex items-center justify-center bg-white/5 p-8">
+          <div class="slide-custom-content text-center text-white max-w-[600px] p-8">
+            <h3 *ngIf="slide.title" class="text-3xl font-bold m-0 mb-4 text-white">{{ slide.title }}</h3>
+            <p *ngIf="slide.description" class="text-lg leading-relaxed m-0 mb-6 text-gray-400">{{ slide.description }}</p>
+            <div [innerHTML]="slide.data?.content"></div>
+          </div>
+        </div>
+
+        <!-- Zoom Button for Images -->
+        <div *ngIf="slide.type === 'image' && mergedConfig.zoom" class="slide-zoom-btn absolute top-4 right-4 w-10 h-10 bg-black/60 border border-white/20 rounded-full flex items-center justify-center text-white cursor-pointer transition-all opacity-0 group-hover:opacity-100 hover:bg-black/80 hover:scale-110">
+          <i class="fas fa-search-plus text-sm"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div *ngIf="mergedConfig.navigation" class="swiper-button-prev absolute top-1/2 left-4 -translate-y-1/2 w-12 h-12 bg-black/60 border border-white/20 rounded-full flex items-center justify-center text-white cursor-pointer transition-all z-10 hover:bg-black/80 hover:scale-110 after:hidden">
+      <i class="fas fa-chevron-left text-base"></i>
+    </div>
+    <div *ngIf="mergedConfig.navigation" class="swiper-button-next absolute top-1/2 right-4 -translate-y-1/2 w-12 h-12 bg-black/60 border border-white/20 rounded-full flex items-center justify-center text-white cursor-pointer transition-all z-10 hover:bg-black/80 hover:scale-110 after:hidden">
+      <i class="fas fa-chevron-right text-base"></i>
+    </div>
+
+    <!-- Pagination -->
+    <div *ngIf="mergedConfig.pagination" class="swiper-pagination absolute bottom-4 left-1/2 -translate-x-1/2 z-10" role="tablist" [attr.aria-label]="'Slide pagination'"></div>
+
+    <!-- Thumbs Container -->
+    <div *ngIf="mergedConfig.thumbs" class="swiper-thumbs absolute bottom-0 left-0 right-0 h-16 bg-black/60 z-10">
+      <div class="swiper-wrapper flex items-center">
+        <div
+          *ngFor="let slide of slides; trackBy: trackBySlideId"
+          class="swiper-slide thumb-slide w-12 h-12 rounded-xl overflow-hidden cursor-pointer transition-all opacity-60 hover:opacity-80">
+          <img appImageOptimization
+            [ngSrc]="slide.thumbnail || slide.src"
+            [alt]="slide.alt"
+            class="thumb-image w-full h-full object-cover" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gallery Controls -->
+  <div *ngIf="!loading && slides.length > 0" class="gallery-controls absolute top-4 right-4 flex gap-4 z-20 md:top-2 md:right-2 md:flex-col md:gap-2">
+    <div class="control-group flex items-center gap-2 bg-black/60 p-2 rounded-xl backdrop-blur-sm md:p-1 md:gap-1">
+      <button
+        class="control-btn flex items-center justify-center w-10 h-10 bg-white/10 border border-white/20 rounded-full text-white cursor-pointer transition-all hover:bg-white/20 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed md:w-8 md:h-8"
+        (click)="prevSlide()"
+        [disabled]="!isSwiperReady()"
+        [attr.aria-label]="'Previous slide'"
+        [attr.tabindex]="0">
+        <i class="fas fa-chevron-left text-sm" [attr.aria-hidden]="true"></i>
+      </button>
+
+      <span class="slide-counter text-white text-sm font-semibold min-w-[4rem] text-center md:text-xs md:min-w-[3rem]" role="status" [attr.aria-live]="'polite'">
+        {{ getCurrentSlideIndex() + 1 }} / {{ getTotalSlides() }}
+      </span>
+
+      <button
+        class="control-btn flex items-center justify-center w-10 h-10 bg-white/10 border border-white/20 rounded-full text-white cursor-pointer transition-all hover:bg-white/20 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed md:w-8 md:h-8"
+        (click)="nextSlide()"
+        [disabled]="!isSwiperReady()"
+        [attr.aria-label]="'Next slide'"
+        [attr.tabindex]="0">
+        <i class="fas fa-chevron-right text-sm" [attr.aria-hidden]="true"></i>
+      </button>
+    </div>
+
+    <div class="control-group flex items-center gap-2 bg-black/60 p-2 rounded-xl backdrop-blur-sm md:p-1 md:gap-1">
+      <button
+        *ngIf="mergedConfig.autoplay"
+        class="control-btn flex items-center justify-center w-10 h-10 bg-white/10 border border-white/20 rounded-full text-white cursor-pointer transition-all hover:bg-white/20 hover:scale-110 md:w-8 md:h-8"
+        [class.bg-primary-500]="isSwiperReady() && swiper?.autoplay?.running"
+        [class.text-white]="isSwiperReady() && swiper?.autoplay?.running"
+        (click)="toggleAutoplay()"
+        [attr.aria-label]="isSwiperReady() && swiper?.autoplay?.running ? 'Pause autoplay' : 'Start autoplay'"
+        [attr.tabindex]="0">
+        <i class="fas text-sm" [class.fa-pause]="isSwiperReady() && swiper?.autoplay?.running" [class.fa-play]="!(isSwiperReady() && swiper?.autoplay?.running)" [attr.aria-hidden]="true"></i>
+      </button>
+
+      <button
+        class="control-btn flex items-center justify-center w-10 h-10 bg-white/10 border border-white/20 rounded-full text-white cursor-pointer transition-all hover:bg-white/20 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed md:w-8 md:h-8"
+        (click)="goToSlide(0)"
+        [disabled]="!isSwiperReady()"
+        [attr.aria-label]="'Go to first slide'"
+        [attr.tabindex]="0">
+        <i class="fas fa-home text-sm" [attr.aria-hidden]="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Current Slide Info -->
+  <div *ngIf="!loading && slides.length > 0 && currentSlide" class="current-slide-info absolute bottom-4 left-4 right-4 bg-black/60 p-4 rounded-lg backdrop-blur-sm z-10 md:bottom-2 md:left-2 md:right-2 md:p-3">
+    <div class="slide-info-content">
+      <h4 *ngIf="currentSlide.title" class="current-title text-lg font-semibold m-0 mb-2 text-white md:text-base">{{ currentSlide.title }}</h4>
+      <p *ngIf="currentSlide.description" class="current-description text-sm leading-relaxed m-0 text-white/90 md:text-xs">{{ currentSlide.description }}</p>
+    </div>
+  </div>
+</div>

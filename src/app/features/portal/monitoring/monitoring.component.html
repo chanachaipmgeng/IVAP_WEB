@@ -1,0 +1,179 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <h1 class="text-4xl font-bold text-white gemini-glow-text">
+      Live Monitoring & Analytics
+    </h1>
+    <div class="flex space-x-2">
+      <app-glass-button (clicked)="loadCameras()" class="gemini-card-hover">
+        🔄 Refresh
+      </app-glass-button>
+    </div>
+  </div>
+
+  <!-- Error Message -->
+  @if (errorMessage()) {
+    <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+      <p class="text-red-800 text-sm">{{ errorMessage() }}</p>
+    </div>
+  }
+
+  <!-- Statistics -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <app-glass-card padding="sm" class="gemini-card-hover gemini-shimmer">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-400">Total Cameras</p>
+          <p class="text-2xl font-bold text-white gemini-glow-text">
+            {{ cameras().length }}
+          </p>
+        </div>
+        <span class="text-4xl ai-float gemini-glow-text">📹</span>
+      </div>
+    </app-glass-card>
+
+    <app-glass-card padding="sm" class="gemini-card-hover gemini-shimmer">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-400">Online</p>
+          <p class="text-2xl font-bold text-green-400 gemini-glow-text">
+            {{ onlineCamerasCount() }}
+          </p>
+        </div>
+        <span class="text-4xl ai-float gemini-pulse-dot">✅</span>
+      </div>
+    </app-glass-card>
+
+    <app-glass-card padding="sm" class="gemini-card-hover gemini-shimmer">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-400">Active Alerts</p>
+          <p class="text-2xl font-bold text-red-400 gemini-glow-text">
+            {{ alerts().length }}
+          </p>
+        </div>
+        <span class="text-4xl ai-float">🚨</span>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Map Section -->
+  <app-glass-card class="mb-6">
+    <h2 class="text-2xl font-bold text-white mb-6 gemini-glow-text">
+      🗺️ Camera Locations Map
+    </h2>
+    <div *ngIf="loading(); else mapContent">
+      <app-skeleton type="card" [count]="1"></app-skeleton>
+    </div>
+    <ng-template #mapContent>
+      <app-map
+        [options]="mapOptions"
+        [markers]="mapMarkers"
+        [apiKey]="googleMapsApiKey"
+        [height]="'500px'">
+      </app-map>
+    </ng-template>
+  </app-glass-card>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Camera List -->
+    <app-glass-card>
+      <h2 class="text-xl font-bold text-white mb-4 gemini-glow-text">
+        📹 Cameras
+      </h2>
+      <div *ngIf="loading(); else cameraListContent">
+        <app-skeleton type="text" [count]="5"></app-skeleton>
+      </div>
+      <ng-template #cameraListContent>
+        <div class="space-y-2 max-h-[500px] overflow-y-auto">
+          <div
+            *ngFor="let camera of cameras()"
+            (click)="selectCamera(camera)"
+            [class.bg-blue-500/20]="selectedCamera()?.id === camera.id"
+            class="p-3 glass rounded-lg cursor-pointer gemini-card-hover transition-all"
+          >
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="font-medium text-white">
+                  {{ camera.name }}
+                </p>
+                <p class="text-sm text-gray-400">
+                  {{ camera.location }}
+                </p>
+              </div>
+              <span [class]="camera.status === 'online' ? 'text-green-400' : 'text-red-400'">
+                {{ camera.status === 'online' ? '🟢' : '🔴' }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </app-glass-card>
+
+    <!-- Video Player -->
+    <app-glass-card customClass="lg:col-span-2">
+      <h2 class="text-xl font-bold text-white mb-4 gemini-glow-text">
+        📺 Live Feed
+      </h2>
+      <div *ngIf="selectedCamera()" class="space-y-4">
+        <div class="glass rounded-lg p-1 bg-black aspect-video flex items-center justify-center">
+          <!-- Video Player will be attached here -->
+          <video #videoPlayer controls class="w-full h-full rounded-md"></video>
+        </div>
+        <div class="flex justify-center space-x-2">
+          <app-glass-button class="gemini-card-hover">⏸️ Pause</app-glass-button>
+          <app-glass-button class="gemini-card-hover">📸 Snapshot</app-glass-button>
+          <app-glass-button class="gemini-card-hover">⏺️ Record</app-glass-button>
+        </div>
+      </div>
+      <div *ngIf="!selectedCamera()" class="text-center py-16 text-gray-400">
+        Select a camera to view live feed
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Recent Alerts -->
+  <app-glass-card>
+    <h2 class="text-xl font-bold text-white mb-4 gemini-glow-text">
+      🚨 Recent Alerts
+    </h2>
+    <div *ngIf="loading(); else alertsContent">
+      <app-skeleton type="text" [count]="3"></app-skeleton>
+    </div>
+    <ng-template #alertsContent>
+      <div class="space-y-2">
+        <div
+          *ngFor="let alert of alerts()"
+          class="p-4 glass rounded-lg flex items-start justify-between gemini-card-hover"
+        >
+          <div class="flex items-start space-x-3">
+            <span class="text-2xl ai-float">{{ getAlertIcon(alert.type) }}</span>
+            <div>
+              <div class="flex items-center space-x-2">
+                <p class="font-medium text-white">
+                  {{ alert.type.toUpperCase() }}
+                </p>
+                <span [class]="getAlertColor(alert.severity)" class="text-xs font-medium">
+                  {{ alert.severity.toUpperCase() }}
+                </span>
+              </div>
+              <p class="text-sm text-gray-400">
+                {{ alert.cameraName }} • {{ formatTimestamp(alert.timestamp) }}
+              </p>
+              <p class="text-sm text-gray-300 mt-1">
+                {{ alert.description }}
+              </p>
+            </div>
+          </div>
+          <app-glass-button size="sm" (clicked)="acknowledgeAlert(alert)" class="gemini-card-hover">
+            ✓ Acknowledge
+          </app-glass-button>
+        </div>
+        <div *ngIf="alerts().length === 0" class="text-center py-8 text-gray-400">
+          No recent alerts
+        </div>
+      </div>
+    </ng-template>
+  </app-glass-card>
+</div>
+

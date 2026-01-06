@@ -1,0 +1,294 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+      Accessibility Dashboard
+    </h1>
+    <div class="flex space-x-2">
+      <app-glass-button (clicked)="runAllTests()" variant="primary" [disabled]="isTesting()">
+        <i class="fas fa-play mr-2" [class.fa-spin]="isTesting()"></i>
+        {{ isTesting() ? 'Testing...' : 'Run All Tests' }}
+      </app-glass-button>
+      <app-glass-button (clicked)="resetToDefaults()" variant="secondary">
+        <i class="fas fa-undo mr-2"></i> Reset to Defaults
+      </app-glass-button>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <app-glass-card class="p-6">
+    <h3 class="text-xl font-semibold text-white mb-4">Quick Actions</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <app-glass-button (clicked)="toggleHighContrast()" variant="primary" customClass="w-full">
+        <i class="fas fa-adjust mr-2"></i>
+        {{ settings().highContrast ? 'Disable' : 'Enable' }} High Contrast
+      </app-glass-button>
+      <app-glass-button (clicked)="toggleLargeText()" variant="primary" customClass="w-full">
+        <i class="fas fa-text-height mr-2"></i>
+        {{ settings().largeText ? 'Disable' : 'Enable' }} Large Text
+      </app-glass-button>
+      <app-glass-button (clicked)="toggleReducedMotion()" variant="primary" customClass="w-full">
+        <i class="fas fa-pause mr-2"></i>
+        {{ settings().reducedMotion ? 'Disable' : 'Enable' }} Reduced Motion
+      </app-glass-button>
+      <app-glass-button (clicked)="runAllTests()" variant="secondary" customClass="w-full" [disabled]="isTesting()">
+        <i class="fas fa-vial mr-2"></i> Test Accessibility
+      </app-glass-button>
+    </div>
+  </app-glass-card>
+
+  <!-- Tabs -->
+  <app-glass-card class="p-6">
+    <div class="flex space-x-1 mb-6">
+      <button
+        *ngFor="let tab of ['settings', 'features', 'testing', 'guidelines']"
+        (click)="selectTab(tab)"
+        [class]="'px-4 py-2 rounded-lg font-medium transition-all ' + (activeTab() === tab ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-700')"
+      >
+        <i [class]="'mr-2 ' + (tab === 'settings' ? 'fas fa-cog' : tab === 'features' ? 'fas fa-list' : tab === 'testing' ? 'fas fa-vial' : 'fas fa-book')"></i>
+        {{ tab | titlecase }}
+      </button>
+    </div>
+
+    <!-- Settings Tab -->
+    <div *ngIf="activeTab() === 'settings'" class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Visual Settings -->
+        <div>
+          <h4 class="text-lg font-semibold text-white mb-4">Visual Settings</h4>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+              <div>
+                <div class="text-white font-medium">High Contrast</div>
+                <div class="text-sm text-gray-400">Increase color contrast for better visibility</div>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" [checked]="settings().highContrast" (change)="updateSetting('highContrast', $event.target.checked)" class="sr-only peer">
+                <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+              <div>
+                <div class="text-white font-medium">Large Text</div>
+                <div class="text-sm text-gray-400">Increase text size for better readability</div>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" [checked]="settings().largeText" (change)="updateSetting('largeText', $event.target.checked)" class="sr-only peer">
+                <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+              <div>
+                <div class="text-white font-medium">Reduced Motion</div>
+                <div class="text-sm text-gray-400">Reduce animations and transitions</div>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" [checked]="settings().reducedMotion" (change)="updateSetting('reducedMotion', $event.target.checked)" class="sr-only peer">
+                <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+              <div>
+                <div class="text-white font-medium">Color Blind Support</div>
+                <div class="text-sm text-gray-400">Optimize colors for color blind users</div>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" [checked]="settings().colorBlindSupport" (change)="updateSetting('colorBlindSupport', $event.target.checked)" class="sr-only peer">
+                <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Font and Color Settings -->
+        <div>
+          <h4 class="text-lg font-semibold text-white mb-4">Font & Color Settings</h4>
+          <div class="space-y-4">
+            <div class="p-3 bg-gray-800 rounded-lg">
+              <label class="block text-white font-medium mb-2">Font Size</label>
+              <select
+                [value]="settings().fontSize"
+                (change)="onFontSizeChange($event)"
+                class="w-full p-2 bg-gray-700 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              >
+                <option value="small">Small</option>
+                <option value="medium">Medium</option>
+                <option value="large">Large</option>
+                <option value="extra-large">Extra Large</option>
+              </select>
+            </div>
+
+            <div class="p-3 bg-gray-800 rounded-lg">
+              <label class="block text-white font-medium mb-2">Color Scheme</label>
+              <select
+                [value]="settings().colorScheme"
+                (change)="onColorSchemeChange($event)"
+                class="w-full p-2 bg-gray-700 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              >
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+                <option value="auto">Auto</option>
+              </select>
+            </div>
+
+            <div class="p-3 bg-gray-800 rounded-lg">
+              <label class="block text-white font-medium mb-2">Animation Speed</label>
+              <select
+                [value]="settings().animationSpeed"
+                (change)="onAnimationSpeedChange($event)"
+                class="w-full p-2 bg-gray-700 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              >
+                <option value="slow">Slow</option>
+                <option value="normal">Normal</option>
+                <option value="fast">Fast</option>
+              </select>
+            </div>
+
+            <div class="p-3 bg-gray-800 rounded-lg">
+              <label class="block text-white font-medium mb-2">Focus Indicator</label>
+              <select
+                [value]="settings().focusIndicator"
+                (change)="onFocusIndicatorChange($event)"
+                class="w-full p-2 bg-gray-700 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              >
+                <option value="default">Default</option>
+                <option value="high">High</option>
+                <option value="extra-high">Extra High</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features Tab -->
+    <div *ngIf="activeTab() === 'features'" class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div *ngFor="let feature of [
+          { key: 'skipLinks', name: 'Skip Links', description: 'Add skip navigation links' },
+          { key: 'landmarks', name: 'Landmarks', description: 'Add ARIA landmarks for navigation' },
+          { key: 'headings', name: 'Headings', description: 'Ensure proper heading structure' },
+          { key: 'altText', name: 'Alt Text', description: 'Add alt text to images' },
+          { key: 'ariaLabels', name: 'ARIA Labels', description: 'Add ARIA labels to interactive elements' },
+          { key: 'focusManagement', name: 'Focus Management', description: 'Manage focus for keyboard navigation' },
+          { key: 'colorContrast', name: 'Color Contrast', description: 'Ensure sufficient color contrast' },
+          { key: 'textScaling', name: 'Text Scaling', description: 'Support text scaling' },
+          { key: 'screenReaderSupport', name: 'Screen Reader Support', description: 'Optimize for screen readers' },
+          { key: 'keyboardSupport', name: 'Keyboard Support', description: 'Full keyboard navigation support' }
+        ]" class="p-4 bg-gray-800 rounded-lg">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-white font-medium">{{ feature.name }}</div>
+              <div class="text-sm text-gray-400">{{ feature.description }}</div>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                [checked]="getFeatureValue(feature.key)"
+                (change)="onFeatureChange(feature.key, $event)"
+                class="sr-only peer"
+              >
+              <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Testing Tab -->
+    <div *ngIf="activeTab() === 'testing'" class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div *ngFor="let scenario of testScenarios" class="p-4 bg-gray-800 rounded-lg">
+          <h4 class="font-medium text-white mb-2">{{ scenario.name }}</h4>
+          <p class="text-sm text-gray-400 mb-3">{{ scenario.description }}</p>
+          <app-glass-button
+            (clicked)="runSingleTest(scenario)"
+            variant="primary"
+            customClass="w-full"
+            [disabled]="isTesting()"
+          >
+            <i class="fas fa-play mr-2"></i> Run Test
+          </app-glass-button>
+        </div>
+      </div>
+
+      <!-- Test Results -->
+      <div *ngIf="testResults().length > 0" class="mt-6">
+        <h4 class="text-lg font-semibold text-white mb-4">Test Results</h4>
+        <div class="space-y-4">
+          <div *ngFor="let result of testResults()" class="p-4 bg-gray-800 rounded-lg">
+            <div class="flex items-center justify-between mb-2">
+              <h5 class="font-medium text-white">{{ result.name }}</h5>
+              <div class="flex items-center space-x-2">
+                <span [class]="'px-2 py-1 rounded text-xs font-medium ' + getTestStatusClass(result.status)">
+                  <i [class]="getTestStatusIcon(result.status) + ' mr-1'"></i>
+                  {{ result.status | titlecase }}
+                </span>
+                <span class="text-sm text-gray-400">{{ result.score }}%</span>
+              </div>
+            </div>
+            <p class="text-sm text-gray-400 mb-2">{{ result.description }}</p>
+            <div *ngIf="result.issues.length > 0" class="mt-2">
+              <div class="text-sm text-red-400 font-medium mb-1">Issues found:</div>
+              <ul class="text-sm text-red-300 space-y-1">
+                <li *ngFor="let issue of result.issues">• {{ issue }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Guidelines Tab -->
+    <div *ngIf="activeTab() === 'guidelines'" class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h4 class="text-lg font-semibold text-white mb-4">WCAG 2.1 Guidelines</h4>
+          <div class="space-y-3">
+            <div class="p-3 bg-gray-800 rounded-lg">
+              <div class="text-white font-medium">Perceivable</div>
+              <div class="text-sm text-gray-400">Information must be presentable in ways users can perceive</div>
+            </div>
+            <div class="p-3 bg-gray-800 rounded-lg">
+              <div class="text-white font-medium">Operable</div>
+              <div class="text-sm text-gray-400">Interface components must be operable</div>
+            </div>
+            <div class="p-3 bg-gray-800 rounded-lg">
+              <div class="text-white font-medium">Understandable</div>
+              <div class="text-sm text-gray-400">Information and UI operation must be understandable</div>
+            </div>
+            <div class="p-3 bg-gray-800 rounded-lg">
+              <div class="text-white font-medium">Robust</div>
+              <div class="text-sm text-gray-400">Content must be robust enough for assistive technologies</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="text-lg font-semibold text-white mb-4">Best Practices</h4>
+          <div class="space-y-3">
+            <div class="p-3 bg-gray-800 rounded-lg">
+              <div class="text-white font-medium">Keyboard Navigation</div>
+              <div class="text-sm text-gray-400">All functionality should be accessible via keyboard</div>
+            </div>
+            <div class="p-3 bg-gray-800 rounded-lg">
+              <div class="text-white font-medium">Screen Reader Support</div>
+              <div class="text-sm text-gray-400">Provide proper ARIA labels and descriptions</div>
+            </div>
+            <div class="p-3 bg-gray-800 rounded-lg">
+              <div class="text-white font-medium">Color Contrast</div>
+              <div class="text-sm text-gray-400">Ensure sufficient contrast ratios (4.5:1 for normal text)</div>
+            </div>
+            <div class="p-3 bg-gray-800 rounded-lg">
+              <div class="text-white font-medium">Focus Management</div>
+              <div class="text-sm text-gray-400">Provide clear focus indicators and logical tab order</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-glass-card>
+</div>

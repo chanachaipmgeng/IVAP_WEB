@@ -1,0 +1,112 @@
+<div class="rich-text-editor-container relative w-full border border-gray-300 rounded-xl bg-white shadow-sm transition-all focus-within:border-primary-500 focus-within:ring-2 focus-within:ring-primary-500/10" [ngClass]="getEditorClasses()" [class.opacity-60]="disabled" [class.cursor-not-allowed]="disabled" [class.bg-gray-50]="disabled">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="editor-loading flex flex-col items-center justify-center p-12 text-gray-500">
+    <div class="loading-spinner w-8 h-8 border-2 border-black/10 border-t-primary-500 rounded-full animate-spin mb-4"></div>
+    <p class="m-0 text-sm">กำลังโหลด Rich Text Editor...</p>
+  </div>
+
+  <!-- Editor Container -->
+  <div *ngIf="!loading" class="editor-wrapper flex flex-col min-h-[200px] opacity-0 transition-opacity duration-300" [class.opacity-100]="!loading">
+    <!-- Toolbar -->
+    <div *ngIf="mergedConfig.theme === 'snow'" class="editor-toolbar flex flex-wrap items-center p-3 bg-gray-50 border-b border-gray-200 rounded-t-xl gap-2 md:p-2 md:gap-1">
+      <div class="toolbar-group flex items-center gap-1 px-2 border-r border-gray-200 last:border-r-0 md:px-1 md:gap-0.5">
+        <button type="button" class="toolbar-btn flex items-center justify-center w-8 h-8 bg-transparent border-none rounded text-gray-700 cursor-pointer transition-all text-sm hover:bg-gray-200 hover:text-primary-500 active:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed md:w-7 md:h-7 md:text-xs" title="Header" (click)="formatText('header', 1)">
+          <i class="fas fa-heading text-xs"></i>
+        </button>
+        <button type="button" class="toolbar-btn flex items-center justify-center w-8 h-8 bg-transparent border-none rounded text-gray-700 cursor-pointer transition-all text-sm hover:bg-gray-200 hover:text-primary-500 active:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed md:w-7 md:h-7 md:text-xs" title="Bold" (click)="formatText('bold', true)">
+          <i class="fas fa-bold text-xs"></i>
+        </button>
+        <button type="button" class="toolbar-btn flex items-center justify-center w-8 h-8 bg-transparent border-none rounded text-gray-700 cursor-pointer transition-all text-sm hover:bg-gray-200 hover:text-primary-500 active:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed md:w-7 md:h-7 md:text-xs" title="Italic" (click)="formatText('italic', true)">
+          <i class="fas fa-italic text-xs"></i>
+        </button>
+        <button type="button" class="toolbar-btn flex items-center justify-center w-8 h-8 bg-transparent border-none rounded text-gray-700 cursor-pointer transition-all text-sm hover:bg-gray-200 hover:text-primary-500 active:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed md:w-7 md:h-7 md:text-xs" title="Underline" (click)="formatText('underline', true)">
+          <i class="fas fa-underline text-xs"></i>
+        </button>
+        <button type="button" class="toolbar-btn flex items-center justify-center w-8 h-8 bg-transparent border-none rounded text-gray-700 cursor-pointer transition-all text-sm hover:bg-gray-200 hover:text-primary-500 active:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed md:w-7 md:h-7 md:text-xs" title="Strike" (click)="formatText('strike', true)">
+          <i class="fas fa-strikethrough text-xs"></i>
+        </button>
+      </div>
+
+      <div class="toolbar-group flex items-center gap-1 px-2 border-r border-gray-200 last:border-r-0 md:px-1 md:gap-0.5">
+        <button type="button" class="toolbar-btn flex items-center justify-center w-8 h-8 bg-transparent border-none rounded text-gray-700 cursor-pointer transition-all text-sm hover:bg-gray-200 hover:text-primary-500 active:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed md:w-7 md:h-7 md:text-xs" title="Color" (click)="formatText('color', '#000000')">
+          <i class="fas fa-palette text-xs"></i>
+        </button>
+        <button type="button" class="toolbar-btn flex items-center justify-center w-8 h-8 bg-transparent border-none rounded text-gray-700 cursor-pointer transition-all text-sm hover:bg-gray-200 hover:text-primary-500 active:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed md:w-7 md:h-7 md:text-xs" title="Background" (click)="formatText('background', '#ffffff')">
+          <i class="fas fa-highlighter text-xs"></i>
+        </button>
+      </div>
+
+      <div class="toolbar-group flex items-center gap-1 px-2 border-r border-gray-200 last:border-r-0 md:px-1 md:gap-0.5">
+        <button type="button" class="toolbar-btn flex items-center justify-center w-8 h-8 bg-transparent border-none rounded text-gray-700 cursor-pointer transition-all text-sm hover:bg-gray-200 hover:text-primary-500 active:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed md:w-7 md:h-7 md:text-xs" title="List" (click)="formatText('list', 'bullet')">
+          <i class="fas fa-list-ul text-xs"></i>
+        </button>
+        <button type="button" class="toolbar-btn flex items-center justify-center w-8 h-8 bg-transparent border-none rounded text-gray-700 cursor-pointer transition-all text-sm hover:bg-gray-200 hover:text-primary-500 active:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed md:w-7 md:h-7 md:text-xs" title="Numbered List" (click)="formatText('list', 'ordered')">
+          <i class="fas fa-list-ol text-xs"></i>
+        </button>
+        <button type="button" class="toolbar-btn flex items-center justify-center w-8 h-8 bg-transparent border-none rounded text-gray-700 cursor-pointer transition-all text-sm hover:bg-gray-200 hover:text-primary-500 active:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed md:w-7 md:h-7 md:text-xs" title="Quote" (click)="formatText('blockquote', true)">
+          <i class="fas fa-quote-left text-xs"></i>
+        </button>
+        <button type="button" class="toolbar-btn flex items-center justify-center w-8 h-8 bg-transparent border-none rounded text-gray-700 cursor-pointer transition-all text-sm hover:bg-gray-200 hover:text-primary-500 active:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed md:w-7 md:h-7 md:text-xs" title="Code" (click)="formatText('code-block', true)">
+          <i class="fas fa-code text-xs"></i>
+        </button>
+      </div>
+
+      <div class="toolbar-group flex items-center gap-1 px-2 border-r border-gray-200 last:border-r-0 md:px-1 md:gap-0.5">
+        <button type="button" class="toolbar-btn flex items-center justify-center w-8 h-8 bg-transparent border-none rounded text-gray-700 cursor-pointer transition-all text-sm hover:bg-gray-200 hover:text-primary-500 active:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed md:w-7 md:h-7 md:text-xs" title="Link" (click)="insertLink()">
+          <i class="fas fa-link text-xs"></i>
+        </button>
+        <button type="button" class="toolbar-btn flex items-center justify-center w-8 h-8 bg-transparent border-none rounded text-gray-700 cursor-pointer transition-all text-sm hover:bg-gray-200 hover:text-primary-500 active:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed md:w-7 md:h-7 md:text-xs" title="Image" (click)="insertImage()">
+          <i class="fas fa-image text-xs"></i>
+        </button>
+        <button type="button" class="toolbar-btn flex items-center justify-center w-8 h-8 bg-transparent border-none rounded text-gray-700 cursor-pointer transition-all text-sm hover:bg-gray-200 hover:text-primary-500 active:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed md:w-7 md:h-7 md:text-xs" title="Table" (click)="insertTable()">
+          <i class="fas fa-table text-xs"></i>
+        </button>
+      </div>
+
+      <div class="toolbar-group flex items-center gap-1 px-2 border-r border-gray-200 last:border-r-0 md:px-1 md:gap-0.5">
+        <button type="button" class="toolbar-btn flex items-center justify-center w-8 h-8 bg-transparent border-none rounded text-gray-700 cursor-pointer transition-all text-sm hover:bg-gray-200 hover:text-primary-500 active:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed md:w-7 md:h-7 md:text-xs" title="Align Left" (click)="formatText('align', 'left')">
+          <i class="fas fa-align-left text-xs"></i>
+        </button>
+        <button type="button" class="toolbar-btn flex items-center justify-center w-8 h-8 bg-transparent border-none rounded text-gray-700 cursor-pointer transition-all text-sm hover:bg-gray-200 hover:text-primary-500 active:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed md:w-7 md:h-7 md:text-xs" title="Align Center" (click)="formatText('align', 'center')">
+          <i class="fas fa-align-center text-xs"></i>
+        </button>
+        <button type="button" class="toolbar-btn flex items-center justify-center w-8 h-8 bg-transparent border-none rounded text-gray-700 cursor-pointer transition-all text-sm hover:bg-gray-200 hover:text-primary-500 active:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed md:w-7 md:h-7 md:text-xs" title="Align Right" (click)="formatText('align', 'right')">
+          <i class="fas fa-align-right text-xs"></i>
+        </button>
+        <button type="button" class="toolbar-btn flex items-center justify-center w-8 h-8 bg-transparent border-none rounded text-gray-700 cursor-pointer transition-all text-sm hover:bg-gray-200 hover:text-primary-500 active:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed md:w-7 md:h-7 md:text-xs" title="Justify" (click)="formatText('align', 'justify')">
+          <i class="fas fa-align-justify text-xs"></i>
+        </button>
+      </div>
+
+      <div class="toolbar-group flex items-center gap-1 px-2 border-r border-gray-200 last:border-r-0 md:px-1 md:gap-0.5">
+        <button type="button" class="toolbar-btn flex items-center justify-center w-8 h-8 bg-transparent border-none rounded text-gray-700 cursor-pointer transition-all text-sm hover:bg-gray-200 hover:text-primary-500 active:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed md:w-7 md:h-7 md:text-xs" title="Undo" (click)="undo()">
+          <i class="fas fa-undo text-xs"></i>
+        </button>
+        <button type="button" class="toolbar-btn flex items-center justify-center w-8 h-8 bg-transparent border-none rounded text-gray-700 cursor-pointer transition-all text-sm hover:bg-gray-200 hover:text-primary-500 active:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed md:w-7 md:h-7 md:text-xs" title="Redo" (click)="redo()">
+          <i class="fas fa-redo text-xs"></i>
+        </button>
+        <button type="button" class="toolbar-btn flex items-center justify-center w-8 h-8 bg-transparent border-none rounded text-gray-700 cursor-pointer transition-all text-sm hover:bg-gray-200 hover:text-primary-500 active:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed md:w-7 md:h-7 md:text-xs" title="Clear Format" (click)="removeFormat()">
+          <i class="fas fa-remove-format text-xs"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Editor -->
+    <div
+      #editor
+      class="editor-content flex-1 min-h-[150px] p-4 border-none outline-none font-sans text-sm leading-relaxed text-gray-700 bg-transparent resize-y cursor-text md:p-3 md:min-h-[120px]"
+      [attr.placeholder]="mergedConfig.placeholder"
+      [attr.contenteditable]="!disabled"
+      [class.cursor-not-allowed]="disabled">
+    </div>
+
+    <!-- Character Count -->
+    <div class="editor-footer flex justify-end px-4 py-2 bg-gray-50 border-t border-gray-200 rounded-b-xl md:px-3 md:py-1.5">
+      <div class="character-count flex items-center gap-1 text-xs text-gray-500">
+        <span class="current-count font-semibold">{{ getLength() }}</span>
+        <span class="separator opacity-50">/</span>
+        <span class="max-count opacity-50">∞</span>
+      </div>
+    </div>
+  </div>
+</div>

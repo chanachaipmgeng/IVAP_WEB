@@ -1,0 +1,253 @@
+<div class="gallery-wrapper w-full bg-white rounded-xl overflow-hidden" [ngClass]="getContainerClasses()" [class]="customClass || ''" role="group" [attr.aria-label]="ariaLabel || 'Image gallery'">
+  <!-- Gallery Controls -->
+  <div *ngIf="!loading" class="gallery-controls flex flex-wrap items-center gap-4 p-4 bg-gray-50 border-b border-gray-200 md:flex-col md:items-stretch md:gap-3" role="toolbar" [attr.aria-label]="'Gallery controls'">
+    <!-- Search -->
+    <div *ngIf="mergedConfig.showSearch" class="gallery-search flex-1 min-w-[200px] md:min-w-0">
+      <div class="search-input relative flex items-center">
+        <i class="fas fa-search absolute left-3 text-gray-500 z-10"></i>
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="onSearchChange($event)"
+          placeholder="ค้นหารูปภาพ..."
+          class="search-field w-full px-4 py-2 pl-10 border border-gray-200 rounded-lg bg-white text-gray-700 text-sm transition-all focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/10 placeholder-gray-500">
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div *ngIf="mergedConfig.showFilters && filters.length > 0" class="gallery-filters flex gap-4 flex-wrap md:flex-col md:gap-2">
+      <div *ngFor="let filter of filters" class="filter-group flex items-center gap-2 md:flex-col md:items-start md:gap-1">
+        <label class="text-sm font-medium text-gray-700 whitespace-nowrap">{{ filter.label }}:</label>
+        <select
+          *ngIf="filter.type === 'select'"
+          [(ngModel)]="activeFilters[filter.key]"
+          (ngModelChange)="onFilterChange(filter.key, $event)"
+          class="filter-select px-3 py-1.5 border border-gray-200 rounded-lg bg-white text-gray-700 text-sm min-w-[120px] focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/10 md:min-w-full">
+          <option value="">ทั้งหมด</option>
+          <option *ngFor="let option of filter.options" [value]="option.value">
+            {{ option.label }}
+          </option>
+        </select>
+
+        <input
+          *ngIf="filter.type === 'text'"
+          type="text"
+          [(ngModel)]="activeFilters[filter.key]"
+          (ngModelChange)="onFilterChange(filter.key, $event)"
+          [placeholder]="'ค้นหา ' + filter.label"
+          class="filter-input px-3 py-1.5 border border-gray-200 rounded-lg bg-white text-gray-700 text-sm min-w-[120px] focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/10 md:min-w-full">
+      </div>
+    </div>
+
+    <!-- Sorting -->
+    <div *ngIf="mergedConfig.showSorting && sorts.length > 0" class="gallery-sorting flex items-center gap-2 md:flex-col md:items-start md:gap-1">
+      <label class="text-sm font-medium text-gray-700 whitespace-nowrap">เรียงตาม:</label>
+      <select
+        [(ngModel)]="activeSort"
+        (ngModelChange)="onSortChange($event)"
+        class="sort-select px-3 py-1.5 border border-gray-200 rounded-lg bg-white text-gray-700 text-sm min-w-[150px] focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/10 md:min-w-full">
+        <option [ngValue]="null">ไม่เรียง</option>
+        <option *ngFor="let sort of sorts" [ngValue]="sort">
+          {{ sort.label }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Actions -->
+    <div *ngIf="mergedConfig.selectable" class="gallery-actions flex gap-2 md:justify-center">
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-primary px-3 py-1.5 text-sm rounded-lg transition-all flex items-center gap-1"
+        (click)="selectAllItems()">
+        <i class="fas fa-check-square"></i>
+        เลือกทั้งหมด
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-secondary px-3 py-1.5 text-sm rounded-lg transition-all flex items-center gap-1"
+        (click)="clearSelection()">
+        <i class="fas fa-square"></i>
+        ยกเลิกการเลือก
+      </button>
+    </div>
+  </div>
+
+  <!-- Gallery Container -->
+  <div
+    *ngIf="!loading"
+    #galleryContainer
+    class="gallery"
+    [ngClass]="getGalleryClasses()"
+    [style]="getGridStyles()"
+    role="list"
+    [attr.aria-label]="'Gallery items'">
+
+    <!-- Gallery Items -->
+    <div
+      *ngFor="let item of filteredItems; trackBy: trackByItemId"
+      class="gallery-item"
+      [ngClass]="getItemClasses(item)"
+      [style]="getItemStyles()"
+      role="listitem"
+      [attr.aria-label]="item.title || item.alt || 'Gallery item'"
+      [attr.aria-selected]="isItemSelected(item) ? 'true' : 'false'"
+      [attr.tabindex]="mergedConfig.clickable ? 0 : -1"
+      (click)="onItemClick(item)"
+      (keydown.enter)="onItemClick(item)"
+      (keydown.space)="onItemClick(item); $event.preventDefault()">
+
+      <!-- Selection Checkbox -->
+      <div *ngIf="mergedConfig.selectable" class="item-selection">
+        <input
+          type="checkbox"
+          [checked]="isItemSelected(item)"
+          (change)="onItemSelect(item, $event.target.checked)"
+          (click)="$event.stopPropagation()"
+          class="form-check-input">
+      </div>
+
+      <!-- Item Image -->
+      <div class="item-image">
+        <img appImageOptimization
+          [ngSrc]="item.thumbnail || item.src"
+          [alt]="item.alt || item.title || ''"
+          [attr.data-src]="mergedConfig.lazyLoading ? item.src : null"
+          [loading]="mergedConfig.lazyLoading ? 'lazy' : 'eager'"
+          class="item-img">
+
+        <!-- Overlay -->
+        <div class="item-overlay">
+          <!-- Favorite Button -->
+          <button
+            *ngIf="item.isFavorite !== undefined"
+            type="button"
+            class="btn btn-sm btn-favorite"
+            [class.active]="item.isFavorite"
+            (click)="$event.stopPropagation()">
+            <i class="fas fa-heart"></i>
+          </button>
+
+          <!-- Actions -->
+          <div *ngIf="mergedConfig.showActions && actions.length > 0" class="item-actions">
+            <ng-container *ngFor="let action of actions">
+              <button
+                *ngIf="!action.visible || action.visible(item)"
+                type="button"
+                [class]="'btn btn-sm btn-' + (action.variant || 'secondary')"
+                [disabled]="action.disabled"
+                [title]="action.label"
+                (click)="$event.stopPropagation(); onActionClick(action, item)">
+                <i *ngIf="action.icon" [class]="action.icon"></i>
+                <span *ngIf="!action.icon">{{ action.label }}</span>
+              </button>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item Content -->
+      <div *ngIf="mergedConfig.showTitles || mergedConfig.showDescriptions || mergedConfig.showMetadata" class="item-content p-4">
+        <h4 *ngIf="mergedConfig.showTitles && item.title" class="item-title text-base font-semibold text-gray-700 m-0 mb-2 leading-tight line-clamp-2">
+          {{ item.title }}
+        </h4>
+
+        <p *ngIf="mergedConfig.showDescriptions && item.description" class="item-description text-sm text-gray-500 m-0 mb-2 leading-relaxed line-clamp-3">
+          {{ item.description }}
+        </p>
+
+        <div *ngIf="mergedConfig.showMetadata && item.metadata" class="item-metadata flex gap-4 flex-wrap">
+          <span *ngIf="item.metadata.size" class="metadata-item flex items-center gap-1 text-xs text-gray-500">
+            <i class="fas fa-file text-[10px]"></i>
+            {{ formatFileSize(item.metadata.size) }}
+          </span>
+
+          <span *ngIf="item.metadata.uploadedAt" class="metadata-item flex items-center gap-1 text-xs text-gray-500">
+            <i class="fas fa-calendar text-[10px]"></i>
+            {{ formatDate(item.metadata.uploadedAt) }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && filteredItems.length === 0" class="gallery-empty flex flex-col items-center justify-center p-12 text-gray-500 text-center" role="status" [attr.aria-live]="'polite'">
+    <i [class]="emptyIcon + ' text-5xl mb-4 opacity-50'" [attr.aria-hidden]="true"></i>
+    <p class="m-0 text-base">{{ emptyText }}</p>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="gallery-loading flex flex-col items-center justify-center p-12 text-gray-500" role="status" [attr.aria-live]="'polite'">
+    <div class="loading-spinner w-8 h-8 border-2 border-black/10 border-t-primary-500 rounded-full animate-spin mb-4" [attr.aria-hidden]="true"></div>
+    <p class="m-0 text-sm">กำลังโหลดรูปภาพ...</p>
+  </div>
+
+  <!-- Lightbox -->
+  <div
+    *ngIf="isLightboxOpen && lightboxItem"
+    class="lightbox fixed top-0 left-0 right-0 bottom-0 bg-black/70 flex items-center justify-center z-[9999] animate-fade-in"
+    role="dialog"
+    [attr.aria-label]="lightboxItem.title || lightboxItem.alt || 'Image lightbox'"
+    [attr.aria-modal]="'true'"
+    (click)="closeLightbox()"
+    (keydown)="onKeyDown($event)"
+    [attr.tabindex]="0">
+
+    <div class="lightbox-content relative max-w-[90vw] max-h-[90vh] bg-white rounded-xl overflow-hidden shadow-2xl" (click)="$event.stopPropagation()">
+      <!-- Close Button -->
+      <button
+        type="button"
+        class="lightbox-close absolute top-4 right-4 w-10 h-10 rounded-full bg-black/50 border-none text-white text-xl cursor-pointer z-10 transition-all hover:bg-black/70"
+        (click)="closeLightbox()"
+        [attr.aria-label]="'Close lightbox'"
+        [attr.tabindex]="0">
+        <i class="fas fa-times" [attr.aria-hidden]="true"></i>
+      </button>
+
+      <!-- Navigation -->
+      <button
+        *ngIf="filteredItems.length > 1"
+        type="button"
+        class="lightbox-nav lightbox-prev absolute top-1/2 left-4 -translate-y-1/2 w-12 h-12 rounded-full bg-black/50 border-none text-white text-xl cursor-pointer z-10 transition-all hover:bg-black/70"
+        (click)="navigateLightbox('prev')"
+        [attr.aria-label]="'Previous image'"
+        [attr.tabindex]="0">
+        <i class="fas fa-chevron-left" [attr.aria-hidden]="true"></i>
+      </button>
+
+      <button
+        *ngIf="filteredItems.length > 1"
+        type="button"
+        class="lightbox-nav lightbox-next absolute top-1/2 right-4 -translate-y-1/2 w-12 h-12 rounded-full bg-black/50 border-none text-white text-xl cursor-pointer z-10 transition-all hover:bg-black/70"
+        (click)="navigateLightbox('next')"
+        [attr.aria-label]="'Next image'"
+        [attr.tabindex]="0">
+        <i class="fas fa-chevron-right" [attr.aria-hidden]="true"></i>
+      </button>
+
+      <!-- Image -->
+      <div class="lightbox-image flex items-center justify-center max-w-[80vw] max-h-[70vh]">
+        <img appImageOptimization
+          [ngSrc]="lightboxItem.fullSize || lightboxItem.src"
+          [alt]="lightboxItem.alt || lightboxItem.title || ''"
+          class="lightbox-img max-w-full max-h-full object-contain" loading="lazy">
+      </div>
+
+      <!-- Info -->
+      <div *ngIf="lightboxItem.title || lightboxItem.description" class="lightbox-info p-4 bg-white border-t border-gray-200">
+        <h3 *ngIf="lightboxItem.title" class="lightbox-title text-xl font-semibold text-gray-700 m-0 mb-2">
+          {{ lightboxItem.title }}
+        </h3>
+
+        <p *ngIf="lightboxItem.description" class="lightbox-description text-sm text-gray-500 m-0 mb-2 leading-relaxed">
+          {{ lightboxItem.description }}
+        </p>
+
+        <div class="lightbox-counter text-xs text-gray-500 text-center">
+          {{ lightboxIndex + 1 }} / {{ filteredItems.length }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

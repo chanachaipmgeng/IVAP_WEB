@@ -1,0 +1,83 @@
+<aside
+  class="w-64 min-h-screen p-4 fixed lg:static inset-y-0 left-0 border-r border-white/10 bg-white/40 dark:bg-slate-900/80 backdrop-blur-md"
+  [ngClass]="{
+    '-translate-x-full': !shouldShowSidebar,
+    'translate-x-0': shouldShowSidebar,
+    'sidebar-hidden': !shouldShowSidebar,
+    'sidebar-visible': shouldShowSidebar
+  }" [class]="customClass" [attr.aria-label]="ariaLabel || 'Navigation sidebar'" role="navigation"
+  [attr.aria-hidden]="!shouldShowSidebar">
+  <!-- Close Button (Mobile Only) -->
+  <button *ngIf="isOpen" (click)="close.emit()"
+    class="lg:hidden absolute top-4 right-4 p-2 rounded-lg glass-button hover:bg-white/50 dark:hover:bg-primary-500/20 transition-all z-20"
+    aria-label="Close sidebar">
+    <svg class="w-5 h-5 text-gray-900 dark:text-gray-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </button>
+
+  <!-- Animated Background Elements -->
+  <!-- Particles handled globally or removed -->
+
+  <nav class="space-y-1 relative z-10" [attr.aria-label]="ariaLabel || 'Navigation menu'">
+    <ng-container *ngFor="let item of visibleMenuItems; trackBy: trackByMenuItem">
+      <!-- Menu Item with Children (Group) -->
+      <div *ngIf="item.children && item.children.length > 0">
+        <div class="flex items-center w-full">
+          <a *ngIf="item.route" [routerLink]="item.route" routerLinkActive="bg-primary-500/20 border-primary-500"
+            class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-white/50 dark:hover:bg-primary-500/20 transition-all border border-transparent flex-1"
+            (click)="onMenuItemClick()" [attr.aria-label]="t(item.label)" [attr.aria-expanded]="item.expanded">
+            <span class="text-xl" aria-hidden="true">{{ item.icon }}</span>
+            <span class="font-medium text-gray-900 dark:text-gray-100">
+              {{ t(item.label) }}
+            </span>
+          </a>
+          <button *ngIf="!item.route" (click)="toggleExpand(item)"
+            class="w-full flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-white/50 dark:hover:bg-primary-500/20 transition-all border border-transparent text-left"
+            [attr.aria-label]="t(item.label)" [attr.aria-expanded]="item.expanded"
+            [attr.aria-controls]="'menu-' + trackByMenuItem(0, item)">
+            <span class="text-xl" aria-hidden="true">{{ item.icon }}</span>
+            <span class="font-medium text-gray-900 dark:text-gray-100">
+              {{ t(item.label) }}
+            </span>
+          </button>
+          <button (click)="toggleExpand(item)"
+            class="p-2 rounded-lg hover:bg-white/50 dark:hover:bg-primary-500/20 transition-all"
+            [attr.aria-label]="(item.expanded ? 'Collapse' : 'Expand') + ' ' + t(item.label)"
+            [attr.aria-expanded]="item.expanded" [attr.aria-controls]="'menu-' + trackByMenuItem(0, item)">
+            <svg class="w-4 h-4 text-gray-600 dark:text-gray-400 transition-transform"
+              [class.rotate-180]="item.expanded" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Children Items -->
+        <div [id]="'menu-' + trackByMenuItem(0, item)"
+          class="ml-4 mt-1 space-y-1 overflow-hidden transition-all duration-200" [class.hidden]="!item.expanded"
+          role="menu" [attr.aria-hidden]="!item.expanded">
+          <a *ngFor="let child of getVisibleChildren(item); trackBy: trackByMenuItem" [routerLink]="child.route"
+            routerLinkActive="bg-primary-500/20 border-primary-500"
+            class="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/50 dark:hover:bg-primary-500/20 transition-all border border-transparent text-sm"
+            (click)="onMenuItemClick()" role="menuitem" [attr.aria-label]="t(child.label)">
+            <span class="text-base" aria-hidden="true">{{ child.icon }}</span>
+            <span class="font-medium text-gray-900 dark:text-gray-100">
+              {{ t(child.label) }}
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Single Menu Item (No Children) -->
+      <a *ngIf="!item.children || item.children.length === 0" [routerLink]="item.route"
+        routerLinkActive="bg-primary-500/20 border-primary-500"
+        class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-white/50 dark:hover:bg-primary-500/20 transition-all border border-transparent"
+        (click)="onMenuItemClick()" role="menuitem" [attr.aria-label]="t(item.label)">
+        <span class="text-xl" aria-hidden="true">{{ item.icon }}</span>
+        <span class="font-medium text-gray-900 dark:text-gray-100">
+          {{ t(item.label) }}
+        </span>
+      </a>
+    </ng-container>
+  </nav>
+</aside>

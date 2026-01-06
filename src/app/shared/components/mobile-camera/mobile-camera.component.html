@@ -1,0 +1,296 @@
+<div class="mobile-camera relative w-full h-screen bg-gray-900 overflow-hidden" [class]="customClass || ''" role="group" [attr.aria-label]="ariaLabel || 'Camera'">
+  <!-- Camera View -->
+  <div class="camera-container relative w-full h-full bg-black" role="application" [attr.aria-label]="'Camera view'">
+    <video
+      #videoElement
+      class="camera-video w-full h-full object-cover block"
+      [class.hidden]="!isStreaming"
+      autoplay
+      muted
+      playsinline
+      [attr.aria-label]="'Camera preview'"
+      [attr.aria-hidden]="!isStreaming">
+    </video>
+
+    <canvas
+      #canvasElement
+      class="camera-canvas absolute top-0 left-0 w-full h-full pointer-events-none"
+      [class.hidden]="!isStreaming"
+      [attr.aria-hidden]="true">
+    </canvas>
+
+    <!-- Camera Overlay -->
+    <div class="camera-overlay absolute top-0 left-0 w-full h-full pointer-events-none" *ngIf="isStreaming" [attr.aria-hidden]="true">
+      <!-- Grid Lines -->
+      <div class="grid-lines absolute top-0 left-0 w-full h-full" *ngIf="enableGrid" [attr.aria-hidden]="true">
+        <div class="grid-line grid-line-horizontal absolute w-full h-px bg-white/30" style="top: 33.33%"></div>
+        <div class="grid-line grid-line-horizontal absolute w-full h-px bg-white/30" style="top: 66.66%"></div>
+        <div class="grid-line grid-line-vertical absolute h-full w-px bg-white/30" style="left: 33.33%"></div>
+        <div class="grid-line grid-line-vertical absolute h-full w-px bg-white/30" style="left: 66.66%"></div>
+      </div>
+
+      <!-- Countdown Timer -->
+      <div class="countdown-timer absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10" *ngIf="countdown > 0" role="status" [attr.aria-live]="'polite'">
+        <div class="countdown-number text-6xl font-bold text-white drop-shadow-[0_0_20px_rgba(0,0,0,0.8)] animate-pulse">{{ countdown }}</div>
+      </div>
+
+      <!-- Capture Indicator -->
+      <div class="capture-indicator absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10" *ngIf="isCapturing && countdown === 0" role="status" [attr.aria-live]="'polite'">
+        <div class="capture-circle w-[100px] h-[100px] border-4 border-success-500 rounded-full animate-capture-pulse" [attr.aria-label]="'Capturing photo'"></div>
+      </div>
+    </div>
+
+    <!-- Camera Placeholder -->
+    <div class="camera-placeholder absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900" *ngIf="!isStreaming">
+      <div class="placeholder-content text-center text-gray-500">
+        <i class="fas fa-camera fa-3x mb-4 opacity-50"></i>
+        <p class="m-0 mb-6 text-lg">Camera not available</p>
+        <app-glass-button
+          variant="primary"
+          (click)="initializeCamera()"
+          *ngIf="!isInitialized">
+          <i class="fas fa-play"></i>
+          Initialize Camera
+        </app-glass-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Camera Controls -->
+  <div class="camera-controls absolute top-0 left-0 w-full h-full pointer-events-none" *ngIf="isStreaming">
+    <!-- Top Controls -->
+    <div class="top-controls absolute top-8 left-0 right-0 flex justify-between px-8 pointer-events-auto md:px-4">
+      <div class="control-group flex gap-4">
+        <app-glass-button
+          variant="secondary"
+          size="sm"
+          (click)="toggleSettings()"
+          *ngIf="showSettings"
+          [ariaLabel]="'Open camera settings'">
+          <i class="fas fa-cog" [attr.aria-hidden]="true"></i>
+        </app-glass-button>
+
+        <app-glass-button
+          variant="secondary"
+          size="sm"
+          (click)="toggleFlash()"
+          *ngIf="enableFlash"
+          [ariaLabel]="'Toggle flash: ' + getFlashLabel()">
+          <i [class]="getFlashIcon()" [attr.aria-hidden]="true"></i>
+          {{ getFlashLabel() }}
+        </app-glass-button>
+      </div>
+
+      <div class="control-group flex gap-4">
+        <app-glass-button
+          variant="secondary"
+          size="sm"
+          (click)="toggleHDR()"
+          [class.active]="enableHDR">
+          <i class="fas fa-sun"></i>
+          HDR
+        </app-glass-button>
+
+        <app-glass-button
+          variant="secondary"
+          size="sm"
+          (click)="toggleGrid()"
+          [class.active]="enableGrid">
+          <i class="fas fa-th"></i>
+          Grid
+        </app-glass-button>
+      </div>
+    </div>
+
+    <!-- Bottom Controls -->
+    <div class="bottom-controls absolute bottom-8 left-0 right-0 flex justify-between items-center px-8 pointer-events-auto md:px-4">
+      <!-- Left Controls -->
+      <div class="left-controls flex gap-4">
+        <app-glass-button
+          variant="secondary"
+          size="sm"
+          (click)="togglePreview()"
+          *ngIf="showPreview && lastPhoto">
+          <i class="fas fa-image"></i>
+        </app-glass-button>
+      </div>
+
+      <!-- Center Controls -->
+      <div class="center-controls">
+        <!-- Capture Button -->
+        <app-glass-button
+          variant="primary"
+          size="lg"
+          (click)="capturePhoto()"
+          [disabled]="isCapturing"
+          [ariaLabel]="isCapturing ? 'Capturing photo...' : 'Capture photo'"
+          [ariaBusy]="isCapturing ? 'true' : 'false'"
+          class="w-20 h-20 rounded-full text-2xl">
+          <i class="fas fa-camera" *ngIf="!isCapturing" [attr.aria-hidden]="true"></i>
+          <i class="fas fa-spinner fa-spin" *ngIf="isCapturing" [attr.aria-hidden]="true"></i>
+        </app-glass-button>
+      </div>
+
+      <!-- Right Controls -->
+      <div class="right-controls flex gap-4">
+        <app-glass-button
+          variant="secondary"
+          size="sm"
+          (click)="switchCamera()"
+          *ngIf="isNative()">
+          <i class="fas fa-sync-alt"></i>
+        </app-glass-button>
+      </div>
+    </div>
+
+    <!-- Zoom Controls -->
+    <div class="zoom-controls absolute bottom-[120px] left-8 right-8 pointer-events-auto md:left-6 md:right-6 md:bottom-[100px]" *ngIf="enableZoom">
+      <div class="zoom-slider flex items-center gap-4">
+        <input
+          type="range"
+          min="1"
+          max="10"
+          step="0.1"
+          [(ngModel)]="zoomLevel"
+          (ngModelChange)="setZoom($event)"
+          class="zoom-range flex-1 h-1 bg-white/30 rounded-sm outline-none appearance-none">
+        <div class="zoom-label text-white font-medium min-w-[40px] text-center">{{ getZoomLabel() }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Panel -->
+  <div class="settings-panel absolute top-0 left-0 w-full h-full bg-black/80 flex items-center justify-center z-[1000] p-4" *ngIf="showSettingsPanel">
+    <app-glass-card>
+      <div class="settings-header flex justify-between items-center mb-6">
+        <h3 class="m-0 text-white">Camera Settings</h3>
+        <app-glass-button
+          variant="secondary"
+          size="sm"
+          (click)="toggleSettings()">
+          <i class="fas fa-times"></i>
+        </app-glass-button>
+      </div>
+
+      <div class="settings-content">
+        <!-- Quality -->
+        <div class="setting-group mb-6">
+          <label class="block mb-2 text-gray-400 font-medium">Quality</label>
+          <select [(ngModel)]="cameraSettings.quality" class="setting-select w-full px-3 py-3 rounded-xl bg-white/10 border border-white/20 text-white text-base focus:outline-none focus:border-primary-500">
+            <option value="50">Low (50%)</option>
+            <option value="80">Medium (80%)</option>
+            <option value="95">High (95%)</option>
+            <option value="100">Maximum (100%)</option>
+          </select>
+        </div>
+
+        <!-- Resolution -->
+        <div class="setting-group mb-6">
+          <label class="block mb-2 text-gray-400 font-medium">Resolution</label>
+          <select [(ngModel)]="cameraSettings.resolution" class="setting-select w-full px-3 py-3 rounded-xl bg-white/10 border border-white/20 text-white text-base focus:outline-none focus:border-primary-500">
+            <option [ngValue]="{width: 1280, height: 720}">HD (1280x720)</option>
+            <option [ngValue]="{width: 1920, height: 1080}">Full HD (1920x1080)</option>
+            <option [ngValue]="{width: 2560, height: 1440}">2K (2560x1440)</option>
+            <option [ngValue]="{width: 3840, height: 2160}">4K (3840x2160)</option>
+          </select>
+        </div>
+
+        <!-- Timer -->
+        <div class="setting-group mb-6">
+          <label class="block mb-2 text-gray-400 font-medium">Timer</label>
+          <select [(ngModel)]="timerDelay" class="setting-select w-full px-3 py-3 rounded-xl bg-white/10 border border-white/20 text-white text-base focus:outline-none focus:border-primary-500">
+            <option value="0">Off</option>
+            <option value="3">3 seconds</option>
+            <option value="5">5 seconds</option>
+            <option value="10">10 seconds</option>
+          </select>
+        </div>
+
+        <!-- Focus Mode -->
+        <div class="setting-group mb-6">
+          <label class="block mb-2 text-gray-400 font-medium">Focus Mode</label>
+          <select [(ngModel)]="cameraSettings.focusMode" class="setting-select w-full px-3 py-3 rounded-xl bg-white/10 border border-white/20 text-white text-base focus:outline-none focus:border-primary-500">
+            <option value="auto">Auto</option>
+            <option value="manual">Manual</option>
+            <option value="continuous">Continuous</option>
+          </select>
+        </div>
+
+        <!-- White Balance -->
+        <div class="setting-group mb-6">
+          <label class="block mb-2 text-gray-400 font-medium">White Balance</label>
+          <select [(ngModel)]="cameraSettings.whiteBalance" class="setting-select w-full px-3 py-3 rounded-xl bg-white/10 border border-white/20 text-white text-base focus:outline-none focus:border-primary-500">
+            <option value="auto">Auto</option>
+            <option value="sunny">Sunny</option>
+            <option value="cloudy">Cloudy</option>
+            <option value="tungsten">Tungsten</option>
+            <option value="fluorescent">Fluorescent</option>
+          </select>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Preview Panel -->
+  <div class="preview-panel absolute top-0 left-0 w-full h-full bg-black/80 flex items-center justify-center z-[1000] p-4" *ngIf="showPreviewPanel && lastPhoto">
+    <app-glass-card>
+      <div class="preview-header flex justify-between items-center mb-6">
+        <h3 class="m-0 text-white">Photo Preview</h3>
+        <app-glass-button
+          variant="secondary"
+          size="sm"
+          (click)="togglePreview()">
+          <i class="fas fa-times"></i>
+        </app-glass-button>
+      </div>
+
+      <div class="preview-content">
+        <img appImageOptimization [ngSrc]="lastPhoto.dataUrl" [alt]="'Captured photo'" class="preview-image w-full max-w-[400px] h-auto rounded-xl mb-4" loading="lazy">
+
+        <div class="preview-info mb-6">
+          <div class="info-item flex justify-between mb-2">
+            <span class="info-label text-gray-400">Size:</span>
+            <span class="info-value text-white font-medium">{{ lastPhoto.width }}x{{ lastPhoto.height }}</span>
+          </div>
+          <div class="info-item flex justify-between mb-2">
+            <span class="info-label text-gray-400">File Size:</span>
+            <span class="info-value text-white font-medium">{{ (lastPhoto.size / 1024).toFixed(1) }} KB</span>
+          </div>
+          <div class="info-item flex justify-between mb-2">
+            <span class="info-label text-gray-400">Time:</span>
+            <span class="info-value text-white font-medium">{{ lastPhoto.timestamp | date:'short' }}</span>
+          </div>
+          <div class="info-item flex justify-between mb-2" *ngIf="lastPhoto.location">
+            <span class="info-label text-gray-400">Location:</span>
+            <span class="info-value text-white font-medium">{{ lastPhoto.location.latitude.toFixed(4) }}, {{ lastPhoto.location.longitude.toFixed(4) }}</span>
+          </div>
+        </div>
+
+        <div class="preview-actions flex gap-4 justify-center">
+          <app-glass-button
+            variant="secondary"
+            (click)="retakePhoto()">
+            <i class="fas fa-redo"></i>
+            Retake
+          </app-glass-button>
+
+          <app-glass-button
+            variant="primary"
+            (click)="usePhoto()">
+            <i class="fas fa-check"></i>
+            Use Photo
+          </app-glass-button>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Device Info -->
+  <div class="device-info absolute top-5 left-1/2 -translate-x-1/2 z-10" *ngIf="isInitialized">
+    <div class="info-badge bg-black/70 text-white px-4 py-2 rounded-2xl text-sm flex items-center gap-2">
+      <i class="fas fa-mobile-alt text-primary-500"></i>
+      {{ getDeviceInfo() }}
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,138 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+      📊 Parking Statistics
+    </h1>
+    <button
+      (click)="loadStatistics()"
+      class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center space-x-2"
+    >
+      <span>🔄</span>
+      <span>Refresh</span>
+    </button>
+  </div>
+
+  <!-- Loading -->
+  @if (loading()) {
+    <div class="flex justify-center items-center py-20">
+      <app-loading />
+    </div>
+  }
+
+  <!-- Error -->
+  @if (error() && !loading()) {
+    <div class="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+      <div class="text-5xl mb-3">⚠️</div>
+      <p class="text-red-600 font-semibold">{{ error() }}</p>
+      <button
+        (click)="loadStatistics()"
+        class="mt-4 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+      >
+        Try Again
+      </button>
+    </div>
+  }
+
+  <!-- Statistics -->
+  @if (statistics() && !loading() && !error()) {
+    <div class="space-y-6">
+      <!-- Overall Stats -->
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <app-glass-card class="text-center">
+          <div class="text-3xl mb-2">🚗</div>
+          <p class="text-3xl font-bold text-blue-600">{{ statistics()?.totalSpaces }}</p>
+          <p class="text-sm text-gray-600">Total Spaces</p>
+        </app-glass-card>
+
+        <app-glass-card class="text-center">
+          <div class="text-3xl mb-2">✅</div>
+          <p class="text-3xl font-bold text-green-600">{{ statistics()?.availableSpaces }}</p>
+          <p class="text-sm text-gray-600">Available</p>
+        </app-glass-card>
+
+        <app-glass-card class="text-center">
+          <div class="text-3xl mb-2">🔴</div>
+          <p class="text-3xl font-bold text-red-600">{{ statistics()?.occupiedSpaces }}</p>
+          <p class="text-sm text-gray-600">Occupied</p>
+        </app-glass-card>
+
+        <app-glass-card class="text-center">
+          <div class="text-3xl mb-2">📅</div>
+          <p class="text-3xl font-bold text-yellow-600">{{ statistics()?.reservedSpaces }}</p>
+          <p class="text-sm text-gray-600">Reserved</p>
+        </app-glass-card>
+
+        <app-glass-card class="text-center">
+          <div class="text-3xl mb-2">📊</div>
+          <p class="text-3xl font-bold text-purple-600">{{ occupancyPercentage() }}%</p>
+          <p class="text-sm text-gray-600">Occupancy</p>
+        </app-glass-card>
+      </div>
+
+      <!-- Vehicle Stats -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <app-glass-card>
+          <h3 class="text-lg font-semibold mb-4 flex items-center">
+            <span class="text-2xl mr-2">🚙</span>
+            Vehicles
+          </h3>
+          <div class="space-y-3">
+            <div class="flex justify-between items-center">
+              <span class="text-gray-600">Total Vehicles</span>
+              <span class="font-bold text-xl">{{ statistics()?.totalVehicles }}</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-gray-600">Currently Parked</span>
+              <span class="font-bold text-xl text-green-600">{{ statistics()?.currentlyParked }}</span>
+            </div>
+          </div>
+        </app-glass-card>
+
+        <app-glass-card>
+          <h3 class="text-lg font-semibold mb-4 flex items-center">
+            <span class="text-2xl mr-2">💰</span>
+            Today's Revenue
+          </h3>
+          <div class="space-y-3">
+            <div class="flex justify-between items-center">
+              <span class="text-gray-600">Revenue</span>
+              <span class="font-bold text-2xl text-green-600">
+                {{ formatCurrency(statistics()?.todayRevenue) }}
+              </span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-gray-600">Entries</span>
+              <span class="font-bold text-xl">{{ statistics()?.todayEntries }}</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-gray-600">Exits</span>
+              <span class="font-bold text-xl">{{ statistics()?.todayExits }}</span>
+            </div>
+          </div>
+        </app-glass-card>
+      </div>
+
+      <!-- Utilization -->
+      @if (statistics()?.utilizationRate !== undefined) {
+        <app-glass-card>
+          <h3 class="text-lg font-semibold mb-4 flex items-center">
+            <span class="text-2xl mr-2">📈</span>
+            Utilization Rate
+          </h3>
+          <div class="relative w-full bg-gray-200 rounded-full h-8">
+            <div
+              class="bg-gradient-to-r from-blue-500 to-blue-600 h-8 rounded-full flex items-center justify-center"
+              [style.width.%]="statistics()?.utilizationRate"
+            >
+              <span class="text-white font-bold text-sm">
+                {{ formatPercentage(statistics()?.utilizationRate) }}
+              </span>
+            </div>
+          </div>
+        </app-glass-card>
+      }
+    </div>
+  }
+</div>
+

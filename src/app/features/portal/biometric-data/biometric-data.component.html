@@ -1,0 +1,42 @@
+<app-page-layout
+  title="Biometric Data Management"
+  description="Manage biometric data such as face recognition, fingerprints, and iris scans."
+  icon="👤"
+  [actions]="pageActions()">
+  
+  <!-- Statistics Cards -->
+  <app-statistics-grid [stats]="statisticsCards()" [columns]="4" />
+
+  <!-- Error Message -->
+  @if (errorMessage()) {
+    <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+      <p class="text-red-800 text-sm">{{ errorMessage() }}</p>
+    </div>
+  }
+
+  <!-- Filters -->
+  <app-filter-section
+    [fields]="filterFields()"
+    [columns]="3"
+    (filterChange)="onFilterChange($event)"
+  />
+
+  <!-- Biometric Data Table -->
+  <app-data-table
+    [columns]="columns"
+    [data]="filteredData()"
+    [actions]="actions"
+    [searchable]="false"
+  />
+
+  <!-- Add/Edit Modal -->
+  <app-modal
+    [isOpen]="showModal()"
+    [title]="(selectedData() ? 'Edit Biometric Data' : 'Add Biometric Data') | translate"
+    [loading]="isLoading()"
+    (closed)="closeModal()"
+    (confirmed)="saveBiometricData()"
+  >
+    <!-- Biometric form content -->
+  </app-modal>
+</app-page-layout>

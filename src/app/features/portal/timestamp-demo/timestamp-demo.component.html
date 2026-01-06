@@ -1,0 +1,321 @@
+<div class="timestamp-demo">
+  <!-- Header -->
+  <div class="demo-header">
+    <h1 class="demo-title">Timestamp Management Demo</h1>
+    <p class="demo-description">
+      ระบบจัดการเวลาและสถานที่แบบเรียลไทม์ พร้อม Geofencing
+    </p>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <div class="demo-navigation">
+    <app-glass-card>
+      <div class="nav-tabs">
+        <app-glass-button
+          *ngFor="let tab of ['overview', 'timestamps', 'locations', 'settings']"
+          [variant]="selectedTab === tab ? 'primary' : 'secondary'"
+          (click)="selectTab(tab)">
+          <i class="fas" [class]="getTabIcon(tab)"></i>
+          {{ getTabLabel(tab) }}
+        </app-glass-button>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Overview Tab -->
+  <div *ngIf="selectedTab === 'overview'" class="overview-tab">
+    <!-- Statistics Cards -->
+    <div class="stats-section">
+      <app-glass-card>
+        <h2>สถิติการทำงาน</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon total">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-value">{{ stats.totalRecords }}</div>
+              <div class="stat-label">บันทึกทั้งหมด</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon today">
+              <i class="fas fa-calendar-day"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-value">{{ stats.todayRecords }}</div>
+              <div class="stat-label">วันนี้</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon week">
+              <i class="fas fa-calendar-week"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-value">{{ stats.thisWeekRecords }}</div>
+              <div class="stat-label">สัปดาห์นี้</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon month">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-value">{{ stats.thisMonthRecords }}</div>
+              <div class="stat-label">เดือนนี้</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon pending">
+              <i class="fas fa-hourglass-half"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-value">{{ stats.pendingApprovals }}</div>
+              <div class="stat-label">รออนุมัติ</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon late">
+              <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-value">{{ stats.lateCheckins }}</div>
+              <div class="stat-label">เข้างานสาย</div>
+            </div>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+
+    <!-- Current Location -->
+    <div *ngIf="currentLocation" class="current-location">
+      <app-glass-card>
+        <h3>ตำแหน่งปัจจุบัน</h3>
+        <div class="location-info">
+          <div class="location-coords">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>{{ currentLocation.latitude.toFixed(6) }}, {{ currentLocation.longitude.toFixed(6) }}</span>
+          </div>
+          <div class="location-accuracy">
+            <i class="fas fa-crosshairs"></i>
+            <span>ความแม่นยำ: ±{{ roundNumber(currentLocation.accuracy) }}m</span>
+          </div>
+          <div class="location-time">
+            <i class="fas fa-clock"></i>
+            <span>อัปเดตล่าสุด: {{ formatTimestamp(getLocationTimestamp()) }}</span>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+
+    <!-- Main Timestamp Component -->
+    <div class="timestamp-section">
+      <app-timestamp
+        [mode]="'camera'"
+        [showPhoto]="demoSettings.enablePhotoCapture"
+        [showLocation]="true"
+        [showNotes]="true"
+        [autoSave]="demoSettings.autoSave"
+        (timestampCreated)="onTimestampCreated($event)"
+        (locationChanged)="onLocationChanged($event)">
+      </app-timestamp>
+    </div>
+  </div>
+
+  <!-- Timestamps Tab -->
+  <div *ngIf="selectedTab === 'timestamps'" class="timestamps-tab">
+    <app-glass-card>
+      <div class="timestamps-header">
+        <h2>บันทึกเวลา</h2>
+        <div class="timestamps-controls">
+          <select [(ngModel)]="selectedDateRange" class="date-range-select">
+            <option value="today">วันนี้</option>
+            <option value="week">สัปดาห์นี้</option>
+            <option value="month">เดือนนี้</option>
+            <option value="custom">กำหนดเอง</option>
+          </select>
+
+          <div class="export-import">
+            <app-glass-button
+              variant="secondary"
+              (click)="exportData()">
+              <i class="fas fa-download"></i>
+              ส่งออก
+            </app-glass-button>
+            <app-glass-button
+              variant="secondary"
+              (click)="fileInput.click()">
+              <i class="fas fa-upload"></i>
+              นำเข้า
+            </app-glass-button>
+          </div>
+        </div>
+      </div>
+
+      <div class="timestamps-list">
+        <div *ngIf="getTimestampsByDateRange().length === 0" class="no-timestamps">
+          <i class="fas fa-inbox fa-3x"></i>
+          <p>ไม่มีข้อมูลบันทึกเวลา</p>
+        </div>
+
+        <div *ngFor="let timestamp of getTimestampsByDateRange()" class="timestamp-item">
+          <div class="timestamp-icon">
+            <i class="fas" [class]="getTimestampTypeIcon(timestamp.type)"></i>
+          </div>
+          <div class="timestamp-content">
+            <div class="timestamp-type">{{ getTimestampTypeLabel(timestamp.type) }}</div>
+            <div class="timestamp-time">{{ formatTimestamp(timestamp.timestamp) }}</div>
+            <div class="timestamp-location">{{ timestamp.location.address }}</div>
+            <div *ngIf="timestamp.notes" class="timestamp-notes">{{ timestamp.notes }}</div>
+          </div>
+          <div class="timestamp-status">
+            <span class="status-badge" [style.background-color]="getTimestampStatusColor(timestamp.status)">
+              {{ getTimestampStatusLabel(timestamp.status) }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Locations Tab -->
+  <div *ngIf="selectedTab === 'locations'" class="locations-tab">
+    <app-glass-card>
+      <div class="locations-header">
+        <h2>สถานที่ทำงาน</h2>
+        <app-glass-button
+          variant="primary"
+          (click)="addLocation()">
+          <i class="fas fa-plus"></i>
+          เพิ่มสถานที่
+        </app-glass-button>
+      </div>
+
+      <div class="locations-grid">
+        <div *ngFor="let location of availableLocations" class="location-card">
+          <div class="location-header">
+            <div class="location-name">{{ location.name }}</div>
+            <div class="location-actions">
+              <app-glass-button
+                variant="secondary"
+                size="sm"
+                (click)="toggleLocationActive(location)">
+                <i class="fas" [class.fa-toggle-on]="location.isActive" [class.fa-toggle-off]="!location.isActive"></i>
+              </app-glass-button>
+              <app-glass-button
+                variant="danger"
+                size="sm"
+                (click)="deleteLocation(location)">
+                <i class="fas fa-trash"></i>
+              </app-glass-button>
+            </div>
+          </div>
+
+          <div class="location-info">
+            <div class="location-address">
+              <i class="fas fa-map-marker-alt"></i>
+              {{ location.address }}
+            </div>
+            <div class="location-hours">
+              <i class="fas fa-clock"></i>
+              {{ getWorkingHours(location) }} ({{ getWorkingDays(location) }})
+            </div>
+            <div class="location-radius">
+              <i class="fas fa-circle"></i>
+              รัศมี: {{ location.radius }}m
+            </div>
+          </div>
+
+          <div class="location-status">
+            <div class="distance" *ngIf="currentLocation">
+              <i class="fas fa-ruler"></i>
+              ระยะทาง: {{ formatDistance(getLocationDistance(location)) }}
+            </div>
+            <div class="status-indicator"
+                 [style.color]="getLocationStatusColor(getLocationStatus(location))">
+              <i [class]="getLocationStatusIcon(getLocationStatus(location))"></i>
+              {{ getLocationStatus(location) === 'inside' ? 'อยู่ในพื้นที่' : 'นอกพื้นที่' }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Settings Tab -->
+  <div *ngIf="selectedTab === 'settings'" class="settings-tab">
+    <app-glass-card>
+      <h2>การตั้งค่า</h2>
+
+      <div class="settings-content">
+        <div class="setting-group">
+          <label class="setting-label">
+            <input
+              type="checkbox"
+              [(ngModel)]="demoSettings.enableLocationTracking"
+              (change)="saveDemoSettings()">
+            <span class="checkmark"></span>
+            เปิดการติดตามตำแหน่ง
+          </label>
+        </div>
+
+        <div class="setting-group">
+          <label class="setting-label">
+            <input
+              type="checkbox"
+              [(ngModel)]="demoSettings.enablePhotoCapture"
+              (change)="saveDemoSettings()">
+            <span class="checkmark"></span>
+            เปิดการถ่ายรูป
+          </label>
+        </div>
+
+        <div class="setting-group">
+          <label class="setting-label">
+            <input
+              type="checkbox"
+              [(ngModel)]="demoSettings.autoSave"
+              (change)="saveDemoSettings()">
+            <span class="checkmark"></span>
+            บันทึกอัตโนมัติ
+          </label>
+        </div>
+
+        <div class="setting-group">
+          <label class="setting-label">
+            <input
+              type="checkbox"
+              [(ngModel)]="demoSettings.showWorkingHours"
+              (change)="saveDemoSettings()">
+            <span class="checkmark"></span>
+            แสดงเวลาทำงาน
+          </label>
+        </div>
+
+        <div class="setting-group">
+          <label class="setting-label">
+            <input
+              type="checkbox"
+              [(ngModel)]="demoSettings.showAdvancedFeatures"
+              (change)="toggleAdvancedFeatures()">
+            <span class="checkmark"></span>
+            แสดงฟีเจอร์ขั้นสูง
+          </label>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Hidden file input for import -->
+  <input
+    #fileInput
+    type="file"
+    accept=".json"
+    (change)="onImportFile($event)"
+    style="display: none;">
+</div>

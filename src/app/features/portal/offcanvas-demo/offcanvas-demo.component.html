@@ -1,0 +1,295 @@
+<div class="offcanvas-demo-container">
+  <!-- Header -->
+  <div class="demo-header">
+    <h1 class="demo-title">
+      <i class="fas fa-bars"></i>
+      Offcanvas Demo
+    </h1>
+    <p class="demo-description">
+      ทดสอบ Offcanvas Component สำหรับ Mobile Menu และ Sidebar
+    </p>
+  </div>
+
+  <!-- Demo Controls -->
+  <div class="demo-controls">
+    <app-glass-card>
+      <div class="controls-section">
+        <h3>การตั้งค่า Offcanvas</h3>
+
+        <div class="control-group">
+          <label>ตำแหน่ง:</label>
+          <select [(ngModel)]="selectedPosition" (change)="updateConfig()">
+            <option *ngFor="let option of getPositionOptions()" [value]="option.value">
+              {{ option.label }}
+            </option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>ขนาด:</label>
+          <select [(ngModel)]="selectedSize" (change)="updateConfig()">
+            <option *ngFor="let option of getSizeOptions()" [value]="option.value">
+              {{ option.label }}
+            </option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>Animation Duration:</label>
+          <input
+            type="range"
+            min="100"
+            max="1000"
+            step="50"
+            [(ngModel)]="animationDuration"
+            (change)="updateConfig()"
+            class="range-input">
+          <span class="range-value">{{ animationDuration }}ms</span>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="backdrop" (change)="updateConfig()">
+            แสดง Backdrop
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="backdropClose" (change)="updateConfig()">
+            ปิดด้วย Backdrop
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="keyboard" (change)="updateConfig()">
+            ใช้งานด้วยคีย์บอร์ด
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="animation" (change)="updateConfig()">
+            เปิดใช้ Animation
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="bodyScroll" (change)="updateConfig()">
+            ปิดการ Scroll ของ Body
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="focusTrap" (change)="updateConfig()">
+            Focus Trap
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="autoFocus" (change)="updateConfig()">
+            Auto Focus
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="restoreFocus" (change)="updateConfig()">
+            Restore Focus
+          </label>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Demo Actions -->
+  <div class="demo-actions">
+    <app-glass-card>
+      <div class="actions-section">
+        <h3>ทดสอบ Offcanvas</h3>
+
+        <div class="action-buttons">
+          <app-glass-button
+            variant="primary"
+            (click)="openOffcanvas('start')">
+            <i class="fas fa-arrow-left"></i>
+            เปิด Start (ซ้าย)
+          </app-glass-button>
+
+          <app-glass-button
+            variant="primary"
+            (click)="openOffcanvas('end')">
+            <i class="fas fa-arrow-right"></i>
+            เปิด End (ขวา)
+          </app-glass-button>
+
+          <app-glass-button
+            variant="primary"
+            (click)="openOffcanvas('top')">
+            <i class="fas fa-arrow-up"></i>
+            เปิด Top (บน)
+          </app-glass-button>
+
+          <app-glass-button
+            variant="primary"
+            (click)="openOffcanvas('bottom')">
+            <i class="fas fa-arrow-down"></i>
+            เปิด Bottom (ล่าง)
+          </app-glass-button>
+        </div>
+
+        <div class="action-buttons">
+          <app-glass-button
+            variant="secondary"
+            (click)="openCustomOffcanvas()">
+            <i class="fas fa-cog"></i>
+            เปิด Custom Offcanvas
+          </app-glass-button>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Statistics -->
+  <div class="demo-stats">
+    <app-glass-card>
+      <div class="stats-section">
+        <h3>สถิติ Offcanvas</h3>
+
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-value">{{ getOffcanvasStats().totalOpen }}</div>
+            <div class="stat-label">Offcanvas ที่เปิด</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getOffcanvasStats().position }}</div>
+            <div class="stat-label">ตำแหน่ง</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getOffcanvasStats().size }}</div>
+            <div class="stat-label">ขนาด</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getOffcanvasStats().backdrop ? 'เปิด' : 'ปิด' }}</div>
+            <div class="stat-label">Backdrop</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getOffcanvasStats().keyboard ? 'เปิด' : 'ปิด' }}</div>
+            <div class="stat-label">คีย์บอร์ด</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getOffcanvasStats().animation ? 'เปิด' : 'ปิด' }}</div>
+            <div class="stat-label">Animation</div>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Features Overview -->
+  <div class="features-overview">
+    <app-glass-card>
+      <div class="features-section">
+        <h3>ฟีเจอร์ Offcanvas</h3>
+
+        <div class="features-grid">
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Multiple Positions</h4>
+            <p>รองรับหลายตำแหน่ง</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Multiple Sizes</h4>
+            <p>รองรับหลายขนาด</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Backdrop Support</h4>
+            <p>รองรับ Backdrop</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Keyboard Navigation</h4>
+            <p>รองรับการใช้งานด้วยคีย์บอร์ด</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Focus Trap</h4>
+            <p>รองรับ Focus Trap</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Animation</h4>
+            <p>รองรับ Animation</p>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+</div>
+
+<!-- Offcanvas Components -->
+<app-offcanvas
+  [isOpen]="isStartOpen"
+  title="Start Offcanvas"
+  [config]="config"
+  (opened)="onOffcanvasOpened()"
+  (closed)="onOffcanvasClosed()"
+  (backdropClick)="onBackdropClick()">
+  <div [innerHTML]="demoContent"></div>
+</app-offcanvas>
+
+<app-offcanvas
+  [isOpen]="isEndOpen"
+  title="End Offcanvas"
+  [config]="config"
+  (opened)="onOffcanvasOpened()"
+  (closed)="onOffcanvasClosed()"
+  (backdropClick)="onBackdropClick()">
+  <div [innerHTML]="demoContent"></div>
+</app-offcanvas>
+
+<app-offcanvas
+  [isOpen]="isTopOpen"
+  title="Top Offcanvas"
+  [config]="config"
+  (opened)="onOffcanvasOpened()"
+  (closed)="onOffcanvasClosed()"
+  (backdropClick)="onBackdropClick()">
+  <div [innerHTML]="demoContent"></div>
+</app-offcanvas>
+
+<app-offcanvas
+  [isOpen]="isBottomOpen"
+  title="Bottom Offcanvas"
+  [config]="config"
+  (opened)="onOffcanvasOpened()"
+  (closed)="onOffcanvasClosed()"
+  (backdropClick)="onBackdropClick()">
+  <div [innerHTML]="demoContent"></div>
+</app-offcanvas>
+
+<app-offcanvas
+  [isOpen]="isCustomOpen"
+  title="Custom Offcanvas"
+  [config]="config"
+  (opened)="onOffcanvasOpened()"
+  (closed)="onOffcanvasClosed()"
+  (backdropClick)="onBackdropClick()">
+  <div [innerHTML]="demoContent"></div>
+</app-offcanvas>

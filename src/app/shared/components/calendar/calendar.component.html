@@ -1,0 +1,101 @@
+<div class="calendar-container p-4 rounded-xl shadow-2xl bg-gray-800/80 text-white backdrop-blur-sm border border-primary-500/20" [class]="customClass || ''" role="application" [attr.aria-label]="ariaLabel || 'Calendar'">
+  <!-- Toolbar -->
+  <div *ngIf="showToolbar" class="calendar-toolbar mb-4 flex justify-between items-center">
+    <div class="flex items-center space-x-2">
+      <app-glass-button (clicked)="previousView()" variant="secondary">
+        <i class="fas fa-chevron-left"></i>
+      </app-glass-button>
+      <app-glass-button (clicked)="today()" variant="secondary">
+        Today
+      </app-glass-button>
+      <app-glass-button (clicked)="nextView()" variant="secondary">
+        <i class="fas fa-chevron-right"></i>
+      </app-glass-button>
+    </div>
+
+    <h2 class="text-xl font-bold text-white">
+      {{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}
+    </h2>
+
+    <div class="flex space-x-2">
+      <app-glass-button
+        (clicked)="setView(CalendarView.Month)"
+        [variant]="view === CalendarView.Month ? 'primary' : 'secondary'"
+      >
+        Month
+      </app-glass-button>
+      <app-glass-button
+        (clicked)="setView(CalendarView.Week)"
+        [variant]="view === CalendarView.Week ? 'primary' : 'secondary'"
+      >
+        Week
+      </app-glass-button>
+      <app-glass-button
+        (clicked)="setView(CalendarView.Day)"
+        [variant]="view === CalendarView.Day ? 'primary' : 'secondary'"
+      >
+        Day
+      </app-glass-button>
+      <app-glass-button (clicked)="onRefreshClicked()" variant="secondary">
+        <i class="fas fa-sync-alt"></i>
+      </app-glass-button>
+    </div>
+  </div>
+
+  <!-- Calendar Views -->
+  <div class="calendar-content">
+    @switch (view) {
+      @case (CalendarView.Month) {
+        <mwl-calendar-month-view
+          [viewDate]="viewDate"
+          [events]="events"
+          [activeDayIsOpen]="activeDayIsOpen"
+          [weekStartsOn]="weekStartsOn"
+          [excludeDays]="excludeDays"
+          [weekendDays]="weekendDays"
+          [refresh]="refresh"
+          (dayClicked)="onDayClicked($event)"
+          (eventClicked)="onEventClicked($event)"
+          (eventTimesChanged)="onEventTimesChanged($event)"
+          (eventDropped)="onEventDropped($event)"
+        >
+        </mwl-calendar-month-view>
+      }
+
+      @case (CalendarView.Week) {
+        <mwl-calendar-week-view
+          [viewDate]="viewDate"
+          [events]="events"
+          [weekStartsOn]="weekStartsOn"
+          [excludeDays]="excludeDays"
+          [weekendDays]="weekendDays"
+          [dayStartHour]="dayStartHour"
+          [dayEndHour]="dayEndHour"
+          [hourSegments]="hourSegments"
+          [refresh]="refresh"
+          (dayClicked)="onDayClicked($event)"
+          (eventClicked)="onEventClicked($event)"
+          (eventTimesChanged)="onEventTimesChanged($event)"
+          (eventDropped)="onEventDropped($event)"
+        >
+        </mwl-calendar-week-view>
+      }
+
+      @case (CalendarView.Day) {
+        <mwl-calendar-day-view
+          [viewDate]="viewDate"
+          [events]="events"
+          [dayStartHour]="dayStartHour"
+          [dayEndHour]="dayEndHour"
+          [hourSegments]="hourSegments"
+          [refresh]="refresh"
+          (dayClicked)="onDayClicked($event)"
+          (eventClicked)="onEventClicked($event)"
+          (eventTimesChanged)="onEventTimesChanged($event)"
+          (eventDropped)="onEventDropped($event)"
+        >
+        </mwl-calendar-day-view>
+      }
+    }
+  </div>
+</div>

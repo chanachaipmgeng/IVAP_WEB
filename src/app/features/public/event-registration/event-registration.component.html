@@ -1,0 +1,224 @@
+<div class="event-registration-page min-h-screen relative overflow-hidden">
+  <!-- Background Graphics -->
+  <!-- Background Graphics handled globally by body styles -->
+
+  <!-- Header -->
+  <header
+    class="fixed top-0 left-0 right-0 z-50 glass-card !rounded-none !border-x-0 !border-t-0 border-b border-white/10">
+    <div class="container mx-auto px-6 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <div class="text-4xl">🎥</div>
+          <h1 class="text-2xl font-bold ai-gradient-text">
+            IVAP Platform
+          </h1>
+        </div>
+        <div class="flex items-center space-x-4">
+          <app-glass-button (clicked)="goBack()" variant="secondary" size="md">
+            ← Back
+          </app-glass-button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="pt-24 pb-12 relative z-10">
+    <div class="container mx-auto px-6">
+      <div class="max-w-3xl mx-auto">
+        <!-- Loading State -->
+        @if (loading()) {
+        <app-glass-card padding="lg" customClass="text-center">
+          <div class="py-12">
+            <div class="inline-block animate-spin text-4xl mb-4">⟳</div>
+            <p class="text-lg text-gray-300 dark:text-gray-400">Loading event details...</p>
+          </div>
+        </app-glass-card>
+        }
+
+        <!-- Event Not Found -->
+        @else if (!event()) {
+        <app-glass-card padding="lg" customClass="text-center">
+          <div class="py-12">
+            <div class="text-6xl mb-4">😕</div>
+            <h2 class="text-2xl font-bold mb-2 ai-gradient-text">Event Not Found</h2>
+            <p class="text-gray-300 dark:text-gray-400 mb-6">The event you're looking for doesn't exist or has been
+              removed.</p>
+            <app-glass-button (clicked)="goBack()" variant="primary" size="md">
+              Go Back
+            </app-glass-button>
+          </div>
+        </app-glass-card>
+        }
+
+        <!-- Event Registration Form -->
+        @else {
+        <!-- Event Header -->
+        <app-glass-card padding="lg" customClass="mb-6">
+          <div class="text-center mb-6">
+            <div class="text-5xl mb-4">🎉</div>
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4 ai-gradient-text">
+              {{ event().name }}
+            </h1>
+            <p class="text-lg text-gray-300 dark:text-gray-400 mb-6">
+              {{ event().description }}
+            </p>
+
+            <!-- Event Details -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+              <div class="glass-card p-4 text-center">
+                <div class="text-2xl mb-2">📅</div>
+                <div class="text-sm text-gray-400 mb-1">Start Date</div>
+                <div class="font-semibold">{{ formatDate(event().startDate) }}</div>
+              </div>
+              <div class="glass-card p-4 text-center">
+                <div class="text-2xl mb-2">📍</div>
+                <div class="text-sm text-gray-400 mb-1">Location</div>
+                <div class="font-semibold">{{ event().location }}</div>
+              </div>
+              <div class="glass-card p-4 text-center">
+                <div class="text-2xl mb-2">👥</div>
+                <div class="text-sm text-gray-400 mb-1">Attendees</div>
+                <div class="font-semibold">{{ event().currentAttendees || 0 }} / {{ event().maxAttendees || '∞' }}</div>
+              </div>
+            </div>
+          </div>
+        </app-glass-card>
+
+        <!-- Registration Form -->
+        <app-glass-card padding="lg">
+          <h2 class="text-2xl font-bold mb-6 ai-gradient-text">Registration Form</h2>
+
+          <!-- Error Messages -->
+          @if (errorMessage()) {
+          <div class="glass-card p-4 mb-6 border-2 border-red-500/50 bg-red-500/10">
+            <div class="flex items-start gap-3">
+              <div class="text-2xl">⚠️</div>
+              <div class="flex-1">
+                <p class="font-semibold text-red-400 mb-2">{{ errorMessage() }}</p>
+                @if (validationErrors().length > 0) {
+                <ul class="list-disc list-inside space-y-1 text-sm text-red-300">
+                  @for (error of validationErrors(); track $index) {
+                  <li>{{ error }}</li>
+                  }
+                </ul>
+                }
+              </div>
+              <button (click)="errorMessage.set(null); validationErrors.set([])"
+                class="text-red-400 hover:text-red-300">
+                ×
+              </button>
+            </div>
+          </div>
+          }
+
+          <form (ngSubmit)="submitRegistration()" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <app-glass-input label="First Name" [(ngModel)]="formData.firstName" name="firstName" [required]="true"
+                placeholder="Enter your first name">
+              </app-glass-input>
+
+              <app-glass-input label="Last Name" [(ngModel)]="formData.lastName" name="lastName" [required]="true"
+                placeholder="Enter your last name">
+              </app-glass-input>
+            </div>
+
+            <app-glass-input label="Email Address" type="email" [(ngModel)]="formData.email" name="email"
+              [required]="true" placeholder="your.email@example.com">
+            </app-glass-input>
+
+            <app-glass-input label="Phone Number" type="tel" [(ngModel)]="formData.phone" name="phone"
+              placeholder="+66 XX XXX XXXX">
+            </app-glass-input>
+
+            <app-glass-input label="Organization (Optional)" [(ngModel)]="formData.organization" name="organization"
+              placeholder="Your company or organization">
+            </app-glass-input>
+
+            <!-- Face Image Capture Section -->
+            <div class="glass-card p-6 border-2 border-dashed border-white/20 rounded-xl">
+              <h3 class="text-lg font-semibold mb-4">Face Image</h3>
+              <p class="text-sm text-gray-400 mb-4">Please capture a clear photo of your face using your camera for
+                identification purposes.</p>
+
+              <div class="flex flex-col gap-4">
+                <app-glass-button type="button" variant="primary" size="md" (clicked)="captureFaceImage()">
+                  📸 Capture from Camera
+                </app-glass-button>
+
+                @if (faceImagePreview()) {
+                <div class="mt-4 flex items-center gap-4">
+                  <img *ngIf="faceImagePreview() && !isBase64Image(faceImagePreview()!)" appImageOptimization
+                    [ngSrc]="faceImagePreview()!" alt="Face preview"
+                    class="w-32 h-32 object-cover rounded-lg border-2 border-white/20" loading="lazy">
+                  <img *ngIf="faceImagePreview() && isBase64Image(faceImagePreview()!)" [src]="faceImagePreview()!"
+                    alt="Face preview" class="w-32 h-32 object-cover rounded-lg border-2 border-white/20"
+                    loading="lazy">
+                  <app-glass-button type="button" variant="danger" size="sm" (clicked)="faceImagePreview.set(null)">
+                    Remove
+                  </app-glass-button>
+                </div>
+                }
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex gap-4 pt-4">
+              <app-glass-button type="submit" [disabled]="loading() || !isFormValid()" variant="primary" size="lg"
+                [loading]="loading()" [fullWidth]="true">
+                <span class="flex items-center justify-center space-x-2">
+                  <span>✨ Register Now</span>
+                </span>
+              </app-glass-button>
+            </div>
+          </form>
+        </app-glass-card>
+        }
+      </div>
+    </div>
+  </main>
+
+  <!-- Camera Modal -->
+  @if (showCameraModal()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm"
+    (click)="closeCameraModal()">
+    <div class="glass-card p-6 max-w-2xl w-full bg-black/90 max-h-[90vh] overflow-y-auto"
+      (click)="$event.stopPropagation()">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-2xl font-bold ai-gradient-text">Capture Your Photo</h3>
+        <button (click)="closeCameraModal()" class="text-2xl hover:opacity-70 transition-opacity">×</button>
+      </div>
+
+      <div class="relative w-full aspect-[4/3] bg-black rounded-xl overflow-hidden border border-white/10 mb-4">
+        <app-face-recognition [mode]="'camera'" [autoDetect]="true" [showControls]="false" [showLandmarks]="true"
+          [showAgeGender]="false" [showExpressions]="false" [showRecognition]="false" [showEnrollment]="false"
+          (faceDetected)="onFaceDetected($event)">
+        </app-face-recognition>
+      </div>
+
+      <!-- Face Detection Status -->
+      <div class="mb-4 p-3 rounded-lg" [class.bg-green-500/20]="faceDetected()"
+        [class.bg-yellow-500/20]="!faceDetected()" [class.border-green-500]="faceDetected()"
+        [class.border-yellow-500]="!faceDetected()" [class.border]="true">
+        <p class="text-sm text-center" [class.text-green-300]="faceDetected()"
+          [class.text-yellow-300]="!faceDetected()">
+          {{ faceDetectionMessage() }}
+        </p>
+      </div>
+
+      <canvas #canvasElement class="hidden"></canvas>
+
+      <div class="flex gap-4 justify-end">
+        <app-glass-button type="button" variant="secondary" size="md" (clicked)="closeCameraModal()">
+          Cancel
+        </app-glass-button>
+
+        <app-glass-button type="button" variant="primary" size="md" [disabled]="!faceDetected()"
+          (clicked)="capturePhoto()">
+          📸 Capture Photo
+        </app-glass-button>
+      </div>
+    </div>
+  </div>
+  }
+</div>

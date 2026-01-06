@@ -1,0 +1,222 @@
+// Tooltip Component Styles
+// Most styles migrated to Tailwind classes in HTML template
+// Keeping only complex styles that require SCSS (gradients, animations, variants)
+
+// Size variants - keeping in SCSS for dynamic padding/font-size
+.tooltip-content {
+  &.tooltip-sm {
+    padding: var(--spacing-sm); /* 8px */
+    font-size: var(--font-size-xs); /* 12px */
+    max-width: 200px;
+  }
+
+  &.tooltip-md {
+    padding: calc(var(--spacing-sm) + var(--spacing-xs)); /* 12px */
+    font-size: var(--font-size-sm); /* 14px */
+    max-width: 300px;
+  }
+
+  &.tooltip-lg {
+    padding: var(--spacing-md); /* 16px */
+    font-size: var(--font-size-base); /* 16px */
+    max-width: 400px;
+  }
+
+  // Theme variants - keeping gradients in SCSS
+  &.tooltip-light {
+    background: #ffffff;
+    color: var(--color-gray-900);
+    border: 1px solid var(--color-gray-200);
+  }
+
+  &.tooltip-dark {
+    background: var(--color-gray-900);
+    color: #ffffff;
+    border: 1px solid var(--color-gray-700);
+  }
+
+  &.tooltip-primary {
+    background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-700) 100%);
+    color: #ffffff;
+  }
+
+  &.tooltip-success {
+    background: linear-gradient(135deg, var(--color-success-500) 0%, var(--color-success-600) 100%);
+    color: #ffffff;
+  }
+
+  &.tooltip-warning {
+    background: linear-gradient(135deg, var(--color-warning-500) 0%, var(--color-warning-600) 100%);
+    color: #ffffff;
+  }
+
+  &.tooltip-danger {
+    background: linear-gradient(135deg, var(--color-error-500) 0%, var(--color-error-600) 100%);
+    color: #ffffff;
+  }
+
+  &.tooltip-info {
+    background: linear-gradient(135deg, var(--color-info-500) 0%, var(--color-info-600) 100%);
+    color: #ffffff;
+  }
+
+  // Position variants - transform-origin
+  &.tooltip-top {
+    transform-origin: bottom center;
+  }
+
+  &.tooltip-bottom {
+    transform-origin: top center;
+  }
+
+  &.tooltip-left {
+    transform-origin: right center;
+  }
+
+  &.tooltip-right {
+    transform-origin: left center;
+  }
+
+  // Interactive mode
+  &.tooltip-interactive {
+    pointer-events: auto;
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+
+  // Tooltip arrow positioning
+  .tooltip-arrow {
+    &.tooltip-arrow-top {
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-top-color: inherit;
+    }
+
+    &.tooltip-arrow-bottom {
+      top: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-bottom-color: inherit;
+    }
+
+    &.tooltip-arrow-left {
+      right: -6px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-left-color: inherit;
+    }
+
+    &.tooltip-arrow-right {
+      left: -6px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-right-color: inherit;
+    }
+  }
+}
+
+// Animation keyframes
+@keyframes tooltip-fade-in-top {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes tooltip-fade-in-bottom {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes tooltip-fade-in-left {
+  0% {
+    opacity: 0;
+    transform: translateX(10px) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes tooltip-fade-in-right {
+  0% {
+    opacity: 0;
+    transform: translateX(-10px) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+// Animation classes
+.tooltip-content {
+  &.tooltip-animated {
+    &.tooltip-top {
+      animation: tooltip-fade-in-top 0.2s ease-out;
+    }
+
+    &.tooltip-bottom {
+      animation: tooltip-fade-in-bottom 0.2s ease-out;
+    }
+
+    &.tooltip-left {
+      animation: tooltip-fade-in-left 0.2s ease-out;
+    }
+
+    &.tooltip-right {
+      animation: tooltip-fade-in-right 0.2s ease-out;
+    }
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .tooltip-content {
+    border: 2px solid currentColor;
+
+    &.tooltip-light {
+      border-color: #000000;
+    }
+
+    &.tooltip-dark {
+      border-color: #ffffff;
+    }
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .tooltip-content {
+    transition: none;
+
+    &.tooltip-animated {
+      animation: none;
+    }
+  }
+}
+
+// Focus styles for accessibility
+.tooltip-trigger:focus {
+  outline: 2px solid #3B82F6;
+  outline-offset: 2px;
+}
+
+// Responsive styles migrated to Tailwind responsive classes in HTML template
+// Using md: breakpoint for mobile-first responsive design
+

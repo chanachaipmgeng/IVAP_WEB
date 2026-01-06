@@ -1,0 +1,233 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+      Advanced Form Elements
+    </h1>
+    <div class="flex space-x-2">
+      <app-glass-button (clicked)="resetForm()">
+        🔄 Reset Form
+      </app-glass-button>
+      <app-glass-button (clicked)="submitForm()">
+        ✅ Submit Form
+      </app-glass-button>
+    </div>
+  </div>
+
+  <!-- Progress Stats -->
+  <app-glass-card customClass="p-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="text-center">
+        <div class="text-3xl font-bold text-blue-400">{{ demoData().completedForms }}</div>
+        <div class="text-gray-400">Completed Fields</div>
+      </div>
+      <div class="text-center">
+        <div class="text-3xl font-bold text-green-400">{{ demoData().totalForms }}</div>
+        <div class="text-gray-400">Total Fields</div>
+      </div>
+      <div class="text-center">
+        <div class="text-3xl font-bold text-purple-400">
+          {{ Math.round((demoData().completedForms / demoData().totalForms) * 100) }}%
+        </div>
+        <div class="text-gray-400">Completion</div>
+      </div>
+    </div>
+  </app-glass-card>
+
+  <!-- Form Elements Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+    <!-- Color Pickers -->
+    <app-glass-card customClass="p-6">
+      <h3 class="text-xl font-semibold text-white mb-4">🎨 Color Pickers</h3>
+      <div class="space-y-4">
+        <div>
+          <app-color-picker
+            label="Primary Color"
+            [(ngModel)]="formData().primaryColor"
+            (ngModelChange)="onFormChange()"
+            [presetColors]="['#3b82f6', '#8b5cf6', '#06b6d4', '#10b981', '#f59e0b', '#ef4444']"
+            >
+          </app-color-picker>
+        </div>
+
+        <div>
+          <app-color-picker
+            label="Secondary Color"
+            [(ngModel)]="formData().secondaryColor"
+            (ngModelChange)="onFormChange()"
+            [presetColors]="['#8b5cf6', '#ec4899', '#f97316', '#84cc16', '#06b6d4', '#6366f1']"
+            >
+          </app-color-picker>
+        </div>
+
+        <div>
+          <app-color-picker
+            label="Accent Color"
+            [(ngModel)]="formData().accentColor"
+            (ngModelChange)="onFormChange()"
+            [presetColors]="['#06b6d4', '#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444']"
+            >
+          </app-color-picker>
+        </div>
+      </div>
+    </app-glass-card>
+
+    <!-- Date/Time Pickers -->
+    <app-glass-card customClass="p-6">
+      <h3 class="text-xl font-semibold text-white mb-4">📅 Date & Time Pickers</h3>
+      <div class="space-y-4">
+        <div>
+          <app-date-time-picker
+            label="Event Date"
+            type="date"
+            [(ngModel)]="formData().eventDate"
+            (ngModelChange)="onFormChange()"
+            placeholder="Select event date">
+          </app-date-time-picker>
+        </div>
+
+        <div>
+          <app-date-time-picker
+            label="Event Time"
+            type="time"
+            [(ngModel)]="formData().eventTime"
+            (ngModelChange)="onFormChange()"
+            placeholder="Select event time">
+          </app-date-time-picker>
+        </div>
+
+        <div>
+          <app-date-time-picker
+            label="Event Date & Time"
+            type="datetime"
+            [(ngModel)]="formData().eventDateTime"
+            (ngModelChange)="onFormChange()"
+            placeholder="Select date and time">
+          </app-date-time-picker>
+        </div>
+      </div>
+    </app-glass-card>
+
+    <!-- File Upload -->
+    <app-glass-card customClass="p-6">
+      <h3 class="text-xl font-semibold text-white mb-4">📁 File Upload</h3>
+      <div class="space-y-4">
+        <div>
+          <app-file-upload
+            label="Upload Documents"
+            [(ngModel)]="formData().uploadedFiles"
+            (ngModelChange)="onFormChange()"
+            [multiple]="true"
+            [maxFiles]="5"
+            [maxFileSize]="'10MB'"
+            [acceptedFileTypes]="['image/*', 'application/pdf', '.doc', '.docx']"
+            [showFileInfo]="true">
+          </app-file-upload>
+        </div>
+      </div>
+    </app-glass-card>
+
+    <!-- Range Sliders -->
+    <app-glass-card customClass="p-6">
+      <h3 class="text-xl font-semibold text-white mb-4">🎚️ Range Sliders</h3>
+      <div class="space-y-6">
+        <div>
+          <app-range-slider
+            label="Priority Level"
+            [(ngModel)]="formData().priority"
+            (ngModelChange)="onFormChange()"
+            [min]="1"
+            [max]="100"
+            [step]="1"
+            [unit]="'%'"
+            [showInput]="true">
+          </app-range-slider>
+        </div>
+
+        <div>
+          <app-range-slider
+            label="Budget"
+            [(ngModel)]="formData().budget"
+            (ngModelChange)="onFormChange()"
+            [min]="1000"
+            [max]="50000"
+            [step]="500"
+            [unit]="'$'"
+            [showInput]="true">
+          </app-range-slider>
+        </div>
+
+        <div>
+          <app-range-slider
+            label="Rating"
+            [(ngModel)]="formData().rating"
+            (ngModelChange)="onFormChange()"
+            [min]="0"
+            [max]="5"
+            [step]="0.1"
+            [unit]="'★'"
+            [precision]="1"
+            [showInput]="true">
+          </app-range-slider>
+        </div>
+      </div>
+    </app-glass-card>
+
+    <!-- Additional Form Elements -->
+    <app-glass-card customClass="p-6 lg:col-span-2">
+      <h3 class="text-xl font-semibold text-white mb-4">📝 Additional Form Elements</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            Description
+          </label>
+          <textarea
+            [(ngModel)]="formData().description"
+            (ngModelChange)="onFormChange()"
+            rows="4"
+            class="glass-input w-full"
+            placeholder="Enter description...">
+          </textarea>
+        </div>
+
+        <div class="space-y-4">
+          <div>
+            <label class="flex items-center space-x-3">
+              <input
+                type="checkbox"
+                [(ngModel)]="formData().isEnabled"
+                (ngModelChange)="onFormChange()"
+                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+              <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Enable notifications
+              </span>
+            </label>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+              Category
+            </label>
+            <select
+              class="glass-input w-full"
+              [(ngModel)]="formData().category"
+              (ngModelChange)="onFormChange()">
+              <option value="">Select category</option>
+              <option value="technology">Technology</option>
+              <option value="business">Business</option>
+              <option value="education">Education</option>
+              <option value="healthcare">Healthcare</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Form Data Preview -->
+  <app-glass-card customClass="p-6">
+    <h3 class="text-xl font-semibold text-white mb-4">📊 Form Data Preview</h3>
+    <pre class="bg-gray-800 p-4 rounded-lg text-sm text-gray-300 overflow-x-auto">{{ formData() | json }}</pre>
+  </app-glass-card>
+</div>

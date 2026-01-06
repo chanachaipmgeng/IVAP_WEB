@@ -1,0 +1,255 @@
+<div class="timeline-container w-full relative" [ngClass]="'timeline-' + config.orientation">
+  <!-- Timeline Header -->
+  <div class="timeline-header mb-6" *ngIf="config.showIcons || config.showTimestamps || config.allowCollapse">
+    <div class="timeline-controls flex gap-4 items-center flex-wrap md:flex-col md:items-stretch">
+      <!-- Search -->
+      <div class="search-container relative flex-1 min-w-[200px] md:min-w-0">
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          (input)="onSearchChange()"
+          placeholder="ค้นหาใน Timeline..."
+          class="search-input w-full px-4 py-2 pr-10 bg-white/5 border border-white/10 rounded-xl text-white text-sm placeholder-white/50 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20">
+        <button
+          *ngIf="searchTerm"
+          (click)="clearSearch()"
+          class="clear-search-btn absolute right-2 top-1/2 -translate-y-1/2 bg-transparent border-none text-white/50 cursor-pointer p-1 rounded-full hover:text-white hover:bg-white/10 transition-all">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Type Filter -->
+      <select
+        [(ngModel)]="selectedType"
+        (change)="onTypeChange()"
+        class="type-filter px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-white text-sm cursor-pointer focus:outline-none focus:border-primary-500">
+        <option *ngFor="let type of eventTypes" [value]="type.value" class="bg-gray-900 text-white">
+          {{ type.label }}
+        </option>
+      </select>
+
+      <!-- Sort Toggle -->
+      <button
+        (click)="toggleSortOrder()"
+        class="sort-btn p-2 bg-white/5 border border-white/10 rounded-xl text-white cursor-pointer transition-all hover:bg-white/10 hover:-translate-y-0.5"
+        [title]="'เรียงลำดับ ' + (sortOrder === 'asc' ? 'ใหม่ล่าสุด' : 'เก่าที่สุด')">
+        <i class="fas" [class.fa-sort-amount-up]="sortOrder === 'desc'" [class.fa-sort-amount-down]="sortOrder === 'asc'"></i>
+      </button>
+
+      <!-- Collapse Toggle -->
+      <button
+        *ngIf="config.allowCollapse"
+        (click)="toggleCollapse()"
+        class="collapse-btn p-2 bg-white/5 border border-white/10 rounded-xl text-white cursor-pointer transition-all hover:bg-white/10 hover:-translate-y-0.5">
+        <i class="fas" [class.fa-chevron-up]="!isCollapsed" [class.fa-chevron-down]="isCollapsed"></i>
+      </button>
+
+      <!-- Reset Filters -->
+      <button
+        (click)="resetFilters()"
+        class="reset-btn p-2 bg-white/5 border border-white/10 rounded-xl text-white cursor-pointer transition-all hover:bg-white/10 hover:-translate-y-0.5"
+        title="รีเซ็ตตัวกรอง">
+        <i class="fas fa-refresh"></i>
+      </button>
+
+      <!-- Create Event Button -->
+      <button
+        *ngIf="config.allowCreate"
+        (click)="openCreateModal()"
+        class="create-btn px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-white cursor-pointer transition-all hover:bg-white/10 hover:-translate-y-0.5"
+        title="สร้างเหตุการณ์ใหม่">
+        <i class="fas fa-plus"></i>
+        สร้างใหม่
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="timeline-loading flex flex-col items-center justify-center p-12 text-white/60">
+    <div class="loading-spinner w-8 h-8 border-2 border-white/10 border-t-primary-500 rounded-full animate-spin mb-4"></div>
+    <p class="m-0 text-sm">กำลังโหลดข้อมูล...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && visibleEvents.length === 0" class="timeline-empty flex flex-col items-center justify-center p-12 text-white/60 text-center">
+    <i class="fas fa-history text-5xl mb-4 opacity-50"></i>
+    <p class="m-0 text-base">{{ emptyMessage }}</p>
+  </div>
+
+  <!-- Timeline Events -->
+  <div *ngIf="!loading && visibleEvents.length > 0" class="timeline-events" [style.max-height]="config.maxHeight">
+    <div
+      *ngFor="let event of visibleEvents; let i = index; trackBy: trackByEventId"
+      class="timeline-item"
+      [ngClass]="getTimelineItemClasses(event)"
+      [style.height]="config.itemHeight">
+
+      <!-- Timeline Line -->
+      <div class="timeline-line" *ngIf="i < visibleEvents.length - 1"></div>
+
+      <!-- Timeline Dot -->
+      <div class="timeline-dot" [style.background-color]="event.color || getEventTypeColor(event.type)">
+        <i *ngIf="config.showIcons" [class]="getEventIcon(event)"></i>
+      </div>
+
+      <!-- Event Content -->
+      <div class="timeline-content flex-1 bg-white/2 border border-white/10 rounded-xl p-4 cursor-pointer transition-all hover:bg-white/5 hover:-translate-y-0.5 hover:shadow-md" (click)="onEventClick(event)">
+        <div class="timeline-content-header flex justify-between items-start mb-2 md:flex-col md:items-start md:gap-2">
+          <h4 class="timeline-title m-0 text-base font-semibold text-white flex-1">{{ event.title }}</h4>
+          <div class="timeline-meta flex flex-col items-end gap-1 md:items-start">
+            <span *ngIf="config.showTimestamps" class="timeline-timestamp text-xs text-white/60">
+              {{ formatTimestamp(event.timestamp) }}
+            </span>
+            <span class="timeline-type text-xs font-medium uppercase tracking-wider" [style.color]="getEventTypeColor(event.type)">
+              {{ getEventTypeLabel(event.type) }}
+            </span>
+          </div>
+        </div>
+
+        <p *ngIf="config.showDescriptions && event.description" class="timeline-description m-0 mb-2 text-white/80 text-sm leading-relaxed">
+          {{ event.description }}
+        </p>
+
+        <div *ngIf="event.data" class="timeline-data mt-2 p-2 bg-black/20 rounded border border-white/10">
+          <pre class="m-0 text-xs text-white/70 whitespace-pre-wrap break-words">{{ event.data | json }}</pre>
+        </div>
+      </div>
+
+      <!-- Event Actions -->
+      <div class="timeline-actions absolute top-2 right-2">
+        <button
+          *ngIf="event.data"
+          (click)="onEventToggle(event); $event.stopPropagation()"
+          class="timeline-toggle-btn p-1 bg-white/10 border-none rounded-full text-white/60 cursor-pointer transition-all hover:bg-white/20 hover:text-white"
+          [title]="event.isActive ? 'ซ่อนรายละเอียด' : 'แสดงรายละเอียด'">
+          <i class="fas" [class.fa-chevron-down]="!event.isActive" [class.fa-chevron-up]="event.isActive"></i>
+        </button>
+        <button
+          *ngIf="config.allowEdit"
+          (click)="openEditModal(event); $event.stopPropagation()"
+          class="timeline-edit-btn p-1 bg-white/10 border-none rounded-full text-white/60 cursor-pointer transition-all hover:bg-white/20 hover:text-white"
+          title="แก้ไขเหตุการณ์">
+          <i class="fas fa-edit"></i>
+        </button>
+        <button
+          *ngIf="config.allowDelete"
+          (click)="deleteEvent(event.id); $event.stopPropagation()"
+          class="timeline-delete-btn p-1 bg-white/10 border-none rounded-full text-white/60 cursor-pointer transition-all hover:bg-white/20 hover:text-white"
+          title="ลบเหตุการณ์">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load More Button -->
+  <div *ngIf="hasMoreEvents()" class="timeline-load-more flex justify-center mt-6">
+    <app-glass-button
+      variant="secondary"
+      (click)="onLoadMore()">
+      <i class="fas fa-plus"></i>
+      แสดงเพิ่มเติม ({{ getRemainingEventsCount() }} รายการ)
+    </app-glass-button>
+  </div>
+
+  <!-- Timeline Footer -->
+  <div class="timeline-footer mt-6 pt-4 border-t border-white/10" *ngIf="visibleEvents.length > 0">
+    <div class="timeline-stats flex gap-4 flex-wrap">
+      <span class="stat-item flex items-center gap-2 text-sm text-white/60">
+        <i class="fas fa-list text-primary-500"></i>
+        {{ visibleEvents.length }} รายการ
+      </span>
+      <span class="stat-item flex items-center gap-2 text-sm text-white/60" *ngIf="searchTerm">
+        <i class="fas fa-search text-primary-500"></i>
+        ผลการค้นหา
+      </span>
+      <span class="stat-item flex items-center gap-2 text-sm text-white/60" *ngIf="selectedType !== 'all'">
+        <i class="fas fa-filter text-primary-500"></i>
+        กรองตาม {{ getEventTypeLabel(selectedType) }}
+      </span>
+      <span class="stat-item flex items-center gap-2 text-sm text-white/60" *ngIf="config.enableRealTime">
+        <i class="fas fa-sync-alt text-primary-500"></i>
+        อัพเดทอัตโนมัติ
+      </span>
+    </div>
+  </div>
+
+  <!-- Create/Edit Event Modal -->
+  <app-modal
+    [isOpen]="showEventModal"
+    [title]="editingEvent ? 'แก้ไขเหตุการณ์' : 'สร้างเหตุการณ์ใหม่'"
+    (closed)="closeEventModal()">
+    <div class="event-form">
+      <div class="form-group">
+        <label>ชื่อเหตุการณ์ *</label>
+        <input
+          type="text"
+          [(ngModel)]="eventForm.title"
+          placeholder="กรอกชื่อเหตุการณ์"
+          class="form-input">
+      </div>
+
+      <div class="form-group">
+        <label>คำอธิบาย</label>
+        <textarea
+          [(ngModel)]="eventForm.description"
+          placeholder="กรอกคำอธิบาย"
+          rows="3"
+          class="form-textarea"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>ประเภท</label>
+          <select [(ngModel)]="eventForm.type" class="form-select">
+            <option *ngFor="let type of eventTypes" [value]="type.value" [disabled]="type.value === 'all'">
+              {{ type.label }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>วันที่และเวลา</label>
+          <input
+            type="datetime-local"
+            [ngModel]="eventForm.timestamp ? (eventForm.timestamp | date:'yyyy-MM-ddTHH:mm') : ''"
+            (ngModelChange)="onTimestampChange($event)"
+            class="form-input">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>ไอคอน (Font Awesome class)</label>
+          <input
+            type="text"
+            [(ngModel)]="eventForm.icon"
+            placeholder="เช่น: fas fa-check"
+            class="form-input">
+        </div>
+
+        <div class="form-group">
+          <label>สี (HEX)</label>
+          <input
+            type="color"
+            [ngModel]="eventForm.color || getEventTypeColor(eventForm.type || 'info')"
+            (ngModelChange)="eventForm.color = $event"
+            class="form-input">
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <app-glass-button
+          variant="secondary"
+          (clicked)="closeEventModal()">
+          ยกเลิก
+        </app-glass-button>
+        <app-glass-button
+          variant="primary"
+          (clicked)="saveEvent()">
+          {{ editingEvent ? 'อัพเดท' : 'สร้าง' }}
+        </app-glass-button>
+      </div>
+    </div>
+  </app-modal>
+</div>

@@ -1,0 +1,384 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+      Performance Dashboard
+    </h1>
+    <div class="flex space-x-2">
+      <app-glass-button (clicked)="runFullOptimization()" variant="primary" [disabled]="isOptimizing()">
+        <i class="fas fa-magic mr-2" [class.fa-spin]="isOptimizing()"></i>
+        {{ isOptimizing() ? 'Optimizing...' : 'Run Full Optimization' }}
+      </app-glass-button>
+      <app-glass-button (clicked)="resetMetrics()" variant="secondary">
+        <i class="fas fa-refresh mr-2"></i> Reset Metrics
+      </app-glass-button>
+    </div>
+  </div>
+
+  <!-- Performance Score -->
+  <app-glass-card class="p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-xl font-semibold text-white">Performance Score</h3>
+      <div class="flex items-center space-x-2">
+        <span class="text-sm text-gray-400">Last updated: {{ getCurrentTime() }}</span>
+        <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+      </div>
+    </div>
+    <div class="flex items-center space-x-6">
+      <div class="text-center">
+        <div class="text-6xl font-bold" [class]="getScoreColor(performanceScore())">
+          {{ performanceScore() }}
+        </div>
+        <div class="text-sm text-gray-400">{{ getScoreLabel(performanceScore()) }}</div>
+      </div>
+      <div class="flex-1">
+        <div class="w-full bg-gray-700 rounded-full h-4">
+          <div
+            class="h-4 rounded-full transition-all duration-1000"
+            [class]="performanceScore() >= 90 ? 'bg-green-400' : performanceScore() >= 70 ? 'bg-yellow-400' : 'bg-red-400'"
+            [style.width.%]="performanceScore()">
+          </div>
+        </div>
+        <div class="flex justify-between text-xs text-gray-400 mt-2">
+          <span>0</span>
+          <span>50</span>
+          <span>70</span>
+          <span>90</span>
+          <span>100</span>
+        </div>
+      </div>
+    </div>
+  </app-glass-card>
+
+  <!-- Budget Status -->
+  <app-glass-card class="p-6">
+    <h3 class="text-xl font-semibold text-white mb-4">Performance Budget</h3>
+    <div class="flex items-center space-x-4">
+      <div class="flex items-center space-x-2">
+        <i [class]="budgetPassed() ? 'fas fa-check-circle text-green-400' : 'fas fa-exclamation-triangle text-red-400'"></i>
+        <span [class]="budgetPassed() ? 'text-green-400' : 'text-red-400'">
+          {{ budgetPassed() ? 'Budget Passed' : 'Budget Violated' }}
+        </span>
+      </div>
+      <div *ngIf="!budgetPassed()" class="text-sm text-gray-400">
+        {{ budgetViolations().length }} violation(s) found
+      </div>
+    </div>
+    <div *ngIf="!budgetPassed()" class="mt-4 space-y-2">
+      <div *ngFor="let violation of budgetViolations()" class="text-sm text-red-400 bg-red-500/10 p-2 rounded">
+        <i class="fas fa-times mr-2"></i>{{ violation }}
+      </div>
+    </div>
+  </app-glass-card>
+
+  <!-- Tabs -->
+  <app-glass-card class="p-6">
+    <div class="flex space-x-1 mb-6">
+      <button
+        *ngFor="let tab of ['overview', 'metrics', 'optimization', 'recommendations']"
+        (click)="selectTab(tab)"
+        [class]="'px-4 py-2 rounded-lg font-medium transition-all ' + (activeTab() === tab ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-700')"
+      >
+        <i [class]="'mr-2 ' + (tab === 'overview' ? 'fas fa-chart-pie' : tab === 'metrics' ? 'fas fa-tachometer-alt' : tab === 'optimization' ? 'fas fa-cogs' : 'fas fa-lightbulb')"></i>
+        {{ tab | titlecase }}
+      </button>
+    </div>
+
+    <!-- Overview Tab -->
+    <div *ngIf="activeTab() === 'overview'" class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="text-center p-4 bg-gray-800 rounded-lg">
+          <div class="text-2xl font-bold text-white">{{ formatBytes(metrics().bundleSize) }}</div>
+          <div class="text-sm text-gray-400">Bundle Size</div>
+        </div>
+        <div class="text-center p-4 bg-gray-800 rounded-lg">
+          <div class="text-2xl font-bold text-white">{{ formatTime(metrics().loadTime) }}</div>
+          <div class="text-sm text-gray-400">Load Time</div>
+        </div>
+        <div class="text-center p-4 bg-gray-800 rounded-lg">
+          <div class="text-2xl font-bold text-white">{{ formatTime(metrics().firstContentfulPaint) }}</div>
+          <div class="text-sm text-gray-400">First Contentful Paint</div>
+        </div>
+        <div class="text-center p-4 bg-gray-800 rounded-lg">
+          <div class="text-2xl font-bold text-white">{{ formatBytes(metrics().memoryUsage * 1024 * 1024) }}</div>
+          <div class="text-sm text-gray-400">Memory Usage</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Metrics Tab -->
+    <div *ngIf="activeTab() === 'metrics'" class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Core Web Vitals -->
+        <div>
+          <h4 class="text-lg font-semibold text-white mb-4">Core Web Vitals</h4>
+          <div class="space-y-3">
+            <div class="flex justify-between items-center p-3 bg-gray-800 rounded-lg">
+              <span class="text-gray-300">First Contentful Paint</span>
+              <div class="text-right">
+                <div class="text-white font-medium">{{ formatTime(metrics().firstContentfulPaint) }}</div>
+                <div class="text-xs" [class]="getMetricStatus(metrics().firstContentfulPaint, 1800).color">
+                  {{ getMetricStatus(metrics().firstContentfulPaint, 1800).status }}
+                </div>
+              </div>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-gray-800 rounded-lg">
+              <span class="text-gray-300">Largest Contentful Paint</span>
+              <div class="text-right">
+                <div class="text-white font-medium">{{ formatTime(metrics().largestContentfulPaint) }}</div>
+                <div class="text-xs" [class]="getMetricStatus(metrics().largestContentfulPaint, 2500).color">
+                  {{ getMetricStatus(metrics().largestContentfulPaint, 2500).status }}
+                </div>
+              </div>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-gray-800 rounded-lg">
+              <span class="text-gray-300">Cumulative Layout Shift</span>
+              <div class="text-right">
+                <div class="text-white font-medium">{{ metrics().cumulativeLayoutShift.toFixed(3) }}</div>
+                <div class="text-xs" [class]="getMetricStatus(metrics().cumulativeLayoutShift, 0.1).color">
+                  {{ getMetricStatus(metrics().cumulativeLayoutShift, 0.1).status }}
+                </div>
+              </div>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-gray-800 rounded-lg">
+              <span class="text-gray-300">First Input Delay</span>
+              <div class="text-right">
+                <div class="text-white font-medium">{{ formatTime(metrics().firstInputDelay) }}</div>
+                <div class="text-xs" [class]="getMetricStatus(metrics().firstInputDelay, 100).color">
+                  {{ getMetricStatus(metrics().firstInputDelay, 100).status }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Performance Metrics -->
+        <div>
+          <h4 class="text-lg font-semibold text-white mb-4">Performance Metrics</h4>
+          <div class="space-y-3">
+            <div class="flex justify-between items-center p-3 bg-gray-800 rounded-lg">
+              <span class="text-gray-300">Bundle Size</span>
+              <div class="text-right">
+                <div class="text-white font-medium">{{ formatBytes(metrics().bundleSize) }}</div>
+                <div class="text-xs" [class]="getMetricStatus(metrics().bundleSize, 500000).color">
+                  {{ getMetricStatus(metrics().bundleSize, 500000).status }}
+                </div>
+              </div>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-gray-800 rounded-lg">
+              <span class="text-gray-300">Load Time</span>
+              <div class="text-right">
+                <div class="text-white font-medium">{{ formatTime(metrics().loadTime) }}</div>
+                <div class="text-xs" [class]="getMetricStatus(metrics().loadTime, 3000).color">
+                  {{ getMetricStatus(metrics().loadTime, 3000).status }}
+                </div>
+              </div>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-gray-800 rounded-lg">
+              <span class="text-gray-300">Render Time</span>
+              <div class="text-right">
+                <div class="text-white font-medium">{{ formatTime(metrics().renderTime) }}</div>
+                <div class="text-xs" [class]="getMetricStatus(metrics().renderTime, 1000).color">
+                  {{ getMetricStatus(metrics().renderTime, 1000).status }}
+                </div>
+              </div>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-gray-800 rounded-lg">
+              <span class="text-gray-300">Memory Usage</span>
+              <div class="text-right">
+                <div class="text-white font-medium">{{ formatBytes(metrics().memoryUsage * 1024 * 1024) }}</div>
+                <div class="text-xs" [class]="getMetricStatus(metrics().memoryUsage, 50).color">
+                  {{ getMetricStatus(metrics().memoryUsage, 50).status }}
+                </div>
+              </div>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-gray-800 rounded-lg">
+              <span class="text-gray-300">Network Requests</span>
+              <div class="text-right">
+                <div class="text-white font-medium">{{ metrics().networkRequests }}</div>
+                <div class="text-xs" [class]="getMetricStatus(metrics().networkRequests, 20).color">
+                  {{ getMetricStatus(metrics().networkRequests, 20).status }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Optimization Tab -->
+    <div *ngIf="activeTab() === 'optimization'" class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Bundle Optimization -->
+        <div>
+          <h4 class="text-lg font-semibold text-white mb-4">Bundle Optimization</h4>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+              <div>
+                <div class="text-white font-medium">Tree Shaking</div>
+                <div class="text-sm text-gray-400">Remove unused code</div>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span [class]="config().enableTreeShaking ? 'text-green-400' : 'text-red-400'">
+                  {{ config().enableTreeShaking ? 'Enabled' : 'Disabled' }}
+                </span>
+                <i [class]="config().enableTreeShaking ? 'fas fa-check-circle text-green-400' : 'fas fa-times-circle text-red-400'"></i>
+              </div>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+              <div>
+                <div class="text-white font-medium">Code Splitting</div>
+                <div class="text-sm text-gray-400">Split code into chunks</div>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span [class]="config().enableCodeSplitting ? 'text-green-400' : 'text-red-400'">
+                  {{ config().enableCodeSplitting ? 'Enabled' : 'Disabled' }}
+                </span>
+                <i [class]="config().enableCodeSplitting ? 'fas fa-check-circle text-green-400' : 'fas fa-times-circle text-red-400'"></i>
+              </div>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+              <div>
+                <div class="text-white font-medium">Minification</div>
+                <div class="text-sm text-gray-400">Minify JavaScript and CSS</div>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span [class]="config().enableMinification ? 'text-green-400' : 'text-red-400'">
+                  {{ config().enableMinification ? 'Enabled' : 'Disabled' }}
+                </span>
+                <i [class]="config().enableMinification ? 'fas fa-check-circle text-green-400' : 'fas fa-times-circle text-red-400'"></i>
+              </div>
+            </div>
+            <app-glass-button (clicked)="optimizeBundleSize()" variant="primary" customClass="w-full" [disabled]="isOptimizing()">
+              <i class="fas fa-compress mr-2"></i> Optimize Bundle
+            </app-glass-button>
+          </div>
+        </div>
+
+        <!-- Loading Optimization -->
+        <div>
+          <h4 class="text-lg font-semibold text-white mb-4">Loading Optimization</h4>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+              <div>
+                <div class="text-white font-medium">Lazy Loading</div>
+                <div class="text-sm text-gray-400">Load components on demand</div>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span [class]="config().enableLazyLoading ? 'text-green-400' : 'text-red-400'">
+                  {{ config().enableLazyLoading ? 'Enabled' : 'Disabled' }}
+                </span>
+                <i [class]="config().enableLazyLoading ? 'fas fa-check-circle text-green-400' : 'fas fa-times-circle text-red-400'"></i>
+              </div>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+              <div>
+                <div class="text-white font-medium">Preloading</div>
+                <div class="text-sm text-gray-400">Preload critical resources</div>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span [class]="config().enablePreloading ? 'text-green-400' : 'text-red-400'">
+                  {{ config().enablePreloading ? 'Enabled' : 'Disabled' }}
+                </span>
+                <i [class]="config().enablePreloading ? 'fas fa-check-circle text-green-400' : 'fas fa-times-circle text-red-400'"></i>
+              </div>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+              <div>
+                <div class="text-white font-medium">Image Optimization</div>
+                <div class="text-sm text-gray-400">Optimize images for web</div>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span [class]="config().enableImageOptimization ? 'text-green-400' : 'text-red-400'">
+                  {{ config().enableImageOptimization ? 'Enabled' : 'Disabled' }}
+                </span>
+                <i [class]="config().enableImageOptimization ? 'fas fa-check-circle text-green-400' : 'fas fa-times-circle text-red-400'"></i>
+              </div>
+            </div>
+            <app-glass-button (clicked)="optimizeLazyLoading()" variant="primary" customClass="w-full" [disabled]="isOptimizing()">
+              <i class="fas fa-rocket mr-2"></i> Optimize Loading
+            </app-glass-button>
+          </div>
+        </div>
+
+        <!-- Caching Optimization -->
+        <div>
+          <h4 class="text-lg font-semibold text-white mb-4">Caching Optimization</h4>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+              <div>
+                <div class="text-white font-medium">Browser Caching</div>
+                <div class="text-sm text-gray-400">Cache static assets</div>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span [class]="config().enableCaching ? 'text-green-400' : 'text-red-400'">
+                  {{ config().enableCaching ? 'Enabled' : 'Disabled' }}
+                </span>
+                <i [class]="config().enableCaching ? 'fas fa-check-circle text-green-400' : 'fas fa-times-circle text-red-400'"></i>
+              </div>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+              <div>
+                <div class="text-white font-medium">Service Worker</div>
+                <div class="text-sm text-gray-400">Offline caching</div>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span [class]="config().enableServiceWorker ? 'text-green-400' : 'text-red-400'">
+                  {{ config().enableServiceWorker ? 'Enabled' : 'Disabled' }}
+                </span>
+                <i [class]="config().enableServiceWorker ? 'fas fa-check-circle text-green-400' : 'fas fa-times-circle text-red-400'"></i>
+              </div>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+              <div>
+                <div class="text-white font-medium">CDN</div>
+                <div class="text-sm text-gray-400">Content delivery network</div>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span [class]="config().enableCDN ? 'text-green-400' : 'text-red-400'">
+                  {{ config().enableCDN ? 'Enabled' : 'Disabled' }}
+                </span>
+                <i [class]="config().enableCDN ? 'fas fa-check-circle text-green-400' : 'fas fa-times-circle text-red-400'"></i>
+              </div>
+            </div>
+            <app-glass-button (clicked)="optimizeCaching()" variant="primary" customClass="w-full" [disabled]="isOptimizing()">
+              <i class="fas fa-database mr-2"></i> Optimize Caching
+            </app-glass-button>
+          </div>
+        </div>
+
+        <!-- Additional Optimizations -->
+        <div>
+          <h4 class="text-lg font-semibold text-white mb-4">Additional Optimizations</h4>
+          <div class="space-y-3">
+            <app-glass-button (clicked)="optimizeImages()" variant="primary" customClass="w-full" [disabled]="isOptimizing()">
+              <i class="fas fa-image mr-2"></i> Optimize Images
+            </app-glass-button>
+            <app-glass-button (clicked)="enableCDN()" variant="primary" customClass="w-full" [disabled]="isOptimizing()">
+              <i class="fas fa-globe mr-2"></i> Enable CDN
+            </app-glass-button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommendations Tab -->
+    <div *ngIf="activeTab() === 'recommendations'" class="space-y-6">
+      <div *ngIf="recommendations().length === 0" class="text-center py-8 text-gray-400">
+        <i class="fas fa-check-circle text-4xl mb-4 text-green-400"></i>
+        <p>No performance recommendations at this time.</p>
+        <p class="text-sm">Your application is performing well!</p>
+      </div>
+      <div *ngIf="recommendations().length > 0" class="space-y-4">
+        <div *ngFor="let recommendation of recommendations()" class="p-4 bg-gray-800 rounded-lg border-l-4 border-yellow-400">
+          <div class="flex items-start space-x-3">
+            <i class="fas fa-lightbulb text-yellow-400 mt-1"></i>
+            <div>
+              <p class="text-white">{{ recommendation }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-glass-card>
+</div>

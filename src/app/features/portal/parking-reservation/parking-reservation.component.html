@@ -1,0 +1,227 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+        📅 Parking Reservations
+      </h1>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+        Book parking spaces in advance
+      </p>
+    </div>
+    <app-glass-button variant="primary" (clicked)="openModal()">
+      ➕ New Reservation
+    </app-glass-button>
+  </div>
+
+  <!-- Quick Info -->
+  <div class="bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg shadow-lg p-6 text-white">
+    <div class="flex items-center space-x-4">
+      <div class="text-5xl">📋</div>
+      <div>
+        <h3 class="text-xl font-bold">Advance Booking</h3>
+        <p class="text-purple-100">
+          Reserve parking spaces for future use
+        </p>
+        <div class="mt-3 flex flex-wrap gap-4 text-sm">
+          <div class="flex items-center space-x-2">
+            <span>✅</span>
+            <span>Auto-assign best space</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span>📱</span>
+            <span>QR code confirmation</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span>⏰</span>
+            <span>Flexible time slots</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reservation Modal -->
+<app-modal
+  [isOpen]="showModal()"
+  [title]="success() ? '✅ Reservation Created' : '📅 Create Parking Reservation'"
+  [loading]="processing()"
+  (closed)="closeModal()"
+>
+  <div class="space-y-4">
+    <!-- Success Message -->
+    @if (success() && reservationResult()) {
+      <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+        <div class="flex items-start space-x-3">
+          <div class="text-3xl">✅</div>
+          <div class="flex-1">
+            <h4 class="font-bold text-green-800">Reservation Created Successfully!</h4>
+            <div class="mt-2 space-y-1 text-sm text-green-700">
+              @if (reservationResult()?.spaceId) {
+                <p><strong>Space:</strong> {{ reservationResult()?.spaceId }}</p>
+              }
+              @if (reservationResult()?.startTime && reservationResult()?.endTime) {
+                <p><strong>Period:</strong> 
+                  {{ formatDateTime(reservationResult()!.startTime) }} - 
+                  {{ formatDateTime(reservationResult()!.endTime) }}
+                </p>
+              }
+              @if (reservationResult()?.qrCode) {
+                <p><strong>QR Code:</strong> {{ reservationResult()?.qrCode }}</p>
+              }
+              @if (reservationResult()?.totalCost) {
+                <p><strong>Total Cost:</strong> ฿{{ reservationResult()?.totalCost }}</p>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Form -->
+    @if (!success()) {
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Select Parking Space *
+        </label>
+        <select
+          [(ngModel)]="reservationData.spaceId"
+          class="glass-input w-full"
+          required
+          [disabled]="processing()"
+        >
+          <option value="">-- Select Space --</option>
+          @for (space of availableSpaces(); track space.spaceId) {
+            <option [value]="space.spaceId">
+              {{ space.spaceNumber }} @if (space.zone) { - {{ space.zone }} }
+              @if (space.hourlyRate) { - {{ space.hourlyRate }}฿/hr }
+            </option>
+          }
+        </select>
+        @if (availableSpaces().length === 0) {
+          <p class="text-xs text-gray-500 mt-1">No available reservable spaces</p>
+        }
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          License Plate (Optional)
+        </label>
+        <input
+          [(ngModel)]="reservationData.plateNumber"
+          type="text"
+          class="glass-input w-full"
+          placeholder="e.g., ABC-1234"
+          [disabled]="processing()"
+        />
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            Start Time *
+          </label>
+          <input
+            [(ngModel)]="reservationData.startTime"
+            type="datetime-local"
+            class="glass-input w-full"
+            required
+            [disabled]="processing()"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            End Time *
+          </label>
+          <input
+            [(ngModel)]="reservationData.endTime"
+            type="datetime-local"
+            class="glass-input w-full"
+            required
+            [disabled]="processing()"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Reserver Name *
+        </label>
+        <input
+          [(ngModel)]="reservationData.reserverName"
+          type="text"
+          class="glass-input w-full"
+          placeholder="John Doe"
+          required
+          [disabled]="processing()"
+        />
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            Phone
+          </label>
+          <input
+            [(ngModel)]="reservationData.reserverPhone"
+            type="tel"
+            class="glass-input w-full"
+            placeholder="08X-XXX-XXXX"
+            [disabled]="processing()"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            Email
+          </label>
+          <input
+            [(ngModel)]="reservationData.reserverEmail"
+            type="email"
+            class="glass-input w-full"
+            placeholder="john@example.com"
+            [disabled]="processing()"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Notes
+        </label>
+        <textarea
+          [(ngModel)]="reservationData.notes"
+          class="glass-input w-full"
+          rows="2"
+          placeholder="Additional notes (optional)"
+          [disabled]="processing()"
+        ></textarea>
+      </div>
+
+      <!-- Error Message -->
+      @if (errorMessage()) {
+        <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+          <p class="text-sm text-red-600">⚠️ {{ errorMessage() }}</p>
+        </div>
+      }
+
+      <!-- Info -->
+      <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
+        <p class="text-sm text-blue-700">
+          💡 A QR code will be generated for this reservation
+        </p>
+      </div>
+    }
+  </div>
+
+  @if (!success()) {
+    <div slot="actions">
+      <app-glass-button variant="primary" (clicked)="createReservation()" [disabled]="processing()">
+        {{ processing() ? 'Processing...' : '📅 Create Reservation' }}
+      </app-glass-button>
+    </div>
+  }
+</app-modal>
+

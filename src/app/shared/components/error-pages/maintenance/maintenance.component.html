@@ -1,0 +1,137 @@
+<div class="maintenance-container min-h-screen flex items-center justify-center p-8 relative overflow-hidden" [class]="customClass || ''" role="main" [attr.aria-label]="ariaLabel || 'System maintenance'">
+  <div class="maintenance-content bg-white/95 backdrop-blur-sm rounded-3xl p-12 max-w-4xl w-full text-center shadow-2xl relative z-10 md:p-8">
+    <!-- Header -->
+    <div class="maintenance-header mb-12">
+      <div class="maintenance-icon text-primary-500 mb-6 animate-spin-slow" [attr.aria-hidden]="'true'">
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" [attr.aria-hidden]="'true'">
+          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-3.77 3.77a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1 7.94-7.94l-3.77 3.77z"></path>
+        </svg>
+      </div>
+      <h1 class="maintenance-title text-5xl font-black text-gray-800 mb-4 leading-tight md:text-4xl md:text-3xl">{{ i18n.t('pages.errorPages.maintenance.title') }}</h1>
+      <p class="maintenance-description text-xl text-gray-500 leading-relaxed max-w-2xl mx-auto">
+        {{ i18n.t('pages.errorPages.maintenance.message') }}
+      </p>
+    </div>
+
+    <!-- Progress Section -->
+    <div class="progress-section bg-gray-50 rounded-2xl p-8 mb-12 border border-gray-200 md:p-6 md:flex-col md:items-start md:text-left">
+      <div class="progress-header flex justify-between items-center mb-6 flex-wrap gap-4">
+        <h3 class="progress-title text-2xl font-bold text-gray-800 m-0 md:text-xl">{{ i18n.t('pages.errorPages.maintenance.maintenanceProgress') }}</h3>
+        <div class="time-remaining flex items-center gap-2 text-sm font-semibold text-gray-700 bg-white px-4 py-2 rounded-lg border border-gray-200" *ngIf="!isMaintenanceComplete()" role="status" [attr.aria-live]="'polite'">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary-500" [attr.aria-hidden]="'true'">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12,6 12,12 16,14"></polyline>
+          </svg>
+          <span [attr.aria-label]="'Time remaining: ' + timeRemaining">{{ i18n.t('pages.errorPages.maintenance.timeRemaining') }} {{ timeRemaining }}</span>
+        </div>
+        <div class="maintenance-complete flex items-center gap-2 text-sm font-semibold text-success-500 bg-white px-4 py-2 rounded-lg border border-success-500" *ngIf="isMaintenanceComplete()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-success-500">
+            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <span>{{ i18n.t('pages.errorPages.maintenance.maintenanceComplete') }}</span>
+        </div>
+      </div>
+
+      <div class="progress-bar w-full h-3 bg-gray-200 rounded-md overflow-hidden mb-4">
+        <div class="progress-fill h-full bg-gradient-to-r from-primary-500 to-purple-600 rounded-md transition-all relative" [style.width.%]="progress">
+          <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
+        </div>
+      </div>
+      <div class="progress-text text-sm text-gray-500 font-semibold">{{ progress | number:'1.0-0' }}% {{ i18n.t('pages.errorPages.maintenance.complete') }}</div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="features-section mb-12 text-left">
+      <h3 class="features-title text-2xl font-bold text-gray-800 mb-4 text-center">{{ i18n.t('pages.errorPages.maintenance.whatsNew') }}</h3>
+      <p class="features-description text-base text-gray-500 text-center mb-8">
+        {{ i18n.t('pages.errorPages.maintenance.implementingFeatures') }}
+      </p>
+      <div class="features-grid grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4 md:grid-cols-1">
+        <div class="feature-item flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-lg transition-all hover:border-gray-300 hover:shadow-md" *ngFor="let feature of features; trackBy: trackByFeature" role="listitem">
+          <div class="feature-icon text-success-500 flex-shrink-0">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <span class="feature-text text-sm text-gray-700 font-medium">{{ feature }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Updates Timeline -->
+    <div class="updates-section mb-12 text-left">
+      <h3 class="updates-title text-2xl font-bold text-gray-800 mb-8 text-center">{{ i18n.t('pages.errorPages.maintenance.maintenanceUpdates') }}</h3>
+      <div class="updates-timeline relative max-w-2xl mx-auto">
+        <div class="absolute left-5 top-0 bottom-0 w-0.5 bg-gray-200 md:left-4"></div>
+        <div class="timeline-item flex items-start gap-4 mb-8 relative last:mb-0" *ngFor="let update of updates; trackBy: trackByUpdate; let i = index" role="listitem">
+          <div class="timeline-marker w-10 h-10 rounded-full flex items-center justify-center text-white flex-shrink-0 relative z-10 border-3 border-white shadow-sm" [style.background-color]="getStatusColor(update.status)" [class.w-8]="false" [class.h-8]="false" [class.md:w-8]="true" [class.md:h-8]="true">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path [attr.d]="getStatusIcon(update.status)"></path>
+            </svg>
+          </div>
+          <div class="timeline-content flex-1 pt-2">
+            <div class="timeline-time text-sm font-semibold text-gray-700 mb-1">{{ update.time }}</div>
+            <div class="timeline-description text-sm text-gray-500 leading-relaxed">{{ update.description }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons flex gap-4 justify-center flex-wrap mb-12 md:flex-col md:items-center">
+      <button (click)="refreshPage()" class="btn btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold no-underline border-none cursor-pointer transition-all text-base bg-primary-500 text-white hover:bg-primary-600 hover:-translate-y-0.5 hover:shadow-lg disabled:bg-gray-300 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none md:w-full md:max-w-xs md:justify-center" [disabled]="!isMaintenanceComplete()" [attr.aria-label]="isMaintenanceComplete() ? 'Refresh page' : 'Check again'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M1 4v6h6"></path>
+          <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+        </svg>
+        {{ isMaintenanceComplete() ? i18n.t('pages.errorPages.maintenance.refreshPage') : i18n.t('pages.errorPages.maintenance.checkAgain') }}
+      </button>
+
+      <button (click)="goHome()" class="btn btn-outline inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold no-underline border-none cursor-pointer transition-all text-base bg-transparent text-primary-500 border-2 border-primary-500 hover:bg-primary-500 hover:text-white hover:-translate-y-0.5 md:w-full md:max-w-xs md:justify-center" [attr.aria-label]="'Go to home page'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9,22 9,12 15,12 15,22"></polyline>
+        </svg>
+        {{ i18n.t('pages.errorPages.maintenance.goHome') }}
+      </button>
+    </div>
+
+    <!-- Contact Information -->
+    <div class="contact-section mb-8">
+      <div class="contact-card bg-gray-50 border border-gray-200 rounded-xl p-8 flex items-center gap-6 max-w-2xl mx-auto md:flex-col md:text-center">
+        <div class="contact-icon text-primary-500 flex-shrink-0">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+          </svg>
+        </div>
+        <div class="contact-content text-left flex-1 md:text-center">
+          <h4 class="text-xl font-bold text-gray-800 m-0 mb-2">{{ i18n.t('pages.errorPages.maintenance.needImmediateAssistance') }}</h4>
+          <p class="text-sm text-gray-500 m-0 mb-4 leading-relaxed">{{ i18n.t('pages.errorPages.maintenance.urgentBusinessNeeds') }}</p>
+          <div class="contact-methods flex gap-4 flex-wrap md:justify-center">
+            <a href="mailto:support@company.com" class="contact-method flex items-center gap-2 text-primary-500 no-underline text-sm font-medium transition-colors hover:text-primary-600">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary-500">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              support@company.com
+            </a>
+            <a href="tel:+1234567890" class="contact-method flex items-center gap-2 text-primary-500 no-underline text-sm font-medium transition-colors hover:text-primary-600">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary-500">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+              +1 (234) 567-890
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional Information -->
+    <div class="additional-info">
+      <p class="info-text text-gray-500 text-sm leading-relaxed m-0">
+        {{ i18n.t('pages.errorPages.maintenance.apologizeInconvenience') }}
+      </p>
+    </div>
+  </div>
+</div>
+

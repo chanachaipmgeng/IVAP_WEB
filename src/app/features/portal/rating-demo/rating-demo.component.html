@@ -1,0 +1,278 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+      Rating & Reviews Demo
+    </h1>
+    <div class="flex space-x-2">
+      <app-glass-button (clicked)="submitReview()" variant="primary">
+        <i class="fas fa-star mr-2"></i> Submit Review
+      </app-glass-button>
+    </div>
+  </div>
+
+  <!-- Rating Types Demo -->
+  <app-glass-card class="p-6">
+    <h3 class="text-xl font-semibold text-white mb-4">Rating Types Demo</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Basic Stars -->
+      <div class="space-y-2">
+        <h4 class="text-lg font-medium text-gray-300">Basic Stars</h4>
+        <app-rating
+          [config]="basicRatingConfig"
+          [editable]="true"
+          [showValue]="true"
+          [showText]="true"
+          (ratingChange)="onRatingChange($event, 'basic')"
+          (ratingHover)="onRatingHover($event, 'basic')"
+          (ratingLeave)="onRatingLeave('basic')"
+          (ratingSelect)="onRatingSelect($event, 'basic')"
+          (ratingClear)="onRatingClear('basic')">
+        </app-rating>
+        <p class="text-sm text-gray-400">Current: {{ basicRating() }}/5</p>
+      </div>
+
+      <!-- Hearts -->
+      <div class="space-y-2">
+        <h4 class="text-lg font-medium text-gray-300">Hearts</h4>
+        <app-rating
+          [config]="heartRatingConfig"
+          [editable]="true"
+          [showValue]="true"
+          [showText]="true"
+          (ratingChange)="onRatingChange($event, 'heart')"
+          (ratingHover)="onRatingHover($event, 'heart')"
+          (ratingLeave)="onRatingLeave('heart')"
+          (ratingSelect)="onRatingSelect($event, 'heart')"
+          (ratingClear)="onRatingClear('heart')">
+        </app-rating>
+        <p class="text-sm text-gray-400">Current: {{ heartRating() }}/5</p>
+      </div>
+
+      <!-- Smileys -->
+      <div class="space-y-2">
+        <h4 class="text-lg font-medium text-gray-300">Smileys</h4>
+        <app-rating
+          [config]="smileyRatingConfig"
+          [editable]="true"
+          [showValue]="true"
+          [showText]="true"
+          (ratingChange)="onRatingChange($event, 'smiley')"
+          (ratingHover)="onRatingHover($event, 'smiley')"
+          (ratingLeave)="onRatingLeave('smiley')"
+          (ratingSelect)="onRatingSelect($event, 'smiley')"
+          (ratingClear)="onRatingClear('smiley')">
+        </app-rating>
+        <p class="text-sm text-gray-400">Current: {{ smileyRating() }}/5</p>
+      </div>
+
+      <!-- Thumbs -->
+      <div class="space-y-2">
+        <h4 class="text-lg font-medium text-gray-300">Thumbs</h4>
+        <app-rating
+          [config]="thumbsRatingConfig"
+          [editable]="true"
+          [showValue]="true"
+          [showText]="true"
+          (ratingChange)="onRatingChange($event, 'thumbs')"
+          (ratingHover)="onRatingHover($event, 'thumbs')"
+          (ratingLeave)="onRatingLeave('thumbs')"
+          (ratingSelect)="onRatingSelect($event, 'thumbs')"
+          (ratingClear)="onRatingClear('thumbs')">
+        </app-rating>
+        <p class="text-sm text-gray-400">Current: {{ thumbsRating() }}/5</p>
+      </div>
+    </div>
+  </app-glass-card>
+
+  <!-- Product Reviews -->
+  <app-glass-card class="p-6">
+    <h3 class="text-xl font-semibold text-white mb-4">Product Reviews</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div *ngFor="let product of products()" class="product-card">
+        <div class="relative">
+          <img appImageOptimization [ngSrc]="product.image" [alt]="product.name" class="w-full h-48 object-cover rounded-lg" loading="lazy">
+          <div class="absolute top-2 right-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-sm">
+            {{ product.category }}
+          </div>
+        </div>
+
+        <div class="p-4">
+          <h4 class="text-lg font-semibold text-white mb-2">{{ product.name }}</h4>
+          <p class="text-gray-400 text-sm mb-3">{{ product.description }}</p>
+
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center space-x-2">
+              <app-rating
+                [config]="basicRatingConfig"
+                [editable]="false"
+                [showValue]="false"
+                [showText]="false"
+                [value]="getProductRating(product.id)">
+              </app-rating>
+              <span class="text-sm text-gray-400">
+                {{ getProductRating(product.id) | number:'1.1-1' }} ({{ getProductReviewCount(product.id) }} reviews)
+              </span>
+            </div>
+            <span class="text-lg font-bold text-white">${{ product.price }}</span>
+          </div>
+
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-300">Rate this product:</label>
+            <app-rating
+              [config]="basicRatingConfig"
+              [editable]="true"
+              [showValue]="false"
+              [showText]="false"
+              (ratingChange)="onRatingChange($event, 'product')"
+              (ratingHover)="onRatingHover($event, 'product')"
+              (ratingLeave)="onRatingLeave('product')"
+              (ratingSelect)="onRatingSelect($event, 'product')"
+              (ratingClear)="onRatingClear('product')">
+            </app-rating>
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-glass-card>
+
+  <!-- Rating Statistics -->
+  <app-glass-card class="p-6">
+    <h3 class="text-xl font-semibold text-white mb-4">Rating Statistics</h3>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div>
+        <h4 class="text-lg font-medium text-gray-300 mb-3">Overall Rating</h4>
+        <div class="flex items-center space-x-4">
+          <div class="text-center">
+            <div class="text-4xl font-bold text-white">{{ ratingStats().average | number:'1.1-1' }}</div>
+            <div class="text-sm text-gray-400">out of 5</div>
+          </div>
+          <div class="flex-1">
+            <app-rating
+              [config]="basicRatingConfig"
+              [editable]="false"
+              [showValue]="false"
+              [showText]="false"
+              [value]="ratingStats().average">
+            </app-rating>
+            <div class="text-sm text-gray-400 mt-1">{{ ratingStats().total }} total ratings</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-lg font-medium text-gray-300 mb-3">Rating Distribution</h4>
+        <div class="space-y-2">
+          <div *ngFor="let dist of ratingStats().distribution" class="flex items-center space-x-2">
+            <span class="text-sm text-gray-400 w-8">{{ dist.rating }}★</span>
+            <div class="flex-1 bg-gray-700 rounded-full h-2">
+              <div class="bg-yellow-400 h-2 rounded-full" [style.width.%]="dist.percentage"></div>
+            </div>
+            <span class="text-sm text-gray-400 w-12">{{ dist.count }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-glass-card>
+
+  <!-- Review Form -->
+  <app-glass-card class="p-6">
+    <h3 class="text-xl font-semibold text-white mb-4">Write a Review</h3>
+    <form (ngSubmit)="submitReview()" class="space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">Your Name</label>
+          <input
+            type="text"
+            [(ngModel)]="newReview().userName"
+            name="userName"
+            class="glass-input w-full"
+            placeholder="Enter your name"
+            required>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">Rating</label>
+          <app-rating
+            [config]="basicRatingConfig"
+            [editable]="true"
+            [showValue]="true"
+            [showText]="true"
+            (ratingChange)="onRatingChange($event, 'review')"
+            (ratingHover)="onRatingHover($event, 'review')"
+            (ratingLeave)="onRatingLeave('review')"
+            (ratingSelect)="onRatingSelect($event, 'review')"
+            (ratingClear)="onRatingClear('review')">
+          </app-rating>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-300 mb-2">Review Title</label>
+        <input
+          type="text"
+          [(ngModel)]="newReview().title"
+          name="title"
+          class="glass-input w-full"
+          placeholder="Summarize your review"
+          required>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-300 mb-2">Your Review</label>
+        <textarea
+          [(ngModel)]="newReview().comment"
+          name="comment"
+          rows="4"
+          class="glass-input w-full"
+          placeholder="Tell us about your experience"
+          required></textarea>
+      </div>
+
+      <div class="flex justify-end">
+        <app-glass-button type="submit" variant="primary">
+          <i class="fas fa-paper-plane mr-2"></i> Submit Review
+        </app-glass-button>
+      </div>
+    </form>
+  </app-glass-card>
+
+  <!-- Recent Reviews -->
+  <app-glass-card class="p-6">
+    <h3 class="text-xl font-semibold text-white mb-4">Recent Reviews</h3>
+    <div class="space-y-4">
+      <div *ngFor="let review of reviews()" class="review-item">
+        <div class="flex items-start space-x-3">
+          <img appImageOptimization [ngSrc]="review.userAvatar" [alt]="review.userName" class="w-10 h-10 rounded-full" loading="lazy">
+          <div class="flex-1">
+            <div class="flex items-center space-x-2 mb-1">
+              <span class="font-medium text-white">{{ review.userName }}</span>
+              <span *ngIf="review.verified" class="text-xs bg-green-500 text-white px-2 py-1 rounded">
+                Verified
+              </span>
+              <app-rating
+                [config]="basicRatingConfig"
+                [editable]="false"
+                [showValue]="false"
+                [showText]="false"
+                [value]="review.rating">
+              </app-rating>
+            </div>
+            <h5 class="font-medium text-gray-300 mb-1">{{ review.title }}</h5>
+            <p class="text-gray-400 text-sm mb-2">{{ review.comment }}</p>
+            <div class="flex items-center justify-between text-xs text-gray-500">
+              <span>{{ formatDate(review.date) }}</span>
+              <button
+                (click)="markHelpful(review.id)"
+                class="flex items-center space-x-1 hover:text-blue-400 transition-colors">
+                <i class="fas fa-thumbs-up"></i>
+                <span>Helpful ({{ review.helpful }})</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-glass-card>
+</div>
+
+

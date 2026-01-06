@@ -1,0 +1,100 @@
+<app-page-layout
+  [title]="'pages.moduleSubscription.title' | translate"
+  [description]="'pages.moduleSubscription.description' | translate"
+  icon="📦"
+  [actions]="pageActions()">
+  
+  <!-- Tabs -->
+  <app-tabs [tabs]="tabs()" [activeTab]="selectedTab()" (activeTabChange)="onTabChange($event)">
+    
+    <!-- Overview Tab -->
+    <div *ngIf="selectedTab() === 'overview'" class="space-y-6">
+      <!-- Metrics Cards -->
+      <app-statistics-grid [stats]="statisticsCards()" [columns]="4" />
+    </div>
+
+    <!-- Modules Tab -->
+    <div *ngIf="selectedTab() === 'modules'" class="space-y-6">
+      <!-- Filters -->
+      <app-filter-section
+        [fields]="moduleFilterFields()"
+        [columns]="3"
+        (filterChange)="onModuleFilterChange($event)"
+      />
+
+      <!-- Modules Table -->
+      <app-data-table
+        [columns]="moduleColumns"
+        [data]="filteredModules()"
+        [actions]="moduleActions"
+        [searchable]="false"
+      />
+    </div>
+
+    <!-- Subscriptions Tab -->
+    <div *ngIf="selectedTab() === 'subscriptions'" class="space-y-6">
+      <!-- Subscriptions Table -->
+      <app-data-table
+        [columns]="subscriptionColumns"
+        [data]="filteredSubscriptions()"
+        [actions]="subscriptionActions"
+        [searchable]="false"
+      />
+    </div>
+
+    <!-- Tenants Tab -->
+    <div *ngIf="selectedTab() === 'tenants'" class="space-y-6">
+      <!-- Tenants content -->
+      <p class="text-gray-600 dark:text-gray-400">{{ 'pages.moduleSubscription.tenantsManagement' | translate }}</p>
+    </div>
+  </app-tabs>
+
+  <!-- Subscribe Modal -->
+  <app-modal
+    [isOpen]="showSubscribeModal()"
+    [title]="'pages.moduleSubscription.subscribeToModule' | translate"
+    (closed)="closeSubscribeModal()"
+  >
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          {{ 'pages.moduleSubscription.tenantId' | translate }} <span class="text-red-500">*</span>
+        </label>
+        <input
+          [(ngModel)]="subscribeForm.tenantId"
+          type="text"
+          class="glass-input w-full"
+          [placeholder]="'pages.moduleSubscription.enterTenantId' | translate"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          {{ 'pages.moduleSubscription.plan' | translate }} <span class="text-red-500">*</span>
+        </label>
+        <select [(ngModel)]="subscribeForm.plan" class="glass-input w-full">
+          <option value="basic">{{ 'pages.moduleSubscription.basic' | translate }}</option>
+          <option value="professional">{{ 'pages.moduleSubscription.professional' | translate }}</option>
+          <option value="enterprise">{{ 'pages.moduleSubscription.enterprise' | translate }}</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Billing Cycle <span class="text-red-500">*</span>
+        </label>
+        <select [(ngModel)]="subscribeForm.billingCycle" class="glass-input w-full">
+          <option value="monthly">Monthly</option>
+          <option value="quarterly">Quarterly</option>
+          <option value="yearly">Yearly</option>
+        </select>
+      </div>
+    </div>
+    <div slot="footer">
+      <app-glass-button variant="secondary" (clicked)="closeSubscribeModal()">
+        {{ 'common.cancel' | translate }}
+      </app-glass-button>
+      <app-glass-button variant="primary" [loading]="saving()" (clicked)="subscribeToModule()">
+        {{ 'Subscribe' | translate }}
+      </app-glass-button>
+    </div>
+  </app-modal>
+</app-page-layout>

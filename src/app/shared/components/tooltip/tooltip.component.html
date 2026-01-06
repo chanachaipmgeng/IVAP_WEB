@@ -1,0 +1,44 @@
+<div class="tooltip-wrapper relative inline-block" [ngClass]="customClass || ''">
+  <!-- Trigger Element -->
+  <div
+    #tooltipTrigger
+    class="tooltip-trigger cursor-pointer inline-block"
+    [class.cursor-not-allowed]="disabled"
+    [class.opacity-60]="disabled"
+    [attr.aria-label]="ariaLabel || content || 'Tooltip trigger'"
+    [attr.aria-describedby]="isVisible && content ? 'tooltip-' + tooltipId : null"
+    [attr.aria-expanded]="isVisible ? 'true' : 'false'"
+    [attr.aria-haspopup]="content ? 'true' : null"
+    [attr.tabindex]="disabled ? -1 : 0"
+    (mouseenter)="onMouseEnter()"
+    (mouseleave)="onMouseLeave()"
+    (click)="onClick()"
+    (keydown.enter)="onClick()"
+    (keydown.space)="onClick(); $event.preventDefault()">
+    <ng-content></ng-content>
+  </div>
+
+  <!-- Tooltip Content -->
+  <div
+    *ngIf="isVisible && content"
+    #tooltipContent
+    [id]="'tooltip-' + tooltipId"
+    class="tooltip-content fixed z-[1000] max-w-[300px] px-3 py-3 rounded-xl text-sm leading-relaxed font-medium text-center break-words shadow-lg pointer-events-none opacity-0 scale-90 transition-all"
+    [ngClass]="getTooltipClasses()"
+    [class.opacity-100]="isVisible"
+    [class.scale-100]="isVisible"
+    [ngStyle]="getTooltipStyles()"
+    role="tooltip"
+    [attr.aria-hidden]="!isVisible"
+    [attr.aria-live]="mergedConfig.interactive ? 'polite' : 'off'">
+
+    <!-- Tooltip Text -->
+    <div class="tooltip-text m-0 whitespace-pre-wrap">
+      {{ content }}
+    </div>
+
+    <!-- Tooltip Arrow -->
+    <div *ngIf="mergedConfig.showArrow" class="tooltip-arrow absolute w-0 h-0 border-[6px] border-transparent" [ngClass]="'tooltip-arrow-' + actualPosition" [attr.aria-hidden]="true"></div>
+  </div>
+</div>
+

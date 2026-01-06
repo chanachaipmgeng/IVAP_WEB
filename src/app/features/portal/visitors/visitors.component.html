@@ -1,0 +1,161 @@
+<app-page-layout
+  [title]="'pages.visitors.title' | translate"
+  [description]="'pages.visitors.description' | translate"
+  icon="🚶"
+  [actions]="pageActions()">
+  
+  <!-- Error Message -->
+  @if (errorMessage()) {
+    <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+      <p class="text-red-800 text-sm">{{ errorMessage() }}</p>
+    </div>
+  }
+
+  <!-- Visitors Table -->
+  <app-data-table
+    [columns]="columns"
+    [data]="visitors()"
+    [actions]="actions"
+    [searchable]="true"
+  >
+    <div actions>
+      <app-glass-button (clicked)="loadVisitors()">
+        🔄 {{ 'common.refresh' | translate }}
+      </app-glass-button>
+    </div>
+  </app-data-table>
+
+  <!-- Add/Edit Modal -->
+  <app-modal
+    [isOpen]="showModal()"
+    [title]="(editingVisitor() ? ('pages.visitors.editVisitor' | translate) : ('pages.visitors.registerVisitor' | translate))"
+    [loading]="saving()"
+    (closed)="closeModal()"
+    (confirmed)="saveVisitor()"
+  >
+    <form [formGroup]="visitorForm" class="space-y-4">
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            {{ 'pages.visitors.firstName' | translate }} <span class="text-red-500">*</span>
+          </label>
+          <input
+            formControlName="firstName"
+            type="text"
+            class="glass-input w-full"
+            [class.border-red-300]="visitorForm.get('firstName')?.invalid && visitorForm.get('firstName')?.touched"
+            [placeholder]="'pages.visitors.firstName' | translate"
+          />
+          @if (getFieldError('firstName')) {
+            <p class="mt-1 text-sm text-red-600">{{ getFieldError('firstName') }}</p>
+          }
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            {{ 'pages.visitors.lastName' | translate }} <span class="text-red-500">*</span>
+          </label>
+          <input
+            formControlName="lastName"
+            type="text"
+            class="glass-input w-full"
+            [class.border-red-300]="visitorForm.get('lastName')?.invalid && visitorForm.get('lastName')?.touched"
+            [placeholder]="'pages.visitors.lastName' | translate"
+          />
+          @if (getFieldError('lastName')) {
+            <p class="mt-1 text-sm text-red-600">{{ getFieldError('lastName') }}</p>
+          }
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          {{ 'pages.visitors.email' | translate }}
+        </label>
+        <input
+          formControlName="email"
+          type="email"
+          class="glass-input w-full"
+          [class.border-red-300]="visitorForm.get('email')?.invalid && visitorForm.get('email')?.touched"
+          [placeholder]="'pages.visitors.email' | translate"
+        />
+        @if (getFieldError('email')) {
+          <p class="mt-1 text-sm text-red-600">{{ getFieldError('email') }}</p>
+        }
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          {{ 'pages.visitors.phone' | translate }}
+        </label>
+        <input
+          formControlName="phone"
+          type="tel"
+          class="glass-input w-full"
+          [class.border-red-300]="visitorForm.get('phone')?.invalid && visitorForm.get('phone')?.touched"
+          [placeholder]="'pages.visitors.phone' | translate"
+        />
+        @if (getFieldError('phone')) {
+          <p class="mt-1 text-sm text-red-600">{{ getFieldError('phone') }}</p>
+        }
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          {{ 'pages.visitors.companyName' | translate }}
+        </label>
+        <input
+          formControlName="companyName"
+          type="text"
+          class="glass-input w-full"
+          [placeholder]="'pages.visitors.companyName' | translate"
+        />
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            {{ 'pages.visitors.visitorType' | translate }} <span class="text-red-500">*</span>
+          </label>
+          <select
+            formControlName="visitorType"
+            class="glass-input w-full"
+            [class.border-red-300]="visitorForm.get('visitorType')?.invalid && visitorForm.get('visitorType')?.touched"
+          >
+            <option [value]="VisitorType.GUEST">{{ 'pages.visitors.guest' | translate }}</option>
+            <option [value]="VisitorType.VENDOR">{{ 'pages.visitors.vendor' | translate }}</option>
+            <option [value]="VisitorType.CONTRACTOR">{{ 'pages.visitors.contractor' | translate }}</option>
+          </select>
+          @if (getFieldError('visitorType')) {
+            <p class="mt-1 text-sm text-red-600">{{ getFieldError('visitorType') }}</p>
+          }
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            {{ 'pages.visitors.visitPurpose' | translate }} <span class="text-red-500">*</span>
+          </label>
+          <select
+            formControlName="visitPurpose"
+            class="glass-input w-full"
+            [class.border-red-300]="visitorForm.get('visitPurpose')?.invalid && visitorForm.get('visitPurpose')?.touched"
+          >
+            <option [value]="VisitPurpose.MEETING">{{ 'pages.visitors.meeting' | translate }}</option>
+            <option [value]="VisitPurpose.DELIVERY">{{ 'pages.visitors.delivery' | translate }}</option>
+            <option [value]="VisitPurpose.INTERVIEW">{{ 'pages.visitors.interview' | translate }}</option>
+            <option [value]="VisitPurpose.OTHER">{{ 'pages.visitors.other' | translate }}</option>
+          </select>
+          @if (getFieldError('visitPurpose')) {
+            <p class="mt-1 text-sm text-red-600">{{ getFieldError('visitPurpose') }}</p>
+          }
+        </div>
+      </div>
+
+      @if (errorMessage()) {
+        <div class="p-3 bg-red-50 border border-red-200 rounded-lg">
+          <p class="text-sm text-red-800">{{ errorMessage() }}</p>
+        </div>
+      }
+    </form>
+  </app-modal>
+</app-page-layout>

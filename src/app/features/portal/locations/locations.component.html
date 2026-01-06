@@ -1,0 +1,54 @@
+<app-page-layout
+  title="Location Management (Geofencing)"
+  description="Define geographic boundaries for attendance validation. Employees can only check-in when they're within the specified radius of these locations."
+  icon="📍"
+  [actions]="pageActions()">
+  
+  <!-- Info Card -->
+  <app-glass-card customClass="p-6">
+    <div class="flex items-start space-x-4">
+      <span class="text-3xl">📍</span>
+      <div>
+        <h3 class="font-medium text-gray-900 dark:text-gray-100 mb-1">Geofencing System</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-400">
+          Define geographic boundaries for attendance validation. Employees can only check-in when they're within the specified radius of these locations.
+        </p>
+      </div>
+    </div>
+  </app-glass-card>
+
+  <!-- Locations Table -->
+  <app-data-table
+    [columns]="columns"
+    [data]="locations()"
+    [actions]="actions"
+    [searchable]="true"
+  >
+    <div actions>
+      <app-glass-button (clicked)="loadLocations()">
+        🔄 {{ 'common.refresh' | translate }}
+      </app-glass-button>
+    </div>
+  </app-data-table>
+
+  <!-- Add/Edit Location Modal Form -->
+  <app-modal-form
+    [isOpen]="showModal()"
+    [title]="editingLocation() ? 'Edit Location' : 'Add Location'"
+    [fields]="locationFormFields()"
+    [loading]="saving()"
+    [submitLabel]="'common.save' | translate"
+    [cancelLabel]="'common.cancel' | translate"
+    (closed)="closeModal()"
+    (submitted)="onLocationFormSubmitted($event)"
+  />
+
+  <!-- Helper Button for Current Location -->
+  @if (showModal()) {
+    <div class="mt-4">
+      <app-glass-button (clicked)="getCurrentLocation()">
+        📍 Use Current Location
+      </app-glass-button>
+    </div>
+  }
+</app-page-layout>

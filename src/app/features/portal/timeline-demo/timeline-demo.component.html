@@ -1,0 +1,267 @@
+<div class="timeline-demo">
+  <!-- Header -->
+  <div class="demo-header">
+    <h1 class="demo-title">Timeline Demo</h1>
+    <p class="demo-description">
+      ทดสอบระบบ Timeline สำหรับแสดงเหตุการณ์และกิจกรรมต่างๆ
+    </p>
+  </div>
+
+  <!-- Demo Statistics -->
+  <div class="demo-stats">
+    <app-glass-card>
+      <h2>สถิติ Timeline</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-list"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">{{ getTotalEventsCount() }}</div>
+            <div class="stat-label">เหตุการณ์ทั้งหมด</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">{{ getRecentEventsCount() }}</div>
+            <div class="stat-label">เหตุการณ์ล่าสุด (24 ชม.)</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-chart-pie"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">{{ getEventTypeStats() | json }}</div>
+            <div class="stat-label">สถิติตามประเภท</div>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Demo Controls -->
+  <div class="demo-controls">
+    <app-glass-card>
+      <h2>การควบคุม Demo</h2>
+      <div class="controls-grid">
+        <!-- Mode Selection -->
+        <div class="control-group">
+          <label>โหมดการแสดงผล:</label>
+          <div class="mode-buttons">
+            <app-glass-button
+              [variant]="demoMode === 'system' ? 'primary' : 'secondary'"
+              (click)="demoMode = 'system'; onModeChange()">
+              <i class="fas fa-cogs"></i>
+              ระบบ
+            </app-glass-button>
+            <app-glass-button
+              [variant]="demoMode === 'user' ? 'primary' : 'secondary'"
+              (click)="demoMode = 'user'; onModeChange()">
+              <i class="fas fa-user"></i>
+              ผู้ใช้
+            </app-glass-button>
+            <app-glass-button
+              [variant]="demoMode === 'custom' ? 'primary' : 'secondary'"
+              (click)="demoMode = 'custom'; onModeChange()">
+              <i class="fas fa-puzzle-piece"></i>
+              กำหนดเอง
+            </app-glass-button>
+          </div>
+        </div>
+
+        <!-- Timeline Configuration -->
+        <div class="control-group">
+          <label>การตั้งค่า Timeline:</label>
+          <div class="config-buttons">
+            <app-glass-button
+              [variant]="timelineConfig.orientation === 'vertical' ? 'primary' : 'secondary'"
+              (click)="toggleOrientation()">
+              <i class="fas" [class.fa-list]="timelineConfig.orientation === 'vertical'" [class.fa-th-list]="timelineConfig.orientation === 'horizontal'"></i>
+              {{ timelineConfig.orientation === 'vertical' ? 'แนวตั้ง' : 'แนวนอน' }}
+            </app-glass-button>
+            <app-glass-button
+              [variant]="timelineConfig.showIcons ? 'primary' : 'secondary'"
+              (click)="toggleFeature('showIcons')">
+              <i class="fas fa-icons"></i>
+              ไอคอน
+            </app-glass-button>
+            <app-glass-button
+              [variant]="timelineConfig.showTimestamps ? 'primary' : 'secondary'"
+              (click)="toggleFeature('showTimestamps')">
+              <i class="fas fa-clock"></i>
+              เวลา
+            </app-glass-button>
+            <app-glass-button
+              [variant]="timelineConfig.showDescriptions ? 'primary' : 'secondary'"
+              (click)="toggleFeature('showDescriptions')">
+              <i class="fas fa-align-left"></i>
+              คำอธิบาย
+            </app-glass-button>
+            <app-glass-button
+              [variant]="timelineConfig.allowCollapse ? 'primary' : 'secondary'"
+              (click)="toggleFeature('allowCollapse')">
+              <i class="fas fa-compress-alt"></i>
+              ย่อ/ขยาย
+            </app-glass-button>
+          </div>
+        </div>
+
+        <!-- Demo Actions -->
+        <div class="control-group">
+          <label>การดำเนินการ:</label>
+          <div class="action-buttons">
+            <app-glass-button
+              [variant]="autoRefresh ? 'primary' : 'secondary'"
+              (click)="toggleAutoRefresh()">
+              <i class="fas fa-sync-alt" [class.fa-spin]="autoRefresh"></i>
+              {{ autoRefresh ? 'หยุด' : 'เริ่ม' }} อัตโนมัติ
+            </app-glass-button>
+            <app-glass-button
+              variant="secondary"
+              (click)="onLoadMore()"
+              [disabled]="loading">
+              <i class="fas fa-plus"></i>
+              เพิ่มเหตุการณ์
+            </app-glass-button>
+            <app-glass-button
+              variant="secondary"
+              (click)="resetToSampleData()">
+              <i class="fas fa-refresh"></i>
+              รีเซ็ตข้อมูล
+            </app-glass-button>
+            <app-glass-button
+              variant="danger"
+              (click)="clearAllEvents()">
+              <i class="fas fa-trash"></i>
+              ล้างทั้งหมด
+            </app-glass-button>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Timeline Component -->
+  <div class="timeline-section">
+    <app-glass-card>
+      <h2>Timeline</h2>
+      <app-timeline
+        [events]="timelineEvents"
+        [config]="timelineConfig"
+        [loading]="loading"
+        [emptyMessage]="'ไม่มีข้อมูล Timeline'"
+        (eventClick)="onEventClick($event)"
+        (eventToggle)="onEventToggle($event)"
+        (loadMore)="onLoadMore()">
+      </app-timeline>
+    </app-glass-card>
+  </div>
+
+  <!-- Event Type Legend -->
+  <div class="event-legend">
+    <app-glass-card>
+      <h2>คำอธิบายประเภทเหตุการณ์</h2>
+      <div class="legend-grid">
+        <div class="legend-item">
+          <div class="legend-dot success"></div>
+          <span>สำเร็จ - การดำเนินการที่สำเร็จ</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot warning"></div>
+          <span>คำเตือน - ข้อควรระวัง</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot error"></div>
+          <span>ข้อผิดพลาด - ข้อผิดพลาดที่เกิดขึ้น</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot info"></div>
+          <span>ข้อมูล - ข้อมูลทั่วไป</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot primary"></div>
+          <span>หลัก - เหตุการณ์สำคัญ</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot secondary"></div>
+          <span>รอง - เหตุการณ์รอง</span>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Features Overview -->
+  <div class="features-overview">
+    <app-glass-card>
+      <h2>คุณสมบัติของ Timeline</h2>
+      <div class="features-grid">
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-list"></i>
+          </div>
+          <div class="feature-content">
+            <h3>แสดงเหตุการณ์แบบ Timeline</h3>
+            <p>แสดงเหตุการณ์และกิจกรรมต่างๆ ในรูปแบบ Timeline ที่เข้าใจง่าย</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-search"></i>
+          </div>
+          <div class="feature-content">
+            <h3>ค้นหาและกรอง</h3>
+            <p>ค้นหาเหตุการณ์ตามคำสำคัญและกรองตามประเภท</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-sort"></i>
+          </div>
+          <div class="feature-content">
+            <h3>เรียงลำดับ</h3>
+            <p>เรียงลำดับเหตุการณ์ตามเวลาจากเก่าที่สุดหรือใหม่ล่าสุด</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-compress-alt"></i>
+          </div>
+          <div class="feature-content">
+            <h3>ย่อ/ขยาย</h3>
+            <p>ย่อ/ขยาย Timeline เพื่อแสดงเหตุการณ์จำนวนมาก</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <div class="feature-content">
+            <h3>Responsive Design</h3>
+            <p>รองรับการใช้งานบนอุปกรณ์ต่างๆ</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-cog"></i>
+          </div>
+          <div class="feature-content">
+            <h3>การตั้งค่าที่ยืดหยุ่น</h3>
+            <p>ปรับแต่งการแสดงผลตามความต้องการ</p>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+</div>
+

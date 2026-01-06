@@ -1,0 +1,101 @@
+<app-page-layout
+  [title]="'navigation.dashboard' | translate"
+  [description]="getCurrentDate()"
+  icon="📊"
+  [actions]="pageActions()">
+  
+  <!-- Error Message -->
+  @if (errorMessage()) {
+    <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+      <p class="text-red-800 text-sm">{{ errorMessage() }}</p>
+    </div>
+  }
+
+  <app-loading *ngIf="getLoading()()" [message]="i18n.t('pages.dashboard.loadingDashboardData')" />
+
+  <!-- Stats Grid -->
+  <app-statistics-grid *ngIf="!getLoading()() && stats()" [stats]="statisticsCards()" [columns]="4" />
+
+  <!-- Charts Section -->
+  <div *ngIf="!getLoading()() && stats()" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Attendance Trend Chart -->
+    <app-glass-card customClass="p-6">
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+        {{ i18n.t('pages.dashboard.attendanceTrend7Days') }}
+      </h3>
+      <div class="h-64">
+        <app-echarts-chart [options]="attendanceChartOptions()" [height]="'256px'" [ariaLabel]="i18n.t('pages.dashboard.attendanceTrend7Days')" />
+      </div>
+    </app-glass-card>
+
+    <!-- Door Status Chart -->
+    <app-glass-card customClass="p-6">
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+        {{ i18n.t('pages.dashboard.doorStatus') }}
+      </h3>
+      <div class="h-64">
+        <app-echarts-chart [options]="doorChartOptions()" [height]="'256px'" [ariaLabel]="i18n.t('pages.dashboard.doorStatus')" />
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Recent Activity & Upcoming Events -->
+  <div *ngIf="!getLoading()() && stats()" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Recent Check-ins -->
+    <app-glass-card customClass="p-6">
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+        {{ i18n.t('pages.dashboard.recentCheckIns') }}
+      </h3>
+      <div class="space-y-3">
+        @if (recentCheckIns().length > 0) {
+          @for (checkIn of recentCheckIns(); track trackByCheckIn($index, checkIn)) {
+            <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+              <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+                  <span class="text-lg">👤</span>
+                </div>
+                <div>
+                  <p class="font-medium text-gray-900 dark:text-gray-100">{{ checkIn.name }}</p>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">{{ checkIn.time }}</p>
+                </div>
+              </div>
+              <span class="px-2 py-1 text-xs font-semibold rounded" [class]="checkIn.status === 'present' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'">
+                {{ i18n.t('pages.dashboard.' + checkIn.status) }}
+              </span>
+            </div>
+          }
+        } @else {
+          <p class="text-gray-500 dark:text-gray-400 text-center py-8">
+            {{ i18n.t('pages.dashboard.noRecentCheckIns') }}
+          </p>
+        }
+      </div>
+    </app-glass-card>
+
+    <!-- Upcoming Events -->
+    <app-glass-card customClass="p-6">
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+        {{ i18n.t('pages.dashboard.upcomingEvents') }}
+      </h3>
+      <div class="space-y-3">
+        @if (upcomingEvents().length > 0) {
+          @for (event of upcomingEvents(); track trackByEvent($index, event)) {
+            <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+              <div>
+                <p class="font-medium text-gray-900 dark:text-gray-100">{{ event.name }}</p>
+                <p class="text-sm text-gray-600 dark:text-gray-400">{{ event.date }}</p>
+              </div>
+              <span class="px-2 py-1 text-xs font-semibold rounded bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                {{ event.type }}
+              </span>
+            </div>
+          }
+        } @else {
+          <p class="text-gray-500 dark:text-gray-400 text-center py-8">
+            {{ i18n.t('pages.dashboard.noUpcomingEvents') }}
+          </p>
+        }
+      </div>
+    </app-glass-card>
+  </div>
+</app-page-layout>

@@ -1,0 +1,119 @@
+<div class="draggable-cards-container relative w-full h-full min-h-[400px] bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-xl overflow-hidden" [class]="customClass || ''" role="group" [attr.aria-label]="ariaLabel || 'Draggable cards'">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="cards-loading flex flex-col items-center justify-center h-[400px] text-gray-400" role="status" [attr.aria-live]="'polite'">
+    <div class="loading-spinner w-12 h-12 border-3 border-white/10 border-t-primary-500 rounded-full animate-spin mb-4" [attr.aria-hidden]="true"></div>
+    <p class="m-0 text-base">กำลังโหลดข้อมูล...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && cards.length === 0" class="cards-empty flex flex-col items-center justify-center h-[400px] text-gray-400" role="status" [attr.aria-live]="'polite'">
+    <i class="fas fa-th-large fa-3x mb-4 opacity-50" [attr.aria-hidden]="true"></i>
+    <p class="m-0 mb-6 text-lg">ไม่มีข้อมูล Cards</p>
+    <button class="add-card-btn flex items-center gap-2 px-6 py-3 bg-white/10 border border-white/20 rounded-xl text-white text-sm cursor-pointer transition-all hover:bg-white/15 hover:-translate-y-0.5 focus:outline-2 focus:outline-primary-500 focus:outline-offset-2" (click)="addCard()" [attr.aria-label]="'Add new card'">
+      <i class="fas fa-plus" [attr.aria-hidden]="true"></i>
+      เพิ่ม Card
+    </button>
+  </div>
+
+  <!-- Cards Container -->
+  <div
+    *ngIf="!loading && cards.length > 0"
+    #container
+    class="cards-container relative w-full h-full min-h-[400px] overflow-hidden cursor-default"
+    role="application"
+    [attr.aria-label]="'Cards container'"
+    (click)="deselectCard()">
+
+    <!-- Draggable Cards -->
+    <div
+      *ngFor="let card of cards; trackBy: trackByCardId"
+      class="draggable-card absolute bg-white/5 border border-white/10 rounded-xl shadow-md backdrop-blur-sm cursor-move select-none transition-all overflow-hidden hover:shadow-lg hover:-translate-y-0.5"
+      [ngClass]="getCardClasses(card)"
+      [class.border-primary-500]="selectedCard === card"
+      [class.shadow-lg]="selectedCard === card"
+      [class.shadow-primary-500/20]="selectedCard === card"
+      [class.-translate-y-0.5]="selectedCard === card"
+      [class.opacity-60]="card.locked"
+      [class.cursor-not-allowed]="card.locked"
+      [class.cursor-default]="!card.draggable"
+      [style]="getCardStyles(card)"
+      role="group"
+      [attr.aria-label]="card.title || 'Card'"
+      [attr.aria-selected]="selectedCard === card ? 'true' : 'false'"
+      [attr.aria-disabled]="card.locked ? 'true' : null"
+      [attr.tabindex]="card.locked ? -1 : 0"
+      (mousedown)="onMouseDown($event, card)"
+      (touchstart)="onTouchStart($event, card)"
+      (click)="selectCard(card); $event.stopPropagation()"
+      (keydown.enter)="selectCard(card)"
+      (keydown.space)="selectCard(card); $event.preventDefault()">
+
+      <!-- Card Header -->
+      <div class="card-header flex items-center justify-between p-4 border-b border-white/10 bg-white/2 cursor-move">
+        <div class="card-title-section flex items-center gap-3 flex-1 min-w-0">
+          <i *ngIf="card.icon" [class]="card.icon + ' text-primary-500 text-lg flex-shrink-0'" [attr.aria-hidden]="true"></i>
+          <h3 class="card-title m-0 text-base font-semibold text-white whitespace-nowrap overflow-hidden text-ellipsis">{{ card.title }}</h3>
+          <span *ngIf="card.badge" class="card-badge px-2 py-1 rounded text-xs font-medium text-white whitespace-nowrap flex-shrink-0" [ngClass]="'badge-' + (card.badgeColor || 'default')"
+            [class.bg-gray-500]="card.badgeColor === 'default' || !card.badgeColor"
+            [class.bg-primary-500]="card.badgeColor === 'primary'"
+            [class.bg-success-500]="card.badgeColor === 'success'"
+            [class.bg-warning-500]="card.badgeColor === 'warning'"
+            [class.bg-error-500]="card.badgeColor === 'danger'"
+            [class.bg-info-500]="card.badgeColor === 'info'">
+            {{ card.badge }}
+          </span>
+        </div>
+
+        <div class="card-actions flex items-center gap-2 flex-shrink-0">
+          <button
+            class="card-action-btn flex items-center justify-center w-8 h-8 bg-white/10 border border-white/10 rounded text-gray-400 text-xs cursor-pointer transition-all hover:bg-white/15 hover:text-white focus:outline-2 focus:outline-primary-500 focus:outline-offset-2"
+            [class.bg-primary-500]="card.locked"
+            [class.text-white]="card.locked"
+            (click)="toggleCardLock(card); $event.stopPropagation()"
+            [attr.aria-label]="card.locked ? 'Unlock card' : 'Lock card'"
+            [attr.title]="card.locked ? 'ปลดล็อค' : 'ล็อค'"
+            [attr.tabindex]="0">
+            <i class="fas" [class.fa-lock]="card.locked" [class.fa-unlock]="!card.locked" [attr.aria-hidden]="true"></i>
+          </button>
+
+          <button
+            class="card-action-btn danger flex items-center justify-center w-8 h-8 bg-white/10 border border-white/10 rounded text-gray-400 text-xs cursor-pointer transition-all hover:bg-error-500 hover:text-white focus:outline-2 focus:outline-primary-500 focus:outline-offset-2"
+            (click)="deleteCard(card); $event.stopPropagation()"
+            [attr.aria-label]="'Delete card'"
+            [attr.title]="'ลบ'"
+            [attr.tabindex]="0">
+            <i class="fas fa-trash" [attr.aria-hidden]="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Card Content -->
+      <div class="card-content p-4 h-[calc(100%-4rem)] overflow-y-auto">
+        <div class="card-content-body text-white leading-relaxed text-sm" [innerHTML]="card.content"></div>
+      </div>
+
+      <!-- Resize Handle -->
+      <div
+        *ngIf="card.resizable"
+        class="resize-handle absolute bottom-0 right-0 w-4 h-4 bg-white/10 rounded-tl-lg cursor-nw-resize flex items-center justify-center transition-all hover:bg-white/20 hidden"
+        role="button"
+        [attr.aria-label]="'Resize card'"
+        [attr.tabindex]="0"
+        (mousedown)="onResizeStart($event, card)"
+        (touchstart)="onResizeStart($event, card)"
+        (keydown.enter)="onResizeStart($event, card)"
+        (keydown.space)="onResizeStart($event, card); $event.preventDefault()">
+        <i class="fas fa-grip-horizontal text-[8px] text-gray-400" [attr.aria-hidden]="true"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Card Button -->
+  <div *ngIf="!loading && cards.length > 0" class="add-card-container absolute top-4 right-4 z-10 md:top-2 md:right-2">
+    <button class="add-card-btn flex items-center gap-2 px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white text-sm cursor-pointer transition-all backdrop-blur-sm hover:bg-white/15 hover:-translate-y-0.5 focus:outline-2 focus:outline-primary-500 focus:outline-offset-2 md:px-2 md:py-2 md:text-xs" (click)="addCard()" [attr.aria-label]="'Add new card'">
+      <i class="fas fa-plus text-sm" [attr.aria-hidden]="true"></i>
+      เพิ่ม Card
+    </button>
+  </div>
+</div>
+

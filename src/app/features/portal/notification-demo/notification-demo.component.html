@@ -1,0 +1,218 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+      Notification System Demo
+    </h1>
+    <div class="flex space-x-2">
+      <app-glass-button (clicked)="clearAllNotifications()" variant="secondary">
+        <i class="fas fa-trash mr-2"></i> Clear All
+      </app-glass-button>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <app-glass-card class="p-6">
+    <div class="flex space-x-1 mb-6">
+      <button
+        *ngFor="let tab of ['demo', 'center', 'settings']"
+        (click)="selectTab(tab)"
+        [class]="'px-4 py-2 rounded-lg font-medium transition-all ' + (activeTab() === tab ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-700')"
+      >
+        <i [class]="'mr-2 ' + (tab === 'demo' ? 'fas fa-play' : tab === 'center' ? 'fas fa-bell' : 'fas fa-cog')"></i>
+        {{ tab | titlecase }}
+      </button>
+    </div>
+
+    <!-- Demo Tab -->
+    <div *ngIf="activeTab() === 'demo'" class="space-y-6">
+      <!-- Quick Actions -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <app-glass-button (clicked)="sendBulkNotifications()" variant="primary" customClass="w-full">
+          <i class="fas fa-bolt mr-2"></i> Send Bulk
+        </app-glass-button>
+        <app-glass-button (clicked)="runDemoScenario('login-flow')" variant="primary" customClass="w-full">
+          <i class="fas fa-sign-in-alt mr-2"></i> Login Flow
+        </app-glass-button>
+        <app-glass-button (clicked)="runDemoScenario('file-upload')" variant="primary" customClass="w-full">
+          <i class="fas fa-upload mr-2"></i> File Upload
+        </app-glass-button>
+        <app-glass-button (clicked)="runDemoScenario('security-alerts')" variant="danger" customClass="w-full">
+          <i class="fas fa-shield-alt mr-2"></i> Security Alert
+        </app-glass-button>
+      </div>
+
+      <!-- Notification Templates -->
+      <div class="space-y-4">
+        <h3 class="text-lg font-semibold text-white">Notification Templates</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div
+            *ngFor="let template of templates()"
+            (click)="selectTemplate(template)"
+            [class]="'p-4 rounded-lg border cursor-pointer transition-all ' + (selectedTemplate()?.name === template.name ? 'border-blue-500 bg-blue-500/20' : 'border-gray-600 bg-gray-800 hover:bg-gray-700')"
+          >
+            <div class="flex items-start space-x-3">
+              <i [class]="'text-lg ' + getIconClass(template.config.type) + ' ' + template.config.icon"></i>
+              <div class="flex-1">
+                <h4 class="font-medium text-white mb-1">{{ template.name }}</h4>
+                <p class="text-sm text-gray-400 mb-2">{{ template.description }}</p>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs px-2 py-1 bg-gray-700 text-gray-300 rounded">
+                    {{ template.category }}
+                  </span>
+                  <app-glass-button (clicked)="sendNotification()" variant="primary" customClass="text-xs">
+                    Send
+                  </app-glass-button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Custom Notification Form -->
+      <div class="space-y-4">
+        <h3 class="text-lg font-semibold text-white">Custom Notification</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">Title</label>
+            <input
+              type="text"
+              [(ngModel)]="customForm().title"
+              class="glass-input w-full"
+              placeholder="Enter notification title">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">Type</label>
+            <select [(ngModel)]="customForm().type" class="glass-input w-full">
+              <option value="success">Success</option>
+              <option value="error">Error</option>
+              <option value="warning">Warning</option>
+              <option value="info">Info</option>
+              <option value="custom">Custom</option>
+            </select>
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-300 mb-2">Message</label>
+            <textarea
+              [(ngModel)]="customForm().message"
+              rows="3"
+              class="glass-input w-full"
+              placeholder="Enter notification message"></textarea>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">Duration (ms)</label>
+            <input
+              type="number"
+              [(ngModel)]="customForm().duration"
+              class="glass-input w-full"
+              placeholder="5000">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">Priority</label>
+            <select [(ngModel)]="customForm().priority" class="glass-input w-full">
+              <option value="low">Low</option>
+              <option value="normal">Normal</option>
+              <option value="high">High</option>
+              <option value="urgent">Urgent</option>
+            </select>
+          </div>
+          <div class="flex items-center space-x-4">
+            <label class="flex items-center">
+              <input type="checkbox" [(ngModel)]="customForm().persistent" class="mr-2">
+              <span class="text-sm text-gray-300">Persistent</span>
+            </label>
+            <label class="flex items-center">
+              <input type="checkbox" [(ngModel)]="customForm().sound" class="mr-2">
+              <span class="text-sm text-gray-300">Sound</span>
+            </label>
+            <label class="flex items-center">
+              <input type="checkbox" [(ngModel)]="customForm().vibration" class="mr-2">
+              <span class="text-sm text-gray-300">Vibration</span>
+            </label>
+          </div>
+          <div class="md:col-span-2">
+            <app-glass-button (clicked)="sendCustomNotification()" variant="primary">
+              <i class="fas fa-paper-plane mr-2"></i> Send Custom Notification
+            </app-glass-button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Demo Scenarios -->
+      <div class="space-y-4">
+        <h3 class="text-lg font-semibold text-white">Demo Scenarios</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="p-4 rounded-lg border border-gray-600 bg-gray-800">
+            <h4 class="font-medium text-white mb-2">Login Flow</h4>
+            <p class="text-sm text-gray-400 mb-3">Simulate a complete login process with notifications</p>
+            <app-glass-button (clicked)="runDemoScenario('login-flow')" variant="primary" customClass="w-full">
+              <i class="fas fa-play mr-2"></i> Run Scenario
+            </app-glass-button>
+          </div>
+
+          <div class="p-4 rounded-lg border border-gray-600 bg-gray-800">
+            <h4 class="font-medium text-white mb-2">File Upload</h4>
+            <p class="text-sm text-gray-400 mb-3">Demonstrate file upload progress notifications</p>
+            <app-glass-button (clicked)="runDemoScenario('file-upload')" variant="primary" customClass="w-full">
+              <i class="fas fa-play mr-2"></i> Run Scenario
+            </app-glass-button>
+          </div>
+
+          <div class="p-4 rounded-lg border border-gray-600 bg-gray-800">
+            <h4 class="font-medium text-white mb-2">Error Handling</h4>
+            <p class="text-sm text-gray-400 mb-3">Show error recovery with notifications</p>
+            <app-glass-button (clicked)="runDemoScenario('error-handling')" variant="danger" customClass="w-full">
+              <i class="fas fa-play mr-2"></i> Run Scenario
+            </app-glass-button>
+          </div>
+
+          <div class="p-4 rounded-lg border border-gray-600 bg-gray-800">
+            <h4 class="font-medium text-white mb-2">Progress Tracking</h4>
+            <p class="text-sm text-gray-400 mb-3">Multi-step process with progress updates</p>
+            <app-glass-button (clicked)="runDemoScenario('progress-tracking')" variant="primary" customClass="w-full">
+              <i class="fas fa-play mr-2"></i> Run Scenario
+            </app-glass-button>
+          </div>
+
+          <div class="p-4 rounded-lg border border-gray-600 bg-gray-800">
+            <h4 class="font-medium text-white mb-2">Security Alerts</h4>
+            <p class="text-sm text-gray-400 mb-3">High-priority security notifications</p>
+            <app-glass-button (clicked)="runDemoScenario('security-alerts')" variant="danger" customClass="w-full">
+              <i class="fas fa-play mr-2"></i> Run Scenario
+            </app-glass-button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notification Center Tab -->
+    <div *ngIf="activeTab() === 'center'">
+      <app-notification-center></app-notification-center>
+    </div>
+
+    <!-- Settings Tab -->
+    <div *ngIf="activeTab() === 'settings'">
+      <app-notification-settings></app-notification-settings>
+    </div>
+  </app-glass-card>
+
+  <!-- Statistics -->
+  <app-glass-card class="p-6">
+    <h3 class="text-xl font-semibold text-white mb-4">Notification Statistics</h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="text-center">
+        <div class="text-2xl font-bold text-white">{{ notificationCount() }}</div>
+        <div class="text-sm text-gray-400">Total Notifications</div>
+      </div>
+      <div class="text-center">
+        <div class="text-2xl font-bold text-red-400">{{ unreadCount() }}</div>
+        <div class="text-sm text-gray-400">Unread Notifications</div>
+      </div>
+      <div class="text-center">
+        <div class="text-2xl font-bold text-green-400">{{ notificationCount() - unreadCount() }}</div>
+        <div class="text-sm text-gray-400">Read Notifications</div>
+      </div>
+    </div>
+  </app-glass-card>
+</div>

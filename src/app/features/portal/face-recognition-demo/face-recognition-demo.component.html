@@ -1,0 +1,320 @@
+<div class="face-recognition-demo">
+  <!-- Header -->
+  <div class="demo-header">
+    <h1 class="demo-title">Face Recognition Demo</h1>
+    <p class="demo-description">
+      ทดสอบระบบจดจำใบหน้าด้วย AI และ Machine Learning
+    </p>
+  </div>
+
+  <!-- Demo Statistics -->
+  <div class="demo-stats">
+    <app-glass-card>
+      <h2>สถิติการทดสอบ</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-eye"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">{{ demoStats.totalDetections }}</div>
+            <div class="stat-label">การตรวจจับ</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-user-check"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">{{ demoStats.successfulRecognitions }}</div>
+            <div class="stat-label">การจดจำสำเร็จ</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-user-plus"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">{{ demoStats.totalEnrollments }}</div>
+            <div class="stat-label">การลงทะเบียน</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value">{{ (demoStats.averageConfidence * 100) | number:'1.1-1' }}%</div>
+            <div class="stat-label">ความแม่นยำเฉลี่ย</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-actions">
+        <app-glass-button
+          variant="secondary"
+          (click)="resetStats()">
+          <i class="fas fa-refresh"></i>
+          รีเซ็ตสถิติ
+        </app-glass-button>
+        <app-glass-button
+          variant="secondary"
+          (click)="exportDemoData()">
+          <i class="fas fa-download"></i>
+          ส่งออกข้อมูล
+        </app-glass-button>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Demo Settings -->
+  <div class="demo-settings">
+    <app-glass-card>
+      <div class="settings-header">
+        <h2>การตั้งค่า</h2>
+        <app-glass-button
+          variant="secondary"
+          (click)="toggleAdvancedFeatures()">
+          <i class="fas" [class.fa-chevron-down]="!demoSettings.showAdvancedFeatures" [class.fa-chevron-up]="demoSettings.showAdvancedFeatures"></i>
+          {{ demoSettings.showAdvancedFeatures ? 'ซ่อน' : 'แสดง' }} การตั้งค่าขั้นสูง
+        </app-glass-button>
+      </div>
+
+      <div class="settings-content">
+        <div class="setting-group">
+          <label class="setting-label">
+            <input
+              type="checkbox"
+              [(ngModel)]="demoSettings.enableSound"
+              (change)="saveDemoSettings()">
+            <span class="checkmark"></span>
+            เปิดเสียงแจ้งเตือน
+          </label>
+        </div>
+
+        <div class="setting-group">
+          <label class="setting-label">
+            <input
+              type="checkbox"
+              [(ngModel)]="demoSettings.enableVibration"
+              (change)="saveDemoSettings()">
+            <span class="checkmark"></span>
+            เปิดการสั่น
+          </label>
+        </div>
+
+        <div *ngIf="demoSettings.showAdvancedFeatures" class="advanced-settings">
+          <div class="setting-group">
+            <label class="setting-label">เกณฑ์การตรวจจับ:</label>
+            <input
+              type="range"
+              min="0.1"
+              max="1.0"
+              step="0.1"
+              [(ngModel)]="demoSettings.detectionThreshold"
+              (change)="saveDemoSettings()"
+              class="range-input">
+            <span class="range-value">{{ (demoSettings.detectionThreshold * 100) | number:'1.0-0' }}%</span>
+          </div>
+
+          <div class="setting-group">
+            <label class="setting-label">เกณฑ์การจดจำ:</label>
+            <input
+              type="range"
+              min="0.1"
+              max="1.0"
+              step="0.1"
+              [(ngModel)]="demoSettings.recognitionThreshold"
+              (change)="saveDemoSettings()"
+              class="range-input">
+            <span class="range-value">{{ (demoSettings.recognitionThreshold * 100) | number:'1.0-0' }}%</span>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Demo Mode Selection -->
+  <div class="demo-mode-selection">
+    <app-glass-card>
+      <h2>เลือกโหมดการทดสอบ</h2>
+      <div class="mode-buttons">
+        <app-glass-button
+          [variant]="demoMode === 'single' ? 'primary' : 'secondary'"
+          (click)="demoMode = 'single'">
+          <i class="fas fa-user"></i>
+          จดจำใบหน้าคนเดียว
+        </app-glass-button>
+        <app-glass-button
+          [variant]="demoMode === 'group' ? 'primary' : 'secondary'"
+          (click)="demoMode = 'group'">
+          <i class="fas fa-users"></i>
+          จดจำใบหน้าหลายคน
+        </app-glass-button>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Single Face Recognition Component -->
+  <div *ngIf="demoMode === 'single'" class="face-recognition-section">
+    <app-face-recognition
+      [mode]="'camera'"
+      [showEnrollment]="true"
+      [showRecognition]="true"
+      [showExpressions]="demoSettings.showAdvancedFeatures"
+      [showAgeGender]="demoSettings.showAdvancedFeatures"
+      [showLandmarks]="true"
+      [autoDetect]="true"
+      [detectionInterval]="1000"
+      (faceDetected)="onFaceDetected($event)"
+      (faceRecognized)="onFaceRecognized($event)"
+      (faceEnrolled)="onFaceEnrolled($event)">
+    </app-face-recognition>
+  </div>
+
+  <!-- Group Face Recognition Component -->
+  <div *ngIf="demoMode === 'group'" class="group-face-recognition-section">
+    <app-group-face-recognition
+      [autoDetect]="true"
+      [detectionInterval]="1000"
+      [enableQualityCheck]="true"
+      [maxFaces]="10"
+      (facesRecognized)="onGroupFacesRecognized($event)"
+      (qualityChanged)="onQualityChanged($event)">
+    </app-group-face-recognition>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="recent-activity">
+    <app-glass-card>
+      <h2>กิจกรรมล่าสุด</h2>
+      <div class="activity-list">
+        <div *ngIf="recentActivity.length === 0" class="no-activity">
+          <i class="fas fa-info-circle"></i>
+          <p>ยังไม่มีกิจกรรม</p>
+        </div>
+
+        <div *ngFor="let activity of recentActivity" class="activity-item">
+          <!-- Snapshot Image -->
+          <div *ngIf="activity.snapshot" class="activity-snapshot mr-3">
+            <img appImageOptimization [ngSrc]="activity.snapshot" alt="Face Snapshot" class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm" loading="lazy">
+          </div>
+          
+          <div class="activity-icon" *ngIf="!activity.snapshot" [class]="getActivityColor(activity.type)">
+            <i [class]="getActivityIcon(activity.type)"></i>
+          </div>
+          
+          <div class="activity-content">
+            <div class="activity-message font-medium">{{ activity.message }}</div>
+            
+            <!-- Details Badge -->
+            <div *ngIf="activity.details" class="activity-details mt-1 flex flex-wrap gap-2">
+              <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                <i class="fas fa-info-circle mr-1"></i>
+                {{ activity.details }}
+              </span>
+            </div>
+
+            <div class="flex justify-between items-center mt-1">
+              <div class="activity-time text-xs text-gray-500">{{ formatTimestamp(activity.timestamp) }}</div>
+              <div *ngIf="activity.confidence" class="activity-confidence text-xs font-medium" [class.text-green-600]="activity.confidence > 0.8" [class.text-yellow-600]="activity.confidence <= 0.8">
+                ความมั่นใจ: {{ (activity.confidence * 100) | number:'1.1-1' }}%
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Features Overview -->
+  <div class="features-overview">
+    <app-glass-card>
+      <h2>คุณสมบัติของระบบ</h2>
+      <div class="features-grid">
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-camera"></i>
+          </div>
+          <div class="feature-content">
+            <h3>การตรวจจับใบหน้าแบบเรียลไทม์</h3>
+            <p>ใช้กล้องเว็บแคมเพื่อตรวจจับใบหน้าแบบเรียลไทม์ด้วย AI</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-user-check"></i>
+          </div>
+          <div class="feature-content">
+            <h3>การจดจำใบหน้า</h3>
+            <p>จดจำใบหน้าที่ลงทะเบียนแล้วด้วยความแม่นยำสูง</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-user-plus"></i>
+          </div>
+          <div class="feature-content">
+            <h3>การลงทะเบียนใบหน้า</h3>
+            <p>ลงทะเบียนใบหน้าใหม่ได้ง่ายและรวดเร็ว</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-smile"></i>
+          </div>
+          <div class="feature-content">
+            <h3>การวิเคราะห์อารมณ์</h3>
+            <p>วิเคราะห์อารมณ์และอายุจากใบหน้า (ฟีเจอร์ขั้นสูง)</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-upload"></i>
+          </div>
+          <div class="feature-content">
+            <h3>การอัปโหลดรูปภาพ</h3>
+            <p>อัปโหลดรูปภาพเพื่อทดสอบการตรวจจับและจดจำ</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="feature-content">
+            <h3>การจดจำใบหน้าหลายคน</h3>
+            <p>จดจำใบหน้าหลายคนพร้อมกันในภาพเดียว</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="feature-content">
+            <h3>การประเมินคุณภาพภาพ</h3>
+            <p>ตรวจสอบความสว่างและความชัดของภาพก่อนประมวลผล</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-download"></i>
+          </div>
+          <div class="feature-content">
+            <h3>การส่งออกข้อมูล</h3>
+            <p>ส่งออกและนำเข้าข้อมูลการลงทะเบียน</p>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+</div>

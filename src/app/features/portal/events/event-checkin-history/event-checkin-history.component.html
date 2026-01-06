@@ -1,0 +1,138 @@
+<div class="w-full">
+  <app-page-layout [title]="'Event Check-in History'" [description]="eventName()" [actions]="pageActions()">
+    <!-- Filters -->
+    <div class="mb-6">
+      <app-filter-section [fields]="filterFields()" (filterChange)="onFilterChange($event)"></app-filter-section>
+    </div>
+
+    <!-- Loading State -->
+    @if (loading()) {
+    <div class="flex justify-center items-center py-12">
+      <div class="text-center">
+        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-4"></div>
+        <p class="text-gray-600 dark:text-gray-400">กำลังโหลดข้อมูล...</p>
+      </div>
+    </div>
+    }
+
+    <!-- Error Message -->
+    @if (errorMessage()) {
+    <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-6">
+      <p class="text-red-800 dark:text-red-400">{{ errorMessage() }}</p>
+    </div>
+    }
+
+    <!-- Empty State -->
+    @if (!loading() && checkInRecords().length === 0) {
+    <div class="text-center py-12">
+      <div class="text-6xl mb-4">📋</div>
+      <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
+        ไม่มีข้อมูล Check-in History
+      </h3>
+      <p class="text-gray-600 dark:text-gray-400">
+        ยังไม่มีผู้เข้าร่วมที่ทำการ Check-in
+      </p>
+    </div>
+    }
+
+    <!-- Timeline View -->
+    @if (!loading() && checkInRecords().length > 0) {
+    <div class="w-full">
+      <!-- Summary Stats -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+          <div class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Total Check-ins</div>
+          <div class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ totalRecords() }}</div>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+          <div class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Today</div>
+          <div class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+            {{ getTodayCheckIns() }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeline by Date -->
+      <div class="relative">
+        @for (dateKey of getDateKeys(); track dateKey) {
+        <div class="mb-8">
+          <!-- Date Header -->
+          <div class="flex items-center justify-between mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ dateKey }}</h3>
+            <span
+              class="text-sm text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full">{{
+              groupedRecords()[dateKey].length }} check-ins</span>
+          </div>
+
+          <!-- Timeline Items -->
+          <div class="relative pl-8">
+            @for (record of groupedRecords()[dateKey]; track record.attendeeId) {
+            <div class="relative pb-6 last:pb-0">
+              <!-- Timeline Line -->
+              <div class="absolute left-0 top-0 bottom-0 w-0.5 bg-gray-300 dark:bg-gray-600"></div>
+
+              <!-- Timeline Dot -->
+              <div
+                class="absolute left-0 top-2 w-4 h-4 rounded-full bg-blue-600 dark:bg-blue-500 flex items-center justify-center transform -translate-x-1/2">
+                <div class="w-2 h-2 rounded-full bg-white dark:bg-gray-900"></div>
+              </div>
+
+              <!-- Timeline Content -->
+              <div
+                class="ml-6 bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">
+                <div class="flex items-start justify-between mb-3 flex-col md:flex-row gap-2 md:gap-0">
+                  <div class="flex-1">
+                    <div class="text-base font-semibold text-gray-900 dark:text-gray-100 mb-1">
+                      {{ record.firstName || record.memberFirstName || 'N/A' }}
+                      {{ record.lastName || record.memberLastName || '' }}
+                    </div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">{{ record.email || record.memberEmail || 'N/A'
+                      }}</div>
+                  </div>
+                  <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 self-start md:self-auto">
+                    <div class="text-lg">🕐</div>
+                    <div class="font-medium">{{ formatTime(record.checkInTime) }}</div>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700">
+                  <span
+                    class="px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">CHECKED
+                    IN</span>
+                  <span class="text-xs text-gray-500 dark:text-gray-400">{{ formatDateTime(record.checkInTime) }}</span>
+                </div>
+              </div>
+            </div>
+            }
+          </div>
+        </div>
+        }
+      </div>
+
+      <!-- Pagination -->
+      @if (totalPages() > 1) {
+      <div
+        class="flex flex-col md:flex-row items-center justify-between gap-4 mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+        <div class="text-sm text-gray-600 dark:text-gray-400">
+          แสดง {{ (currentPage() - 1) * pageSize() + 1 }} -
+          {{ Math.min(currentPage() * pageSize(), totalRecords()) }}
+          จาก {{ totalRecords() }} รายการ
+        </div>
+        <div class="flex items-center gap-4">
+          <app-glass-button [variant]="'secondary'" [disabled]="currentPage() === 1"
+            (click)="onPageChange(currentPage() - 1)">
+            ← Previous
+          </app-glass-button>
+          <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+            หน้า {{ currentPage() }} / {{ totalPages() }}
+          </span>
+          <app-glass-button [variant]="'secondary'" [disabled]="currentPage() === totalPages()"
+            (click)="onPageChange(currentPage() + 1)">
+            Next →
+          </app-glass-button>
+        </div>
+      </div>
+      }
+    </div>
+    }
+  </app-page-layout>
+</div>

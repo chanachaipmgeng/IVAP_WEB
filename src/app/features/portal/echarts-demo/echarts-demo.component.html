@@ -1,0 +1,171 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+      ECharts Advanced Charts Demo
+    </h1>
+    <div class="flex space-x-2">
+      <app-glass-button (clicked)="generateRandomData()">
+        🎲 Random Data
+      </app-glass-button>
+      <app-glass-button (clicked)="generateCustomChart()">
+        ⚙️ Custom Chart
+      </app-glass-button>
+      <app-glass-button (clicked)="resetChart()">
+        🔄 Reset
+      </app-glass-button>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <app-glass-card customClass="p-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="text-center">
+        <div class="text-3xl font-bold text-blue-400">{{ demoData().totalCharts }}</div>
+        <div class="text-gray-400">Chart Types</div>
+      </div>
+      <div class="text-center">
+        <div class="text-3xl font-bold text-green-400">{{ demoData().activeCharts }}</div>
+        <div class="text-gray-400">Active Charts</div>
+      </div>
+      <div class="text-center">
+        <div class="text-3xl font-bold text-purple-400">{{ selectedChartType() }}</div>
+        <div class="text-gray-400">Current Type</div>
+      </div>
+      <div class="text-center">
+        <div class="text-3xl font-bold text-orange-400">
+          {{ demoData().lastUpdated | date:'HH:mm:ss' }}
+        </div>
+        <div class="text-gray-400">Last Updated</div>
+      </div>
+    </div>
+  </app-glass-card>
+
+  <!-- Chart Type Selector -->
+  <app-glass-card customClass="p-6">
+    <h3 class="text-xl font-semibold text-white mb-4">📊 Chart Type Selector</h3>
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+      <button *ngFor="let chartType of chartTypes" (click)="onChartTypeChange(chartType.value)"
+        [ngClass]="{'bg-blue-900 border-blue-500 ring-2 ring-blue-500 ring-opacity-50': selectedChartType() === chartType.value}"
+        class="p-4 rounded-lg transition-all duration-200 bg-gray-800 hover:bg-blue-900 border border-gray-700 hover:border-blue-500 text-left group">
+        <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">{{ chartType.icon }}</div>
+        <div class="text-sm font-medium text-white">{{ chartType.label }}</div>
+      </button>
+    </div>
+  </app-glass-card>
+
+  <!-- Main Chart -->
+  <app-glass-card customClass="p-6">
+    <h3 class="text-xl font-semibold text-white mb-4">📈 Interactive Chart</h3>
+    <app-echarts-chart [data]="chartData()" [options]="customOptions()" [chartType]="selectedChartType()"
+      [showControls]="true" [showInfo]="true" [height]="'500px'" customClass="rounded-lg overflow-hidden">
+    </app-echarts-chart>
+  </app-glass-card>
+
+  <!-- Chart Examples Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+    <!-- Line Chart Example -->
+    <app-glass-card customClass="p-6">
+      <h3 class="text-xl font-semibold text-white mb-4">📈 Line Chart</h3>
+      <app-echarts-chart [data]="sampleDatasets.sales" [chartType]="'line'" [showControls]="false" [showInfo]="false"
+        [height]="'300px'" customClass="rounded-lg overflow-hidden">
+      </app-echarts-chart>
+    </app-glass-card>
+
+    <!-- Bar Chart Example -->
+    <app-glass-card customClass="p-6">
+      <h3 class="text-xl font-semibold text-white mb-4">📊 Bar Chart</h3>
+      <app-echarts-chart [data]="sampleDatasets.revenue" [chartType]="'bar'" [showControls]="false" [showInfo]="false"
+        [height]="'300px'" customClass="rounded-lg overflow-hidden">
+      </app-echarts-chart>
+    </app-glass-card>
+
+    <!-- Pie Chart Example -->
+    <app-glass-card customClass="p-6">
+      <h3 class="text-xl font-semibold text-white mb-4">🥧 Pie Chart</h3>
+      <app-echarts-chart [data]="sampleDatasets.distribution" [chartType]="'pie'" [showControls]="false"
+        [showInfo]="false" [height]="'300px'" customClass="rounded-lg overflow-hidden">
+      </app-echarts-chart>
+    </app-glass-card>
+
+    <!-- Radar Chart Example -->
+    <app-glass-card customClass="p-6">
+      <h3 class="text-xl font-semibold text-white mb-4">🕸️ Radar Chart</h3>
+      <app-echarts-chart [data]="sampleDatasets.performance" [chartType]="'radar'" [showControls]="false"
+        [showInfo]="false" [height]="'300px'" customClass="rounded-lg overflow-hidden">
+      </app-echarts-chart>
+    </app-glass-card>
+  </div>
+
+  <!-- Chart Configuration -->
+  <app-glass-card customClass="p-6">
+    <h3 class="text-xl font-semibold text-white mb-4">⚙️ Chart Configuration</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <h4 class="font-medium text-white mb-2">Current Chart Data</h4>
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between">
+            <span class="text-gray-500">Type:</span>
+            <span class="text-white">{{ selectedChartType() }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-500">Data Points:</span>
+            <span class="text-white">{{ chartData()?.labels?.length || 0 }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-500">Series:</span>
+            <span class="text-white">{{ chartData()?.datasets?.length || 0 }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-500">Custom Options:</span>
+            <span class="text-white">{{ customOptions() ? 'Yes' : 'No' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="font-medium text-white mb-2">Chart Actions</h4>
+        <div class="space-y-2">
+          <app-glass-button (clicked)="generateRandomData()">
+            🎲 Generate Random Data
+          </app-glass-button>
+          <app-glass-button (clicked)="generateCustomChart()">
+            ⚙️ Generate Custom Chart
+          </app-glass-button>
+          <app-glass-button (clicked)="resetChart()">
+            🔄 Reset Chart
+          </app-glass-button>
+        </div>
+      </div>
+    </div>
+  </app-glass-card>
+
+  <!-- Chart Data Preview -->
+  <app-glass-card customClass="p-6">
+    <h3 class="text-xl font-semibold text-white mb-4">📊 Chart Data Preview</h3>
+    <div class="space-y-4">
+      <div *ngIf="chartData()">
+        <h4 class="font-medium text-white mb-2">Current Data</h4>
+        <pre
+          class="bg-gray-800 p-4 rounded-lg text-sm text-gray-300 overflow-x-auto max-h-64">{{ chartData() | json }}</pre>
+      </div>
+
+      <div *ngIf="customOptions()">
+        <h4 class="font-medium text-white mb-2">Custom Options</h4>
+        <pre
+          class="bg-gray-800 p-4 rounded-lg text-sm text-gray-300 overflow-x-auto max-h-64">{{ customOptions() | json }}</pre>
+      </div>
+
+      <div *ngIf="!chartData() && !customOptions()" class="text-center py-8">
+        <div class="text-6xl mb-4">📊</div>
+        <h3 class="text-xl font-medium text-gray-700 dark:text-gray-300 mb-2">
+          No Chart Data
+        </h3>
+        <p class="text-gray-500 dark:text-gray-400">
+          Select a chart type or generate data to get started
+        </p>
+      </div>
+    </div>
+  </app-glass-card>
+</div>

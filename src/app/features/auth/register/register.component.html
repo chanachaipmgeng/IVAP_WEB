@@ -1,0 +1,256 @@
+<div class="register-container min-h-screen flex items-center justify-center p-4 relative">
+  <!-- Background Graphics -->
+  <!-- Background Graphics handled globally -->
+
+  <!-- Header with Theme/Language Switcher -->
+  <div
+    class="fixed top-0 left-0 right-0 z-50 glass-card !rounded-none !border-x-0 !border-t-0 border-b border-white/10 p-4">
+    <div class="container mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <button (click)="navigateToLanding()" class="glass-button flex items-center space-x-2"
+          [title]="i18n.t('login.backToHome')">
+          <span class="text-lg">←</span>
+          <span class="hidden md:inline font-medium">{{ i18n.t('login.home') }}</span>
+        </button>
+        <div class="text-3xl">🎥</div>
+        <h1 class="text-xl font-bold ai-gradient-text">IVAP Platform</h1>
+      </div>
+      <div class="flex items-center space-x-3">
+        <!-- Language Switcher -->
+        <button (click)="toggleLanguage()" class="glass-button flex items-center space-x-2"
+          [title]="currentLang() === 'th' ? i18n.t('kiosk.switchToEnglish') : i18n.t('kiosk.switchToThai')">
+          <span class="text-lg">{{ currentLang() === 'th' ? '🇹🇭' : '🇬🇧' }}</span>
+          <span class="hidden md:inline font-medium">{{ currentLang() === 'th' ? i18n.t('kiosk.thai') :
+            i18n.t('kiosk.english') }}</span>
+        </button>
+
+        <!-- Theme Switcher -->
+        <button (click)="toggleTheme()" class="glass-button flex items-center space-x-2" [title]="getThemeLabel()">
+          <span class="text-lg">{{ getThemeIcon() }}</span>
+          <span class="hidden md:inline font-medium">{{ getThemeLabel() }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="register-card glass-card max-w-lg w-full relative z-10 mt-20 p-8 sm:p-12">
+    <!-- Step 1: Information -->
+    <div *ngIf="currentStep() === 'info'" class="step-content">
+      <!-- Header -->
+      <div class="header text-center mb-8">
+        <div class="logo text-primary-500 mb-4 inline-block">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+            <path d="M2 17l10 5 10-5"></path>
+            <path d="M2 12l10 5 10-5"></path>
+          </svg>
+        </div>
+        <h1 class="title text-3xl font-bold m-0 mb-2 text-slate-900 dark:text-white">{{ i18n.t('register.createAccount')
+          }}</h1>
+        <p class="subtitle m-0 text-slate-700 dark:text-gray-300">{{ i18n.t('register.signUpToGetStarted') }}</p>
+      </div>
+
+      <!-- Form -->
+      <form (ngSubmit)="onSubmit()" class="form">
+        <div class="form-row grid grid-cols-2 gap-4 mb-6">
+          <div class="form-group mb-6">
+            <label for="firstName" class="block font-semibold mb-2 text-slate-900 dark:text-white">{{
+              i18n.t('register.firstName') }}</label>
+            <input id="firstName" type="text" [(ngModel)]="formData.firstName" name="firstName" placeholder="John"
+              class="glass-input w-full" required />
+          </div>
+          <div class="form-group mb-6">
+            <label for="lastName" class="block font-semibold mb-2 text-slate-900 dark:text-white">{{
+              i18n.t('register.lastName') }}</label>
+            <input id="lastName" type="text" [(ngModel)]="formData.lastName" name="lastName" placeholder="Doe"
+              class="glass-input w-full" required />
+          </div>
+        </div>
+
+        <div class="form-group mb-6">
+          <label for="email" class="block font-semibold mb-2 text-slate-900 dark:text-white">{{ i18n.t('register.email')
+            }}</label>
+          <input id="email" type="email" [(ngModel)]="formData.email" name="email" placeholder="john.doe@example.com"
+            class="glass-input w-full" required />
+        </div>
+
+        <div class="form-group mb-6">
+          <label for="password" class="block font-semibold mb-2 text-slate-900 dark:text-white">{{
+            i18n.t('register.password') }}</label>
+          <div class="password-input-wrapper relative">
+            <input id="password" [type]="showPassword() ? 'text' : 'password'" [(ngModel)]="formData.password"
+              (input)="checkPasswordStrength(formData.password)" name="password"
+              [placeholder]="i18n.t('register.enterPassword')"
+              class="form-input w-full px-4 py-3 pr-12 rounded-lg text-base transition-all backdrop-blur-sm" required />
+            <button type="button" (click)="togglePasswordVisibility()"
+              class="password-toggle absolute right-3 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-gray-500 p-0 flex items-center justify-center hover:text-primary-500">
+              <svg *ngIf="!showPassword()" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              <svg *ngIf="showPassword()" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <path
+                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+                </path>
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+              </svg>
+            </button>
+          </div>
+          <div class="password-strength flex items-center gap-2 mt-2" *ngIf="formData.password">
+            <div class="strength-bar flex-1 h-1 bg-gray-200 dark:bg-gray-700 rounded overflow-hidden"
+              [class]="getPasswordStrengthColor()">
+              <div class="strength-fill h-full transition-all" [style.width.%]="passwordStrength()"></div>
+            </div>
+            <span class="strength-text text-sm font-semibold text-gray-500">{{ getPasswordStrengthText() }}</span>
+          </div>
+          <div class="password-requirements mt-3 text-sm" *ngIf="formData.password">
+            <div class="requirement flex items-center gap-2 text-gray-400 mb-1"
+              [class.met]="passwordRequirements().minLength"
+              [class.text-success-500]="passwordRequirements().minLength">
+              <span class="font-semibold">{{ passwordRequirements().minLength ? '✓' : '○' }}</span>
+              {{ i18n.t('register.atLeast8Characters') }}
+            </div>
+            <div class="requirement flex items-center gap-2 text-gray-400 mb-1"
+              [class.met]="passwordRequirements().hasUppercase"
+              [class.text-success-500]="passwordRequirements().hasUppercase">
+              <span class="font-semibold">{{ passwordRequirements().hasUppercase ? '✓' : '○' }}</span>
+              {{ i18n.t('register.containsUppercase') }}
+            </div>
+            <div class="requirement flex items-center gap-2 text-gray-400 mb-1"
+              [class.met]="passwordRequirements().hasLowercase"
+              [class.text-success-500]="passwordRequirements().hasLowercase">
+              <span class="font-semibold">{{ passwordRequirements().hasLowercase ? '✓' : '○' }}</span>
+              {{ i18n.t('register.containsLowercase') }}
+            </div>
+            <div class="requirement flex items-center gap-2 text-gray-400 mb-1"
+              [class.met]="passwordRequirements().hasNumber"
+              [class.text-success-500]="passwordRequirements().hasNumber">
+              <span class="font-semibold">{{ passwordRequirements().hasNumber ? '✓' : '○' }}</span>
+              {{ i18n.t('register.containsNumber') }}
+            </div>
+            <div class="requirement flex items-center gap-2 text-gray-400 mb-1"
+              [class.met]="passwordRequirements().hasSpecial"
+              [class.text-success-500]="passwordRequirements().hasSpecial">
+              <span class="font-semibold">{{ passwordRequirements().hasSpecial ? '✓' : '○' }}</span>
+              {{ i18n.t('register.containsSpecial') }}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group mb-6">
+          <label for="confirmPassword" class="block font-semibold mb-2 text-slate-900 dark:text-white">{{
+            i18n.t('register.confirmPassword') }}</label>
+          <div class="password-input-wrapper relative">
+            <input id="confirmPassword" [type]="showConfirmPassword() ? 'text' : 'password'"
+              [(ngModel)]="formData.confirmPassword" name="confirmPassword"
+              [placeholder]="i18n.t('register.confirmYourPassword')" class="glass-input w-full px-4 py-3 pr-12"
+              required />
+            <button type="button" (click)="toggleConfirmPasswordVisibility()"
+              class="password-toggle absolute right-3 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-gray-500 p-0 flex items-center justify-center hover:text-primary-500">
+              <svg *ngIf="!showConfirmPassword()" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              <svg *ngIf="showConfirmPassword()" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path
+                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+                </path>
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group checkbox-group mb-6">
+          <label
+            class="checkbox-label flex items-start gap-3 cursor-pointer text-sm leading-relaxed text-slate-700 dark:text-gray-300">
+            <input type="checkbox" [(ngModel)]="formData.acceptTerms" name="acceptTerms"
+              class="checkbox mt-1 cursor-pointer" />
+            <span>
+              {{ i18n.t('register.acceptTerms') }}
+              <a href="/terms" target="_blank" class="link text-primary-500 hover:underline">{{
+                i18n.t('register.termsAndConditions') }}</a>
+              {{ i18n.t('register.and') }}
+              <a href="/privacy" target="_blank" class="link text-primary-500 hover:underline">{{
+                i18n.t('register.privacyPolicy') }}</a>
+            </span>
+          </label>
+        </div>
+
+        <button type="submit" [disabled]="loading()"
+          class="btn btn-primary w-full px-6 py-3 rounded-lg font-semibold text-white bg-gradient-to-r from-primary-500 to-purple-600 border-none cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed">
+          <span *ngIf="!loading()">{{ i18n.t('register.createAccount') }}</span>
+          <span *ngIf="loading()">{{ i18n.t('register.creating') }}</span>
+        </button>
+      </form>
+
+      <!-- Footer -->
+      <div class="footer text-center mt-6">
+        <p class="m-0 text-slate-700 dark:text-gray-300">{{ i18n.t('register.alreadyHaveAccount') }} <a
+            routerLink="/portal/login" class="link text-primary-500 hover:underline">{{ i18n.t('register.signIn') }}</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Step 2: Verification -->
+    <div *ngIf="currentStep() === 'verification'" class="step-content">
+      <div class="header text-center mb-8">
+        <button (click)="goBack()"
+          class="back-button absolute top-0 left-0 w-10 h-10 flex items-center justify-center bg-white/10 rounded-lg border border-white/20 text-white cursor-pointer transition-all hover:bg-white/20">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7"></path>
+          </svg>
+        </button>
+        <h1 class="title text-3xl font-bold m-0 mb-2 text-white dark:text-gray-900">{{ i18n.t('register.verifyEmail') }}
+        </h1>
+        <p class="subtitle m-0 text-white/80 dark:text-gray-600">{{ i18n.t('register.verificationCodeSent') }} {{
+          formData.email }}</p>
+      </div>
+
+      <form (ngSubmit)="onVerificationSubmit()" class="form">
+        <div class="form-group mb-6">
+          <label for="verificationCode" class="block font-semibold mb-2 text-white dark:text-gray-900">{{
+            i18n.t('register.verificationCode') }}</label>
+          <input id="verificationCode" type="text" [(ngModel)]="verificationCode" name="verificationCode"
+            [placeholder]="i18n.t('register.enter6DigitCode')" maxlength="6"
+            class="glass-input verification-input w-full text-2xl text-center tracking-[0.5rem] font-bold" required />
+          <div class="resend-section text-center mt-4">
+            <p class="resend-text m-0 mb-2 text-gray-500">{{ i18n.t('register.didntReceiveCode') }}</p>
+            <button type="button" (click)="resendCode()" [disabled]="!canResend() || loading()"
+              class="resend-button bg-transparent border-none text-primary-500 cursor-pointer font-semibold px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed hover:underline">
+              <span *ngIf="!canResend() && !loading()">{{ i18n.t('register.resendIn') }} {{ resendCountdown() }}s</span>
+              <span *ngIf="canResend() && !loading()">{{ i18n.t('register.resendCode') }}</span>
+              <span *ngIf="loading()">{{ i18n.t('register.sending') }}</span>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" [disabled]="loading()"
+          class="btn btn-primary w-full px-6 py-3 rounded-lg font-semibold text-white bg-gradient-to-r from-primary-500 to-purple-600 border-none cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed">
+          <span *ngIf="!loading()">{{ i18n.t('register.verifyEmail') }}</span>
+          <span *ngIf="loading()">{{ i18n.t('register.verifying') }}</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- Step 3: Success -->
+    <div *ngIf="currentStep() === 'success'" class="step-content success-content text-center">
+      <div class="success-icon text-success-500 mb-6">
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+      </div>
+      <h1 class="title text-3xl font-bold m-0 mb-2 text-white dark:text-gray-900">{{ i18n.t('register.accountCreated')
+        }}</h1>
+      <p class="subtitle m-0 mb-6 text-white/80 dark:text-gray-600">{{ i18n.t('register.accountCreatedSuccess') }}</p>
+      <button (click)="goToLogin()"
+        class="btn btn-primary w-full px-6 py-3 rounded-lg font-semibold text-white bg-gradient-to-r from-primary-500 to-purple-600 border-none cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-lg">{{
+        i18n.t('register.goToLogin') }}</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,446 @@
+<div class="landing-page min-h-screen relative overflow-hidden">
+  <!-- Gemini 2.0 Flash Background -->
+  <div class="landing-bg-graphics">
+    <div class="bg-gradient-overlay"></div>
+    <div class="bg-grid-pattern"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="landing-header fixed top-0 left-0 right-0 z-50 glass-card border-b border-white/10" @fadeIn>
+    <div class="container mx-auto px-6 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-4" @slideInLeft>
+          <div class="text-4xl ai-float">🎥</div>
+          <h1 class="text-2xl font-bold gradient-text">
+            IVAP Platform
+          </h1>
+        </div>
+        <div class="flex items-center space-x-4" @slideInRight>
+          <!-- Language Switcher -->
+          <button
+            (click)="toggleLanguage()"
+            class="language-switcher glass-card px-4 py-2 flex items-center space-x-2 hover:scale-105 transition-transform"
+            [title]="currentLang() === 'th' ? 'Switch to English' : 'เปลี่ยนเป็นภาษาไทย'">
+            <span class="text-lg">{{ currentLang() === 'th' ? '🇹🇭' : '🇬🇧' }}</span>
+            <span class="hidden md:inline font-medium">{{ currentLang() === 'th' ? 'ไทย' : 'EN' }}</span>
+          </button>
+
+          <!-- Theme Switcher -->
+          <button
+            (click)="toggleTheme()"
+            class="theme-switcher glass-card px-4 py-2 flex items-center space-x-2 hover:scale-105 transition-transform"
+            [title]="getThemeTooltip()">
+            <span class="text-lg">{{ getThemeIcon() }}</span>
+            <span class="hidden md:inline font-medium">{{ getThemeLabel() }}</span>
+          </button>
+
+          <!-- Login Button -->
+          <app-glass-button (clicked)="navigateToDemo()" variant="primary" size="md">
+            {{ i18n.t('common.login') }}
+          </app-glass-button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section with Image Slider -->
+  <section class="hero-section pt-32 pb-20 relative overflow-hidden">
+    <div class="container mx-auto px-6 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <!-- Left: Content -->
+        <div class="text-center lg:text-left" @slideInLeft>
+          <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-slate-900 dark:text-white mb-6 leading-tight gradient-text">
+            {{ i18n.t('landing.heroTitle') }}
+          </h1>
+          <p class="text-xl md:text-2xl text-slate-700 dark:text-gray-300 mb-8 leading-relaxed">
+            {{ i18n.t('landing.heroSubtitle') }}<br>
+            {{ i18n.t('landing.heroDescription') }}
+          </p>
+          <p class="text-base md:text-lg text-slate-500 dark:text-gray-400 mb-12 leading-relaxed">
+            {{ i18n.t('landing.heroDetail') }}
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <app-glass-button
+              variant="primary"
+              size="lg"
+              (clicked)="navigateToDemo()"
+              class="gemini-card-hover"
+            >
+              <span class="flex items-center space-x-2">
+                <span>🚀 {{ i18n.t('landing.tryFree') }}</span>
+                <span class="arrow-icon">→</span>
+              </span>
+            </app-glass-button>
+            <app-glass-button
+              size="lg"
+              (clicked)="navigateToContact()"
+              class="gemini-card-hover"
+            >
+              <span class="flex items-center space-x-2">
+                <span>💬 {{ i18n.t('landing.requestQuote') }}</span>
+              </span>
+            </app-glass-button>
+          </div>
+        </div>
+
+        <!-- Right: Image Slider -->
+        <div class="hero-slider-container" @slideInRight>
+          <div class="hero-slider glass-card p-4">
+            <div class="slider-wrapper">
+              <div *ngFor="let slide of heroSlides(); let i = index"
+                   class="slider-slide"
+                   [class.active]="i === currentSlideIndex()">
+                <img *ngIf="!isBase64Image(slide.image)"
+                     appImageOptimization [ngSrc]="slide.image" [alt]="slide.title" class="slider-image" loading="lazy">
+                <img *ngIf="isBase64Image(slide.image)"
+                     [src]="slide.image" [alt]="slide.title" class="slider-image" loading="lazy">
+                <div class="slider-overlay">
+                  <h3 class="slider-title">{{ slide.title }}</h3>
+                  <p class="slider-description">{{ slide.description }}</p>
+                </div>
+              </div>
+            </div>
+            <!-- Slider Controls -->
+            <div class="slider-controls">
+              <button (click)="previousSlide()" class="slider-btn slider-btn-prev" aria-label="Previous">
+                <span>‹</span>
+              </button>
+              <button (click)="nextSlide()" class="slider-btn slider-btn-next" aria-label="Next">
+                <span>›</span>
+              </button>
+            </div>
+            <!-- Slider Dots -->
+            <div class="slider-dots">
+              <button *ngFor="let _ of heroSlides(); let i = index"
+                      (click)="goToSlide(i)"
+                      class="slider-dot"
+                      [class.active]="i === currentSlideIndex()"
+                      [attr.aria-label]="'Go to slide ' + (i + 1)">
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- App Structure Section -->
+  <section class="app-structure-section py-24 relative">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-20" @fadeIn>
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-6">
+          {{ i18n.t('landing.platformStructure') }}
+          <span class="gradient-text">{{ i18n.t('landing.complete') }}</span>
+        </h2>
+        <p class="text-xl text-slate-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+          {{ i18n.t('landing.platformStructureDesc') }}
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div *ngFor="let module of appModules(); let i = index"
+             class="module-card glass-card p-6 gemini-card-hover"
+             [@slideInUp]
+             [style.animation-delay]="(i * 0.1) + 's'">
+          <div class="module-icon text-5xl mb-4 text-center ai-float" [style.animation-delay]="(i * 0.2) + 's'">
+            {{ module.icon }}
+          </div>
+          <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-3 text-center">
+            {{ module.name }}
+          </h3>
+          <p class="text-slate-700 dark:text-gray-300 mb-4 text-center leading-relaxed">
+            {{ module.description }}
+          </p>
+          <ul class="space-y-2">
+            <li *ngFor="let feature of module.features"
+                class="flex items-start space-x-2 text-sm text-slate-500 dark:text-gray-400">
+              <span class="text-blue-400 mt-1">✓</span>
+              <span>{{ feature }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Gallery Section -->
+  <section class="features-gallery-section py-24 relative">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-20" @fadeIn>
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-6">
+          {{ i18n.t('landing.features') }}
+        </h2>
+        <p class="text-xl text-slate-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+          {{ i18n.t('landing.featuresDesc') }}
+        </p>
+      </div>
+
+      <!-- Feature Cards with Images -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div *ngFor="let feature of keyFeatures(); let i = index"
+             class="feature-card glass-card overflow-hidden gemini-card-hover"
+             [@scaleIn]
+             [style.animation-delay]="(i * 0.1) + 's'">
+          <div class="feature-image-container">
+            <img *ngIf="!isBase64Image(feature.image || '/assets/images/placeholder.jpg')"
+                 appImageOptimization [ngSrc]="feature.image || '/assets/images/placeholder.jpg'"
+                 [alt]="feature.title"
+                 class="feature-image" loading="lazy">
+            <img *ngIf="isBase64Image(feature.image || '/assets/images/placeholder.jpg')"
+                 [src]="feature.image || '/assets/images/placeholder.jpg'"
+                 [alt]="feature.title"
+                 class="feature-image" loading="lazy">
+            <div class="feature-overlay">
+              <div class="feature-icon text-5xl mb-3">{{ feature.icon }}</div>
+              <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">{{ feature.title }}</h3>
+            </div>
+          </div>
+          <div class="p-6">
+            <p class="text-slate-700 dark:text-gray-300 mb-4 leading-relaxed">
+              {{ feature.description }}
+            </p>
+            <ul class="space-y-2">
+              <li *ngFor="let benefit of feature.benefits"
+                  class="flex items-start space-x-2 text-sm text-slate-500 dark:text-gray-400">
+                <span class="text-green-400 mt-1">•</span>
+                <span>{{ benefit }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Image Gallery Slider -->
+  <section class="image-gallery-section py-24 relative">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-20" @fadeIn>
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-6">
+          {{ i18n.t('landing.gallery') }}
+          <span class="gradient-text">{{ i18n.t('landing.inRealView') }}</span>
+        </h2>
+        <p class="text-xl text-slate-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+          {{ i18n.t('landing.galleryDesc') }}
+        </p>
+      </div>
+
+      <div class="gallery-container glass-card p-6">
+        <div class="gallery-main">
+          <div class="gallery-slide-wrapper">
+            <div *ngFor="let image of galleryImages(); let i = index"
+                 class="gallery-slide"
+                 [class.active]="i === currentGalleryIndex()">
+              <img *ngIf="!isBase64Image(image.url)"
+                   appImageOptimization [ngSrc]="image.url" [alt]="image.title" class="gallery-image" loading="lazy">
+              <img *ngIf="isBase64Image(image.url)"
+                   [src]="image.url" [alt]="image.title" class="gallery-image" loading="lazy">
+              <div class="gallery-caption">
+                <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">{{ image.title }}</h3>
+                <p class="text-slate-700 dark:text-gray-300">{{ image.description }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Gallery Thumbnails -->
+          <div class="gallery-thumbnails">
+            <button *ngFor="let image of galleryImages(); let i = index"
+                    (click)="goToGalleryImage(i)"
+                    class="gallery-thumbnail"
+                    [class.active]="i === currentGalleryIndex()">
+              <img *ngIf="!isBase64Image(image.thumbnail || image.url)"
+                   appImageOptimization [ngSrc]="image.thumbnail || image.url" [alt]="image.title" loading="lazy">
+              <img *ngIf="isBase64Image(image.thumbnail || image.url)"
+                   [src]="image.thumbnail || image.url" [alt]="image.title" loading="lazy">
+            </button>
+          </div>
+
+          <!-- Gallery Controls -->
+          <div class="gallery-controls">
+            <button (click)="previousGalleryImage()" class="gallery-btn gallery-btn-prev" aria-label="Previous">
+              <span>‹</span>
+            </button>
+            <button (click)="nextGalleryImage()" class="gallery-btn gallery-btn-next" aria-label="Next">
+              <span>›</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Statistics Section -->
+  <section class="statistics-section py-24 relative">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-20" @fadeIn>
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-6">
+          {{ i18n.t('landing.statistics') }}
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div *ngFor="let stat of statisticsData(); let i = index"
+             class="stat-card glass-card p-8 text-center gemini-card-hover"
+             [@scaleIn]
+             [style.animation-delay]="(i * 0.1) + 's'">
+          <div class="stat-icon text-6xl mb-4 ai-float">{{ stat.icon }}</div>
+          <div class="text-5xl font-bold gradient-text mb-2">
+            {{ stat.value }}{{ stat.suffix }}
+          </div>
+          <p class="text-xl text-slate-500 dark:text-gray-400">{{ stat.label }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Business Benefits Section -->
+  <section class="business-benefits-section py-24 relative bg-black/20">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-20" @fadeIn>
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-6">
+          Business <span class="gradient-text">Benefits</span>
+        </h2>
+        <p class="text-xl text-slate-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+          ประโยชน์ที่องค์กรจะได้รับจากการใช้งานระบบ IVAP Enterprise Edition
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div *ngFor="let benefit of businessBenefits(); let i = index"
+             class="benefit-card glass-card p-8 gemini-card-hover"
+             [@slideInUp]
+             [style.animation-delay]="(i * 0.1) + 's'">
+          <div class="text-5xl mb-6 ai-float">{{ benefit.icon }}</div>
+          <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">{{ benefit.title }}</h3>
+          <p class="text-slate-500 dark:text-gray-400 leading-relaxed">{{ benefit.desc }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technical Specs Section -->
+  <section class="tech-specs-section py-24 relative">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-20" @fadeIn>
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-6">
+          Technical <span class="gradient-text">Specifications</span>
+        </h2>
+        <p class="text-xl text-slate-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+          โครงสร้างเทคโนโลยีระดับ Enterprise ที่อยู่เบื้องหลังความสำเร็จ
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div *ngFor="let spec of technicalSpecs(); let i = index"
+             class="spec-card glass-card p-6 flex items-start space-x-4 gemini-card-hover"
+             [@slideInRight]
+             [style.animation-delay]="(i * 0.1) + 's'">
+          <div class="text-4xl shrink-0">{{ spec.icon }}</div>
+          <div>
+            <h4 class="text-xl font-bold text-slate-900 dark:text-white mb-2">{{ spec.title }}</h4>
+            <p class="text-slate-500 dark:text-gray-400">{{ spec.desc }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA Section -->
+  <section class="final-cta-section py-24 relative overflow-hidden">
+    <div class="container mx-auto px-6 relative z-10">
+      <div class="text-center text-slate-900 dark:text-white text-center" @fadeIn>
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 leading-tight">
+          {{ i18n.t('landing.finalCta') }}
+        </h2>
+        <p class="text-2xl mb-12 opacity-90 max-w-4xl mx-auto leading-relaxed">
+          {{ i18n.t('landing.finalCtaDesc') }}
+        </p>
+        <div class="flex flex-col sm:flex-row gap-6 justify-center">
+          <app-glass-button
+            variant="primary"
+            size="lg"
+            (clicked)="navigateToDemo()"
+            class="gemini-card-hover"
+          >
+            🎯 {{ i18n.t('landing.contactDemo') }}
+          </app-glass-button>
+          <app-glass-button
+            size="lg"
+            (clicked)="navigateToContact()"
+            class="gemini-card-hover"
+          >
+            📞 {{ i18n.t('landing.contactInfo') }}
+          </app-glass-button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="landing-footer py-16 glass-card border-t border-white/10">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div @fadeIn>
+          <div class="flex items-center space-x-3 mb-6">
+            <div class="text-3xl ai-float">🎥</div>
+            <h3 class="text-2xl font-bold gradient-text">IVAP Platform</h3>
+          </div>
+          <p class="text-slate-500 dark:text-gray-400 text-lg leading-relaxed">
+            {{ currentLang() === 'th' ? 'แพลตฟอร์มยืนยันตัวตนและวิเคราะห์วิดีโออัจฉริยะ' : 'Intelligent identity verification and video analytics platform' }}
+          </p>
+        </div>
+        <div @fadeIn [style.animation-delay]="'0.1s'">
+          <h4 class="text-xl font-semibold mb-6 text-slate-900 dark:text-white">{{ i18n.t('landing.mainModules') }}</h4>
+          <ul class="space-y-3 text-slate-500 dark:text-gray-400">
+            <li *ngFor="let module of appModules().slice(0, 4)"
+                class="flex items-center space-x-2 hover:text-blue-400 transition-colors cursor-pointer">
+              <span class="text-blue-400">→</span>
+              <span>{{ module.name }}</span>
+            </li>
+          </ul>
+        </div>
+        <div @fadeIn [style.animation-delay]="'0.2s'">
+          <h4 class="text-xl font-semibold mb-6 text-slate-900 dark:text-white">{{ i18n.t('landing.featuresFooter') }}</h4>
+          <ul class="space-y-3 text-slate-500 dark:text-gray-400">
+            <li class="flex items-center space-x-2 hover:text-green-400 transition-colors cursor-pointer">
+              <span class="text-green-400">→</span>
+              <span>Face Recognition</span>
+            </li>
+            <li class="flex items-center space-x-2 hover:text-green-400 transition-colors cursor-pointer">
+              <span class="text-green-400">→</span>
+              <span>Video Analytics</span>
+            </li>
+            <li class="flex items-center space-x-2 hover:text-green-400 transition-colors cursor-pointer">
+              <span class="text-green-400">→</span>
+              <span>Event Management</span>
+            </li>
+            <li class="flex items-center space-x-2 hover:text-green-400 transition-colors cursor-pointer">
+              <span class="text-green-400">→</span>
+              <span>Access Control</span>
+            </li>
+          </ul>
+        </div>
+        <div @fadeIn [style.animation-delay]="'0.3s'">
+          <h4 class="text-xl font-semibold mb-6 text-slate-900 dark:text-white">{{ i18n.t('landing.contactUs') }}</h4>
+          <ul class="space-y-3 text-slate-500 dark:text-gray-400">
+            <li class="flex items-center space-x-3">
+              <span class="text-blue-400">📧</span>
+              <span>contact@ivap.com</span>
+            </li>
+            <li class="flex items-center space-x-3">
+              <span class="text-blue-400">📞</span>
+              <span>02-xxx-xxxx</span>
+            </li>
+            <li class="flex items-center space-x-3">
+              <span class="text-blue-400">🌐</span>
+              <span>www.ivap.com</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-white/10 mt-12 pt-8 text-center text-slate-500 dark:text-gray-400">
+        <p class="text-lg">{{ i18n.t('landing.copyright') }}</p>
+      </div>
+    </div>
+  </footer>
+</div>

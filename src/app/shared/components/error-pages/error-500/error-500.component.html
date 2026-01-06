@@ -1,0 +1,159 @@
+<div class="error-500-container min-h-screen flex items-center justify-center p-8 relative overflow-hidden" [class]="customClass || ''" role="main" [attr.aria-label]="ariaLabel || 'Internal server error'">
+  <div class="error-500-content bg-white/95 backdrop-blur-sm rounded-3xl p-12 max-w-4xl w-full text-center shadow-2xl relative z-10 md:p-8">
+      <!-- Error Illustration -->
+      <div class="error-illustration mb-8 relative" [attr.aria-hidden]="'true'">
+        <div class="error-number text-9xl font-black bg-gradient-to-br from-red-500 to-orange-600 bg-clip-text text-transparent leading-none mb-4 drop-shadow-md md:text-6xl">500</div>
+        <div class="error-icon text-error-500 opacity-80 animate-shake">
+          <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" [attr.aria-hidden]="'true'">
+          <circle cx="100" cy="100" r="80" stroke="currentColor" stroke-width="2" fill="none" opacity="0.1"/>
+          <path d="M60 60L140 140M140 60L60 140" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="100" cy="100" r="20" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M85 85L115 115M115 85L85 115" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Error Message -->
+    <div class="error-message mb-10" role="alert">
+      <h1 class="error-title text-5xl font-bold text-gray-800 mb-4 leading-tight md:text-4xl md:text-2xl">{{ i18n.t('pages.errorPages.serverError.title') }}</h1>
+      <p class="error-description text-lg text-gray-500 leading-relaxed max-w-2xl mx-auto mb-6">
+        {{ i18n.t('pages.errorPages.serverError.message') }}
+      </p>
+      <div class="error-details bg-gray-50 border border-gray-200 rounded-lg p-4 text-left max-w-md mx-auto" role="status" [attr.aria-live]="'polite'">
+        <div class="error-id text-sm text-gray-700 mb-2 last:mb-0">
+          <strong class="text-gray-800">{{ i18n.t('pages.errorPages.serverError.errorId') }}</strong> <span [attr.aria-label]="'Error ID: ' + errorId">{{ errorId }}</span>
+        </div>
+        <div class="error-time text-sm text-gray-700 mb-2 last:mb-0">
+          <strong class="text-gray-800">{{ i18n.t('pages.errorPages.serverError.time') }}</strong> <span [attr.aria-label]="'Error time: ' + currentTime.toLocaleString()">{{ currentTime.toLocaleString() }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status Information -->
+    <div class="status-section mb-8">
+      <div class="status-indicator flex items-center justify-center gap-2 mb-4">
+        <div class="status-dot w-2 h-2 bg-warning-400 rounded-full animate-pulse"></div>
+        <span class="status-text text-sm text-gray-700 font-medium">{{ i18n.t('pages.errorPages.serverError.serviceStatus') }} {{ i18n.t('pages.errorPages.serverError.investigating') }}</span>
+      </div>
+      <div class="retry-info" *ngIf="retryCount > 0">
+        <p class="retry-count text-sm text-gray-500 m-0">
+          {{ i18n.t('pages.errorPages.serverError.retryAttempts') }} {{ retryCount }}/{{ maxRetries }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Troubleshooting Steps -->
+    <div class="troubleshooting mb-10 text-left">
+      <h3 class="troubleshooting-title text-xl font-semibold text-gray-800 mb-4 text-center">{{ i18n.t('pages.errorPages.serverError.whatYouCanTry') }}</h3>
+      <ul class="troubleshooting-list list-none p-0 m-0 max-w-lg mx-auto">
+        <li class="troubleshooting-item flex items-start gap-3 py-3 text-gray-700 text-sm leading-relaxed border-b border-gray-200 last:border-b-0">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-error-500 mt-0.5 flex-shrink-0">
+            <path d="M1 4v6h6"></path>
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+          </svg>
+          <span>{{ i18n.t('pages.errorPages.serverError.waitAndRetry') }}</span>
+        </li>
+        <li class="troubleshooting-item flex items-start gap-3 py-3 text-gray-700 text-sm leading-relaxed border-b border-gray-200 last:border-b-0">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-error-500 mt-0.5 flex-shrink-0">
+            <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+            <path d="M21 3v5h-5"></path>
+            <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+            <path d="M3 21v-5h5"></path>
+          </svg>
+          <span>{{ i18n.t('pages.errorPages.serverError.checkConnection') }}</span>
+        </li>
+        <li class="troubleshooting-item flex items-start gap-3 py-3 text-gray-700 text-sm leading-relaxed border-b border-gray-200 last:border-b-0">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-error-500 mt-0.5 flex-shrink-0">
+            <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+            <path d="M21 3v5h-5"></path>
+            <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+            <path d="M3 21v-5h5"></path>
+          </svg>
+          <span>{{ i18n.t('pages.errorPages.serverError.clearCache') }}</span>
+        </li>
+        <li class="troubleshooting-item flex items-start gap-3 py-3 text-gray-700 text-sm leading-relaxed border-b border-gray-200 last:border-b-0">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-error-500 mt-0.5 flex-shrink-0">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14,2 14,8 20,8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10,9 9,9 8,9"></polyline>
+          </svg>
+          <span>{{ i18n.t('pages.errorPages.serverError.contactSupport') }}</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons flex gap-4 justify-center flex-wrap mb-8 md:flex-col md:items-center">
+      <button
+        (click)="retry()"
+        [disabled]="!canRetry()"
+        class="btn btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold no-underline border-none cursor-pointer transition-all text-base bg-error-500 text-white hover:bg-red-500 hover:-translate-y-0.5 hover:shadow-lg disabled:bg-gray-300 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none md:w-full md:max-w-xs md:justify-center"
+        [class.loading]="isRetrying"
+      >
+        <svg *ngIf="!isRetrying" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M1 4v6h6"></path>
+          <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+        </svg>
+        <svg *ngIf="isRetrying" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spinning animate-spin">
+          <path d="M1 4v6h6"></path>
+          <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+        </svg>
+        {{ isRetrying ? i18n.t('pages.errorPages.serverError.retrying') : i18n.t('pages.errorPages.serverError.retry') }}
+        <span *ngIf="isRetrying" class="retry-timer text-xs opacity-80">({{ getRetryDelay() }}s)</span>
+      </button>
+
+      <button (click)="goBack()" class="btn btn-outline inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold no-underline border-none cursor-pointer transition-all text-base bg-transparent text-error-500 border-2 border-error-500 hover:bg-error-500 hover:text-white hover:-translate-y-0.5 md:w-full md:max-w-xs md:justify-center">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"></path>
+        </svg>
+        {{ i18n.t('pages.errorPages.serverError.goBack') }}
+      </button>
+
+      <button (click)="goHome()" class="btn btn-secondary inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold no-underline border-none cursor-pointer transition-all text-base bg-gray-500 text-white hover:bg-gray-600 hover:-translate-y-0.5 hover:shadow-lg md:w-full md:max-w-xs md:justify-center">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9,22 9,12 15,12 15,22"></polyline>
+        </svg>
+        {{ i18n.t('pages.errorPages.serverError.goHome') }}
+      </button>
+    </div>
+
+    <!-- Support Information -->
+    <div class="support-section mb-8">
+      <div class="support-card bg-gray-50 border border-gray-200 rounded-2xl p-6 flex items-center gap-4 max-w-lg mx-auto md:flex-col md:text-center">
+        <div class="support-icon text-error-500 flex-shrink-0">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 12l2 2 4-4"></path>
+            <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"></path>
+            <path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"></path>
+            <path d="M12 3c0 1-1 3-3 3s-3-2-3-3 1-3 3-3 3 2 3 3"></path>
+            <path d="M12 21c0-1 1-3 3-3s3 2 3 3-1 3-3 3-3-2-3-3"></path>
+          </svg>
+        </div>
+        <div class="support-content text-left flex-1 md:text-center">
+          <h4 class="text-base font-semibold text-gray-800 m-0 mb-2">{{ i18n.t('pages.errorPages.serverError.needHelp') }}</h4>
+          <p class="text-sm text-gray-500 m-0 mb-4 leading-relaxed">{{ i18n.t('pages.errorPages.serverError.needHelpMessage') }}</p>
+          <button (click)="reportIssue()" class="btn btn-outline btn-sm inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold no-underline border-none cursor-pointer transition-all text-sm bg-transparent text-error-500 border-2 border-error-500 hover:bg-error-500 hover:text-white hover:-translate-y-0.5">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14,2 14,8 20,8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10,9 9,9 8,9"></polyline>
+            </svg>
+            {{ i18n.t('pages.errorPages.serverError.reportIssue') }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional Information -->
+    <div class="additional-info">
+      <p class="info-text text-gray-500 text-sm leading-relaxed m-0">
+        {{ i18n.t('pages.errorPages.serverError.autoLogged') }}
+      </p>
+    </div>
+  </div>
+</div>

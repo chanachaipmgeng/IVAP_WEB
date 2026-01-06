@@ -1,0 +1,61 @@
+<app-page-layout
+  title="Attendance Records"
+  description="View and manage employee attendance records. Approve or reject timestamp requests."
+  icon="⏰"
+  [actions]="pageActions()">
+  
+  <!-- Statistics Cards -->
+  <app-statistics-grid [stats]="statisticsCards()" [columns]="4" />
+
+  <!-- Filters -->
+  <app-filter-section
+    [fields]="filterFields()"
+    [columns]="5"
+    [actionButton]="{ label: '🔍 Apply Filters', variant: 'primary', onClick: applyFilters.bind(this) }"
+    (filterChange)="onFilterChange($event)"
+  />
+
+  <!-- Attendance Records Table -->
+  <app-glass-card customClass="p-6">
+    <div class="space-y-4">
+      <!-- Records list -->
+      <div class="space-y-2">
+        @for (record of records(); track getRecordId(record)) {
+          <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+            <!-- Record content -->
+            <p class="text-gray-900 dark:text-gray-100">{{ record | json }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </app-glass-card>
+
+  <!-- Reject Modal -->
+  <app-modal
+    [isOpen]="showRejectModal()"
+    title="Reject Timestamp"
+    (closed)="closeRejectModal()"
+  >
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Rejection Reason <span class="text-red-500">*</span>
+        </label>
+        <textarea
+          [(ngModel)]="rejectReason"
+          class="glass-input w-full"
+          rows="3"
+          placeholder="Enter rejection reason..."
+        ></textarea>
+      </div>
+    </div>
+    <div slot="footer">
+      <app-glass-button variant="secondary" (clicked)="closeRejectModal()">
+        {{ 'common.cancel' | translate }}
+      </app-glass-button>
+      <app-glass-button variant="danger" (clicked)="confirmReject()">
+        {{ 'Reject' | translate }}
+      </app-glass-button>
+    </div>
+  </app-modal>
+</app-page-layout>

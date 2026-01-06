@@ -1,0 +1,627 @@
+// Landing Page Styles - Gemini 2.0 Flash Style
+
+.landing-page {
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+
+  // Landing specific theme overrides
+  // Ideally, use tailwind 'dark:' classes in HTML instead of these overrides.
+  // Keeping simplified version for now but relying on global variables.
+  @apply text-slate-900 dark:text-white;
+
+}
+
+// Background Graphics
+.landing-bg-graphics {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-gradient-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 0% 100%, rgba(6, 182, 212, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 100% 100%, rgba(139, 92, 246, 0.04) 0%, transparent 40%);
+  opacity: 0.6;
+}
+
+.bg-grid-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    repeating-linear-gradient(0deg,
+      transparent,
+      transparent 1px,
+      rgba(59, 130, 246, 0.02) 1px,
+      rgba(59, 130, 246, 0.02) 2px),
+    repeating-linear-gradient(90deg,
+      transparent,
+      transparent 1px,
+      rgba(6, 182, 212, 0.02) 1px,
+      rgba(6, 182, 212, 0.02) 2px);
+  background-size: 40px 40px;
+  opacity: 0.3;
+}
+
+// Header
+.landing-header {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+// Header - Support both :host-context and global selectors
+:host-context(.light) .landing-header,
+:host-context(html.light) .landing-header,
+:host-context(body.light) .landing-header,
+html.light .landing-header,
+body.light .landing-header {
+  background: rgba(255, 255, 255, 0.5);
+  border-bottom-color: rgba(245, 158, 11, 0.2);
+}
+
+:host-context(.dark) .landing-header,
+:host-context(html.dark) .landing-header,
+:host-context(body.dark) .landing-header,
+html.dark .landing-header,
+body.dark .landing-header {
+  background: rgba(26, 26, 46, 0.7);
+  border-bottom-color: rgba(59, 130, 246, 0.3);
+}
+
+// Gradient Text
+.gradient-text {
+  background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 50%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// Hero Section
+.hero-section {
+  position: relative;
+  z-index: 10;
+  padding-top: 8rem;
+  padding-bottom: 5rem;
+}
+
+// Hero Slider
+.hero-slider-container {
+  position: relative;
+}
+
+.hero-slider {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  aspect-ratio: 16/9;
+}
+
+.slider-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.slider-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.active {
+    opacity: 1;
+    transform: translateX(0);
+    z-index: 1;
+  }
+}
+
+.slider-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 24px;
+}
+
+.slider-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  padding: 2rem;
+  border-radius: 0 0 24px 24px;
+}
+
+.slider-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.slider-description {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.slider-controls {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1rem;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.slider-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  pointer-events: all;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+  }
+}
+
+.slider-dots {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+  z-index: 2;
+}
+
+.slider-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &.active {
+    background: #3b82f6;
+    width: 24px;
+    border-radius: 6px;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.6);
+  }
+}
+
+// Arrow Icon
+.arrow-icon {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.gemini-card-hover:hover .arrow-icon {
+  transform: translateX(4px);
+}
+
+// App Structure Section
+.app-structure-section {
+  position: relative;
+  z-index: 10;
+}
+
+.module-card {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
+  }
+}
+
+.module-icon {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+// Features Gallery Section
+.features-gallery-section {
+  position: relative;
+  z-index: 10;
+}
+
+.feature-card {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 24px 64px rgba(59, 130, 246, 0.25);
+  }
+}
+
+.feature-image-container {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.feature-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.feature-card:hover .feature-image {
+  transform: scale(1.1);
+}
+
+.feature-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.feature-card:hover .feature-overlay {
+  opacity: 1;
+}
+
+.feature-icon {
+  margin-bottom: 0.5rem;
+}
+
+// Image Gallery Section
+.image-gallery-section {
+  position: relative;
+  z-index: 10;
+}
+
+.gallery-container {
+  position: relative;
+}
+
+.gallery-main {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.gallery-slide-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+}
+
+.gallery-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.active {
+    opacity: 1;
+    transform: translateX(0);
+    z-index: 1;
+  }
+}
+
+.gallery-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  padding: 2rem;
+  color: white;
+}
+
+.gallery-thumbnails {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.gallery-thumbnail {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: transparent;
+  padding: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &.active {
+    border-color: #3b82f6;
+    transform: scale(1.1);
+  }
+
+  &:hover {
+    border-color: rgba(59, 130, 246, 0.5);
+  }
+}
+
+.gallery-controls {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1rem;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.gallery-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  pointer-events: all;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+  }
+}
+
+// Statistics Section
+.statistics-section {
+  position: relative;
+  z-index: 10;
+}
+
+// Business Benefits Section
+.business-benefits-section {
+  position: relative;
+  z-index: 10;
+}
+
+.benefit-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+// Tech Specs Section
+.tech-specs-section {
+  position: relative;
+  z-index: 10;
+}
+
+.spec-card {
+  height: 100%;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    transform: translateX(8px);
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.stat-card {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
+  }
+}
+
+.stat-icon {
+  animation: float 6s ease-in-out infinite;
+}
+
+// Final CTA Section
+.final-cta-section {
+  position: relative;
+  z-index: 10;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+}
+
+// Footer
+.landing-footer {
+  position: relative;
+  z-index: 10;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+// Footer - Support both :host-context and global selectors
+:host-context(.light) .landing-footer,
+:host-context(html.light) .landing-footer,
+:host-context(body.light) .landing-footer,
+html.light .landing-footer,
+body.light .landing-footer {
+  background: rgba(255, 255, 255, 0.5);
+  border-top-color: rgba(245, 158, 11, 0.2);
+}
+
+:host-context(.dark) .landing-footer,
+:host-context(html.dark) .landing-footer,
+:host-context(body.dark) .landing-footer,
+html.dark .landing-footer,
+body.dark .landing-footer {
+  background: rgba(26, 26, 46, 0.7);
+  border-top-color: rgba(59, 130, 246, 0.3);
+}
+
+// Gemini Card Hover Effect
+.gemini-card-hover {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(59, 130, 246, 0.25);
+  }
+}
+
+// AI Float Animation
+.ai-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+// Language Switcher & Theme Switcher
+.language-switcher,
+.theme-switcher {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+  }
+}
+
+// Language Switcher & Theme Switcher - Support both :host-context and global selectors
+:host-context(.light) .language-switcher,
+:host-context(html.light) .language-switcher,
+:host-context(body.light) .language-switcher,
+html.light .language-switcher,
+body.light .language-switcher,
+:host-context(.light) .theme-switcher,
+:host-context(html.light) .theme-switcher,
+:host-context(body.light) .theme-switcher,
+html.light .theme-switcher,
+body.light .theme-switcher {
+  background: rgba(255, 255, 255, 0.5);
+  color: rgb(15 23 42);
+}
+
+:host-context(.dark) .language-switcher,
+:host-context(html.dark) .language-switcher,
+:host-context(body.dark) .language-switcher,
+html.dark .language-switcher,
+body.dark .language-switcher,
+:host-context(.dark) .theme-switcher,
+:host-context(html.dark) .theme-switcher,
+:host-context(body.dark) .theme-switcher,
+html.dark .theme-switcher,
+body.dark .theme-switcher {
+  background: rgba(26, 26, 46, 0.6);
+  color: #ffffff;
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .hero-section {
+    padding-top: 6rem;
+    padding-bottom: 3rem;
+  }
+
+  .hero-section h1 {
+    font-size: 2.5rem;
+  }
+
+  .slider-controls,
+  .gallery-controls {
+    padding: 0 0.5rem;
+  }
+
+  .slider-btn,
+  .gallery-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+  }
+
+  .gallery-thumbnails {
+    gap: 0.5rem;
+  }
+
+  .gallery-thumbnail {
+    width: 60px;
+    height: 60px;
+  }
+}

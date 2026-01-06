@@ -1,0 +1,396 @@
+<div class="mobile-demo p-8 max-w-[1400px] mx-auto">
+  <!-- Header -->
+  <div class="demo-header text-center mb-12">
+    <h1 class="demo-title text-5xl font-bold text-white m-0 mb-4 bg-gradient-to-r from-primary-500 to-purple-600 bg-clip-text text-transparent">Mobile Features Demo</h1>
+    <p class="demo-description text-xl text-gray-400 m-0 max-w-[600px] mx-auto">
+      ฟีเจอร์สำหรับมือถือและอุปกรณ์เคลื่อนที่
+    </p>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <div class="demo-navigation mb-8">
+    <app-glass-card>
+      <div class="nav-tabs flex gap-4 justify-center flex-wrap">
+        <app-glass-button
+          *ngFor="let tab of ['overview', 'camera', 'notifications', 'offline', 'settings']"
+          [variant]="selectedTab === tab ? 'primary' : 'secondary'"
+          (click)="selectTab(tab)">
+          <i class="fas" [class]="getTabIcon(tab)"></i>
+          {{ getTabLabel(tab) }}
+        </app-glass-button>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Overview Tab -->
+  <div *ngIf="selectedTab === 'overview'" class="overview-tab">
+    <!-- Device Info -->
+    <div class="device-info-section mb-8">
+      <app-glass-card>
+        <h3 class="m-0 mb-4 text-white text-lg">ข้อมูลอุปกรณ์</h3>
+        <div class="device-details grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4">
+          <div class="device-item flex justify-between items-center p-4 bg-white/5 rounded-lg border border-white/10">
+            <div class="device-label text-gray-400 font-medium">อุปกรณ์:</div>
+            <div class="device-value text-white font-semibold">{{ getDeviceName() }}</div>
+          </div>
+          <div class="device-item flex justify-between items-center p-4 bg-white/5 rounded-lg border border-white/10">
+            <div class="device-label text-gray-400 font-medium">แพลตฟอร์ม:</div>
+            <div class="device-value text-white font-semibold">{{ getPlatformName() }}</div>
+          </div>
+          <div class="device-item flex justify-between items-center p-4 bg-white/5 rounded-lg border border-white/10">
+            <div class="device-label text-gray-400 font-medium">เวอร์ชัน:</div>
+            <div class="device-value text-white font-semibold">{{ deviceInfo?.version || 'Unknown' }}</div>
+          </div>
+          <div class="device-item flex justify-between items-center p-4 bg-white/5 rounded-lg border border-white/10">
+            <div class="device-label text-gray-400 font-medium">สถานะ:</div>
+            <div class="device-value font-semibold" [class.text-success-500]="isOnline()" [class.text-error-500]="!isOnline()">
+              {{ isOnline() ? 'ออนไลน์' : 'ออฟไลน์' }}
+            </div>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+
+    <!-- Capabilities -->
+    <div class="capabilities-section mb-8">
+      <app-glass-card>
+        <h3 class="m-0 mb-4 text-white text-lg">ความสามารถของอุปกรณ์</h3>
+        <div class="capabilities-grid grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4">
+          <div *ngFor="let capability of ['hasCamera', 'hasLocation', 'hasPushNotifications', 'hasBiometric', 'hasNFC', 'hasBluetooth']"
+               class="capability-item flex items-center gap-4 p-4 bg-white/5 rounded-lg border border-white/10 transition-all hover:bg-white/10 hover:-translate-y-0.5">
+            <div class="capability-icon text-2xl" [style.color]="getCapabilityColor(capability)">
+              <i [class]="getCapabilityIcon(capability)"></i>
+            </div>
+            <div class="capability-info flex-1">
+              <div class="capability-name text-white font-medium mb-1">{{ getCapabilityName(capability) }}</div>
+              <div class="capability-status text-gray-400 text-sm">{{ getCapabilityStatus(capability) }}</div>
+            </div>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions-section">
+      <app-glass-card>
+        <h3 class="m-0 mb-4 text-white text-lg">การดำเนินการด่วน</h3>
+        <div class="quick-actions flex gap-4 flex-wrap justify-center">
+          <app-glass-button
+            variant="primary"
+            (click)="toggleCamera()">
+            <i class="fas fa-camera"></i>
+            เปิดกล้อง
+          </app-glass-button>
+
+          <app-glass-button
+            variant="secondary"
+            (click)="sendTestNotification()">
+            <i class="fas fa-bell"></i>
+            ส่งการแจ้งเตือน
+          </app-glass-button>
+
+          <app-glass-button
+            variant="secondary"
+            (click)="vibrateDevice()">
+            <i class="fas fa-mobile-alt"></i>
+            เปิดการสั่น
+          </app-glass-button>
+
+          <app-glass-button
+            variant="secondary"
+            (click)="openNativeSettings()"
+            *ngIf="isNative()">
+            <i class="fas fa-cog"></i>
+            เปิดการตั้งค่า
+          </app-glass-button>
+        </div>
+      </app-glass-card>
+    </div>
+  </div>
+
+  <!-- Camera Tab -->
+  <div *ngIf="selectedTab === 'camera'" class="camera-tab">
+    <app-glass-card>
+      <div class="camera-header flex justify-between items-center mb-8 md:flex-col md:items-start md:gap-4">
+        <h3 class="m-0 text-white text-lg">กล้องมือถือ</h3>
+        <app-glass-button
+          variant="primary"
+          (click)="toggleCamera()">
+          <i class="fas fa-camera"></i>
+          {{ showCamera ? 'ปิดกล้อง' : 'เปิดกล้อง' }}
+        </app-glass-button>
+      </div>
+
+      <div class="camera-content">
+        <app-mobile-camera
+          *ngIf="showCamera"
+          [showSettings]="true"
+          [showPreview]="true"
+          [autoStart]="true"
+          [enableFlash]="true"
+          [enableZoom]="true"
+          [enableTimer]="true"
+          (photoCaptured)="onPhotoCaptured($event)"
+          (cameraReady)="onCameraReady($event)"
+          (error)="onCameraError($event)">
+        </app-mobile-camera>
+
+        <div *ngIf="!showCamera" class="camera-placeholder text-center p-12 text-gray-500">
+          <i class="fas fa-camera fa-3x mb-4 opacity-50"></i>
+          <p class="m-0 text-lg">กดปุ่ม "เปิดกล้อง" เพื่อเริ่มใช้งาน</p>
+        </div>
+
+        <div *ngIf="lastPhoto" class="last-photo mt-8">
+          <h4 class="m-0 mb-4 text-white">รูปภาพล่าสุด</h4>
+          <div class="photo-info flex gap-4 items-start md:flex-col">
+            <img appImageOptimization [ngSrc]="lastPhoto.dataUrl" [alt]="'Last photo'" class="photo-preview w-[200px] h-[150px] object-cover rounded-lg" loading="lazy">
+            <div class="photo-details flex-1">
+              <div class="detail-item flex justify-between mb-2">
+                <span class="detail-label text-gray-400">ขนาด:</span>
+                <span class="detail-value text-white font-medium">{{ lastPhoto.width }}x{{ lastPhoto.height }}</span>
+              </div>
+              <div class="detail-item flex justify-between mb-2">
+                <span class="detail-label text-gray-400">ขนาดไฟล์:</span>
+                <span class="detail-value text-white font-medium">{{ formatFileSize(lastPhoto.size) }}</span>
+              </div>
+              <div class="detail-item flex justify-between mb-2">
+                <span class="detail-label text-gray-400">เวลา:</span>
+                <span class="detail-value text-white font-medium">{{ formatDate(lastPhoto.timestamp) }}</span>
+              </div>
+              <div class="detail-item flex justify-between mb-2" *ngIf="lastPhoto.location">
+                <span class="detail-label text-gray-400">ตำแหน่ง:</span>
+                <span class="detail-value text-white font-medium">{{ lastPhoto.location.latitude.toFixed(4) }}, {{ lastPhoto.location.longitude.toFixed(4) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Notifications Tab -->
+  <div *ngIf="selectedTab === 'notifications'" class="notifications-tab">
+    <app-glass-card>
+      <div class="notifications-header flex justify-between items-center mb-8 md:flex-col md:items-start md:gap-4">
+        <h3 class="m-0 text-white text-lg">การแจ้งเตือน</h3>
+        <div class="notification-actions flex gap-4">
+          <app-glass-button
+            variant="secondary"
+            (click)="requestNotificationPermission()">
+            <i class="fas fa-key"></i>
+            ขอสิทธิ์
+          </app-glass-button>
+
+          <app-glass-button
+            variant="primary"
+            (click)="sendTestNotification()">
+            <i class="fas fa-paper-plane"></i>
+            ส่งทดสอบ
+          </app-glass-button>
+        </div>
+      </div>
+
+      <div class="notifications-content">
+        <div class="notifications-list">
+          <div *ngFor="let notification of notifications" class="notification-item flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/10 mb-4 transition-all hover:bg-white/10 last:mb-0">
+            <div class="notification-icon w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-primary-500 text-base">
+              <i class="fas fa-bell"></i>
+            </div>
+            <div class="notification-content flex-1">
+              <div class="notification-title text-white font-medium mb-1">{{ notification.title }}</div>
+              <div class="notification-body text-gray-400 text-sm mb-1">{{ notification.body }}</div>
+              <div class="notification-time text-gray-500 text-xs">{{ formatDate(notification.timestamp) }}</div>
+            </div>
+            <div class="notification-actions flex gap-2">
+              <app-glass-button
+                variant="secondary"
+                size="sm"
+                (click)="markNotificationAsRead(notification.id)"
+                *ngIf="!notification.read">
+                <i class="fas fa-check"></i>
+              </app-glass-button>
+
+              <app-glass-button
+                variant="danger"
+                size="sm"
+                (click)="deleteNotification(notification.id)">
+                <i class="fas fa-trash"></i>
+              </app-glass-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Offline Tab -->
+  <div *ngIf="selectedTab === 'offline'" class="offline-tab">
+    <app-glass-card>
+      <div class="offline-header flex justify-between items-center mb-8 md:flex-col md:items-start md:gap-4">
+        <h3 class="m-0 text-white text-lg">การทำงานออฟไลน์</h3>
+        <div class="offline-actions flex gap-4">
+          <app-glass-button
+            variant="secondary"
+            (click)="storeTestOfflineData()">
+            <i class="fas fa-plus"></i>
+            เพิ่มข้อมูลทดสอบ
+          </app-glass-button>
+
+          <app-glass-button
+            variant="primary"
+            (click)="syncOfflineData()"
+            [disabled]="!isOnline() || syncStatus.isSyncing">
+            <i class="fas fa-sync-alt" [class.fa-spin]="syncStatus.isSyncing"></i>
+            {{ syncStatus.isSyncing ? 'กำลังซิงค์...' : 'ซิงค์ข้อมูล' }}
+          </app-glass-button>
+        </div>
+      </div>
+
+      <div class="offline-content">
+        <!-- Sync Status -->
+        <div class="sync-status grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-4 mb-8 md:grid-cols-1">
+          <div class="status-item flex justify-between items-center p-4 bg-white/5 rounded-lg border border-white/10">
+            <span class="status-label text-gray-400 font-medium">สถานะ:</span>
+            <span class="status-value text-white font-semibold" [style.color]="getSyncStatusColor()">
+              {{ getSyncStatusText() }}
+            </span>
+          </div>
+          <div class="status-item flex justify-between items-center p-4 bg-white/5 rounded-lg border border-white/10">
+            <span class="status-label text-gray-400 font-medium">รอซิงค์:</span>
+            <span class="status-value text-white font-semibold">{{ syncStatus.pendingItems }}</span>
+          </div>
+          <div class="status-item flex justify-between items-center p-4 bg-white/5 rounded-lg border border-white/10">
+            <span class="status-label text-gray-400 font-medium">ล้มเหลว:</span>
+            <span class="status-value text-white font-semibold">{{ syncStatus.failedItems }}</span>
+          </div>
+          <div class="status-item flex justify-between items-center p-4 bg-white/5 rounded-lg border border-white/10">
+            <span class="status-label text-gray-400 font-medium">ทั้งหมด:</span>
+            <span class="status-value text-white font-semibold">{{ syncStatus.totalItems }}</span>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="sync-progress mb-8" *ngIf="syncStatus.isSyncing">
+          <div class="progress-bar w-full h-2 bg-white/10 rounded overflow-hidden mb-2">
+            <div class="progress-fill h-full bg-gradient-to-r from-primary-500 to-success-500 transition-all" [style.width.%]="syncStatus.syncProgress"></div>
+          </div>
+          <div class="progress-text text-center text-gray-400 text-sm">{{ syncStatus.syncProgress | number:'1.0-0' }}%</div>
+        </div>
+
+        <!-- Offline Data List -->
+        <div class="offline-data-list">
+          <h4 class="m-0 mb-4 text-white">ข้อมูลออฟไลน์</h4>
+          <div *ngFor="let item of offlineData" class="offline-item flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/10 mb-4 transition-all hover:bg-white/10 last:mb-0">
+            <div class="offline-icon w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-primary-500 text-base">
+              <i class="fas fa-database"></i>
+            </div>
+            <div class="offline-content flex-1">
+              <div class="offline-type text-white font-medium mb-1">{{ item.type }}</div>
+              <div class="offline-time text-gray-400 text-sm mb-1">{{ formatDate(item.timestamp) }}</div>
+              <div class="offline-status text-xs px-2 py-1 rounded font-medium" [class.synced]="item.synced" [class.pending]="!item.synced"
+                [class.bg-success-500/20]="item.synced"
+                [class.text-success-500]="item.synced"
+                [class.bg-warning-500/20]="!item.synced"
+                [class.text-warning-500]="!item.synced">
+                {{ item.synced ? 'ซิงค์แล้ว' : 'รอซิงค์' }}
+              </div>
+            </div>
+            <div class="offline-actions flex gap-2">
+              <app-glass-button
+                variant="danger"
+                size="sm"
+                (click)="deleteOfflineData(item.id)">
+                <i class="fas fa-trash"></i>
+              </app-glass-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Settings Tab -->
+  <div *ngIf="selectedTab === 'settings'" class="settings-tab">
+    <app-glass-card>
+      <h3 class="m-0 mb-6 text-white text-lg">การตั้งค่า</h3>
+
+      <div class="settings-content">
+        <!-- Notification Settings -->
+        <div class="settings-section mb-8">
+          <h4 class="m-0 mb-4 text-white">การแจ้งเตือน</h4>
+          <div class="setting-group mb-4">
+            <label class="setting-label flex items-center gap-3 font-medium text-white cursor-pointer">
+              <input
+                type="checkbox"
+                [(ngModel)]="notificationSettings.enabled"
+                (change)="updateNotificationSettings()"
+                class="hidden">
+              <span class="checkmark w-5 h-5 border-2 border-white/30 rounded relative transition-all"></span>
+              เปิดการแจ้งเตือน
+            </label>
+          </div>
+          <div class="setting-group mb-4">
+            <label class="setting-label flex items-center gap-3 font-medium text-white cursor-pointer">
+              <input
+                type="checkbox"
+                [(ngModel)]="notificationSettings.sound"
+                (change)="updateNotificationSettings()"
+                class="hidden">
+              <span class="checkmark w-5 h-5 border-2 border-white/30 rounded relative transition-all"></span>
+              เสียงแจ้งเตือน
+            </label>
+          </div>
+          <div class="setting-group mb-4">
+            <label class="setting-label flex items-center gap-3 font-medium text-white cursor-pointer">
+              <input
+                type="checkbox"
+                [(ngModel)]="notificationSettings.vibration"
+                (change)="updateNotificationSettings()"
+                class="hidden">
+              <span class="checkmark w-5 h-5 border-2 border-white/30 rounded relative transition-all"></span>
+              การสั่น
+            </label>
+          </div>
+        </div>
+
+        <!-- Offline Settings -->
+        <div class="settings-section mb-8">
+          <h4 class="m-0 mb-4 text-white">การทำงานออฟไลน์</h4>
+          <div class="setting-group mb-4">
+            <label class="setting-label flex items-center gap-3 font-medium text-white cursor-pointer">
+              <input
+                type="checkbox"
+                [(ngModel)]="offlineSettings.enabled"
+                (change)="updateOfflineSettings()"
+                class="hidden">
+              <span class="checkmark w-5 h-5 border-2 border-white/30 rounded relative transition-all"></span>
+              เปิดการทำงานออฟไลน์
+            </label>
+          </div>
+          <div class="setting-group mb-4">
+            <label class="setting-label flex items-center gap-3 font-medium text-white cursor-pointer">
+              <input
+                type="checkbox"
+                [(ngModel)]="offlineSettings.autoSync"
+                (change)="updateOfflineSettings()"
+                class="hidden">
+              <span class="checkmark w-5 h-5 border-2 border-white/30 rounded relative transition-all"></span>
+              ซิงค์อัตโนมัติ
+            </label>
+          </div>
+          <div class="setting-group mb-4">
+            <label class="setting-label flex items-center gap-3 font-medium text-white cursor-pointer">
+              <input
+                type="checkbox"
+                [(ngModel)]="offlineSettings.syncOnReconnect"
+                (change)="updateOfflineSettings()"
+                class="hidden">
+              <span class="checkmark w-5 h-5 border-2 border-white/30 rounded relative transition-all"></span>
+              ซิงค์เมื่อเชื่อมต่อใหม่
+            </label>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+</div>

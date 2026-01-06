@@ -1,0 +1,483 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-4xl font-bold bg-gradient-to-r from-primary-500 to-purple-600 bg-clip-text text-transparent">
+        <span class="mr-3">🛡️</span>
+        Safety & Security Dashboard
+      </h1>
+      <p class="text-gray-600 dark:text-gray-400 mt-2">
+        Real-time monitoring of safety violations, environment alerts, and equipment status
+      </p>
+    </div>
+    <app-glass-button variant="primary" (clicked)="generateSafetyReport()">
+      📊 Generate Report
+    </app-glass-button>
+  </div>
+
+  <!-- Filters -->
+  <app-glass-card customClass="p-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Date From
+        </label>
+        <input
+          type="date"
+          class="glass-input w-full"
+          [(ngModel)]="dateRange.from"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Date To
+        </label>
+        <input
+          type="date"
+          class="glass-input w-full"
+          [(ngModel)]="dateRange.to"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Severity
+        </label>
+        <select class="glass-input w-full" [(ngModel)]="severityFilter">
+          <option value="all">All Severities</option>
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+          <option value="critical">Critical</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Status
+        </label>
+        <select class="glass-input w-full" [(ngModel)]="statusFilter">
+          <option value="all">All Status</option>
+          <option value="active">Active</option>
+          <option value="acknowledged">Acknowledged</option>
+          <option value="resolved">Resolved</option>
+        </select>
+      </div>
+    </div>
+    <div class="mt-4">
+      <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+        Zone
+      </label>
+      <select class="glass-input w-full" [(ngModel)]="zoneFilter">
+        <option value="all">All Zones</option>
+        <option *ngFor="let zone of workerSafetyZones" [value]="zone.id">{{ zone.name }}</option>
+      </select>
+    </div>
+  </app-glass-card>
+
+  <!-- Tab Navigation -->
+  <div class="glass rounded-lg p-1 flex space-x-1 overflow-x-auto">
+    <button
+      *ngFor="let tab of ['overview', 'worker-safety', 'environment', 'equipment', 'ai-models', 'reports']"
+      [class]="selectedTab === tab
+        ? 'bg-primary-500/20 text-primary-600 dark:text-primary-400'
+        : 'text-gray-600 dark:text-gray-400'"
+      (click)="selectTab(tab)"
+      class="flex items-center space-x-2 py-2 px-4 rounded-lg font-medium transition-colors whitespace-nowrap"
+    >
+      <span>{{ getTabIcon(tab) }}</span>
+      <span>{{ getTabLabel(tab) }}</span>
+    </button>
+  </div>
+
+  <!-- Tab Content -->
+  <div class="space-y-6">
+    <!-- Overview Tab -->
+    <div *ngIf="selectedTab === 'overview'" class="space-y-6">
+      <!-- Key Metrics Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <app-glass-card customClass="p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Worker Safety Score</h3>
+            <span class="text-3xl">👷</span>
+          </div>
+          <div class="text-4xl font-bold mb-2" [class]="getSafetyScoreColor(workerSafetyMetrics?.safetyScore || 0)">
+            {{ formatNumber(workerSafetyMetrics?.safetyScore || 0, 1) }}%
+          </div>
+          <div class="text-sm" [class]="getTrendColor(workerSafetyMetrics?.trend || 'stable')">
+            {{ getTrendIcon(workerSafetyMetrics?.trend || 'stable') }} {{ workerSafetyMetrics?.trend || 'stable' }}
+          </div>
+        </app-glass-card>
+
+        <app-glass-card customClass="p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Environment Score</h3>
+            <span class="text-3xl">🌡️</span>
+          </div>
+          <div class="text-4xl font-bold mb-2" [class]="getSafetyScoreColor(environmentMetrics?.environmentScore || 0)">
+            {{ formatNumber(environmentMetrics?.environmentScore || 0, 1) }}%
+          </div>
+          <div class="text-sm" [class]="getTrendColor(environmentMetrics?.trend || 'stable')">
+            {{ getTrendIcon(environmentMetrics?.trend || 'stable') }} {{ environmentMetrics?.trend || 'stable' }}
+          </div>
+        </app-glass-card>
+
+        <app-glass-card customClass="p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Equipment Health</h3>
+            <span class="text-3xl">⚙️</span>
+          </div>
+          <div class="text-4xl font-bold mb-2" [class]="getSafetyScoreColor(equipmentMetrics?.averageHealthScore || 0)">
+            {{ formatNumber(equipmentMetrics?.averageHealthScore || 0, 1) }}%
+          </div>
+          <div class="text-sm" [class]="getTrendColor(equipmentMetrics?.trend || 'stable')">
+            {{ getTrendIcon(equipmentMetrics?.trend || 'stable') }} {{ equipmentMetrics?.trend || 'stable' }}
+          </div>
+        </app-glass-card>
+
+        <app-glass-card customClass="p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">AI Model Accuracy</h3>
+            <span class="text-3xl">🤖</span>
+          </div>
+          <div class="text-4xl font-bold mb-2" [class]="getSafetyScoreColor(aiModelMetrics?.averageAccuracy || 0)">
+            {{ formatNumber(aiModelMetrics?.averageAccuracy || 0, 1) }}%
+          </div>
+          <div class="text-sm" [class]="getTrendColor(aiModelMetrics?.trend || 'stable')">
+            {{ getTrendIcon(aiModelMetrics?.trend || 'stable') }} {{ aiModelMetrics?.trend || 'stable' }}
+          </div>
+        </app-glass-card>
+      </div>
+
+      <!-- Recent Alerts -->
+      <app-glass-card customClass="p-6">
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Recent Alerts</h3>
+        <div class="space-y-3">
+          <div *ngFor="let violation of getFilteredViolations().slice(0, 5)" class="flex items-center gap-4 p-4 glass rounded-lg hover:bg-white/50 dark:hover:bg-gray-800/50 transition-all">
+            <div class="text-2xl">⚠️</div>
+            <div class="flex-1">
+              <div class="font-medium text-gray-900 dark:text-gray-100">{{ violation.description }}</div>
+              <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                <span>{{ violation.location }}</span>
+                <span class="mx-2">•</span>
+                <span>{{ getRelativeTime(violation.timestamp) }}</span>
+              </div>
+            </div>
+            <span class="px-3 py-1 rounded-full text-sm font-semibold" [ngClass]="getSeverityColor(violation.severity)">
+              {{ violation.severity }}
+            </span>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+
+    <!-- Worker Safety Tab -->
+    <div *ngIf="selectedTab === 'worker-safety'" class="space-y-6">
+      <app-glass-card customClass="p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Worker Safety Violations</h3>
+          <div class="flex gap-6">
+            <div class="text-center">
+              <div class="text-sm text-gray-600 dark:text-gray-400">Total</div>
+              <div class="text-2xl font-bold text-primary-600 dark:text-primary-400">{{ workerSafetyMetrics?.totalViolations || 0 }}</div>
+            </div>
+            <div class="text-center">
+              <div class="text-sm text-gray-600 dark:text-gray-400">Active</div>
+              <div class="text-2xl font-bold text-red-600 dark:text-red-400">{{ getActiveViolationsCount() }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <div class="min-w-full">
+            <!-- Table Header -->
+            <div class="grid grid-cols-6 gap-4 p-4 glass rounded-lg mb-2 font-semibold text-gray-900 dark:text-gray-100">
+              <div>Type</div>
+              <div>Severity</div>
+              <div>Location</div>
+              <div>Time</div>
+              <div>Status</div>
+              <div>Actions</div>
+            </div>
+
+            <!-- Table Rows -->
+            <div *ngFor="let violation of getFilteredViolations()" class="grid grid-cols-6 gap-4 p-4 glass rounded-lg mb-2 hover:bg-white/50 dark:hover:bg-gray-800/50 transition-all">
+              <div class="font-medium text-gray-900 dark:text-gray-100">
+                {{ violation.type.replace('_', ' ').toUpperCase() }}
+              </div>
+              <div>
+                <span class="px-3 py-1 rounded-full text-sm font-semibold" [ngClass]="getSeverityColor(violation.severity)">
+                  {{ violation.severity }}
+                </span>
+              </div>
+              <div class="text-gray-600 dark:text-gray-400">{{ violation.location }}</div>
+              <div class="text-gray-600 dark:text-gray-400">{{ getRelativeTime(violation.timestamp) }}</div>
+              <div>
+                <span class="px-3 py-1 rounded-full text-sm font-semibold" [ngClass]="getStatusColor(violation.status)">
+                  {{ violation.status }}
+                </span>
+              </div>
+              <div class="flex gap-2">
+                <app-glass-button
+                  *ngIf="violation.status === 'active'"
+                  variant="secondary"
+                  size="sm"
+                  (clicked)="acknowledgeViolation(violation.id)"
+                >
+                  Acknowledge
+                </app-glass-button>
+                <app-glass-button
+                  *ngIf="violation.status === 'acknowledged'"
+                  variant="primary"
+                  size="sm"
+                  (clicked)="resolveViolation(violation.id)"
+                >
+                  Resolve
+                </app-glass-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+
+    <!-- Environment Tab -->
+    <div *ngIf="selectedTab === 'environment'" class="space-y-6">
+      <app-glass-card customClass="p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Environment Monitoring</h3>
+          <div class="flex gap-6">
+            <div class="text-center">
+              <div class="text-sm text-gray-600 dark:text-gray-400">Total Alerts</div>
+              <div class="text-2xl font-bold text-primary-600 dark:text-primary-400">{{ environmentMetrics?.totalAlerts || 0 }}</div>
+            </div>
+            <div class="text-center">
+              <div class="text-sm text-gray-600 dark:text-gray-400">Active Sensors</div>
+              <div class="text-2xl font-bold text-green-600 dark:text-green-400">{{ getActiveSensorsCount() }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sensors Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+          <app-glass-card *ngFor="let sensor of environmentSensors" customClass="p-4">
+            <div class="flex justify-between items-start mb-3">
+              <h4 class="font-semibold text-gray-900 dark:text-gray-100">{{ sensor.name }}</h4>
+              <span class="px-2 py-1 rounded-full text-xs font-semibold" [class]="sensor.status === 'online' ? 'bg-green-100 text-green-600 dark:bg-green-900/20 dark:text-green-400' : 'bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400'">
+                {{ sensor.status }}
+              </span>
+            </div>
+            <div class="mb-3">
+              <div class="text-3xl font-bold text-primary-600 dark:text-primary-400">
+                {{ formatNumber(sensor.lastReading, 1) }}
+                <span class="text-lg text-gray-600 dark:text-gray-400">{{ sensor.unit }}</span>
+              </div>
+            </div>
+            <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+              <span>{{ sensor.location }}</span>
+              <span *ngIf="sensor.batteryLevel">🔋 {{ sensor.batteryLevel }}%</span>
+            </div>
+          </app-glass-card>
+        </div>
+
+        <!-- Environment Alerts -->
+        <div>
+          <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Environment Alerts</h4>
+          <div class="space-y-3">
+            <div *ngFor="let alert of getFilteredEnvironmentAlerts()" class="flex items-center gap-4 p-4 glass rounded-lg hover:bg-white/50 dark:hover:bg-gray-800/50 transition-all">
+              <div class="text-2xl">🌡️</div>
+              <div class="flex-1">
+                <div class="font-medium text-gray-900 dark:text-gray-100">{{ alert.description }}</div>
+                <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                  <span>{{ alert.location }}</span>
+                  <span class="mx-2">•</span>
+                  <span>{{ getRelativeTime(alert.timestamp) }}</span>
+                </div>
+              </div>
+              <span class="px-3 py-1 rounded-full text-sm font-semibold" [ngClass]="getSeverityColor(alert.severity)">
+                {{ alert.severity }}
+              </span>
+              <div class="flex gap-2">
+                <app-glass-button
+                  *ngIf="alert.status === 'active'"
+                  variant="secondary"
+                  size="sm"
+                  (clicked)="acknowledgeEnvironmentAlert(alert.id)"
+                >
+                  Acknowledge
+                </app-glass-button>
+                <app-glass-button
+                  *ngIf="alert.status === 'acknowledged'"
+                  variant="primary"
+                  size="sm"
+                  (clicked)="resolveEnvironmentAlert(alert.id)"
+                >
+                  Resolve
+                </app-glass-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+
+    <!-- Equipment Tab -->
+    <div *ngIf="selectedTab === 'equipment'" class="space-y-6">
+      <app-glass-card customClass="p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Equipment Monitoring</h3>
+          <div class="flex gap-6">
+            <div class="text-center">
+              <div class="text-sm text-gray-600 dark:text-gray-400">Total Equipment</div>
+              <div class="text-2xl font-bold text-primary-600 dark:text-primary-400">{{ equipmentMetrics?.totalEquipment || 0 }}</div>
+            </div>
+            <div class="text-center">
+              <div class="text-sm text-gray-600 dark:text-gray-400">Maintenance Due</div>
+              <div class="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{{ equipmentMetrics?.maintenanceDue || 0 }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Equipment Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+          <app-glass-card *ngFor="let eq of equipment" customClass="p-4">
+            <div class="flex justify-between items-start mb-3">
+              <h4 class="font-semibold text-gray-900 dark:text-gray-100">{{ eq.name }}</h4>
+              <span class="px-2 py-1 rounded-full text-xs font-semibold" [class]="eq.status === 'operational' ? 'bg-green-100 text-green-600 dark:bg-green-900/20 dark:text-green-400' : 'bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400'">
+                {{ eq.status }}
+              </span>
+            </div>
+            <div class="mb-4">
+              <div class="text-3xl font-bold mb-1" [class]="getSafetyScoreColor(eq.healthScore)">
+                {{ formatNumber(eq.healthScore, 1) }}%
+              </div>
+              <div class="text-sm text-gray-600 dark:text-gray-400">Health Score</div>
+            </div>
+            <div class="space-y-2 mb-4">
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-600 dark:text-gray-400">Efficiency:</span>
+                <span class="font-semibold text-gray-900 dark:text-gray-100">{{ formatNumber(eq.performance.efficiency, 1) }}%</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-600 dark:text-gray-400">Throughput:</span>
+                <span class="font-semibold text-gray-900 dark:text-gray-100">{{ formatNumber(eq.performance.throughput, 0) }}/h</span>
+              </div>
+            </div>
+            <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+              <span>{{ eq.location }}</span>
+              <span>{{ eq.type.replace('_', ' ').toUpperCase() }}</span>
+            </div>
+          </app-glass-card>
+        </div>
+
+        <!-- Equipment Alerts -->
+        <div>
+          <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Equipment Alerts</h4>
+          <div class="space-y-3">
+            <div *ngFor="let alert of getFilteredEquipmentAlerts()" class="flex items-center gap-4 p-4 glass rounded-lg hover:bg-white/50 dark:hover:bg-gray-800/50 transition-all">
+              <div class="text-2xl">⚙️</div>
+              <div class="flex-1">
+                <div class="font-medium text-gray-900 dark:text-gray-100">{{ alert.description }}</div>
+                <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                  <span>{{ alert.equipmentName }}</span>
+                  <span class="mx-2">•</span>
+                  <span>{{ getRelativeTime(alert.timestamp) }}</span>
+                </div>
+              </div>
+              <span class="px-3 py-1 rounded-full text-sm font-semibold" [ngClass]="getSeverityColor(alert.severity)">
+                {{ alert.severity }}
+              </span>
+              <div class="flex gap-2">
+                <app-glass-button
+                  *ngIf="alert.status === 'active'"
+                  variant="secondary"
+                  size="sm"
+                  (clicked)="acknowledgeEquipmentAlert(alert.id)"
+                >
+                  Acknowledge
+                </app-glass-button>
+                <app-glass-button
+                  *ngIf="alert.status === 'acknowledged'"
+                  variant="primary"
+                  size="sm"
+                  (clicked)="resolveEquipmentAlert(alert.id)"
+                >
+                  Resolve
+                </app-glass-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+
+    <!-- AI Models Tab -->
+    <div *ngIf="selectedTab === 'ai-models'" class="space-y-6">
+      <app-glass-card customClass="p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">AI Model Management</h3>
+          <div class="flex gap-6">
+            <div class="text-center">
+              <div class="text-sm text-gray-600 dark:text-gray-400">Total Models</div>
+              <div class="text-2xl font-bold text-primary-600 dark:text-primary-400">{{ aiModelMetrics?.totalModels || 0 }}</div>
+            </div>
+            <div class="text-center">
+              <div class="text-sm text-gray-600 dark:text-gray-400">Active Models</div>
+              <div class="text-2xl font-bold text-green-600 dark:text-green-400">{{ aiModelMetrics?.activeModels || 0 }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <app-glass-card *ngFor="let model of aiModels" customClass="p-4">
+            <div class="flex justify-between items-start mb-3">
+              <h4 class="font-semibold text-gray-900 dark:text-gray-100">{{ model.name }}</h4>
+              <span class="px-2 py-1 rounded-full text-xs font-semibold" [class]="model.status === 'active' ? 'bg-green-100 text-green-600 dark:bg-green-900/20 dark:text-green-400' : 'bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400'">
+                {{ model.status }}
+              </span>
+            </div>
+            <div class="mb-4">
+              <div class="font-semibold text-primary-600 dark:text-primary-400 mb-1">
+                {{ model.framework }} v{{ model.version }}
+              </div>
+              <div class="text-sm text-gray-600 dark:text-gray-400">
+                {{ model.purpose.replace('_', ' ').toUpperCase() }}
+              </div>
+            </div>
+            <div class="space-y-2 mb-4">
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-600 dark:text-gray-400">Accuracy:</span>
+                <span class="font-semibold text-gray-900 dark:text-gray-100">{{ formatNumber(model.accuracy, 1) }}%</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-600 dark:text-gray-400">Inference Time:</span>
+                <span class="font-semibold text-gray-900 dark:text-gray-100">{{ formatNumber(model.performance.inferenceTime, 1) }}ms</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-600 dark:text-gray-400">Throughput:</span>
+                <span class="font-semibold text-gray-900 dark:text-gray-100">{{ formatNumber(model.performance.throughput, 1) }}/s</span>
+              </div>
+            </div>
+            <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+              <span>{{ formatNumber(model.size, 1) }} MB</span>
+              <span>{{ getRelativeTime(model.lastTrained) }}</span>
+            </div>
+          </app-glass-card>
+        </div>
+      </app-glass-card>
+    </div>
+
+    <!-- Reports Tab -->
+    <div *ngIf="selectedTab === 'reports'" class="space-y-6">
+      <app-glass-card customClass="p-12 text-center">
+        <div class="text-6xl mb-4">📋</div>
+        <h4 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">No Reports Generated</h4>
+        <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
+          Generate comprehensive safety reports including worker safety violations,
+          environment alerts, equipment status, and AI model performance.
+        </p>
+        <app-glass-button variant="primary" (clicked)="generateSafetyReport()">
+          Generate First Report
+        </app-glass-button>
+      </app-glass-card>
+    </div>
+  </div>
+</div>

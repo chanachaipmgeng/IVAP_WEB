@@ -1,0 +1,289 @@
+<div class="swiper-gallery-demo-container">
+  <!-- Header -->
+  <div class="demo-header">
+    <h1 class="demo-title">
+      <i class="fas fa-images"></i>
+      SwiperJS Gallery Demo
+    </h1>
+    <p class="demo-description">
+      ทดสอบ SwiperJS Gallery Component ที่มีฟีเจอร์ครบถ้วน
+    </p>
+  </div>
+
+  <!-- Demo Controls -->
+  <div class="demo-controls">
+    <app-glass-card>
+      <div class="controls-section">
+        <h3>การตั้งค่า Gallery</h3>
+
+        <div class="control-group">
+          <label>Effect:</label>
+          <select [(ngModel)]="selectedEffect" (change)="updateConfig()">
+            <option *ngFor="let option of getEffectOptions()" [value]="option.value">
+              {{ option.label }}
+            </option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>Slides Per View:</label>
+          <input
+            type="range"
+            min="1"
+            max="6"
+            [(ngModel)]="slidesPerView"
+            (change)="updateConfig()"
+            class="range-input">
+          <span class="range-value">{{ slidesPerView }}</span>
+        </div>
+
+        <div class="control-group">
+          <label>Space Between:</label>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            [(ngModel)]="spaceBetween"
+            (change)="updateConfig()"
+            class="range-input">
+          <span class="range-value">{{ spaceBetween }}px</span>
+        </div>
+
+        <div class="control-group">
+          <label>Height:</label>
+          <select [(ngModel)]="height">
+            <option value="300px">300px</option>
+            <option value="400px">400px</option>
+            <option value="500px">500px</option>
+            <option value="600px">600px</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="loop" (change)="updateConfig()">
+            Loop
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="navigation" (change)="updateConfig()">
+            Navigation
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="pagination" (change)="updateConfig()">
+            Pagination
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>Pagination Type:</label>
+          <select [(ngModel)]="paginationType" (change)="updateConfig()">
+            <option *ngFor="let option of getPaginationTypeOptions()" [value]="option.value">
+              {{ option.label }}
+            </option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="autoplay" (change)="updateConfig()">
+            Autoplay
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>Autoplay Delay:</label>
+          <input
+            type="range"
+            min="1000"
+            max="10000"
+            step="500"
+            [(ngModel)]="autoplayDelay"
+            (change)="updateConfig()"
+            class="range-input">
+          <span class="range-value">{{ autoplayDelay }}ms</span>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="thumbs" (change)="updateConfig()">
+            Thumbs
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="zoom" (change)="updateConfig()">
+            Zoom
+          </label>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Demo Actions -->
+  <div class="demo-actions">
+    <app-glass-card>
+      <div class="actions-section">
+        <h3>การจัดการ Slides</h3>
+
+        <div class="action-buttons">
+          <app-glass-button
+            variant="primary"
+            (click)="loadNatureSlides()">
+            <i class="fas fa-tree"></i>
+            ภาพธรรมชาติ
+          </app-glass-button>
+
+          <app-glass-button
+            variant="secondary"
+            (click)="loadCitySlides()">
+            <i class="fas fa-city"></i>
+            ภาพเมือง
+          </app-glass-button>
+
+          <app-glass-button
+            variant="secondary"
+            (click)="loadMixedSlides()">
+            <i class="fas fa-random"></i>
+            ภาพผสม
+          </app-glass-button>
+        </div>
+
+        <div class="action-buttons">
+          <app-glass-button
+            variant="primary"
+            (click)="addNewSlide()">
+            <i class="fas fa-plus"></i>
+            เพิ่ม Slide
+          </app-glass-button>
+
+          <app-glass-button
+            variant="secondary"
+            (click)="removeLastSlide()">
+            <i class="fas fa-minus"></i>
+            ลบ Slide สุดท้าย
+          </app-glass-button>
+
+          <app-glass-button
+            variant="danger"
+            (click)="clearAllSlides()">
+            <i class="fas fa-trash"></i>
+            ลบทั้งหมด
+          </app-glass-button>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Swiper Gallery Demo -->
+  <div class="gallery-demo">
+    <app-glass-card>
+      <div class="gallery-section">
+        <h3>SwiperJS Gallery</h3>
+
+        <app-swiper-gallery
+          [slides]="slides"
+          [config]="config"
+          [height]="height"
+          (slideChange)="onSlideChange($event)"
+          (slideClick)="onSlideClick($event)"
+          (galleryReady)="onGalleryReady($event)">
+        </app-swiper-gallery>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Statistics -->
+  <div class="demo-stats">
+    <app-glass-card>
+      <div class="stats-section">
+        <h3>สถิติ Gallery</h3>
+
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-value">{{ getGalleryStats().totalSlides }}</div>
+            <div class="stat-label">Slides ทั้งหมด</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getGalleryStats().currentSlide }}</div>
+            <div class="stat-label">Slide ปัจจุบัน</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getGalleryStats().imageSlides }}</div>
+            <div class="stat-label">ภาพ</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getGalleryStats().videoSlides }}</div>
+            <div class="stat-label">วิดีโอ</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getGalleryStats().contentSlides }}</div>
+            <div class="stat-label">เนื้อหา</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getGalleryStats().effect }}</div>
+            <div class="stat-label">Effect</div>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Features Overview -->
+  <div class="features-overview">
+    <app-glass-card>
+      <div class="features-section">
+        <h3>ฟีเจอร์ SwiperJS Gallery</h3>
+
+        <div class="features-grid">
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Multiple Effects</h4>
+            <p>รองรับ Effects หลายแบบ</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Touch Support</h4>
+            <p>รองรับการใช้งานบนมือถือ</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Navigation</h4>
+            <p>ปุ่มนำทางและ Pagination</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Autoplay</h4>
+            <p>เล่นอัตโนมัติได้</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Thumbs</h4>
+            <p>แสดง Thumbnails</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Zoom</h4>
+            <p>ซูมรูปภาพได้</p>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+</div>

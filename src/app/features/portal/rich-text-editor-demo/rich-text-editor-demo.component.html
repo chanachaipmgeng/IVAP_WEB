@@ -1,0 +1,258 @@
+<div class="rich-text-editor-demo-container">
+  <!-- Header -->
+  <div class="demo-header">
+    <h1 class="demo-title">
+      <i class="fas fa-edit"></i>
+      Rich Text Editor Demo
+    </h1>
+    <p class="demo-description">
+      ทดสอบ Rich Text Editor Component สำหรับการแก้ไขเนื้อหา
+    </p>
+  </div>
+
+  <!-- Demo Controls -->
+  <div class="demo-controls">
+    <app-glass-card>
+      <div class="controls-section">
+        <h3>การตั้งค่า Editor</h3>
+
+        <div class="control-group">
+          <label>Theme:</label>
+          <select [(ngModel)]="selectedTheme" (change)="updateConfig()">
+            <option *ngFor="let option of getThemeOptions()" [value]="option.value">
+              {{ option.label }}
+            </option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>Placeholder:</label>
+          <input
+            type="text"
+            [(ngModel)]="placeholder"
+            (change)="updateConfig()"
+            class="text-input">
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="readOnly" (change)="updateConfig()">
+            Read Only
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="disabled" (change)="updateConfig()">
+            Disabled
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="loading" (change)="updateConfig()">
+            Loading
+          </label>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Demo Actions -->
+  <div class="demo-actions">
+    <app-glass-card>
+      <div class="actions-section">
+        <h3>ตัวอย่างเนื้อหา</h3>
+
+        <div class="action-buttons">
+          <app-glass-button
+            variant="primary"
+            (click)="loadSampleContent()">
+            <i class="fas fa-file-alt"></i>
+            เนื้อหาตัวอย่าง
+          </app-glass-button>
+
+          <app-glass-button
+            variant="secondary"
+            (click)="loadNewsContent()">
+            <i class="fas fa-newspaper"></i>
+            ข่าวสาร
+          </app-glass-button>
+
+          <app-glass-button
+            variant="secondary"
+            (click)="loadProductContent()">
+            <i class="fas fa-box"></i>
+            สินค้า
+          </app-glass-button>
+
+          <app-glass-button
+            variant="secondary"
+            (click)="loadDocumentContent()">
+            <i class="fas fa-file-text"></i>
+            เอกสาร
+          </app-glass-button>
+        </div>
+
+        <div class="action-buttons">
+          <app-glass-button
+            variant="primary"
+            (click)="onSubmit()">
+            <i class="fas fa-save"></i>
+            บันทึก
+          </app-glass-button>
+
+          <app-glass-button
+            variant="secondary"
+            (click)="clearContent()">
+            <i class="fas fa-trash"></i>
+            ล้างข้อมูล
+          </app-glass-button>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Rich Text Editor Demo -->
+  <div class="editor-demo">
+    <app-glass-card>
+      <div class="editor-section">
+        <h3>Rich Text Editor</h3>
+
+        <form [formGroup]="editorForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="title">หัวข้อ:</label>
+            <input
+              type="text"
+              id="title"
+              formControlName="title"
+              class="form-input"
+              placeholder="กรอกหัวข้อ">
+          </div>
+
+          <div class="form-group">
+            <label for="description">คำอธิบาย:</label>
+            <input
+              type="text"
+              id="description"
+              formControlName="description"
+              class="form-input"
+              placeholder="กรอกคำอธิบาย">
+          </div>
+
+          <div class="form-group">
+            <label for="content">เนื้อหา:</label>
+            <app-rich-text-editor
+              formControlName="content"
+              [config]="config"
+              [disabled]="disabled"
+              [loading]="loading"
+              (contentChange)="onContentChange($event)"
+              (selectionChange)="onSelectionChange($event)"
+              (textChange)="onTextChange($event)"
+              (editorReady)="onEditorReady($event)">
+            </app-rich-text-editor>
+          </div>
+        </form>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Statistics -->
+  <div class="demo-stats">
+    <app-glass-card>
+      <div class="stats-section">
+        <h3>สถิติ Editor</h3>
+
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-value">{{ getEditorStats().characterCount }}</div>
+            <div class="stat-label">ตัวอักษร</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getEditorStats().wordCount }}</div>
+            <div class="stat-label">คำ</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getEditorStats().paragraphCount }}</div>
+            <div class="stat-label">ย่อหน้า</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getEditorStats().headingCount }}</div>
+            <div class="stat-label">หัวข้อ</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getEditorStats().listCount }}</div>
+            <div class="stat-label">รายการ</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getEditorStats().imageCount }}</div>
+            <div class="stat-label">รูปภาพ</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getEditorStats().linkCount }}</div>
+            <div class="stat-label">ลิงก์</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getEditorStats().tableCount }}</div>
+            <div class="stat-label">ตาราง</div>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Features Overview -->
+  <div class="features-overview">
+    <app-glass-card>
+      <div class="features-section">
+        <h3>ฟีเจอร์ Rich Text Editor</h3>
+
+        <div class="features-grid">
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Rich Text Formatting</h4>
+            <p>จัดรูปแบบข้อความได้หลากหลาย</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Image & Media</h4>
+            <p>แทรกรูปภาพและสื่อได้</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Tables & Lists</h4>
+            <p>สร้างตารางและรายการได้</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Undo/Redo</h4>
+            <p>ยกเลิกและทำซ้ำได้</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Keyboard Shortcuts</h4>
+            <p>รองรับคีย์บอร์ดลัด</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Form Integration</h4>
+            <p>ทำงานร่วมกับ Angular Forms</p>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<app-page-layout
+  [title]="'pages.backupRestore.title' | translate"
+  [description]="'pages.backupRestore.description' | translate"
+  icon="💾"
+  [actions]="pageActions()">
+  
+  <!-- Statistics Cards -->
+  <app-statistics-grid [stats]="statisticsCards()" [columns]="4" />
+
+  <!-- Backups Table -->
+  <app-data-table
+    [columns]="columns"
+    [data]="backupService.getBackups()()"
+    [actions]="actions"
+    [searchable]="false"
+  />
+
+  <!-- Schedule Modal -->
+  <app-modal
+    [isOpen]="showScheduleModal()"
+    [title]="'pages.backupRestore.scheduleBackup' | translate"
+    (closed)="closeScheduleModal()"
+  >
+    <div class="space-y-4">
+      <!-- Schedule form content -->
+      <p class="text-gray-600 dark:text-gray-400">{{ 'pages.backupRestore.scheduleBackupConfiguration' | translate }}</p>
+    </div>
+    <div slot="footer">
+      <app-glass-button variant="secondary" (clicked)="closeScheduleModal()">
+        {{ 'common.cancel' | translate }}
+      </app-glass-button>
+      <app-glass-button variant="primary" (clicked)="closeScheduleModal()">
+        {{ 'common.save' | translate }}
+      </app-glass-button>
+    </div>
+  </app-modal>
+</app-page-layout>

@@ -1,0 +1,786 @@
+<app-page-layout
+  [title]="'pages.companies.title' | translate"
+  [description]="'pages.companies.description' | translate"
+  icon="🏢"
+  [actions]="pageActions()">
+  
+  <!-- Statistics Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div class="glass-card p-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-600 dark:text-gray-400">{{ 'pages.companies.totalCompanies' | translate }}</p>
+          <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ totalRecords() }}</p>
+        </div>
+        <div class="text-3xl">🏢</div>
+      </div>
+    </div>
+    <div class="glass-card p-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-600 dark:text-gray-400">{{ 'pages.companies.activeCompanies' | translate }}</p>
+          <p class="text-2xl font-bold text-green-600">{{ activeCompaniesCount() }}</p>
+        </div>
+        <div class="text-3xl">✅</div>
+      </div>
+    </div>
+    <div class="glass-card p-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-600 dark:text-gray-400">{{ 'pages.companies.pendingCompanies' | translate }}</p>
+          <p class="text-2xl font-bold text-yellow-600">{{ pendingCompaniesCount() }}</p>
+        </div>
+        <div class="text-3xl">⏳</div>
+      </div>
+    </div>
+    <div class="glass-card p-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-600 dark:text-gray-400">{{ 'pages.companies.thisPage' | translate }}</p>
+          <p class="text-2xl font-bold text-blue-600">{{ companies().length }}</p>
+        </div>
+        <div class="text-3xl">📄</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <app-filter-section
+    [fields]="filterFields()"
+    [columns]="2"
+    (filterChange)="onFilterChange($event)"
+  />
+
+  <!-- Bulk Actions Toolbar -->
+  <div *ngIf="selectedCompanies().length > 0" class="glass-card p-4 mb-4" role="toolbar" [attr.aria-label]="'pages.companies.bulkActions' | translate">
+    <div class="flex items-center justify-between mb-2">
+      <div class="flex items-center gap-4">
+        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+          {{ 'pages.companies.selectedCount' | translate }}: <strong>{{ selectedCompanies().length }}</strong>
+        </span>
+        <div class="flex gap-2">
+          <app-glass-button 
+            variant="primary" 
+            size="sm" 
+            (clicked)="bulkActivate()"
+            [disabled]="bulkOperationInProgress()"
+            [attr.aria-label]="'pages.companies.bulkActivate' | translate">
+            {{ 'pages.companies.bulkActivate' | translate }}
+          </app-glass-button>
+          <app-glass-button 
+            variant="secondary" 
+            size="sm" 
+            (clicked)="bulkDeactivate()"
+            [disabled]="bulkOperationInProgress()"
+            [attr.aria-label]="'pages.companies.bulkDeactivate' | translate">
+            {{ 'pages.companies.bulkDeactivate' | translate }}
+          </app-glass-button>
+          <app-glass-button 
+            variant="danger" 
+            size="sm" 
+            (clicked)="bulkDelete()"
+            [disabled]="bulkOperationInProgress()"
+            [attr.aria-label]="'pages.companies.bulkDelete' | translate">
+            {{ 'pages.companies.bulkDelete' | translate }}
+          </app-glass-button>
+        </div>
+      </div>
+      <app-glass-button 
+        variant="secondary" 
+        size="sm" 
+        (clicked)="clearSelection()"
+        [disabled]="bulkOperationInProgress()"
+        [attr.aria-label]="'pages.companies.clearSelection' | translate">
+        {{ 'pages.companies.clearSelection' | translate }}
+      </app-glass-button>
+    </div>
+    <!-- Bulk Operation Progress Bar -->
+    <div *ngIf="bulkOperationInProgress()" class="mt-2">
+      <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+        <div 
+          class="bg-blue-600 h-2 rounded-full transition-all duration-300"
+          [style.width.%]="bulkOperationProgress()"
+          [attr.aria-valuenow]="bulkOperationProgress()"
+          [attr.aria-valuemin]="0"
+          [attr.aria-valuemax]="100"
+          role="progressbar"
+          [attr.aria-label]="'pages.companies.processing' | translate"
+        ></div>
+      </div>
+      <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+        {{ bulkOperationProgress() }}% {{ 'pages.companies.processing' | translate }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Companies Table -->
+  <app-data-table
+    [columns]="columns"
+    [data]="companies()"
+    [actions]="actions"
+    [selectable]="true"
+    [getRowId]="getRowId"
+    [loading]="companyService.loading()"
+    [enableColumnFilters]="true"
+    [enableMultiSort]="true"
+    [emptyText]="'pages.companies.noCompanies' | translate"
+    [emptyIcon]="'🏢'"
+    (sorted)="onSort($event)"
+    (selectionChange)="onSelectionChange($event)"
+    (filterChange)="onColumnFilterChange($event)">
+    <div actions>
+      <app-glass-button variant="secondary" (clicked)="exportCompanies()">
+        {{ 'pages.companies.export' | translate }}
+      </app-glass-button>
+    </div>
+  </app-data-table>
+
+  <!-- Pagination Controls -->
+  <div class="flex items-center justify-between mt-4 text-gray-600 dark:text-gray-400">
+    <div class="text-sm">
+      {{ 'pages.companies.showing' | translate }} {{ (currentPage() - 1) * pageSize() + 1 }} - {{ currentPage() * pageSize() > totalRecords() ? totalRecords() : currentPage() * pageSize() }} {{ 'pages.companies.of' | translate }} {{ totalRecords() }} {{ 'pages.companies.records' | translate }}
+    </div>
+    <div class="flex items-center gap-2">
+      <app-glass-button [disabled]="currentPage() === 1" (clicked)="onPageChange(currentPage() - 1)">
+        {{ 'pages.companies.previous' | translate }}
+      </app-glass-button>
+      <span class="font-semibold">{{ 'pages.companies.page' | translate }} {{ currentPage() }} {{ 'pages.companies.of' | translate }} {{ totalPages() }}</span>
+      <app-glass-button [disabled]="currentPage() === totalPages()" (clicked)="onPageChange(currentPage() + 1)">
+        {{ 'pages.companies.next' | translate }}
+      </app-glass-button>
+    </div>
+  </div>
+
+  <!-- Add/Edit Company Modal -->
+  <app-modal
+    [isOpen]="showModal()"
+    [title]="(editingCompany() ? ('pages.companies.editCompany' | translate) : ('pages.companies.addCompany' | translate))"
+    [loading]="saving()"
+    [config]="{ size: 'xl', scrollable: true, centered: true, animation: true }"
+    (closed)="closeModal()"
+  >
+    <div class="modal-form-container">
+      <!-- Basic Information Section -->
+      <div class="form-section">
+        <h3 class="form-section-title">
+          {{ 'pages.companies.basicInformation' | translate }}
+        </h3>
+        <div class="form-grid">
+          <!-- Company Name - Full Width -->
+          <div class="form-group form-group-full">
+            <label class="form-label">
+              {{ 'pages.companies.companyName' | translate }}
+              <span class="required-indicator">*</span>
+            </label>
+            <input
+              [(ngModel)]="formData.name"
+              type="text"
+              class="glass-input w-full"
+              [placeholder]="'pages.companies.companyNamePlaceholder' | translate"
+              required
+              [attr.aria-label]="'pages.companies.companyName' | translate"
+              [attr.aria-required]="true"
+            />
+          </div>
+
+          <!-- Company Logo - Full Width -->
+          <div class="form-group form-group-full">
+            <label class="form-label">
+              {{ 'pages.companies.companyLogo' | translate }}
+            </label>
+            <div class="flex items-center gap-4">
+              <div class="relative w-24 h-24 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 flex items-center justify-center">
+                <img appImageOptimization *ngIf="formData.picture" [ngSrc]="getImageUrl(formData.picture)" alt="Company Logo" class="w-full h-full object-cover" loading="lazy">
+                <span *ngIf="!formData.picture" class="text-2xl">🏢</span>
+                <div *ngIf="uploadingImage()" class="absolute inset-0 bg-black/50 flex items-center justify-center">
+                  <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+                </div>
+              </div>
+              <div class="flex-1">
+                <input
+                  type="file"
+                  (change)="onFileSelected($event)"
+                  accept="image/*"
+                  class="block w-full text-sm text-gray-500
+                    file:mr-4 file:py-2 file:px-4
+                    file:rounded-full file:border-0
+                    file:text-sm file:font-semibold
+                    file:bg-blue-50 file:text-blue-700
+                    hover:file:bg-blue-100
+                    dark:file:bg-blue-900/30 dark:file:text-blue-400"
+                  [attr.aria-label]="'pages.companies.companyLogo' | translate"
+                  [disabled]="uploadingImage()"
+                />
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                  PNG, JPG up to 5MB
+                </p>
+                <!-- Upload Progress Bar -->
+                <div *ngIf="uploadingImage()" class="mt-2">
+                  <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+                    <div 
+                      class="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                      [style.width.%]="uploadProgress()"
+                      [attr.aria-valuenow]="uploadProgress()"
+                      [attr.aria-valuemin]="0"
+                      [attr.aria-valuemax]="100"
+                      role="progressbar"
+                    ></div>
+                  </div>
+                  <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    {{ uploadProgress() }}% {{ 'pages.companies.uploading' | translate }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Company Code and Owner Name - Two Columns -->
+          <div class="form-group">
+            <label class="form-label">
+              {{ 'pages.companies.companyCode' | translate }}
+              <span class="required-indicator">*</span>
+            </label>
+            <input
+              [(ngModel)]="formData.code"
+              type="text"
+              class="glass-input w-full"
+              [placeholder]="'pages.companies.companyCodePlaceholder' | translate"
+              required
+              [attr.aria-label]="'pages.companies.companyCode' | translate"
+              [attr.aria-required]="true"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              {{ 'pages.companies.ownerName' | translate }}
+              <span class="required-indicator">*</span>
+            </label>
+            <input
+              [(ngModel)]="formData.ownerName"
+              type="text"
+              class="glass-input w-full"
+              [placeholder]="'pages.companies.ownerNamePlaceholder' | translate"
+              required
+              [attr.aria-label]="'pages.companies.ownerName' | translate"
+              [attr.aria-required]="true"
+            />
+          </div>
+
+          <!-- Contact - Full Width -->
+          <div class="form-group form-group-full">
+            <label class="form-label">
+              {{ 'pages.companies.contact' | translate }}
+              <span class="required-indicator">*</span>
+            </label>
+            <input
+              [(ngModel)]="formData.contact"
+              type="text"
+              class="glass-input w-full"
+              [placeholder]="'pages.companies.contactPlaceholder' | translate"
+              required
+              [attr.aria-label]="'pages.companies.contact' | translate"
+              [attr.aria-required]="true"
+            />
+            <p class="form-hint">{{ 'pages.companies.contactHint' | translate }}</p>
+          </div>
+
+          <!-- Description - Full Width -->
+          <div class="form-group form-group-full">
+            <label class="form-label">
+              {{ 'pages.companies.description' | translate }}
+            </label>
+            <textarea
+              [(ngModel)]="formData.description"
+              class="glass-input w-full"
+              rows="3"
+              [placeholder]="'pages.companies.descriptionPlaceholder' | translate"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Location Information Section -->
+      <div class="form-section">
+        <h3 class="form-section-title">
+          {{ 'pages.companies.locationInformation' | translate }}
+        </h3>
+        <div class="form-grid">
+          <!-- Address - Full Width -->
+          <div class="form-group form-group-full">
+            <label class="form-label">
+              {{ 'pages.companies.address' | translate }}
+              <span class="required-indicator">*</span>
+            </label>
+            <textarea
+              [(ngModel)]="formData.address"
+              class="glass-input w-full"
+              rows="2"
+              [placeholder]="'pages.companies.addressPlaceholder' | translate"
+              required
+            ></textarea>
+          </div>
+
+          <!-- Latitude and Longitude - Two Columns -->
+          <div class="form-group">
+            <label class="form-label">
+              {{ 'pages.companies.latitude' | translate }}
+              <span class="required-indicator">*</span>
+            </label>
+            <input
+              [(ngModel)]="formData.latitude"
+              type="number"
+              step="any"
+              min="-90"
+              max="90"
+              class="glass-input w-full"
+              [placeholder]="'pages.companies.latitudePlaceholder' | translate"
+              [attr.aria-label]="'pages.companies.latitude' | translate"
+              [attr.aria-required]="true"
+              [attr.aria-describedby]="'latitude-hint'"
+            />
+            <p id="latitude-hint" class="form-hint text-xs text-gray-500 dark:text-gray-400 mt-1">
+              {{ 'pages.companies.latitudeHint' | translate }} (-90 to 90)
+            </p>
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              {{ 'pages.companies.longitude' | translate }}
+              <span class="required-indicator">*</span>
+            </label>
+            <input
+              [(ngModel)]="formData.longitude"
+              type="number"
+              step="any"
+              min="-180"
+              max="180"
+              class="glass-input w-full"
+              [placeholder]="'pages.companies.longitudePlaceholder' | translate"
+              required
+              [attr.aria-label]="'pages.companies.longitude' | translate"
+              [attr.aria-required]="true"
+              [attr.aria-describedby]="'longitude-hint'"
+            />
+            <p id="longitude-hint" class="form-hint text-xs text-gray-500 dark:text-gray-400 mt-1">
+              {{ 'pages.companies.longitudeHint' | translate }} (-180 to 180)
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Status Section -->
+      <div class="form-section">
+        <h3 class="form-section-title">
+          {{ 'pages.companies.statusInformation' | translate }}
+        </h3>
+        <div class="form-grid">
+          <!-- Status - Full Width -->
+          <div class="form-group form-group-full">
+            <label class="form-label">
+              {{ 'pages.companies.status' | translate }}
+            </label>
+            <select [(ngModel)]="formData.status" class="glass-input w-full">
+              <option value="pending">{{ 'pages.companies.pending' | translate }}</option>
+              <option value="public">{{ 'pages.companies.public' | translate }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div slot="footer" class="modal-footer-actions">
+      <app-glass-button variant="secondary" (clicked)="closeModal()">
+        {{ 'common.cancel' | translate }}
+      </app-glass-button>
+      <app-glass-button variant="primary" [loading]="saving()" (clicked)="saveCompany()">
+        {{ 'common.save' | translate }}
+      </app-glass-button>
+    </div>
+  </app-modal>
+
+  <!-- Settings Modal -->
+  <app-modal
+    [isOpen]="showSettingsModal()"
+    [title]="settingsModalTitle()"
+    [loading]="saving()"
+    [config]="{ size: 'xl', scrollable: true, centered: true, animation: true }"
+    (closed)="closeSettingsModal()"
+  >
+    <div class="modal-form-container">
+      <!-- Subscription & Limits Section -->
+      <div class="form-section">
+        <h3 class="form-section-title">
+          {{ 'pages.companies.subscriptionAndLimits' | translate }}
+        </h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">
+              {{ 'pages.companies.subscriptionType' | translate }}
+            </label>
+            <select [(ngModel)]="settings.subscriptionType" class="glass-input w-full">
+              <option value="trial">{{ 'pages.companies.trial' | translate }}</option>
+              <option value="basic">{{ 'pages.companies.basic' | translate }}</option>
+              <option value="premium">{{ 'pages.companies.premium' | translate }}</option>
+              <option value="enterprise">{{ 'pages.companies.enterprise' | translate }}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              {{ 'pages.companies.maxUsers' | translate }}
+            </label>
+            <input
+              [(ngModel)]="settings.maxUsers"
+              type="number"
+              min="0"
+              class="glass-input w-full"
+              [placeholder]="'pages.companies.maxUsersPlaceholder' | translate"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              {{ 'pages.companies.maxDevices' | translate }}
+            </label>
+            <input
+              [(ngModel)]="settings.maxDevices"
+              type="number"
+              min="0"
+              class="glass-input w-full"
+              [placeholder]="'pages.companies.maxDevicesPlaceholder' | translate"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              {{ 'pages.companies.maxStorageGb' | translate }}
+            </label>
+            <input
+              [(ngModel)]="settings.maxStorageGb"
+              type="number"
+              min="0"
+              class="glass-input w-full"
+              [placeholder]="'pages.companies.maxStorageGbPlaceholder' | translate"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Features Section -->
+      <div class="form-section">
+        <h3 class="form-section-title">
+          {{ 'pages.companies.features' | translate }}
+        </h3>
+        <div class="form-grid">
+          <div class="form-group form-group-full">
+            <label class="form-label">
+              {{ 'pages.companies.enabledFeatures' | translate }}
+            </label>
+            <div class="flex flex-wrap gap-2">
+              <label *ngFor="let feature of availableFeatures" class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [checked]="isFeatureEnabled(feature)"
+                  (change)="toggleFeature(feature, $event)"
+                  class="glass-checkbox"
+                />
+                <span>{{ feature }}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- General Settings Section -->
+      <div class="form-section">
+        <h3 class="form-section-title">
+          {{ 'pages.companies.generalSettings' | translate }}
+        </h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">
+              {{ 'pages.companies.timezone' | translate }}
+            </label>
+            <select [(ngModel)]="settings.timezone" class="glass-input w-full">
+              <option value="UTC">UTC</option>
+              <option value="Asia/Bangkok">Asia/Bangkok</option>
+              <option value="America/New_York">America/New_York</option>
+              <option value="Europe/London">Europe/London</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              {{ 'pages.companies.language' | translate }}
+            </label>
+            <select [(ngModel)]="settings.language" class="glass-input w-full">
+              <option value="en">English</option>
+              <option value="th">ไทย</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              {{ 'pages.companies.dateFormat' | translate }}
+            </label>
+            <select [(ngModel)]="settings.dateFormat" class="glass-input w-full">
+              <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+              <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+              <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              {{ 'pages.companies.timeFormat' | translate }}
+            </label>
+            <select [(ngModel)]="settings.timeFormat" class="glass-input w-full">
+              <option value="24h">24 Hour</option>
+              <option value="12h">12 Hour</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notification Settings Section -->
+      <div class="form-section">
+        <h3 class="form-section-title">
+          {{ 'pages.companies.notificationSettings' | translate }}
+        </h3>
+        <div class="form-grid">
+          <div class="form-group form-group-full">
+            <div class="space-y-3">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [(ngModel)]="settings.notifications!.email"
+                  class="glass-checkbox"
+                />
+                <span>{{ 'pages.companies.emailNotifications' | translate }}</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [(ngModel)]="settings.notifications!.sms"
+                  class="glass-checkbox"
+                />
+                <span>{{ 'pages.companies.smsNotifications' | translate }}</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [(ngModel)]="settings.notifications!.push"
+                  class="glass-checkbox"
+                />
+                <span>{{ 'pages.companies.pushNotifications' | translate }}</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [(ngModel)]="settings.notifications!.webhook"
+                  class="glass-checkbox"
+                />
+                <span>{{ 'pages.companies.webhookNotifications' | translate }}</span>
+              </label>
+              <div *ngIf="settings.notifications?.webhook" class="form-group">
+                <label class="form-label">
+                  {{ 'pages.companies.webhookUrl' | translate }}
+                </label>
+                <input
+                  [(ngModel)]="settings.notifications!.webhookUrl"
+                  type="url"
+                  class="glass-input w-full"
+                  [placeholder]="'pages.companies.webhookUrlPlaceholder' | translate"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Security Settings Section -->
+      <div class="form-section">
+        <h3 class="form-section-title">
+          {{ 'pages.companies.securitySettings' | translate }}
+        </h3>
+        <div class="form-grid">
+          <div class="form-group form-group-full">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                [(ngModel)]="settings.security!.twoFactorRequired"
+                class="glass-checkbox"
+              />
+              <span>{{ 'pages.companies.twoFactorRequired' | translate }}</span>
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              {{ 'pages.companies.sessionTimeout' | translate }} (minutes)
+            </label>
+            <input
+              [(ngModel)]="settings.security!.sessionTimeout"
+              type="number"
+              min="5"
+              max="1440"
+              class="glass-input w-full"
+            />
+          </div>
+
+          <div class="form-group form-group-full">
+            <label class="form-label">
+              {{ 'pages.companies.passwordPolicy' | translate }}
+            </label>
+            <div class="space-y-2 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [(ngModel)]="settings.security!.passwordPolicy!.requireUppercase"
+                  class="glass-checkbox"
+                />
+                <span>{{ 'pages.companies.requireUppercase' | translate }}</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [(ngModel)]="settings.security!.passwordPolicy!.requireLowercase"
+                  class="glass-checkbox"
+                />
+                <span>{{ 'pages.companies.requireLowercase' | translate }}</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [(ngModel)]="settings.security!.passwordPolicy!.requireNumbers"
+                  class="glass-checkbox"
+                />
+                <span>{{ 'pages.companies.requireNumbers' | translate }}</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  [(ngModel)]="settings.security!.passwordPolicy!.requireSpecialChars"
+                  class="glass-checkbox"
+                />
+                <span>{{ 'pages.companies.requireSpecialChars' | translate }}</span>
+              </label>
+              <div class="form-group">
+                <label class="form-label">
+                  {{ 'pages.companies.minPasswordLength' | translate }}
+                </label>
+                <input
+                  [(ngModel)]="settings.security!.passwordPolicy!.minLength"
+                  type="number"
+                  min="4"
+                  max="128"
+                  class="glass-input w-full"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div slot="footer" class="modal-footer-actions">
+      <app-glass-button variant="secondary" (clicked)="closeSettingsModal()">
+        {{ 'common.cancel' | translate }}
+      </app-glass-button>
+      <app-glass-button variant="primary" [loading]="saving()" (clicked)="saveSettings()">
+        {{ 'common.save' | translate }}
+      </app-glass-button>
+    </div>
+  </app-modal>
+
+  <!-- Company Details Modal -->
+  <app-modal
+    [isOpen]="showDetailsModal()"
+    [title]="viewingCompany() ? (('pages.companies.companyDetails' | translate) + ' - ' + viewingCompany()!.name) : ('pages.companies.companyDetails' | translate)"
+    [config]="{ size: 'lg', scrollable: true, centered: true, animation: true }"
+    (closed)="closeDetailsModal()"
+  >
+    <div class="modal-form-container" *ngIf="viewingCompany()">
+      <div class="form-section">
+        <h3 class="form-section-title">
+          {{ 'pages.companies.basicInformation' | translate }}
+        </h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">{{ 'pages.companies.companyName' | translate }}</label>
+            <p class="form-value">{{ viewingCompany()!.name }}</p>
+          </div>
+          <div class="form-group">
+            <label class="form-label">{{ 'pages.companies.companyCode' | translate }}</label>
+            <p class="form-value">{{ viewingCompany()!.code }}</p>
+          </div>
+          <div class="form-group">
+            <label class="form-label">{{ 'pages.companies.ownerName' | translate }}</label>
+            <p class="form-value">{{ viewingCompany()!.ownerName || 'N/A' }}</p>
+          </div>
+          <div class="form-group">
+            <label class="form-label">{{ 'pages.companies.contact' | translate }}</label>
+            <p class="form-value">{{ viewingCompany()!.contact || 'N/A' }}</p>
+          </div>
+          <div class="form-group form-group-full">
+            <label class="form-label">{{ 'pages.companies.description' | translate }}</label>
+            <p class="form-value">{{ viewingCompany()!.description || 'N/A' }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3 class="form-section-title">
+          {{ 'pages.companies.locationInformation' | translate }}
+        </h3>
+        <div class="form-grid">
+          <div class="form-group form-group-full">
+            <label class="form-label">{{ 'pages.companies.address' | translate }}</label>
+            <p class="form-value">{{ viewingCompany()!.address }}</p>
+          </div>
+          <div class="form-group">
+            <label class="form-label">{{ 'pages.companies.latitude' | translate }}</label>
+            <p class="form-value">{{ viewingCompany()!.latitude }}</p>
+          </div>
+          <div class="form-group">
+            <label class="form-label">{{ 'pages.companies.longitude' | translate }}</label>
+            <p class="form-value">{{ viewingCompany()!.longitude }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3 class="form-section-title">
+          {{ 'pages.companies.statusInformation' | translate }}
+        </h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">{{ 'pages.companies.status' | translate }}</label>
+            <p class="form-value">
+              <span [class]="getStatusClassForDisplay(viewingCompany()!.status)">
+                {{ getStatusDisplayText(viewingCompany()!.status) }}
+              </span>
+            </p>
+          </div>
+          <div class="form-group">
+            <label class="form-label">{{ 'pages.companies.createdAt' | translate }}</label>
+            <p class="form-value">{{ viewingCompany()!.createdAt ? formatDateTime(viewingCompany()!.createdAt) : 'N/A' }}</p>
+          </div>
+          <div class="form-group">
+            <label class="form-label">{{ 'pages.companies.updatedAt' | translate }}</label>
+            <p class="form-value">{{ viewingCompany()!.updatedAt ? formatDateTime(viewingCompany()!.updatedAt) : 'N/A' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div slot="footer" class="modal-footer-actions">
+      <app-glass-button variant="secondary" (clicked)="closeDetailsModal()">
+        {{ 'common.close' | translate }}
+      </app-glass-button>
+      <app-glass-button variant="primary" (clicked)="openEditModal(viewingCompany()!)">
+        {{ 'pages.companies.edit' | translate }}
+      </app-glass-button>
+    </div>
+  </app-modal>
+</app-page-layout>

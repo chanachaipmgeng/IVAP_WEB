@@ -1,0 +1,93 @@
+<app-page-layout
+  [title]="'pages.positions.title' | translate"
+  [subtitle]="'pages.positions.description' | translate"
+  [actions]="pageActions()">
+  
+  <!-- Filter Section -->
+  <app-filter-section
+    [fields]="filterFields"
+    [loading]="loading()"
+    (search)="onSearch($event)"
+    (filterChange)="onFilterChange($event)">
+  </app-filter-section>
+
+  <!-- Error Message -->
+  @if (errorMessage()) {
+    <div class="error-message">
+      {{ errorMessage() }}
+    </div>
+  }
+
+  <!-- Loading State -->
+  @if (loading()) {
+    <div class="loading-state">
+      <p>{{ 'common.loading' | translate }}</p>
+    </div>
+  }
+
+  <!-- Data Table -->
+  @if (!loading() && positions().length > 0) {
+    <app-data-table
+      [data]="positions()"
+      [columns]="columns"
+      [actions]="actions"
+      [pagination]="{
+        currentPage: currentPage(),
+        pageSize: pageSize(),
+        total: totalRecords(),
+        totalPages: totalPages()
+      }"
+      (pageChange)="onPageChange($event)"
+      (pageSizeChange)="onPageSizeChange($event)">
+    </app-data-table>
+  }
+
+  <!-- Empty State -->
+  @if (!loading() && positions().length === 0) {
+    <app-empty-state
+      [title]="'pages.positions.noPositionsFound' | translate"
+      [message]="'pages.positions.description' | translate"
+      [actions]="emptyStateActions()">
+    </app-empty-state>
+  }
+
+  <!-- Add/Edit Modal -->
+  <app-modal
+    [isOpen]="showModal()"
+    [title]="editingPosition() ? ('pages.positions.editPosition' | translate) : ('pages.positions.addPosition' | translate)"
+    [loading]="saving()"
+    (closed)="closeModal()">
+    <app-modal-form
+      [fields]="formFields()"
+      [loading]="saving()"
+      (submitted)="onFormSubmitted($event)"
+      (cancelled)="closeModal()">
+    </app-modal-form>
+  </app-modal>
+
+  <!-- Delete Confirmation Modal -->
+  <app-modal
+    [isOpen]="showDeleteModal()"
+    [title]="'pages.positions.deletePosition' | translate"
+    [loading]="deleting()"
+    (closed)="cancelDelete()">
+    <div class="delete-confirmation">
+      <p>Are you sure you want to delete <strong>{{ deletingPosition()?.thName || deletingPosition()?.engName }}</strong>?</p>
+      <p class="warning">This action cannot be undone.</p>
+      <div class="modal-actions">
+        <app-glass-button
+          variant="danger"
+          [loading]="deleting()"
+          (clicked)="deletePosition()">
+          Delete
+        </app-glass-button>
+        <app-glass-button
+          variant="secondary"
+          [disabled]="deleting()"
+          (clicked)="cancelDelete()">
+          Cancel
+        </app-glass-button>
+      </div>
+    </div>
+  </app-modal>
+</app-page-layout>

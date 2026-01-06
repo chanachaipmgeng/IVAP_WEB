@@ -1,0 +1,319 @@
+<div class="gallery-demo-container">
+  <!-- Header -->
+  <div class="demo-header">
+    <h1 class="demo-title">
+      <i class="fas fa-images"></i>
+      Gallery Demo
+    </h1>
+    <p class="demo-description">
+      ทดสอบ Gallery Component สำหรับการแสดงรูปภาพ
+    </p>
+  </div>
+
+  <!-- Demo Controls -->
+  <div class="demo-controls">
+    <app-glass-card>
+      <div class="controls-section">
+        <h3>การตั้งค่า Gallery</h3>
+
+        <div class="control-group">
+          <label>Layout:</label>
+          <select [(ngModel)]="selectedLayout" (change)="updateConfig()">
+            <option *ngFor="let option of getLayoutOptions()" [value]="option.value">
+              {{ option.label }}
+            </option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>Columns:</label>
+          <select [(ngModel)]="selectedColumns" (change)="updateConfig()">
+            <option *ngFor="let option of getColumnOptions()" [value]="option.value">
+              {{ option.label }}
+            </option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>Theme:</label>
+          <select [(ngModel)]="selectedTheme" (change)="updateConfig()">
+            <option *ngFor="let option of getThemeOptions()" [value]="option.value">
+              {{ option.label }}
+            </option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="showThumbnails" (change)="updateConfig()">
+            Show Thumbnails
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="showTitles" (change)="updateConfig()">
+            Show Titles
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="showDescriptions" (change)="updateConfig()">
+            Show Descriptions
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="showMetadata" (change)="updateConfig()">
+            Show Metadata
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="showActions" (change)="updateConfig()">
+            Show Actions
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="showSearch" (change)="updateConfig()">
+            Show Search
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="showFilters" (change)="updateConfig()">
+            Show Filters
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="showSorting" (change)="updateConfig()">
+            Show Sorting
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="selectable" (change)="updateConfig()">
+            Selectable
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="multiSelect" (change)="updateConfig()">
+            Multi Select
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="clickable" (change)="updateConfig()">
+            Clickable
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="lightbox" (change)="updateConfig()">
+            Lightbox
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="lazyLoading" (change)="updateConfig()">
+            Lazy Loading
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="responsive" (change)="updateConfig()">
+            Responsive
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="shadow" (change)="updateConfig()">
+            Shadow
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="hoverEffect" (change)="updateConfig()">
+            Hover Effect
+          </label>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Demo Actions -->
+  <div class="demo-actions">
+    <app-glass-card>
+      <div class="actions-section">
+        <h3>การจัดการรูปภาพ</h3>
+
+        <div class="action-buttons">
+          <app-glass-button
+            variant="primary"
+            (click)="addItem()">
+            <i class="fas fa-plus"></i>
+            เพิ่มรูปภาพ
+          </app-glass-button>
+
+          <app-glass-button
+            variant="secondary"
+            (click)="loadSampleItems()">
+            <i class="fas fa-refresh"></i>
+            โหลดตัวอย่าง
+          </app-glass-button>
+
+          <app-glass-button
+            variant="danger"
+            (click)="clearItems()">
+            <i class="fas fa-trash"></i>
+            ล้างทั้งหมด
+          </app-glass-button>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Gallery Demo -->
+  <div class="gallery-demo">
+    <app-glass-card>
+      <div class="gallery-section">
+        <h3>แกลเลอรี่รูปภาพ</h3>
+
+        <app-gallery
+          [items]="sampleItems"
+          [config]="config"
+          [filters]="filters"
+          [sorts]="sorts"
+          [actions]="actions"
+          (itemClick)="onItemClick($event)"
+          (itemSelect)="onItemSelect($event)"
+          (itemAction)="onItemAction($event)"
+          (filterChange)="onFilterChange($event)"
+          (sortChange)="onSortChange($event)"
+          (lightboxOpen)="onLightboxOpen($event)"
+          (lightboxClose)="onLightboxClose()">
+        </app-gallery>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Statistics -->
+  <div class="demo-stats">
+    <app-glass-card>
+      <div class="stats-section">
+        <h3>สถิติ Gallery</h3>
+
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-value">{{ getGalleryStats().totalItems }}</div>
+            <div class="stat-label">รูปภาพทั้งหมด</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getGalleryStats().selectedItems }}</div>
+            <div class="stat-label">เลือกแล้ว</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getGalleryStats().layout }}</div>
+            <div class="stat-label">Layout</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getGalleryStats().columns }}</div>
+            <div class="stat-label">คอลัมน์</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getGalleryStats().theme }}</div>
+            <div class="stat-label">Theme</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getGalleryStats().showThumbnails ? 'เปิด' : 'ปิด' }}</div>
+            <div class="stat-label">Thumbnails</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getGalleryStats().showTitles ? 'เปิด' : 'ปิด' }}</div>
+            <div class="stat-label">Titles</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-value">{{ getGalleryStats().showActions ? 'เปิด' : 'ปิด' }}</div>
+            <div class="stat-label">Actions</div>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Features Overview -->
+  <div class="features-overview">
+    <app-glass-card>
+      <div class="features-section">
+        <h3>ฟีเจอร์ Gallery</h3>
+
+        <div class="features-grid">
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Multiple Layouts</h4>
+            <p>รองรับหลายรูปแบบการแสดงผล</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Lightbox</h4>
+            <p>ดูรูปภาพแบบเต็มหน้าจอ</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Search & Filter</h4>
+            <p>ค้นหาและกรองรูปภาพได้</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Selection</h4>
+            <p>เลือกรูปภาพได้หลายรูป</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Lazy Loading</h4>
+            <p>โหลดรูปภาพแบบ lazy loading</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h4>Responsive</h4>
+            <p>รองรับทุกขนาดหน้าจอ</p>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+</div>
+
+
+
+
+

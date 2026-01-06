@@ -1,0 +1,201 @@
+<app-page-layout
+  title="Reports"
+  description="Create and view various reports from the system."
+  icon="📊"
+  [actions]="pageActions()">
+  
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Left Side - Report Selection -->
+    <div class="lg:col-span-1">
+      <app-glass-card customClass="p-6 sticky top-6">
+        <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">เลือกประเภทรายงาน</h2>
+
+        <!-- Attendance Reports -->
+        <div class="mb-6">
+          <h3 class="text-sm font-semibold text-gray-600 mb-3 flex items-center gap-2">
+            <span class="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg flex items-center justify-center text-sm">📊</span>
+            การเข้างาน
+          </h3>
+          <div class="space-y-2">
+            @for (report of reportsByCategory().attendance; track report.id) {
+              <button
+                (click)="selectReport(report)"
+                [class.ring-2]="selectedReport()?.id === report.id"
+                [class.ring-blue-500]="selectedReport()?.id === report.id"
+                class="w-full text-left p-3 rounded-lg bg-gray-50 hover:bg-blue-50 transition-all duration-200 border border-gray-200 hover:border-blue-300"
+              >
+                <div class="flex items-start gap-2">
+                  <span class="text-xl">{{ report.icon }}</span>
+                  <div class="flex-1">
+                    <p class="font-medium text-gray-800 text-sm">{{ report.name }}</p>
+                    <p class="text-xs text-gray-500 mt-1">{{ report.description }}</p>
+                  </div>
+                </div>
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Employee Reports -->
+        <div class="mb-6">
+          <h3 class="text-sm font-semibold text-gray-600 mb-3 flex items-center gap-2">
+            <span class="w-8 h-8 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg flex items-center justify-center text-sm">👥</span>
+            พนักงาน
+          </h3>
+          <div class="space-y-2">
+            @for (report of reportsByCategory().employee; track report.id) {
+              <button
+                (click)="selectReport(report)"
+                [class.ring-2]="selectedReport()?.id === report.id"
+                [class.ring-green-500]="selectedReport()?.id === report.id"
+                class="w-full text-left p-3 rounded-lg bg-gray-50 hover:bg-green-50 transition-all duration-200 border border-gray-200 hover:border-green-300"
+              >
+                <div class="flex items-start gap-2">
+                  <span class="text-xl">{{ report.icon }}</span>
+                  <div class="flex-1">
+                    <p class="font-medium text-gray-800 text-sm">{{ report.name }}</p>
+                    <p class="text-xs text-gray-500 mt-1">{{ report.description }}</p>
+                  </div>
+                </div>
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Visitor Reports -->
+        <div class="mb-6">
+          <h3 class="text-sm font-semibold text-gray-600 mb-3 flex items-center gap-2">
+            <span class="w-8 h-8 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg flex items-center justify-center text-sm">🚶</span>
+            ผู้เยี่ยม
+          </h3>
+          <div class="space-y-2">
+            @for (report of reportsByCategory().visitor; track report.id) {
+              <button
+                (click)="selectReport(report)"
+                [class.ring-2]="selectedReport()?.id === report.id"
+                [class.ring-purple-500]="selectedReport()?.id === report.id"
+                class="w-full text-left p-3 rounded-lg bg-gray-50 hover:bg-purple-50 transition-all duration-200 border border-gray-200 hover:border-purple-300"
+              >
+                <div class="flex items-start gap-2">
+                  <span class="text-xl">{{ report.icon }}</span>
+                  <div class="flex-1">
+                    <p class="font-medium text-gray-800 text-sm">{{ report.name }}</p>
+                    <p class="text-xs text-gray-500 mt-1">{{ report.description }}</p>
+                  </div>
+                </div>
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Vehicle Reports -->
+        <div>
+          <h3 class="text-sm font-semibold text-gray-600 mb-3 flex items-center gap-2">
+            <span class="w-8 h-8 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg flex items-center justify-center text-sm">🚗</span>
+            ยานพาหนะ
+          </h3>
+          <div class="space-y-2">
+            @for (report of reportsByCategory().vehicle; track report.id) {
+              <button
+                (click)="selectReport(report)"
+                [class.ring-2]="selectedReport()?.id === report.id"
+                [class.ring-orange-500]="selectedReport()?.id === report.id"
+                class="w-full text-left p-3 rounded-lg bg-gray-50 hover:bg-orange-50 transition-all duration-200 border border-gray-200 hover:border-orange-300"
+              >
+                <div class="flex items-start gap-2">
+                  <span class="text-xl">{{ report.icon }}</span>
+                  <div class="flex-1">
+                    <p class="font-medium text-gray-800 text-sm">{{ report.name }}</p>
+                    <p class="text-xs text-gray-500 mt-1">{{ report.description }}</p>
+                  </div>
+                </div>
+              </button>
+            }
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+
+    <!-- Right Side - Filters & Results -->
+    <div class="lg:col-span-2 space-y-6">
+      <!-- Filters Panel -->
+      <app-filter-section
+        [fields]="filterFields()"
+        [columns]="3"
+        [actionButton]="{ label: isLoading() ? 'กำลังสร้าง...' : 'สร้างรายงาน', variant: 'primary', onClick: generateReport.bind(this), disabled: !selectedReport() || isLoading() }"
+        (filterChange)="onFilterChange($event)"
+      />
+
+      <!-- Report Results -->
+      @if (reportData()) {
+        <app-glass-card customClass="p-6">
+          <!-- Report Header -->
+          <div class="flex justify-between items-start mb-6">
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ selectedReport()?.name }}</h2>
+              <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                สร้างเมื่อ: {{ reportData().generatedAt | date: 'dd/MM/yyyy HH:mm' }}
+              </p>
+            </div>
+
+            <!-- Export Buttons -->
+            <div class="flex gap-2">
+              <app-glass-button variant="danger" size="sm" (clicked)="exportToPDF()">📄 PDF</app-glass-button>
+              <app-glass-button variant="primary" size="sm" (clicked)="exportToExcel()">📊 Excel</app-glass-button>
+              <app-glass-button variant="secondary" size="sm" (clicked)="printReport()">🖨️ พิมพ์</app-glass-button>
+            </div>
+          </div>
+
+          <!-- Report Table -->
+          @if (reportData().data && reportData().data.length > 0) {
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    @for (key of reportData().data[0] | keyvalue | slice:0:10; track key.key) {
+                      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        {{ key.key }}
+                      </th>
+                    }
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  @for (row of reportData().data; track $index) {
+                    <tr class="hover:bg-gray-50">
+                      @for (key of row | keyvalue | slice:0:10; track key.key) {
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {{ key.value }}
+                        </td>
+                      }
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Summary Stats -->
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4">
+                <p class="text-sm text-blue-600 font-medium">ข้อมูลทั้งหมด</p>
+                <p class="text-2xl font-bold text-blue-800">{{ reportData().data.length }}</p>
+              </div>
+            </div>
+          } @else {
+            <div class="text-center py-12">
+              <p class="text-gray-500">ไม่มีข้อมูลรายงาน</p>
+            </div>
+          }
+        </app-glass-card>
+      }
+
+      <!-- Empty State -->
+      @if (!selectedReport()) {
+        <app-empty-state
+          icon="📊"
+          title="Select a Report"
+          description="Please select a report type from the left menu to get started."
+        />
+      }
+    </div>
+  </div>
+</app-page-layout>

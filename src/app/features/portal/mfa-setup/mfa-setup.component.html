@@ -1,0 +1,186 @@
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-purple-900 dark:to-blue-900 flex items-center justify-center p-4">
+  <div class="w-full max-w-2xl">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+        🔐 Multi-Factor Authentication Setup
+      </h1>
+      <p class="text-gray-600 dark:text-gray-400">
+        Secure your account with an additional layer of protection
+      </p>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading()" class="text-center">
+      <app-loading></app-loading>
+      <p class="text-gray-600 dark:text-gray-400 mt-4">Setting up MFA...</p>
+    </div>
+
+    <!-- Setup Step -->
+    <div *ngIf="!loading() && step() === 'setup'">
+      <app-glass-card>
+        <div class="space-y-6">
+          <div class="text-center">
+            <div class="text-6xl mb-4">📱</div>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+              Step 1: Install Authenticator App
+            </h2>
+            <p class="text-gray-600 dark:text-gray-400 mb-6">
+              Download and install an authenticator app on your mobile device. We recommend:
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div class="p-4 glass rounded-lg text-center">
+                <div class="text-2xl mb-2">🔐</div>
+                <h3 class="font-semibold">Google Authenticator</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400">iOS & Android</p>
+              </div>
+              <div class="p-4 glass rounded-lg text-center">
+                <div class="text-2xl mb-2">🔑</div>
+                <h3 class="font-semibold">Microsoft Authenticator</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400">iOS & Android</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-center">
+            <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+              Step 2: Scan QR Code
+            </h3>
+            <p class="text-gray-600 dark:text-gray-400 mb-4">
+              Open your authenticator app and scan this QR code:
+            </p>
+            <div class="flex justify-center mb-4">
+              <div class="p-4 glass rounded-lg">
+                <img *ngIf="mfaSetup()?.qrCode && !isBase64Image(mfaSetup()!.qrCode)"
+                     appImageOptimization [ngSrc]="mfaSetup()!.qrCode" alt="MFA QR Code" class="w-48 h-48" loading="lazy">
+                <img *ngIf="mfaSetup()?.qrCode && isBase64Image(mfaSetup()!.qrCode)"
+                     [src]="mfaSetup()!.qrCode" alt="MFA QR Code" class="w-48 h-48" loading="lazy">
+              </div>
+            </div>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
+              Or manually enter this key: <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">{{ mfaSetup()?.secretKey }}</code>
+            </p>
+          </div>
+
+          <div class="text-center">
+            <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+              Step 3: Backup Codes
+            </h3>
+            <p class="text-gray-600 dark:text-gray-400 mb-4">
+              Save these backup codes in a safe place. You can use them if you lose access to your authenticator app:
+            </p>
+            <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg mb-4">
+              <div class="grid grid-cols-2 gap-2 text-sm font-mono">
+                <div *ngFor="let code of mfaSetup()?.backupCodes" class="text-center py-1">
+                  {{ code }}
+                </div>
+              </div>
+            </div>
+            <app-glass-button (clicked)="downloadBackupCodes()">
+              💾 Download Backup Codes
+            </app-glass-button>
+          </div>
+
+          <div class="flex space-x-4">
+            <app-glass-button
+              variant="primary"
+              (clicked)="step.set('verify')"
+              class="flex-1"
+            >
+              ✅ I've Set Up My Authenticator App
+            </app-glass-button>
+            <app-glass-button (clicked)="skipMFA()">
+              ⏭️ Skip for Now
+            </app-glass-button>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+
+    <!-- Verification Step -->
+    <div *ngIf="step() === 'verify'">
+      <app-glass-card>
+        <div class="space-y-6">
+          <div class="text-center">
+            <div class="text-6xl mb-4">🔍</div>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+              Verify Your Setup
+            </h2>
+            <p class="text-gray-600 dark:text-gray-400">
+              Enter the 6-digit code from your authenticator app to complete the setup
+            </p>
+          </div>
+
+          <form [formGroup]="verificationForm" (ngSubmit)="verifyCode()" class="space-y-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Verification Code
+              </label>
+              <app-glass-input
+                formControlName="code"
+                type="text"
+                placeholder="Enter 6-digit code"
+                maxlength="6"
+                class="text-center text-2xl tracking-widest"
+              />
+              <div *ngIf="verificationForm.get('code')?.invalid && verificationForm.get('code')?.touched"
+                   class="text-red-500 text-sm mt-1">
+                Please enter a valid 6-digit code
+              </div>
+            </div>
+
+            <div *ngIf="errorMessage()" class="p-4 bg-red-100 dark:bg-red-900/20 border border-red-300 dark:border-red-700 rounded-lg">
+              <p class="text-red-800 dark:text-red-200 text-sm">{{ errorMessage() }}</p>
+            </div>
+
+            <div class="flex space-x-4">
+              <app-glass-button
+                type="submit"
+                variant="primary"
+                [disabled]="verificationForm.invalid || verifying()"
+                class="flex-1"
+              >
+                <span *ngIf="!verifying()">🔐 Verify & Complete Setup</span>
+                <span *ngIf="verifying()">⏳ Verifying...</span>
+              </app-glass-button>
+              <app-glass-button
+                type="button"
+                (clicked)="step.set('setup')"
+                [disabled]="verifying()"
+              >
+                ← Back
+              </app-glass-button>
+            </div>
+          </form>
+        </div>
+      </app-glass-card>
+    </div>
+
+    <!-- Complete Step -->
+    <div *ngIf="step() === 'complete'">
+      <app-glass-card>
+        <div class="text-center space-y-6">
+          <div class="text-6xl mb-4">🎉</div>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+            MFA Setup Complete!
+          </h2>
+          <p class="text-gray-600 dark:text-gray-400">
+            Your account is now protected with multi-factor authentication. You'll be redirected to the dashboard shortly.
+          </p>
+          <div class="flex justify-center">
+            <app-glass-button variant="primary" (clicked)="router.navigate(['/portal/dashboard'])">
+              🏠 Go to Dashboard
+            </app-glass-button>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+
+    <!-- Security Notice -->
+    <div class="mt-6 text-center">
+      <p class="text-sm text-gray-500 dark:text-gray-400">
+        🔒 MFA adds an extra layer of security to protect your account from unauthorized access.
+      </p>
+    </div>
+  </div>
+</div>

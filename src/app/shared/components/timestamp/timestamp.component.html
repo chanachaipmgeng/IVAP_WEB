@@ -1,0 +1,252 @@
+<div class="timestamp-container p-6 max-w-4xl mx-auto md:p-4" [class]="customClass || ''" role="region" [attr.aria-label]="ariaLabel || 'Timestamp recorder'">
+  <!-- Header -->
+  <div class="header flex justify-between items-center mb-8 flex-wrap gap-4 md:flex-col md:text-center">
+    <h2 class="title text-4xl font-semibold text-white m-0 md:text-3xl md:text-2xl">ระบบบันทึกเวลา</h2>
+    <div class="current-time text-right text-gray-400 md:text-center" role="status" [attr.aria-live]="'polite'">
+      <div class="time text-xl font-semibold text-white mb-1" [attr.aria-label]="'Current time: ' + getCurrentTime()">{{ getCurrentTime() }}</div>
+      <div class="date text-sm" [attr.aria-label]="'Current date: ' + getCurrentDate()">{{ getCurrentDate() }}</div>
+    </div>
+  </div>
+
+  <!-- Today's Statistics -->
+  <div class="today-stats mb-8">
+    <app-glass-card>
+      <h3>สถิติวันนี้</h3>
+      <div class="stats-grid grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-4 md:grid-cols-2">
+        <div class="stat-item flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10 transition-all hover:bg-white/8 hover:-translate-y-0.5">
+          <div class="stat-icon checkin w-12 h-12 rounded-full flex items-center justify-center text-xl text-white bg-gradient-to-br from-success-500 to-success-600">
+            <i class="fas fa-sign-in-alt"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value text-2xl font-bold text-white m-0 leading-none">{{ todayStats.checkins }}</div>
+            <div class="stat-label text-sm text-gray-400 mt-1 m-0 font-medium">เข้างาน</div>
+          </div>
+        </div>
+
+        <div class="stat-item flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10 transition-all hover:bg-white/8 hover:-translate-y-0.5">
+          <div class="stat-icon checkout w-12 h-12 rounded-full flex items-center justify-center text-xl text-white bg-gradient-to-br from-error-500 to-error-600">
+            <i class="fas fa-sign-out-alt"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value text-2xl font-bold text-white m-0 leading-none">{{ todayStats.checkouts }}</div>
+            <div class="stat-label text-sm text-gray-400 mt-1 m-0 font-medium">ออกงาน</div>
+          </div>
+        </div>
+
+        <div class="stat-item flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10 transition-all hover:bg-white/8 hover:-translate-y-0.5">
+          <div class="stat-icon hours w-12 h-12 rounded-full flex items-center justify-center text-xl text-white bg-gradient-to-br from-primary-500 to-primary-600">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value text-2xl font-bold text-white m-0 leading-none">{{ todayStats.totalHours }}h</div>
+            <div class="stat-label text-sm text-gray-400 mt-1 m-0 font-medium">ชั่วโมงทำงาน</div>
+          </div>
+        </div>
+
+        <div class="stat-item flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10 transition-all hover:bg-white/8 hover:-translate-y-0.5">
+          <div class="stat-icon status w-12 h-12 rounded-full flex items-center justify-center text-xl text-white bg-gradient-to-br from-gray-500 to-gray-600" [class.bg-gradient-to-br]="true" [class.from-success-500]="todayStats.isCheckedIn" [class.to-success-600]="todayStats.isCheckedIn">
+            <i class="fas" [class.fa-check-circle]="todayStats.isCheckedIn" [class.fa-times-circle]="!todayStats.isCheckedIn"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value text-2xl font-bold text-white m-0 leading-none">{{ todayStats.isCheckedIn ? 'อยู่' : 'ไม่อยู่' }}</div>
+            <div class="stat-label text-sm text-gray-400 mt-1 m-0 font-medium">สถานะ</div>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Main Timestamp Form -->
+  <div class="timestamp-form">
+    <app-glass-card>
+      <h3>บันทึกเวลา</h3>
+
+      <!-- Timestamp Type Selection -->
+      <div class="form-group mb-6">
+        <label class="block mb-3 text-white font-medium">ประเภทการบันทึก:</label>
+        <div class="type-buttons flex gap-3 flex-wrap md:flex-col">
+          <app-glass-button
+            *ngFor="let type of getAvailableTimestampTypes()"
+            [variant]="timestampType === type ? 'primary' : 'secondary'"
+            (click)="timestampType = type">
+            <i class="fas" [class]="getTimestampTypeIcon(type)"></i>
+            {{ getTimestampTypeLabel(type) }}
+          </app-glass-button>
+        </div>
+      </div>
+
+      <!-- Location Selection -->
+      <div class="form-group mb-6">
+        <label class="block mb-3 text-white font-medium">สถานที่:</label>
+        <div class="location-selector relative">
+          <app-glass-button
+            variant="secondary"
+            (click)="toggleLocationSelector()">
+            <i class="fas fa-map-marker-alt"></i>
+            {{ selectedLocation?.name || 'เลือกสถานที่' }}
+            <i class="fas fa-chevron-down"></i>
+          </app-glass-button>
+
+          <div *ngIf="showLocationSelector" class="location-dropdown absolute top-full left-0 right-0 bg-black/90 border border-white/20 rounded-2xl mt-2 z-[1000] max-h-[300px] overflow-y-auto md:fixed md:top-1/2 md:left-4 md:right-4 md:transform md:-translate-y-1/2 md:max-h-[70vh]">
+            <div *ngFor="let location of availableLocations"
+                 class="location-item flex justify-between items-center p-4 border-b border-white/10 cursor-pointer transition-colors hover:bg-white/5 last:border-b-0"
+                 [class.opacity-50]="!isLocationAvailableForType(location, timestampType)"
+                 [class.cursor-not-allowed]="!isLocationAvailableForType(location, timestampType)"
+                 (click)="selectLocation(location)">
+              <div class="location-info flex-1">
+                <div class="location-name text-white font-medium mb-1">{{ location.name }}</div>
+                <div class="location-address text-gray-400 text-sm mb-1">{{ location.address }}</div>
+                <div class="location-hours text-gray-500 text-xs">{{ getWorkingHours(location) }}</div>
+              </div>
+              <div class="location-status text-right">
+                <div class="distance text-gray-400 text-sm mb-1" *ngIf="currentLocation">
+                  {{ formatDistance(getLocationDistance(location)) }}
+                </div>
+                <div class="status-indicator text-xl mb-1"
+                     [style.color]="getLocationStatusColor(getLocationStatus(location))">
+                  <i [class]="getLocationStatusIcon(getLocationStatus(location))"></i>
+                </div>
+                <div class="working-hours-status text-xs text-gray-500"
+                     [class.text-success-500]="isWithinWorkingHours(location)">
+                  <i class="fas fa-clock mr-1"></i>
+                  {{ isWithinWorkingHours(location) ? 'เวลาทำงาน' : 'นอกเวลาทำงาน' }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Photo Capture Toggle Button -->
+      <div *ngIf="showPhoto" class="form-group mb-6">
+        <label class="block mb-3 text-white font-medium">รูปภาพ:</label>
+        <div *ngIf="!previewImage && !showPhotoCapture">
+           <app-glass-button
+              variant="secondary"
+              (click)="togglePhotoCapture()">
+              <i class="fas fa-camera"></i>
+              ถ่ายรูป / อัปโหลด
+            </app-glass-button>
+        </div>
+
+        <div class="photo-section" *ngIf="showPhotoCapture || previewImage">
+          <!-- Camera Mode -->
+          <div *ngIf="mode === 'camera' && !previewImage" class="camera-section">
+            <div class="camera-controls flex gap-4 mb-4 flex-wrap">
+              <app-glass-button
+                [variant]="isStreaming ? 'danger' : 'primary'"
+                (click)="isStreaming ? stopCamera() : startCamera()"
+                [disabled]="!isInitialized">
+                <i class="fas" [class.fa-stop]="isStreaming" [class.fa-play]="!isStreaming"></i>
+                {{ isStreaming ? 'หยุดกล้อง' : 'เริ่มกล้อง' }}
+              </app-glass-button>
+
+              <app-glass-button
+                variant="secondary"
+                (click)="capturePhoto()"
+                [disabled]="!isStreaming || isCapturing">
+                <i class="fas fa-camera"></i>
+                {{ isCapturing ? 'กำลังถ่าย...' : 'ถ่ายรูป' }}
+              </app-glass-button>
+
+              <app-glass-button
+                variant="secondary"
+                (click)="togglePhotoCapture()">
+                <i class="fas fa-times"></i>
+                ยกเลิก
+              </app-glass-button>
+            </div>
+
+            <div class="camera-container rounded-lg overflow-hidden border border-white/10 relative bg-gray-900" style="min-height: 300px;">
+              <app-face-recognition
+                [mode]="'camera'"
+                [autoDetect]="true"
+                [showControls]="false"
+                [showLandmarks]="true"
+                [showAgeGender]="false"
+                [showExpressions]="false"
+                [showRecognition]="false"
+                [showEnrollment]="false">
+              </app-face-recognition>
+            </div>
+          </div>
+
+          <!-- File Upload Mode -->
+          <div *ngIf="mode === 'manual' && !previewImage" class="file-upload">
+            <input
+              #fileInput
+              type="file"
+              accept="image/*"
+              (change)="onFileSelected($event)"
+              class="file-input hidden">
+
+            <div class="flex gap-2">
+              <app-glass-button
+                variant="secondary"
+                (click)="fileInput.click()">
+                <i class="fas fa-upload"></i>
+                เลือกไฟล์รูปภาพ
+              </app-glass-button>
+
+              <app-glass-button
+                variant="secondary"
+                (click)="togglePhotoCapture()">
+                <i class="fas fa-times"></i>
+                ยกเลิก
+              </app-glass-button>
+            </div>
+          </div>
+
+          <!-- Photo Preview -->
+          <div *ngIf="previewImage" class="photo-preview mt-4 text-center">
+            <img appImageOptimization [ngSrc]="previewImage" alt="Preview" class="preview-image max-w-full max-h-[300px] rounded-xl mb-4" loading="lazy">
+            <div class="photo-actions flex gap-4 justify-center">
+              <app-glass-button
+                variant="danger"
+                size="sm"
+                (click)="removePhoto()">
+                <i class="fas fa-trash"></i>
+                ถ่ายใหม่ / ลบ
+              </app-glass-button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div *ngIf="showNotes" class="form-group mb-6">
+        <label class="block mb-3 text-white font-medium">หมายเหตุ:</label>
+        <app-glass-input
+          [(ngModel)]="notes"
+          placeholder="กรอกหมายเหตุ (ไม่บังคับ)"
+          type="textarea">
+        </app-glass-input>
+      </div>
+
+      <!-- Current Location Info -->
+      <div *ngIf="currentLocation" class="location-info bg-white/2 rounded-xl p-4 mb-6 border border-white/10">
+        <div class="location-details flex items-center gap-2 text-gray-400 text-sm mb-2 last:mb-0">
+          <i class="fas fa-map-marker-alt text-primary-500"></i>
+          <span>ตำแหน่งปัจจุบัน: {{ currentLocation.latitude.toFixed(6) }}, {{ currentLocation.longitude.toFixed(6) }}</span>
+        </div>
+        <div class="accuracy-info flex items-center gap-2 text-gray-400 text-sm mb-2 last:mb-0">
+          <i class="fas fa-crosshairs text-primary-500"></i>
+            <span>ความแม่นยำ: ±{{ roundNumber(currentLocation.accuracy) }}m</span>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="form-actions flex gap-4 justify-center mt-8">
+        <app-glass-button
+          variant="primary"
+          (click)="createTimestamp()"
+          [disabled]="!selectedLocation || isCapturing">
+          <i class="fas fa-save"></i>
+          {{ isCapturing ? 'กำลังบันทึก...' : 'บันทึกเวลา' }}
+        </app-glass-button>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <canvas #canvasElement class="hidden"></canvas>
+</div>

@@ -1,0 +1,276 @@
+<div class="kiosk-view-container min-h-screen flex items-center justify-center p-4 relative">
+  <!-- Background Graphics -->
+  <!-- Background Graphics handled globally by body styles -->
+
+  <!-- Header with Theme/Language Switcher -->
+  <div
+    class="fixed top-0 left-0 right-0 z-50 glass-card !rounded-none !border-x-0 !border-t-0 border-b border-white/10 p-4">
+    <div class="container mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <button (click)="navigateToLanding()" class="glass-button flex items-center space-x-2"
+          [title]="i18n.t('kiosk.backToHome')">
+          <span class="text-lg">←</span>
+          <span class="hidden md:inline font-medium">{{ i18n.t('kiosk.home') }}</span>
+        </button>
+        <div class="text-3xl">🎥</div>
+        <h1 class="text-xl font-bold ai-gradient-text">IVAP Platform</h1>
+      </div>
+      <div class="flex items-center space-x-3">
+        <!-- Language Switcher -->
+        <button (click)="toggleLanguage()" class="glass-button flex items-center space-x-2"
+          [title]="currentLang() === 'th' ? i18n.t('kiosk.switchToEnglish') : i18n.t('kiosk.switchToThai')">
+          <span class="text-lg">{{ currentLang() === 'th' ? '🇹🇭' : '🇬🇧' }}</span>
+          <span class="hidden md:inline font-medium">{{ currentLang() === 'th' ? i18n.t('kiosk.thai') :
+            i18n.t('kiosk.english') }}</span>
+        </button>
+
+        <!-- Theme Switcher -->
+        <button (click)="toggleTheme()" class="glass-button flex items-center space-x-2" [title]="getThemeLabel()">
+          <span class="text-lg">{{ getThemeIcon() }}</span>
+          <span class="hidden md:inline font-medium">{{ getThemeLabel() }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <app-glass-card customClass="max-w-4xl w-full text-center relative z-10 mt-20">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-5xl font-bold bg-gradient-to-r from-primary-500 to-purple-600 bg-clip-text text-transparent mb-2">
+        <span *ngIf="isEventMode()">{{ i18n.t('kiosk.eventCheckIn') }}</span>
+        <span *ngIf="!isEventMode()">{{ i18n.t('kiosk.faceRecognition') }}</span>
+      </h1>
+      <p class="text-gray-600 dark:text-gray-400" *ngIf="!isEventMode()">
+        {{ getStateMessage() }}
+      </p>
+      <div *ngIf="isEventMode() && currentEvent()" class="glass-card p-4 max-w-xl mx-auto mt-4">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+          {{ currentEvent()?.eventName || currentEvent()?.name }}
+        </h2>
+        <p class="text-gray-600 dark:text-gray-400" *ngIf="currentEvent()?.description">
+          {{ currentEvent()?.description }}
+        </p>
+        <div class="flex items-center justify-center space-x-4 mt-2 text-sm text-gray-500 dark:text-gray-400">
+          <span *ngIf="currentEvent()?.location">📍 {{ currentEvent()?.location }}</span>
+          <span *ngIf="currentEvent()?.startDate">
+            📅 {{ formatDate(currentEvent()?.startDate) }}
+          </span>
+        </div>
+      </div>
+      <p class="text-gray-600 dark:text-gray-400 mt-2" *ngIf="isEventMode()">
+        {{ i18n.t('kiosk.pleaseLookAtCamera') }}
+      </p>
+    </div>
+
+    <!-- Camera Feed using FaceRecognitionComponent -->
+    <div class="relative mb-8">
+      <div class="glass-card overflow-hidden max-w-2xl mx-auto">
+        <div class="relative">
+
+          <app-face-recognition [mode]="'camera'" [autoDetect]="true" [showControls]="false" [showEnrollment]="false"
+            [showRecognition]="false" [showExpressions]="true" [showAgeGender]="true" [showLandmarks]="true"
+            (faceDetected)="onFaceDetected($event)" (qualityChanged)="onQualityChanged($event)">
+          </app-face-recognition>
+
+          <!-- Scanning Overlay (Layered on top) -->
+          <div *ngIf="state() === 'scanning'"
+            class="absolute inset-0 flex items-center justify-center bg-black/50 z-20">
+            <div class="glass-card p-8">
+              <div
+                class="w-20 h-20 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4">
+              </div>
+              <p class="text-white text-xl font-medium">{{ i18n.t('kiosk.verifying') }}</p>
+            </div>
+          </div>
+
+          <!-- Success State (Layered on top) -->
+          <div *ngIf="state() === 'success'"
+            class="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-20 p-8 overflow-y-auto">
+            <div class="py-8 w-full">
+              <div class="text-9xl mb-4 text-green-500">✓</div>
+              <h2 class="text-4xl font-bold text-green-500 mb-4">
+                {{ result()?.message || 'Welcome!' }}
+              </h2>
+              <div *ngIf="result()?.employee"
+                class="glass-card inline-block px-8 py-4 mb-6 bg-white/10 border-white/20">
+                <p class="text-2xl font-medium text-white">
+                  {{ result()?.employee?.firstName }} {{ result()?.employee?.lastName }}
+                </p>
+                <p class="text-gray-300">
+                  {{ result()?.employee?.position || result()?.employee?.department }}
+                </p>
+              </div>
+
+              <!-- Event Check-in Details -->
+              <div *ngIf="isEventMode() && result()"
+                class="glass-card inline-block px-8 py-4 mb-4 max-w-2xl bg-white/10 border-white/20">
+                <div class="grid grid-cols-2 gap-4 text-left">
+                  <!-- Check-in Time -->
+                  <div *ngIf="result()?.checkInTime" class="col-span-2">
+                    <p class="text-sm text-gray-400 mb-1">เวลาเข้า</p>
+                    <p class="text-lg font-medium text-white">
+                      {{ formatDateTime(result()?.checkInTime || '') }}
+                    </p>
+                  </div>
+
+                  <!-- Check-out Time -->
+                  <div *ngIf="result()?.checkOutTime">
+                    <p class="text-sm text-gray-400 mb-1">เวลาออก</p>
+                    <p class="text-lg font-medium text-white">
+                      {{ formatDateTime(result()?.checkOutTime || '') }}
+                    </p>
+                  </div>
+
+                  <!-- Duration -->
+                  <div *ngIf="result()?.durationMinutes">
+                    <p class="text-sm text-gray-400 mb-1">รวมเวลาใช้งาน</p>
+                    <p class="text-lg font-medium text-white">
+                      {{ result()?.durationMinutes }}
+                    </p>
+                  </div>
+
+                  <!-- Gender -->
+                  <div *ngIf="result()?.gender">
+                    <p class="text-sm text-gray-400 mb-1">เพศ</p>
+                    <p class="text-lg font-medium text-white">
+                      {{ result()?.gender === 'male' ? 'ชาย' : result()?.gender === 'female' ? 'หญิง' : result()?.gender
+                      }}
+                    </p>
+                  </div>
+
+                  <!-- Age Range -->
+                  <div *ngIf="result()?.ageRange">
+                    <p class="text-sm text-gray-400 mb-1">อายุ</p>
+                    <p class="text-lg font-medium text-white">
+                      {{ result()?.ageRange }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Multi-person Results -->
+              <div *ngIf="multiPersonMode() && multiPersonResults().length > 0" class="mt-6 max-w-4xl mx-auto w-full">
+                <h3 class="text-2xl font-bold text-white mb-4">
+                  ผลการตรวจสอบ ({{ multiPersonResults().length }} คน)
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div *ngFor="let person of multiPersonResults()" class="glass-card p-4 bg-white/10"
+                    [class.border-green-500]="person.success" [class.border-red-500]="!person.success"
+                    [class.border-2]="true">
+                    <div class="flex items-start justify-between mb-2">
+                      <div class="text-left">
+                        <p class="text-lg font-medium text-white">
+                          {{ person.first_name }} {{ person.last_name }}
+                        </p>
+                        <p class="text-sm text-gray-300" *ngIf="person.success">
+                          {{ person.message }}
+                        </p>
+                        <p class="text-sm text-red-400" *ngIf="!person.success">
+                          {{ person.message }}
+                        </p>
+                      </div>
+                      <span class="text-2xl" [class.text-green-500]="person.success"
+                        [class.text-red-500]="!person.success">
+                        {{ person.success ? '✓' : '✗' }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <p class="text-xl text-gray-400 mt-4">
+                {{ formatTime(result()?.timestamp || '') }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Error State (Layered on top) -->
+          <div *ngIf="state() === 'error'"
+            class="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-20 p-8">
+            <div class="py-16">
+              <div class="text-9xl mb-4 text-red-500">✗</div>
+              <h2 class="text-4xl font-bold text-red-500 mb-4">
+                {{ result()?.message || 'Verification Failed' }}
+              </h2>
+              <p class="text-xl text-gray-300 mb-6">
+                {{ result()?.details || 'Face not recognized. Please try again or contact support.' }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quality Feedback -->
+    <div *ngIf="state() === 'idle' && qualityFeedback()" class="mb-6">
+      <div class="glass-card p-4 max-w-xl mx-auto">
+        <div class="flex items-center space-x-3">
+          <div class="flex-shrink-0">
+            <div class="w-12 h-12 rounded-full flex items-center justify-center"
+              [class]="qualityScore() >= 80 ? 'bg-green-500' : qualityScore() >= 60 ? 'bg-yellow-500' : 'bg-red-500'">
+              <span class="text-white text-xl">
+                {{ qualityScore() >= 80 ? '✓' : qualityScore() >= 60 ? '⚠' : '✗' }}
+              </span>
+            </div>
+          </div>
+          <div class="flex-1">
+            <h3 class="font-medium text-gray-900 dark:text-gray-100">
+              {{ i18n.t('kiosk.imageQuality') }} {{ qualityScore() }}%
+            </h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">
+              {{ qualityFeedback() }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Instructions -->
+    <div *ngIf="state() === 'idle'" class="space-y-4 text-left max-w-xl mx-auto">
+      <div class="glass-card p-4 flex items-start space-x-3">
+        <span class="text-2xl">👤</span>
+        <div>
+          <h3 class="font-medium text-gray-900 dark:text-gray-100">{{ i18n.t('kiosk.positionYourself') }}</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            {{ i18n.t('kiosk.positionYourselfDesc') }}
+          </p>
+        </div>
+      </div>
+      <div class="glass-card p-4 flex items-start space-x-3">
+        <span class="text-2xl">💡</span>
+        <div>
+          <h3 class="font-medium text-gray-900 dark:text-gray-100">{{ i18n.t('kiosk.goodLighting') }}</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            {{ i18n.t('kiosk.goodLightingDesc') }}
+          </p>
+        </div>
+      </div>
+      <div class="glass-card p-4 flex items-start space-x-3">
+        <span class="text-2xl">⏱️</span>
+        <div>
+          <h3 class="font-medium text-gray-900 dark:text-gray-100">{{ i18n.t('kiosk.autoDetection') }}</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            {{ i18n.t('kiosk.autoDetectionDesc') }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Manual Capture Button (for testing) -->
+    <div *ngIf="state() === 'idle'" class="mt-8 flex justify-center gap-4 flex-wrap">
+      <button (click)="captureAndVerify()" class="glass-button-primary px-12 py-4 text-xl">
+        {{ i18n.t('kiosk.captureAndVerify') }}
+      </button>
+      <button *ngIf="isEventMode()" (click)="toggleMultiPersonMode()" class="glass-button-secondary px-6 py-4 text-lg"
+        [class.glass-button-primary]="multiPersonMode()"
+        [title]="multiPersonMode() ? 'ปิดโหมดหลายคน' : 'เปิดโหมดหลายคน'">
+        {{ multiPersonMode() ? '👥 โหมดหลายคน (เปิด)' : '👤 โหมดคนเดียว' }}
+      </button>
+    </div>
+
+    <!-- Device Info -->
+    <div class="mt-8 text-sm text-gray-500 dark:text-gray-400">
+      {{ i18n.t('kiosk.deviceId') }} {{ deviceId }}
+    </div>
+  </app-glass-card>
+</div>

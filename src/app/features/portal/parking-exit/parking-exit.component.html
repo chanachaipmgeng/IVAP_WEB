@@ -1,0 +1,172 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+        🚪 Vehicle Exit
+      </h1>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+        Record vehicle exit and calculate parking fee
+      </p>
+    </div>
+    <app-glass-button variant="primary" (clicked)="openModal()">
+      ⏏️ Process Exit
+    </app-glass-button>
+  </div>
+
+  <!-- Quick Info -->
+  <div class="bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg shadow-lg p-6 text-white">
+    <div class="flex items-center space-x-4">
+      <div class="text-5xl">💳</div>
+      <div>
+        <h3 class="text-xl font-bold">Automatic Fee Calculation</h3>
+        <p class="text-orange-100">
+          Our system automatically calculates parking fees based on duration
+        </p>
+        <div class="mt-3 flex flex-wrap gap-4 text-sm">
+          <div class="flex items-center space-x-2">
+            <span>🆓</span>
+            <span>First 30 minutes FREE</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span>⏱️</span>
+            <span>Automatic duration calculation</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span>💰</span>
+            <span>Multiple payment methods</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Exit Modal -->
+<app-modal
+  [isOpen]="showModal()"
+  [title]="success() ? '✅ Exit Processed' : '🚪 Record Vehicle Exit'"
+  [loading]="processing()"
+  (closed)="closeModal()"
+>
+  <div class="space-y-4">
+    <!-- Success Message with Payment Info -->
+    @if (success() && exitResult()) {
+      <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+        <div class="flex items-start space-x-3">
+          <div class="text-3xl">✅</div>
+          <div class="flex-1">
+            <h4 class="font-bold text-green-800">Exit Processed Successfully!</h4>
+            
+            <!-- Payment Details -->
+            <div class="mt-3 grid grid-cols-2 gap-3 bg-white rounded-lg p-3">
+              <div>
+                <p class="text-xs text-gray-600">Duration</p>
+                <p class="font-semibold text-gray-900">
+                  {{ formatDuration(exitResult()?.durationMinutes) }}
+                </p>
+              </div>
+              <div>
+                <p class="text-xs text-gray-600">Total Cost</p>
+                <p class="font-bold text-xl text-green-600">
+                  {{ formatCurrency(exitResult()?.totalCost) }}
+                </p>
+              </div>
+              @if (exitResult()?.hourlyRate) {
+                <div>
+                  <p class="text-xs text-gray-600">Hourly Rate</p>
+                  <p class="font-semibold text-gray-900">
+                    {{ formatCurrency(exitResult()?.hourlyRate) }}
+                  </p>
+                </div>
+              }
+              @if (exitResult()?.paymentMethod) {
+                <div>
+                  <p class="text-xs text-gray-600">Payment Method</p>
+                  <p class="font-semibold text-gray-900">
+                    {{ exitResult()?.paymentMethod?.toUpperCase() }}
+                  </p>
+                </div>
+              }
+            </div>
+
+            @if (exitResult()?.exitTime) {
+              <p class="text-xs text-gray-600 mt-2">
+                Exit Time: {{ formatDateTime(exitResult()!.exitTime!) }}
+              </p>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Form -->
+    @if (!success()) {
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          License Plate Number *
+        </label>
+        <input
+          [(ngModel)]="exitData.plateNumber"
+          type="text"
+          class="glass-input w-full"
+          placeholder="e.g., ABC-1234"
+          required
+          [disabled]="processing()"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Payment Method
+        </label>
+        <select
+          [(ngModel)]="exitData.paymentMethod"
+          class="glass-input w-full"
+          [disabled]="processing()"
+        >
+          <option value="">Select payment method</option>
+          @for (method of paymentMethods; track method.value) {
+            <option [value]="method.value">{{ method.label }}</option>
+          }
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Notes
+        </label>
+        <textarea
+          [(ngModel)]="exitData.notes"
+          class="glass-input w-full"
+          rows="2"
+          placeholder="Additional notes (optional)"
+          [disabled]="processing()"
+        ></textarea>
+      </div>
+
+      <!-- Error Message -->
+      @if (errorMessage()) {
+        <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+          <p class="text-sm text-red-600">⚠️ {{ errorMessage() }}</p>
+        </div>
+      }
+
+      <!-- Info -->
+      <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
+        <p class="text-sm text-blue-700">
+          💡 Fee will be calculated automatically. First 30 minutes are FREE!
+        </p>
+      </div>
+    }
+  </div>
+
+  @if (!success()) {
+    <div slot="actions">
+      <app-glass-button variant="primary" (clicked)="processExit()" [disabled]="processing()">
+        {{ processing() ? 'Processing...' : '💳 Process Exit' }}
+      </app-glass-button>
+    </div>
+  }
+</app-modal>
+

@@ -1,0 +1,66 @@
+<app-page-layout
+  title="Organization Structure"
+  description="Manage departments and positions in your organization structure."
+  icon="🏢"
+  [actions]="pageActions()">
+  
+  <!-- Tabs -->
+  <app-tabs [tabs]="tabs()" [activeTab]="activeTab()" (activeTabChange)="onTabChange($event)">
+    
+    <!-- Departments Tab -->
+    <div *ngIf="activeTab() === 'departments'" class="space-y-6">
+      <app-data-table
+        [columns]="deptColumns"
+        [data]="departments()"
+        [actions]="deptActions"
+        [searchable]="true"
+      >
+        <div actions>
+          <app-glass-button (clicked)="loadDepartments()">
+            🔄 {{ 'common.refresh' | translate }}
+          </app-glass-button>
+        </div>
+      </app-data-table>
+
+      <!-- Department Modal Form -->
+      <app-modal-form
+        [isOpen]="showDeptModal()"
+        [title]="editingDept() ? 'Edit Department' : 'Add Department'"
+        [fields]="deptFormFields()"
+        [loading]="savingDept()"
+        [submitLabel]="'common.save' | translate"
+        [cancelLabel]="'common.cancel' | translate"
+        (closed)="closeDeptModal()"
+        (submitted)="onDeptFormSubmitted($event)"
+      />
+    </div>
+
+    <!-- Positions Tab -->
+    <div *ngIf="activeTab() === 'positions'" class="space-y-6">
+      <app-data-table
+        [columns]="posColumns"
+        [data]="positions()"
+        [actions]="posActions"
+        [searchable]="true"
+      >
+        <div actions>
+          <app-glass-button (clicked)="loadPositions()">
+            🔄 {{ 'common.refresh' | translate }}
+          </app-glass-button>
+        </div>
+      </app-data-table>
+
+      <!-- Position Modal Form -->
+      <app-modal-form
+        [isOpen]="showPosModal()"
+        [title]="editingPos() ? 'Edit Position' : 'Add Position'"
+        [fields]="posFormFields()"
+        [loading]="savingPos()"
+        [submitLabel]="'common.save' | translate"
+        [cancelLabel]="'common.cancel' | translate"
+        (closed)="closePosModal()"
+        (submitted)="onPosFormSubmitted($event)"
+      />
+    </div>
+  </app-tabs>
+</app-page-layout>

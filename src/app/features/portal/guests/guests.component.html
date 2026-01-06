@@ -1,0 +1,51 @@
+<app-page-layout
+  title="Guest Management"
+  description="Manage guest registrations, check-ins, and visitor records."
+  icon="👋"
+  [actions]="pageActions()">
+  
+  <!-- Statistics Cards -->
+  <app-statistics-grid [stats]="statisticsCards()" [columns]="3" />
+
+  <!-- Filters -->
+  <app-filter-section
+    [fields]="filterFields()"
+    [columns]="2"
+    (filterChange)="onFilterChange($event)"
+  />
+
+  <!-- Guests Table -->
+  <app-data-table
+    [columns]="columns"
+    [data]="guests()"
+    [actions]="actions"
+    [searchable]="true"
+  />
+
+  <!-- Add/Edit Guest Modal Form -->
+  <app-modal-form
+    [isOpen]="showModal()"
+    [title]="(editingGuest() ? 'Edit Guest' : 'Add Guest') | translate"
+    [fields]="guestFormFields()"
+    [loading]="saving()"
+    [submitLabel]="'common.save' | translate"
+    [cancelLabel]="'common.cancel' | translate"
+    (closed)="closeModal()"
+    (submitted)="onFormSubmitted($event)"
+  />
+
+  <!-- Empty State for Guests -->
+  @if (guests().length === 0 && !loading()) {
+    <app-empty-state
+      icon="👋"
+      [title]="'common.emptyState.title' | translate"
+      [description]="'No guests found. Add your first guest to get started.'"
+      [action]="{
+        label: 'Add Guest',
+        icon: '➕',
+        variant: 'primary',
+        onClick: openAddModal.bind(this)
+      }"
+    />
+  }
+</app-page-layout>

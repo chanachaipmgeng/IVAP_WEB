@@ -1,0 +1,58 @@
+<app-page-layout
+  title="RFID Cards Management"
+  description="Manage RFID cards for access control. Create, assign, and monitor RFID card usage."
+  icon="💳"
+  [actions]="pageActions()">
+  
+  <!-- Statistics Cards -->
+  <app-statistics-grid [stats]="statisticsCards()" [columns]="4" />
+
+  <!-- Error Message -->
+  @if (errorMessage()) {
+    <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+      <p class="text-red-800 text-sm">{{ errorMessage() }}</p>
+    </div>
+  }
+
+  <!-- Filters -->
+  <app-filter-section
+    [fields]="filterFields()"
+    [columns]="3"
+    (filterChange)="onFilterChange($event)"
+  />
+
+  <!-- RFID Cards Table -->
+  <app-data-table
+    [columns]="columns"
+    [data]="filteredCards()"
+    [actions]="actions"
+    [searchable]="false"
+  />
+
+  <!-- Pagination -->
+  <div class="flex items-center justify-between mt-4 text-gray-600 dark:text-gray-400">
+    <div class="text-sm">
+      Showing {{ (currentPage() - 1) * pageSize() + 1 }} - {{ currentPage() * pageSize() > total() ? total() : currentPage() * pageSize() }} of {{ total() }} cards
+    </div>
+    <div class="flex items-center gap-2">
+      <app-glass-button [disabled]="currentPage() === 1" (clicked)="currentPage.set(currentPage() - 1)">
+        &laquo; {{ 'common.previous' | translate }}
+      </app-glass-button>
+      <span class="font-semibold">{{ 'common.page' | translate }} {{ currentPage() }} {{ 'common.of' | translate }} {{ Math.ceil(total() / pageSize()) }}</span>
+      <app-glass-button [disabled]="currentPage() >= Math.ceil(total() / pageSize())" (clicked)="currentPage.set(currentPage() + 1)">
+        {{ 'common.next' | translate }} &raquo;
+      </app-glass-button>
+    </div>
+  </div>
+
+  <!-- Add/Edit Modal -->
+  <app-modal
+    [isOpen]="showModal()"
+    [title]="(selectedCard() ? 'Edit RFID Card' : 'Add RFID Card') | translate"
+    [loading]="isLoading()"
+    (closed)="closeModal()"
+    (confirmed)="saveCard()"
+  >
+    <!-- RFID Card form content -->
+  </app-modal>
+</app-page-layout>

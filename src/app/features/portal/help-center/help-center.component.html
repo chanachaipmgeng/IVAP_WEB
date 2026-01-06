@@ -1,0 +1,62 @@
+<div class="container mx-auto p-4 md:p-8 text-gray-800 dark:text-gray-200">
+  <!-- Header and Search -->
+  <div class="text-center mb-12">
+    <h1 class="text-4xl md:text-5xl font-bold mb-4">Help Center</h1>
+    <p class="text-lg text-gray-600 dark:text-gray-400 mb-6">How can we help you today?</p>
+    <div class="max-w-2xl mx-auto">
+      <input
+        type="search"
+        [value]="searchQuery()"
+        (input)="onSearchChange($any($event.target).value)"
+        placeholder="Search for articles... (e.g., how to add a user)"
+        class="glass-input w-full text-lg p-4 rounded-full"
+      />
+    </div>
+  </div>
+
+  <!-- Categories -->
+  <div class="mb-16">
+    <h2 class="text-2xl font-bold mb-6 text-center">Browse Categories</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <a 
+        *ngFor="let category of helpCategories()" 
+        [routerLink]="category.link"
+        class="block hover:no-underline cursor-pointer">
+        <app-glass-card customClass="h-full hover:border-primary-500/80 transition-all duration-300 transform hover:-translate-y-1">
+          <div class="p-6">
+            <div class="text-4xl mb-4">{{ category.icon }}</div>
+            <h3 class="text-xl font-bold mb-2">{{ category.title }}</h3>
+            <p class="text-gray-600 dark:text-gray-400">{{ category.description }}</p>
+          </div>
+        </app-glass-card>
+      </a>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div>
+    <h2 class="text-2xl font-bold mb-6 text-center">Frequently Asked Questions</h2>
+    <div *ngIf="filteredFaqs().length === 0 && searchQuery().trim()" class="text-center py-8">
+      <p class="text-gray-600 dark:text-gray-400">No results found for "{{ searchQuery() }}"</p>
+    </div>
+    <div class="max-w-3xl mx-auto space-y-4">
+      <div *ngFor="let item of filteredFaqs()" class="glass rounded-lg overflow-hidden">
+        <button (click)="toggleFaq(item)" class="w-full flex justify-between items-center p-5 font-semibold text-left hover:bg-opacity-50 transition-colors">
+          <span class="flex-1 text-left">{{ item.question }}</span>
+          <span class="text-2xl font-light transition-transform duration-300 ml-4" [class.rotate-45]="item.expanded">+</span>
+        </button>
+        <div 
+          class="overflow-hidden transition-all duration-300 ease-in-out"
+          [style.max-height]="item.expanded ? '500px' : '0'"
+          [style.opacity]="item.expanded ? '1' : '0'">
+          <div class="px-5 pb-5">
+            <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+              {{ item.answer }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

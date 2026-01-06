@@ -1,0 +1,40 @@
+<app-page-layout
+  title="Kiosk Device Management"
+  description="Manage kiosk devices for your company. Configure devices, link them to events, and monitor their status."
+  icon="🖥️"
+  [actions]="pageActions()">
+  
+  <!-- Devices Table -->
+  <app-data-table
+    [columns]="columns"
+    [data]="devices()"
+    [actions]="actions"
+    [searchable]="true"
+  >
+    <div actions>
+      <app-glass-button (clicked)="loadDevices()">
+        🔄 {{ 'common.refresh' | translate }}
+      </app-glass-button>
+    </div>
+  </app-data-table>
+
+  <!-- Add/Edit Device Modal -->
+  <app-modal
+    [isOpen]="showModal()"
+    [title]="(editingDevice() ? 'Edit Device' : 'Add Device') | translate"
+    [loading]="saving()"
+    (closed)="closeModal()"
+    (confirmed)="saveDevice()"
+  >
+    <!-- Device form content -->
+  </app-modal>
+
+  <!-- Link Event Modal -->
+  <app-modal
+    [isOpen]="showLinkEventModal()"
+    title="Link Device to Event"
+    (closed)="closeLinkEventModal()"
+  >
+    <!-- Link event content -->
+  </app-modal>
+</app-page-layout>

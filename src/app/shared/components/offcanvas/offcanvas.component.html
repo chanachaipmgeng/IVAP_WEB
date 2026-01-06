@@ -1,0 +1,61 @@
+<!-- Offcanvas Backdrop -->
+<div
+  *ngIf="mergedConfig.backdrop"
+  #backdrop
+  class="offcanvas-backdrop fixed top-0 left-0 w-screen h-screen bg-black/50 z-[1040] opacity-0 invisible transition-all"
+  [ngClass]="getBackdropClasses()"
+  [class.opacity-100]="isOpen"
+  [class.visible]="isOpen"
+  [style]="getBackdropStyles()"
+  (click)="onBackdropClick()">
+</div>
+
+<!-- Offcanvas Container -->
+<div
+  #offcanvas
+  class="offcanvas fixed bg-white/95 backdrop-blur-sm border border-black/10 shadow-lg z-[1050] opacity-0 invisible transition-all"
+  [ngClass]="getOffcanvasClasses().concat(customClass ? [customClass] : [])"
+  [class.opacity-100]="isOpen"
+  [class.visible]="isOpen"
+  [ngStyle]="getOffcanvasStyles()"
+  [attr.aria-hidden]="!isOpen"
+  [attr.aria-modal]="true"
+  [attr.aria-label]="ariaLabel || title"
+  role="dialog"
+  tabindex="-1">
+
+  <!-- Offcanvas Header -->
+  <div *ngIf="title || !loading" class="offcanvas-header flex items-center justify-between p-4 border-b border-black/10 bg-white/5" [ngClass]="getHeaderClasses()"
+    [class.flex-row]="mergedConfig.position === 'top' || mergedConfig.position === 'bottom'"
+    [class.flex-col]="mergedConfig.position === 'start' || mergedConfig.position === 'end'"
+    [class.items-start]="mergedConfig.position === 'start' || mergedConfig.position === 'end'"
+    [class.gap-2]="mergedConfig.position === 'start' || mergedConfig.position === 'end'">
+    <h5 *ngIf="title" class="offcanvas-title m-0 text-xl font-semibold text-gray-900 leading-tight" id="offcanvas-title">{{ title }}</h5>
+
+    <button
+      *ngIf="!loading"
+      type="button"
+      class="btn-close flex items-center justify-center w-8 h-8 bg-transparent border-none rounded-lg text-gray-600 cursor-pointer transition-all flex-shrink-0 hover:bg-black/10 hover:text-gray-900 focus:outline-2 focus:outline-primary-500 focus:outline-offset-2"
+      [ngClass]="getCloseButtonClasses()"
+      [class.ml-auto]="mergedConfig.position === 'top' || mergedConfig.position === 'bottom'"
+      [class.self-end]="mergedConfig.position === 'start' || mergedConfig.position === 'end'"
+      (click)="closeOffcanvas()"
+      [attr.aria-label]="'Close ' + (title || 'offcanvas')"
+      [attr.aria-describedby]="title ? 'offcanvas-title' : null">
+      <i class="fas fa-times text-sm" aria-hidden="true"></i>
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="offcanvas-loading flex flex-col items-center justify-center p-8 h-full text-gray-600">
+    <div class="loading-spinner w-8 h-8 border-2 border-black/10 border-t-primary-500 rounded-full animate-spin mb-4"></div>
+    <p class="m-0 text-sm">กำลังโหลด...</p>
+  </div>
+
+  <!-- Offcanvas Body -->
+  <div *ngIf="!loading" class="offcanvas-body p-4 overflow-y-auto flex-1" [ngClass]="getBodyClasses()"
+    [class.max-h-[calc(100%-4rem)]]="mergedConfig.position === 'top' || mergedConfig.position === 'bottom'"
+    [class.max-h-[calc(100%-6rem)]]="mergedConfig.position === 'start' || mergedConfig.position === 'end'">
+    <ng-content></ng-content>
+  </div>
+</div>

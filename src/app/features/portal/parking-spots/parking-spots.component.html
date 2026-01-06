@@ -1,0 +1,36 @@
+<app-page-layout
+  title="Parking Spots Management"
+  description="Manage parking spaces, monitor occupancy, and configure parking rates."
+  icon="🅿️"
+  [actions]="pageActions()">
+  
+  <!-- Statistics Cards -->
+  <app-statistics-grid [stats]="statisticsCards()" [columns]="4" />
+
+  <!-- Filters -->
+  <app-filter-section
+    [fields]="filterFields()"
+    [columns]="3"
+    [actionButton]="{ label: '🔍 Apply', variant: 'primary', onClick: applyFilters.bind(this) }"
+    (filterChange)="onFilterChange($event)"
+  />
+
+  <!-- Parking Spots Table -->
+  <app-data-table
+    [columns]="columns"
+    [data]="parkingSpots()"
+    [actions]="actions"
+    [searchable]="false"
+  />
+
+  <!-- Add/Edit Modal -->
+  <app-modal
+    [isOpen]="showModal()"
+    [title]="(editingSpot() ? 'Edit Parking Spot' : 'Add Parking Spot') | translate"
+    [loading]="saving()"
+    (closed)="closeModal()"
+    (confirmed)="saveSpot()"
+  >
+    <!-- Parking spot form content -->
+  </app-modal>
+</app-page-layout>

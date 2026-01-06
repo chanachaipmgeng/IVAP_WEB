@@ -1,0 +1,240 @@
+<div class="documentation-container min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-8 relative overflow-hidden">
+  <div class="documentation-content max-w-[1200px] mx-auto relative z-10">
+    <!-- Header -->
+    <div class="doc-header text-center mb-12 text-white">
+      <div class="doc-icon mb-6 animate-float">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14,2 14,8 20,8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10,9 9,9 8,9"></polyline>
+        </svg>
+      </div>
+      <h1 class="doc-title text-5xl font-black mb-4 leading-tight drop-shadow-md md:text-[40px] md:text-4xl">Documentation</h1>
+      <p class="doc-description text-xl opacity-90 leading-relaxed max-w-[700px] mx-auto md:text-lg">
+        Comprehensive guides, tutorials, and reference materials to help you get the most out of our platform.
+      </p>
+    </div>
+
+    <!-- Search Section -->
+    <div class="search-section mb-12">
+      <div class="search-container max-w-[700px] mx-auto">
+        <div class="search-input-wrapper relative flex items-center bg-white/95 backdrop-blur-sm rounded-xl px-4 py-3 shadow-lg transition-all focus-within:shadow-xl focus-within:-translate-y-0.5">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="search-icon text-gray-400 mr-3">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+          <input
+            type="text"
+            [(ngModel)]="searchQuery"
+            (input)="onSearchInput()"
+            placeholder="Search documentation, guides, and tutorials..."
+            class="search-input flex-1 border-none outline-none text-base text-gray-800 bg-transparent placeholder-gray-400"
+          />
+          <button
+            type="button"
+            (click)="searchQuery = ''; onSearchInput()"
+            class="clear-button bg-transparent border-none text-gray-400 cursor-pointer p-1 rounded transition-all hover:text-primary-500 hover:bg-gray-100"
+            *ngIf="searchQuery"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="categories-section mb-12">
+      <h3 class="categories-title text-xl font-bold text-white mb-6 text-center">Browse by Category</h3>
+      <div class="categories-grid grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 max-w-[900px] mx-auto md:grid-cols-1">
+        <button
+          *ngFor="let category of categories"
+          (click)="onCategoryChange(category.id)"
+          class="category-button flex items-center gap-4 px-6 py-6 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white cursor-pointer transition-all text-left hover:bg-white/20 hover:-translate-y-0.5 hover:shadow-lg"
+          [class.bg-white/95]="selectedCategory === category.id"
+          [class.text-gray-800]="selectedCategory === category.id"
+          [class.shadow-lg]="selectedCategory === category.id"
+        >
+          <span class="category-icon text-2xl flex-shrink-0">{{ category.icon }}</span>
+          <div class="category-content flex-1">
+            <span class="category-name block font-semibold text-base mb-1">{{ category.name }}</span>
+            <span class="category-count text-sm opacity-80">{{ category.count }} articles</span>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Results Count -->
+    <div class="results-section mb-8">
+      <div class="results-info text-center text-white">
+        <span class="results-count text-lg font-semibold">{{ getFilteredCount() }} articles found</span>
+        <span class="results-category text-sm opacity-80 ml-2" *ngIf="selectedCategory !== 'all'">
+          in {{ getCategoryName(selectedCategory) }}
+        </span>
+      </div>
+    </div>
+
+    <!-- No Results Message -->
+    <div class="no-results text-center p-16 px-8 bg-white/95 backdrop-blur-sm rounded-[20px] shadow-xl" *ngIf="!hasSearchResults()">
+      <div class="no-results-icon text-gray-400 mb-6">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14,2 14,8 20,8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10,9 9,9 8,9"></polyline>
+        </svg>
+      </div>
+      <h3 class="no-results-title text-xl font-bold text-gray-800 mb-4">{{ getSearchMessage() || 'No documentation found' }}</h3>
+      <p class="no-results-description text-base text-gray-600 mb-8 leading-relaxed">
+        Try searching with different keywords or browse by category.
+      </p>
+      <button (click)="searchQuery = ''; selectedCategory = 'all'; onSearchInput()" class="btn btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-base no-underline border-none cursor-pointer transition-all bg-indigo-500 text-white hover:bg-indigo-600 hover:-translate-y-0.5 hover:shadow-lg">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M1 4v6h6"></path>
+          <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+        </svg>
+        Clear Filters
+      </button>
+    </div>
+
+    <!-- Documentation Sections -->
+    <div class="doc-sections flex flex-col gap-4 mb-12" *ngIf="hasSearchResults()">
+      <div
+        *ngFor="let section of filteredSections"
+        class="doc-section bg-white/95 backdrop-blur-sm rounded-xl shadow-md overflow-hidden transition-all hover:shadow-lg hover:-translate-y-0.5"
+        [class.shadow-xl]="isSectionSelected(section.id)"
+        [class.expanded]="isSectionSelected(section.id)"
+      >
+        <div class="section-header flex items-start justify-between px-8 py-8 cursor-pointer transition-all hover:bg-gray-50 md:px-6" (click)="toggleSection(section.id)">
+          <div class="section-content flex-1 mr-4 md:mr-2">
+            <div class="section-title-row flex items-center justify-between mb-3 flex-wrap gap-4 md:flex-col md:items-start md:gap-3">
+              <h4 class="section-title text-xl font-bold text-gray-800 m-0 leading-tight">{{ section.title }}</h4>
+              <div class="section-badges flex gap-2 flex-wrap md:self-start">
+                <span class="difficulty-badge px-3 py-1 rounded-xl text-xs font-semibold uppercase" [class]="getDifficultyColor(section.difficulty)"
+                  [class.bg-success-100]="getDifficultyColor(section.difficulty).includes('success')"
+                  [class.text-success-800]="getDifficultyColor(section.difficulty).includes('success')"
+                  [class.bg-warning-100]="getDifficultyColor(section.difficulty).includes('warning')"
+                  [class.text-warning-800]="getDifficultyColor(section.difficulty).includes('warning')"
+                  [class.bg-error-100]="getDifficultyColor(section.difficulty).includes('error')"
+                  [class.text-error-800]="getDifficultyColor(section.difficulty).includes('error')"
+                  [class.bg-info-100]="getDifficultyColor(section.difficulty).includes('info')"
+                  [class.text-info-800]="getDifficultyColor(section.difficulty).includes('info')">
+                  {{ getDifficultyText(section.difficulty) }}
+                </span>
+                <span class="read-time-badge px-3 py-1 bg-gray-200 text-gray-700 rounded-xl text-xs font-semibold">
+                  {{ section.estimatedReadTime }} min read
+                </span>
+              </div>
+            </div>
+            <p class="section-description text-base text-gray-700 leading-relaxed m-0 mb-4">{{ section.description }}</p>
+            <div class="section-meta flex items-center gap-4 text-sm text-gray-600 mb-4 md:flex-col md:items-start md:gap-2">
+              <span class="section-category flex items-center gap-2">
+                <span class="category-icon text-sm">{{ getCategoryIcon(section.category) }}</span>
+                {{ getCategoryName(section.category) }}
+              </span>
+              <span class="section-date">
+                Updated {{ section.lastUpdated | date:'MMM d, y' }}
+              </span>
+            </div>
+            <div class="section-tags flex flex-wrap gap-2" *ngIf="section.tags.length > 0">
+              <span class="tag bg-indigo-500 text-white px-3 py-1 rounded-xl text-xs font-medium" *ngFor="let tag of section.tags">{{ tag }}</span>
+            </div>
+          </div>
+          <div class="section-actions">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              class="expand-icon text-gray-400 transition-transform"
+              [class.rotate-180]="isSectionSelected(section.id)"
+            >
+              <polyline points="6,9 12,15 18,9"></polyline>
+            </svg>
+          </div>
+        </div>
+
+        <div class="section-content-detail border-t border-gray-200 px-8 py-8 bg-gray-50 md:px-6" *ngIf="isSectionSelected(section.id)">
+          <div class="content-body">
+            <div class="content-text mb-8">
+              <p class="text-base text-gray-700 leading-relaxed m-0">{{ section.content }}</p>
+            </div>
+
+            <div class="content-steps mb-8" *ngIf="section.steps.length > 0">
+              <h5 class="steps-title text-lg font-semibold text-gray-800 m-0 mb-4">Steps:</h5>
+              <ol class="steps-list list-none p-0 m-0">
+                <li class="step-item py-3 border-b border-gray-200 text-sm text-gray-700 leading-relaxed relative pl-8 last:border-b-0" *ngFor="let step of section.steps">{{ step }}</li>
+              </ol>
+            </div>
+
+            <div class="content-actions flex gap-4 flex-wrap md:flex-col md:items-start">
+              <button
+                type="button"
+                (click)="downloadPDF(section.id)"
+                class="action-button flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 rounded-lg text-gray-700 text-sm font-medium cursor-pointer transition-all hover:border-primary-500 hover:text-primary-500 hover:bg-gray-50 md:w-full md:justify-center"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7,10 12,15 17,10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Download PDF
+              </button>
+              <button
+                type="button"
+                (click)="printSection(section.id)"
+                class="action-button flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 rounded-lg text-gray-700 text-sm font-medium cursor-pointer transition-all hover:border-primary-500 hover:text-primary-500 hover:bg-gray-50 md:w-full md:justify-center"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="6,9 6,2 18,2 18,9"></polyline>
+                  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                  <polyline points="6,14 18,14 18,22 6,22"></polyline>
+                </svg>
+                Print
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Support -->
+    <div class="contact-section">
+      <div class="contact-card flex items-center gap-8 px-8 py-8 bg-white/95 backdrop-blur-sm rounded-[20px] shadow-xl md:flex-col md:text-center">
+        <div class="contact-icon text-indigo-500 flex-shrink-0">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+          </svg>
+        </div>
+        <div class="contact-content flex-1">
+          <h3 class="contact-title text-2xl font-bold text-gray-800 m-0 mb-3">Need More Help?</h3>
+          <p class="contact-description text-base text-gray-600 leading-relaxed m-0 mb-6">
+            Can't find what you're looking for? Our support team is here to help you with any questions.
+          </p>
+          <div class="contact-actions flex gap-4 flex-wrap md:justify-center">
+            <button (click)="contactSupport()" class="btn btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-base no-underline border-none cursor-pointer transition-all bg-indigo-500 text-white hover:bg-indigo-600 hover:-translate-y-0.5 hover:shadow-lg">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+              Contact Support
+            </button>
+            <a href="mailto:support@company.com" class="btn btn-outline inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-base no-underline border-2 border-indigo-500 cursor-pointer transition-all bg-transparent text-indigo-500 hover:bg-indigo-500 hover:text-white hover:-translate-y-0.5">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              Email Us
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

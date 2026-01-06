@@ -1,0 +1,466 @@
+<div class="advanced-ui-demo p-8 max-w-[1400px] mx-auto">
+  <!-- Header -->
+  <div class="demo-header text-center mb-12">
+    <h1 class="demo-title text-5xl font-bold text-white m-0 mb-4 bg-gradient-to-r from-primary-500 to-purple-600 bg-clip-text text-transparent">Advanced UI Components Demo</h1>
+    <p class="demo-description text-xl text-gray-400 m-0 max-w-[600px] mx-auto">
+      ทดสอบ Advanced UI Components: Progress Bar, Tooltip, Modal
+    </p>
+  </div>
+
+  <!-- Demo Statistics -->
+  <div class="demo-stats mb-8">
+    <app-glass-card>
+      <h2 class="m-0 mb-4 text-white text-lg">สถิติ Demo</h2>
+      <div class="stats-grid grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-6 mb-8">
+        <div class="stat-card flex items-center gap-4 p-6 bg-white/5 rounded-2xl border border-white/10 transition-all hover:bg-white/10 hover:-translate-y-0.5">
+          <div class="stat-icon w-15 h-15 rounded-full bg-gradient-to-r from-primary-500 to-purple-600 flex items-center justify-center text-2xl text-white">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="stat-content flex-1">
+            <div class="stat-value text-3xl font-bold text-white m-0 leading-none">{{ getDemoStats().progressPercentage }}%</div>
+            <div class="stat-label text-gray-400 text-sm mt-1 font-medium">Progress Value</div>
+          </div>
+        </div>
+
+        <div class="stat-card flex items-center gap-4 p-6 bg-white/5 rounded-2xl border border-white/10 transition-all hover:bg-white/10 hover:-translate-y-0.5">
+          <div class="stat-icon w-15 h-15 rounded-full bg-gradient-to-r from-primary-500 to-purple-600 flex items-center justify-center text-2xl text-white">
+            <i class="fas fa-info-circle"></i>
+          </div>
+          <div class="stat-content flex-1">
+            <div class="stat-value text-3xl font-bold text-white m-0 leading-none">{{ getDemoStats().tooltipPosition }}</div>
+            <div class="stat-label text-gray-400 text-sm mt-1 font-medium">Tooltip Position</div>
+          </div>
+        </div>
+
+        <div class="stat-card flex items-center gap-4 p-6 bg-white/5 rounded-2xl border border-white/10 transition-all hover:bg-white/10 hover:-translate-y-0.5">
+          <div class="stat-icon w-15 h-15 rounded-full bg-gradient-to-r from-primary-500 to-purple-600 flex items-center justify-center text-2xl text-white">
+            <i class="fas fa-window-maximize"></i>
+          </div>
+          <div class="stat-content flex-1">
+            <div class="stat-value text-3xl font-bold text-white m-0 leading-none">{{ getDemoStats().modalSize }}</div>
+            <div class="stat-label text-gray-400 text-sm mt-1 font-medium">Modal Size</div>
+          </div>
+        </div>
+
+        <div class="stat-card flex items-center gap-4 p-6 bg-white/5 rounded-2xl border border-white/10 transition-all hover:bg-white/10 hover:-translate-y-0.5">
+          <div class="stat-icon w-15 h-15 rounded-full bg-gradient-to-r from-primary-500 to-purple-600 flex items-center justify-center text-2xl text-white">
+            <i class="fas fa-play"></i>
+          </div>
+          <div class="stat-content flex-1">
+            <div class="stat-value text-3xl font-bold text-white m-0 leading-none">{{ getDemoStats().autoProgress ? 'ON' : 'OFF' }}</div>
+            <div class="stat-label text-gray-400 text-sm mt-1 font-medium">Auto Progress</div>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Demo Navigation -->
+  <div class="demo-navigation mb-8">
+    <app-glass-card>
+      <h2 class="m-0 mb-4 text-white text-lg">เลือก Demo</h2>
+      <div class="nav-buttons flex gap-4 flex-wrap">
+        <app-glass-button
+          [variant]="selectedDemo === 'progress' ? 'primary' : 'secondary'"
+          (click)="selectedDemo = 'progress'">
+          <i class="fas fa-chart-line"></i>
+          Progress Bar
+        </app-glass-button>
+        <app-glass-button
+          [variant]="selectedDemo === 'tooltip' ? 'primary' : 'secondary'"
+          (click)="selectedDemo = 'tooltip'">
+          <i class="fas fa-info-circle"></i>
+          Tooltip
+        </app-glass-button>
+        <app-glass-button
+          [variant]="selectedDemo === 'modal' ? 'primary' : 'secondary'"
+          (click)="selectedDemo = 'modal'">
+          <i class="fas fa-window-maximize"></i>
+          Modal
+        </app-glass-button>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Progress Bar Demo -->
+  <div *ngIf="selectedDemo === 'progress'" class="demo-section">
+    <app-glass-card>
+      <h2>Progress Bar Demo</h2>
+
+      <!-- Progress Bar Controls -->
+      <div class="progress-controls">
+        <div class="control-group">
+          <label>Progress Value: {{ progressValue }}%</label>
+          <input
+            type="range"
+            [(ngModel)]="progressValue"
+            [max]="progressMax"
+            min="0"
+            class="progress-slider">
+        </div>
+
+        <div class="control-group">
+          <label>Progress Label:</label>
+          <input
+            type="text"
+            [(ngModel)]="progressLabel"
+            placeholder="Enter progress label"
+            class="progress-input">
+        </div>
+
+        <div class="control-group">
+          <label>Progress Color:</label>
+          <select [(ngModel)]="progressConfig.color" class="progress-select">
+            <option value="primary">Primary</option>
+            <option value="secondary">Secondary</option>
+            <option value="success">Success</option>
+            <option value="warning">Warning</option>
+            <option value="danger">Danger</option>
+            <option value="info">Info</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>Progress Size:</label>
+          <select [(ngModel)]="progressConfig.size" class="progress-select">
+            <option value="sm">Small</option>
+            <option value="md">Medium</option>
+            <option value="lg">Large</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input
+              type="checkbox"
+              [(ngModel)]="progressConfig.animated"
+              class="progress-checkbox">
+            Animated
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input
+              type="checkbox"
+              [(ngModel)]="progressConfig.striped"
+              class="progress-checkbox">
+            Striped
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input
+              type="checkbox"
+              [(ngModel)]="autoProgress"
+              (change)="toggleAutoProgress()"
+              class="progress-checkbox">
+            Auto Progress
+          </label>
+        </div>
+      </div>
+
+      <!-- Progress Bar Display -->
+      <div class="progress-display">
+        <h3>Progress Bar Preview</h3>
+        <app-progress-bar
+          [value]="progressValue"
+          [max]="progressMax"
+          [label]="progressLabel"
+          [config]="progressConfig">
+        </app-progress-bar>
+
+        <div class="progress-status">
+          <p>Status: {{ getProgressStatus() }}</p>
+          <p>Color: {{ getProgressColor() }}</p>
+        </div>
+      </div>
+
+      <!-- Progress Bar Examples -->
+      <div class="progress-examples">
+        <h3>Progress Bar Examples</h3>
+        <div class="examples-grid">
+          <div *ngFor="let example of progressExamples" class="example-item">
+            <h4>{{ example.label }}</h4>
+            <app-progress-bar
+              [value]="example.value"
+              [max]="100"
+              [label]="example.label"
+              [config]="{ color: example.color, size: 'md' }">
+            </app-progress-bar>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Tooltip Demo -->
+  <div *ngIf="selectedDemo === 'tooltip'" class="demo-section">
+    <app-glass-card>
+      <h2>Tooltip Demo</h2>
+
+      <!-- Tooltip Controls -->
+      <div class="tooltip-controls">
+        <div class="control-group">
+          <label>Tooltip Content:</label>
+          <input
+            type="text"
+            [(ngModel)]="tooltipContent"
+            placeholder="Enter tooltip content"
+            class="tooltip-input">
+        </div>
+
+        <div class="control-group">
+          <label>Position:</label>
+          <select [(ngModel)]="tooltipConfig.position" class="tooltip-select">
+            <option value="top">Top</option>
+            <option value="bottom">Bottom</option>
+            <option value="left">Left</option>
+            <option value="right">Right</option>
+            <option value="auto">Auto</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>Theme:</label>
+          <select [(ngModel)]="tooltipConfig.theme" class="tooltip-select">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="primary">Primary</option>
+            <option value="success">Success</option>
+            <option value="warning">Warning</option>
+            <option value="danger">Danger</option>
+            <option value="info">Info</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>Size:</label>
+          <select [(ngModel)]="tooltipConfig.size" class="tooltip-select">
+            <option value="sm">Small</option>
+            <option value="md">Medium</option>
+            <option value="lg">Large</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input
+              type="checkbox"
+              [(ngModel)]="tooltipConfig.showArrow"
+              class="tooltip-checkbox">
+            Show Arrow
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input
+              type="checkbox"
+              [(ngModel)]="tooltipConfig.animation"
+              class="tooltip-checkbox">
+            Animation
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input
+              type="checkbox"
+              [(ngModel)]="tooltipConfig.interactive"
+              class="tooltip-checkbox">
+            Interactive
+          </label>
+        </div>
+      </div>
+
+      <!-- Tooltip Display -->
+      <div class="tooltip-display">
+        <h3>Tooltip Preview</h3>
+        <div class="tooltip-preview">
+          <app-tooltip
+            [content]="tooltipContent"
+            [config]="tooltipConfig">
+            <app-glass-button variant="primary">
+              Hover me for tooltip
+            </app-glass-button>
+          </app-tooltip>
+        </div>
+      </div>
+
+      <!-- Tooltip Examples -->
+      <div class="tooltip-examples">
+        <h3>Tooltip Examples</h3>
+        <div class="examples-grid">
+          <div *ngFor="let example of tooltipExamples" class="example-item">
+            <app-tooltip
+              [content]="example.content"
+              [config]="{
+                position: example.position,
+                theme: example.theme,
+                size: 'md',
+                showArrow: true,
+                animation: true,
+                interactive: example.interactive || false
+              }">
+              <app-glass-button variant="secondary">
+                {{ example.content }}
+              </app-glass-button>
+            </app-tooltip>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Modal Demo -->
+  <div *ngIf="selectedDemo === 'modal'" class="demo-section">
+    <app-glass-card>
+      <h2>Modal Demo</h2>
+
+      <!-- Modal Controls -->
+      <div class="modal-controls">
+        <div class="control-group">
+          <label>Modal Title:</label>
+          <input
+            type="text"
+            [(ngModel)]="modalTitle"
+            placeholder="Enter modal title"
+            class="modal-input">
+        </div>
+
+        <div class="control-group">
+          <label>Modal Size:</label>
+          <select [(ngModel)]="modalConfig.size" class="modal-select">
+            <option value="sm">Small</option>
+            <option value="md">Medium</option>
+            <option value="lg">Large</option>
+            <option value="xl">Extra Large</option>
+            <option value="full">Full Screen</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input
+              type="checkbox"
+              [(ngModel)]="modalConfig.centered"
+              class="modal-checkbox">
+            Centered
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input
+              type="checkbox"
+              [(ngModel)]="modalConfig.scrollable"
+              class="modal-checkbox">
+            Scrollable
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input
+              type="checkbox"
+              [(ngModel)]="modalConfig.animation"
+              class="modal-checkbox">
+            Animation
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input
+              type="checkbox"
+              [(ngModel)]="modalConfig.closeOnEscape"
+              class="modal-checkbox">
+            Close on Escape
+          </label>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input
+              type="checkbox"
+              [(ngModel)]="modalConfig.closeOnBackdrop"
+              class="modal-checkbox">
+            Close on Backdrop
+          </label>
+        </div>
+      </div>
+
+      <!-- Modal Display -->
+      <div class="modal-display">
+        <h3>Modal Preview</h3>
+        <div class="modal-preview">
+          <app-glass-button
+            variant="primary"
+            (click)="openModal()">
+            Open Modal
+          </app-glass-button>
+        </div>
+      </div>
+
+      <!-- Modal Examples -->
+      <div class="modal-examples">
+        <h3>Modal Examples</h3>
+        <div class="examples-grid">
+          <div *ngFor="let example of modalExamples" class="example-item">
+            <h4>{{ example.title }}</h4>
+            <app-glass-button
+              variant="secondary"
+              (click)="modalTitle = example.title; modalConfig.size = example.size; openModal()">
+              Open {{ example.title }}
+            </app-glass-button>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Modal Component -->
+  <app-modal
+    [isOpen]="isModalOpen"
+    [title]="modalTitle"
+    [config]="modalConfig"
+    [closable]="true"
+    (opened)="onModalOpened()"
+    (closed)="onModalClosed()"
+    (backdropClick)="onBackdropClick()">
+
+    <div class="modal-content-demo">
+      <h3>Modal Content Demo</h3>
+      <p>นี่คือเนื้อหาของ Modal Demo</p>
+      <p>คุณสามารถปรับแต่งขนาด, การแสดงผล, และพฤติกรรมต่างๆ ได้</p>
+
+      <div class="modal-features">
+        <h4>Features:</h4>
+        <ul>
+          <li>Responsive Design</li>
+          <li>Keyboard Navigation</li>
+          <li>Focus Management</li>
+          <li>Animation Support</li>
+          <li>Backdrop Control</li>
+          <li>Size Variants</li>
+        </ul>
+      </div>
+    </div>
+
+    <div slot="footer" class="modal-footer-demo">
+      <app-glass-button
+        variant="secondary"
+        (click)="closeModal()">
+        Cancel
+      </app-glass-button>
+      <app-glass-button
+        variant="primary"
+        (click)="closeModal()">
+        OK
+      </app-glass-button>
+    </div>
+  </app-modal>
+</div>
+

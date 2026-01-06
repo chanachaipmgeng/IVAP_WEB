@@ -1,0 +1,268 @@
+<div class="advanced-data-table-demo-container p-8 max-w-[1400px] mx-auto min-h-screen bg-gradient-to-br from-primary-500 to-purple-600">
+  <!-- Header -->
+  <div class="demo-header text-center mb-8 text-white">
+    <h1 class="demo-title text-4xl font-bold text-white m-0 mb-4 flex items-center justify-center gap-4">
+      <i class="fas fa-table text-primary-500"></i>
+      Advanced Data Table Demo
+    </h1>
+    <p class="demo-description text-lg opacity-90 m-0">
+      ทดสอบ Advanced Data Table Component สำหรับการแสดงข้อมูลแบบตาราง
+    </p>
+  </div>
+
+  <!-- Demo Controls -->
+  <div class="demo-controls mb-8">
+    <app-glass-card>
+      <div class="controls-section">
+        <h3 class="m-0 mb-6 text-white text-xl font-semibold">การตั้งค่า Table</h3>
+
+        <div class="control-group flex items-center gap-4 mb-4">
+          <label class="text-white font-medium min-w-[120px] flex items-center gap-2">ขนาด:</label>
+          <select [(ngModel)]="selectedSize" (change)="updateConfig()" class="px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-white text-sm min-w-[120px] focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20">
+            <option *ngFor="let option of getSizeOptions()" [value]="option.value" class="bg-gray-800 text-white">
+              {{ option.label }}
+            </option>
+          </select>
+        </div>
+
+        <div class="control-group flex items-center gap-4 mb-4">
+          <label class="text-white font-medium min-w-[120px] flex items-center gap-2">Page Size:</label>
+          <select [(ngModel)]="pageSize" (change)="updateConfig()" class="px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-white text-sm min-w-[120px] focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20">
+            <option value="5" class="bg-gray-800 text-white">5</option>
+            <option value="10" class="bg-gray-800 text-white">10</option>
+            <option value="25" class="bg-gray-800 text-white">25</option>
+            <option value="50" class="bg-gray-800 text-white">50</option>
+          </select>
+        </div>
+
+        <div class="control-group flex items-center gap-4 mb-4">
+          <label class="text-white font-medium min-w-[120px] flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" [(ngModel)]="striped" (change)="updateConfig()" class="m-0">
+            Striped Rows
+          </label>
+        </div>
+
+        <div class="control-group flex items-center gap-4 mb-4">
+          <label class="text-white font-medium min-w-[120px] flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" [(ngModel)]="hover" (change)="updateConfig()" class="m-0">
+            Hover Effect
+          </label>
+        </div>
+
+        <div class="control-group flex items-center gap-4 mb-4">
+          <label class="text-white font-medium min-w-[120px] flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" [(ngModel)]="bordered" (change)="updateConfig()" class="m-0">
+            Bordered
+          </label>
+        </div>
+
+        <div class="control-group flex items-center gap-4 mb-4">
+          <label class="text-white font-medium min-w-[120px] flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" [(ngModel)]="compact" (change)="updateConfig()" class="m-0">
+            Compact
+          </label>
+        </div>
+
+        <div class="control-group flex items-center gap-4 mb-4">
+          <label class="text-white font-medium min-w-[120px] flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" [(ngModel)]="pagination" (change)="updateConfig()" class="m-0">
+            Pagination
+          </label>
+        </div>
+
+        <div class="control-group flex items-center gap-4 mb-4">
+          <label class="text-white font-medium min-w-[120px] flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" [(ngModel)]="sortable" (change)="updateConfig()" class="m-0">
+            Sortable
+          </label>
+        </div>
+
+        <div class="control-group flex items-center gap-4 mb-4">
+          <label class="text-white font-medium min-w-[120px] flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" [(ngModel)]="filterable" (change)="updateConfig()" class="m-0">
+            Filterable
+          </label>
+        </div>
+
+        <div class="control-group flex items-center gap-4 mb-4">
+          <label class="text-white font-medium min-w-[120px] flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" [(ngModel)]="selectable" (change)="updateConfig()" class="m-0">
+            Selectable
+          </label>
+        </div>
+
+        <div class="control-group flex items-center gap-4 mb-4">
+          <label class="text-white font-medium min-w-[120px] flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" [(ngModel)]="actionsEnabled" (change)="updateConfig()" class="m-0">
+            Actions
+          </label>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Demo Actions -->
+  <div class="demo-actions mb-8">
+    <app-glass-card>
+      <div class="actions-section">
+        <h3 class="m-0 mb-6 text-white text-xl font-semibold">การจัดการข้อมูล</h3>
+
+        <div class="action-buttons flex gap-4 flex-wrap md:flex-col">
+          <app-glass-button
+            variant="primary"
+            (click)="addEmployee()"
+            class="flex-1 min-w-[150px] md:min-w-0">
+            <i class="fas fa-plus"></i>
+            เพิ่มพนักงาน
+          </app-glass-button>
+
+          <app-glass-button
+            variant="secondary"
+            (click)="loadSampleData()"
+            class="flex-1 min-w-[150px] md:min-w-0">
+            <i class="fas fa-refresh"></i>
+            โหลดข้อมูลตัวอย่าง
+          </app-glass-button>
+
+          <app-glass-button
+            variant="danger"
+            (click)="clearData()"
+            class="flex-1 min-w-[150px] md:min-w-0">
+            <i class="fas fa-trash"></i>
+            ล้างข้อมูลทั้งหมด
+          </app-glass-button>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Advanced Data Table -->
+  <div class="table-demo mb-8">
+    <app-glass-card>
+      <div class="table-section">
+        <h3 class="m-0 mb-6 text-white text-xl font-semibold">ตารางข้อมูลพนักงาน</h3>
+
+        <app-data-table
+          [data]="sampleData"
+          [columns]="columns"
+          [actions]="actions"
+          [pageSize]="pageSize"
+          [enableColumnFilters]="enableColumnFilters"
+          [enableMultiSort]="enableMultiSort"
+          [selectable]="selectable"
+          [showExport]="showExport"
+          [exportFormats]="exportFormats"
+          [emptyText]="emptyText"
+          [emptyIcon]="emptyIcon"
+          (selectionChange)="onSelectionChange($event)"
+          (sorted)="onSortChange($event)"
+          (filterChange)="onFilterChange($event)"
+          (pageChange)="onPageChange($event)">
+        </app-data-table>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Statistics -->
+  <div class="demo-stats mb-8">
+    <app-glass-card>
+      <div class="stats-section">
+        <h3 class="m-0 mb-6 text-white text-xl font-semibold">สถิติ Table</h3>
+
+        <div class="stats-grid grid grid-cols-[repeat(auto-fit,minmax(120px,1fr))] gap-4 md:grid-cols-2">
+          <div class="stat-item text-center p-4 bg-white/5 rounded-lg border border-white/10">
+            <div class="stat-value text-2xl font-bold text-primary-500 mb-2">{{ getTableStats().totalRows }}</div>
+            <div class="stat-label text-sm text-white/80 font-medium">ข้อมูลทั้งหมด</div>
+          </div>
+
+          <div class="stat-item text-center p-4 bg-white/5 rounded-lg border border-white/10">
+            <div class="stat-value text-2xl font-bold text-primary-500 mb-2">{{ getTableStats().selectedRows }}</div>
+            <div class="stat-label text-sm text-white/80 font-medium">เลือกแล้ว</div>
+          </div>
+
+          <div class="stat-item text-center p-4 bg-white/5 rounded-lg border border-white/10">
+            <div class="stat-value text-2xl font-bold text-primary-500 mb-2">{{ getTableStats().size }}</div>
+            <div class="stat-label text-sm text-white/80 font-medium">ขนาด</div>
+          </div>
+
+          <div class="stat-item text-center p-4 bg-white/5 rounded-lg border border-white/10">
+            <div class="stat-value text-2xl font-bold text-primary-500 mb-2">{{ getTableStats().pageSize }}</div>
+            <div class="stat-label text-sm text-white/80 font-medium">ต่อหน้า</div>
+          </div>
+
+          <div class="stat-item text-center p-4 bg-white/5 rounded-lg border border-white/10">
+            <div class="stat-value text-2xl font-bold text-primary-500 mb-2">{{ getTableStats().striped ? 'เปิด' : 'ปิด' }}</div>
+            <div class="stat-label text-sm text-white/80 font-medium">Striped</div>
+          </div>
+
+          <div class="stat-item text-center p-4 bg-white/5 rounded-lg border border-white/10">
+            <div class="stat-value text-2xl font-bold text-primary-500 mb-2">{{ getTableStats().hover ? 'เปิด' : 'ปิด' }}</div>
+            <div class="stat-label text-sm text-white/80 font-medium">Hover</div>
+          </div>
+
+          <div class="stat-item text-center p-4 bg-white/5 rounded-lg border border-white/10">
+            <div class="stat-value text-2xl font-bold text-primary-500 mb-2">{{ getTableStats().sortable ? 'เปิด' : 'ปิด' }}</div>
+            <div class="stat-label text-sm text-white/80 font-medium">Sortable</div>
+          </div>
+
+          <div class="stat-item text-center p-4 bg-white/5 rounded-lg border border-white/10">
+            <div class="stat-value text-2xl font-bold text-primary-500 mb-2">{{ getTableStats().filterable ? 'เปิด' : 'ปิด' }}</div>
+            <div class="stat-label text-sm text-white/80 font-medium">Filterable</div>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Features Overview -->
+  <div class="features-overview">
+    <app-glass-card>
+      <div class="features-section">
+        <h3 class="m-0 mb-6 text-white text-xl font-semibold">ฟีเจอร์ Advanced Data Table</h3>
+
+        <div class="features-grid grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-6 md:grid-cols-1 md:gap-4">
+          <div class="feature-item text-center p-6 bg-white/5 rounded-xl border border-white/10 transition-all hover:-translate-y-0.5 hover:bg-white/10">
+            <i class="fas fa-check-circle text-3xl text-success-500 mb-4"></i>
+            <h4 class="text-white text-lg font-semibold m-0 mb-2">Sorting & Filtering</h4>
+            <p class="text-white/80 text-sm m-0 leading-relaxed">เรียงลำดับและกรองข้อมูลได้</p>
+          </div>
+
+          <div class="feature-item text-center p-6 bg-white/5 rounded-xl border border-white/10 transition-all hover:-translate-y-0.5 hover:bg-white/10">
+            <i class="fas fa-check-circle text-3xl text-success-500 mb-4"></i>
+            <h4 class="text-white text-lg font-semibold m-0 mb-2">Pagination</h4>
+            <p class="text-white/80 text-sm m-0 leading-relaxed">แบ่งหน้าข้อมูลได้</p>
+          </div>
+
+          <div class="feature-item text-center p-6 bg-white/5 rounded-xl border border-white/10 transition-all hover:-translate-y-0.5 hover:bg-white/10">
+            <i class="fas fa-check-circle text-3xl text-success-500 mb-4"></i>
+            <h4 class="text-white text-lg font-semibold m-0 mb-2">Selection</h4>
+            <p class="text-white/80 text-sm m-0 leading-relaxed">เลือกข้อมูลได้หลายรายการ</p>
+          </div>
+
+          <div class="feature-item text-center p-6 bg-white/5 rounded-xl border border-white/10 transition-all hover:-translate-y-0.5 hover:bg-white/10">
+            <i class="fas fa-check-circle text-3xl text-success-500 mb-4"></i>
+            <h4 class="text-white text-lg font-semibold m-0 mb-2">Actions</h4>
+            <p class="text-white/80 text-sm m-0 leading-relaxed">ดำเนินการกับข้อมูลได้</p>
+          </div>
+
+          <div class="feature-item text-center p-6 bg-white/5 rounded-xl border border-white/10 transition-all hover:-translate-y-0.5 hover:bg-white/10">
+            <i class="fas fa-check-circle text-3xl text-success-500 mb-4"></i>
+            <h4 class="text-white text-lg font-semibold m-0 mb-2">Responsive</h4>
+            <p class="text-white/80 text-sm m-0 leading-relaxed">รองรับทุกขนาดหน้าจอ</p>
+          </div>
+
+          <div class="feature-item text-center p-6 bg-white/5 rounded-xl border border-white/10 transition-all hover:-translate-y-0.5 hover:bg-white/10">
+            <i class="fas fa-check-circle text-3xl text-success-500 mb-4"></i>
+            <h4 class="text-white text-lg font-semibold m-0 mb-2">Export</h4>
+            <p class="text-white/80 text-sm m-0 leading-relaxed">ส่งออกข้อมูลได้</p>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+</div>
+
+
+
+
+

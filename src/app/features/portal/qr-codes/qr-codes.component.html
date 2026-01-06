@@ -1,0 +1,43 @@
+<app-page-layout
+  title="QR Code Management"
+  description="Create, scan, and manage QR codes for access control and event check-in."
+  icon="🔲"
+  [actions]="pageActions()">
+  
+  <!-- Statistics Cards -->
+  <app-statistics-grid [stats]="statisticsCards()" [columns]="4" />
+
+  <!-- Filters -->
+  <app-filter-section
+    [fields]="filterFields()"
+    [columns]="3"
+    (filterChange)="onFilterChange($event)"
+  />
+
+  <!-- QR Codes Table -->
+  <app-data-table
+    [columns]="columns"
+    [data]="filteredQRCodes()"
+    [actions]="actions"
+    [searchable]="false"
+  />
+
+  <!-- Create/Edit Modal -->
+  <app-modal
+    [isOpen]="showModal()"
+    title="Create QR Code"
+    [loading]="isLoading()"
+    (closed)="closeModal()"
+  >
+    <!-- QR Code form content -->
+  </app-modal>
+
+  <!-- Scan Modal -->
+  <app-modal
+    [isOpen]="showScanModal()"
+    title="Scan QR Code"
+    (closed)="showScanModal.set(false)"
+  >
+    <!-- QR Code scanner content -->
+  </app-modal>
+</app-page-layout>

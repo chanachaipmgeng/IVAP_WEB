@@ -1,0 +1,601 @@
+<div class="advanced-features-dashboard p-8 max-w-[1400px] mx-auto">
+  <!-- Header -->
+  <div class="dashboard-header text-center mb-12">
+    <h1
+      class="text-5xl font-bold text-white m-0 mb-4 bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent">
+      Advanced Features Dashboard</h1>
+    <p class="dashboard-description text-xl text-gray-400 m-0 max-w-[600px] mx-auto">
+      ระบบฟีเจอร์ขั้นสูงสำหรับ Video Analytics Platform
+    </p>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <div class="dashboard-navigation mb-8">
+    <app-glass-card>
+      <div class="nav-tabs flex gap-4 justify-center flex-wrap">
+        <app-glass-button *ngFor="let tab of ['overview', 'video-analytics', 'ai-security', 'reports', 'multi-tenant']"
+          [variant]="selectedTab === tab ? 'primary' : 'secondary'" (click)="selectTab(tab)">
+          <i class="fas" [class]="getTabIcon(tab)"></i>
+          {{ getTabLabel(tab) }}
+        </app-glass-button>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Overview Tab -->
+  <div *ngIf="selectedTab === 'overview'" class="overview-tab">
+    <!-- Stats Cards -->
+    <div class="stats-grid grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-6 mb-8">
+      <app-glass-card>
+        <div class="stat-card flex items-center gap-4 p-6">
+          <div
+            class="w-16 h-16 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500 flex items-center justify-center text-2xl text-white">
+            <i class="fas fa-video"></i>
+          </div>
+          <div class="stat-content flex-1">
+            <div class="stat-value text-3xl font-bold text-white mb-1">{{ videoStreams.length }}</div>
+            <div class="stat-label text-gray-400 text-sm">Video Streams</div>
+          </div>
+        </div>
+      </app-glass-card>
+
+      <app-glass-card>
+        <div class="stat-card flex items-center gap-4 p-6">
+          <div
+            class="w-16 h-16 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500 flex items-center justify-center text-2xl text-white">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <div class="stat-content flex-1">
+            <div class="stat-value text-3xl font-bold text-white mb-1">{{ securityThreats.length }}</div>
+            <div class="stat-label text-gray-400 text-sm">Security Threats</div>
+          </div>
+        </div>
+      </app-glass-card>
+
+      <app-glass-card>
+        <div class="stat-card flex items-center gap-4 p-6">
+          <div
+            class="w-16 h-16 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500 flex items-center justify-center text-2xl text-white">
+            <i class="fas fa-chart-bar"></i>
+          </div>
+          <div class="stat-content flex-1">
+            <div class="stat-value text-3xl font-bold text-white mb-1">{{ reports.length }}</div>
+            <div class="stat-label text-gray-400 text-sm">Reports Generated</div>
+          </div>
+        </div>
+      </app-glass-card>
+
+      <app-glass-card>
+        <div class="stat-card flex items-center gap-4 p-6">
+          <div
+            class="w-16 h-16 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500 flex items-center justify-center text-2xl text-white">
+            <i class="fas fa-building"></i>
+          </div>
+          <div class="stat-content flex-1">
+            <div class="stat-value text-3xl font-bold text-white mb-1">{{ tenants.length }}</div>
+            <div class="stat-label text-gray-400 text-sm">Tenants</div>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="recent-activity">
+      <app-glass-card>
+        <h3 class="m-0 mb-4 text-white text-lg">Recent Activity</h3>
+        <div class="activity-list">
+          <div class="activity-item flex items-center gap-4 p-4 border-b border-white/10 last:border-b-0"
+            *ngFor="let event of analyticsEvents.slice(0, 5)">
+            <div
+              class="activity-icon w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-primary-500 text-base">
+              <i class="fas fa-video"></i>
+            </div>
+            <div class="activity-content flex-1">
+              <div class="activity-title text-white font-medium mb-1">{{ event.type }} detected</div>
+              <div class="activity-time text-gray-400 text-sm">{{ formatDate(event.timestamp) }}</div>
+            </div>
+            <div class="activity-status text-sm font-medium"
+              [style.color]="getStatusColor(event.processed ? 'completed' : 'pending')">
+              {{ event.processed ? 'Processed' : 'Pending' }}
+            </div>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+  </div>
+
+  <!-- Video Analytics Tab -->
+  <div *ngIf="selectedTab === 'video-analytics'" class="video-analytics-tab">
+    <!-- Streams Section -->
+    <div class="streams-section">
+      <app-glass-card>
+        <div class="section-header">
+          <h3>Video Streams</h3>
+          <app-glass-button variant="primary" (click)="toggleAddStream()">
+            <i class="fas fa-plus"></i>
+            Add Stream
+          </app-glass-button>
+        </div>
+
+        <div class="streams-list">
+          <div *ngFor="let stream of videoStreams" class="stream-item">
+            <div class="stream-info">
+              <div class="stream-name">{{ stream.name }}</div>
+              <div class="stream-url">{{ stream.url }}</div>
+              <div class="stream-specs">
+                {{ stream.resolution.width }}x{{ stream.resolution.height }} @ {{ stream.fps }}fps
+              </div>
+            </div>
+            <div class="stream-status" [style.color]="getStatusColor(stream.status)">
+              {{ stream.status }}
+            </div>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+
+    <!-- Analytics Rules Section -->
+    <div class="rules-section">
+      <app-glass-card>
+        <div class="section-header">
+          <h3>Analytics Rules</h3>
+          <app-glass-button variant="primary" (click)="toggleAddRule()">
+            <i class="fas fa-plus"></i>
+            Add Rule
+          </app-glass-button>
+        </div>
+
+        <div class="rules-list">
+          <div *ngFor="let rule of analyticsRules" class="rule-item">
+            <div class="rule-info">
+              <div class="rule-name">{{ rule.name }}</div>
+              <div class="rule-description">{{ rule.description }}</div>
+              <div class="rule-type">{{ rule.type }} ({{ rule.sensitivity }}% sensitivity)</div>
+            </div>
+            <div class="rule-status" [style.color]="getStatusColor(rule.enabled ? 'active' : 'inactive')">
+              {{ rule.enabled ? 'Enabled' : 'Disabled' }}
+            </div>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+
+    <!-- Analytics Stats -->
+    <div class="analytics-stats">
+      <app-glass-card>
+        <h3>Analytics Statistics</h3>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-label">Total Events</div>
+            <div class="stat-value">{{ formatNumber(analyticsStats.totalEvents) }}</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Average Confidence</div>
+            <div class="stat-value">{{ analyticsStats.averageConfidence.toFixed(1) }}%</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Processing Time</div>
+            <div class="stat-value">{{ analyticsStats.processingTime.toFixed(0) }}ms</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Error Rate</div>
+            <div class="stat-value">{{ analyticsStats.errorRate.toFixed(1) }}%</div>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+  </div>
+
+  <!-- AI Security Tab -->
+  <div *ngIf="selectedTab === 'ai-security'" class="ai-security-tab">
+    <!-- Threats Section -->
+    <div class="threats-section">
+      <app-glass-card>
+        <div class="section-header">
+          <h3>Security Threats</h3>
+        </div>
+
+        <div class="threats-list">
+          <div *ngFor="let threat of securityThreats.slice(0, 10)" class="threat-item">
+            <div class="threat-icon" [style.color]="getSeverityColor(threat.severity)">
+              <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="threat-info">
+              <div class="threat-type">{{ threat.type }}</div>
+              <div class="threat-description">{{ threat.description }}</div>
+              <div class="threat-time">{{ formatDate(threat.timestamp) }}</div>
+            </div>
+            <div class="threat-actions">
+              <app-glass-button variant="secondary" size="sm" (click)="acknowledgeThreat(threat.id)"
+                *ngIf="!threat.acknowledged">
+                <i class="fas fa-check"></i>
+              </app-glass-button>
+              <app-glass-button variant="primary" size="sm" (click)="resolveThreat(threat.id)" *ngIf="!threat.resolved">
+                <i class="fas fa-times"></i>
+              </app-glass-button>
+            </div>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+
+    <!-- Security Zones Section -->
+    <div class="zones-section">
+      <app-glass-card>
+        <div class="section-header">
+          <h3>Security Zones</h3>
+          <app-glass-button variant="primary" (click)="toggleAddZone()">
+            <i class="fas fa-plus"></i>
+            Add Zone
+          </app-glass-button>
+        </div>
+
+        <div class="zones-list">
+          <div *ngFor="let zone of securityZones" class="zone-item">
+            <div class="zone-info">
+              <div class="zone-name">{{ zone.name }}</div>
+              <div class="zone-description">{{ zone.description }}</div>
+              <div class="zone-type">{{ zone.type }}</div>
+            </div>
+            <div class="zone-status" [style.color]="getStatusColor(zone.enabled ? 'active' : 'inactive')">
+              {{ zone.enabled ? 'Active' : 'Inactive' }}
+            </div>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+  </div>
+
+  <!-- Reports Tab -->
+  <div *ngIf="selectedTab === 'reports'" class="reports-tab">
+    <!-- Report Templates Section -->
+    <div class="templates-section">
+      <app-glass-card>
+        <div class="section-header">
+          <h3>Report Templates</h3>
+          <app-glass-button variant="primary" (click)="toggleAddTemplate()">
+            <i class="fas fa-plus"></i>
+            Add Template
+          </app-glass-button>
+        </div>
+
+        <div class="templates-list">
+          <div *ngFor="let template of reportTemplates" class="template-item">
+            <div class="template-info">
+              <div class="template-name">{{ template.name }}</div>
+              <div class="template-description">{{ template.description }}</div>
+              <div class="template-category">{{ template.category }} - {{ template.type }}</div>
+            </div>
+            <div class="template-actions">
+              <app-glass-button variant="primary" size="sm" (click)="generateReport(template.id)">
+                <i class="fas fa-play"></i>
+                Generate
+              </app-glass-button>
+            </div>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+
+    <!-- Generated Reports Section -->
+    <div class="reports-section">
+      <app-glass-card>
+        <h3>Generated Reports</h3>
+        <div class="reports-list">
+          <div *ngFor="let report of reports.slice(0, 10)" class="report-item">
+            <div class="report-info">
+              <div class="report-name">{{ report.name }}</div>
+              <div class="report-time">{{ formatDate(report.generatedAt) }}</div>
+              <div class="report-size" *ngIf="report.fileSize">
+                {{ (report.fileSize / 1024).toFixed(1) }} KB
+              </div>
+            </div>
+            <div class="report-actions">
+              <app-glass-button variant="secondary" size="sm" (click)="downloadReport(report.id)"
+                *ngIf="report.status === 'completed'">
+                <i class="fas fa-download"></i>
+                Download
+              </app-glass-button>
+              <div class="report-status" [style.color]="getStatusColor(report.status)">
+                {{ report.status }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+  </div>
+
+  <!-- Multi-tenant Tab -->
+  <div *ngIf="selectedTab === 'multi-tenant'" class="multi-tenant-tab">
+    <!-- Tenants Section -->
+    <div class="tenants-section">
+      <app-glass-card>
+        <div class="section-header">
+          <h3>Tenants</h3>
+          <app-glass-button variant="primary" (click)="toggleAddTenant()">
+            <i class="fas fa-plus"></i>
+            Add Tenant
+          </app-glass-button>
+        </div>
+
+        <div class="tenants-list">
+          <div *ngFor="let tenant of tenants" class="tenant-item">
+            <div class="tenant-info">
+              <div class="tenant-name">{{ tenant.name }}</div>
+              <div class="tenant-domain">{{ tenant.domain }}</div>
+              <div class="tenant-plan" [style.color]="getPlanColor(tenant.plan)">
+                {{ tenant.plan }}
+              </div>
+            </div>
+            <div class="tenant-status" [style.color]="getStatusColor(tenant.status)">
+              {{ tenant.status }}
+            </div>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+
+    <!-- Tenant Stats -->
+    <div class="tenant-stats">
+      <app-glass-card>
+        <h3>Tenant Statistics</h3>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-label">Total Tenants</div>
+            <div class="stat-value">{{ formatNumber(tenantStats.totalTenants) }}</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Active Tenants</div>
+            <div class="stat-value">{{ formatNumber(tenantStats.activeTenants) }}</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Total Users</div>
+            <div class="stat-value">{{ formatNumber(tenantStats.totalUsers) }}</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Total Revenue</div>
+            <div class="stat-value">${{ formatNumber(tenantStats.totalRevenue) }}</div>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+  </div>
+
+  <!-- Add Stream Modal -->
+  <div *ngIf="showAddStream" class="modal-overlay">
+    <app-glass-card class="modal-content">
+      <div class="modal-header">
+        <h3>Add Video Stream</h3>
+        <app-glass-button variant="secondary" (click)="toggleAddStream()">
+          <i class="fas fa-times"></i>
+        </app-glass-button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Stream Name</label>
+          <app-glass-input [(ngModel)]="newStream.name" placeholder="Enter stream name">
+          </app-glass-input>
+        </div>
+        <div class="form-group">
+          <label>Stream URL</label>
+          <app-glass-input [(ngModel)]="newStream.url" placeholder="rtsp://example.com/stream">
+          </app-glass-input>
+        </div>
+        <div class="form-group">
+          <label>Resolution</label>
+          <div class="form-row">
+            <app-glass-input [(ngModel)]="newStream.resolution!.width" type="number" placeholder="Width">
+            </app-glass-input>
+            <app-glass-input [(ngModel)]="newStream.resolution!.height" type="number" placeholder="Height">
+            </app-glass-input>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>FPS</label>
+          <app-glass-input [(ngModel)]="newStream.fps" type="number" placeholder="30">
+          </app-glass-input>
+        </div>
+        <div class="form-group">
+          <label>Bitrate (kbps)</label>
+          <app-glass-input [(ngModel)]="newStream.bitrate" type="number" placeholder="2000">
+          </app-glass-input>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <app-glass-button variant="secondary" (click)="toggleAddStream()">
+          Cancel
+        </app-glass-button>
+        <app-glass-button variant="primary" (click)="addVideoStream()">
+          Add Stream
+        </app-glass-button>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Add Rule Modal -->
+  <div *ngIf="showAddRule" class="modal-overlay">
+    <app-glass-card class="modal-content">
+      <div class="modal-header">
+        <h3>Add Analytics Rule</h3>
+        <app-glass-button variant="secondary" (click)="toggleAddRule()">
+          <i class="fas fa-times"></i>
+        </app-glass-button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Rule Name</label>
+          <app-glass-input [(ngModel)]="newRule.name" placeholder="Enter rule name">
+          </app-glass-input>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <app-glass-input [(ngModel)]="newRule.description" placeholder="Enter rule description">
+          </app-glass-input>
+        </div>
+        <div class="form-group">
+          <label>Type</label>
+          <select [(ngModel)]="newRule.type" class="form-select">
+            <option value="motion">Motion</option>
+            <option value="face">Face</option>
+            <option value="object">Object</option>
+            <option value="vehicle">Vehicle</option>
+            <option value="person">Person</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Sensitivity (%)</label>
+          <app-glass-input [(ngModel)]="newRule.sensitivity" type="number" min="0" max="100" placeholder="75">
+          </app-glass-input>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <app-glass-button variant="secondary" (click)="toggleAddRule()">
+          Cancel
+        </app-glass-button>
+        <app-glass-button variant="primary" (click)="addAnalyticsRule()">
+          Add Rule
+        </app-glass-button>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Add Zone Modal -->
+  <div *ngIf="showAddZone" class="modal-overlay">
+    <app-glass-card class="modal-content">
+      <div class="modal-header">
+        <h3>Add Security Zone</h3>
+        <app-glass-button variant="secondary" (click)="toggleAddZone()">
+          <i class="fas fa-times"></i>
+        </app-glass-button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Zone Name</label>
+          <app-glass-input [(ngModel)]="newZone.name" placeholder="Enter zone name">
+          </app-glass-input>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <app-glass-input [(ngModel)]="newZone.description" placeholder="Enter zone description">
+          </app-glass-input>
+        </div>
+        <div class="form-group">
+          <label>Type</label>
+          <select [(ngModel)]="newZone.type" class="form-select">
+            <option value="restricted">Restricted</option>
+            <option value="monitored">Monitored</option>
+            <option value="public">Public</option>
+            <option value="sensitive">Sensitive</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <app-glass-button variant="secondary" (click)="toggleAddZone()">
+          Cancel
+        </app-glass-button>
+        <app-glass-button variant="primary" (click)="addSecurityZone()">
+          Add Zone
+        </app-glass-button>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Add Template Modal -->
+  <div *ngIf="showAddTemplate" class="modal-overlay">
+    <app-glass-card class="modal-content">
+      <div class="modal-header">
+        <h3>Add Report Template</h3>
+        <app-glass-button variant="secondary" (click)="toggleAddTemplate()">
+          <i class="fas fa-times"></i>
+        </app-glass-button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Template Name</label>
+          <app-glass-input [(ngModel)]="newTemplate.name" placeholder="Enter template name">
+          </app-glass-input>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <app-glass-input [(ngModel)]="newTemplate.description" placeholder="Enter template description">
+          </app-glass-input>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select [(ngModel)]="newTemplate.category" class="form-select">
+            <option value="security">Security</option>
+            <option value="attendance">Attendance</option>
+            <option value="performance">Performance</option>
+            <option value="compliance">Compliance</option>
+            <option value="custom">Custom</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Type</label>
+          <select [(ngModel)]="newTemplate.type" class="form-select">
+            <option value="summary">Summary</option>
+            <option value="detailed">Detailed</option>
+            <option value="analytical">Analytical</option>
+            <option value="comparative">Comparative</option>
+            <option value="trend">Trend</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <app-glass-button variant="secondary" (click)="toggleAddTemplate()">
+          Cancel
+        </app-glass-button>
+        <app-glass-button variant="primary" (click)="addReportTemplate()">
+          Add Template
+        </app-glass-button>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Add Tenant Modal -->
+  <div *ngIf="showAddTenant" class="modal-overlay">
+    <app-glass-card class="modal-content">
+      <div class="modal-header">
+        <h3>Add Tenant</h3>
+        <app-glass-button variant="secondary" (click)="toggleAddTenant()">
+          <i class="fas fa-times"></i>
+        </app-glass-button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Tenant Name</label>
+          <app-glass-input [(ngModel)]="newTenant.name" placeholder="Enter tenant name">
+          </app-glass-input>
+        </div>
+        <div class="form-group">
+          <label>Domain</label>
+          <app-glass-input [(ngModel)]="newTenant.domain" placeholder="example.com">
+          </app-glass-input>
+        </div>
+        <div class="form-group">
+          <label>Subdomain</label>
+          <app-glass-input [(ngModel)]="newTenant.subdomain" placeholder="subdomain">
+          </app-glass-input>
+        </div>
+        <div class="form-group">
+          <label>Plan</label>
+          <select [(ngModel)]="newTenant.plan" class="form-select">
+            <option value="basic">Basic</option>
+            <option value="standard">Standard</option>
+            <option value="premium">Premium</option>
+            <option value="enterprise">Enterprise</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <app-glass-button variant="secondary" (click)="toggleAddTenant()">
+          Cancel
+        </app-glass-button>
+        <app-glass-button variant="primary" (click)="addTenant()">
+          Add Tenant
+        </app-glass-button>
+      </div>
+    </app-glass-card>
+  </div>
+</div>
