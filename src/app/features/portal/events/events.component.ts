@@ -1,9 +1,9 @@
 /**
  * Events Component
- * 
+ *
  * Event management component with CRUD operations, attendee management, device linking,
  * and statistics. Supports event creation, editing, cancellation, and bulk attendee operations.
- * 
+ *
  * @example
  * ```html
  * <app-events></app-events>
@@ -154,7 +154,7 @@ export class EventsComponent extends BaseComponent implements OnInit {
       value: this.filterStatus()
     },
     {
-      key: 'eventType',
+      key: 'event_type',
       label: 'Event Type',
       type: 'select',
       options: [
@@ -176,19 +176,19 @@ export class EventsComponent extends BaseComponent implements OnInit {
   ]);
 
   columns: TableColumn[] = [
-    { key: 'eventName', label: 'Event Name', sortable: true },
+    { key: 'event_name', label: 'Event Name', sortable: true },
     {
-      key: 'startDate',
+      key: 'start_date',
       label: 'Start Date',
       sortable: true,
       render: (value) => this.formatDateTime(value)
     },
     {
-      key: 'endDate',
+      key: 'end_date',
       label: 'End Date',
       render: (value) => this.formatDateTime(value)
     },
-    { key: 'eventType', label: 'Type', render: (value) => value || 'other' },
+    { key: 'event_type', label: 'Type', render: (value) => value || 'other' },
     { key: 'location', label: 'Location' },
     {
       key: 'status',
@@ -261,14 +261,14 @@ export class EventsComponent extends BaseComponent implements OnInit {
   ) {
     super();
     this.eventForm = this.fb.group({
-      eventName: ['', [Validators.required]],
+      event_name: ['', [Validators.required]],
       description: [''],
-      startDate: ['', [Validators.required]],
-      endDate: ['', [Validators.required]],
+      start_date: ['', [Validators.required]],
+      end_date: ['', [Validators.required]],
       location: [''],
-      eventType: ['other', [Validators.required]],
+      event_type: ['other', [Validators.required]],
       status: ['draft', [Validators.required]],
-      maxAttendees: [undefined]
+      max_attendees: [undefined]
     });
   }
 
@@ -287,7 +287,7 @@ export class EventsComponent extends BaseComponent implements OnInit {
     };
     if (this.searchTerm()) params.search = this.searchTerm();
     if (this.filterStatus()) params.status = this.filterStatus();
-    if (this.filterEventType()) params.eventType = this.filterEventType();
+    if (this.filterEventType()) params.event_type = this.filterEventType();  // snake_case
     if (this.filterLocation()) params.location = this.filterLocation();
 
     // ✅ Auto-unsubscribe on component destroy
@@ -317,7 +317,7 @@ export class EventsComponent extends BaseComponent implements OnInit {
       this.searchTerm.set(event.value);
     } else if (event.key === 'status') {
       this.filterStatus.set(event.value);
-    } else if (event.key === 'eventType') {
+    } else if (event.key === 'event_type') {
       this.filterEventType.set(event.value);
     } else if (event.key === 'location') {
       this.filterLocation.set(event.value);
@@ -349,14 +349,14 @@ export class EventsComponent extends BaseComponent implements OnInit {
   openAddModal(): void {
     this.editingEvent.set(null);
     this.eventForm.reset({
-      eventName: '',
+      event_name: '',
       description: '',
-      startDate: '',
-      endDate: '',
+      start_date: '',
+      end_date: '',
       location: '',
-      eventType: 'other',
+      event_type: 'other',
       status: 'draft',
-      maxAttendees: undefined
+      max_attendees: undefined
     });
     this.eventForm.markAsUntouched();
     this.descriptionContent.set('');
@@ -370,25 +370,25 @@ export class EventsComponent extends BaseComponent implements OnInit {
    */
   editEvent(event: any): void {
     this.editingEvent.set(event);
-    // Handle both camelCase (from API) and regular field names
-    const eventName = event.eventName || '';
+    // Use snake_case from backend
+    const event_name = event.event_name || '';
     const description = event.description || '';
     const location = event.location || '';
-    const eventType = event.eventType || event.type || 'other';
+    const event_type = event.event_type || 'other';
     const status = event.status || 'draft';
-    const maxAttendees = event.maxAttendees !== undefined ? event.maxAttendees : undefined;
-    const startDate = event.startDate ? new Date(event.startDate).toISOString().slice(0, 16) : '';
-    const endDate = event.endDate ? new Date(event.endDate).toISOString().slice(0, 16) : '';
+    const max_attendees = event.max_attendees !== undefined ? event.max_attendees : undefined;
+    const start_date = event.start_date ? new Date(event.start_date).toISOString().slice(0, 16) : '';
+    const end_date = event.end_date ? new Date(event.end_date).toISOString().slice(0, 16) : '';
 
     this.eventForm.patchValue({
-      eventName: eventName,
+      event_name: event_name,
       description: description,
-      startDate: startDate,
-      endDate: endDate,
+      start_date: start_date,
+      end_date: end_date,
       location: location,
-      eventType: eventType,
+      event_type: event_type,
       status: status,
-      maxAttendees: maxAttendees
+      max_attendees: max_attendees
     });
     this.descriptionContent.set(description);
     this.eventForm.markAsUntouched();
@@ -410,8 +410,8 @@ export class EventsComponent extends BaseComponent implements OnInit {
   validateDates(): boolean {
     this.dateError.set('');
 
-    const startDateControl = this.eventForm.get('startDate');
-    const endDateControl = this.eventForm.get('endDate');
+    const startDateControl = this.eventForm.get('start_date');
+    const endDateControl = this.eventForm.get('end_date');
 
     if (!startDateControl?.value || !endDateControl?.value) {
       return true; // Let required validation handle this
@@ -455,18 +455,18 @@ export class EventsComponent extends BaseComponent implements OnInit {
 
     const formValue = this.eventForm.value;
     const eventData: any = {
-      eventName: formValue.eventName,
+      event_name: formValue.event_name,  // snake_case
       description: this.descriptionContent() || formValue.description || '',
-      startDate: formValue.startDate,
-      endDate: formValue.endDate,
+      start_date: formValue.start_date,  // snake_case
+      end_date: formValue.end_date,  // snake_case
       location: formValue.location || '',
       status: formValue.status || 'draft',
-      eventType: formValue.eventType || 'other'
+      event_type: formValue.event_type || 'other'  // snake_case
     };
 
-    // Add maxAttendees if provided
-    if (formValue.maxAttendees !== undefined && formValue.maxAttendees !== null && typeof formValue.maxAttendees === 'number') {
-      eventData.maxAttendees = formValue.maxAttendees;
+    // Add max_attendees if provided
+    if (formValue.max_attendees !== undefined && formValue.max_attendees !== null && typeof formValue.max_attendees === 'number') {
+      eventData.max_attendees = formValue.max_attendees;  // snake_case
     }
 
     const eventId = this.editingEvent() ? this.editingEvent()!.id : null;
@@ -497,7 +497,7 @@ export class EventsComponent extends BaseComponent implements OnInit {
    * Delete event
    */
   deleteEvent(event: any): void {
-    const eventName = event.eventName || 'this event';
+    const eventName = event.event_name || 'this event';  // snake_case
     if (!confirm(`Delete event ${eventName}?`)) return;
 
     const eventId = event.id;
@@ -595,15 +595,15 @@ export class EventsComponent extends BaseComponent implements OnInit {
     if (!event) return;
 
     const eventId = event.id;
-    if (!confirm(`Send reminder emails to all registered attendees of "${event.eventName}"?`)) {
+    if (!confirm(`Send reminder emails to all registered attendees of "${event.event_name}"?`)) {  // snake_case
       return;
     }
 
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
       this.eventService.sendReminders(eventId, {
-        reminderType: 'email',
-        message: `Reminder: ${event.eventName} is coming up!`
+        reminder_type: 'email',  // snake_case
+        message: `Reminder: ${event.event_name} is coming up!`  // snake_case
       }),
       (response: any) => {
         const result = response.data || response;
@@ -679,8 +679,8 @@ export class EventsComponent extends BaseComponent implements OnInit {
    */
   calculateEventStatus(event: any): 'upcoming' | 'active' | 'past' {
     const now = new Date();
-    const startDate = event.startDate ? new Date(event.startDate) : null;
-    const endDate = event.endDate ? new Date(event.endDate) : null;
+    const startDate = event.start_date ? new Date(event.start_date) : null;  // snake_case
+    const endDate = event.end_date ? new Date(event.end_date) : null;  // snake_case
 
     if (!startDate || !endDate) {
       return 'upcoming';
@@ -701,7 +701,7 @@ export class EventsComponent extends BaseComponent implements OnInit {
       this.eventService.getAttendees(eventId),
       (attendees: any[]) => {
         const event = this.selectedEvent();
-        const eventName = event ? (event.eventName || 'event') : 'event';
+        const eventName = event ? (event.event_name || 'event') : 'event';  // snake_case
 
         // Helper function to format date
         const formatDateTime = (dateString: string): string => {
@@ -815,8 +815,8 @@ export class EventsComponent extends BaseComponent implements OnInit {
   }
 
   copyPublicLink(event: any): void {
-    if (event.publicUrl) {
-      const link = `${window.location.origin}/events/register/${event.publicUrl}`;
+    if (event.public_url) {  // snake_case
+      const link = `${window.location.origin}/events/register/${event.public_url}`;  // snake_case
       navigator.clipboard.writeText(link).then(() => {
         this.errorHandler.showSuccess('Public registration link copied to clipboard!');
       }).catch(() => {
@@ -844,13 +844,14 @@ export class EventsComponent extends BaseComponent implements OnInit {
 
   getFieldLabel(fieldName: string): string {
     const labels: Record<string, string> = {
-      'eventName': 'Event Name',
+      'event_name': 'Event Name',  // snake_case
       'description': 'Description',
-      'startDate': 'Start Date',
-      'endDate': 'End Date',
+      'start_date': 'Start Date',  // snake_case
+      'end_date': 'End Date',  // snake_case
       'location': 'Location',
-      'eventType': 'Event Type',
-      'status': 'Status'
+      'event_type': 'Event Type',  // snake_case
+      'status': 'Status',
+      'max_attendees': 'Max Attendees'  // snake_case
     };
     return labels[fieldName] || fieldName;
   }
@@ -1009,8 +1010,8 @@ export class EventsComponent extends BaseComponent implements OnInit {
       // Add attendees one by one
       const requests = memberIds.map(memberId => {
         return this.api.post(`/events/attendees`, {
-          eventId: eventId,
-          memberId: memberId
+          event_id: eventId,  // snake_case
+          member_id: memberId  // snake_case
         });
       });
 
@@ -1071,8 +1072,8 @@ export class EventsComponent extends BaseComponent implements OnInit {
               const members = memberResponse.data?.items || memberResponse.items || memberResponse.data || [];
               if (members.length > 0) {
                 return this.api.post(`/events/attendees`, {
-                  eventId: eventId,
-                  memberId: members[0].id || members[0].memberId
+                  event_id: eventId,  // snake_case
+                  member_id: members[0].id || members[0].member_id || members[0].memberId  // snake_case
                 });
               } else {
                 // Member doesn't exist, skip for now (or create member first)

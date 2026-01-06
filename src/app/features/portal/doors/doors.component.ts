@@ -44,10 +44,10 @@ interface Employee {
  */
 interface DoorPermission {
   id: string;
-  employeeId?: string;
-  companyEmployeeId?: string;
-  doorId: string;
-  accessType?: string;
+  employee_id?: string;  // snake_case
+  company_employee_id?: string;  // snake_case
+  door_id: string;  // snake_case
+  access_type?: string;  // snake_case
 }
 
 @Component({
@@ -90,12 +90,12 @@ export class DoorsComponent extends BaseComponent implements OnInit {
   // Available employees (not already assigned)
   availableEmployees = computed(() => {
     const currentPermissions = this.doorPermissions();
-    const assignedEmployeeIds = currentPermissions.map(p => p.employeeId);
+    const assignedEmployeeIds = currentPermissions.map(p => p.employee_id || p.company_employee_id);  // snake_case
     return this.employees().filter(emp => !assignedEmployeeIds.includes(emp.id));
   });
 
   formData: Partial<DoorCreate> = {
-    doorName: '',
+    door_name: '',  // snake_case
     location: ''
   };
 
@@ -104,12 +104,12 @@ export class DoorsComponent extends BaseComponent implements OnInit {
     const door = this.editingDoor();
     return [
       {
-        key: 'doorName',
+        key: 'door_name',  // snake_case
         label: 'Door Name',
         type: 'text',
         placeholder: 'Enter door name',
         required: true,
-        value: door?.doorName || this.formData.doorName || ''
+        value: door?.door_name || this.formData.door_name || ''  // snake_case
       },
       {
         key: 'location',
@@ -137,7 +137,7 @@ export class DoorsComponent extends BaseComponent implements OnInit {
 
   columns: TableColumn[] = [
     { key: 'id', label: 'Door ID', sortable: true },
-    { key: 'doorName', label: 'Door Name', sortable: true },
+    { key: 'door_name', label: 'Door Name', sortable: true },  // snake_case
     { key: 'location', label: 'Location' }
   ];
 
@@ -193,7 +193,7 @@ export class DoorsComponent extends BaseComponent implements OnInit {
   openAddModal(): void {
     this.editingDoor.set(null);
     this.formData = {
-      doorName: '',
+      door_name: '',  // snake_case
       location: ''
     };
     this.showModal.set(true);
@@ -205,7 +205,7 @@ export class DoorsComponent extends BaseComponent implements OnInit {
   editDoor(door: Door): void {
     this.editingDoor.set(door);
     this.formData = {
-      doorName: door.doorName,
+      door_name: door.door_name,  // snake_case
       location: door.location || ''
     };
     this.showModal.set(true);
@@ -250,7 +250,7 @@ export class DoorsComponent extends BaseComponent implements OnInit {
   onFormSubmitted(formData: Record<string, unknown>): void {
     // Update formData from ModalFormComponent
     this.formData = {
-      doorName: String(formData['doorName'] || ''),
+      door_name: String(formData['door_name'] || ''),  // snake_case
       location: formData['location'] ? String(formData['location']) : undefined
     };
     this.saveDoor();
@@ -260,7 +260,7 @@ export class DoorsComponent extends BaseComponent implements OnInit {
    * Delete door
    */
   deleteDoor(door: Door): void {
-    if (!confirm(`Delete door ${door.doorName}?`)) return;
+    if (!confirm(`Delete door ${door.door_name}?`)) return;  // snake_case
 
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
@@ -360,8 +360,8 @@ export class DoorsComponent extends BaseComponent implements OnInit {
 
     const requests = this.selectedEmployees().map(employeeId =>
       this.doorService.grantPermission(companyId.toString(), {
-        doorId: door.id,
-        companyEmployeeId: employeeId
+        door_id: door.id,  // snake_case
+        company_employee_id: employeeId  // snake_case
       })
     );
 

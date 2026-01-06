@@ -31,50 +31,50 @@ export interface Event extends BaseTimestamps {
   id: UUID;  // event_id in backend
   
   // Event information
-  eventName: string;  // event_name in backend
+  event_name: string;  // event_name in backend (snake_case)
   description?: string;  // description in backend
-  startDate: string;  // start_date in backend (DateTime)
-  endDate: string;  // end_date in backend (DateTime)
+  start_date: string;  // start_date in backend (DateTime)
+  end_date: string;  // end_date in backend (DateTime)
   location?: string;  // location in backend
   
   // Event configuration
-  publicUrl?: string;  // public_url in backend (unique URL slug)
+  public_url?: string;  // public_url in backend (unique URL slug)
   status: EventStatus;  // status in backend
-  eventType?: EventType;  // event_type in backend
-  maxAttendees?: number;  // max_attendees in backend (null for unlimited)
+  event_type?: EventType;  // event_type in backend
+  max_attendees?: number;  // max_attendees in backend (null for unlimited)
   
   // Foreign key
-  companyId: UUID;  // company_id in backend
+  company_id: UUID;  // company_id in backend
 }
 
 /**
  * Event Create Request
  */
 export interface EventCreate {
-  eventName: string;
+  event_name: string;  // snake_case to match backend
   description?: string;
-  startDate: string;  // ISO 8601 datetime string
-  endDate: string;  // ISO 8601 datetime string
+  start_date: string;  // ISO 8601 datetime string
+  end_date: string;  // ISO 8601 datetime string
   location?: string;
-  publicUrl?: string;  // Unique URL slug
+  public_url?: string;  // Unique URL slug
   status?: EventStatus;
-  eventType?: EventType;
-  maxAttendees?: number;
+  event_type?: EventType;
+  max_attendees?: number;
 }
 
 /**
  * Event Update Request
  */
 export interface EventUpdate {
-  eventName?: string;
+  event_name?: string;  // snake_case to match backend
   description?: string;
-  startDate?: string;
-  endDate?: string;
+  start_date?: string;
+  end_date?: string;
   location?: string;
-  publicUrl?: string;
+  public_url?: string;
   status?: EventStatus;
-  eventType?: EventType;
-  maxAttendees?: number;
+  event_type?: EventType;
+  max_attendees?: number;
 }
 
 /**
@@ -90,25 +90,25 @@ export interface EventResponse extends Event {
  */
 export interface EventAttendee {
   id: UUID;  // attendee_id in backend
-  eventId: UUID;  // event_id in backend
-  memberId: UUID;  // member_id in backend
+  event_id: UUID;  // event_id in backend (snake_case)
+  member_id: UUID;  // member_id in backend (snake_case)
   status: RegistrationStatus;  // status in backend
-  checkInTime?: string;  // check_in_time in backend (DateTime)
-  checkOutTime?: string;  // check_out_time in backend (DateTime)
-  durationMinutes?: string;  // duration_minutes in backend (Format: "HH:MM")
+  check_in_time?: string;  // check_in_time in backend (DateTime)
+  check_out_time?: string;  // check_out_time in backend (DateTime)
+  duration_minutes?: string;  // duration_minutes in backend (Format: "HH:MM")
   gender?: string;  // gender in backend ('male' or 'female')
-  ageRange?: string;  // age_range in backend ('10s', '20s', '30s', '40s', '50s', '60s', '70s', '80+')
-  memberFirstName?: string;  // member_first_name in backend
-  memberLastName?: string;  // member_last_name in backend
-  createdAt: string;
+  age_range?: string;  // age_range in backend ('10s', '20s', '30s', '40s', '50s', '60s', '70s', '80+')
+  member_first_name?: string;  // member_first_name in backend
+  member_last_name?: string;  // member_last_name in backend
+  created_at: string;  // snake_case
 }
 
 /**
  * Event Attendee Create Request
  */
 export interface EventAttendeeCreate {
-  memberId: UUID;
-  eventId: UUID;
+  member_id: UUID;  // snake_case to match backend
+  event_id: UUID;  // snake_case to match backend
 }
 
 /**
@@ -124,9 +124,9 @@ export interface EventAttendeeResponse extends EventAttendee {
  */
 export interface PublicRegistrationRequest {
   email: string;
-  firstName: string;
-  lastName: string;
-  faceImage: string;  // Base64 encoded image data string
+  first_name: string;  // snake_case to match backend
+  last_name: string;  // snake_case to match backend
+  face_image: string;  // Base64 encoded image data string (snake_case)
 }
 
 /**
@@ -134,20 +134,20 @@ export interface PublicRegistrationRequest {
  * Event details for public registration page
  */
 export interface PublicEventResponse {
-  eventName: string;
+  event_name: string;  // snake_case to match backend
   description?: string;
-  startDate: string;
-  endDate: string;
+  start_date: string;  // snake_case to match backend
+  end_date: string;  // snake_case to match backend
 }
 
 /**
  * Event QR Code Response
  */
 export interface EventQRCodeResponse {
-  qrCodeData: string;  // Base64 encoded QR code image
-  qrCodeUrl: string;  // URL to display QR code
-  checkInUrl: string;  // URL for check-in
-  expirationDate?: string;  // QR code expiration date
+  qr_code_data: string;  // Base64 encoded QR code image (snake_case)
+  qr_code_url: string;  // URL to display QR code (snake_case)
+  check_in_url: string;  // URL for check-in (snake_case)
+  expiration_date?: string;  // QR code expiration date (snake_case)
 }
 
 /**
@@ -170,12 +170,12 @@ export interface AttendanceByDateItem {
  * Event Statistics Response
  */
 export interface EventStatisticsResponse {
-  totalRegistrations: number;  // total_registrations in backend
-  confirmedEmails: number;  // confirmed_emails in backend
-  checkedIn: number;  // checked_in in backend
-  attendanceRate: number;  // attendance_rate in backend (Percentage 0-100)
-  registrationTrend: RegistrationTrendItem[];  // registration_trend in backend
-  attendanceByDate: AttendanceByDateItem[];  // attendance_by_date in backend
+  total_registrations: number;  // total_registrations in backend (snake_case)
+  confirmed_emails: number;  // confirmed_emails in backend (snake_case)
+  checked_in: number;  // checked_in in backend (snake_case)
+  attendance_rate: number;  // attendance_rate in backend (Percentage 0-100) (snake_case)
+  registration_trend: RegistrationTrendItem[];  // registration_trend in backend (snake_case)
+  attendance_by_date: AttendanceByDateItem[];  // attendance_by_date in backend (snake_case)
 }
 
 /**
@@ -183,8 +183,8 @@ export interface EventStatisticsResponse {
  * Note: eventId is sent in URL path, not in request body
  */
 export interface EventReminderRequest {
-  reminderType: 'email' | 'sms';  // reminder_type in backend
-  reminderTime?: string;  // reminder_time in backend (e.g., '24_hours_before', '1_hour_before')
+  reminder_type: 'email' | 'sms';  // reminder_type in backend (snake_case)
+  reminder_time?: string;  // reminder_time in backend (e.g., '24_hours_before', '1_hour_before') (snake_case)
   message?: string;  // message in backend
 }
 
@@ -193,8 +193,8 @@ export interface EventReminderRequest {
  */
 export interface EventReminderResponse {
   success: boolean;  // success in backend
-  emailsSent: number;  // emails_sent in backend
-  messagesSent: number;  // messages_sent in backend
+  emails_sent: number;  // emails_sent in backend (snake_case)
+  messages_sent: number;  // messages_sent in backend (snake_case)
   message: string;  // message in backend
 }
 
@@ -211,21 +211,21 @@ export interface EmailConfirmationResponse {
  */
 export interface EventFilters {
   search?: string;
-  companyId?: UUID;
+  company_id?: UUID;  // snake_case to match backend
   status?: EventStatus;
-  eventType?: EventType;
-  startDateFrom?: string;
-  startDateTo?: string;
+  event_type?: EventType;  // snake_case to match backend
+  start_date_from?: string;  // snake_case to match backend
+  start_date_to?: string;  // snake_case to match backend
 }
 
 /**
  * Event Statistics
  */
 export interface EventStatistics {
-  totalEvents: number;
-  activeEvents: number;
-  completedEvents: number;
-  cancelledEvents: number;
-  eventsByType: Record<EventType, number>;
-  eventsByStatus: Record<EventStatus, number>;
+  total_events: number;  // snake_case to match backend
+  active_events: number;  // snake_case to match backend
+  completed_events: number;  // snake_case to match backend
+  cancelled_events: number;  // snake_case to match backend
+  events_by_type: Record<EventType, number>;  // snake_case to match backend
+  events_by_status: Record<EventStatus, number>;  // snake_case to match backend
 }

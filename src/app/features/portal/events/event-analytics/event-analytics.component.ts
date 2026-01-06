@@ -26,14 +26,14 @@ import { I18nService } from '../../../../core/services/i18n.service';
  * Event statistics interface
  */
 interface EventStats {
-  eventId: string;
-  eventName: string;
-  totalRegistrations: number;
-  checkedIn: number;
-  attendanceRate: number;
-  confirmedEmails: number;
-  startDate: string;
-  endDate: string;
+  event_id: string;  // snake_case
+  event_name: string;  // snake_case
+  total_registrations: number;  // snake_case
+  checked_in: number;  // snake_case
+  attendance_rate: number;  // snake_case
+  confirmed_emails: number;  // snake_case
+  start_date: string;  // snake_case
+  end_date: string;  // snake_case
   status: string;
 }
 
@@ -41,15 +41,15 @@ interface EventStats {
  * Analytics data interface
  */
 interface AnalyticsData {
-  totalEvents: number;
-  totalRegistrations: number;
-  totalCheckedIn: number;
-  averageAttendanceRate: number;
-  eventsByStatus: { [key: string]: number };
-  eventsByType: { [key: string]: number };
-  registrationTrend: { date: string; count: number }[];
-  attendanceTrend: { date: string; count: number }[];
-  topEvents: EventStats[];
+  total_events: number;  // snake_case
+  total_registrations: number;  // snake_case
+  total_checked_in: number;  // snake_case
+  average_attendance_rate: number;  // snake_case
+  events_by_status: { [key: string]: number };  // snake_case
+  events_by_type: { [key: string]: number };  // snake_case
+  registration_trend: { date: string; count: number }[];  // snake_case
+  attendance_trend: { date: string; count: number }[];  // snake_case
+  top_events: EventStats[];  // snake_case
 }
 
 @Component({
@@ -116,7 +116,7 @@ export class EventAnalyticsComponent implements OnInit {
       value: this.filterStatus()
     },
     {
-      key: 'eventType',
+      key: 'event_type',  // snake_case
       label: 'Event Type',
       type: 'select',
       options: [
@@ -161,7 +161,7 @@ export class EventAnalyticsComponent implements OnInit {
       page: 1,
       size: 1000, // Get all events for analytics
       status: this.filterStatus() || undefined,
-      eventType: this.filterEventType() || undefined
+      event_type: this.filterEventType() || undefined  // snake_case
     };
 
     this.eventService.getAll(params).subscribe({
@@ -205,14 +205,14 @@ export class EventAnalyticsComponent implements OnInit {
           totalCheckedIn += checkedIn;
 
           eventStats.push({
-            eventId: event.eventId || event.id,
-            eventName: event.eventName || event.name || 'Unknown',
-            totalRegistrations: registrations,
-            checkedIn: checkedIn,
-            attendanceRate: Math.round(attendanceRate * 100) / 100,
-            confirmedEmails: data.confirmed_emails || data.confirmedEmails || 0,
-            startDate: event.startDate || event.start_date,
-            endDate: event.endDate || event.end_date,
+            event_id: event.id,  // snake_case
+            event_name: event.event_name || event.name || 'Unknown',  // snake_case
+            total_registrations: registrations,  // snake_case
+            checked_in: checkedIn,  // snake_case
+            attendance_rate: Math.round(attendanceRate * 100) / 100,  // snake_case
+            confirmed_emails: data.confirmed_emails || data.confirmedEmails || 0,  // snake_case
+            start_date: event.start_date,  // snake_case
+            end_date: event.end_date,  // snake_case
             status: event.status || 'draft'
           });
 
@@ -228,11 +228,11 @@ export class EventAnalyticsComponent implements OnInit {
 
       // Sort top events by attendance rate
       const topEvents = [...eventStats]
-        .sort((a, b) => b.attendanceRate - a.attendanceRate)
+        .sort((a, b) => b.attendance_rate - a.attendance_rate)  // snake_case
         .slice(0, 10);
 
       const averageAttendanceRate = eventStats.length > 0
-        ? eventStats.reduce((sum, e) => sum + e.attendanceRate, 0) / eventStats.length
+        ? eventStats.reduce((sum, e) => sum + e.attendance_rate, 0) / eventStats.length  // snake_case
         : 0;
 
       // Build registration and attendance trends (simplified - group by month)
@@ -242,14 +242,14 @@ export class EventAnalyticsComponent implements OnInit {
       // Group by month
       const monthlyData: { [key: string]: { registrations: number; checkIns: number } } = {};
       eventStats.forEach(stat => {
-        if (stat.startDate) {
-          const date = new Date(stat.startDate);
+        if (stat.start_date) {  // snake_case
+          const date = new Date(stat.start_date);  // snake_case
           const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
           if (!monthlyData[monthKey]) {
             monthlyData[monthKey] = { registrations: 0, checkIns: 0 };
           }
-          monthlyData[monthKey].registrations += stat.totalRegistrations;
-          monthlyData[monthKey].checkIns += stat.checkedIn;
+          monthlyData[monthKey].registrations += stat.total_registrations;  // snake_case
+          monthlyData[monthKey].checkIns += stat.checked_in;  // snake_case
         }
       });
 
@@ -259,15 +259,15 @@ export class EventAnalyticsComponent implements OnInit {
       });
 
       const analyticsData: AnalyticsData = {
-        totalEvents: events.length,
-        totalRegistrations,
-        totalCheckedIn,
-        averageAttendanceRate: Math.round(averageAttendanceRate * 100) / 100,
-        eventsByStatus,
-        eventsByType,
-        registrationTrend,
-        attendanceTrend,
-        topEvents
+        total_events: events.length,  // snake_case
+        total_registrations: totalRegistrations,  // snake_case
+        total_checked_in: totalCheckedIn,  // snake_case
+        average_attendance_rate: Math.round(averageAttendanceRate * 100) / 100,  // snake_case
+        events_by_status: eventsByStatus,  // snake_case
+        events_by_type: eventsByType,  // snake_case
+        registration_trend: registrationTrend,  // snake_case
+        attendance_trend: attendanceTrend,  // snake_case
+        top_events: topEvents  // snake_case
       };
 
       this.analyticsData.set(analyticsData);
@@ -285,7 +285,7 @@ export class EventAnalyticsComponent implements OnInit {
       this.dateRange.set({ ...this.dateRange(), end: event.value });
     } else if (event.key === 'status') {
       this.filterStatus.set(event.value);
-    } else if (event.key === 'eventType') {
+    } else if (event.key === 'event_type') {  // snake_case
       this.filterEventType.set(event.value);
     }
     this.loadAnalytics();
@@ -329,39 +329,39 @@ export class EventAnalyticsComponent implements OnInit {
 
   // Helper methods for accessing nested properties
   getEventsByStatus(status: string): number {
-    return this.data()?.eventsByStatus?.[status] || 0;
+    return this.data()?.events_by_status?.[status] || 0;  // snake_case
   }
 
   getEventsByType(type: string): number {
-    return this.data()?.eventsByType?.[type] || 0;
+    return this.data()?.events_by_type?.[type] || 0;  // snake_case
   }
 
   getTotalEvents(): number {
-    return this.data()?.totalEvents || 0;
+    return this.data()?.total_events || 0;  // snake_case
   }
 
   getStatusPercentage(status: string): number {
     const data = this.data();
-    if (!data || !data.totalEvents) return 0;
-    return ((data.eventsByStatus[status] || 0) / data.totalEvents) * 100;
+    if (!data || !data.total_events) return 0;  // snake_case
+    return ((data.events_by_status?.[status] || 0) / data.total_events) * 100;  // snake_case
   }
 
   getTypePercentage(type: string): number {
     const data = this.data();
-    if (!data || !data.totalEvents) return 0;
-    return ((data.eventsByType[type] || 0) / data.totalEvents) * 100;
+    if (!data || !data.total_events) return 0;  // snake_case
+    return ((data.events_by_type?.[type] || 0) / data.total_events) * 100;  // snake_case
   }
 
   getRegistrationTrend(): { date: string; count: number }[] {
-    return this.data()?.registrationTrend || [];
+    return this.data()?.registration_trend || [];  // snake_case
   }
 
   getAttendanceTrend(): { date: string; count: number }[] {
-    return this.data()?.attendanceTrend || [];
+    return this.data()?.attendance_trend || [];  // snake_case
   }
 
   getTopEvents(): EventStats[] {
-    return this.data()?.topEvents || [];
+    return this.data()?.top_events || [];  // snake_case
   }
 
   getMaxRegValue(): number {

@@ -733,7 +733,7 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
         this.errorMessage.set('ไม่สามารถลบ Employee ได้');
         this.deleting.set(false);
       }
-    });
+    );
   }
 
   /**

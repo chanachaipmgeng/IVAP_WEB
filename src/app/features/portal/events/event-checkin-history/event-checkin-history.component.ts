@@ -27,15 +27,15 @@ import { I18nService } from '../../../../core/services/i18n.service';
  * Check-in record interface
  */
 interface CheckInRecord {
-  attendeeId: string;
-  memberId: string;
-  firstName?: string;
-  lastName?: string;
+  attendee_id?: string;  // snake_case
+  member_id: string;  // snake_case
+  first_name?: string;  // snake_case
+  last_name?: string;  // snake_case
   email?: string;
-  memberFirstName?: string;
-  memberLastName?: string;
-  memberEmail?: string;
-  checkInTime: string;
+  member_first_name?: string;  // snake_case
+  member_last_name?: string;  // snake_case
+  member_email?: string;  // snake_case
+  check_in_time: string;  // snake_case
   status: string;
 }
 
@@ -61,8 +61,8 @@ export class EventCheckinHistoryComponent implements OnInit {
   private eventService = inject(EventService);
   private i18n = inject(I18nService);
 
-  eventId = signal<string>('');
-  eventName = signal<string>('');
+  event_id = signal<string>('');  // snake_case
+  event_name = signal<string>('');  // snake_case
   checkInRecords = signal<CheckInRecord[]>([]);
   loading = signal(false);
   errorMessage = signal<string>('');
@@ -83,8 +83,8 @@ export class EventCheckinHistoryComponent implements OnInit {
     const grouped: { [key: string]: CheckInRecord[] } = {};
 
     records.forEach(record => {
-      if (record.checkInTime) {
-        const date = new Date(record.checkInTime);
+      if (record.check_in_time) {  // snake_case
+        const date = new Date(record.check_in_time);  // snake_case
         const dateKey = date.toLocaleDateString('th-TH', {
           year: 'numeric',
           month: 'long',
@@ -101,9 +101,9 @@ export class EventCheckinHistoryComponent implements OnInit {
     // Sort records within each date group by time (newest first)
     Object.keys(grouped).forEach(dateKey => {
       grouped[dateKey].sort((a, b) => {
-        const timeA = new Date(a.checkInTime).getTime();
-        const timeB = new Date(b.checkInTime).getTime();
-        return timeB - timeA;
+      const timeA = new Date(a.check_in_time).getTime();  // snake_case
+      const timeB = new Date(b.check_in_time).getTime();  // snake_case
+      return timeB - timeA;
       });
     });
 
@@ -150,7 +150,7 @@ export class EventCheckinHistoryComponent implements OnInit {
     this.route.params.subscribe(params => {
       const eventId = params['eventId'];
       if (eventId) {
-        this.eventId.set(eventId);
+        this.event_id.set(eventId);  // snake_case
         this.loadEventDetails();
         this.loadCheckInHistory();
       }
@@ -158,12 +158,12 @@ export class EventCheckinHistoryComponent implements OnInit {
   }
 
   loadEventDetails(): void {
-    const eventId = this.eventId();
+    const eventId = this.event_id();  // snake_case
     if (!eventId) return;
 
     this.api.get<any>(`/events/${eventId}`).subscribe({
       next: (event) => {
-        this.eventName.set(event.eventName || event.name || 'Event');
+        this.event_name.set(event.event_name || event.name || 'Event');  // snake_case
       },
       error: (error) => {
         this.errorHandler.handleApiError(error);
@@ -172,7 +172,7 @@ export class EventCheckinHistoryComponent implements OnInit {
   }
 
   loadCheckInHistory(): void {
-    const eventId = this.eventId();
+    const eventId = this.event_id();  // snake_case
     if (!eventId) return;
 
     this.loading.set(true);
@@ -183,13 +183,13 @@ export class EventCheckinHistoryComponent implements OnInit {
       next: (attendees: any[]) => {
         // Filter only checked-in attendees
         const checkedInRecords = attendees.filter((attendee: any) => 
-          attendee.status === 'CHECKED_IN' && attendee.checkInTime
+          attendee.status === 'CHECKED_IN' && attendee.check_in_time  // snake_case
         );
 
         // Sort by check-in time (newest first)
         checkedInRecords.sort((a: any, b: any) => {
-          const timeA = new Date(a.checkInTime).getTime();
-          const timeB = new Date(b.checkInTime).getTime();
+          const timeA = new Date(a.check_in_time).getTime();  // snake_case
+          const timeB = new Date(b.check_in_time).getTime();  // snake_case
           return timeB - timeA;
         });
 
@@ -198,9 +198,9 @@ export class EventCheckinHistoryComponent implements OnInit {
         if (this.searchTerm()) {
           const search = this.searchTerm().toLowerCase();
           filtered = checkedInRecords.filter((record: any) => {
-            const firstName = (record.memberFirstName || record.firstName || '').toLowerCase();
-            const lastName = (record.memberLastName || record.lastName || '').toLowerCase();
-            const email = (record.memberEmail || record.email || '').toLowerCase();
+            const firstName = (record.member_first_name || record.first_name || '').toLowerCase();  // snake_case
+            const lastName = (record.member_last_name || record.last_name || '').toLowerCase();  // snake_case
+            const email = (record.member_email || record.email || '').toLowerCase();  // snake_case
             return firstName.includes(search) || lastName.includes(search) || email.includes(search);
           });
         }
@@ -209,7 +209,7 @@ export class EventCheckinHistoryComponent implements OnInit {
         if (this.dateFilter()) {
           const filterDate = new Date(this.dateFilter());
           filtered = filtered.filter((record: any) => {
-            const checkInDate = new Date(record.checkInTime);
+            const checkInDate = new Date(record.check_in_time);  // snake_case
             return checkInDate.toDateString() === filterDate.toDateString();
           });
         }
@@ -257,10 +257,10 @@ export class EventCheckinHistoryComponent implements OnInit {
     // CSV Headers
     const headers = ['First Name', 'Last Name', 'Email', 'Check-in Time', 'Status'];
     const rows = records.map(record => [
-      record.firstName || record.memberFirstName || '',
-      record.lastName || record.memberLastName || '',
-      record.email || record.memberEmail || '',
-      record.checkInTime ? this.formatDateTime(record.checkInTime) : '',
+      record.first_name || record.member_first_name || '',  // snake_case
+      record.last_name || record.member_last_name || '',  // snake_case
+      record.email || record.member_email || '',  // snake_case
+      record.check_in_time ? this.formatDateTime(record.check_in_time) : '',  // snake_case
       record.status || 'CHECKED_IN'
     ]);
 
@@ -275,7 +275,7 @@ export class EventCheckinHistoryComponent implements OnInit {
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
     link.setAttribute('href', url);
-    link.setAttribute('download', `event-checkin-history-${this.eventName()}-${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute('download', `event-checkin-history-${this.event_name()}-${new Date().toISOString().split('T')[0]}.csv`);  // snake_case
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();

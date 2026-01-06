@@ -44,7 +44,8 @@ export class EventService extends BaseCrudService<Event, EventCreate, EventUpdat
    * Get all events with pagination
    */
   override getAll(filters?: EventFilters): Observable<PaginatedApiResponse<Event>> {
-    return this.api.get<any>(this.baseEndpoint, filters).pipe(
+    const options = { skipTransform: true };
+    return this.api.get<any>(this.baseEndpoint, filters, options).pipe(
       map(response => handlePaginatedResponse<Event>(response))
     );
   }
@@ -53,7 +54,8 @@ export class EventService extends BaseCrudService<Event, EventCreate, EventUpdat
    * Get event by ID
    */
   override getById(id: string): Observable<Event> {
-    return this.api.get<any>(`${this.baseEndpoint}/${id}`).pipe(
+    const options = { skipTransform: true };
+    return this.api.get<any>(`${this.baseEndpoint}/${id}`, undefined, options).pipe(
       map(response => handleApiResponse<Event>(response))
     );
   }
@@ -62,7 +64,8 @@ export class EventService extends BaseCrudService<Event, EventCreate, EventUpdat
    * Create new event
    */
   override create(data: EventCreate): Observable<Event> {
-    return this.api.post<any>(this.baseEndpoint, data).pipe(
+    const options = { skipTransform: true };
+    return this.api.post<any>(this.baseEndpoint, data, undefined, options).pipe(
       map(response => handleApiResponse<Event>(response))
     );
   }
@@ -71,7 +74,8 @@ export class EventService extends BaseCrudService<Event, EventCreate, EventUpdat
    * Update existing event
    */
   override update(id: string, data: EventUpdate): Observable<Event> {
-    return this.api.put<any>(`${this.baseEndpoint}/${id}`, data).pipe(
+    const options = { skipTransform: true };
+    return this.api.put<any>(`${this.baseEndpoint}/${id}`, data, undefined, options).pipe(
       map(response => handleApiResponse<Event>(response))
     );
   }
@@ -80,14 +84,16 @@ export class EventService extends BaseCrudService<Event, EventCreate, EventUpdat
    * Delete event
    */
   override delete(id: string): Observable<void> {
-    return this.api.delete<void>(`${this.baseEndpoint}/${id}`);
+    const options = { skipTransform: true };
+    return this.api.delete<void>(`${this.baseEndpoint}/${id}`, undefined, undefined, options);
   }
 
   /**
    * Get event attendees
    */
   getAttendees(eventId: string): Observable<EventAttendee[]> {
-    return this.api.get<any>(`${this.baseEndpoint}/${eventId}/attendees`).pipe(
+    const options = { skipTransform: true };
+    return this.api.get<any>(`${this.baseEndpoint}/${eventId}/attendees`, undefined, options).pipe(
       map(response => {
         // Handle both array and paginated response
         if (Array.isArray(response)) {
@@ -102,7 +108,8 @@ export class EventService extends BaseCrudService<Event, EventCreate, EventUpdat
    * Add attendee to event
    */
   addAttendee(data: EventAttendeeCreate): Observable<EventAttendee> {
-    return this.api.post<any>(`${this.baseEndpoint}/attendees`, data).pipe(
+    const options = { skipTransform: true };
+    return this.api.post<any>(`${this.baseEndpoint}/attendees`, data, undefined, options).pipe(
       map(response => handleApiResponse<EventAttendee>(response))
     );
   }
@@ -111,7 +118,8 @@ export class EventService extends BaseCrudService<Event, EventCreate, EventUpdat
    * Get event statistics
    */
   getEventStatistics(eventId: string): Observable<EventStatisticsResponse> {
-    return this.api.get<any>(`${this.baseEndpoint}/${eventId}/statistics`).pipe(
+    const options = { skipTransform: true };
+    return this.api.get<any>(`${this.baseEndpoint}/${eventId}/statistics`, undefined, options).pipe(
       map(response => handleApiResponse<EventStatisticsResponse>(response))
     );
   }
@@ -122,7 +130,8 @@ export class EventService extends BaseCrudService<Event, EventCreate, EventUpdat
    * Note: eventId is sent in URL path, request body contains reminderType, reminderTime, message
    */
   sendReminders(eventId: string, data: EventReminderRequest): Observable<EventReminderResponse> {
-    return this.api.post<any>(`${this.baseEndpoint}/${eventId}/send-reminders`, data).pipe(
+    const options = { skipTransform: true };
+    return this.api.post<any>(`${this.baseEndpoint}/${eventId}/send-reminders`, data, undefined, options).pipe(
       map(response => handleApiResponse<EventReminderResponse>(response))
     );
   }
@@ -133,7 +142,8 @@ export class EventService extends BaseCrudService<Event, EventCreate, EventUpdat
    * Get public event details (no authentication required)
    */
   getPublicEventDetails(publicUrl: string): Observable<PublicEventResponse> {
-    return this.api.get<any>(`${this.baseEndpoint}/public/details/${publicUrl}`).pipe(
+    const options = { skipTransform: true };
+    return this.api.get<any>(`${this.baseEndpoint}/public/details/${publicUrl}`, undefined, options).pipe(
       map(response => handleApiResponse<PublicEventResponse>(response))
     );
   }
@@ -142,7 +152,8 @@ export class EventService extends BaseCrudService<Event, EventCreate, EventUpdat
    * Register for public event (no authentication required)
    */
   registerForPublicEvent(publicUrl: string, data: PublicRegistrationRequest): Observable<any> {
-    return this.api.post<any>(`${this.baseEndpoint}/public/register/${publicUrl}`, data).pipe(
+    const options = { skipTransform: true };
+    return this.api.post<any>(`${this.baseEndpoint}/public/register/${publicUrl}`, data, undefined, options).pipe(
       map(response => handleApiResponse<any>(response))
     );
   }
@@ -152,7 +163,8 @@ export class EventService extends BaseCrudService<Event, EventCreate, EventUpdat
    */
   confirmEmail(publicUrl: string, token: string): Observable<EmailConfirmationResponse> {
     // Token is passed as query parameter, not in body
-    return this.api.post<any>(`${this.baseEndpoint}/public/register/${publicUrl}/confirm-email?token=${encodeURIComponent(token)}`, {}).pipe(
+    const options = { skipTransform: true };
+    return this.api.post<any>(`${this.baseEndpoint}/public/register/${publicUrl}/confirm-email?token=${encodeURIComponent(token)}`, {}, undefined, options).pipe(
       map(response => handleApiResponse<EmailConfirmationResponse>(response))
     );
   }
@@ -161,7 +173,8 @@ export class EventService extends BaseCrudService<Event, EventCreate, EventUpdat
    * Get event QR code
    */
   getEventQRCode(publicUrl: string): Observable<EventQRCodeResponse> {
-    return this.api.get<any>(`${this.baseEndpoint}/public/${publicUrl}/qr-code`).pipe(
+    const options = { skipTransform: true };
+    return this.api.get<any>(`${this.baseEndpoint}/public/${publicUrl}/qr-code`, undefined, options).pipe(
       map(response => handleApiResponse<EventQRCodeResponse>(response))
     );
   }
@@ -188,8 +201,9 @@ export class EventService extends BaseCrudService<Event, EventCreate, EventUpdat
    * Get event statistics (general)
    */
   getStatistics(companyId?: string): Observable<EventStatistics> {
-    const params = companyId ? { companyId } : {};
-    return this.api.get<EventStatistics>(`${this.baseEndpoint}/statistics`, params).pipe(
+    const params = companyId ? { company_id: companyId } : {};  // snake_case
+    const options = { skipTransform: true };
+    return this.api.get<EventStatistics>(`${this.baseEndpoint}/statistics`, params, options).pipe(
       map(response => handleApiResponse<EventStatistics>(response))
     );
   }
@@ -199,7 +213,8 @@ export class EventService extends BaseCrudService<Event, EventCreate, EventUpdat
    * Backend: GET /api/v1/events/{event_id}/devices
    */
   getEventLinkedDevices(eventId: string): Observable<any[]> {
-    return this.api.get<any>(`${this.baseEndpoint}/${eventId}/devices`).pipe(
+    const options = { skipTransform: true };
+    return this.api.get<any>(`${this.baseEndpoint}/${eventId}/devices`, undefined, options).pipe(
       map(response => {
         if (Array.isArray(response)) {
           return response;
@@ -225,6 +240,7 @@ export class EventService extends BaseCrudService<Event, EventCreate, EventUpdat
    * Backend: GET /api/v1/events/public/{public_url}/check-status?email={email}
    */
   checkCheckinStatus(publicUrl: string, email: string): Observable<any> {
-    return this.api.get<any>(`${this.baseEndpoint}/public/${publicUrl}/check-status`, { email });
+    const options = { skipTransform: true };
+    return this.api.get<any>(`${this.baseEndpoint}/public/${publicUrl}/check-status`, { email }, options);
   }
 }

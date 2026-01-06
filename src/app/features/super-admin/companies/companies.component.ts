@@ -24,7 +24,7 @@ import { ModalComponent } from '../../../shared/components/modal/modal.component
 import { PageLayoutComponent, PageAction } from '../../../shared/components/page-layout/page-layout.component';
 import { FilterSectionComponent, FilterField } from '../../../shared/components/filter-section/filter-section.component';
 import { CompanyService } from '../../../core/services/company.service';
-import { Company, CompanyForm, CompanySettings, CompanyFilters } from '../../../core/models/company.model';
+import { Company, CompanyCreate, CompanyUpdate, CompanySettings, CompanySettingsUpdate, CompanyFilters } from '../../../core/models/company.model';
 import { FileUploadService } from '../../../core/services/file-upload.service';
 import { I18nService } from '../../../core/services/i18n.service';
 import { BaseComponent } from '../../../core/base/base.component';
@@ -55,12 +55,13 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
   companies = signal<Company[]>([]);
   totalRecords = signal(0);
   companyStats = signal<any>({}); // Simplified for now
+  loading = signal(false);  // Loading state for table
 
   // Computed statistics
   activeCompaniesCount = computed(() => {
     return this.companies().filter(c => {
       if (typeof c.status === 'string') {
-        return c.status === 'public';
+        return c.status === 'PUBLIC' || c.status.toUpperCase() === 'PUBLIC';  // snake_case - support uppercase
       }
       return c.status === 1;
     }).length;
@@ -69,14 +70,14 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
   pendingCompaniesCount = computed(() => {
     return this.companies().filter(c => {
       if (typeof c.status === 'string') {
-        return c.status === 'pending';
+        return c.status === 'PENDING' || c.status.toUpperCase() === 'PENDING';  // snake_case - support uppercase
       }
       return c.status === 2;
     }).length;
   });
 
   settingsModalTitle = computed(() => {
-    const companyName = this.selectedCompany()?.name || '';
+    const companyName = this.selectedCompany()?.company_name || '';  // snake_case
     return `${this.i18n.t('pages.companies.settings')}${companyName ? ' - ' + companyName : ''}`;
   });
 
@@ -147,7 +148,7 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
   totalPages = computed(() => Math.ceil(this.totalRecords() / this.pageSize()));
 
   // Sorting & Filtering
-  sortBy = signal('createdAt');
+  sortBy = signal('created_at');  // snake_case
   sortOrder = signal<'asc' | 'desc'>('desc');
   filters: FormGroup<{
     search: FormControl<string>;
@@ -173,17 +174,17 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
   // Bulk selection
   selectedCompanies = signal<Company[]>([]);
 
-  formData: CompanyForm = {
-    name: '',
-    code: '',
-    description: '',
+  formData: Partial<CompanyCreate> = {
+    company_name: '',  // snake_case
+    company_code: '',  // snake_case
+    company_info: '',  // snake_case
     address: '',
     latitude: 0,
     longitude: 0,
-    ownerName: '',
+    owner_name: '',  // snake_case
     contact: '',
-    status: 'pending'
-  } as CompanyForm;
+    status: 'PENDING'  // snake_case - use uppercase to match backend
+  };
 
   settings: CompanySettings = this.getDefaultSettings();
 
@@ -202,21 +203,21 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
   get columns(): TableColumn[] {
     return [
       {
-        key: 'name',
+        key: 'company_name',  // snake_case
         label: this.i18n.t('pages.companies.companyName'),
         sortable: true,
         filterable: true,
         filterType: 'text'
       },
       {
-        key: 'code',
+        key: 'company_code',  // snake_case
         label: this.i18n.t('pages.companies.companyCode'),
         sortable: true,
         filterable: true,
         filterType: 'text'
       },
       {
-        key: 'ownerName',
+        key: 'owner_name',  // snake_case
         label: this.i18n.t('pages.companies.ownerName'),
         sortable: false,
         filterable: true,
@@ -246,14 +247,18 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
           { value: 'public', label: this.i18n.t('pages.companies.public') },
           { value: 'pending', label: this.i18n.t('pages.companies.pending') }
         ],
-        render: (value) => `<span class="${this.companyService.getStatusClass(value)}">${value ? (typeof value === 'string' ? value.toUpperCase() : value) : ''}</span>`
+        render: (value) => {
+          const statusStr = typeof value === 'string' ? value.toUpperCase() : (value === 1 ? 'PUBLIC' : 'PENDING');
+          const statusClass = statusStr === 'PUBLIC' ? 'text-green-600' : statusStr === 'PENDING' ? 'text-yellow-600' : 'text-gray-600';
+          return `<span class="${statusClass}">${statusStr}</span>`;
+        }
       },
       {
-        key: 'createdAt',
+        key: 'created_at',  // snake_case
         label: this.i18n.t('pages.companies.createdAt'),
         sortable: true,
         filterable: false,
-        render: (value) => value ? this.companyService.formatDate(value) : ''
+        render: (value) => value ? this.formatDateTime(value) : ''
       }
     ];
   }
@@ -321,22 +326,25 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
 
 
   loadCompanies(): void {
-    const params = {
-      page: this.currentPage(),
-      limit: this.pageSize(),
-      filters: this.filters.value as CompanyFilters,
-      sortBy: this.sortBy(),
-      sortOrder: this.sortOrder()
+    this.loading.set(true);  // Set loading state
+    const filters: CompanyFilters = {
+      ...this.filters.value,
+      search: this.filters.value.search || undefined,
+      status: this.filters.value.status ? (this.filters.value.status.toUpperCase() as 'PUBLIC' | 'PENDING') : undefined  // snake_case - convert to uppercase
     };
     // ✅ Auto-unsubscribe on component destroy
-    const obs = this.companyService.loadCompanies(params);
+    const obs = this.companyService.getCompanies(filters);
     this.subscribe(
       obs,
       (response) => {
-        this.companies.set(response.data);
-        this.totalRecords.set(response.total);
+        this.companies.set(response.data || []);
+        this.totalRecords.set(response.total || 0);
+        this.loading.set(false);  // Clear loading state
       },
-      (err) => this.toastr.error(this.i18n.t('pages.companies.failedToLoad'), err.message)
+      (err) => {
+        this.toastr.error(this.i18n.t('pages.companies.failedToLoad'), err.message);
+        this.loading.set(false);  // Clear loading state on error
+      }
     );
   }
 
@@ -350,10 +358,10 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
         console.error('Error loading company statistics:', err);
         // Set default empty stats on error
         this.companyStats.set({
-          totalCompanies: 0,
-          publicCompanies: 0,
-          pendingCompanies: 0,
-          suspendedCompanies: 0
+          total_companies: 0,  // snake_case
+          public_companies: 0,  // snake_case
+          pending_companies: 0,  // snake_case
+          suspended_companies: 0  // snake_case
         });
         // Only show error if it's not a 403 (permission denied)
         if (err.status !== 403) {
@@ -394,32 +402,32 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
   openAddModal(): void {
     this.editingCompany.set(null);
     this.formData = {
-      name: '',
-      code: '',
-      description: '',
+      company_name: '',  // snake_case
+      company_code: '',  // snake_case
+      company_info: '',  // snake_case
       address: '',
       latitude: 0,
       longitude: 0,
-      ownerName: '',
+      owner_name: '',  // snake_case
       contact: '',
-      status: 'pending'
-    } as CompanyForm;
+      status: 'PENDING'  // snake_case - use uppercase
+    };
     this.showModal.set(true);
   }
 
   openEditModal(company: Company): void {
     this.editingCompany.set(company);
     this.formData = {
-      name: company.name || '',
-      code: company.code || '',
-      description: company.description || '',
+      company_name: company.company_name || '',  // snake_case
+      company_code: company.company_code || '',  // snake_case
+      company_info: company.company_info || '',  // snake_case
       address: company.address || '',
       latitude: company.latitude || 0,
       longitude: company.longitude || 0,
-      ownerName: company.ownerName || '',
+      owner_name: company.owner_name || '',  // snake_case
       contact: company.contact || '',
-      status: typeof company.status === 'string' ? company.status : (company.status === 1 ? 'public' : 'pending')
-    } as CompanyForm;
+      status: typeof company.status === 'string' ? company.status : (company.status === 1 ? 'PUBLIC' : 'PENDING')  // snake_case - use uppercase
+    };
     this.showModal.set(true);
   }
 
@@ -429,8 +437,8 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
 
   saveCompany(): void {
     // Validate required fields
-    if (!this.formData.name || !this.formData.code || !this.formData.address ||
-      !this.formData.ownerName || !this.formData.contact) {
+    if (!this.formData.company_name || !this.formData.company_code || !this.formData.address ||
+      !this.formData.owner_name || !this.formData.contact) {  // snake_case
       this.toastr.error(this.i18n.t('pages.companies.requiredFieldsMissing'));
       return;
     }
@@ -456,14 +464,14 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
 
     // Validate company code format (alphanumeric, dashes, underscores)
     const codePattern = /^[A-Za-z0-9_-]+$/;
-    if (!codePattern.test(this.formData.code)) {
+    if (!codePattern.test(this.formData.company_code || '')) {  // snake_case
       this.toastr.error(this.i18n.t('pages.companies.invalidCodeFormat'));
       return;
     }
 
     // Check if code already exists (only for new companies)
     if (!this.editingCompany()) {
-      const existingCompany = this.companies().find(c => c.code.toLowerCase() === this.formData.code.toLowerCase());
+      const existingCompany = this.companies().find(c => c.company_code.toLowerCase() === this.formData.company_code?.toLowerCase());  // snake_case
       if (existingCompany) {
         this.toastr.error(this.i18n.t('pages.companies.codeAlreadyExists'));
         return;
@@ -471,8 +479,8 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
     } else {
       // For editing, check if code exists for another company
       const existingCompany = this.companies().find(c =>
-        c.code.toLowerCase() === this.formData.code.toLowerCase() &&
-        c.id !== this.editingCompany()!.id
+        c.company_code.toLowerCase() === this.formData.company_code?.toLowerCase() &&  // snake_case
+        c.company_id !== this.editingCompany()!.company_id  // snake_case
       );
       if (existingCompany) {
         this.toastr.error(this.i18n.t('pages.companies.codeAlreadyExists'));
@@ -482,23 +490,23 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
 
     this.saving.set(true);
 
-    // Transform form data to backend format
-    const backendData = {
-      company_name: this.formData.name,
-      company_code: this.formData.code,
-      company_info: this.formData.description || '',
-      address: this.formData.address,
-      latitude: this.formData.latitude,
-      longitude: this.formData.longitude,
-      owner_name: this.formData.ownerName,
-      contact: this.formData.contact,
-      status: this.formData.status || 'pending',
-      picture: this.formData.picture || null
+    // Use formData directly (already in snake_case format)
+    const backendData: CompanyCreate | CompanyUpdate = {
+      company_name: this.formData.company_name!,  // snake_case
+      company_code: this.formData.company_code!,  // snake_case
+      company_info: this.formData.company_info || '',  // snake_case
+      address: this.formData.address!,
+      latitude: this.formData.latitude!,
+      longitude: this.formData.longitude!,
+      owner_name: this.formData.owner_name!,  // snake_case
+      contact: this.formData.contact!,
+      status: this.formData.status || 'PENDING',  // snake_case - use uppercase
+      picture: this.formData.picture || undefined
     };
 
     const request = this.editingCompany()
-      ? this.companyService.updateCompany(this.editingCompany()!.id, backendData as any)
-      : this.companyService.createCompany(backendData as any);
+      ? this.companyService.updateCompany(this.editingCompany()!.company_id, backendData as CompanyUpdate)  // snake_case
+      : this.companyService.createCompany(backendData as CompanyCreate);
 
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
@@ -530,7 +538,7 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
       }, 100);
 
       // ✅ Auto-unsubscribe on component destroy
-      const obs = this.companyService.uploadImage(file);
+      const obs = this.fileUploadService.uploadImage(file);  // Use FileUploadService instead
       this.subscribe(
         obs,
         (response) => {
@@ -554,14 +562,14 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
   }
 
   deleteCompany(company: Company): void {
-    if (!confirm(`${this.i18n.t('pages.companies.deleteConfirm')} "${company.name}"?`)) return;
+    if (!confirm(`${this.i18n.t('pages.companies.deleteConfirm')} "${company.company_name}"?`)) return;  // snake_case
 
     // ✅ Auto-unsubscribe on component destroy
-    const obs = this.companyService.deleteCompany(company.id);
+    const obs = this.companyService.deleteCompany(company.company_id);  // snake_case
     this.subscribe(
       obs,
       () => {
-        this.toastr.success(`${this.i18n.t('pages.companies.companyDeleted')} "${company.name}"`);
+        this.toastr.success(`${this.i18n.t('pages.companies.companyDeleted')} "${company.company_name}"`);  // snake_case
         this.loadCompanies();
       },
       (err) => this.toastr.error(this.i18n.t('pages.companies.failedToDelete'), err.message)
@@ -570,14 +578,18 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
 
   // Status management methods
   activateCompany(company: Company): void {
-    if (!confirm(`${this.i18n.t('pages.companies.activateConfirm')} "${company.name}"?`)) return;
+    if (!confirm(`${this.i18n.t('pages.companies.activateConfirm')} "${company.company_name}"?`)) return;  // snake_case
 
+    // Update company status to PUBLIC
+    const updateData: CompanyUpdate = {
+      status: 'PUBLIC'  // snake_case - use uppercase
+    };
     // ✅ Auto-unsubscribe on component destroy
-    const obs = this.companyService.activateCompany(company.id);
+    const obs = this.companyService.updateCompany(company.company_id, updateData);  // snake_case
     this.subscribe(
       obs,
       () => {
-        this.toastr.success(`${this.i18n.t('pages.companies.companyActivated')} "${company.name}"`);
+        this.toastr.success(`${this.i18n.t('pages.companies.companyActivated')} "${company.company_name}"`);  // snake_case
         this.loadCompanies();
       },
       (err) => this.toastr.error(this.i18n.t('pages.companies.failedToActivate'), err.message)
@@ -585,14 +597,18 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
   }
 
   deactivateCompany(company: Company): void {
-    if (!confirm(`${this.i18n.t('pages.companies.deactivateConfirm')} "${company.name}"?`)) return;
+    if (!confirm(`${this.i18n.t('pages.companies.deactivateConfirm')} "${company.company_name}"?`)) return;  // snake_case
 
+    // Update company status to PENDING
+    const updateData: CompanyUpdate = {
+      status: 'PENDING'  // snake_case - use uppercase
+    };
     // ✅ Auto-unsubscribe on component destroy
-    const obs = this.companyService.deactivateCompany(company.id);
+    const obs = this.companyService.updateCompany(company.company_id, updateData);  // snake_case
     this.subscribe(
       obs,
       () => {
-        this.toastr.success(`${this.i18n.t('pages.companies.companyDeactivated')} "${company.name}"`);
+        this.toastr.success(`${this.i18n.t('pages.companies.companyDeactivated')} "${company.company_name}"`);  // snake_case
         this.loadCompanies();
       },
       (err) => this.toastr.error(this.i18n.t('pages.companies.failedToDeactivate'), err.message)
@@ -603,14 +619,19 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
     const reason = prompt(this.i18n.t('pages.companies.suspendReasonPrompt'));
     if (!reason) return;
 
-    if (!confirm(`${this.i18n.t('pages.companies.suspendConfirm')} "${company.name}"?`)) return;
+    if (!confirm(`${this.i18n.t('pages.companies.suspendConfirm')} "${company.company_name}"?`)) return;  // snake_case
 
+    // Update company status - Note: Backend may need a SUSPENDED status or use additional_settings
+    const updateData: CompanyUpdate = {
+      status: 'PENDING',  // snake_case - or use a SUSPENDED status if backend supports it
+      // Store suspend reason in company_info or additional_settings if needed
+    };
     // ✅ Auto-unsubscribe on component destroy
-    const obs = this.companyService.suspendCompany(company.id, reason);
+    const obs = this.companyService.updateCompany(company.company_id, updateData);  // snake_case
     this.subscribe(
       obs,
       () => {
-        this.toastr.success(`${this.i18n.t('pages.companies.companySuspended')} "${company.name}"`);
+        this.toastr.success(`${this.i18n.t('pages.companies.companySuspended')} "${company.company_name}"`);  // snake_case
         this.loadCompanies();
       },
       (err) => this.toastr.error(this.i18n.t('pages.companies.failedToSuspend'), err.message)
@@ -620,14 +641,14 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
   // Helper methods for status checking
   isCompanyPublic(company: Company): boolean {
     if (typeof company.status === 'string') {
-      return company.status === 'public';
+      return company.status.toUpperCase() === 'PUBLIC';  // snake_case - use uppercase
     }
     return company.status === 1;
   }
 
   isCompanyPending(company: Company): boolean {
     if (typeof company.status === 'string') {
-      return company.status === 'pending';
+      return company.status.toUpperCase() === 'PENDING';  // snake_case - use uppercase
     }
     return company.status === 2;
   }
@@ -645,7 +666,7 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
 
   // Bulk operations
   getRowId = (row: Company): string => {
-    return row.id;
+    return row.company_id;  // snake_case
   }
 
   onSelectionChange(selected: Company[]): void {
@@ -669,7 +690,7 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
     let completed = 0;
 
     const activatePromises = selected.map((company, index) =>
-      this.companyService.activateCompany(company.id).toPromise().then(() => {
+      this.companyService.updateCompany(company.company_id, { status: 'PUBLIC' } as CompanyUpdate).toPromise().then(() => {  // snake_case
         completed++;
         this.bulkOperationProgress.set(Math.round((completed / total) * 100));
         return company;
@@ -702,7 +723,7 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
     let completed = 0;
 
     const deactivatePromises = selected.map((company, index) =>
-      this.companyService.deactivateCompany(company.id).toPromise().then(() => {
+      this.companyService.updateCompany(company.company_id, { status: 'PENDING' } as CompanyUpdate).toPromise().then(() => {  // snake_case
         completed++;
         this.bulkOperationProgress.set(Math.round((completed / total) * 100));
         return company;
@@ -735,7 +756,7 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
     let completed = 0;
 
     const deletePromises = selected.map((company, index) =>
-      this.companyService.deleteCompany(company.id).toPromise().then(() => {
+      this.companyService.deleteCompany(company.company_id).toPromise().then(() => {  // snake_case
         completed++;
         this.bulkOperationProgress.set(Math.round((completed / total) * 100));
         return company;
@@ -756,25 +777,35 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
   }
 
   // Helper methods for status display
-  getStatusClassForDisplay(status: 'public' | 'pending' | number): string {
+  getStatusClassForDisplay(status: 'PUBLIC' | 'PENDING' | number): string {
     const statusStr = this.getStatusString(status);
-    return this.companyService.getStatusClass(statusStr);
+    if (statusStr === 'PUBLIC') return 'text-green-600 font-semibold';
+    if (statusStr === 'PENDING') return 'text-yellow-600 font-semibold';
+    return 'text-gray-600';
   }
 
-  getStatusString(status: 'public' | 'pending' | number): string {
+  getStatusString(status: 'PUBLIC' | 'PENDING' | number): string {
     if (typeof status === 'string') {
-      return status;
+      return status.toUpperCase();  // snake_case - return uppercase
     }
-    return status === 1 ? 'public' : 'pending';
+    return status === 1 ? 'PUBLIC' : 'PENDING';  // snake_case - return uppercase
   }
 
-  getStatusDisplayText(status: 'public' | 'pending' | number): string {
+  getStatusDisplayText(status: 'PUBLIC' | 'PENDING' | number): string {
     const statusStr = this.getStatusString(status);
-    return statusStr.toUpperCase();
+    return statusStr;
   }
 
   formatDateTime(dateStr: string): string {
-    return this.companyService.formatDateTime(dateStr);
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   }
 
   getImageUrl(path: string | null): string {
@@ -786,60 +817,52 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
   openSettingsModal(company: Company): void {
     this.selectedCompany.set(company);
     // ✅ Auto-unsubscribe on component destroy
-    const obs = this.companyService.getCompanySettings(company.id);
+    const obs = this.companyService.getSettings(company.company_id);  // snake_case - use getSettings method
     this.subscribe(
       obs,
       (settings) => {
-        // Map backend settings to frontend CompanySettings
+        // Map backend settings to frontend CompanySettings (snake_case)
+        const additionalSettings = settings.additional_settings || {};
         this.settings = {
-          timezone: settings.timezone || 'UTC',
-          language: settings.language || 'en',
-          dateFormat: settings.dateFormat || 'YYYY-MM-DD',
-          timeFormat: settings.timeFormat || '24h',
-          currency: settings.currency || 'USD',
-          notifications: settings.notifications || {
-            email: true,
-            sms: false,
-            push: true,
-            webhook: false,
-            webhookUrl: ''
-          },
-          security: settings.security || {
-            twoFactorRequired: false,
-            passwordPolicy: {
-              minLength: 8,
-              requireUppercase: true,
-              requireLowercase: true,
-              requireNumbers: true,
-              requireSpecialChars: false,
-              maxAge: 90
+          company_id: settings.company_id,  // snake_case
+          max_users: settings.max_users || 10,  // snake_case
+          max_devices: settings.max_devices || 5,  // snake_case
+          max_storage_gb: settings.max_storage_gb || 10,  // snake_case
+          subscription_type: settings.subscription_type || 'trial',  // snake_case
+          features: settings.features || [],
+          additional_settings: {
+            timezone: additionalSettings['timezone'] || 'UTC',
+            language: additionalSettings['language'] || 'en',
+            dateFormat: additionalSettings['dateFormat'] || 'YYYY-MM-DD',
+            timeFormat: additionalSettings['timeFormat'] || '24h',
+            currency: additionalSettings['currency'] || 'USD',
+            notifications: additionalSettings['notifications'] || {
+              email: true,
+              sms: false,
+              push: true,
+              webhook: false,
+              webhookUrl: ''
             },
-            sessionTimeout: 30,
-            ipWhitelist: [],
-            allowedDomains: []
-          },
-          integrations: settings.integrations || {
-            ldap: {
-              enabled: false,
-              server: '',
-              port: 389,
-              baseDn: '',
-              bindDn: '',
-              bindPassword: ''
+            security: additionalSettings['security'] || {
+              twoFactorRequired: false,
+              passwordPolicy: {
+                minLength: 8,
+                requireUppercase: true,
+                requireLowercase: true,
+                requireNumbers: true,
+                requireSpecialChars: false,
+                maxAge: 90
+              },
+              sessionTimeout: 30,
+              ipWhitelist: [],
+              allowedDomains: []
             },
-            sso: {
-              enabled: false,
-              provider: '',
-              clientId: '',
-              clientSecret: '',
-              redirectUri: ''
+            integrations: additionalSettings['integrations'] || {
+              ldap: { enabled: false, server: '', port: 389, baseDn: '', bindDn: '', bindPassword: '' },
+              sso: { enabled: false, provider: '', clientId: '', clientSecret: '', redirectUri: '' },
+              api: { enabled: false, rateLimit: 100, allowedOrigins: [], apiKey: '' }
             },
-            api: {
-              enabled: false,
-              rateLimit: 100,
-              allowedOrigins: [],
-              apiKey: ''
-            }
+            ...additionalSettings  // Preserve any other additional settings
           }
         };
         this.showSettingsModal.set(true);
@@ -872,21 +895,77 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
     }
   }
 
-  private getDefaultSettings(): CompanySettings {
-    return {
-      timezone: 'UTC',
-      language: 'en',
-      dateFormat: 'YYYY-MM-DD',
-      timeFormat: '24h',
-      currency: 'USD',
-      notifications: {
+  // Helper methods for additional_settings access (for two-way binding)
+  getTimezone(): string {
+    return this.settings.additional_settings['timezone'] || 'UTC';
+  }
+
+  setTimezone(value: string): void {
+    if (!this.settings.additional_settings) {
+      this.settings.additional_settings = {};
+    }
+    this.settings.additional_settings['timezone'] = value;
+  }
+
+  getLanguage(): string {
+    return this.settings.additional_settings['language'] || 'en';
+  }
+
+  setLanguage(value: string): void {
+    if (!this.settings.additional_settings) {
+      this.settings.additional_settings = {};
+    }
+    this.settings.additional_settings['language'] = value;
+  }
+
+  getDateFormat(): string {
+    return this.settings.additional_settings['dateFormat'] || 'YYYY-MM-DD';
+  }
+
+  setDateFormat(value: string): void {
+    if (!this.settings.additional_settings) {
+      this.settings.additional_settings = {};
+    }
+    this.settings.additional_settings['dateFormat'] = value;
+  }
+
+  getTimeFormat(): string {
+    return this.settings.additional_settings['timeFormat'] || '24h';
+  }
+
+  setTimeFormat(value: string): void {
+    if (!this.settings.additional_settings) {
+      this.settings.additional_settings = {};
+    }
+    this.settings.additional_settings['timeFormat'] = value;
+  }
+
+  getNotifications(): any {
+    if (!this.settings.additional_settings['notifications']) {
+      this.settings.additional_settings['notifications'] = {
         email: true,
         sms: false,
         push: true,
         webhook: false,
         webhookUrl: ''
-      },
-      security: {
+      };
+    }
+    return this.settings.additional_settings['notifications'];
+  }
+
+  setNotificationField(field: string, value: boolean | string): void {
+    if (!this.settings.additional_settings) {
+      this.settings.additional_settings = {};
+    }
+    if (!this.settings.additional_settings['notifications']) {
+      this.settings.additional_settings['notifications'] = {};
+    }
+    this.settings.additional_settings['notifications'][field] = value;
+  }
+
+  getSecurity(): any {
+    if (!this.settings.additional_settings['security']) {
+      this.settings.additional_settings['security'] = {
         twoFactorRequired: false,
         passwordPolicy: {
           minLength: 8,
@@ -899,28 +978,73 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
         sessionTimeout: 30,
         ipWhitelist: [],
         allowedDomains: []
-      },
-      integrations: {
-        ldap: {
-          enabled: false,
-          server: '',
-          port: 389,
-          baseDn: '',
-          bindDn: '',
-          bindPassword: ''
+      };
+    }
+    return this.settings.additional_settings['security'];
+  }
+
+  setSecurityField(field: string, value: any): void {
+    if (!this.settings.additional_settings) {
+      this.settings.additional_settings = {};
+    }
+    if (!this.settings.additional_settings['security']) {
+      this.settings.additional_settings['security'] = {};
+    }
+    this.settings.additional_settings['security'][field] = value;
+  }
+
+  setPasswordPolicyField(field: string, value: any): void {
+    if (!this.settings.additional_settings) {
+      this.settings.additional_settings = {};
+    }
+    if (!this.settings.additional_settings['security']) {
+      this.settings.additional_settings['security'] = {};
+    }
+    if (!this.settings.additional_settings['security']['passwordPolicy']) {
+      this.settings.additional_settings['security']['passwordPolicy'] = {};
+    }
+    this.settings.additional_settings['security']['passwordPolicy'][field] = value;
+  }
+
+  private getDefaultSettings(): CompanySettings {
+    return {
+      company_id: '',  // snake_case
+      max_users: 10,  // snake_case
+      max_devices: 5,  // snake_case
+      max_storage_gb: 10,  // snake_case
+      subscription_type: 'trial',  // snake_case
+      features: [],
+      additional_settings: {
+        timezone: 'UTC',
+        language: 'en',
+        dateFormat: 'YYYY-MM-DD',
+        timeFormat: '24h',
+        currency: 'USD',
+        notifications: {
+          email: true,
+          sms: false,
+          push: true,
+          webhook: false,
+          webhookUrl: ''
         },
-        sso: {
-          enabled: false,
-          provider: '',
-          clientId: '',
-          clientSecret: '',
-          redirectUri: ''
+        security: {
+          twoFactorRequired: false,
+          passwordPolicy: {
+            minLength: 8,
+            requireUppercase: true,
+            requireLowercase: true,
+            requireNumbers: true,
+            requireSpecialChars: false,
+            maxAge: 90
+          },
+          sessionTimeout: 30,
+          ipWhitelist: [],
+          allowedDomains: []
         },
-        api: {
-          enabled: false,
-          rateLimit: 100,
-          allowedOrigins: [],
-          apiKey: ''
+        integrations: {
+          ldap: { enabled: false, server: '', port: 389, baseDn: '', bindDn: '', bindPassword: '' },
+          sso: { enabled: false, provider: '', clientId: '', clientSecret: '', redirectUri: '' },
+          api: { enabled: false, rateLimit: 100, allowedOrigins: [], apiKey: '' }
         }
       }
     };
@@ -934,27 +1058,18 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
     if (!this.selectedCompany()) return;
     this.saving.set(true);
 
-    // Transform to backend format
-    const backendSettings = {
-      maxUsers: this.settings.maxUsers || 10,
-      maxDevices: this.settings.maxDevices || 5,
-      maxStorageGb: this.settings.maxStorageGb || 10,
-      subscriptionType: this.settings.subscriptionType || 'trial',
+    // Transform to backend format (snake_case)
+    const backendSettings: CompanySettingsUpdate = {
+      max_users: this.settings.max_users || 10,  // snake_case
+      max_devices: this.settings.max_devices || 5,  // snake_case
+      max_storage_gb: this.settings.max_storage_gb || 10,  // snake_case
+      subscription_type: this.settings.subscription_type || 'trial',  // snake_case
       features: this.settings.features || [],
-      additionalSettings: {
-        timezone: this.settings.timezone,
-        language: this.settings.language,
-        dateFormat: this.settings.dateFormat,
-        timeFormat: this.settings.timeFormat,
-        currency: this.settings.currency,
-        notifications: this.settings.notifications,
-        security: this.settings.security,
-        integrations: this.settings.integrations
-      }
+      additional_settings: this.settings.additional_settings || {}  // snake_case - store all additional settings here
     };
 
     // ✅ Auto-unsubscribe on component destroy
-    const obs = this.companyService.updateCompanySettings(this.selectedCompany()!.id, backendSettings as any);
+    const obs = this.companyService.updateSettings(this.selectedCompany()!.company_id, backendSettings);  // snake_case
     this.subscribe(
       obs,
       () => {
@@ -970,19 +1085,43 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
   }
 
   exportCompanies(): void {
-    // ✅ Auto-unsubscribe on component destroy
-    const obs = this.companyService.exportCompanies();
-    this.subscribe(
-      obs,
-      (blob) => {
-        const link = document.createElement('a');
-        link.href = window.URL.createObjectURL(blob);
-        link.download = 'companies.csv';
-        link.click();
-        window.URL.revokeObjectURL(link.href);
-      },
-      (err) => this.toastr.error(this.i18n.t('pages.companies.failedToExport'), err.message)
-    );
+    // Export companies to CSV
+    const companies = this.companies();
+    if (companies.length === 0) {
+      this.toastr.warning(this.i18n.t('pages.companies.noCompaniesToExport'));
+      return;
+    }
+
+    // Create CSV content
+    const headers = ['Company Name', 'Company Code', 'Owner Name', 'Contact', 'Address', 'Status', 'Created At'];
+    const rows = companies.map(c => [
+      c.company_name || '',  // snake_case
+      c.company_code || '',  // snake_case
+      c.owner_name || '',  // snake_case
+      c.contact || '',
+      c.address || '',
+      typeof c.status === 'string' ? c.status : (c.status === 1 ? 'PUBLIC' : 'PENDING'),
+      c.created_at || ''  // snake_case
+    ]);
+
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+    ].join('\n');
+
+    // Create blob and download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `companies-${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    this.toastr.success(this.i18n.t('pages.companies.companiesExported'));
   }
 
   t(key: string): string {

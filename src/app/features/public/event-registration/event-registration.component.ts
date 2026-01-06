@@ -67,8 +67,8 @@ export class EventRegistrationComponent extends BaseComponent implements OnInit 
   faceDetectionMessage = signal<string>('Position your face in front of the camera');
 
   formData = {
-    firstName: '',
-    lastName: '',
+    first_name: '',  // snake_case
+    last_name: '',  // snake_case
     email: '',
     phone: '',
     organization: ''
@@ -130,9 +130,9 @@ export class EventRegistrationComponent extends BaseComponent implements OnInit 
     try {
       await firstValueFrom(this.eventService.registerForPublicEvent(this.publicUrl(), {
         email: this.formData.email.trim(),
-        firstName: this.formData.firstName.trim(),
-        lastName: this.formData.lastName.trim(),
-        faceImage: faceImage // Already in correct format (data:image/jpeg;base64,...)
+        first_name: this.formData.first_name.trim(),  // snake_case
+        last_name: this.formData.last_name.trim(),  // snake_case
+        face_image: faceImage  // snake_case - Already in correct format (data:image/jpeg;base64,...)
       }));
       this.router.navigate(['/events/register', this.publicUrl(), 'confirm']);
     } catch (error: any) {
@@ -263,8 +263,8 @@ export class EventRegistrationComponent extends BaseComponent implements OnInit 
 
   isFormValid(): boolean {
     return !!(
-      this.formData.firstName &&
-      this.formData.lastName &&
+      this.formData.first_name &&  // snake_case
+      this.formData.last_name &&  // snake_case
       this.formData.email &&
       this.faceImagePreview()
     );

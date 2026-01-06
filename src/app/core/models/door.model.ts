@@ -16,18 +16,18 @@ export interface Door extends BaseTimestamps {
   id: UUID;  // door_id in backend
   
   // Door information
-  doorName: string;  // door_name in backend
+  door_name: string;  // door_name in backend (snake_case)
   location?: string;  // location in backend
   
   // Foreign key
-  companyId: UUID;  // company_id in backend
+  company_id: UUID;  // company_id in backend (snake_case)
 }
 
 /**
  * Door Create Request
  */
 export interface DoorCreate {
-  doorName: string;
+  door_name: string;  // snake_case to match backend
   location?: string;
 }
 
@@ -35,7 +35,7 @@ export interface DoorCreate {
  * Door Update Request
  */
 export interface DoorUpdate {
-  doorName?: string;
+  door_name?: string;  // snake_case to match backend
   location?: string;
 }
 
@@ -55,16 +55,16 @@ export interface DoorPermission extends BaseTimestamps {
   id: UUID;  // permission_id in backend
   
   // Foreign keys
-  doorId: UUID;  // door_id in backend
-  companyEmployeeId: UUID;  // company_employee_id in backend
+  door_id: UUID;  // door_id in backend (snake_case)
+  company_employee_id: UUID;  // company_employee_id in backend (snake_case)
 }
 
 /**
  * Door Permission Create Request
  */
 export interface DoorPermissionCreate {
-  doorId: UUID;
-  companyEmployeeId: UUID;
+  door_id: UUID;  // snake_case to match backend
+  company_employee_id: UUID;  // snake_case to match backend
 }
 
 /**
@@ -79,7 +79,7 @@ export interface DoorPermissionResponse extends DoorPermission {
  */
 export interface DoorFilters {
   search?: string;
-  companyId?: UUID;
+  company_id?: UUID;  // snake_case to match backend
   location?: string;
 }
 
@@ -87,7 +87,7 @@ export interface DoorFilters {
  * Door Statistics
  */
 export interface DoorStatistics {
-  totalDoors: number;
-  doorsByCompany: Record<string, number>;
-  permissionsByDoor: Record<string, number>;
+  total_doors: number;  // snake_case to match backend
+  doors_by_company: Record<string, number>;  // snake_case to match backend
+  permissions_by_door: Record<string, number>;  // snake_case to match backend
 }

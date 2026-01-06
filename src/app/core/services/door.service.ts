@@ -87,7 +87,8 @@ export class DoorService extends BaseCrudService<Door, DoorCreate, DoorUpdate> {
    * Get all doors for a company
    */
   getByCompanyId(companyId: string): Observable<Door[]> {
-    return this.api.get<Door[]>(`${this.baseEndpoint}/company/${companyId}/doors`).pipe(
+    const options = { skipTransform: true };
+    return this.api.get<Door[]>(`${this.baseEndpoint}/company/${companyId}/doors`, undefined, options).pipe(
       map(response => {
         // Handle both array and paginated response
         if (Array.isArray(response)) {
@@ -102,7 +103,8 @@ export class DoorService extends BaseCrudService<Door, DoorCreate, DoorUpdate> {
    * Get door by ID (company-scoped)
    */
   getByIdWithCompany(companyId: string, doorId: string): Observable<Door> {
-    return this.api.get<any>(`${this.baseEndpoint}/company/${companyId}/doors/${doorId}`).pipe(
+    const options = { skipTransform: true };
+    return this.api.get<any>(`${this.baseEndpoint}/company/${companyId}/doors/${doorId}`, undefined, options).pipe(
       map(response => handleApiResponse<Door>(response))
     );
   }
@@ -111,7 +113,8 @@ export class DoorService extends BaseCrudService<Door, DoorCreate, DoorUpdate> {
    * Create new door (company-scoped)
    */
   createWithCompany(companyId: string, data: DoorCreate): Observable<Door> {
-    return this.api.post<any>(`${this.baseEndpoint}/company/${companyId}/doors`, data).pipe(
+    const options = { skipTransform: true };
+    return this.api.post<any>(`${this.baseEndpoint}/company/${companyId}/doors`, data, undefined, options).pipe(
       map(response => handleApiResponse<Door>(response)),
       tap((door) => {
         // Update local state
@@ -126,7 +129,7 @@ export class DoorService extends BaseCrudService<Door, DoorCreate, DoorUpdate> {
   createDoor(data: Partial<DoorCreate>): Observable<Door> {
     const companyId = this.getCompanyId();
     const doorData: DoorCreate = {
-      doorName: data.doorName || '',
+      door_name: data.door_name || '',  // snake_case
       location: data.location
     };
     return this.createWithCompany(companyId, doorData);
@@ -136,7 +139,8 @@ export class DoorService extends BaseCrudService<Door, DoorCreate, DoorUpdate> {
    * Update existing door (company-scoped)
    */
   updateWithCompany(companyId: string, doorId: string, data: DoorUpdate): Observable<Door> {
-    return this.api.put<any>(`${this.baseEndpoint}/company/${companyId}/doors/${doorId}`, data).pipe(
+    const options = { skipTransform: true };
+    return this.api.put<any>(`${this.baseEndpoint}/company/${companyId}/doors/${doorId}`, data, undefined, options).pipe(
       map(response => handleApiResponse<Door>(response)),
       tap((door) => {
         // Update local state
@@ -157,7 +161,8 @@ export class DoorService extends BaseCrudService<Door, DoorCreate, DoorUpdate> {
    * Delete door (company-scoped)
    */
   deleteWithCompany(companyId: string, doorId: string): Observable<void> {
-    return this.api.delete<void>(`${this.baseEndpoint}/company/${companyId}/doors/${doorId}`).pipe(
+    const options = { skipTransform: true };
+    return this.api.delete<void>(`${this.baseEndpoint}/company/${companyId}/doors/${doorId}`, undefined, undefined, options).pipe(
       tap(() => {
         // Update local state
         this.doors.update(doors => doors.filter(d => d.id !== doorId));
@@ -186,7 +191,8 @@ export class DoorService extends BaseCrudService<Door, DoorCreate, DoorUpdate> {
    * Backend: POST /api/v1/doors/company/{company_id}/doors/permissions
    */
   grantPermission(companyId: string, data: DoorPermissionCreate): Observable<DoorPermission> {
-    return this.api.post<any>(`${this.baseEndpoint}/company/${companyId}/doors/permissions`, data).pipe(
+    const options = { skipTransform: true };
+    return this.api.post<any>(`${this.baseEndpoint}/company/${companyId}/doors/permissions`, data, undefined, options).pipe(
       map(response => handleApiResponse<DoorPermission>(response))
     );
   }
@@ -196,7 +202,8 @@ export class DoorService extends BaseCrudService<Door, DoorCreate, DoorUpdate> {
    * Backend: DELETE /api/v1/doors/company/{company_id}/doors/permissions/{permission_id}
    */
   revokePermission(companyId: string, permissionId: string): Observable<void> {
-    return this.api.delete<void>(`${this.baseEndpoint}/company/${companyId}/doors/permissions/${permissionId}`);
+    const options = { skipTransform: true };
+    return this.api.delete<void>(`${this.baseEndpoint}/company/${companyId}/doors/permissions/${permissionId}`, undefined, undefined, options);
   }
 
   /**
@@ -204,7 +211,8 @@ export class DoorService extends BaseCrudService<Door, DoorCreate, DoorUpdate> {
    * Backend: GET /api/v1/doors/company/{company_id}/doors/{door_id}/permissions
    */
   getDoorPermissions(companyId: string, doorId: string): Observable<DoorPermission[]> {
-    return this.api.get<any>(`${this.baseEndpoint}/company/${companyId}/doors/${doorId}/permissions`).pipe(
+    const options = { skipTransform: true };
+    return this.api.get<any>(`${this.baseEndpoint}/company/${companyId}/doors/${doorId}/permissions`, undefined, options).pipe(
       map(response => {
         // Handle both array and paginated response
         if (Array.isArray(response)) {
@@ -219,8 +227,9 @@ export class DoorService extends BaseCrudService<Door, DoorCreate, DoorUpdate> {
    * Get door statistics
    */
   getStatistics(companyId?: string): Observable<DoorStatistics> {
-    const params = companyId ? { companyId } : {};
-    return this.api.get<DoorStatistics>(`${this.baseEndpoint}/statistics`, params).pipe(
+    const params = companyId ? { company_id: companyId } : {};  // snake_case
+    const options = { skipTransform: true };
+    return this.api.get<DoorStatistics>(`${this.baseEndpoint}/statistics`, params, options).pipe(
       map(response => handleApiResponse<DoorStatistics>(response))
     );
   }

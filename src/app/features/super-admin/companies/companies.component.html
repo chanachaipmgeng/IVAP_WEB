@@ -3,7 +3,7 @@
   [description]="'pages.companies.description' | translate"
   icon="🏢"
   [actions]="pageActions()">
-  
+
   <!-- Statistics Cards -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
     <div class="glass-card p-4">
@@ -59,25 +59,25 @@
           {{ 'pages.companies.selectedCount' | translate }}: <strong>{{ selectedCompanies().length }}</strong>
         </span>
         <div class="flex gap-2">
-          <app-glass-button 
-            variant="primary" 
-            size="sm" 
+          <app-glass-button
+            variant="primary"
+            size="sm"
             (clicked)="bulkActivate()"
             [disabled]="bulkOperationInProgress()"
             [attr.aria-label]="'pages.companies.bulkActivate' | translate">
             {{ 'pages.companies.bulkActivate' | translate }}
           </app-glass-button>
-          <app-glass-button 
-            variant="secondary" 
-            size="sm" 
+          <app-glass-button
+            variant="secondary"
+            size="sm"
             (clicked)="bulkDeactivate()"
             [disabled]="bulkOperationInProgress()"
             [attr.aria-label]="'pages.companies.bulkDeactivate' | translate">
             {{ 'pages.companies.bulkDeactivate' | translate }}
           </app-glass-button>
-          <app-glass-button 
-            variant="danger" 
-            size="sm" 
+          <app-glass-button
+            variant="danger"
+            size="sm"
             (clicked)="bulkDelete()"
             [disabled]="bulkOperationInProgress()"
             [attr.aria-label]="'pages.companies.bulkDelete' | translate">
@@ -85,9 +85,9 @@
           </app-glass-button>
         </div>
       </div>
-      <app-glass-button 
-        variant="secondary" 
-        size="sm" 
+      <app-glass-button
+        variant="secondary"
+        size="sm"
         (clicked)="clearSelection()"
         [disabled]="bulkOperationInProgress()"
         [attr.aria-label]="'pages.companies.clearSelection' | translate">
@@ -97,7 +97,7 @@
     <!-- Bulk Operation Progress Bar -->
     <div *ngIf="bulkOperationInProgress()" class="mt-2">
       <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
-        <div 
+        <div
           class="bg-blue-600 h-2 rounded-full transition-all duration-300"
           [style.width.%]="bulkOperationProgress()"
           [attr.aria-valuenow]="bulkOperationProgress()"
@@ -120,7 +120,7 @@
     [actions]="actions"
     [selectable]="true"
     [getRowId]="getRowId"
-    [loading]="companyService.loading()"
+    [loading]="loading()"
     [enableColumnFilters]="true"
     [enableMultiSort]="true"
     [emptyText]="'pages.companies.noCompanies' | translate"
@@ -173,7 +173,7 @@
               <span class="required-indicator">*</span>
             </label>
             <input
-              [(ngModel)]="formData.name"
+              [(ngModel)]="formData.company_name"
               type="text"
               class="glass-input w-full"
               [placeholder]="'pages.companies.companyNamePlaceholder' | translate"
@@ -217,7 +217,7 @@
                 <!-- Upload Progress Bar -->
                 <div *ngIf="uploadingImage()" class="mt-2">
                   <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
-                    <div 
+                    <div
                       class="bg-blue-600 h-2 rounded-full transition-all duration-300"
                       [style.width.%]="uploadProgress()"
                       [attr.aria-valuenow]="uploadProgress()"
@@ -241,7 +241,7 @@
               <span class="required-indicator">*</span>
             </label>
             <input
-              [(ngModel)]="formData.code"
+              [(ngModel)]="formData.company_code"
               type="text"
               class="glass-input w-full"
               [placeholder]="'pages.companies.companyCodePlaceholder' | translate"
@@ -257,7 +257,7 @@
               <span class="required-indicator">*</span>
             </label>
             <input
-              [(ngModel)]="formData.ownerName"
+              [(ngModel)]="formData.owner_name"
               type="text"
               class="glass-input w-full"
               [placeholder]="'pages.companies.ownerNamePlaceholder' | translate"
@@ -291,7 +291,7 @@
               {{ 'pages.companies.description' | translate }}
             </label>
             <textarea
-              [(ngModel)]="formData.description"
+              [(ngModel)]="formData.company_info"
               class="glass-input w-full"
               rows="3"
               [placeholder]="'pages.companies.descriptionPlaceholder' | translate"
@@ -419,7 +419,7 @@
             <label class="form-label">
               {{ 'pages.companies.subscriptionType' | translate }}
             </label>
-            <select [(ngModel)]="settings.subscriptionType" class="glass-input w-full">
+            <select [(ngModel)]="settings.subscription_type" class="glass-input w-full">
               <option value="trial">{{ 'pages.companies.trial' | translate }}</option>
               <option value="basic">{{ 'pages.companies.basic' | translate }}</option>
               <option value="premium">{{ 'pages.companies.premium' | translate }}</option>
@@ -432,7 +432,7 @@
               {{ 'pages.companies.maxUsers' | translate }}
             </label>
             <input
-              [(ngModel)]="settings.maxUsers"
+              [(ngModel)]="settings.max_users"
               type="number"
               min="0"
               class="glass-input w-full"
@@ -445,7 +445,7 @@
               {{ 'pages.companies.maxDevices' | translate }}
             </label>
             <input
-              [(ngModel)]="settings.maxDevices"
+              [(ngModel)]="settings.max_devices"
               type="number"
               min="0"
               class="glass-input w-full"
@@ -458,7 +458,7 @@
               {{ 'pages.companies.maxStorageGb' | translate }}
             </label>
             <input
-              [(ngModel)]="settings.maxStorageGb"
+              [(ngModel)]="settings.max_storage_gb"
               type="number"
               min="0"
               class="glass-input w-full"
@@ -503,7 +503,7 @@
             <label class="form-label">
               {{ 'pages.companies.timezone' | translate }}
             </label>
-            <select [(ngModel)]="settings.timezone" class="glass-input w-full">
+            <select [ngModel]="getTimezone()" (ngModelChange)="setTimezone($event)" class="glass-input w-full">
               <option value="UTC">UTC</option>
               <option value="Asia/Bangkok">Asia/Bangkok</option>
               <option value="America/New_York">America/New_York</option>
@@ -515,7 +515,7 @@
             <label class="form-label">
               {{ 'pages.companies.language' | translate }}
             </label>
-            <select [(ngModel)]="settings.language" class="glass-input w-full">
+            <select [ngModel]="getLanguage()" (ngModelChange)="setLanguage($event)" class="glass-input w-full">
               <option value="en">English</option>
               <option value="th">ไทย</option>
             </select>
@@ -525,7 +525,7 @@
             <label class="form-label">
               {{ 'pages.companies.dateFormat' | translate }}
             </label>
-            <select [(ngModel)]="settings.dateFormat" class="glass-input w-full">
+            <select [ngModel]="getDateFormat()" (ngModelChange)="setDateFormat($event)" class="glass-input w-full">
               <option value="YYYY-MM-DD">YYYY-MM-DD</option>
               <option value="DD/MM/YYYY">DD/MM/YYYY</option>
               <option value="MM/DD/YYYY">MM/DD/YYYY</option>
@@ -536,7 +536,7 @@
             <label class="form-label">
               {{ 'pages.companies.timeFormat' | translate }}
             </label>
-            <select [(ngModel)]="settings.timeFormat" class="glass-input w-full">
+            <select [ngModel]="getTimeFormat()" (ngModelChange)="setTimeFormat($event)" class="glass-input w-full">
               <option value="24h">24 Hour</option>
               <option value="12h">12 Hour</option>
             </select>
@@ -555,7 +555,8 @@
               <label class="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  [(ngModel)]="settings.notifications!.email"
+                  [checked]="getNotifications().email"
+                  (change)="setNotificationField('email', $any($event.target).checked)"
                   class="glass-checkbox"
                 />
                 <span>{{ 'pages.companies.emailNotifications' | translate }}</span>
@@ -563,7 +564,8 @@
               <label class="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  [(ngModel)]="settings.notifications!.sms"
+                  [checked]="getNotifications().sms"
+                  (change)="setNotificationField('sms', $any($event.target).checked)"
                   class="glass-checkbox"
                 />
                 <span>{{ 'pages.companies.smsNotifications' | translate }}</span>
@@ -571,7 +573,8 @@
               <label class="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  [(ngModel)]="settings.notifications!.push"
+                  [checked]="getNotifications().push"
+                  (change)="setNotificationField('push', $any($event.target).checked)"
                   class="glass-checkbox"
                 />
                 <span>{{ 'pages.companies.pushNotifications' | translate }}</span>
@@ -579,17 +582,19 @@
               <label class="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  [(ngModel)]="settings.notifications!.webhook"
+                  [checked]="getNotifications().webhook"
+                  (change)="setNotificationField('webhook', $any($event.target).checked)"
                   class="glass-checkbox"
                 />
                 <span>{{ 'pages.companies.webhookNotifications' | translate }}</span>
               </label>
-              <div *ngIf="settings.notifications?.webhook" class="form-group">
+              <div *ngIf="getNotifications().webhook" class="form-group">
                 <label class="form-label">
                   {{ 'pages.companies.webhookUrl' | translate }}
                 </label>
                 <input
-                  [(ngModel)]="settings.notifications!.webhookUrl"
+                  [value]="getNotifications().webhookUrl || ''"
+                  (input)="setNotificationField('webhookUrl', $any($event.target).value)"
                   type="url"
                   class="glass-input w-full"
                   [placeholder]="'pages.companies.webhookUrlPlaceholder' | translate"
@@ -610,7 +615,8 @@
             <label class="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
-                [(ngModel)]="settings.security!.twoFactorRequired"
+                [checked]="getSecurity().twoFactorRequired"
+                (change)="setSecurityField('twoFactorRequired', $any($event.target).checked)"
                 class="glass-checkbox"
               />
               <span>{{ 'pages.companies.twoFactorRequired' | translate }}</span>
@@ -622,7 +628,8 @@
               {{ 'pages.companies.sessionTimeout' | translate }} (minutes)
             </label>
             <input
-              [(ngModel)]="settings.security!.sessionTimeout"
+              [value]="getSecurity().sessionTimeout || 30"
+              (input)="setSecurityField('sessionTimeout', +$any($event.target).value)"
               type="number"
               min="5"
               max="1440"
@@ -638,7 +645,8 @@
               <label class="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  [(ngModel)]="settings.security!.passwordPolicy!.requireUppercase"
+                  [checked]="getSecurity().passwordPolicy?.requireUppercase"
+                  (change)="setPasswordPolicyField('requireUppercase', $any($event.target).checked)"
                   class="glass-checkbox"
                 />
                 <span>{{ 'pages.companies.requireUppercase' | translate }}</span>
@@ -646,7 +654,8 @@
               <label class="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  [(ngModel)]="settings.security!.passwordPolicy!.requireLowercase"
+                  [checked]="getSecurity().passwordPolicy?.requireLowercase"
+                  (change)="setPasswordPolicyField('requireLowercase', $any($event.target).checked)"
                   class="glass-checkbox"
                 />
                 <span>{{ 'pages.companies.requireLowercase' | translate }}</span>
@@ -654,7 +663,8 @@
               <label class="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  [(ngModel)]="settings.security!.passwordPolicy!.requireNumbers"
+                  [checked]="getSecurity().passwordPolicy?.requireNumbers"
+                  (change)="setPasswordPolicyField('requireNumbers', $any($event.target).checked)"
                   class="glass-checkbox"
                 />
                 <span>{{ 'pages.companies.requireNumbers' | translate }}</span>
@@ -662,7 +672,8 @@
               <label class="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  [(ngModel)]="settings.security!.passwordPolicy!.requireSpecialChars"
+                  [checked]="getSecurity().passwordPolicy?.requireSpecialChars"
+                  (change)="setPasswordPolicyField('requireSpecialChars', $any($event.target).checked)"
                   class="glass-checkbox"
                 />
                 <span>{{ 'pages.companies.requireSpecialChars' | translate }}</span>
@@ -672,7 +683,8 @@
                   {{ 'pages.companies.minPasswordLength' | translate }}
                 </label>
                 <input
-                  [(ngModel)]="settings.security!.passwordPolicy!.minLength"
+                  [value]="getSecurity().passwordPolicy?.minLength || 8"
+                  (input)="setPasswordPolicyField('minLength', +$any($event.target).value)"
                   type="number"
                   min="4"
                   max="128"
@@ -697,7 +709,7 @@
   <!-- Company Details Modal -->
   <app-modal
     [isOpen]="showDetailsModal()"
-    [title]="viewingCompany() ? (('pages.companies.companyDetails' | translate) + ' - ' + viewingCompany()!.name) : ('pages.companies.companyDetails' | translate)"
+    [title]="viewingCompany() ? (('pages.companies.companyDetails' | translate) + ' - ' + viewingCompany()!.company_name) : ('pages.companies.companyDetails' | translate)"
     [config]="{ size: 'lg', scrollable: true, centered: true, animation: true }"
     (closed)="closeDetailsModal()"
   >
@@ -709,15 +721,15 @@
         <div class="form-grid">
           <div class="form-group">
             <label class="form-label">{{ 'pages.companies.companyName' | translate }}</label>
-            <p class="form-value">{{ viewingCompany()!.name }}</p>
+            <p class="form-value">{{ viewingCompany()!.company_name }}</p>
           </div>
           <div class="form-group">
             <label class="form-label">{{ 'pages.companies.companyCode' | translate }}</label>
-            <p class="form-value">{{ viewingCompany()!.code }}</p>
+            <p class="form-value">{{ viewingCompany()!.company_code }}</p>
           </div>
           <div class="form-group">
             <label class="form-label">{{ 'pages.companies.ownerName' | translate }}</label>
-            <p class="form-value">{{ viewingCompany()!.ownerName || 'N/A' }}</p>
+            <p class="form-value">{{ viewingCompany()!.owner_name || 'N/A' }}</p>
           </div>
           <div class="form-group">
             <label class="form-label">{{ 'pages.companies.contact' | translate }}</label>
@@ -725,7 +737,7 @@
           </div>
           <div class="form-group form-group-full">
             <label class="form-label">{{ 'pages.companies.description' | translate }}</label>
-            <p class="form-value">{{ viewingCompany()!.description || 'N/A' }}</p>
+            <p class="form-value">{{ viewingCompany()!.company_info || 'N/A' }}</p>
           </div>
         </div>
       </div>
@@ -765,11 +777,11 @@
           </div>
           <div class="form-group">
             <label class="form-label">{{ 'pages.companies.createdAt' | translate }}</label>
-            <p class="form-value">{{ viewingCompany()!.createdAt ? formatDateTime(viewingCompany()!.createdAt) : 'N/A' }}</p>
+            <p class="form-value">{{ viewingCompany()!.created_at ? formatDateTime(viewingCompany()!.created_at) : 'N/A' }}</p>
           </div>
           <div class="form-group">
             <label class="form-label">{{ 'pages.companies.updatedAt' | translate }}</label>
-            <p class="form-value">{{ viewingCompany()!.updatedAt ? formatDateTime(viewingCompany()!.updatedAt) : 'N/A' }}</p>
+            <p class="form-value">{{ viewingCompany()!.updated_at ? formatDateTime(viewingCompany()!.updated_at) : 'N/A' }}</p>
           </div>
         </div>
       </div>
