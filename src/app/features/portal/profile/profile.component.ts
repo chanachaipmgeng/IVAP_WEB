@@ -19,6 +19,7 @@ import { GlassButtonComponent } from '../../../shared/components/glass-button/gl
 import { AuthService } from '../../../core/services/auth.service';
 import { I18nService } from '../../../core/services/i18n.service';
 import { ApiService } from '../../../core/services/api.service';
+import { User } from '../../../core/models/user.model';
 
 /**
  * User profile interface
@@ -95,7 +96,7 @@ export class ProfileComponent implements OnInit {
 
     // ใช้ auth.getCurrentUserInfo() แทนการเรียกใช้โดยตรง
     this.auth.getCurrentUserInfo().subscribe({
-      next: (user) => {
+      next: (user: User) => {
         this.profile = {
           id: user.member_id || user.memberId || user.id || '',
           firstName: user.first_name || '',  // snake_case only

@@ -3,47 +3,35 @@ import { Member } from './member.model';
 /**
  * User Interface
  * 
- * Extends Member interface with additional compatibility fields
- * to support both snake_case (from backend) and camelCase (frontend convention)
+ * Frontend-specific interface that extends Member with additional fields
+ * needed for UI and backward compatibility.
  * 
- * This interface is used throughout the application for user/member data
- * and provides backward compatibility with existing code.
+ * **Usage Guidelines:**
+ * - Use `Member` for API calls (directly matches backend schema)
+ * - Use `User` for frontend state, UI components, and backward compatibility
+ * - All fields from `Member` are inherited automatically
+ * 
+ * **Additional Fields:**
+ * - `id`, `memberId`: Backward compatibility aliases for `member_id`
+ * - `companyId`, `company_id`, `companyName`: Company info from JWT token or join data
+ * - `fullName`: Computed display name (convenience field)
+ * - `password`: Form data only (not sent to backend)
  */
-export interface User extends Omit<Member, 'memberId' | 'created_at'> {
-  // Primary identifiers - support both formats
+export interface User extends Member {
+  // Backward compatibility - aliases for member_id
   id?: string;  // UUID as string (alias for member_id, for backward compatibility)
-  member_id?: string;  // UUID as string (snake_case from backend)
-  memberId: string;  // UUID as string (camelCase, required from Member)
+  memberId?: string;  // UUID as string (camelCase alias, for backward compatibility)
   
-  // Basic information (from Member, with snake_case compatibility)
-  first_name?: string;  // snake_case version (from backend)
-  last_name?: string;  // snake_case version (from backend)
-  phone_number?: string;  // snake_case version (from backend)
-  
-  // Type and status (from Member, with snake_case compatibility)
-  actor_type?: string;  // snake_case version (from backend)
-  member_type?: string;  // snake_case version (from backend)
-  
-  // Account status (from Member, with snake_case compatibility)
-  is_verified?: boolean;  // snake_case version (from backend)
-  is_active?: boolean;  // snake_case version (from backend)
-  
-  // Company information (additional fields not in Member)
+  // Company information (from JWT token or join data, not in Member schema)
   companyId?: string | number;  // Can be string (UUID) or number
-  company_id?: string;  // snake_case version (from backend)
-  companyName?: string;  // Optional (not in backend schema)
+  company_id?: string;  // snake_case version (from backend/JWT)
+  companyName?: string;  // Optional company name (for display)
   
-  // Metadata (from Member, with snake_case compatibility)
-  user_metadata?: Record<string, any>;  // snake_case version (from backend)
+  // UI convenience fields
+  fullName?: string;  // Computed full name (for display) - `${first_name} ${last_name}`
   
-  // Timestamps (from Member via BaseTimestamps, with snake_case compatibility)
-  created_at?: string;  // snake_case version (from backend)
-  updated_at?: string;  // snake_case version (from backend)
-  last_login_at?: string;  // snake_case version (from backend)
-  
-  // Form data (not from backend)
-  password?: string;  // Optional for form data
-  fullName?: string;  // Computed full name (for display)
+  // Form data (not from backend, not sent to backend)
+  password?: string;  // Optional for form data (password input fields)
 }
 
 export interface Role {

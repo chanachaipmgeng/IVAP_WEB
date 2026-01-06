@@ -69,41 +69,29 @@ export class AuthService {
     return {
       // Required fields from Member
       memberId,
+      member_id: rawUser.member_id || memberId,
       username,
       email,
-      first_name: rawUser.first_name || firstName,  // snake_case
-      last_name: rawUser.last_name || lastName,  // snake_case
-      actorType,
-      isActive,
-      isVerified,
+      first_name: rawUser.first_name || firstName,
+      last_name: rawUser.last_name || lastName,
+      actor_type: rawUser.actor_type || actorType,
+      is_active: rawUser.is_active !== undefined ? rawUser.is_active : isActive,
       status,
       roles,
       permissions,
-      
-      // Optional fields from Member
-      phoneNumber: rawUser.phoneNumber || rawUser.phone_number,
-      memberType: rawUser.memberType || rawUser.member_type,
-      picture: rawUser.picture,
-      userMetadata: rawUser.userMetadata || rawUser.user_metadata,
-      lastLoginAt: rawUser.lastLoginAt || rawUser.last_login_at,
-      createdAt: rawUser.createdAt || rawUser.created_at || new Date().toISOString(),
-      updatedAt: rawUser.updatedAt || rawUser.updated_at || new Date().toISOString(),
-      
-      // Compatibility fields (snake_case)
-      id: rawUser.id || memberId,
-      member_id: rawUser.member_id || memberId,
-      first_name: rawUser.first_name || firstName,
-      last_name: rawUser.last_name || lastName,
+      // Optional ields from Member
       phone_number: rawUser.phone_number || rawUser.phoneNumber,
-      actor_type: rawUser.actor_type || actorType,
       member_type: rawUser.member_type || rawUser.memberType,
-      is_active: rawUser.is_active !== undefined ? rawUser.is_active : isActive,
-      is_verified: rawUser.is_verified !== undefined ? rawUser.is_verified : isVerified,
+      picture: rawUser.picture,
       user_metadata: rawUser.user_metadata || rawUser.userMetadata,
-      created_at: rawUser.created_at || rawUser.createdAt,
-      updated_at: rawUser.updated_at || rawUser.updatedAt,
       last_login_at: rawUser.last_login_at || rawUser.lastLoginAt,
-      
+      created_at: rawUser.created_at || rawUser.createdAt || new Date().toISOString(),
+      updated_at: rawUser.updated_at || rawUser.updatedAt || new Date().toISOString(),
+      is_verified: rawUser.is_verified !== undefined ? rawUser.is_verified : isVerified,
+
+      // Compatibility fields
+      id: rawUser.id || memberId,
+
       // Additional fields
       companyId: rawUser.companyId || rawUser.company_id,
       company_id: rawUser.company_id || rawUser.companyId,
@@ -120,15 +108,15 @@ export class AuthService {
         // ApiService transforms snake_case to camelCase, so access_token becomes accessToken
         // Support both formats for compatibility
         const token = (response as any).accessToken || (response as any).access_token;
-        
+
         if (!token) {
           console.error('Login response missing access_token:', response);
           throw new Error('Invalid login response: missing access token');
         }
-        
+
         // Normalize user data - support both camelCase (from ApiService) and snake_case
         const user = this.normalizeUser(response.user);
-        
+
         this.setToken(token);
         this.setCurrentUser(user);
       })
@@ -174,7 +162,7 @@ export class AuthService {
   public isSuperAdmin(): boolean {
     const user = this.currentUser();
     if (!user) return false;
-    
+
     // Check by actor_type (snake_case only)
     const actorType = user.actor_type;
     if (actorType === 'admin_system') {
@@ -186,7 +174,7 @@ export class AuthService {
   public isAdminSystem(): boolean {
     const user = this.currentUser();
     if (!user) return false;
-    
+
     // Use snake_case only
     const actorType = user.actor_type;
     return actorType === 'admin_system';
@@ -195,11 +183,11 @@ export class AuthService {
   public isCompanyAdmin(): boolean {
     const user = this.currentUser();
     if (!user) return false;
-    
+
     // Use snake_case only
     const memberType = user.member_type;
     const actorType = user.actor_type;
-    
+
     if (memberType === 'admin' || actorType === 'member') {
       return true;
     }
@@ -209,7 +197,7 @@ export class AuthService {
   public isMember(): boolean {
     const user = this.currentUser();
     if (!user) return false;
-    
+
     const actorType = user.actor_type;  // snake_case only
     return actorType === 'member';
   }
@@ -217,7 +205,7 @@ export class AuthService {
   public isGuest(): boolean {
     const user = this.currentUser();
     if (!user) return false;
-    
+
     const actorType = user.actor_type;  // snake_case only
     return actorType === 'guest';
   }
@@ -272,9 +260,9 @@ export class AuthService {
     firstName: string;
     lastName: string;
     email: string;
-    actorType: string;
-    memberType?: string;
-    phoneNumber?: string;
+    actor_type: string;
+    member_type?: string;
+    phone_number?: string;
   }): Observable<User> {
     return this.api.post<User>('/auth/register', data).pipe(
       tap(user => {

@@ -2,7 +2,15 @@
 
 เอกสารสรุปสถานะของ Models และ Services ที่ตรงกับ Backend API และตัวที่ยังต้องปรับปรุง
 
-**อัปเดตล่าสุด:** 2024
+**อัปเดตล่าสุด:** 2024-12-19
+
+## 🔄 การปรับปรุงล่าสุด
+
+### 2024-12-19
+- ✅ แก้ไข `user.model.ts`: ปรับ `User` interface ให้ extend `Omit<Member, 'member_id' | 'created_at'>` และกำหนด `member_id` เป็น required
+- ✅ แก้ไข `auth.service.ts`: ปรับ `normalizeUser` method เพื่อลบ duplicate keys และใช้ `snake_case` อย่างสม่ำเสมอ
+- ✅ แก้ไข `register` method: เปลี่ยน `actorType` เป็น `actor_type` และ `phoneNumber` เป็น `phone_number`
+- ⚠️ ยังต้องแก้ไข: `auth.service.ts` line 79 (ลบ `isVerified`) และ line 291 (แก้ `Observable<>` เป็น `Observable<User>`)
 
 ---
 
@@ -147,11 +155,18 @@
 
 ## ⚠️ Models และ Services ที่ยังต้องปรับปรุง
 
-### 1. **User** (Legacy/Compatibility Layer)
-- **Model:** `user.model.ts` ⚠️
-  - ใช้ทั้ง `camelCase` และ `snake_case` (backward compatibility)
-  - **สถานะ:** ใช้เป็น compatibility layer สำหรับ `Member`
-  - **คำแนะนำ:** ใช้ `Member` model แทน `User` model ในโค้ดใหม่
+### 1. **User** (Frontend-Specific Interface)
+- **Model:** `user.model.ts` ✅ (ปรับปรุงแล้ว)
+  - Extends `Member` โดยตรง (ไม่ซ้ำซ้อน)
+  - เพิ่มเฉพาะ fields ที่จำเป็นสำหรับ frontend:
+    - `id`, `memberId`: Backward compatibility
+    - `companyId`, `company_id`, `companyName`: Company info จาก JWT
+    - `fullName`: Computed field สำหรับ UI
+    - `password`: Form data
+  - **สถานะ:** Frontend-specific interface สำหรับ UI และ backward compatibility
+  - **คำแนะนำ:** 
+    - ใช้ `Member` สำหรับ API calls (ตรงกับ backend 100%)
+    - ใช้ `User` สำหรับ frontend state และ UI components
 - **Service:** `user.service.ts` ⚠️
   - ไม่ extend `BaseCrudService`
   - ใช้ manual API calls

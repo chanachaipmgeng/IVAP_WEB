@@ -198,9 +198,9 @@ export class RegisterComponent extends BaseComponent implements OnInit {
         firstName: this.formData.firstName,
         lastName: this.formData.lastName,
         email: this.formData.email,
-        actorType: 'member', // ตั้งค่า default เป็น member
-        memberType: 'employee', // ตั้งค่า default เป็น employee
-        phoneNumber: '' // ถ้ามี field phone number ใน form
+        actor_type: 'member', // ตั้งค่า default เป็น member
+        member_type: 'employee', // ตั้งค่า default เป็น employee
+        phone_number: '' // ถ้ามี field phone number ใน form
       }),
       (user) => {
         this.loading.set(false);
