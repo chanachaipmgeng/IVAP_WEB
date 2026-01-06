@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { GlassCardComponent } from '../../../shared/components/glass-card/glass-card.component';
 import { GlassButtonComponent } from '../../../shared/components/glass-button/glass-button.component';
 import { DataTableComponent, TableColumn, TableAction } from '../../../shared/components/data-table/data-table.component';
@@ -22,13 +23,15 @@ import { ModalComponent } from '../../../shared/components/modal/modal.component
 import { PageLayoutComponent, PageAction } from '../../../shared/components/page-layout/page-layout.component';
 import { StatisticsGridComponent, StatCard } from '../../../shared/components/statistics-grid/statistics-grid.component';
 import { FilterSectionComponent, FilterField } from '../../../shared/components/filter-section/filter-section.component';
-import { UserService } from '../../../core/services/user.service';
 import { MemberService } from '../../../core/services/member.service';
+import { CompanyService } from '../../../core/services/company.service';
+import { RbacService } from '../../../core/services/rbac.service';
 import { I18nService } from '../../../core/services/i18n.service';
 import { User, Role, UserFilters, UserStatistics } from '../../../core/models/user.model';
 import { Member, MemberCreate, MemberUpdate } from '../../../core/models/member.model';
 import { memberToUser, membersToUsers, userToMember } from '../../../core/utils/member-utils';
 import { BaseComponent } from '../../../core/base/base.component';
+import { RoleForm } from '../../../core/models/rbac.model';
 
 @Component({
   selector: 'app-users',
@@ -55,6 +58,14 @@ export class UsersComponent extends BaseComponent implements OnInit {
   roleSaving = signal(false);
   editingUser = signal<User | null>(null);
   editingRoleRecord = signal<Role | null>(null);
+
+  // Local state for companies and roles
+  private companies = signal<any[]>([]);
+  private roles = signal<Role[]>([]);
+
+  // Public getters for template access
+  getRoles = () => this.roles.asReadonly();
+  getCompanies = () => this.companies.asReadonly();
 
   formData: any = {
     first_name: '',
@@ -85,7 +96,18 @@ export class UsersComponent extends BaseComponent implements OnInit {
   };
 
   // Computed signals for statistics
-  userStats = computed(() => this.userService.getUserStatistics());
+  userStats = computed(() => {
+    const memberStats = this.memberService.calculateStatistics();
+    const members = this.memberService.getMembersSignal()();
+    const adminUsers = members.filter(m => m.roles?.includes('admin') || m.roles?.includes('ADMIN')).length;
+
+    return {
+      totalUsers: memberStats.total_members,
+      activeUsers: memberStats.active_members,
+      inactiveUsers: memberStats.inactive_members,
+      adminUsers: adminUsers
+    } as UserStatistics;
+  });
 
   // Statistics cards for grid
   statisticsCards = computed<StatCard[]>(() => {
@@ -147,7 +169,7 @@ export class UsersComponent extends BaseComponent implements OnInit {
       label: this.i18n.t('pages.users.filterRole'),
       type: 'select',
       placeholder: this.i18n.t('pages.users.filterRole'),
-      options: this.userService.getRoles()().map((r: Role) => ({ label: r.name, value: r.name }))
+      options: this.roles().map((r: Role) => ({ label: r.name, value: r.name })) // Use local roles state
     },
     {
       key: 'status',
@@ -169,7 +191,29 @@ export class UsersComponent extends BaseComponent implements OnInit {
   ]);
 
 filteredUsers = computed(() => {
-  return this.userService.filterUsers(this.filters);
+  // Convert UserFilters to MemberFilters
+  const memberFilters: any = {
+    search: this.filters.search,
+    is_active: this.filters.status === 'active' ? true : (this.filters.status === 'inactive' ? false : undefined)
+  };
+
+  // Filter members using MemberService
+  let filtered = this.memberService.filterMembers(memberFilters);
+
+  // Convert to Users for backward compatibility
+  let users = membersToUsers(filtered);
+
+  // Additional filtering for role and company_id (not in MemberFilters)
+  if (this.filters.role) {
+    const role = this.filters.role;
+    users = users.filter(user => user.roles?.includes(role) || user.roles?.includes(role.toUpperCase()));
+  }
+
+  if (this.filters.company_id) {
+    users = users.filter(user => user.companyId === this.filters.company_id || user.company_id === this.filters.company_id);
+  }
+
+  return users;
 });
 
   get columns(): TableColumn[] {
@@ -211,8 +255,9 @@ filteredUsers = computed(() => {
 }
 
 constructor(
-  public userService: UserService,
-  public memberService: MemberService,
+  public memberService: MemberService, // Use for member CRUD operations
+  public companyService: CompanyService, // Use for company operations
+  public rbacService: RbacService, // Use for role operations
   public i18n: I18nService
 ) {
   super();
@@ -232,41 +277,41 @@ loadUsers(): void {
     (members: Member[]) => {
       // Convert Members to Users for backward compatibility
       const users = membersToUsers(members);
-      // Update UserService state for backward compatibility
-      (this.userService as any).users.set(users);
+      // No need to update UserService state anymore
     },
     (error) => {
       console.error('Error loading users:', error);
-      // Fallback to UserService if MemberService fails
-      this.subscribe(
-        this.userService.loadUsers(),
-        () => {},
-        (err) => console.error('Error loading users (fallback):', err)
-      );
     }
   );
 }
 
 loadRoles(): void {
+  // Use RbacService instead of UserService
   this.subscribe(
-    this.userService.loadRoles(),
-    () => {
-      // Data is automatically updated via service
+    this.rbacService.loadRoles(),
+    (roles: Role[]) => {
+      // Update local state
+      this.roles.set(roles);
     },
     (error) => {
       console.error('Error loading roles:', error);
+      this.roles.set([]);
     }
   );
 }
 
 loadCompanies(): void {
+  // Use CompanyService instead of UserService
   this.subscribe(
-    this.userService.loadCompanies(),
-    () => {
-      // Data is automatically updated via service
+    this.companyService.getCompanies(),
+    (response) => {
+      // Update local state
+      const companies = response.data || response.items || [];
+      this.companies.set(companies);
     },
     (error) => {
       console.error('Error loading companies:', error);
+      this.companies.set([]);
     }
   );
 }
@@ -297,10 +342,10 @@ openAddModal(): void {
     is_active: true
   };
   // Ensure companies and roles are loaded
-  if (this.userService.getCompanies()().length === 0) {
+  if (this.companies().length === 0) {
     this.loadCompanies();
   }
-  if (this.userService.getRoles()().length === 0) {
+  if (this.roles().length === 0) {
     this.loadRoles();
   }
   this.showModal.set(true);
@@ -313,7 +358,7 @@ editUser(user: User): void {
   let roleId = '';
   if(user.roles && user.roles.length > 0) {
     const roleName = user.roles[0];
-    const roleObj = this.userService.getRoles()().find(r => r.name === roleName);
+    const roleObj = this.roles().find((r: Role) => r.name === roleName);
     if (roleObj) {
       roleId = roleObj.id;
     }
@@ -335,10 +380,10 @@ editUser(user: User): void {
     is_active: user.is_active !== undefined ? user.is_active : true
   };
   // Ensure companies and roles are loaded
-  if (this.userService.getCompanies()().length === 0) {
+  if (this.companies().length === 0) {
     this.loadCompanies();
   }
-  if (this.userService.getRoles()().length === 0) {
+  if (this.roles().length === 0) {
     this.loadRoles();
   }
   this.showModal.set(true);
@@ -436,7 +481,7 @@ saveUser(): void {
       // Assign role if provided
       if (roleId) {
         this.subscribe(
-          this.assignRoleToUser(userId, roleId),
+          this.assignRoleToUser(userId, roleId, companyId),
           () => {
             // Assign company if provided
             if (companyId) {
@@ -530,12 +575,7 @@ deleteUser(user: User): void {
     },
     (error) => {
       console.error('Error deleting user:', error);
-      // Fallback to UserService if MemberService fails
-      this.subscribe(
-        this.userService.deleteUser(userId),
-        () => this.loadUsers(),
-        (err) => console.error('Error deleting user (fallback):', err)
-      );
+      // Error already logged above
     }
   );
 }
@@ -543,20 +583,22 @@ deleteUser(user: User): void {
 resetPassword(user: User): void {
   if(!confirm(`${this.i18n.t('pages.users.resetPasswordConfirm')} ${user.username}?`)) return;
 
-  const userId = user.memberId || user.id;
+  const userId = user.memberId || user.member_id || user.id;
   if (!userId) {
     console.error('User ID is missing');
     return;
   }
 
   // ✅ Auto-unsubscribe on component destroy
+  // Use MemberService instead of UserService
   this.subscribe(
-    this.userService.resetPassword(userId),
+    this.memberService.resetPassword(userId),
     () => {
       alert(this.i18n.t('pages.users.passwordResetSuccess'));
     },
     (error) => {
       console.error('Error resetting password:', error);
+      // Error already logged above
     }
   );
 }
@@ -593,8 +635,9 @@ deleteRole(role: Role): void {
   if(!confirm(`${this.i18n.t('pages.users.deleteRoleConfirm')} ${role.name}?`)) return;
 
   // ✅ Auto-unsubscribe on component destroy
+  // Use RbacService instead of UserService
   this.subscribe(
-    this.userService.deleteRole(role.id),
+    this.rbacService.deleteRole(role.id),
     () => {
       this.loadRoles();
     },
@@ -616,10 +659,13 @@ saveRole(): void {
     return;
   }
 
-  // Transform to backend format (without permissions)
-  const payload = {
-    name: this.roleFormData.name.trim(),
-    description: this.roleFormData.description.trim()
+  // Transform to backend format (with permissions)
+  const payload: RoleForm = {
+    name: this.roleFormData.name,
+    description: this.roleFormData.description,
+    permissions: this.roleFormData.permissionsInput.split(/[\n,]/)
+    .map(permission => permission.trim())
+    .filter(permission => permission.length > 0)
   };
 
   // Store permissions for later assignment
@@ -630,9 +676,11 @@ saveRole(): void {
 
   this.roleSaving.set(true);
 
+  // For update, use Partial<RoleForm> which doesn't require permissions
+  // For create, use payload with empty permissions array
   const request = this.editingRoleRecord()
-    ? this.userService.updateRole(this.editingRoleRecord()!.id, payload)
-    : this.userService.createRole(payload);
+    ? this.rbacService.updateRole(this.editingRoleRecord()!.id, { name: payload.name, description: payload.description })
+    : this.rbacService.createRole(payload);
 
   // ✅ Auto-unsubscribe on component destroy
   this.subscribe(
@@ -673,8 +721,9 @@ saveRole(): void {
 
 exportUsers(): void {
   // ✅ Auto-unsubscribe on component destroy
+  // Use MemberService instead of UserService
   this.subscribe(
-    this.userService.exportUsers(),
+    this.memberService.exportMembers('csv'),
     (blob) => {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -685,21 +734,56 @@ exportUsers(): void {
     },
     (error) => {
       console.error('Error exporting users:', error);
+      // Error already logged above
       alert(this.i18n.t('pages.users.errorExportingUsers'));
     }
   );
 }
 
-assignRoleToUser(userId: string, roleId: string) {
-  return this.userService.assignRoleToUser(userId, roleId);
+assignRoleToUser(userId: string, roleId: string, companyId?: string) {
+  // Use RbacService instead of UserService
+  // Get company_id from parameter or formData
+  const company_id = companyId || this.formData.company_id || '';
+
+  return this.rbacService.assignUserRole({
+    userId,
+    roleId,
+    companyId: company_id.toString()
+  });
 }
 
 assignCompanyToUser(userId: string, companyId: string) {
-  return this.userService.assignCompanyToUser(userId, companyId);
+  // Use MemberService to update member with company_id
+  const options = { skipTransform: true };
+  return this.memberService.updateMember(userId, { company_id: companyId } as any);
 }
 
 updateRolePermissions(roleId: string, permissionNames: string[]) {
-  return this.userService.updateRolePermissions(roleId, permissionNames);
+  // Use RbacService instead of UserService
+  // First, load permissions to map names to IDs
+  return this.rbacService.loadPermissions().pipe(
+    switchMap((permissions: any) => {
+      const permissionIds: number[] = [];
+      const allPermissions = Array.isArray(permissions) ? permissions : (permissions?.data || permissions?.items || []);
+
+      for (const permissionName of permissionNames) {
+        const permission = allPermissions.find((p: any) =>
+          p.permissionName === permissionName ||
+          p.permission_name === permissionName ||
+          p.permissionCode === permissionName ||
+          p.permission_code === permissionName ||
+          p.name === permissionName
+        );
+        if (permission) {
+          permissionIds.push(permission.id);
+        } else {
+          console.warn(`Permission not found: ${permissionName}`);
+        }
+      }
+
+      return this.rbacService.updateRolePermissions(roleId, permissionIds);
+    })
+  );
 }
 
 t(key: string): string {

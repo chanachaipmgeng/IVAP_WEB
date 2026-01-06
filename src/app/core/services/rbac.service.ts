@@ -24,8 +24,8 @@ export class RbacService {
   // Load data
   loadRoles(): Observable<Role[]> {
     this.loading.set(true);
-    // Backend: GET /api/v1/roles/roles
-    return this.api.get<Role[]>('/roles/roles').pipe(
+    // Backend: GET /api/v1/rbac/roles
+    return this.api.get<Role[]>('/rbac/roles').pipe(
       tap((response: any) => {
         const data = Array.isArray(response) ? response : (response?.data || []);
         this.roles.set(data);
@@ -41,8 +41,8 @@ export class RbacService {
   }
 
   loadPermissions(): Observable<Permission[]> {
-    // Backend: GET /api/v1/roles/permissions
-    return this.api.get<Permission[]>('/roles/permissions').pipe(
+    // Backend: GET /api/v1/rbac/permissions
+    return this.api.get<Permission[]>('/rbac/permissions').pipe(
       tap((response: any) => {
         const data = Array.isArray(response) ? response : (response?.data || []);
         this.permissions.set(data);
@@ -68,18 +68,18 @@ export class RbacService {
 
   // Role operations
   createRole(roleData: RoleForm): Observable<Role> {
-    // Backend: POST /api/v1/roles/roles
-    return this.api.post<Role>('/roles/roles', roleData);
+    // Backend: POST /api/v1/rbac/roles
+    return this.api.post<Role>('/rbac/roles', roleData);
   }
 
   updateRole(roleId: string, roleData: Partial<RoleForm>): Observable<Role> {
-    // Backend: PUT /api/v1/roles/roles/{role_id}
-    return this.api.put<Role>(`/roles/roles/${roleId}`, roleData);
+    // Backend: PUT /api/v1/rbac/roles/{role_id}
+    return this.api.put<Role>(`/rbac/roles/${roleId}`, roleData);
   }
 
   deleteRole(roleId: string): Observable<void> {
-    // Backend: DELETE /api/v1/roles/roles/{role_id}
-    return this.api.delete<void>(`/roles/roles/${roleId}`);
+    // Backend: DELETE /api/v1/rbac/roles/{role_id}
+    return this.api.delete<void>(`/rbac/roles/${roleId}`);
   }
 
   // Permission operations
@@ -101,41 +101,41 @@ export class RbacService {
 
   // User role operations
   assignUserRole(userRoleData: UserRoleForm): Observable<any> {
-    // Backend: POST /api/v1/roles/users/{user_id}/roles/{role_id}
-    return this.api.post<any>(`/roles/users/${userRoleData.userId}/roles/${userRoleData.roleId}`, {});
+    // Backend: POST /api/v1/rbac/users/{user_id}/roles/{role_id}
+    return this.api.post<any>(`/rbac/users/${userRoleData.userId}/roles/${userRoleData.roleId}`, {});
   }
 
   removeUserRole(userId: string, roleId: string): Observable<void> {
-    // Backend: DELETE /api/v1/roles/users/{user_id}/roles/{role_id}
-    return this.api.delete<void>(`/roles/users/${userId}/roles/${roleId}`);
+    // Backend: DELETE /api/v1/rbac/users/{user_id}/roles/{role_id}
+    return this.api.delete<void>(`/rbac/users/${userId}/roles/${roleId}`);
   }
 
   // Role permission operations
   assignPermissionToRole(roleId: string, permissionId: string): Observable<Role> {
-    // Backend: POST /api/v1/roles/roles/{role_id}/permissions/{permission_id}
-    return this.api.post<Role>(`/roles/roles/${roleId}/permissions/${permissionId}`, {});
+    // Backend: POST /api/v1/rbac/roles/{role_id}/permissions/{permission_id}
+    return this.api.post<Role>(`/rbac/roles/${roleId}/permissions/${permissionId}`, {});
   }
 
   removePermissionFromRole(roleId: string, permissionId: string): Observable<Role> {
-    // Backend: DELETE /api/v1/roles/roles/{role_id}/permissions/{permission_id}
-    return this.api.delete<Role>(`/roles/roles/${roleId}/permissions/${permissionId}`);
+    // Backend: DELETE /api/v1/rbac/roles/{role_id}/permissions/{permission_id}
+    return this.api.delete<Role>(`/rbac/roles/${roleId}/permissions/${permissionId}`);
   }
 
   bulkAssignPermissionsToRole(roleId: string, permissionIds: number[]): Observable<Role> {
-    // Backend: POST /api/v1/roles/roles/{role_id}/permissions/bulk
-    return this.api.post<Role>(`/roles/roles/${roleId}/permissions/bulk`, permissionIds);
+    // Backend: POST /api/v1/rbac/roles/{role_id}/permissions/bulk
+    return this.api.post<Role>(`/rbac/roles/${roleId}/permissions/bulk`, permissionIds);
   }
 
   bulkRemovePermissionsFromRole(roleId: string, permissionIds: number[]): Observable<Role> {
-    // Backend: DELETE /api/v1/roles/roles/{role_id}/permissions/bulk
+    // Backend: DELETE /api/v1/rbac/roles/{role_id}/permissions/bulk
     // Backend accepts body in DELETE request
-    return this.api.delete<Role>(`/roles/roles/${roleId}/permissions/bulk`, undefined, permissionIds);
+    return this.api.delete<Role>(`/rbac/roles/${roleId}/permissions/bulk`, undefined, permissionIds);
   }
 
   updateRolePermissions(roleId: string, permissionIds: number[]): Observable<Role> {
-    // Backend: PUT /api/v1/roles/roles/{role_id}/permissions
+    // Backend: PUT /api/v1/rbac/roles/{role_id}/permissions
     // Note: Backend expects permission_ids (numbers), not permission strings
-    return this.api.put<Role>(`/roles/roles/${roleId}/permissions`, permissionIds);
+    return this.api.put<Role>(`/rbac/roles/${roleId}/permissions`, permissionIds);
   }
 
   // Statistics

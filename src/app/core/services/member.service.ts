@@ -246,5 +246,25 @@ export class MemberService extends BaseCrudService<Member, MemberCreate, MemberU
   loadMembers(filters?: MemberFilters): Observable<Member[]> {
     return this.getMembers(filters);
   }
+
+  /**
+   * Reset member password
+   * Backend: POST /api/v1/admin/members/{member_id}/reset-password
+   * Note: This endpoint may need to be added to backend
+   */
+  resetPassword(memberId: string): Observable<void> {
+    const options = { skipTransform: true };
+    return this.api.post<void>(`${this.baseEndpoint}/${memberId}/reset-password`, {}, undefined, options);
+  }
+
+  /**
+   * Export members data
+   * Backend: GET /api/v1/members/export
+   * Note: This endpoint may need to be added to backend
+   */
+  exportMembers(format: 'csv' | 'json' | 'excel' = 'csv', filters?: MemberFilters): Observable<Blob> {
+    const options = { skipTransform: true, responseType: 'blob' as const };
+    return this.api.get<Blob>(`${this.baseEndpoint}/export`, { ...filters, format }, options);
+  }
 }
 
