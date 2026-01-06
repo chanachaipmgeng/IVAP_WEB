@@ -226,6 +226,18 @@ export class PortalLayoutComponent {
           permission: 'visitor.view'
         },
         {
+          icon: '📩',
+          label: 'Visitor Invitations',
+          route: '/portal/visitor-invitations',
+          permission: 'visitor.view'
+        },
+        {
+          icon: '📛',
+          label: 'Visitor Badges',
+          route: '/portal/visitor-badges',
+          permission: 'visitor.view'
+        },
+        {
           icon: '🏠',
           label: 'Guests',
           route: '/portal/guests',
@@ -250,6 +262,30 @@ export class PortalLayoutComponent {
           icon: '🅿️',
           label: 'Parking Spots',
           route: '/portal/parking-spots',
+          permission: 'parking.view'
+        },
+        {
+          icon: '📅',
+          label: 'Reservations',
+          route: '/portal/parking-reservation',
+          permission: 'parking.view'
+        },
+        {
+          icon: '➡️',
+          label: 'Entry Gate',
+          route: '/portal/parking-entry',
+          permission: 'parking.view'
+        },
+        {
+          icon: '⬅️',
+          label: 'Exit Gate',
+          route: '/portal/parking-exit',
+          permission: 'parking.view'
+        },
+        {
+          icon: '📊',
+          label: 'Parking Stats',
+          route: '/portal/parking-statistics',
           permission: 'parking.view'
         }
       ]
@@ -309,7 +345,34 @@ export class PortalLayoutComponent {
       ]
     },
 
-    // 12. Demo
+    // 12. Public & Kiosk Mode
+    {
+      icon: '🌐',
+      label: 'Public & Kiosk Mode',
+      expanded: false,
+      children: [
+        {
+          icon: '🖥️',
+          label: 'Kiosk Display',
+          route: '/kiosk/default-device',
+          permission: 'device.view'
+        },
+        {
+          icon: '📝',
+          label: 'Event Registration',
+          route: '/events/register/demo-event',
+          permission: 'event.view'
+        },
+        {
+          icon: '✅',
+          label: 'Public Verification',
+          route: '/verify/public/demo-template',
+          permission: 'report.view'
+        }
+      ]
+    },
+
+    // 13. Demo
     {
       icon: '🧪',
       label: 'Demo',
@@ -365,6 +428,12 @@ export class PortalLayoutComponent {
           icon: '⚡',
           label: 'Performance Dashboard',
           route: '/portal/performance-dashboard',
+          permission: 'dashboard.view'
+        },
+        {
+          icon: '⭐',
+          label: 'Advanced Features',
+          route: '/portal/advanced-features',
           permission: 'dashboard.view'
         }
       ]

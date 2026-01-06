@@ -102,6 +102,16 @@ export const routes: Routes = [
             // data: { permission: 'visitor.view' }
           },
           {
+            path: 'visitor-invitations',
+            loadComponent: () => import('./features/portal/visitor-invitations/visitor-invitations.component')
+              .then(m => m.VisitorInvitationsComponent)
+          },
+          {
+            path: 'visitor-badges',
+            loadComponent: () => import('./features/portal/visitor-badges/visitor-badges.component')
+              .then(m => m.VisitorBadgesComponent)
+          },
+          {
             path: 'guests',
             loadComponent: () => import('./features/portal/guests/guests.component')
               .then(m => m.GuestsComponent),
@@ -162,6 +172,26 @@ export const routes: Routes = [
               .then(m => m.ParkingSpotsComponent),
             // canActivate: [permissionGuard],
             // data: { permission: 'parking.view' }
+          },
+          {
+            path: 'parking-reservation',
+            loadComponent: () => import('./features/portal/parking-reservation/parking-reservation.component')
+              .then(m => m.ParkingReservationComponent)
+          },
+          {
+            path: 'parking-entry',
+            loadComponent: () => import('./features/portal/parking-entry/parking-entry.component')
+              .then(m => m.ParkingEntryComponent)
+          },
+          {
+            path: 'parking-exit',
+            loadComponent: () => import('./features/portal/parking-exit/parking-exit.component')
+              .then(m => m.ParkingExitComponent)
+          },
+          {
+            path: 'parking-statistics',
+            loadComponent: () => import('./features/portal/parking-statistics/parking-statistics.component')
+              .then(m => m.ParkingStatisticsComponent)
           },
           {
             path: 'devices',
