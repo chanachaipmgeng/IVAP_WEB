@@ -3,6 +3,7 @@
  *
  * Component for managing biometric data (fingerprint, face, iris, etc.).
  * Supports full CRUD operations, filtering, statistics, and biometric data management.
+ * Includes Face Enrollment features (Upload/Camera).
  *
  * @example
  * ```html
@@ -10,7 +11,7 @@
  * ```
  */
 
-import { Component, OnInit, signal, computed, inject } from '@angular/core';
+import { Component, OnInit, signal, computed, inject, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -46,12 +47,13 @@ import { I18nService } from '../../../core/services/i18n.service';
     StatisticsGridComponent,
     FilterSectionComponent,
     DataTableComponent,
-    ModalComponent
+    ModalComponent,
+    GlassButtonComponent
   ],
   templateUrl: './biometric-data.component.html',
   styleUrls: ['./biometric-data.component.scss']
 })
-export class BiometricDataComponent implements OnInit {
+export class BiometricDataComponent implements OnInit, OnDestroy {
   private biometricService = inject(BiometricDataService);
   private errorHandler = inject(ErrorHandlerService);
   private validationService = inject(ValidationService);
@@ -69,6 +71,17 @@ export class BiometricDataComponent implements OnInit {
 
   // Form
   biometricForm: FormGroup;
+  
+  // Camera & Enrollment
+  @ViewChild('videoElement') videoElement!: ElementRef<HTMLVideoElement>;
+  @ViewChild('canvasElement') canvasElement!: ElementRef<HTMLCanvasElement>;
+  
+  enrollmentMode = signal<'upload' | 'camera'>('upload');
+  isCameraActive = signal(false);
+  availableDevices = signal<MediaDeviceInfo[]>([]);
+  selectedDeviceId = signal<string>('');
+  stream: MediaStream | null = null;
+  capturedImage: string | null = null;
 
   // Filters
   filterType = signal<BiometricType | ''>('');
@@ -166,15 +179,21 @@ export class BiometricDataComponent implements OnInit {
 
   constructor() {
     this.biometricForm = this.fb.group({
-      member_id: ['', [Validators.required, this.validationService.uuidValidator()]],
+      member_id: ['', [Validators.required]],
       biometric_type: [BiometricType.FACE, [Validators.required]],
-      biometric_value: ['', [Validators.required, this.validationService.base64Validator()]],
+      biometric_value: ['', [Validators.required]], // Will store base64
       is_primary: [false]
     });
+
+    this.loadVideoInputDevices();
   }
 
   ngOnInit() {
     this.loadBiometricData();
+  }
+
+  ngOnDestroy(): void {
+    this.stopCamera();
   }
 
   loadBiometricData() {
@@ -227,18 +246,12 @@ export class BiometricDataComponent implements OnInit {
     this.applyFilters();
   }
 
-  updateSearchTerm(value: string): void {
-    this.searchTerm.set(value);
-    this.applyFilters();
-  }
-
-  updateFilterType(value: BiometricType | ''): void {
-    this.filterType.set(value);
-    this.applyFilters();
-  }
-
   openAddModal(): void {
     this.selectedData.set(null);
+    this.capturedImage = null;
+    this.enrollmentMode.set('upload');
+    this.stopCamera();
+    
     this.biometricForm.reset({
       member_id: '',
       biometric_type: BiometricType.FACE,
@@ -248,12 +261,9 @@ export class BiometricDataComponent implements OnInit {
     this.showModal.set(true);
   }
 
-  openCreateModal() {
-    this.openAddModal();
-  }
-
   closeModal() {
     this.showModal.set(false);
+    this.stopCamera();
     this.resetForm();
   }
 
@@ -264,6 +274,7 @@ export class BiometricDataComponent implements OnInit {
       biometric_value: '',
       is_primary: false
     });
+    this.capturedImage = null;
     this.biometricForm.markAsUntouched();
     this.errorMessage.set('');
   }
@@ -271,6 +282,18 @@ export class BiometricDataComponent implements OnInit {
   columns: TableColumn[] = [
     { key: 'member_id', label: 'Member ID', sortable: true },
     { key: 'biometric_type', label: 'Type', sortable: true },
+    {
+        key: 'biometric_value',
+        label: 'Preview',
+        render: (value, row) => {
+            if (row.biometric_type === 'face' && value) {
+                // Check if it's a URL or Base64 (simple check)
+                const src = value.startsWith('http') || value.startsWith('data:') ? value : 'data:image/jpeg;base64,' + value;
+                return `<img src="${src}" class="w-10 h-10 rounded-full object-cover border border-white/20">`;
+            }
+            return '-';
+        }
+    },
     {
       key: 'is_primary',
       label: 'Primary',
@@ -303,6 +326,18 @@ export class BiometricDataComponent implements OnInit {
 
   editBiometricData(data: BiometricData): void {
     this.selectedData.set(data);
+    this.enrollmentMode.set('upload');
+    this.stopCamera();
+
+    // If face, set preview image
+    if (data.biometric_type === BiometricType.FACE && data.biometric_value) {
+        this.capturedImage = data.biometric_value.startsWith('data:') 
+            ? data.biometric_value 
+            : 'data:image/jpeg;base64,' + data.biometric_value;
+    } else {
+        this.capturedImage = null;
+    }
+
     this.biometricForm.patchValue({
       member_id: data.member_id,
       biometric_type: data.biometric_type,
@@ -322,6 +357,12 @@ export class BiometricDataComponent implements OnInit {
     this.isLoading.set(true);
     this.errorMessage.set('');
     const formValue = this.biometricForm.value as CreateBiometricDataDto;
+    
+    // Ensure value is clean base64 if needed (remove data:image/...,)
+    if (formValue.biometric_value.includes('base64,')) {
+        formValue.biometric_value = formValue.biometric_value.split('base64,')[1];
+    }
+
     const request = this.selectedData()
       ? this.biometricService.update(this.selectedData()!.id, formValue as UpdateBiometricDataDto)
       : this.biometricService.create(formValue);
@@ -376,31 +417,111 @@ export class BiometricDataComponent implements OnInit {
     };
     return labels[fieldName] || fieldName;
   }
+  
+  // --- Enrollment Logic (Camera/Upload) ---
 
-  viewBiometricData(data: BiometricData) {
-    this.selectedData.set(data);
+  setEnrollmentMode(mode: 'upload' | 'camera'): void {
+    this.enrollmentMode.set(mode);
+    if (mode === 'camera') {
+        this.startCamera();
+    } else {
+        this.stopCamera();
+    }
   }
 
-  closeViewModal() {
-    this.selectedData.set(null);
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const result = e.target.result;
+        this.capturedImage = result;
+        this.biometricForm.patchValue({ biometric_value: result });
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
-  openVerifyModal() {
-    this.showVerifyModal.set(true);
+  async loadVideoInputDevices() {
+    try {
+        if (typeof navigator !== 'undefined' && navigator.mediaDevices) {
+            const devices = await navigator.mediaDevices.enumerateDevices();
+            const videoDevices = devices.filter(device => device.kind === 'videoinput');
+            this.availableDevices.set(videoDevices);
+            
+            if (videoDevices.length > 0 && !this.selectedDeviceId()) {
+                this.selectedDeviceId.set(videoDevices[0].deviceId);
+            }
+        }
+    } catch (err) {
+        console.error('Error loading devices', err);
+    }
   }
 
-  closeVerifyModal() {
-    this.showVerifyModal.set(false);
+  async startCamera() {
+    this.stopCamera();
+    try {
+        const constraints = {
+            video: this.selectedDeviceId() 
+                ? { deviceId: { exact: this.selectedDeviceId() } } 
+                : true
+        };
+
+        this.stream = await navigator.mediaDevices.getUserMedia(constraints);
+        this.isCameraActive.set(true);
+        
+        setTimeout(() => {
+            if (this.videoElement) {
+                this.videoElement.nativeElement.srcObject = this.stream;
+            }
+        }, 100);
+
+    } catch (err) {
+        console.error('Error accessing camera', err);
+        this.enrollmentMode.set('upload');
+    }
   }
 
-  formatDate(date: string): string {
-    return new Date(date).toLocaleDateString('th-TH', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+  stopCamera() {
+    if (this.stream) {
+        this.stream.getTracks().forEach(track => track.stop());
+        this.stream = null;
+    }
+    this.isCameraActive.set(false);
+  }
+
+  captureImage() {
+    if (!this.videoElement || !this.canvasElement) return;
+
+    const video = this.videoElement.nativeElement;
+    const canvas = this.canvasElement.nativeElement;
+    
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const dataUrl = canvas.toDataURL('image/jpeg');
+        this.capturedImage = dataUrl;
+        this.biometricForm.patchValue({ biometric_value: dataUrl });
+        this.stopCamera();
+        this.enrollmentMode.set('upload'); // Switch view
+    }
+  }
+
+  onDeviceChange(event: any) {
+    this.selectedDeviceId.set(event.target.value);
+    if (this.enrollmentMode() === 'camera') {
+        this.startCamera();
+    }
+  }
+
+  clearImage() {
+    this.capturedImage = null;
+    this.biometricForm.patchValue({ biometric_value: '' });
+    if (this.enrollmentMode() === 'camera') {
+        this.startCamera();
+    }
   }
 }
-
