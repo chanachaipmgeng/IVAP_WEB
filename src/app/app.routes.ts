@@ -349,6 +349,11 @@ export const routes: Routes = [
             loadComponent: () => import('./features/portal/face-recognition-live/face-recognition-live.component')
               .then(m => m.FaceRecognitionLiveComponent)
           },
+          {
+            path: 'face-recognition-test',
+            loadComponent: () => import('./features/portal/face-recognition-test/face-recognition-test.component')
+              .then(m => m.FaceRecognitionTestComponent)
+          },
           // Demo routes (development only)
           ...getDemoRoutes(),
           {

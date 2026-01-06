@@ -50,6 +50,12 @@ export class PortalLayoutComponent {
           permission: 'profile.view'
         },
         {
+          icon: '👔',
+          label: 'Employees',
+          route: '/portal/employees',
+          permission: 'employee.view'
+        },
+        {
           icon: '🏢',
           label: 'Structure (Organization)',
           route: '/portal/structure',
@@ -70,22 +76,7 @@ export class PortalLayoutComponent {
       ]
     },
 
-    // 2. Employee Management
-    {
-      icon: '👔',
-      label: 'Employee Management',
-      expanded: false,
-      children: [
-        {
-          icon: '👔',
-          label: 'Employees',
-          route: '/portal/employees',
-          permission: 'employee.view'
-        }
-      ]
-    },
-
-    // 3. Face Recognition
+    // 2. Face Recognition
     {
       icon: '👁️',
       label: 'Face Recognition',
@@ -95,6 +86,18 @@ export class PortalLayoutComponent {
           icon: '👁️',
           label: 'Face Recognition Live',
           route: '/portal/face-recognition-live',
+          permission: 'face.recognition.view'
+        },
+        {
+          icon: '👤',
+          label: 'Face Enrollment',
+          route: '/portal/biometric-data',
+          permission: 'biometric.view'
+        },
+        {
+          icon: '🔍',
+          label: 'Identification Test',
+          route: '/portal/face-recognition-test',
           permission: 'face.recognition.view'
         },
         {

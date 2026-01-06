@@ -1,8 +1,10 @@
 /**
  * Structure Component
  *
- * Organization structure management component with CRUD operations for departments and positions.
- * Supports department and position creation, editing, deletion through tabbed interface.
+ * Organization structure management component with CRUD operations for:
+ * 1. Company Info (Profile)
+ * 2. Departments
+ * 3. Positions
  *
  * @example
  * ```html
@@ -26,8 +28,10 @@ import { AuthService } from '../../../core/services/auth.service';
 import { I18nService } from '../../../core/services/i18n.service';
 import { Department, DepartmentCreate, DepartmentUpdate } from '../../../core/models/department.model';
 import { Position, PositionCreate, PositionUpdate } from '../../../core/models/position.model';
+import { Company, CompanyUpdate } from '../../../core/models/company.model';
 import { DepartmentService } from '../../../core/services/department.service';
 import { PositionService } from '../../../core/services/position.service';
+import { CompanyService } from '../../../core/services/company.service';
 import { BaseComponent } from '../../../core/base/base.component';
 
 /**
@@ -55,7 +59,7 @@ interface DepartmentFormData {
   styleUrl: './structure.component.scss'
 })
 export class StructureComponent extends BaseComponent implements OnInit {
-  activeTab = signal<'departments' | 'positions'>('departments');
+  activeTab = signal<'company-info' | 'departments' | 'positions'>('company-info');
 
   // Page actions
   pageActions = computed<PageAction[]>(() => {
@@ -65,26 +69,52 @@ export class StructureComponent extends BaseComponent implements OnInit {
         variant: 'primary',
         onClick: () => this.openAddDeptModal()
       }];
-    } else {
+    } else if (this.activeTab() === 'positions') {
       return [{
         label: '➕ Add Position',
         variant: 'primary',
         onClick: () => this.openAddPosModal()
       }];
+    } else {
+      // Company Info tab actions (Save button is inside form)
+      return [];
     }
   });
 
   // Tabs configuration
   tabs = computed<Tab[]>(() => [
+    { id: 'company-info', label: 'ℹ️ Company Info' },
     { id: 'departments', label: '🏢 Departments' },
     { id: 'positions', label: '👔 Positions' }
   ]);
 
   onTabChange(tabId: string): void {
-    this.activeTab.set(tabId as 'departments' | 'positions');
+    this.activeTab.set(tabId as 'company-info' | 'departments' | 'positions');
+    
+    // Load data for the selected tab if not loaded
+    if (tabId === 'departments' && this.departments().length === 0) {
+        this.loadDepartments();
+    } else if (tabId === 'positions' && this.positions().length === 0) {
+        this.loadPositions();
+    }
   }
 
-  // Departments
+  // --- Company Info State ---
+  company = signal<Company | null>(null);
+  loadingCompany = signal(false);
+  savingCompany = signal(false);
+  
+  // Company Form Data
+  companyFormData = {
+    name: '',
+    address: '',
+    phone_number: '',
+    email: '',
+    website: '',
+    tax_id: ''
+  };
+
+  // --- Departments State ---
   departments = signal<Department[]>([]);
   showDeptModal = signal(false);
   savingDept = signal(false);
@@ -114,7 +144,7 @@ export class StructureComponent extends BaseComponent implements OnInit {
     }
   ];
 
-  // Positions
+  // --- Positions State ---
   positions = signal<Position[]>([]);
   showPosModal = signal(false);
   savingPos = signal(false);
@@ -194,15 +224,102 @@ export class StructureComponent extends BaseComponent implements OnInit {
     private auth: AuthService,
     private i18n: I18nService,
     private departmentService: DepartmentService,
-    private positionService: PositionService
+    private positionService: PositionService,
+    private companyService: CompanyService
   ) {
     super();
   }
 
   ngOnInit(): void {
-    this.loadDepartments();
-    this.loadPositions();
+    // Start with loading company info
+    this.loadCompanyInfo();
   }
+
+  // --- Company Methods ---
+
+  loadCompanyInfo(): void {
+    this.loadingCompany.set(true);
+    const companyId = this.auth.currentUser()?.companyId || this.auth.currentUser()?.company_id;
+    
+    if (!companyId) {
+        console.warn('No company ID found for current user');
+        this.loadingCompany.set(false);
+        return;
+    }
+
+    this.subscribe(
+        this.companyService.getById(String(companyId)),
+        (response: any) => {
+            // Handle both wrapped response and direct object
+            const companyData = (response.data || response) as Company;
+            this.company.set(companyData);
+            
+            // Try to parse company_info if it's JSON
+            let additionalInfo: any = {};
+            try {
+                if (companyData.company_info && companyData.company_info.startsWith('{')) {
+                    additionalInfo = JSON.parse(companyData.company_info);
+                }
+            } catch (e) {
+                console.warn('Could not parse company_info', e);
+            }
+
+            // Populate form
+            this.companyFormData = {
+                name: companyData.company_name || '',
+                address: companyData.address || '',
+                phone_number: companyData.contact || '', // Map contact to phone
+                email: additionalInfo.email || '', // From JSON info or empty
+                website: additionalInfo.website || '',
+                tax_id: additionalInfo.tax_id || ''
+            };
+            this.loadingCompany.set(false);
+        },
+        (error) => {
+            console.error('Error loading company info:', error);
+            this.loadingCompany.set(false);
+        }
+    );
+  }
+
+  saveCompanyInfo(): void {
+    const companyId = this.auth.currentUser()?.companyId || this.auth.currentUser()?.company_id;
+    if (!companyId) return;
+
+    this.savingCompany.set(true);
+
+    // Create JSON for extra fields not in core model
+    const additionalInfo = {
+        email: this.companyFormData.email,
+        website: this.companyFormData.website,
+        tax_id: this.companyFormData.tax_id
+    };
+
+    const updateData: CompanyUpdate = {
+        company_name: this.companyFormData.name,
+        address: this.companyFormData.address,
+        contact: this.companyFormData.phone_number,
+        company_info: JSON.stringify(additionalInfo)
+    };
+
+    this.subscribe(
+        this.companyService.update(String(companyId), updateData),
+        (response: any) => {
+            const updatedCompany = (response.data || response) as Company;
+            this.company.set(updatedCompany);
+            this.savingCompany.set(false);
+            alert('Company information updated successfully!');
+        },
+        (error) => {
+            console.error('Error updating company info:', error);
+            this.savingCompany.set(false);
+            alert('Failed to update company information.');
+        }
+    );
+  }
+
+
+  // --- Department Methods ---
 
   /**
    * Load departments for current company
@@ -307,7 +424,8 @@ export class StructureComponent extends BaseComponent implements OnInit {
     );
   }
 
-  // Position methods
+  // --- Position Methods ---
+  
   loadPositions(): void {
     const companyId = this.auth.currentUser()?.companyId || this.auth.currentUser()?.company_id;
     if (!companyId) return;
@@ -411,8 +529,8 @@ export class StructureComponent extends BaseComponent implements OnInit {
   /**
    * Set active tab
    */
-  setActiveTab(tab: 'departments' | 'positions'): void {
-    this.activeTab.set(tab);
+  setActiveTab(tab: 'company-info' | 'departments' | 'positions'): void {
+    this.onTabChange(tab);
   }
 
   /**
@@ -436,4 +554,3 @@ export class StructureComponent extends BaseComponent implements OnInit {
     return this.i18n.translate(key);
   }
 }
-

@@ -1,11 +1,78 @@
 <app-page-layout
   title="Organization Structure"
-  description="Manage departments and positions in your organization structure."
+  description="Manage company profile, departments, and positions."
   icon="🏢"
   [actions]="pageActions()">
   
   <!-- Tabs -->
   <app-tabs [tabs]="tabs()" [activeTab]="activeTab()" (activeTabChange)="onTabChange($event)">
+    
+    <!-- Company Info Tab -->
+    <div *ngIf="activeTab() === 'company-info'" class="space-y-6">
+      <div class="glass-card p-6 md:p-8 animate-fade-in max-w-4xl mx-auto">
+        <h3 class="text-xl font-semibold mb-6 text-slate-800 dark:text-white flex items-center">
+            <span class="text-2xl mr-2">ℹ️</span> Company Information
+        </h3>
+
+        <form (ngSubmit)="saveCompanyInfo()" #companyForm="ngForm" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Name -->
+                <div class="col-span-1 md:col-span-2">
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Company Name</label>
+                    <input type="text" [(ngModel)]="companyFormData.name" name="name" required
+                        class="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 transition-all"
+                        placeholder="Enter company name">
+                </div>
+
+                <!-- Tax ID -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Tax ID</label>
+                    <input type="text" [(ngModel)]="companyFormData.tax_id" name="tax_id"
+                        class="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 transition-all"
+                        placeholder="Tax Identification Number">
+                </div>
+
+                <!-- Phone -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Phone Number</label>
+                    <input type="text" [(ngModel)]="companyFormData.phone_number" name="phone_number"
+                        class="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 transition-all"
+                        placeholder="+66...">
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Email</label>
+                    <input type="email" [(ngModel)]="companyFormData.email" name="email" required email
+                        class="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 transition-all"
+                        placeholder="contact@company.com">
+                </div>
+
+                <!-- Website -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Website</label>
+                    <input type="url" [(ngModel)]="companyFormData.website" name="website"
+                        class="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 transition-all"
+                        placeholder="https://www.company.com">
+                </div>
+
+                <!-- Address -->
+                <div class="col-span-1 md:col-span-2">
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Address</label>
+                    <textarea [(ngModel)]="companyFormData.address" name="address" rows="3"
+                        class="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 transition-all"
+                        placeholder="Company address..."></textarea>
+                </div>
+            </div>
+
+            <div class="flex justify-end pt-4 border-t border-slate-200 dark:border-slate-700">
+                <app-glass-button type="submit" [variant]="'primary'" [loading]="savingCompany()">
+                    💾 Save Changes
+                </app-glass-button>
+            </div>
+        </form>
+      </div>
+    </div>
     
     <!-- Departments Tab -->
     <div *ngIf="activeTab() === 'departments'" class="space-y-6">

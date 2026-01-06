@@ -1,0 +1,129 @@
+<app-page-layout
+  title="Identification Test"
+  description="Test face recognition system by uploading photos or using camera."
+  icon="👁️"
+>
+  <!-- Mode Selection Tabs -->
+  <div class="flex space-x-4 mb-6">
+    <button (click)="setInputType('upload')" 
+        class="px-4 py-2 rounded-lg transition-all"
+        [class.bg-primary-500]="inputType() === 'upload'"
+        [class.text-white]="inputType() === 'upload'"
+        [class.bg-white]="inputType() !== 'upload'"
+        [class.dark:bg-slate-800]="inputType() !== 'upload'">
+        📁 Upload Photo
+    </button>
+    <button (click)="setInputType('camera')" 
+        class="px-4 py-2 rounded-lg transition-all"
+        [class.bg-primary-500]="inputType() === 'camera'"
+        [class.text-white]="inputType() === 'camera'"
+        [class.bg-white]="inputType() !== 'camera'"
+        [class.dark:bg-slate-800]="inputType() !== 'camera'">
+        📷 Use Camera
+    </button>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    
+    <!-- Input Section -->
+    <div class="glass-card p-6 flex flex-col items-center justify-center min-h-[400px] relative overflow-hidden">
+      
+      <!-- MODE: UPLOAD (Default View) -->
+      <div *ngIf="inputType() === 'upload' && !selectedImage" class="text-center animate-fade-in">
+        <div class="mb-4 text-6xl">📁</div>
+        <p class="text-slate-500 dark:text-slate-400 mb-6">Upload a photo to test identification</p>
+        
+        <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" class="hidden">
+        
+        <app-glass-button (clicked)="fileInput.click()" variant="primary">
+          Select Photo
+        </app-glass-button>
+      </div>
+
+      <!-- MODE: CAMERA -->
+      <div *ngIf="inputType() === 'camera'" class="w-full h-full flex flex-col items-center animate-fade-in">
+        
+        <!-- Device Selector -->
+        <div class="w-full mb-4 px-4" *ngIf="availableDevices().length > 0">
+            <select [ngModel]="selectedDeviceId()" (change)="onDeviceChange($event)"
+                class="w-full p-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-sm">
+                <option *ngFor="let device of availableDevices()" [value]="device.deviceId">
+                    {{ device.label || 'Camera ' + (availableDevices().indexOf(device) + 1) }}
+                </option>
+            </select>
+        </div>
+
+        <div class="relative w-full aspect-video bg-black rounded-lg overflow-hidden mb-4">
+            <video #videoElement autoplay playsinline class="w-full h-full object-cover"></video>
+            
+            <!-- Scan Overlay -->
+            <div class="absolute inset-0 border-2 border-primary-500/50 rounded-lg pointer-events-none">
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 border-2 border-white/50 rounded-lg"></div>
+            </div>
+        </div>
+
+        <app-glass-button (clicked)="captureImage()" variant="primary" icon="📸">
+            Capture
+        </app-glass-button>
+        
+        <!-- Hidden Canvas for Capture -->
+        <canvas #canvasElement class="hidden"></canvas>
+      </div>
+
+
+      <!-- RESULT: SELECTED IMAGE PREVIEW (Both modes end up here) -->
+      <div *ngIf="selectedImage && inputType() === 'upload'" class="relative w-full h-full flex flex-col items-center animate-fade-in">
+        <img [src]="selectedImage" class="max-h-[300px] rounded-lg shadow-lg mb-6 object-contain border border-white/20">
+        
+        <div class="flex gap-4">
+          <app-glass-button (clicked)="reset()" variant="danger">
+            Clear
+          </app-glass-button>
+          
+          <app-glass-button (clicked)="identifyFace()" variant="primary" [loading]="loading()">
+            🔍 Identify
+          </app-glass-button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Result Section -->
+    <div class="glass-card p-6">
+      <h3 class="text-xl font-semibold mb-4 text-slate-800 dark:text-white">Identification Result</h3>
+      
+      <div *ngIf="loading()" class="flex flex-col items-center justify-center h-64">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mb-4"></div>
+        <p class="text-slate-500">Processing face recognition...</p>
+      </div>
+
+      <div *ngIf="!loading() && !identificationResult" class="flex flex-col items-center justify-center h-64 text-slate-400">
+        <span class="text-4xl mb-2">❓</span>
+        <p>No result yet. Capture or upload a photo.</p>
+      </div>
+
+      <div *ngIf="!loading() && identificationResult" class="animate-fade-in space-y-6">
+        <div class="flex items-center p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+          <div class="text-4xl mr-4">✅</div>
+          <div>
+            <h4 class="text-lg font-bold text-green-700 dark:text-green-400">Match Found</h4>
+            <p class="text-sm text-green-600 dark:text-green-300">Confidence: {{ identificationResult.confidence * 100 | number:'1.0-2' }}%</p>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="text-sm text-slate-500 dark:text-slate-400">Name</div>
+            <div class="font-medium text-slate-900 dark:text-white">{{ identificationResult.name }}</div>
+            
+            <div class="text-sm text-slate-500 dark:text-slate-400">Employee ID</div>
+            <div class="font-medium text-slate-900 dark:text-white">{{ identificationResult.employeeId }}</div>
+            
+            <div class="text-sm text-slate-500 dark:text-slate-400">Department</div>
+            <div class="font-medium text-slate-900 dark:text-white">{{ identificationResult.department }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</app-page-layout>
