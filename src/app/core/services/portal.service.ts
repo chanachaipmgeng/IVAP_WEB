@@ -5,11 +5,8 @@ import { ApiService } from './api.service';
 import { AuthService } from './auth.service';
 import {
   Dashboard,
-  Employee,
   Notification,
   PortalStatistics,
-  PortalFilters,
-  PortalForm,
   PortalSettings
 } from '../models/portal.model';
 
@@ -18,7 +15,6 @@ import {
 })
 export class PortalService {
   private dashboard = signal<Dashboard | null>(null);
-  private employees = signal<Employee[]>([]);
   private notifications = signal<Notification[]>([]);
   private statistics = signal<PortalStatistics | null>(null);
   private loading = signal(false);
@@ -46,7 +42,6 @@ export class PortalService {
 
   // Getters
   getDashboard = () => this.dashboard.asReadonly();
-  getEmployees = () => this.employees.asReadonly();
   getNotifications = () => this.notifications.asReadonly();
   getStatistics = () => this.statistics.asReadonly();
   getLoading = () => this.loading.asReadonly();
@@ -81,45 +76,11 @@ export class PortalService {
     return this.api.put<Dashboard>(`/dashboard/${dashboardId}`, dashboardData);
   }
 
-  // Employee Management
-  loadEmployees(params: { page: number; limit: number; search?: string; sortBy?: string; sortOrder?: 'asc' | 'desc' }): Observable<{ data: Employee[], total: number }> {
-    this.loading.set(true);
-    let query = `?page=${params.page}&limit=${params.limit}`;
-    if (params.search) {
-      query += `&search=${params.search}`;
-    }
-    if (params.sortBy) {
-      query += `&sortBy=${params.sortBy}`;
-    }
-    if (params.sortOrder) {
-      query += `&sortOrder=${params.sortOrder}`;
-    }
-
-    return this.api.get<{ data: Employee[], total: number }>(`/employees${query}`).pipe(
-      tap((response: any) => {
-        // The component will now handle setting its own data
-        this.loading.set(false);
-      }),
-      catchError((error) => {
-        console.error('Error loading employees:', error);
-        this.employees.set([]);
-        this.loading.set(false);
-        throw error;
-      })
-    );
-  }
-
-  createEmployee(employeeData: PortalForm): Observable<Employee> {
-    return this.api.post<Employee>('/employees', employeeData);
-  }
-
-  updateEmployee(employeeId: string, employeeData: Partial<PortalForm>): Observable<Employee> {
-    return this.api.put<Employee>(`/employees/${employeeId}`, employeeData);
-  }
-
-  deleteEmployee(employeeId: string): Observable<void> {
-    return this.api.delete<void>(`/employees/${employeeId}`);
-  }
+  // ============================================================================
+  // REMOVED: Employee Management - Moved to CompanyEmployeeService
+  // Use CompanyEmployeeService for: loadEmployees (getAll), createEmployee (create),
+  // updateEmployee (update), deleteEmployee (delete)
+  // ============================================================================
 
   // ============================================================================
   // REMOVED: Visitor Management - Moved to VisitorService
@@ -246,30 +207,9 @@ export class PortalService {
     }
   }
 
-  // Filtering
-  filterEmployees(filters: PortalFilters): Employee[] {
-    let filtered = this.employees();
-
-    if (filters.search) {
-      const search = filters.search.toLowerCase();
-      filtered = filtered.filter(employee =>
-        employee.firstName.toLowerCase().includes(search) ||
-        employee.lastName.toLowerCase().includes(search) ||
-        employee.email.toLowerCase().includes(search) ||
-        employee.department.toLowerCase().includes(search)
-      );
-    }
-
-    if (filters.department) {
-      filtered = filtered.filter(employee => employee.department === filters.department);
-    }
-
-    if (filters.status) {
-      filtered = filtered.filter(employee => employee.status === filters.status);
-    }
-
-    return filtered;
-  }
+  // ============================================================================
+  // REMOVED: filterEmployees - Use CompanyEmployeeService for employee filtering
+  // ============================================================================
 
   // ============================================================================
   // REMOVED: filterVisitors - Use VisitorService for visitor filtering

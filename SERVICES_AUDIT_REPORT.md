@@ -102,13 +102,15 @@
 
 ## ⚠️ Services ที่ยังต้องปรับปรุง
 
-### 1. **User Service** ⚠️
+### 1. **User Service** ✅
 - **Service:** `user.service.ts`
-- **Status:** ❌ ไม่ extend `BaseCrudService`
-- **Issue:** ใช้ manual API calls, ซ้ำซ้อนกับ `MemberService`
-- **Recommendation:** 
-  - Migrate components ให้ใช้ `MemberService` แทน
-  - ลบ `user.service.ts` ออก (หรือเก็บไว้เป็น compatibility layer)
+- **Status:** ✅ **ลบแล้ว** (2024-12-20)
+- **Migration:** 
+  - Member operations → `MemberService`
+  - Role operations → `RbacService`
+  - Company operations → `CompanyService`
+  - Password reset & Export → `MemberService`
+- **Components Migrated:** `users.component.ts` (super-admin)
 
 ### 2. **Visitor Extended** ⚠️
 - **Service:** `visitor-extended.service.ts`
@@ -183,20 +185,24 @@
   - ควร extend `BaseCrudService<EmployeeTimestamp, EmployeeTimestampCreate, EmployeeTimestampUpdate>`
   - ตรวจสอบว่า backend endpoint คืออะไร
 
-### 10. **Portal Service** ⚠️
+### 10. **Portal Service** ✅
 - **Service:** `portal.service.ts`
-- **Status:** ❌ ไม่ extend `BaseCrudService`
-- **Issue:** 
-  - มี methods ที่ซ้ำซ้อนกับ `CompanyEmployeeService`:
-    - `loadEmployees()` → ใช้ `CompanyEmployeeService.getEmployees()` แทน
-    - `createEmployee()` → ใช้ `CompanyEmployeeService.createEmployee()` แทน
-    - `updateEmployee()` → ใช้ `CompanyEmployeeService.updateEmployee()` แทน
-    - `deleteEmployee()` → ใช้ `CompanyEmployeeService.deleteEmployee()` แทน
-  - มี comments ระบุว่า methods อื่นๆ ถูกย้ายไป services อื่นแล้ว
-- **Recommendation:** 
-  - ลบ methods ที่ซ้ำซ้อนออก (loadEmployees, createEmployee, updateEmployee, deleteEmployee)
-  - เก็บไว้เฉพาะ dashboard, statistics, aggregated data
-  - Migrate components ให้ใช้ services ที่เหมาะสมแทน
+- **Status:** ✅ **ปรับปรุงแล้ว** (2024-12-20)
+- **Changes:** 
+  - ✅ ลบ methods ที่ซ้ำซ้อนกับ `CompanyEmployeeService`:
+    - `loadEmployees()` - ลบแล้ว (ใช้ `CompanyEmployeeService.getAll()` แทน)
+    - `createEmployee()` - ลบแล้ว (ใช้ `CompanyEmployeeService.create()` แทน)
+    - `updateEmployee()` - ลบแล้ว (ใช้ `CompanyEmployeeService.update()` แทน)
+    - `deleteEmployee()` - ลบแล้ว (ใช้ `CompanyEmployeeService.delete()` แทน)
+    - `filterEmployees()` - ลบแล้ว (ใช้ `CompanyEmployeeService` filtering แทน)
+  - ✅ ลบ `employees` signal และ `getEmployees()` getter
+  - ✅ ลบ unused imports (`Employee`, `PortalForm`, `PortalFilters`)
+- **Current Functionality:** 
+  - Dashboard management (`loadDashboard`, `updateDashboard`)
+  - Notification management (`loadNotifications`, `markNotificationAsRead`, `markAllNotificationsAsRead`)
+  - Statistics (`loadStatistics`)
+  - Helper methods (formatting, status colors/icons)
+- **Note:** Service นี้ไม่ควร extend `BaseCrudService` เพราะเป็น aggregation service สำหรับ dashboard และ statistics
 
 ---
 
@@ -235,7 +241,7 @@
 
 ### Priority 1: Services ที่ซ้ำซ้อน
 1. ✅ `employee.service.ts` - **ลบแล้ว** (ใช้ `CompanyEmployeeService` แทน)
-2. ⚠️ `user.service.ts` - Migrate ไปใช้ `MemberService` (ใช้ใน `users.component.ts` - super-admin)
+2. ✅ `user.service.ts` - **ลบแล้ว** (ใช้ `MemberService`, `RbacService`, `CompanyService` แทน)
 3. ✅ `face.service.ts`, `face-api.service.ts`, `face-detection.service.ts` - **ไม่ซ้ำซ้อน** (แต่ละตัวทำหน้าที่ต่างกัน)
 4. ⚠️ `portal.service.ts` - มี methods ที่ซ้ำซ้อนกับ `CompanyEmployeeService`:
    - `loadEmployees()`, `createEmployee()`, `updateEmployee()`, `deleteEmployee()` → ควรลบออก
@@ -266,5 +272,13 @@
 
 ---
 
-**อัปเดตล่าสุด:** 2024-12-19
+**อัปเดตล่าสุด:** 2024-12-20
+
+## 🔄 การเปลี่ยนแปลงล่าสุด (2024-12-20)
+
+### Portal Service - ลบ Methods ที่ซ้ำซ้อน
+- ✅ ลบ `loadEmployees()`, `createEmployee()`, `updateEmployee()`, `deleteEmployee()`, `filterEmployees()`
+- ✅ ลบ `employees` signal และ `getEmployees()` getter
+- ✅ ลบ unused imports (`Employee`, `PortalForm`, `PortalFilters`)
+- ✅ เก็บไว้เฉพาะ dashboard, statistics, notifications, และ helper methods
 

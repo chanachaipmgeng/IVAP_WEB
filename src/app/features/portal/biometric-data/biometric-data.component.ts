@@ -86,10 +86,10 @@ export class BiometricDataComponent implements OnInit {
     return {
       total: data.length,
       by_type: Object.values(BiometricType).reduce((acc, type) => {
-        acc[type] = data.filter(d => d.biometricType === type).length;
+        acc[type] = data.filter(d => d.biometric_type === type).length;
         return acc;
       }, {} as Record<BiometricType, number>),
-      primary: data.filter(d => d.isPrimary).length
+      primary: data.filter(d => d.is_primary).length
     };
   });
 
@@ -204,13 +204,13 @@ export class BiometricDataComponent implements OnInit {
 
     if (search) {
       filtered = filtered.filter(d =>
-        d.memberId.toLowerCase().includes(search) ||
-        d.biometricType.toLowerCase().includes(search)
+        d.member_id.toLowerCase().includes(search) ||
+        d.biometric_type.toLowerCase().includes(search)
       );
     }
 
     if (type) {
-      filtered = filtered.filter(d => d.biometricType === type);
+      filtered = filtered.filter(d => d.biometric_type === type);
     }
 
     this.filteredData.set(filtered);
@@ -304,10 +304,10 @@ export class BiometricDataComponent implements OnInit {
   editBiometricData(data: BiometricData): void {
     this.selectedData.set(data);
     this.biometricForm.patchValue({
-      member_id: data.memberId,
-      biometric_type: data.biometricType,
-      biometric_value: data.biometricValue,
-      is_primary: data.isPrimary
+      member_id: data.member_id,
+      biometric_type: data.biometric_type,
+      biometric_value: data.biometric_value,
+      is_primary: data.is_primary
     });
     this.showModal.set(true);
   }
@@ -323,8 +323,8 @@ export class BiometricDataComponent implements OnInit {
     this.errorMessage.set('');
     const formValue = this.biometricForm.value as CreateBiometricDataDto;
     const request = this.selectedData()
-      ? this.biometricService.updateBiometricData(this.selectedData()!.id, formValue as UpdateBiometricDataDto)
-      : this.biometricService.createBiometricData(formValue);
+      ? this.biometricService.update(this.selectedData()!.id, formValue as UpdateBiometricDataDto)
+      : this.biometricService.create(formValue);
     
     request.subscribe({
       next: () => {
@@ -347,7 +347,7 @@ export class BiometricDataComponent implements OnInit {
 
     this.isLoading.set(true);
     this.errorMessage.set('');
-    this.biometricService.deleteBiometricData(data.id).subscribe({
+    this.biometricService.delete(data.id).subscribe({
       next: () => {
         this.errorHandler.showSuccess('ลบข้อมูลสำเร็จ');
         this.loadBiometricData();

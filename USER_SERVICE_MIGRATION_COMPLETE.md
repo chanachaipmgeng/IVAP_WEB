@@ -45,7 +45,9 @@
 
 ## 🗑️ UserService Status
 
-### Deprecated Methods
+### ✅ **UserService ถูกลบแล้ว** (2024-12-20)
+
+### Deprecated Methods (ก่อนลบ)
 - ✅ `loadUsers()` - ใช้ `MemberService.loadMembers()` แทน
 - ✅ `createUser()` - ใช้ `MemberService.createMember()` แทน
 - ✅ `updateUser()` - ใช้ `MemberService.updateMember()` แทน
@@ -130,20 +132,22 @@ this.memberService.exportMembers('csv')
 ## 🎯 ขั้นตอนถัดไป
 
 1. ✅ Migrate `users.component.ts` - **เสร็จแล้ว**
-2. ⚠️ ตรวจสอบ components อื่นๆ ที่ใช้ `UserService`
-3. ⚠️ ลบ `UserService` ออกเมื่อ migrate เสร็จทั้งหมด
+2. ✅ ตรวจสอบ components อื่นๆ ที่ใช้ `UserService` - **ไม่มีแล้ว**
+3. ✅ ลบ `UserService` ออก - **เสร็จแล้ว** (2024-12-20)
 
 ---
 
 ## 📊 สถานะปัจจุบัน
 
 - ✅ `users.component.ts` migrate เสร็จแล้ว
-- ✅ `RbacService` endpoints แก้ไขแล้ว
+- ✅ `RbacService` endpoints แก้ไขแล้ว (`/rbac/roles`, `/rbac/permissions`)
 - ✅ `MemberService` เพิ่ม methods สำหรับ password reset และ export
-- ⚠️ `UserService` ยังคงอยู่สำหรับ backward compatibility
+- ✅ `UserService` ถูกลบแล้ว (2024-12-20)
+- ✅ `users.component.html` ใช้ `getRoles()` และ `getCompanies()` getters แทน `userService`
+- ✅ `doors.component.html` ใช้ `snake_case` properties
 - ✅ ไม่มี linter errors
 
 ---
 
-**อัปเดตล่าสุด:** 2024-12-19
+**อัปเดตล่าสุด:** 2024-12-20
 

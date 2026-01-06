@@ -264,13 +264,15 @@ export class CompaniesComponent {
 
 ### 1. **User vs Member**
 - **ใช้ `Member` model แทน `User` model ในโค้ดใหม่**
-- **`User` model เป็น compatibility layer สำหรับ backward compatibility**
+- **`User` model เป็น compatibility layer สำหรับ backward compatibility (extends `Member`)**
 - **`Member` model ตรงกับ backend API โดยตรง**
+- **`UserService` ถูกลบแล้ว - ใช้ `MemberService`, `RbacService`, `CompanyService` แทน**
 
 ### 2. **Employee vs CompanyEmployee**
 - **ใช้ `CompanyEmployee` model แทน `Employee` model**
-- **`Employee` model เป็น legacy model**
+- **`Employee` model เป็น legacy model (ไม่แนะนำให้ใช้)**
 - **`CompanyEmployee` model ตรงกับ backend API โดยตรง**
+- **`EmployeeService` ถูกลบแล้ว - ใช้ `CompanyEmployeeService` แทน**
 
 ### 3. **skipTransform: true**
 - **ต้องใช้ `skipTransform: true` ในทุก API calls**
@@ -295,7 +297,10 @@ export class CompaniesComponent {
 2. ❌ **ห้ามแปลง `snake_case` ↔ `camelCase` ใน components**
 3. ❌ **ห้ามเขียน CRUD operations เอง (ใช้ BaseCrudService)**
 4. ❌ **ห้ามลืม `skipTransform: true` ใน custom API calls**
-5. ❌ **ห้ามใช้ legacy models (`User`, `Employee`) ในโค้ดใหม่**
+5. ❌ **ห้ามใช้ legacy services (`UserService`, `EmployeeService`) ในโค้ดใหม่**
+   - ใช้ `MemberService` แทน `UserService`
+   - ใช้ `CompanyEmployeeService` แทน `EmployeeService`
+   - ใช้ `RbacService` สำหรับ role operations
 6. ❌ **ห้าม hardcode API endpoints (ใช้ `baseEndpoint`)**
 7. ❌ **ห้ามใช้ `any` type (ใช้ specific types)**
 
@@ -317,5 +322,22 @@ export class CompaniesComponent {
 - Naming conventions
 - Best practices
 
-**อัปเดตล่าสุด:** 2024-12-19
+**อัปเดตล่าสุด:** 2024-12-20
+
+## 📋 การเปลี่ยนแปลงล่าสุด (2024-12-20)
+
+### Services ที่ถูกลบ
+- ✅ `UserService` - ลบแล้ว (ใช้ `MemberService`, `RbacService`, `CompanyService` แทน)
+- ✅ `EmployeeService` - ลบแล้ว (ใช้ `CompanyEmployeeService` แทน)
+
+### Services ที่ปรับปรุง
+- ✅ `RbacService` - แก้ไข endpoints เป็น `/rbac/roles`, `/rbac/permissions`
+- ✅ `MemberService` - เพิ่ม `resetPassword()`, `exportMembers()`
+- ✅ `CompanyEmployeeService` - แก้ไข trailing slash สำหรับ `/employees/`
+
+### Components ที่ปรับปรุง
+- ✅ `users.component.ts` - ใช้ `MemberService`, `RbacService`, `CompanyService`
+- ✅ `users.component.html` - ใช้ `getRoles()`, `getCompanies()` getters
+- ✅ `doors.component.html` - ใช้ `snake_case` properties
+- ✅ `hr-dashboard.component.ts` - ใช้ `CompanyEmployeeService`
 

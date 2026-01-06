@@ -2,15 +2,23 @@
 
 เอกสารสรุปสถานะของ Models และ Services ที่ตรงกับ Backend API และตัวที่ยังต้องปรับปรุง
 
-**อัปเดตล่าสุด:** 2024-12-19
+**อัปเดตล่าสุด:** 2024-12-20
 
 ## 🔄 การปรับปรุงล่าสุด
 
+### 2024-12-20
+- ✅ **ลบ `user.service.ts`** - Migrate ไปใช้ `MemberService`, `RbacService`, `CompanyService` แล้ว
+- ✅ **ลบ `employee.service.ts`** - Migrate ไปใช้ `CompanyEmployeeService` แล้ว
+- ✅ แก้ไข `RbacService` endpoints: `/roles/roles` → `/rbac/roles`, `/roles/permissions` → `/rbac/permissions`
+- ✅ แก้ไข `users.component.ts`: ใช้ `MemberService`, `RbacService`, `CompanyService` แทน `UserService`
+- ✅ แก้ไข `users.component.html`: ใช้ `getRoles()` และ `getCompanies()` getters แทน `userService`
+- ✅ แก้ไข `doors.component.html`: ใช้ `snake_case` (`company_employee_id`, `employee_id`, `access_type`)
+- ✅ เพิ่ม `resetPassword()` และ `exportMembers()` ใน `MemberService`
+
 ### 2024-12-19
-- ✅ แก้ไข `user.model.ts`: ปรับ `User` interface ให้ extend `Omit<Member, 'member_id' | 'created_at'>` และกำหนด `member_id` เป็น required
+- ✅ แก้ไข `user.model.ts`: ปรับ `User` interface ให้ extend `Member` โดยตรง (simplified)
 - ✅ แก้ไข `auth.service.ts`: ปรับ `normalizeUser` method เพื่อลบ duplicate keys และใช้ `snake_case` อย่างสม่ำเสมอ
 - ✅ แก้ไข `register` method: เปลี่ยน `actorType` เป็น `actor_type` และ `phoneNumber` เป็น `phone_number`
-- ⚠️ ยังต้องแก้ไข: `auth.service.ts` line 79 (ลบ `isVerified`) และ line 291 (แก้ `Observable<>` เป็น `Observable<User>`)
 
 ---
 
@@ -167,19 +175,19 @@
   - **คำแนะนำ:** 
     - ใช้ `Member` สำหรับ API calls (ตรงกับ backend 100%)
     - ใช้ `User` สำหรับ frontend state และ UI components
-- **Service:** `user.service.ts` ⚠️
-  - ไม่ extend `BaseCrudService`
-  - ใช้ manual API calls
-  - **คำแนะนำ:** Migrate ไปใช้ `MemberService` แทน
+- **Service:** `user.service.ts` ✅ **ลบแล้ว** (2024-12-20)
+  - **Migration:** 
+    - Member operations → `MemberService`
+    - Role operations → `RbacService`
+    - Company operations → `CompanyService`
 
 ### 2. **Employee** (Legacy)
-- **Model:** `employee.model.ts` ⚠️
+- **Model:** `employee.model.ts` ⚠️ (Legacy - ไม่แนะนำให้ใช้)
   - ใช้ `camelCase` (`employeeCode`, `firstName`, `lastName`, `departmentId`, `positionId`, `companyId`, `isActive`)
   - **คำแนะนำ:** ใช้ `CompanyEmployee` และ `EmployeeDisplay` แทน
-- **Service:** `employee.service.ts` ⚠️
-  - ไม่ extend `BaseCrudService`
-  - ใช้ manual API calls
-  - **คำแนะนำ:** Migrate ไปใช้ `CompanyEmployeeService` แทน
+- **Service:** `employee.service.ts` ✅ **ลบแล้ว** (2024-12-20)
+  - **Migration:** ใช้ `CompanyEmployeeService` แทน
+  - **Components Migrated:** `hr-dashboard.component.ts`, `access-control.component.ts`
 
 ### 3. **Timestamp / EmployeeTimestamp**
 - **Model:** `timestamp.model.ts` / `employee-timestamp.model.ts` ⚠️
