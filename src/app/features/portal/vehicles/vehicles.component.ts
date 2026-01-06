@@ -143,41 +143,41 @@ export class VehiclesComponent extends BaseComponent implements OnInit {
       ],
       value: this.filters.status
     },
-    {
-      key: 'vehicleType',
-      label: 'Vehicle Type',
-      type: 'select',
-      options: [
-        { value: '', label: this.i18n.t('common.all') },
-        { value: 'car', label: 'Car' },
-        { value: 'motorcycle', label: 'Motorcycle' },
-        { value: 'truck', label: 'Truck' }
-      ],
-      value: this.filters.vehicleType
-    }
+      {
+        key: 'vehicle_type',
+        label: 'Vehicle Type',
+        type: 'select',
+        options: [
+          { value: '', label: this.i18n.t('common.all') },
+          { value: 'car', label: 'Car' },
+          { value: 'motorcycle', label: 'Motorcycle' },
+          { value: 'truck', label: 'Truck' }
+        ],
+        value: this.filters.vehicleType
+      }
   ]);
 
   filters = {
     status: '',
-    vehicleType: '',
+    vehicle_type: '',
     search: ''
   };
 
   columns: TableColumn[] = [
-    { key: 'plateNumber', label: 'License Plate', sortable: true },
-    { key: 'vehicleType', label: 'Type', sortable: true },
+    { key: 'plate_number', label: 'License Plate', sortable: true },
+    { key: 'vehicle_type', label: 'Type', sortable: true },
     { key: 'brand', label: 'Brand', sortable: true },
     { key: 'model', label: 'Model' },
     { key: 'color', label: 'Color' },
-    { key: 'ownerName', label: 'Owner Name' },
-    { key: 'parkingSpotNumber', label: 'Spot Number' },
+    { key: 'owner_name', label: 'Owner Name' },
+    { key: 'parking_spot_number', label: 'Spot Number' },
     {
-      key: 'checkInTime',
+      key: 'check_in_time',
       label: 'Check In',
       render: (value) => value ? new Date(value).toLocaleString() : '-'
     },
     {
-      key: 'checkOutTime',
+      key: 'check_out_time',
       label: 'Check Out',
       render: (value) => value ? new Date(value).toLocaleString() : '-'
     },
@@ -222,13 +222,13 @@ export class VehiclesComponent extends BaseComponent implements OnInit {
   ) {
     super();
     this.vehicleForm = this.fb.group({
-      plateNumber: ['', [Validators.required, this.validationService.licensePlateValidator()]],
+      plate_number: ['', [Validators.required, this.validationService.licensePlateValidator()]],
       brand: ['', [Validators.required]],
       model: [''],
       color: [''],
-      vehicleType: ['car', [Validators.required]],
-      ownerType: ['employee', [Validators.required]],
-      ownerName: ['', [Validators.required]]
+      vehicle_type: ['car', [Validators.required]],
+      owner_type: ['employee', [Validators.required]],
+      owner_name: ['', [Validators.required]]
     });
   }
 
@@ -243,9 +243,11 @@ export class VehiclesComponent extends BaseComponent implements OnInit {
     this.loading.set(true);
     this.errorMessage.set('');
     this.vehicleService.getVehicles().subscribe({
-      next: (response: PaginatedResponse<Vehicle>) => {
-        this.vehicles.set(response.data);
-        this.totalRecords.set(response.total);
+      next: (response: any) => {
+        // Handle both PaginatedResponse and PaginatedApiResponse
+        const items = response.data || response.items || [];
+        this.vehicles.set(items);
+        this.totalRecords.set(response.total || items.length);
         this.loading.set(false);
       },
       error: (error) => {
@@ -259,13 +261,13 @@ export class VehiclesComponent extends BaseComponent implements OnInit {
   openAddModal(): void {
     this.editingVehicle.set(null);
     this.vehicleForm.reset({
-      plateNumber: '',
+      plate_number: '',
       brand: '',
       model: '',
       color: '',
-      vehicleType: 'car',
-      ownerType: 'employee',
-      ownerName: ''
+      vehicle_type: 'car',
+      owner_type: 'employee',
+      owner_name: ''
     });
     this.vehicleForm.markAsUntouched();
     this.errorMessage.set('');
@@ -278,13 +280,13 @@ export class VehiclesComponent extends BaseComponent implements OnInit {
   editVehicle(vehicle: Vehicle): void {
     this.editingVehicle.set(vehicle);
     this.vehicleForm.patchValue({
-      plateNumber: vehicle.plateNumber,
+      plate_number: vehicle.plate_number,
       brand: vehicle.brand,
       model: vehicle.model,
       color: vehicle.color,
-      vehicleType: vehicle.vehicleType,
-      ownerType: vehicle.ownerType,
-      ownerName: vehicle.ownerName
+      vehicle_type: vehicle.vehicle_type,
+      owner_type: vehicle.owner_type,
+      owner_name: vehicle.owner_name
     });
     this.vehicleForm.markAsUntouched();
     this.errorMessage.set('');
@@ -329,7 +331,7 @@ export class VehiclesComponent extends BaseComponent implements OnInit {
   checkInVehicle(vehicle: Vehicle): void {
     this.loading.set(true);
     this.vehicleService.checkInVehicle(vehicle.id, {
-      checkInTime: new Date().toISOString()
+      check_in_time: new Date().toISOString()
     }).subscribe({
       next: () => {
         this.errorHandler.showSuccess('Vehicle checked in successfully!');
@@ -347,7 +349,7 @@ export class VehiclesComponent extends BaseComponent implements OnInit {
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
       this.vehicleService.checkOutVehicle(vehicle.id, {
-        checkOutTime: new Date().toISOString()
+        check_out_time: new Date().toISOString()
       }),
       () => {
         this.errorHandler.showSuccess('Vehicle checked out successfully!');
@@ -396,13 +398,13 @@ export class VehiclesComponent extends BaseComponent implements OnInit {
    */
   getFieldLabel(fieldName: string): string {
     const labels: Record<string, string> = {
-      'plateNumber': 'License Plate',
+      'plate_number': 'License Plate',
       'brand': 'Brand',
       'model': 'Model',
       'color': 'Color',
-      'vehicleType': 'Vehicle Type',
-      'ownerType': 'Owner Type',
-      'ownerName': 'Owner Name'
+      'vehicle_type': 'Vehicle Type',
+      'owner_type': 'Owner Type',
+      'owner_name': 'Owner Name'
     };
     return labels[fieldName] || fieldName;
   }
@@ -412,7 +414,7 @@ export class VehiclesComponent extends BaseComponent implements OnInit {
   }
 
   clearFilters(): void {
-    this.filters = { status: '', vehicleType: '', search: '' };
+    this.filters = { status: '', vehicle_type: '', search: '' };
     this.loadVehicles();
   }
 

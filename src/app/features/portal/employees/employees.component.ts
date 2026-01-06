@@ -23,18 +23,21 @@ import { FilterSectionComponent, FilterField } from '../../../shared/components/
 import { ModalFormComponent } from '../../../shared/components/modal-form/modal-form.component';
 import { FormFieldConfig } from '../../../shared/components/form-field/form-field.component';
 import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
-import { EmployeeService, Employee } from '../../../core/services/employee.service';
+import { CompanyEmployeeService } from '../../../core/services/company-employee.service';
 import { DepartmentService } from '../../../core/services/department.service';
 import { PositionService } from '../../../core/services/position.service';
 import { ReportService } from '../../../core/services/report.service';
 import { ErrorHandlerService } from '../../../core/services/error-handler.service';
 import { ValidationService } from '../../../core/services/validation.service';
 import { I18nService } from '../../../core/services/i18n.service';
+import { ApiService } from '../../../core/services/api.service';
 import { UUID, PaginatedResponse } from '../../../core/models/base.model';
 import { BaseComponent } from '../../../core/base/base.component';
 import { EmpType, CompanyRoleType } from '../../../core/models/enums.model';
 import { Department } from '../../../core/models/department.model';
 import { Position } from '../../../core/models/position.model';
+import { EmployeeDisplay } from '../../../core/models/employee-display.model';
+import { CompanyEmployeeCreate, CompanyEmployeeUpdate } from '../../../core/models/company-employee.model';
 
 @Component({
   selector: 'app-employees',
@@ -61,7 +64,7 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
   private fb = inject(FormBuilder);
 
   // Data & State Signals
-  employees = signal<Employee[]>([]);
+  employees = signal<EmployeeDisplay[]>([]);
   totalRecords = signal(0);
   loading = signal(false);
   errorMessage = signal<string>('');
@@ -73,7 +76,7 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
 
   // Search & Sort State
   searchControl = new FormControl('');
-  sortBy = signal('employeeId');
+  sortBy = signal('employee_id');
   sortOrder = signal<'asc' | 'desc'>('asc');
 
   // Modal State
@@ -83,14 +86,14 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
   saving = signal(false);
   deleting = signal(false);
   enrollingFace = signal(false);
-  editingEmployee = signal<Employee | null>(null);
-  deletingEmployee = signal<Employee | null>(null);
-  enrollingEmployee = signal<Employee | null>(null);
+  editingEmployee = signal<EmployeeDisplay | null>(null);
+  deletingEmployee = signal<EmployeeDisplay | null>(null);
+  enrollingEmployee = signal<EmployeeDisplay | null>(null);
 
   // Dropdown Data
   departments = signal<Department[]>([]);
   positions = signal<Position[]>([]);
-  allEmployees = signal<Employee[]>([]); // For boss selection
+  allEmployees = signal<EmployeeDisplay[]>([]); // For boss selection
   loadingDepartments = signal(false);
   loadingPositions = signal(false);
 
@@ -109,34 +112,33 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
     const emps = this.employees();
 
     // Access form controls to check touched state for errors
-    const firstNameControl = this.employeeForm.get('firstName');
-    const lastNameControl = this.employeeForm.get('lastName');
+    const firstNameControl = this.employeeForm.get('first_name');
+    const lastNameControl = this.employeeForm.get('last_name');
     const emailControl = this.employeeForm.get('email');
-    const phoneControl = this.employeeForm.get('phone');
-    const employeeIdControl = this.employeeForm.get('employeeId');
+    const phoneControl = this.employeeForm.get('phone_number');
+    const employeeIdControl = this.employeeForm.get('employee_id');
     const salaryControl = this.employeeForm.get('salary');
-    const startDateControl = this.employeeForm.get('startDate');
-    const statusControl = this.employeeForm.get('status');
+    const startDateControl = this.employeeForm.get('start_date');
 
     return [
       {
-        key: 'firstName',
+        key: 'first_name',
         label: 'First Name',
         type: 'text',
         placeholder: 'John',
         required: true,
-        value: employee?.firstName || formValue.firstName || '',
+        value: employee?.first_name || formValue.first_name || '',
         error: firstNameControl?.invalid && firstNameControl?.touched
           ? this.validationService.getValidationErrorMessage(firstNameControl, 'First Name')
           : undefined
       },
       {
-        key: 'lastName',
+        key: 'last_name',
         label: 'Last Name',
         type: 'text',
         placeholder: 'Doe',
         required: true,
-        value: employee?.lastName || formValue.lastName || '',
+        value: employee?.last_name || formValue.last_name || '',
         error: lastNameControl?.invalid && lastNameControl?.touched
           ? this.validationService.getValidationErrorMessage(lastNameControl, 'Last Name')
           : undefined
@@ -153,50 +155,50 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
           : undefined
       },
       {
-        key: 'phone',
+        key: 'phone_number',
         label: 'Phone',
         type: 'text',
         placeholder: '0812345678',
-        value: employee?.phoneNumber || formValue.phone || '',
+        value: employee?.phone_number || formValue.phone_number || '',
         error: phoneControl?.invalid && phoneControl?.touched
           ? this.validationService.getValidationErrorMessage(phoneControl, 'Phone')
           : undefined
       },
       {
-        key: 'employeeId',
+        key: 'employee_id',
         label: 'Employee ID',
         type: 'text',
         placeholder: 'EMP001',
-        value: employee?.employeeId || formValue.employeeId || '',
+        value: employee?.employee_id || formValue.employee_id || '',
         error: employeeIdControl?.invalid && employeeIdControl?.touched
           ? this.validationService.getValidationErrorMessage(employeeIdControl, 'Employee ID')
           : undefined
       },
       {
-        key: 'departmentId',
+        key: 'department_id',
         label: 'Department',
         type: 'select',
         options: [
           { value: '', label: 'Select Department' },
           ...depts.map(dept => ({
-            value: dept.id,
-            label: dept.thName || dept.engName || ''
+            value: dept.department_id,
+            label: dept.th_name || dept.eng_name || ''
           }))
         ],
-        value: employee?.departmentId || formValue.departmentId || ''
+        value: employee?.department_id || formValue.department_id || ''
       },
       {
-        key: 'positionId',
+        key: 'position_id',
         label: 'Position',
         type: 'select',
         options: [
           { value: '', label: 'Select Position' },
           ...pos.map(pos => ({
-            value: pos.id,
-            label: pos.thName || pos.engName || ''
+            value: pos.position_id,
+            label: pos.th_name || pos.eng_name || ''
           }))
         ],
-        value: employee?.positionId || formValue.positionId || ''
+        value: employee?.position_id || formValue.position_id || ''
       },
       {
         key: 'salary',
@@ -209,20 +211,20 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
           : undefined
       },
       {
-        key: 'bossId',
+        key: 'boss_id',
         label: 'Boss/Manager',
         type: 'select',
         options: [
           { value: '', label: 'No Manager' },
-          ...this.allEmployees().filter(emp => emp.id !== employee?.id).map(emp => ({
-            value: emp.employeeId || emp.id,
-            label: `${emp.firstName} ${emp.lastName} (${emp.employeeId || ''})`
+          ...this.allEmployees().filter(emp => emp.company_employee_id !== employee?.company_employee_id).map(emp => ({
+            value: emp.employee_id || emp.company_employee_id,
+            label: `${emp.first_name} ${emp.last_name} (${emp.employee_id || ''})`
           }))
         ],
-        value: employee?.bossId || formValue.bossId || ''
+        value: employee?.boss_id || formValue.boss_id || ''
       },
       {
-        key: 'companyRoleType',
+        key: 'company_role_type',
         label: 'Role Type',
         type: 'select',
         required: true,
@@ -230,10 +232,10 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
           { value: CompanyRoleType.EMPLOYEE, label: 'Employee' },
           { value: CompanyRoleType.ADMIN_COMPANY, label: 'Company Admin' }
         ],
-        value: employee?.companyRoleType || formValue.companyRoleType || CompanyRoleType.EMPLOYEE
+        value: employee?.company_role_type || formValue.company_role_type || CompanyRoleType.EMPLOYEE
       },
       {
-        key: 'empType',
+        key: 'emp_type',
         label: 'Employment Type',
         type: 'select',
         required: true,
@@ -243,30 +245,16 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
           { value: EmpType.PERMONTH, label: 'Per Month' },
           { value: EmpType.PERDAY, label: 'Per Day' }
         ],
-        value: employee?.empType || formValue.empType || EmpType.FULL_TIME
+        value: employee?.emp_type || formValue.emp_type || EmpType.FULL_TIME
       },
       {
-        key: 'startDate',
+        key: 'start_date',
         label: 'Start Date',
         type: 'date',
         required: true,
-        value: employee?.startDate ? new Date(employee.startDate).toISOString().split('T')[0] : formValue.startDate || new Date().toISOString().split('T')[0],
+        value: employee?.start_date ? new Date(employee.start_date).toISOString().split('T')[0] : formValue.start_date || new Date().toISOString().split('T')[0],
         error: startDateControl?.invalid && startDateControl?.touched
           ? this.validationService.getValidationErrorMessage(startDateControl, 'Start Date')
-          : undefined
-      },
-      {
-        key: 'status',
-        label: this.i18n.t('common.status'),
-        type: 'select',
-        required: true,
-        options: [
-          { value: 'active', label: this.i18n.t('common.active') },
-          { value: 'inactive', label: this.i18n.t('common.inactive') }
-        ],
-        value: employee?.status || formValue.status || 'active',
-        error: statusControl?.invalid && statusControl?.touched
-          ? this.validationService.getValidationErrorMessage(statusControl, this.i18n.t('common.status'))
           : undefined
       }
     ];
@@ -303,11 +291,11 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
   ]);
 
   columns: TableColumn[] = [
-    { key: 'employeeId', label: 'Code', sortable: true },
-    { key: 'firstName', label: 'First Name', sortable: true },
-    { key: 'lastName', label: 'Last Name', sortable: true },
+    { key: 'employee_id', label: 'Code', sortable: true },
+    { key: 'first_name', label: 'First Name', sortable: true },
+    { key: 'last_name', label: 'Last Name', sortable: true },
     { key: 'email', label: 'Email', sortable: true },
-    { key: 'department', label: 'Department', sortable: true },
+    { key: 'department_name', label: 'Department', sortable: true },
     { key: 'status', label: 'Status', sortable: true, render: (value) => value || 'inactive' }
   ];
 
@@ -318,27 +306,27 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
   ];
 
   constructor(
-    private employeeService: EmployeeService,
+    private employeeService: CompanyEmployeeService,
     private departmentService: DepartmentService,
     private positionService: PositionService,
     private reportService: ReportService,
+    private apiService: ApiService,
     private i18n: I18nService
   ) {
     super();
     this.employeeForm = this.fb.group({
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
+      first_name: ['', [Validators.required]],
+      last_name: ['', [Validators.required]],
       email: ['', [Validators.required, this.validationService.emailValidator()]],
-      phone: ['', [this.validationService.phoneValidator()]],
-      employeeId: [''],
-      departmentId: [''],
-      positionId: [''],
+      phone_number: ['', [this.validationService.phoneValidator()]],
+      employee_id: [''],
+      department_id: [''],
+      position_id: [''],
       salary: [0, [Validators.min(0)]],
-      bossId: [''],
-      companyRoleType: [CompanyRoleType.EMPLOYEE, [Validators.required]],
-      empType: [EmpType.FULL_TIME, [Validators.required]],
-      startDate: [new Date().toISOString().split('T')[0], [Validators.required]],
-      status: ['active', [Validators.required]]
+      boss_id: [''],
+      company_role_type: [CompanyRoleType.EMPLOYEE, [Validators.required]],
+      emp_type: [EmpType.FULL_TIME, [Validators.required]],
+      start_date: [new Date().toISOString().split('T')[0], [Validators.required]]
     });
 
     // ✅ Auto-unsubscribe on component destroy
@@ -377,8 +365,10 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
       this.employeeService.getEmployees(filters),
-      (response: PaginatedResponse<Employee>) => {
-        this.employees.set(response.data || []);
+      (response) => {
+        // Use items (snake_case) or data (backward compatibility)
+        const items = response.items || response.data || [];
+        this.employees.set(items);
         this.totalRecords.set(response.total || 0);
         this.loading.set(false);
 
@@ -400,9 +390,10 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
    */
   loadAllEmployeesForBossSelection(): void {
     this.subscribe(
-      this.employeeService.getEmployees({ page: 1, size: 100 } as any),
-      (response: PaginatedResponse<Employee>) => {
-        this.allEmployees.set(response.data || []);
+      this.employeeService.getEmployees({ page: 1, size: 100 }),
+      (response) => {
+        const items = response.items || response.data || [];
+        this.allEmployees.set(items);
       },
       (error) => {
         console.error('Error loading all employees:', error);
@@ -434,7 +425,8 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
     this.subscribe(
       this.departmentService.getByCompanyId(companyId, { page: 1, size: 100 } as any),
       (response) => {
-        this.departments.set(response.data || []);
+        const items = response.items || response.data || [];
+        this.departments.set(items);
         this.loadingDepartments.set(false);
       },
       (error) => {
@@ -454,7 +446,8 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
     this.subscribe(
       this.positionService.getByCompanyId(companyId, { page: 1, size: 100 } as any),
       (response) => {
-        this.positions.set(response.data || []);
+        const items = response.items || response.data || [];
+        this.positions.set(items);
         this.loadingPositions.set(false);
       },
       (error) => {
@@ -469,49 +462,40 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
    * Get company ID from current user
    */
   private getCompanyId(): string {
-    const user = this.employeeService['auth'].getCurrentUser();
-    if (!user) {
-      throw new Error('User is not authenticated');
-    }
-    const companyId = user.companyId || (user as any).company_id;
-    if (!companyId) {
-      // Try to decode from JWT token
-      const token = localStorage.getItem('access_token');
-      if (token) {
-        try {
-          const parts = token.split('.');
-          if (parts.length === 3) {
-            const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
-            const companyIdFromToken = payload.company_id || payload.companyId;
-            if (companyIdFromToken) {
-              return companyIdFromToken.toString();
-            }
+    // Try to get from JWT token
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      try {
+        const parts = token.split('.');
+        if (parts.length === 3) {
+          const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+          const companyIdFromToken = payload.company_id || payload.companyId;
+          if (companyIdFromToken) {
+            return companyIdFromToken.toString();
           }
-        } catch (e) {
-          console.warn('Failed to decode JWT token:', e);
         }
+      } catch (e) {
+        console.warn('Failed to decode JWT token:', e);
       }
-      throw new Error('User is not associated with a company');
     }
-    return companyId.toString();
+    throw new Error('Member is not associated with a company');
   }
 
   openAddModal(): void {
     this.editingEmployee.set(null);
     this.employeeForm.reset({
-      firstName: '',
-      lastName: '',
+      first_name: '',
+      last_name: '',
       email: '',
-      phone: '',
-      employeeId: '',
-      departmentId: '',
-      positionId: '',
+      phone_number: '',
+      employee_id: '',
+      department_id: '',
+      position_id: '',
       salary: 0,
-      bossId: '',
-      companyRoleType: CompanyRoleType.EMPLOYEE,
-      empType: EmpType.FULL_TIME,
-      startDate: new Date().toISOString().split('T')[0],
-      status: 'active'
+      boss_id: '',
+      company_role_type: CompanyRoleType.EMPLOYEE,
+      emp_type: EmpType.FULL_TIME,
+      start_date: new Date().toISOString().split('T')[0]
     });
     this.employeeForm.markAsUntouched();
     this.errorMessage.set('');
@@ -521,30 +505,28 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
   /**
    * Edit employee
    */
-  editEmployee(employee: Employee): void {
-    // Validate employee has id
-    if (!employee.id) {
+  editEmployee(employee: EmployeeDisplay): void {
+    // Validate employee has company_employee_id
+    if (!employee.company_employee_id) {
       this.errorHandler.showError('ไม่พบ ID ของพนักงาน');
-      console.error('Employee missing id:', employee);
+      console.error('Employee missing company_employee_id:', employee);
       return;
     }
 
     this.editingEmployee.set(employee);
-    const status = employee.status;
     this.employeeForm.patchValue({
-      firstName: employee.firstName || '',
-      lastName: employee.lastName || '',
+      first_name: employee.first_name || '',
+      last_name: employee.last_name || '',
       email: employee.email || '',
-      phone: employee.phoneNumber || '',
-      employeeId: employee.employeeId || '',
-      departmentId: employee.departmentId || '',
-      positionId: employee.positionId || '',
+      phone_number: employee.phone_number || '',
+      employee_id: employee.employee_id || '',
+      department_id: employee.department_id || '',
+      position_id: employee.position_id || '',
       salary: employee.salary || 0,
-      bossId: employee.bossId || '',
-      companyRoleType: employee.companyRoleType || CompanyRoleType.EMPLOYEE,
-      empType: employee.empType || EmpType.FULL_TIME,
-      startDate: employee.startDate ? new Date(employee.startDate).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
-      status: (status === 'active' || status === 'inactive') ? status : 'inactive'
+      boss_id: employee.boss_id || '',
+      company_role_type: employee.company_role_type || CompanyRoleType.EMPLOYEE,
+      emp_type: employee.emp_type || EmpType.FULL_TIME,
+      start_date: employee.start_date ? new Date(employee.start_date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
     });
     this.employeeForm.markAsUntouched();
     this.errorMessage.set('');
@@ -568,21 +550,20 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
       return value;
     };
 
-    // Update FormGroup from ModalFormComponent
+    // Update FormGroup from ModalFormComponent (convert camelCase to snake_case if needed)
     this.employeeForm.patchValue({
-      firstName: formData['firstName'] || '',
-      lastName: formData['lastName'] || '',
+      first_name: formData['first_name'] || formData['firstName'] || '',
+      last_name: formData['last_name'] || formData['lastName'] || '',
       email: formData['email'] || '',
-      phone: toUndefinedIfEmpty(formData['phone']),
-      employeeId: toUndefinedIfEmpty(formData['employeeId']),
-      departmentId: toUndefinedIfEmpty(formData['departmentId']),
-      positionId: toUndefinedIfEmpty(formData['positionId']),
+      phone_number: toUndefinedIfEmpty(formData['phone_number'] || formData['phone']),
+      employee_id: toUndefinedIfEmpty(formData['employee_id'] || formData['employeeId']),
+      department_id: toUndefinedIfEmpty(formData['department_id'] || formData['departmentId']),
+      position_id: toUndefinedIfEmpty(formData['position_id'] || formData['positionId']),
       salary: formData['salary'] || 0,
-      bossId: toUndefinedIfEmpty(formData['bossId']),
-      companyRoleType: formData['companyRoleType'] || CompanyRoleType.EMPLOYEE,
-      empType: formData['empType'] || EmpType.FULL_TIME,
-      startDate: formData['startDate'] || new Date().toISOString().split('T')[0],
-      status: formData['status'] || 'active'
+      boss_id: toUndefinedIfEmpty(formData['boss_id'] || formData['bossId']),
+      company_role_type: formData['company_role_type'] || formData['companyRoleType'] || CompanyRoleType.EMPLOYEE,
+      emp_type: formData['emp_type'] || formData['empType'] || EmpType.FULL_TIME,
+      start_date: formData['start_date'] || formData['startDate'] || new Date().toISOString().split('T')[0]
     });
     // Mark all fields as touched to show validation errors
     this.employeeForm.markAllAsTouched();
@@ -612,37 +593,104 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
     }
 
     const employee = this.editingEmployee();
-    if (employee && !employee.id) {
+    if (employee && !employee.company_employee_id) {
       this.errorHandler.showError('ไม่พบ ID ของพนักงาน');
-      console.error('Employee missing id:', employee);
+      console.error('Employee missing company_employee_id:', employee);
       return;
     }
 
     this.saving.set(true);
     this.errorMessage.set('');
     const formValue = this.employeeForm.value;
-    const request = employee && employee.id
-      ? this.employeeService.updateEmployee(employee.id, formValue)
-      : this.employeeService.createEmployee(formValue as any);
 
-    // ✅ Auto-unsubscribe on component destroy
-    this.subscribe(
-      request,
-      () => {
-        this.errorHandler.showSuccess(this.editingEmployee() ? 'อัปเดต Employee สำเร็จ' : 'สร้าง Employee สำเร็จ');
-        this.saving.set(false);
-        this.closeModal();
-        this.loadEmployees(); // Reload current page
-      },
-      (error) => {
-        this.errorHandler.handleApiError(error);
-        this.errorMessage.set('ไม่สามารถบันทึกข้อมูล Employee ได้');
-        this.saving.set(false);
-      }
-    );
+    // Convert form data to backend format
+    if (employee && employee.company_employee_id) {
+      // Update existing employee
+      const updateData: CompanyEmployeeUpdate = {
+        company_employee_id: employee.company_employee_id,
+        member: {
+          email: formValue.email,
+          first_name: formValue.first_name,
+          last_name: formValue.last_name,
+          picture: undefined // Can be updated separately
+        },
+        position: formValue.position_id ? {
+          position_id: formValue.position_id,
+          th_name: '', // Will be filled by backend
+          eng_name: ''
+        } : undefined,
+        department: formValue.department_id ? {
+          department_id: formValue.department_id,
+          th_name: '', // Will be filled by backend
+          eng_name: ''
+        } : undefined,
+        employee_id: formValue.employee_id,
+        salary: formValue.salary,
+        boss_id: formValue.boss_id,
+        company_role_type: formValue.company_role_type,
+        emp_type: formValue.emp_type,
+        start_date: new Date(formValue.start_date).toISOString()
+      };
+
+      this.subscribe(
+        this.employeeService.updateEmployee(employee.company_employee_id, updateData),
+        () => {
+          this.errorHandler.showSuccess('อัปเดต Employee สำเร็จ');
+          this.saving.set(false);
+          this.closeModal();
+          this.loadEmployees();
+        },
+        (error) => {
+          this.errorHandler.handleApiError(error);
+          this.errorMessage.set('ไม่สามารถบันทึกข้อมูล Employee ได้');
+          this.saving.set(false);
+        }
+      );
+    } else {
+      // Create new employee
+      const createData: CompanyEmployeeCreate = {
+        member: {
+          email: formValue.email,
+          first_name: formValue.first_name,
+          last_name: formValue.last_name,
+          picture: undefined
+        },
+        position: formValue.position_id ? {
+          position_id: formValue.position_id,
+          th_name: '',
+          eng_name: ''
+        } : undefined,
+        department: formValue.department_id ? {
+          department_id: formValue.department_id,
+          th_name: '',
+          eng_name: ''
+        } : undefined,
+        employee_id: formValue.employee_id,
+        salary: formValue.salary,
+        boss_id: formValue.boss_id,
+        company_role_type: formValue.company_role_type,
+        emp_type: formValue.emp_type,
+        start_date: new Date(formValue.start_date).toISOString()
+      };
+
+      this.subscribe(
+        this.employeeService.createEmployee(createData),
+        () => {
+          this.errorHandler.showSuccess('สร้าง Employee สำเร็จ');
+          this.saving.set(false);
+          this.closeModal();
+          this.loadEmployees();
+        },
+        (error) => {
+          this.errorHandler.handleApiError(error);
+          this.errorMessage.set('ไม่สามารถบันทึกข้อมูล Employee ได้');
+          this.saving.set(false);
+        }
+      );
+    }
   }
 
-  openDeleteModal(employee: Employee): void {
+  openDeleteModal(employee: EmployeeDisplay): void {
     this.deletingEmployee.set(employee);
     this.showDeleteModal.set(true);
   }
@@ -662,23 +710,25 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
     const employee = this.deletingEmployee();
     if (!employee) return;
 
-    if (!employee.id) {
+    if (!employee.company_employee_id) {
       this.errorHandler.showError('ไม่พบ ID ของพนักงาน');
-      console.error('Employee missing id:', employee);
+      console.error('Employee missing company_employee_id:', employee);
       this.closeDeleteModal();
       return;
     }
 
     this.deleting.set(true);
     this.errorMessage.set('');
-    this.employeeService.deleteEmployee(employee.id).subscribe({
-      next: () => {
+    // ✅ Auto-unsubscribe on component destroy
+    this.subscribe(
+      this.employeeService.deleteEmployee(employee.company_employee_id),
+      () => {
         this.errorHandler.showSuccess('ลบ Employee สำเร็จ');
         this.deleting.set(false);
         this.closeDeleteModal();
-        this.loadEmployees(); // Reload current page
+        this.loadEmployees();
       },
-      error: (error: any) => {
+      (error: any) => {
         this.errorHandler.handleApiError(error);
         this.errorMessage.set('ไม่สามารถลบ Employee ได้');
         this.deleting.set(false);
@@ -689,7 +739,7 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
   /**
    * Open face enrollment modal
    */
-  openFaceEnrollModal(employee: Employee): void {
+  openFaceEnrollModal(employee: EmployeeDisplay): void {
     this.enrollingEmployee.set(employee);
     this.faceImageFile = null;
     this.errorMessage.set('');
@@ -729,8 +779,18 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
     this.enrollingFace.set(true);
     this.errorMessage.set('');
 
+    // Use member_id from employee
+    const memberId = employee.member_id;
+    if (!memberId) {
+      this.errorHandler.showError('ไม่พบ Member ID');
+      this.enrollingFace.set(false);
+      return;
+    }
+
+    // Use ApiService directly for face enrollment
+    const options = { skipTransform: true };
     this.subscribe(
-      this.employeeService.enrollFace(employee.memberId, this.faceImageFile!),
+      this.apiService.upload(`/face/members/${memberId}/add-face`, this.faceImageFile!, undefined, options),
       () => {
         this.errorHandler.showSuccess('Enroll Face สำเร็จ');
         this.enrollingFace.set(false);
@@ -757,13 +817,19 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
    */
   getFieldLabel(fieldName: string): string {
     const labels: Record<string, string> = {
-      'firstName': 'ชื่อ',
-      'lastName': 'นามสกุล',
+      'first_name': 'ชื่อ',
+      'last_name': 'นามสกุล',
       'email': 'Email',
-      'phone': 'เบอร์โทรศัพท์',
-      'department': 'แผนก',
-      'status': 'สถานะ'
-    };
+      'phone_number': 'เบอร์โทรศัพท์',
+      'department_id': 'แผนก',
+      'position_id': 'ตำแหน่ง',
+      'employee_id': 'รหัสพนักงาน',
+      'salary': 'เงินเดือน',
+      'boss_id': 'หัวหน้า',
+      'company_role_type': 'ประเภทบทบาท',
+      'emp_type': 'ประเภทการจ้างงาน',
+      'start_date': 'วันที่เริ่มงาน'
+    }
     return labels[fieldName] || fieldName;
   }
 

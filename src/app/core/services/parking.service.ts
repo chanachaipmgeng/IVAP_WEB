@@ -1,13 +1,19 @@
 /**
  * Parking Service
- * 
+ *
  * Service for parking management operations
  * Uses new Phase 2 API endpoints
  */
 
+/**
+ * Parking Service
+ *
+ * Service for parking management operations
+ * Uses snake_case models to match backend API
+ */
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { ApiService } from './api.service';
 import { AuthService } from './auth.service';
 import {
@@ -26,215 +32,348 @@ import {
   ParkingStatistics
 } from '../models/parking.model';
 import { PaginatedResponse } from '../models/base.model';
+import { PaginatedApiResponse } from '../utils/response-handler';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ParkingService {
-  
+
   constructor(
     private api: ApiService,
     private auth: AuthService
   ) {}
 
+  /**
+   * Get current company ID from auth
+   */
+  private getCompanyId(): string {
+    const companyId = this.auth.currentUser()?.companyId || (this.auth.currentUser() as any)?.company_id;
+    if (!companyId) {
+      throw new Error('Company ID not found. User must be logged in.');
+    }
+    return typeof companyId === 'number' ? companyId.toString() : companyId;
+  }
+
+  /**
+   * Get company ID for API calls (with error handling)
+   */
+  private getCompanyIdSafe(): string | null {
+    try {
+      return this.getCompanyId();
+    } catch {
+      return null;
+    }
+  }
+
   // ==================== Vehicle Management ====================
 
-  getVehicles(params?: any): Observable<PaginatedResponse<ParkingVehicle>> {
-    const companyId = this.auth.currentUser()?.companyId;
-    if (!companyId) {
-      throw new Error('Company ID not found');
+  /**
+   * Get all parking vehicles with pagination
+   */
+  getVehicles(params?: any): Observable<PaginatedApiResponse<ParkingVehicle>> {
+    try {
+      const companyId = this.getCompanyId();
+      const options = { skipTransform: true };
+      return this.api.get<any>(`/parking/vehicles`, { company_id: companyId, ...params }, options).pipe(
+        map((response: any) => {
+          const items = response.items || response.data || [];
+          return {
+            total: response.total || items.length,
+            data: items,
+            items: items,
+            page: response.page || 1,
+            size: response.size || response.page_size || items.length
+          } as PaginatedApiResponse<ParkingVehicle>;
+        }),
+        catchError((error) => {
+          console.error('Error loading parking vehicles:', error);
+          return of({
+            data: [],
+            items: [],
+            total: 0,
+            page: 1,
+            size: 10
+          } as PaginatedApiResponse<ParkingVehicle>);
+        })
+      );
+    } catch (error) {
+      return of({
+        data: [],
+        items: [],
+        total: 0,
+        page: 1,
+        size: 10
+      } as PaginatedApiResponse<ParkingVehicle>);
     }
-    return this.api.get<PaginatedResponse<ParkingVehicle>>(
-      `/parking/vehicles`,
-      { company_id: companyId, ...params }
-    );
   }
 
+  /**
+   * Get parking vehicle by ID
+   */
   getVehicleById(vehicleId: string): Observable<ParkingVehicle> {
-    const companyId = this.auth.currentUser()?.companyId;
-    if (!companyId) {
-      throw new Error('Company ID not found');
+    try {
+      const companyId = this.getCompanyId();
+      const options = { skipTransform: true };
+      return this.api.get<any>(`/parking/vehicles/${vehicleId}`, { company_id: companyId }, options).pipe(
+        map((response: any) => {
+          return response.data || response;
+        })
+      );
+    } catch (error) {
+      return throwError(() => error);
     }
-    return this.api.get<ParkingVehicle>(
-      `/parking/vehicles/${vehicleId}`,
-      { company_id: companyId }
-    );
   }
 
+  /**
+   * Create new parking vehicle
+   */
   createVehicle(vehicle: ParkingVehicleCreate): Observable<ParkingVehicle> {
-    const companyId = this.auth.currentUser()?.companyId;
-    if (!companyId) {
-      throw new Error('Company ID not found');
+    try {
+      const companyId = this.getCompanyId();
+      const options = { skipTransform: true };
+      return this.api.post<any>(`/parking/vehicles`, vehicle, { company_id: companyId }, options).pipe(
+        map((response: any) => {
+          return response.data || response;
+        })
+      );
+    } catch (error) {
+      return throwError(() => error);
     }
-    return this.api.post<ParkingVehicle>(
-      `/parking/vehicles`,
-      vehicle,
-      { company_id: companyId }
-    );
   }
 
+  /**
+   * Update parking vehicle
+   */
   updateVehicle(vehicleId: string, vehicle: ParkingVehicleUpdate): Observable<ParkingVehicle> {
-    const companyId = this.auth.currentUser()?.companyId;
-    if (!companyId) {
-      throw new Error('Company ID not found');
+    try {
+      const companyId = this.getCompanyId();
+      const options = { skipTransform: true };
+      return this.api.put<any>(`/parking/vehicles/${vehicleId}`, vehicle, { company_id: companyId }, options).pipe(
+        map((response: any) => {
+          return response.data || response;
+        })
+      );
+    } catch (error) {
+      return throwError(() => error);
     }
-    return this.api.put<ParkingVehicle>(
-      `/parking/vehicles/${vehicleId}`,
-      vehicle,
-      { company_id: companyId }
-    );
   }
 
+  /**
+   * Delete parking vehicle
+   */
   deleteVehicle(vehicleId: string): Observable<void> {
-    const companyId = this.auth.currentUser()?.companyId;
-    if (!companyId) {
-      throw new Error('Company ID not found');
+    try {
+      const companyId = this.getCompanyId();
+      const options = { skipTransform: true };
+      return this.api.delete<void>(`/parking/vehicles/${vehicleId}`, { company_id: companyId }, undefined, options);
+    } catch (error) {
+      return throwError(() => error);
     }
-    return this.api.delete<void>(
-      `/parking/vehicles/${vehicleId}`,
-      { company_id: companyId }
-    );
   }
 
   // ==================== Parking Space Management ====================
 
-  getParkingSpaces(params?: any): Observable<PaginatedResponse<ParkingSpace>> {
-    const companyId = this.auth.currentUser()?.companyId;
+  /**
+   * Get all parking spaces with pagination
+   */
+  getParkingSpaces(params?: any): Observable<PaginatedApiResponse<ParkingSpace>> {
+    const companyId = this.getCompanyIdSafe();
     if (!companyId) {
       console.warn('Company ID not found, returning empty parking spaces');
       return of({
         data: [],
+        items: [],
         total: 0,
         page: 1,
-        limit: 10,
-        totalPages: 0
-      } as PaginatedResponse<ParkingSpace>);
+        size: 10
+      } as PaginatedApiResponse<ParkingSpace>);
     }
-    return this.api.get<PaginatedResponse<ParkingSpace>>(
-      `/parking/spaces`,
-      { company_id: companyId, ...params }
-    ).pipe(
+    const options = { skipTransform: true };
+    return this.api.get<any>(`/parking/spaces`, { company_id: companyId, ...params }, options).pipe(
+      map((response: any) => {
+        const items = response.items || response.data || [];
+        return {
+          total: response.total || items.length,
+          data: items,
+          items: items,
+          page: response.page || 1,
+          size: response.size || response.page_size || items.length
+        } as PaginatedApiResponse<ParkingSpace>;
+      }),
       catchError((error) => {
         console.error('Error loading parking spaces:', error);
         return of({
           data: [],
+          items: [],
           total: 0,
           page: 1,
-          limit: 10,
-          totalPages: 0
-        } as PaginatedResponse<ParkingSpace>);
+          size: 10
+        } as PaginatedApiResponse<ParkingSpace>);
       })
     );
   }
 
+  /**
+   * Get parking space by ID
+   */
   getParkingSpaceById(spaceId: string): Observable<ParkingSpace> {
-    const companyId = this.auth.currentUser()?.companyId;
-    if (!companyId) {
-      throw new Error('Company ID not found');
+    try {
+      const companyId = this.getCompanyId();
+      const options = { skipTransform: true };
+      return this.api.get<any>(`/parking/spaces/${spaceId}`, { company_id: companyId }, options).pipe(
+        map((response: any) => {
+          return response.data || response;
+        })
+      );
+    } catch (error) {
+      return throwError(() => error);
     }
-    return this.api.get<ParkingSpace>(
-      `/parking/spaces/${spaceId}`,
-      { company_id: companyId }
-    );
   }
 
+  /**
+   * Create new parking space
+   */
   createParkingSpace(space: ParkingSpaceCreate): Observable<ParkingSpace> {
-    const companyId = this.auth.currentUser()?.companyId;
-    if (!companyId) {
-      throw new Error('Company ID not found');
+    try {
+      const companyId = this.getCompanyId();
+      const options = { skipTransform: true };
+      return this.api.post<any>(`/parking/spaces`, space, { company_id: companyId }, options).pipe(
+        map((response: any) => {
+          return response.data || response;
+        })
+      );
+    } catch (error) {
+      return throwError(() => error);
     }
-    return this.api.post<ParkingSpace>(
-      `/parking/spaces`,
-      space,
-      { company_id: companyId }
-    );
   }
 
+  /**
+   * Update parking space
+   */
   updateParkingSpace(spaceId: string, space: ParkingSpaceUpdate): Observable<ParkingSpace> {
-    const companyId = this.auth.currentUser()?.companyId;
-    if (!companyId) {
-      throw new Error('Company ID not found');
+    try {
+      const companyId = this.getCompanyId();
+      const options = { skipTransform: true };
+      return this.api.put<any>(`/parking/spaces/${spaceId}`, space, { company_id: companyId }, options).pipe(
+        map((response: any) => {
+          return response.data || response;
+        })
+      );
+    } catch (error) {
+      return throwError(() => error);
     }
-    return this.api.put<ParkingSpace>(
-      `/parking/spaces/${spaceId}`,
-      space,
-      { company_id: companyId }
-    );
   }
 
   // ==================== Parking Events (Entry/Exit) ====================
 
+  /**
+   * Record vehicle entry
+   */
   recordVehicleEntry(entry: VehicleEntryRequest): Observable<ParkingEvent> {
-    const companyId = this.auth.currentUser()?.companyId;
-    if (!companyId) {
-      throw new Error('Company ID not found');
+    try {
+      const companyId = this.getCompanyId();
+      const options = { skipTransform: true };
+      return this.api.post<any>(`/parking/entry`, entry, { company_id: companyId }, options).pipe(
+        map((response: any) => {
+          return response.data || response;
+        })
+      );
+    } catch (error) {
+      return throwError(() => error);
     }
-    return this.api.post<ParkingEvent>(
-      `/parking/entry`,
-      entry,
-      { company_id: companyId }
-    );
   }
 
+  /**
+   * Record vehicle exit
+   */
   recordVehicleExit(exit: VehicleExitRequest): Observable<ParkingEvent> {
-    const companyId = this.auth.currentUser()?.companyId;
-    if (!companyId) {
-      throw new Error('Company ID not found');
+    try {
+      const companyId = this.getCompanyId();
+      const options = { skipTransform: true };
+      return this.api.post<any>(`/parking/exit`, exit, { company_id: companyId }, options).pipe(
+        map((response: any) => {
+          return response.data || response;
+        })
+      );
+    } catch (error) {
+      return throwError(() => error);
     }
-    return this.api.post<ParkingEvent>(
-      `/parking/exit`,
-      exit,
-      { company_id: companyId }
-    );
   }
 
-  getParkingEvents(params?: any): Observable<PaginatedResponse<ParkingEvent>> {
-    const companyId = this.auth.currentUser()?.companyId;
-    if (!companyId) {
-      throw new Error('Company ID not found');
+  /**
+   * Get parking events with pagination
+   */
+  getParkingEvents(params?: any): Observable<PaginatedApiResponse<ParkingEvent>> {
+    try {
+      const companyId = this.getCompanyId();
+      const options = { skipTransform: true };
+      return this.api.get<any>(`/parking/events`, { company_id: companyId, ...params }, options).pipe(
+        map((response: any) => {
+          const items = response.items || response.data || [];
+          return {
+            total: response.total || items.length,
+            data: items,
+            items: items,
+            page: response.page || 1,
+            size: response.size || response.page_size || items.length
+          } as PaginatedApiResponse<ParkingEvent>;
+        })
+      );
+    } catch (error) {
+      return throwError(() => error);
     }
-    return this.api.get<PaginatedResponse<ParkingEvent>>(
-      `/parking/events`,
-      { company_id: companyId, ...params }
-    );
   }
 
   // ==================== Parking Reservations ====================
 
+  /**
+   * Create parking reservation
+   */
   createReservation(reservation: ParkingReservationCreate): Observable<ParkingReservation> {
-    const companyId = this.auth.currentUser()?.companyId;
-    if (!companyId) {
-      throw new Error('Company ID not found');
+    try {
+      const companyId = this.getCompanyId();
+      const options = { skipTransform: true };
+      return this.api.post<any>(`/parking/reservations`, reservation, { company_id: companyId }, options).pipe(
+        map((response: any) => {
+          return response.data || response;
+        })
+      );
+    } catch (error) {
+      return throwError(() => error);
     }
-    return this.api.post<ParkingReservation>(
-      `/parking/reservations`,
-      reservation,
-      { company_id: companyId }
-    );
   }
 
+  /**
+   * Cancel parking reservation
+   */
   cancelReservation(reservationId: string): Observable<void> {
-    const companyId = this.auth.currentUser()?.companyId;
-    if (!companyId) {
-      throw new Error('Company ID not found');
+    try {
+      const companyId = this.getCompanyId();
+      const options = { skipTransform: true };
+      return this.api.delete<void>(`/parking/reservations/${reservationId}`, { company_id: companyId }, undefined, options);
+    } catch (error) {
+      return throwError(() => error);
     }
-    return this.api.delete<void>(
-      `/parking/reservations/${reservationId}`,
-      { company_id: companyId }
-    );
   }
 
   // ==================== Parking Statistics ====================
 
+  /**
+   * Get parking statistics
+   */
   getStatistics(): Observable<ParkingStatistics> {
-    const companyId = this.auth.currentUser()?.companyId;
-    if (!companyId) {
-      throw new Error('Company ID not found');
+    try {
+      const companyId = this.getCompanyId();
+      const options = { skipTransform: true };
+      return this.api.get<any>(`/parking/statistics`, { company_id: companyId }, options).pipe(
+        map((response: any) => {
+          return response.data || response;
+        })
+      );
+    } catch (error) {
+      return throwError(() => error);
     }
-    return this.api.get<ParkingStatistics>(
-      `/parking/statistics`,
-      { company_id: companyId }
-    );
   }
 }
 

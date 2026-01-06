@@ -36,7 +36,7 @@ export type HttpRequestBody = unknown;
  */
 export interface HttpRequestOptions {
   responseType?: 'json' | 'blob' | 'text' | 'arraybuffer';
-  skipTransform?: boolean;
+  skipTransform?: boolean; // Skip field name transformation (use snake_case directly)
 }
 
 @Injectable({
@@ -66,12 +66,13 @@ export class ApiService {
     options?: HttpRequestOptions
   ): Observable<T> {
     let httpParams = new HttpParams();
-    
-    // Transform params to snake_case before sending (except for blob/text responses)
-    const transformedParams = params && options?.responseType !== 'blob' && options?.responseType !== 'text' 
-      ? toSnakeCase(params as Record<string, unknown>) 
+
+    // Transform params to snake_case before sending (unless skipTransform is true)
+    const shouldTransform = !options?.skipTransform && options?.responseType !== 'blob' && options?.responseType !== 'text';
+    const transformedParams = params && shouldTransform
+      ? toSnakeCase(params as Record<string, unknown>)
       : params;
-    
+
     if (transformedParams && typeof transformedParams === 'object' && !Array.isArray(transformedParams)) {
       Object.keys(transformedParams).forEach(key => {
         const value = (transformedParams as { [key: string]: unknown })[key];
@@ -91,13 +92,18 @@ export class ApiService {
       httpOptions.responseType = options.responseType;
     }
 
-    // Transform response to camelCase (except for blob/text responses)
+    // Transform response based on skipTransform option
     return this.http.get<unknown>(`${this.baseUrl}${endpoint}`, httpOptions).pipe(
       map(response => {
         // Don't transform blob or text responses
         if (options?.responseType === 'blob' || options?.responseType === 'text') {
           return response as T;
         }
+        // If skipTransform is true, return response as-is (snake_case)
+        if (options?.skipTransform) {
+          return response as T;
+        }
+        // Otherwise transform to camelCase
         return toCamelCase(response) as T;
       }),
       catchError(this.handleError)
@@ -113,13 +119,13 @@ export class ApiService {
     const shouldTransform = !options?.skipTransform && options?.responseType !== 'blob' && options?.responseType !== 'text';
 
     // Transform data to snake_case before sending unless explicitly skipped
-    const transformedData = data && shouldTransform && !(data instanceof FormData) 
-      ? toSnakeCase(data as Record<string, unknown>) 
+    const transformedData = data && shouldTransform && !(data instanceof FormData)
+      ? toSnakeCase(data as Record<string, unknown>)
       : data;
-    
+
     let httpParams = new HttpParams();
     const transformedParams = params && shouldTransform ? toSnakeCase(params as Record<string, unknown>) : params;
-    
+
     if (transformedParams && typeof transformedParams === 'object' && !Array.isArray(transformedParams)) {
       Object.keys(transformedParams).forEach(key => {
         const value = (transformedParams as { [key: string]: unknown })[key];
@@ -128,7 +134,7 @@ export class ApiService {
         }
       });
     }
-    
+
     const httpOptions: any = {
       headers: this.getHeaders(),
       observe: 'body' as const
@@ -139,13 +145,18 @@ export class ApiService {
     if (options?.responseType) {
       httpOptions.responseType = options.responseType;
     }
-    
+
     return this.http.post<unknown>(`${this.baseUrl}${endpoint}`, transformedData, httpOptions).pipe(
       map(response => {
         // Don't transform blob or text responses
         if (options?.responseType === 'blob' || options?.responseType === 'text') {
           return response as T;
         }
+        // If skipTransform is true, return response as-is (snake_case)
+        if (options?.skipTransform) {
+          return response as T;
+        }
+        // Otherwise transform to camelCase
         return toCamelCase(response) as T;
       }),
       catchError(this.handleError)
@@ -155,18 +166,21 @@ export class ApiService {
   public put<T = unknown>(
     endpoint: string,
     data: HttpRequestBody,
-    params?: HttpRequestParams
+    params?: HttpRequestParams,
+    options?: HttpRequestOptions
   ): Observable<T> {
+    const shouldTransform = !options?.skipTransform;
+
     // Transform data to snake_case before sending
-    const transformedData = data instanceof FormData 
-      ? data 
-      : (data && typeof data === 'object' && !Array.isArray(data))
+    const transformedData = data instanceof FormData
+      ? data
+      : (data && typeof data === 'object' && !Array.isArray(data) && shouldTransform)
         ? toSnakeCase(data as Record<string, unknown>)
         : data;
-    
+
     let httpParams = new HttpParams();
-    const transformedParams = params ? toSnakeCase(params as Record<string, unknown>) : params;
-    
+    const transformedParams = params && shouldTransform ? toSnakeCase(params as Record<string, unknown>) : params;
+
     if (transformedParams && typeof transformedParams === 'object' && !Array.isArray(transformedParams)) {
       Object.keys(transformedParams).forEach(key => {
         const value = (transformedParams as { [key: string]: unknown })[key];
@@ -175,8 +189,8 @@ export class ApiService {
         }
       });
     }
-    
-    const options: {
+
+    const httpOptions: {
       headers: HttpHeaders;
       observe?: 'body';
       params?: HttpParams;
@@ -184,11 +198,16 @@ export class ApiService {
       headers: this.getHeaders()
     };
     if (httpParams.keys().length > 0) {
-      options.params = httpParams;
+      httpOptions.params = httpParams;
     }
-    
-    return this.http.put<unknown>(`${this.baseUrl}${endpoint}`, transformedData, options).pipe(
-      map(response => toCamelCase(response) as T),
+
+    return this.http.put<unknown>(`${this.baseUrl}${endpoint}`, transformedData, httpOptions).pipe(
+      map(response => {
+        if (options?.skipTransform) {
+          return response as T;
+        }
+        return toCamelCase(response) as T;
+      }),
       catchError(this.handleError)
     );
   }
@@ -196,18 +215,21 @@ export class ApiService {
   public patch<T = unknown>(
     endpoint: string,
     data: HttpRequestBody,
-    params?: HttpRequestParams
+    params?: HttpRequestParams,
+    options?: HttpRequestOptions
   ): Observable<T> {
+    const shouldTransform = !options?.skipTransform;
+
     // Transform data to snake_case before sending
-    const transformedData = data instanceof FormData 
-      ? data 
-      : (data && typeof data === 'object' && !Array.isArray(data))
+    const transformedData = data instanceof FormData
+      ? data
+      : (data && typeof data === 'object' && !Array.isArray(data) && shouldTransform)
         ? toSnakeCase(data as Record<string, unknown>)
         : data;
-    
+
     let httpParams = new HttpParams();
-    const transformedParams = params ? toSnakeCase(params as Record<string, unknown>) : params;
-    
+    const transformedParams = params && shouldTransform ? toSnakeCase(params as Record<string, unknown>) : params;
+
     if (transformedParams && typeof transformedParams === 'object' && !Array.isArray(transformedParams)) {
       Object.keys(transformedParams).forEach(key => {
         const value = (transformedParams as { [key: string]: unknown })[key];
@@ -216,8 +238,8 @@ export class ApiService {
         }
       });
     }
-    
-    const options: {
+
+    const httpOptions: {
       headers: HttpHeaders;
       observe?: 'body';
       params?: HttpParams;
@@ -225,11 +247,16 @@ export class ApiService {
       headers: this.getHeaders()
     };
     if (httpParams.keys().length > 0) {
-      options.params = httpParams;
+      httpOptions.params = httpParams;
     }
-    
-    return this.http.patch<unknown>(`${this.baseUrl}${endpoint}`, transformedData, options).pipe(
-      map(response => toCamelCase(response) as T),
+
+    return this.http.patch<unknown>(`${this.baseUrl}${endpoint}`, transformedData, httpOptions).pipe(
+      map(response => {
+        if (options?.skipTransform) {
+          return response as T;
+        }
+        return toCamelCase(response) as T;
+      }),
       catchError(this.handleError)
     );
   }
@@ -237,11 +264,14 @@ export class ApiService {
   public delete<T = unknown>(
     endpoint: string,
     params?: HttpRequestParams,
-    body?: HttpRequestBody
+    body?: HttpRequestBody,
+    options?: HttpRequestOptions
   ): Observable<T> {
+    const shouldTransform = !options?.skipTransform;
+
     let httpParams = new HttpParams();
-    const transformedParams = params ? toSnakeCase(params as Record<string, unknown>) : params;
-    
+    const transformedParams = params && shouldTransform ? toSnakeCase(params as Record<string, unknown>) : params;
+
     if (transformedParams && typeof transformedParams === 'object' && !Array.isArray(transformedParams)) {
       Object.keys(transformedParams).forEach(key => {
         const value = (transformedParams as { [key: string]: unknown })[key];
@@ -250,8 +280,8 @@ export class ApiService {
         }
       });
     }
-    
-    const options: {
+
+    const httpOptions: {
       headers: HttpHeaders;
       observe?: 'body';
       params?: HttpParams;
@@ -260,25 +290,28 @@ export class ApiService {
       headers: this.getHeaders()
     };
     if (httpParams.keys().length > 0) {
-      options.params = httpParams;
+      httpOptions.params = httpParams;
     }
     if (body !== undefined) {
       // Transform body to snake_case if it's not FormData
       // For arrays (like permissionIds), send as-is
-      options.body = body instanceof FormData 
-        ? body 
+      httpOptions.body = body instanceof FormData
+        ? body
         : Array.isArray(body)
           ? body
-          : (body && typeof body === 'object')
+          : (body && typeof body === 'object' && shouldTransform)
             ? toSnakeCase(body as Record<string, unknown>)
             : body;
     }
-    
-    return this.http.delete<unknown>(`${this.baseUrl}${endpoint}`, options).pipe(
+
+    return this.http.delete<unknown>(`${this.baseUrl}${endpoint}`, httpOptions).pipe(
       map(response => {
         // DELETE might return void or a response
         if (!response) {
           return undefined as T;
+        }
+        if (options?.skipTransform) {
+          return response as T;
         }
         return toCamelCase(response) as T;
       }),
@@ -330,7 +363,7 @@ export class ApiService {
     additionalData?: HttpRequestBody
   ): Observable<T> {
     const formData = new FormData();
-    
+
     // Append all files - backend expects 'files' parameter for List[UploadFile]
     files.forEach((file) => {
       formData.append('files', file);

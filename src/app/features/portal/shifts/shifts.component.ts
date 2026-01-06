@@ -87,14 +87,14 @@ export class ShiftsComponent extends BaseComponent implements OnInit {
   // Available employees (not already assigned to this shift)
   availableEmployees = computed(() => {
     const currentAssignments = this.shiftAssignments();
-    const assignedEmployeeIds = currentAssignments.map(a => a.companyEmployeeId);
+    const assignedEmployeeIds = currentAssignments.map(a => a.company_employee_id);
     return this.employees().filter(emp => !assignedEmployeeIds.includes(emp.id));
   });
 
   formData: Partial<ShiftCreate> = {
-    shiftName: '',
-    startTime: '',
-    endTime: ''
+    shift_name: '',
+    start_time: '',
+    end_time: ''
   };
 
   // Form fields configuration for ModalFormComponent
@@ -102,44 +102,44 @@ export class ShiftsComponent extends BaseComponent implements OnInit {
     const shift = this.editingShift();
     return [
       {
-        key: 'shiftName',
+        key: 'shift_name',
         label: 'Shift Name',
         type: 'text',
         placeholder: 'Morning Shift',
         required: true,
-        value: shift?.shiftName || this.formData.shiftName || ''
+        value: shift?.shift_name || this.formData.shift_name || ''
       },
       {
-        key: 'startTime',
+        key: 'start_time',
         label: 'Start Time',
         type: 'text',
         placeholder: '09:00:00',
         required: true,
-        value: shift?.startTime || this.formData.startTime || '',
+        value: shift?.start_time || this.formData.start_time || '',
         hint: 'Format: HH:MM:SS (24-hour format)'
       },
       {
-        key: 'endTime',
+        key: 'end_time',
         label: 'End Time',
         type: 'text',
         placeholder: '17:00:00',
         required: true,
-        value: shift?.endTime || this.formData.endTime || '',
+        value: shift?.end_time || this.formData.end_time || '',
         hint: 'Format: HH:MM:SS (24-hour format)'
       }
     ];
   });
 
   columns: TableColumn[] = [
-    { key: 'shiftName', label: 'Shift Name', sortable: true },
+    { key: 'shift_name', label: 'Shift Name', sortable: true },
     {
-      key: 'startTime',
+      key: 'start_time',
       label: 'Start Time',
       sortable: true,
       render: (value) => this.formatTime(value)
     },
     {
-      key: 'endTime',
+      key: 'end_time',
       label: 'End Time',
       sortable: true,
       render: (value) => this.formatTime(value)
@@ -183,22 +183,27 @@ export class ShiftsComponent extends BaseComponent implements OnInit {
    * Load shifts for current company
    */
   loadShifts(): void {
-    this.shiftService.loadShifts().subscribe({
-      next: () => {
-        // Shifts data automatically updated via signals
+    const companyId = this.auth.getCurrentUser()?.companyId || this.auth.getCurrentUser()?.company_id;
+    if (!companyId) return;
+
+    // ✅ Auto-unsubscribe on component destroy
+    this.subscribe(
+      this.shiftService.getByCompanyId(String(companyId)),
+      (response) => {
+        // Data will be handled by service signals if available
       },
-      error: (error) => {
+      (error) => {
         console.error('Error loading shifts:', error);
       }
-    });
+    );
   }
 
   openAddModal(): void {
     this.editingShift.set(null);
     this.formData = {
-      shiftName: '',
-      startTime: '',
-      endTime: ''
+      shift_name: '',
+      start_time: '',
+      end_time: ''
     };
     this.showModal.set(true);
   }
@@ -209,9 +214,9 @@ export class ShiftsComponent extends BaseComponent implements OnInit {
   editShift(shift: Shift): void {
     this.editingShift.set(shift);
     this.formData = {
-      shiftName: shift.shiftName,
-      startTime: shift.startTime,
-      endTime: shift.endTime
+      shift_name: shift.shift_name,
+      start_time: shift.start_time,
+      end_time: shift.end_time
     };
     this.showModal.set(true);
   }
@@ -226,9 +231,9 @@ export class ShiftsComponent extends BaseComponent implements OnInit {
    */
   onShiftFormSubmitted(formData: Record<string, unknown>): void {
     this.formData = {
-      shiftName: String(formData['shiftName'] || ''),
-      startTime: String(formData['startTime'] || ''),
-      endTime: String(formData['endTime'] || '')
+      shift_name: String(formData['shift_name'] || formData['shiftName'] || ''),
+      start_time: String(formData['start_time'] || formData['startTime'] || ''),
+      end_time: String(formData['end_time'] || formData['endTime'] || '')
     };
     this.saveShift();
   }
@@ -236,9 +241,15 @@ export class ShiftsComponent extends BaseComponent implements OnInit {
   saveShift(): void {
     this.saving.set(true);
 
+    const shiftData: ShiftCreate = {
+      shift_name: String(this.formData.shift_name || ''),
+      start_time: String(this.formData.start_time || ''),
+      end_time: String(this.formData.end_time || '')
+    };
+
     const request = this.editingShift()
-      ? this.shiftService.updateShift(this.editingShift()!.id, this.formData)
-      : this.shiftService.createShift(this.formData);
+      ? this.shiftService.update(this.editingShift()!.shift_id, shiftData)
+      : this.shiftService.create(shiftData);
 
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
@@ -256,11 +267,11 @@ export class ShiftsComponent extends BaseComponent implements OnInit {
   }
 
   deleteShift(shift: Shift): void {
-    if (!confirm(`Delete shift ${shift.shiftName}?`)) return;
+    if (!confirm(`Delete shift ${shift.shift_name}?`)) return;
 
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
-      this.shiftService.deleteShift(shift.id),
+      this.shiftService.delete(shift.shift_id),
       () => {
         this.loadShifts();
       },
@@ -292,22 +303,16 @@ export class ShiftsComponent extends BaseComponent implements OnInit {
    */
   assignEmployees(shift: Shift): void {
     this.selectedShiftForAssignment.set(shift);
-    this.loadShiftAssignments(shift.id);
+    this.loadShiftAssignments(shift.shift_id);
     this.showAssignmentModal.set(true);
   }
 
   loadShiftAssignments(shiftId: string): void {
     this.loadingAssignments.set(true);
-    const companyId = this.auth.getCurrentUser()?.companyId;
-    if (!companyId) {
-      this.loadingAssignments.set(false);
-      return;
-    }
 
-    // Get all user-shifts for this shift
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
-      this.shiftService.getShiftAssignments(companyId.toString(), { shiftId }),
+      this.shiftService.getEmployeeShifts(shiftId),
       (assignments) => {
         this.shiftAssignments.set(assignments);
         this.loadingAssignments.set(false);
@@ -348,9 +353,9 @@ export class ShiftsComponent extends BaseComponent implements OnInit {
     this.saving.set(true);
 
     const requests = this.selectedEmployees().map(employeeId =>
-      this.shiftService.assignShiftToEmployee({
-        shiftId: shift.id,
-        companyEmployeeId: employeeId
+      this.shiftService.assignShift({
+        shift_id: shift.shift_id,
+        company_employee_id: employeeId
       })
     );
 
@@ -377,11 +382,11 @@ export class ShiftsComponent extends BaseComponent implements OnInit {
 
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
-      this.api.delete(`/api/v1/shifts/user-shifts/${assignment.id}`),
+      this.shiftService.removeShiftAssignment(assignment.user_shift_id),
       () => {
         const shift = this.selectedShiftForAssignment();
         if (shift) {
-          this.loadShiftAssignments(shift.id);
+          this.loadShiftAssignments(shift.shift_id);
         }
         alert('Employee removed from shift successfully!');
       },

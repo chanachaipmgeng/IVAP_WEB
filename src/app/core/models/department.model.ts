@@ -1,53 +1,45 @@
 /**
  * Department Models
  * 
- * Represents departments within a company
- * Matches backend Department model and schema
+ * Uses snake_case to match backend DepartmentResponse schema (department_schema.py)
  */
 
-import { UUID, BaseTimestamps } from './base.model';
+import { UUID } from './base.model';
 
 /**
  * Department Interface
- * Represents a department in a company
- * Matches backend DepartmentResponse schema
+ * Matches DepartmentResponse schema from backend
  */
 export interface Department {
-  // Primary key
-  id: UUID;  // department_id in backend
-  
-  // Department information
-  thName: string;  // th_name in backend
-  engName: string;  // eng_name in backend
-  
-  // Foreign key
-  companyId: UUID;  // company_id in backend
-  
-  // Timestamps (optional - may not be in backend response)
-  createdAt?: string;  // created_at from backend (ISO datetime string)
-  updatedAt?: string;  // updated_at from backend (ISO datetime string)
+  department_id: UUID;
+  th_name: string;
+  eng_name: string;
+  company_id: UUID;
 }
 
 /**
  * Department Create Request
+ * Matches DepartmentCreate schema from backend
  */
 export interface DepartmentCreate {
-  thName: string;
-  engName: string;
-  companyId: UUID;
+  th_name: string;
+  eng_name: string;
+  company_id: UUID;
 }
 
 /**
  * Department Update Request
+ * Matches DepartmentUpdate schema from backend
  */
 export interface DepartmentUpdate {
-  thName?: string;
-  engName?: string;
-  companyId?: UUID;
+  th_name?: string;
+  eng_name?: string;
+  company_id?: UUID;
 }
 
 /**
  * Department Response (from API)
+ * Alias for Department - matches backend response
  */
 export interface DepartmentResponse extends Department {
   // All fields from Department interface
@@ -58,13 +50,18 @@ export interface DepartmentResponse extends Department {
  */
 export interface DepartmentFilters {
   search?: string;
-  companyId?: UUID;
+  company_id?: UUID;
+  page?: number;
+  size?: number;
+  page_size?: number;
+  sort_by?: string;
+  sort_order?: 'asc' | 'desc';
 }
 
 /**
  * Department Statistics
  */
 export interface DepartmentStatistics {
-  totalDepartments: number;
-  departmentsByCompany: Record<string, number>;
+  total_departments: number;
+  departments_by_company: Record<string, number>;
 }

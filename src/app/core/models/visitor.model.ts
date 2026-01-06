@@ -1,8 +1,7 @@
 /**
  * Visitor Management Models
  * 
- * Complete visitor models matching backend structure
- * Includes Visitor, VisitorVisit, VisitorInvitation, VisitorBadge
+ * Uses snake_case to match backend VisitorResponse schema (visitor_schema.py)
  */
 
 import { UUID, BaseTimestamps } from './base.model';
@@ -10,275 +9,312 @@ import { VisitorType, VisitorStatus, VisitPurpose } from './enums.model';
 
 /**
  * Visitor Interface
- * ตรงกับ VisitorResponse ใน backend (visitor_schema.py)
+ * Matches VisitorResponse schema from backend
  */
 export interface Visitor extends BaseTimestamps {
-  // Primary identification (from VisitorResponse)
-  id: UUID;  // visitor_id from backend (UUID, REQUIRED)
-  companyId: UUID;  // company_id from backend (UUID, REQUIRED)
+  // Primary identification
+  visitor_id: UUID;
+  company_id: UUID;
   
   // Personal information (from VisitorBase)
-  firstName: string;  // first_name from backend (REQUIRED, min_length=1, max_length=100)
-  lastName: string;  // last_name from backend (REQUIRED, min_length=1, max_length=100)
-  email?: string;  // email from backend (optional, EmailStr)
-  phone?: string;  // phone from backend (optional, max_length=20)
-  idCardNumber?: string;  // id_card_number from backend (optional, max_length=20)
+  first_name: string;
+  last_name: string;
+  email?: string;
+  phone?: string;
+  id_card_number?: string;
   
   // Company information (from VisitorBase)
-  companyName?: string;  // company_name from backend (optional, max_length=200)
-  position?: string;  // position from backend (optional, max_length=100)
-  address?: string;  // address from backend (optional)
+  company_name?: string;
+  position?: string;
+  address?: string;
   
   // Visit classification (from VisitorBase)
-  visitorType: VisitorType;  // visitor_type from backend (VisitorType enum, REQUIRED, default=GUEST)
-  visitPurpose: VisitPurpose;  // visit_purpose from backend (VisitPurpose enum, REQUIRED, default=MEETING)
+  visitor_type: VisitorType;
+  visit_purpose: VisitPurpose;
   
   // Host information (from VisitorBase)
-  hostEmployeeId?: UUID;  // host_employee_id from backend (optional, UUID)
-  hostName?: string;  // host_name from backend (optional, max_length=200)
-  hostPhone?: string;  // host_phone from backend (optional, max_length=20)
-  hostEmail?: string;  // host_email from backend (optional, EmailStr)
+  host_employee_id?: UUID;
+  host_name?: string;
+  host_phone?: string;
+  host_email?: string;
   
   // Schedule (from VisitorBase)
-  appointmentDate?: string;  // appointment_date from backend (optional, datetime)
-  expectedDurationHours?: number;  // expected_duration_hours from backend (optional, float, ge=0)
-  meetingRoom?: string;  // meeting_room from backend (optional, max_length=100)
-  notes?: string;  // notes from backend (optional)
+  appointment_date?: string;
+  expected_duration_hours?: number;
+  meeting_room?: string;
+  notes?: string;
   
   // Status and tracking (from VisitorResponse)
-  status: VisitorStatus;  // status from backend (VisitorStatus enum, REQUIRED)
-  qrCode?: string;  // qr_code from backend (optional)
-  badgeNumber?: string;  // badge_number from backend (optional)
+  status: VisitorStatus;
+  qr_code?: string;
+  badge_number?: string;
   
   // Check-in/out information (from VisitorResponse)
-  checkInTime?: string;  // check_in_time from backend (optional, datetime)
-  checkOutTime?: string;  // check_out_time from backend (optional, datetime)
-  actualDurationMinutes?: number;  // actual_duration_minutes from backend (optional, int)
+  check_in_time?: string;
+  check_out_time?: string;
+  actual_duration_minutes?: number;
   
   // Photos (from VisitorResponse)
-  photoPath?: string;  // photo_path from backend (optional)
-  idCardPhotoPath?: string;  // id_card_photo_path from backend (optional)
+  photo_path?: string;
+  id_card_photo_path?: string;
   
   // Approval workflow (from VisitorResponse)
-  approvedBy?: UUID;  // approved_by from backend (optional, UUID)
-  approvedAt?: string;  // approved_at from backend (optional, datetime)
-  approvalNotes?: string;  // approval_notes from backend (optional)
+  approved_by?: UUID;
+  approved_at?: string;
+  approval_notes?: string;
   
   // Security (from VisitorResponse)
-  isBlacklisted: boolean;  // is_blacklisted from backend (default=False)
-  blacklistReason?: string;  // blacklist_reason from backend (optional)
-  securityNotes?: string;  // security_notes from backend (optional)
+  is_blacklisted: boolean;
+  blacklist_reason?: string;
+  security_notes?: string;
 }
 
 /**
  * Visitor Create Request
+ * Matches VisitorCreate schema from backend
  */
 export interface VisitorCreate {
-  companyId: UUID;  // REQUIRED
-  
-  // Personal info
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   email?: string;
   phone?: string;
-  idCardNumber?: string;
-  
-  // Company info
-  companyName?: string;
+  id_card_number?: string;
+  company_name?: string;
   position?: string;
   address?: string;
-  
-  // Visit info
-  visitorType: VisitorType;
-  visitPurpose: VisitPurpose;
-  hostEmployeeId?: UUID;
-  hostName?: string;
-  hostPhone?: string;
-  hostEmail?: string;
-  
-  // Schedule
-  appointmentDate?: string;
-  expectedDurationHours?: number;
-  meetingRoom?: string;
+  visitor_type: VisitorType;
+  visit_purpose: VisitPurpose;
+  host_employee_id?: UUID;
+  host_name?: string;
+  host_phone?: string;
+  host_email?: string;
+  appointment_date?: string;
+  expected_duration_hours?: number;
+  meeting_room?: string;
   notes?: string;
 }
 
 /**
  * Visitor Update Request
+ * Matches VisitorUpdate schema from backend
  */
 export interface VisitorUpdate {
-  firstName?: string;
-  lastName?: string;
+  first_name?: string;
+  last_name?: string;
   email?: string;
   phone?: string;
-  idCardNumber?: string;
-  companyName?: string;
+  id_card_number?: string;
+  company_name?: string;
   position?: string;
   address?: string;
-  visitorType?: VisitorType;
-  visitPurpose?: VisitPurpose;
-  hostEmployeeId?: UUID;
-  hostName?: string;
-  hostPhone?: string;
-  hostEmail?: string;
-  appointmentDate?: string;
-  expectedDurationHours?: number;
-  meetingRoom?: string;
+  visitor_type?: VisitorType;
+  visit_purpose?: VisitPurpose;
+  host_employee_id?: UUID;
+  host_name?: string;
+  host_phone?: string;
+  host_email?: string;
+  appointment_date?: string;
+  expected_duration_hours?: number;
+  meeting_room?: string;
   notes?: string;
-  status?: VisitorStatus;
-  approvalNotes?: string;
-  securityNotes?: string;
 }
 
 /**
  * Visitor Check-in Request
+ * Matches VisitorCheckIn schema from backend
  */
 export interface VisitorCheckIn {
-  checkInTime?: string;
+  check_in_time?: string;
   location?: string;
-  photoPath?: string;
-  deviceId?: string;
   notes?: string;
 }
 
 /**
  * Visitor Check-out Request
+ * Matches VisitorCheckOut schema from backend
  */
 export interface VisitorCheckOut {
-  checkOutTime?: string;
-  location?: string;
-  deviceId?: string;
+  check_out_time?: string;
   notes?: string;
 }
 
 /**
  * Visitor Approval Request
+ * Matches VisitorApprove schema from backend
  */
 export interface VisitorApproval {
-  approved: boolean;
-  approvalNotes?: string;
+  approval_notes?: string;
 }
 
 /**
  * Visitor Blacklist Request
+ * Matches VisitorBlacklist schema from backend
  */
 export interface VisitorBlacklist {
-  blacklisted: boolean;
-  reason?: string;
+  blacklist_reason: string;
+  security_notes?: string;
 }
 
 /**
  * Visitor Visit
- * Individual visit record (can have multiple visits per visitor)
+ * Matches VisitorVisitResponse schema from backend
  */
 export interface VisitorVisit extends BaseTimestamps {
-  id: UUID;  // visit_id
-  visitorId: UUID;
-  companyId: UUID;
+  visit_id: UUID;
+  visitor_id: UUID;
+  company_id: UUID;
   
   // Schedule
-  visitDate: string;
-  expectedStartTime?: string;
-  expectedEndTime?: string;
-  actualStartTime?: string;
-  actualEndTime?: string;
+  visit_date: string;
+  expected_start_time?: string;
+  expected_end_time?: string;
+  actual_start_time?: string;
+  actual_end_time?: string;
   
   // Host info
-  hostEmployeeId?: UUID;
-  hostName?: string;
-  hostPhone?: string;
+  host_employee_id?: UUID;
+  host_name?: string;
+  host_phone?: string;
   
   // Visit details
-  visitorType: VisitorType;
-  visitPurpose: VisitPurpose;
-  meetingRoom?: string;
+  visitor_type: VisitorType;
+  visit_purpose: VisitPurpose;
+  meeting_room?: string;
   notes?: string;
   
   // Status and tracking
   status: VisitorStatus;
-  qrCode?: string;
-  badgeNumber?: string;
+  qr_code?: string;
+  badge_number?: string;
   
   // Check-in/out
-  checkInTime?: string;
-  checkOutTime?: string;
-  checkInLocation?: string;
-  checkOutLocation?: string;
-  checkInDeviceId?: string;
-  checkOutDeviceId?: string;
-  checkInPhotoPath?: string;
-  checkOutPhotoPath?: string;
+  check_in_time?: string;
+  check_out_time?: string;
+  check_in_location?: string;
+  check_out_location?: string;
   
   // Approval
-  approvedBy?: UUID;
-  approvedAt?: string;
-  approvalNotes?: string;
-  
-  // Security
-  securityNotes?: string;
-  violationNotes?: string;
+  approved_by?: UUID;
+  approved_at?: string;
+  approval_notes?: string;
+}
+
+/**
+ * Visitor Visit Create Request
+ * Matches VisitorVisitCreate schema from backend
+ */
+export interface VisitorVisitCreate {
+  visitor_id: UUID;
+  visit_date: string;
+  expected_start_time?: string;
+  expected_end_time?: string;
+  host_employee_id?: UUID;
+  host_name?: string;
+  host_phone?: string;
+  visitor_type: VisitorType;
+  visit_purpose: VisitPurpose;
+  meeting_room?: string;
+  notes?: string;
 }
 
 /**
  * Visitor Invitation
+ * Matches VisitorInvitationResponse schema from backend
  */
 export interface VisitorInvitation extends BaseTimestamps {
-  id: UUID;  // invitation_id
-  companyId: UUID;
-  
-  invitationCode: string;
-  invitationType: string;
-  invitationStatus: string;
+  invitation_id: UUID;
+  company_id: UUID;
+  invitation_code: string;
+  invitation_type: string;
+  invitation_status: string;
   
   // Inviter info
-  invitedBy: UUID;
-  invitedByName: string;
-  invitedByEmail?: string;
+  invited_by: UUID;
+  invited_by_name: string;
+  invited_by_email?: string;
   
   // Guest info
-  guestEmail?: string;
-  guestPhone?: string;
-  guestName?: string;
+  guest_email?: string;
+  guest_phone?: string;
+  guest_name?: string;
   
   // Visit details
-  visitDate: string;
-  expectedStartTime?: string;
-  expectedEndTime?: string;
-  meetingRoom?: string;
-  visitPurpose: VisitPurpose;
+  visit_date: string;
+  expected_start_time?: string;
+  expected_end_time?: string;
+  meeting_room?: string;
+  visit_purpose: VisitPurpose;
   notes?: string;
   
   // Tracking
-  sentAt?: string;
-  deliveredAt?: string;
-  openedAt?: string;
-  usedAt?: string;
-  expiresAt?: string;
+  sent_at?: string;
+  delivered_at?: string;
+  opened_at?: string;
+  used_at?: string;
+  expires_at?: string;
+}
+
+/**
+ * Visitor Invitation Create Request
+ * Matches VisitorInvitationCreate schema from backend
+ */
+export interface VisitorInvitationCreate {
+  invitation_type?: string;
+  guest_email?: string;
+  guest_phone?: string;
+  guest_name?: string;
+  visit_date: string;
+  expected_start_time?: string;
+  expected_end_time?: string;
+  meeting_room?: string;
+  visit_purpose: VisitPurpose;
+  notes?: string;
+  expires_at?: string;
 }
 
 /**
  * Visitor Badge
+ * Matches VisitorBadgeResponse schema from backend
  */
 export interface VisitorBadge extends BaseTimestamps {
-  id: UUID;  // badge_id
-  companyId: UUID;
-  
-  badgeNumber: string;
-  badgeType: string;
-  badgeStatus: string;
+  badge_id: UUID;
+  company_id: UUID;
+  badge_number: string;
+  badge_type: string;
+  badge_status: string;
   
   // Assignment
-  issuedToVisitorId?: UUID;
-  issuedToVisitId?: UUID;
-  issuedBy: UUID;
-  issuedAt: string;
+  issued_to_visitor_id?: UUID;
+  issued_to_visit_id?: UUID;
+  issued_by: UUID;
+  issued_at: string;
   
   // Return
-  returnedAt?: string;
-  returnedBy?: UUID;
-  returnNotes?: string;
+  returned_at?: string;
+  returned_by?: UUID;
+  return_notes?: string;
   
-  expiresAt?: string;
+  expires_at?: string;
+}
+
+/**
+ * Visitor Badge Issue Request
+ * Matches VisitorBadgeIssue schema from backend
+ */
+export interface VisitorBadgeIssue {
+  badge_number: string;
+  badge_type?: string;
+  visitor_id?: UUID;
+  visit_id?: UUID;
+  expires_at?: string;
+}
+
+/**
+ * Visitor Badge Return Request
+ * Matches VisitorBadgeReturn schema from backend
+ */
+export interface VisitorBadgeReturn {
+  return_notes?: string;
 }
 
 /**
@@ -286,57 +322,57 @@ export interface VisitorBadge extends BaseTimestamps {
  */
 export interface VisitorFilters {
   search?: string;
-  companyId?: UUID;
+  company_id?: UUID;
   status?: VisitorStatus;
-  visitorType?: VisitorType;
-  visitPurpose?: VisitPurpose;
-  hostEmployeeId?: UUID;
-  isBlacklisted?: boolean;
-  appointmentFrom?: string;
-  appointmentTo?: string;
-  checkInFrom?: string;
-  checkInTo?: string;
+  visitor_type?: VisitorType;
+  visit_purpose?: VisitPurpose;
+  host_employee_id?: UUID;
+  is_blacklisted?: boolean;
+  appointment_from?: string;
+  appointment_to?: string;
+  check_in_from?: string;
+  check_in_to?: string;
 }
 
 /**
  * Visitor Statistics
  */
-export interface VisitorStats {
-  totalVisitors: number;
-  pendingVisitors: number;
-  approvedVisitors: number;
-  checkedInVisitors: number;
-  checkedOutVisitors: number;
-  cancelledVisitors: number;
-  expiredVisitors: number;
-  blacklistedVisitors: number;
-  todayVisitors: number;
-  thisWeekVisitors: number;
-  thisMonthVisitors: number;
+export interface VisitorStatistics {
+  total_visitors: number;
+  pending_visitors: number;
+  approved_visitors: number;
+  checked_in_visitors: number;
+  checked_out_visitors: number;
+  cancelled_visitors: number;
+  expired_visitors: number;
+  blacklisted_visitors: number;
+  today_visitors: number;
+  this_week_visitors: number;
+  this_month_visitors: number;
   
   // By type
-  visitorsByType: Record<VisitorType, number>;
-  visitorsByPurpose: Record<VisitPurpose, number>;
+  visitors_by_type: Record<VisitorType, number>;
+  visitors_by_purpose: Record<VisitPurpose, number>;
   
   // Average metrics
-  averageVisitDuration?: number;
-  averageWaitTime?: number;
+  average_visit_duration?: number;
+  average_wait_time?: number;
 }
 
 /**
  * Visitor Summary (lightweight)
  */
 export interface VisitorSummary {
-  id: UUID;
-  fullName: string;
+  visitor_id: UUID;
+  full_name: string;
   email?: string;
   phone?: string;
-  companyName?: string;
-  visitorType: VisitorType;
-  visitPurpose: VisitPurpose;
+  company_name?: string;
+  visitor_type: VisitorType;
+  visit_purpose: VisitPurpose;
   status: VisitorStatus;
-  appointmentDate?: string;
-  checkInTime?: string;
+  appointment_date?: string;
+  check_in_time?: string;
 }
 
 // ==================== Helper Functions ====================
@@ -345,10 +381,10 @@ export interface VisitorSummary {
  * Get visitor full name
  */
 export function getVisitorFullName(visitor: Visitor | VisitorSummary): string {
-  if ('fullName' in visitor) {
-    return visitor.fullName;
+  if ('full_name' in visitor) {
+    return visitor.full_name;
   }
-  return `${visitor.firstName} ${visitor.lastName}`.trim();
+  return `${visitor.first_name} ${visitor.last_name}`.trim();
 }
 
 /**
@@ -369,11 +405,11 @@ export function needsApproval(visitor: Visitor): boolean {
  * Get visit duration in minutes
  */
 export function getVisitDuration(visitor: Visitor): number | null {
-  if (!visitor.checkInTime || !visitor.checkOutTime) {
+  if (!visitor.check_in_time || !visitor.check_out_time) {
     return null;
   }
-  const checkIn = new Date(visitor.checkInTime);
-  const checkOut = new Date(visitor.checkOutTime);
+  const checkIn = new Date(visitor.check_in_time);
+  const checkOut = new Date(visitor.check_out_time);
   return Math.floor((checkOut.getTime() - checkIn.getTime()) / (1000 * 60));
 }
 
@@ -381,10 +417,10 @@ export function getVisitDuration(visitor: Visitor): number | null {
  * Check if visitor is late
  */
 export function isVisitorLate(visitor: Visitor): boolean {
-  if (!visitor.appointmentDate || !visitor.checkInTime) {
+  if (!visitor.appointment_date || !visitor.check_in_time) {
     return false;
   }
-  const appointment = new Date(visitor.appointmentDate);
-  const checkIn = new Date(visitor.checkInTime);
+  const appointment = new Date(visitor.appointment_date);
+  const checkIn = new Date(visitor.check_in_time);
   return checkIn > appointment;
 }

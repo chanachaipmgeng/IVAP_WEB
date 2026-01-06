@@ -1,6 +1,6 @@
 /**
  * Device Model
- * 
+ *
  * Interfaces and types for device management
  * Matches backend device schemas
  */
@@ -17,45 +17,49 @@ export type DeviceStatus = 'ACTIVE' | 'INACTIVE' | 'DISABLED';
 
 /**
  * Device Response (from backend DeviceResponse)
+ * Uses snake_case to match backend (backend supports both via populate_by_name)
  */
 export interface Device {
-  deviceId: string;  // UUID
-  companyId: string;  // UUID
-  deviceName: string;
-  deviceType: DeviceType;
+  device_id: string;  // UUID (alias: deviceId)
+  company_id: string;  // UUID (alias: companyId)
+  device_name: string;  // (alias: deviceName)
+  device_type: DeviceType;  // (alias: deviceType)
   location?: string;
   status: DeviceStatus;
-  apiKey: string;
-  lastSeen?: string;  // ISO datetime string
-  createdAt: string;  // ISO datetime string
-  updatedAt?: string;  // ISO datetime string
+  api_key: string;  // (alias: apiKey)
+  last_seen?: string;  // ISO datetime string (alias: lastSeen)
+  created_at: string;  // ISO datetime string (alias: createdAt)
+  updated_at?: string;  // ISO datetime string (alias: updatedAt)
 }
 
 /**
  * Device Create Request (from backend DeviceCreate)
+ * Uses snake_case to match backend
  */
 export interface DeviceCreate {
-  deviceName: string;
-  deviceType?: DeviceType;
+  device_name: string;
+  device_type?: DeviceType;
   location?: string;
   status?: DeviceStatus;
 }
 
 /**
  * Device Update Request (from backend DeviceUpdate)
+ * Uses snake_case to match backend
  */
 export interface DeviceUpdate {
-  deviceName?: string;
-  deviceType?: DeviceType;
+  device_name?: string;
+  device_type?: DeviceType;
   location?: string;
   status?: DeviceStatus;
 }
 
 /**
  * Device API Key Response (from backend DeviceApiKeyResponse)
+ * Uses snake_case to match backend
  */
 export interface DeviceApiKeyResponse {
-  apiKey: string;
+  api_key: string;  // (alias: apiKey)
 }
 
 /**

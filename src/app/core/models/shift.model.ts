@@ -1,49 +1,46 @@
 /**
  * Shift Models
  * 
- * Represents work shifts within a company
- * Matches backend Shift model and schema
+ * Uses snake_case to match backend ShiftResponse schema (shift.py)
  */
 
 import { UUID, BaseTimestamps } from './base.model';
 
 /**
  * Shift Interface
- * Represents a work shift
+ * Matches ShiftResponse schema from backend
  */
 export interface Shift extends BaseTimestamps {
-  // Primary key
-  id: UUID;  // shift_id in backend
-  
-  // Shift information
-  shiftName: string;  // shift_name in backend
-  startTime: string;  // start_time in backend (Time format)
-  endTime: string;  // end_time in backend (Time format)
-  
-  // Foreign key
-  companyId: UUID;  // company_id in backend
+  shift_id: UUID;
+  company_id: UUID;
+  shift_name: string;
+  start_time: string; // Time format: "HH:MM:SS"
+  end_time: string; // Time format: "HH:MM:SS"
 }
 
 /**
  * Shift Create Request
+ * Matches ShiftCreate schema from backend
  */
 export interface ShiftCreate {
-  shiftName: string;
-  startTime: string;  // Time format: "HH:MM:SS"
-  endTime: string;  // Time format: "HH:MM:SS"
+  shift_name: string;
+  start_time: string; // Time format: "HH:MM:SS"
+  end_time: string; // Time format: "HH:MM:SS"
 }
 
 /**
  * Shift Update Request
+ * Matches ShiftUpdate schema from backend
  */
 export interface ShiftUpdate {
-  shiftName?: string;
-  startTime?: string;
-  endTime?: string;
+  shift_name?: string;
+  start_time?: string;
+  end_time?: string;
 }
 
 /**
  * Shift Response (from API)
+ * Alias for Shift - matches backend response
  */
 export interface ShiftResponse extends Shift {
   // All fields from Shift interface
@@ -51,25 +48,27 @@ export interface ShiftResponse extends Shift {
 
 /**
  * User Shift Assignment
- * Represents the assignment of a shift to an employee
+ * Matches UserShiftAssign schema from backend
  */
-export interface UserShift {
-  id: UUID;  // user_shift_id in backend
-  companyEmployeeId: UUID;  // company_employee_id in backend
-  shiftId: UUID;  // shift_id in backend
-  createdAt: string;
+export interface UserShiftAssign {
+  company_employee_id: UUID;
+  shift_id: UUID;
 }
 
 /**
- * User Shift Assign Request
+ * User Shift Response
+ * Matches UserShiftResponse schema from backend
  */
-export interface UserShiftAssign {
-  companyEmployeeId: UUID;
-  shiftId: UUID;
+export interface UserShift {
+  user_shift_id: UUID;
+  company_employee_id: UUID;
+  shift_id: UUID;
+  created_at: string;
 }
 
 /**
  * User Shift Response (from API)
+ * Alias for UserShift - matches backend response
  */
 export interface UserShiftResponse extends UserShift {
   // All fields from UserShift interface
@@ -80,14 +79,19 @@ export interface UserShiftResponse extends UserShift {
  */
 export interface ShiftFilters {
   search?: string;
-  companyId?: UUID;
+  company_id?: UUID;
+  page?: number;
+  size?: number;
+  page_size?: number;
+  sort_by?: string;
+  sort_order?: 'asc' | 'desc';
 }
 
 /**
  * Shift Statistics
  */
 export interface ShiftStatistics {
-  totalShifts: number;
-  shiftsByCompany: Record<string, number>;
-  employeesByShift: Record<string, number>;
+  total_shifts: number;
+  shifts_by_company: Record<string, number>;
+  employees_by_shift: Record<string, number>;
 }

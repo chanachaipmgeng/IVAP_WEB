@@ -64,10 +64,11 @@ export function generateUUID(): UUID {
 /**
  * Base Timestamps Interface
  * Common timestamp fields for all models
+ * Uses snake_case to match backend schemas
  */
 export interface BaseTimestamps {
-  createdAt: string;
-  updatedAt: string;
+  created_at: string;
+  updated_at: string;
 }
 
 /**
@@ -91,13 +92,18 @@ export interface PaginationParams {
 
 /**
  * Paginated Response
+ * Matches backend PaginatedResponse schema (standard_response_schema.py)
  */
 export interface PaginatedResponse<T> {
-  data: T[];
+  items: T[];
   total: number;
   page: number;
-  limit: number;
-  totalPages: number;
+  size: number;
+  total_pages: number;
+  has_next: boolean;
+  has_prev: boolean;
+  // Backward compatibility aliases
+  data?: T[]; // alias for items
 }
 
 /**

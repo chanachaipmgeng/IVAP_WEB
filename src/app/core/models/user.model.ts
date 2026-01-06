@@ -54,10 +54,11 @@ export interface Role {
 }
 
 export interface UserFilters {
-  search: string;
-  role: string;
-  status: string;
-  companyId: string;
+  search?: string;
+  role?: string;
+  status?: string;
+  company_id?: string;  // snake_case to match backend
+  companyId?: string;  // camelCase for backward compatibility
 }
 
 export interface UserStatistics {

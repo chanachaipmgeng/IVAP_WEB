@@ -48,13 +48,13 @@ export class ParkingSpotsComponent implements OnInit {
   editingSpot = signal<ParkingSpace | null>(null);
 
   formData: Partial<ParkingSpaceCreate> = {
-    spaceNumber: '',
+    space_number: '',
     zone: '',
     floor: undefined,
-    hourlyRate: undefined,
-    isHandicapAccessible: false,
-    isElectricVehicleReady: false,
-    isReservable: true
+    hourly_rate: undefined,
+    is_handicap_accessible: false,
+    is_electric_vehicle_ready: false,
+    is_reservable: true
   };
 
   filters = {
@@ -132,12 +132,12 @@ export class ParkingSpotsComponent implements OnInit {
   ]);
 
   columns: TableColumn[] = [
-    { key: 'spaceNumber', label: 'Spot Number', sortable: true },
+    { key: 'space_number', label: 'Spot Number', sortable: true },
     { key: 'zone', label: 'Zone', sortable: true },
     { key: 'floor', label: 'Floor' },
-    { key: 'currentVehiclePlate', label: 'License Plate' },
+    { key: 'current_vehicle_plate', label: 'License Plate' },
     {
-      key: 'occupiedSince',
+      key: 'occupied_since',
       label: 'Occupied Since',
       render: (value) => value ? this.formatDateTime(value) : '-'
     },
@@ -147,7 +147,7 @@ export class ParkingSpotsComponent implements OnInit {
       render: (value) => this.getStatusIcon(value) + ' ' + value
     },
     {
-      key: 'hourlyRate',
+      key: 'hourly_rate',
       label: 'Rate/hr',
       render: (value) => value ? `฿${value}` : 'Free'
     }
@@ -180,7 +180,9 @@ export class ParkingSpotsComponent implements OnInit {
   loadParkingSpots(): void {
     this.parkingService.getParkingSpaces().subscribe({
       next: (response) => {
-        this.parkingSpots.set(response.data || []);
+        // Handle both PaginatedResponse and PaginatedApiResponse
+        const items = response.data || response.items || [];
+        this.parkingSpots.set(items);
       },
       error: (error) => {
         console.warn('Error loading parking spaces:', error);
@@ -192,13 +194,13 @@ export class ParkingSpotsComponent implements OnInit {
   openAddModal(): void {
     this.editingSpot.set(null);
     this.formData = {
-      spaceNumber: '',
+      space_number: '',
       zone: '',
       floor: undefined,
-      hourlyRate: undefined,
-      isHandicapAccessible: false,
-      isElectricVehicleReady: false,
-      isReservable: true
+      hourly_rate: undefined,
+      is_handicap_accessible: false,
+      is_electric_vehicle_ready: false,
+      is_reservable: true
     };
     this.showModal.set(true);
   }
@@ -206,13 +208,13 @@ export class ParkingSpotsComponent implements OnInit {
   editSpot(spot: ParkingSpace): void {
     this.editingSpot.set(spot);
     this.formData = {
-      spaceNumber: spot.spaceNumber,
+      space_number: spot.space_number,
       zone: spot.zone,
       floor: spot.floor,
-      hourlyRate: spot.hourlyRate,
-      isHandicapAccessible: spot.isHandicapAccessible,
-      isElectricVehicleReady: spot.isElectricVehicleReady,
-      isReservable: spot.isReservable
+      hourly_rate: spot.hourly_rate,
+      is_handicap_accessible: spot.is_handicap_accessible,
+      is_electric_vehicle_ready: spot.is_electric_vehicle_ready,
+      is_reservable: spot.is_reservable
     };
     this.showModal.set(true);
   }
@@ -222,7 +224,7 @@ export class ParkingSpotsComponent implements OnInit {
 
     if (this.editingSpot()) {
       const updateData: ParkingSpaceUpdate = { ...this.formData };
-      this.parkingService.updateParkingSpace(this.editingSpot()!.spaceId, updateData).subscribe({
+      this.parkingService.updateParkingSpace(this.editingSpot()!.space_id, updateData).subscribe({
         next: () => {
           this.loadParkingSpots();
           this.closeModal();
@@ -300,12 +302,12 @@ export class ParkingSpotsComponent implements OnInit {
     const spots = this.parkingSpots();
     const headers = ['Spot Number', 'Zone', 'Floor', 'Status', 'License Plate', 'Rate/hr'];
     const rows = spots.map(spot => [
-      spot.spaceNumber,
+      spot.space_number,
       spot.zone || '',
       spot.floor?.toString() || '',
       spot.status,
-      spot.currentVehiclePlate || '',
-      spot.hourlyRate?.toString() || 'Free'
+      spot.current_vehicle_plate || '',
+      spot.hourly_rate?.toString() || 'Free'
     ]);
 
     const csv = [headers.join(','), ...rows.map(row => row.join(','))].join('\n');

@@ -1,56 +1,69 @@
 /**
  * Employee Display Models
- * 
+ *
  * DTO (Data Transfer Object) for displaying employee information
- * Combines Member + CompanyEmployee + related entity data
+ * Uses snake_case to match backend schemas
+ * Combines CompanyEmployee + Member + related entity data
  */
 
 import { UUID } from './base.model';
 import { CompanyEmployee } from './company-employee.model';
 import { Member } from './member.model';
-import { ActorType, MemberType, EmpType, CompanyRoleType, AccessLevel } from './enums.model';
 
 /**
  * Employee Display Interface
  * Complete employee information for display purposes
- * Includes CompanyEmployee fields + Member fields + related entities
+ * Based on CompanyEmployeeResponse from backend with flattened structure
  */
-export interface EmployeeDisplay extends Omit<CompanyEmployee, 'position' | 'department'> {
-  // Member fields
+export interface EmployeeDisplay {
+  // From CompanyEmployee
+  company_employee_id: UUID;
+  company_id: UUID;
+  employee_id: string;
+  salary: number;
+  boss_id: string;
+  company_role_type: string; // CompanyRoleType enum
+  emp_type: string; // EmpType enum
+  start_date: string;
+
+  // From Member (nested in CompanyEmployee)
+  member_id: UUID;
   username: string;
   email: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber?: string;
+  first_name: string;
+  last_name: string;
+  phone_number?: string;
   picture?: string;
-  actorType: ActorType;
-  memberType?: MemberType;
+  actor_type: string;
+  member_type?: string;
   roles: string[];
   permissions: string[];
-  
-  // Related entity names
-  departmentName?: string;
-  positionName?: string;
-  companyName?: string;
-  bossName?: string;
-  
-  // Aliases for backward compatibility
-  department?: string;  // alias for departmentName
-  position?: string;    // alias for positionName (overrides CompanyEmployee.position which is an object)
-  status?: 'active' | 'inactive' | 'on_leave' | 'terminated'; // derived from isActive and leftAt
-  avatar?: string;      // alias for picture
-  
-  // Additional info (optional, might not be loaded in all contexts)
-  workInfo?: EmployeeWorkInfo;
-  
-  // Computed fields
-  fullName: string;
-  displayName: string;
-  
+
+  // From Position (nested in CompanyEmployee)
+  position_id?: UUID;
+  position_th_name?: string;
+  position_eng_name?: string;
+
+  // From Department (nested in CompanyEmployee)
+  department_id?: UUID;
+  department_th_name?: string;
+  department_eng_name?: string;
+
+  // Computed/Display fields
+  full_name: string;
+  display_name: string;
+  department_name?: string; // alias for department_th_name or department_eng_name
+  position_name?: string; // alias for position_th_name or position_eng_name
+  company_name?: string;
+  boss_name?: string;
+
+  // Status (derived, not from backend)
+  status?: 'active' | 'inactive' | 'on_leave' | 'terminated';
+
   // Timestamps from member
-  memberCreatedAt?: string;
-  memberUpdatedAt?: string;
-  lastLoginAt?: string;
+  created_at?: string;
+  updated_at?: string;
+  last_login_at?: string;
 }
 
 /**
@@ -58,18 +71,18 @@ export interface EmployeeDisplay extends Omit<CompanyEmployee, 'position' | 'dep
  * Lightweight version for lists and tables
  */
 export interface EmployeeListItem {
-  id: UUID;
-  memberId: UUID;
-  employeeId?: string;
-  fullName: string;
+  company_employee_id: UUID;
+  member_id: UUID;
+  employee_id?: string;
+  full_name: string;
   email: string;
-  phoneNumber?: string;
+  phone_number?: string;
   picture?: string;
-  departmentName?: string;
-  positionName?: string;
-  companyRoleType: CompanyRoleType;
-  isActive: boolean;
-  joinedAt: string;
+  department_name?: string;
+  position_name?: string;
+  company_role_type: string;
+  status?: 'active' | 'inactive' | 'on_leave' | 'terminated';
+  start_date: string;
 }
 
 /**
@@ -77,114 +90,54 @@ export interface EmployeeListItem {
  * Extended information for detail views
  */
 export interface EmployeeDetail extends EmployeeDisplay {
-  // Additional detail fields
-  personalInfo?: EmployeePersonalInfo;
-  workInfo?: EmployeeWorkInfo;
-  performanceInfo?: EmployeePerformanceInfo;
+  // Additional detail fields can be added here
   subordinates?: EmployeeListItem[];
-}
-
-/**
- * Employee Personal Information
- */
-export interface EmployeePersonalInfo {
-  dateOfBirth?: string;
-  gender?: 'male' | 'female' | 'other';
-  address?: string;
-  idCardNumber?: string;
-  emergencyContact?: {
-    name: string;
-    relationship: string;
-    phone: string;
-    address?: string;
-  };
-}
-
-/**
- * Employee Work Information
- */
-export interface EmployeeWorkInfo {
-  workLocation?: string;
-  workSchedule?: string;
-  workType?: 'full_time' | 'part_time' | 'contract' | 'intern';
-  probationEndDate?: string;
-  contractEndDate?: string;
-  benefits?: string[];
-  skills?: string[];
-  certifications?: string[];
-}
-
-/**
- * Employee Performance Information
- */
-export interface EmployeePerformanceInfo {
-  lastReviewDate?: string;
-  nextReviewDate?: string;
-  performanceRating?: number;
-  goalsAchieved?: number;
-  totalGoals?: number;
-  attendanceRate?: number;
-  punctualityRate?: number;
 }
 
 /**
  * Employee Create Form Data
  * Used for creating new employee (Member + CompanyEmployee)
+ * Maps to CompanyEmployeeCreate
  */
 export interface EmployeeCreateForm {
-  // Member data
-  username: string;
+  // Member data (via MemberInput)
   email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber?: string;
-  actorType: ActorType;
-  memberType: MemberType;
-  
+  first_name?: string;
+  last_name?: string;
+  picture?: string;
+
   // CompanyEmployee data
-  companyId: UUID;
-  departmentId?: UUID;
-  positionId?: UUID;
-  employeeId?: string;
-  empType: EmpType;
-  companyRoleType: CompanyRoleType;
-  accessLevel: AccessLevel;
+  position_id?: UUID;
+  department_id?: UUID;
+  employee_id?: string;
+  emp_type: string; // EmpType enum
+  company_role_type: string; // CompanyRoleType enum
   salary?: number;
-  startDate: string;
-  bossId?: string;
-  
-  // Additional data
-  personalInfo?: Partial<EmployeePersonalInfo>;
-  workInfo?: Partial<EmployeeWorkInfo>;
+  boss_id?: string;
+  start_date: string;
 }
 
 /**
  * Employee Update Form Data
+ * Maps to CompanyEmployeeUpdate
  */
 export interface EmployeeUpdateForm {
-  // Member updates
-  firstName?: string;
-  lastName?: string;
-  phoneNumber?: string;
+  // Member updates (via MemberInput)
   email?: string;
+  first_name?: string;
+  last_name?: string;
   picture?: string;
-  
+
   // CompanyEmployee updates
-  departmentId?: UUID;
-  positionId?: UUID;
-  employeeId?: string;
-  empType?: EmpType;
-  companyRoleType?: CompanyRoleType;
-  accessLevel?: AccessLevel;
+  company_employee_id: UUID; // Required for update
+  position_id?: UUID;
+  department_id?: UUID;
+  employee_id?: string;
+  emp_type?: string;
+  company_role_type?: string;
   salary?: number;
-  bossId?: string;
-  isActive?: boolean;
-  leftAt?: string;
-  
-  // Additional updates
-  personalInfo?: Partial<EmployeePersonalInfo>;
-  workInfo?: Partial<EmployeeWorkInfo>;
+  boss_id?: string;
+  start_date: string; // Required in backend
 }
 
 /**
@@ -192,15 +145,18 @@ export interface EmployeeUpdateForm {
  */
 export interface EmployeeFilters {
   search?: string;
-  companyId?: UUID;
-  departmentId?: UUID;
-  positionId?: UUID;
-  isActive?: boolean;
-  empType?: EmpType;
-  companyRoleType?: CompanyRoleType;
-  accessLevel?: AccessLevel;
-  joinedFrom?: string;
-  joinedTo?: string;
+  company_id?: UUID;
+  department_id?: UUID;
+  position_id?: UUID;
+  emp_type?: string;
+  company_role_type?: string;
+  boss_id?: string;
+  // Pagination parameters
+  page?: number;
+  size?: number;
+  page_size?: number;
+  sort_by?: string;
+  sort_order?: 'asc' | 'desc';
 }
 
 /**
@@ -208,91 +164,87 @@ export interface EmployeeFilters {
  */
 export interface EmployeeStatistics {
   // Counts
-  totalEmployees: number;
-  activeEmployees: number;
-  inactiveEmployees: number;
-  terminatedEmployees: number;
-  onLeaveEmployees: number;
-  newHiresThisMonth: number;
-  newHiresThisYear: number;
-  leftThisMonth: number;
-  leftThisYear: number;
-  
+  total_employees: number;
+  active_employees: number;
+  inactive_employees: number;
+
   // Distributions
-  employeesByDepartment: Record<string, number>;
-  employeesByPosition: Record<string, number>;
-  employeesByEmpType: Record<EmpType, number>;
-  employeesByRole: Record<CompanyRoleType, number>;
-  
-  // Aliases for backward compatibility
-  departmentDistribution?: Record<string, number>;  // alias for employeesByDepartment
-  positionDistribution?: Record<string, number>;    // alias for employeesByPosition
-  
+  employees_by_department: Record<string, number>;
+  employees_by_position: Record<string, number>;
+  employees_by_emp_type: Record<string, number>;
+  employees_by_role: Record<string, number>;
+
   // Metrics
-  averageTenure: number; // in months
-  averageSalary?: number;
-  turnoverRate?: number; // percentage
+  average_tenure?: number; // in months
+  average_salary?: number;
 }
 
 // ==================== Helper Functions ====================
 
 /**
- * Convert Member + CompanyEmployee to EmployeeDisplay
+ * Convert CompanyEmployee (from backend) to EmployeeDisplay
+ * Backend returns CompanyEmployeeResponse which has nested member, position, department
  */
-export function createEmployeeDisplay(
-  member: Member,
-  companyEmployee: CompanyEmployee,
-  options?: {
-    departmentName?: string;
-    positionName?: string;
-    companyName?: string;
-    bossName?: string;
-  }
-): EmployeeDisplay {
-  const fullName = `${member.firstName} ${member.lastName}`.trim();
-  
-  // Determine status based on isActive and leftAt
-  let status: 'active' | 'inactive' | 'on_leave' | 'terminated' = 'inactive';
-  if (companyEmployee.leftAt) {
-    status = 'terminated';
-  } else if (companyEmployee.isActive) {
-    status = 'active';
-  }
-  
+export function companyEmployeeToDisplay(companyEmployee: CompanyEmployee, options?: {
+  company_name?: string;
+  boss_name?: string;
+}): EmployeeDisplay {
+  const member = companyEmployee.member;
+  const position = companyEmployee.position;
+  const department = companyEmployee.department;
+
+  const fullName = `${member.first_name || ''} ${member.last_name || ''}`.trim();
+
+  // Extract position/department names
+  const positionName = position ? (position.th_name || position.eng_name) : undefined;
+  const departmentName = department ? (department.th_name || department.eng_name) : undefined;
+
   return {
-    ...companyEmployee,
-    // Member fields
-    username: member.username,
-    email: member.email,
-    firstName: member.firstName,
-    lastName: member.lastName,
-    phoneNumber: member.phoneNumber,
+    // CompanyEmployee fields
+    company_employee_id: companyEmployee.company_employee_id,
+    company_id: companyEmployee.company_id,
+    employee_id: companyEmployee.employee_id,
+    salary: companyEmployee.salary,
+    boss_id: companyEmployee.boss_id,
+    company_role_type: companyEmployee.company_role_type,
+    emp_type: companyEmployee.emp_type,
+    start_date: companyEmployee.start_date,
+
+    // Member fields (flattened)
+    member_id: member.member_id,
+    username: member.username || '',
+    email: member.email || '',
+    first_name: member.first_name || '',
+    last_name: member.last_name || '',
+    phone_number: member.phone_number,
     picture: member.picture,
-    actorType: member.actorType,
-    memberType: member.memberType,
-    roles: member.roles,
-    permissions: member.permissions,
-    
-    // Related entities
-    departmentName: options?.departmentName,
-    positionName: options?.positionName,
-    companyName: options?.companyName,
-    bossName: options?.bossName,
-    
-    // Aliases for backward compatibility
-    department: options?.departmentName,
-    position: options?.positionName,
-    status,
-    avatar: member.picture,
-    
+    actor_type: member.actor_type,
+    member_type: member.member_type,
+    roles: member.roles || [],
+    permissions: member.permissions || [],
+
+    // Position fields (flattened)
+    position_id: position?.position_id,
+    position_th_name: position?.th_name,
+    position_eng_name: position?.eng_name,
+
+    // Department fields (flattened)
+    department_id: department?.department_id,
+    department_th_name: department?.th_name,
+    department_eng_name: department?.eng_name,
+
     // Computed
-    fullName,
-    displayName: fullName || member.username,
-    
+    full_name: fullName,
+    display_name: fullName || member.username || member.email || '',
+    department_name: departmentName,
+    position_name: positionName,
+    company_name: options?.company_name,
+    boss_name: options?.boss_name,
+
     // Timestamps
-    memberCreatedAt: member.createdAt,
-    memberUpdatedAt: member.updatedAt,
-    lastLoginAt: member.lastLoginAt,
+    created_at: member.created_at,
+    updated_at: member.updated_at,
+    last_login_at: member.last_login_at,
   };
 }
 
@@ -301,18 +253,18 @@ export function createEmployeeDisplay(
  */
 export function toEmployeeListItem(employee: EmployeeDisplay): EmployeeListItem {
   return {
-    id: employee.id,
-    memberId: employee.memberId,
-    employeeId: employee.employeeId,
-    fullName: employee.fullName,
+    company_employee_id: employee.company_employee_id,
+    member_id: employee.member_id,
+    employee_id: employee.employee_id,
+    full_name: employee.full_name,
     email: employee.email,
-    phoneNumber: employee.phoneNumber,
+    phone_number: employee.phone_number,
     picture: employee.picture,
-    departmentName: employee.departmentName,
-    positionName: employee.positionName,
-    companyRoleType: employee.companyRoleType,
-    isActive: employee.isActive ?? true,
-    joinedAt: employee.joinedAt || employee.startDate || '',
+    department_name: employee.department_name,
+    position_name: employee.position_name,
+    company_role_type: employee.company_role_type,
+    status: employee.status,
+    start_date: employee.start_date,
   };
 }
 
@@ -320,41 +272,42 @@ export function toEmployeeListItem(employee: EmployeeDisplay): EmployeeListItem 
  * Check if employee has permission
  */
 export function hasEmployeePermission(employee: EmployeeDisplay, permission: string): boolean {
-  return employee.permissions.includes(permission);
+  return employee.permissions?.includes(permission) || false;
 }
 
 /**
  * Check if employee has role
  */
 export function hasEmployeeRole(employee: EmployeeDisplay, role: string): boolean {
-  return employee.roles.includes(role);
+  return employee.roles?.includes(role) || false;
 }
 
 /**
  * Check if employee is admin
  */
 export function isEmployeeAdmin(employee: EmployeeDisplay): boolean {
-  return employee.companyRoleType === CompanyRoleType.ADMIN || 
-         employee.accessLevel === AccessLevel.ADMIN;
+  return employee.company_role_type === 'ADMIN' || employee.company_role_type === 'admin';
 }
 
 /**
  * Get employee tenure in months
  */
 export function getEmployeeTenure(employee: EmployeeDisplay): number {
-  const startDateStr = employee.joinedAt || employee.startDate || '';
-  if (!startDateStr) return 0;
-  const startDate = new Date(startDateStr);
-  const endDate = employee.leftAt ? new Date(employee.leftAt) : new Date();
-  const months = (endDate.getFullYear() - startDate.getFullYear()) * 12 + 
+  if (!employee.start_date) return 0;
+  const startDate = new Date(employee.start_date);
+  const endDate = new Date();
+  const months = (endDate.getFullYear() - startDate.getFullYear()) * 12 +
                  (endDate.getMonth() - startDate.getMonth());
   return Math.max(0, months);
 }
 
 /**
  * Check if employee is still employed
+ * Note: Backend doesn't have isActive/leftAt fields, so we assume active if exists
  */
 export function isCurrentlyEmployed(employee: EmployeeDisplay): boolean {
-  return (employee.isActive ?? true) && !employee.leftAt;
+  // If status is explicitly set to terminated, return false
+  if (employee.status === 'terminated') return false;
+  // Otherwise assume active if employee exists
+  return true;
 }
-

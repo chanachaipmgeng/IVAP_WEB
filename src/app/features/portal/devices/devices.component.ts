@@ -34,9 +34,9 @@ type DeviceStatus = 'active' | 'inactive' | 'offline';
  * Device form data interface
  */
 interface DeviceFormData {
-  deviceName: string;
+  device_name: string;
   location: string;
-  deviceType: string;
+  device_type: string;
   status: DeviceStatus;
 }
 
@@ -45,16 +45,16 @@ interface DeviceFormData {
  */
 interface MappedDevice {
   id: string;
-  deviceId: string;
-  deviceName: string;
+  device_id: string;
+  device_name: string;
   location: string;
-  deviceType: string;
+  device_type: string;
   status: DeviceStatus;
   activeEventId?: string;
   activeEventName?: string;
-  apiKey?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  api_key?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 @Component({
@@ -88,9 +88,9 @@ export class DevicesComponent extends BaseComponent implements OnInit {
   deviceConfig: Record<string, unknown> = {};
 
   formData: DeviceFormData = {
-    deviceName: '',
+    device_name: '',
     location: '',
-    deviceType: 'kiosk',
+    device_type: 'kiosk',
     status: 'active'
   };
 
@@ -111,9 +111,9 @@ export class DevicesComponent extends BaseComponent implements OnInit {
   ]);
 
   columns: TableColumn[] = [
-    { key: 'deviceName', label: 'Device Name', sortable: true },
+    { key: 'device_name', label: 'Device Name', sortable: true },
     { key: 'location', label: 'Location', sortable: true },
-    { key: 'deviceType', label: 'Type' },
+    { key: 'device_type', label: 'Type' },
     {
       key: 'status',
       label: 'Status',
@@ -182,18 +182,18 @@ export class DevicesComponent extends BaseComponent implements OnInit {
       this.deviceService.getDevices(companyIdStr),
       (response) => {
         // Map Device model to component format
-        const mappedDevices: MappedDevice[] = (response.data || []).map(device => ({
-          id: device.deviceId,
-          deviceId: device.deviceId,
-          deviceName: device.deviceName,
+        const mappedDevices: MappedDevice[] = (response.data || response.items || []).map(device => ({
+          id: device.device_id,
+          device_id: device.device_id,
+          device_name: device.device_name,
           location: device.location || '',
-          deviceType: device.deviceType.toLowerCase(),
+          device_type: device.device_type.toLowerCase(),
           status: device.status.toLowerCase() as DeviceStatus,
           activeEventId: undefined,
           activeEventName: undefined,
-          apiKey: device.apiKey,
-          createdAt: device.createdAt,
-          updatedAt: device.updatedAt || device.createdAt
+          api_key: device.api_key,
+          created_at: device.created_at,
+          updated_at: device.updated_at || device.created_at
         }));
         this.devices.set(mappedDevices);
       },
@@ -209,9 +209,9 @@ export class DevicesComponent extends BaseComponent implements OnInit {
   openAddModal(): void {
     this.editingDevice.set(null);
     this.formData = {
-      deviceName: '',
+      device_name: '',
       location: '',
-      deviceType: 'kiosk',
+      device_type: 'kiosk',
       status: 'active'
     };
     this.showModal.set(true);
@@ -234,9 +234,9 @@ export class DevicesComponent extends BaseComponent implements OnInit {
       'DISABLED': 'offline'
     };
     this.formData = {
-      deviceName: device.deviceName || '',
+      device_name: device.device_name || '',
       location: device.location || '',
-      deviceType: (device.deviceType || 'KIOSK').toLowerCase(),
+      device_type: (device.device_type || 'KIOSK').toLowerCase(),
       status: statusMap[device.status] || 'active'
     };
     this.showModal.set(true);
@@ -255,14 +255,14 @@ export class DevicesComponent extends BaseComponent implements OnInit {
     this.saving.set(true);
 
     const deviceData = {
-      deviceName: this.formData.deviceName,
-      deviceType: this.formData.deviceType.toUpperCase() as any,
+      device_name: this.formData.device_name,
+      device_type: this.formData.device_type.toUpperCase() as any,
       location: this.formData.location,
       status: this.formData.status.toUpperCase() as any
     };
 
     const request = this.editingDevice()
-      ? this.deviceService.updateDevice(this.editingDevice()!.deviceId || this.editingDevice()!.id, companyIdStr, deviceData, true)
+      ? this.deviceService.updateDevice(this.editingDevice()!.device_id || this.editingDevice()!.id, companyIdStr, deviceData, true)
       : this.deviceService.createDevice(companyIdStr, deviceData);
 
     // ✅ Auto-unsubscribe on component destroy
@@ -281,7 +281,7 @@ export class DevicesComponent extends BaseComponent implements OnInit {
   }
 
   deleteDevice(device: any): void {
-    if (!confirm(`Are you sure you want to delete ${device.deviceName}?`)) return;
+    if (!confirm(`Are you sure you want to delete ${device.device_name}?`)) return;
 
     const companyId = this.auth.currentUser()?.companyId;
     if (!companyId) return;
@@ -291,8 +291,8 @@ export class DevicesComponent extends BaseComponent implements OnInit {
 
     this.deleting.set(true);
 
-    // Use deviceId from Device model or id from mapped device
-    const deviceId = device.deviceId || device.id;
+    // Use device_id from Device model or id from mapped device
+    const deviceId = device.device_id || device.id;
     this.deviceService.deleteDevice(deviceId, companyIdStr, true).subscribe({
       next: () => {
         this.loadDevices();
@@ -340,8 +340,8 @@ export class DevicesComponent extends BaseComponent implements OnInit {
   confirmLinkEvent(): void {
     if (!this.selectedEventId || !this.linkingDevice()) return;
 
-    // Use deviceId from Device model or id from mapped device
-    const deviceId = this.linkingDevice()?.deviceId || this.linkingDevice()?.id;
+    // Use device_id from Device model or id from mapped device
+    const deviceId = this.linkingDevice()?.device_id || this.linkingDevice()?.id;
     if (!deviceId) return;
 
     // Link device to event via DeviceService
@@ -369,8 +369,8 @@ export class DevicesComponent extends BaseComponent implements OnInit {
    */
   configureDevice(device: MappedDevice): void {
     this.configuringDevice.set(device);
-    // Use deviceId from Device model or id from mapped device
-    const deviceId = device.deviceId || device.id;
+    // Use device_id from Device model or id from mapped device
+    const deviceId = device.device_id || device.id;
     this.loadDeviceConfig(deviceId);
     this.showConfigModal.set(true);
   }
@@ -418,8 +418,8 @@ export class DevicesComponent extends BaseComponent implements OnInit {
     const device = this.configuringDevice();
     if (!device) return;
 
-    // Use deviceId from Device model or id from mapped device
-    const deviceId = device.deviceId || device.id;
+    // Use device_id from Device model or id from mapped device
+    const deviceId = device.device_id || device.id;
     if (!deviceId) return;
 
     this.saving.set(true);

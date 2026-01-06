@@ -32,7 +32,7 @@ export class ParkingStatisticsComponent implements OnInit {
   // Computed stats
   occupancyPercentage = computed(() => 
     this.statistics() ? 
-      ((this.statistics()!.occupiedSpaces / this.statistics()!.totalSpaces) * 100).toFixed(1) 
+      ((this.statistics()!.occupied_spaces / this.statistics()!.total_spaces) * 100).toFixed(1) 
       : '0'
   );
 

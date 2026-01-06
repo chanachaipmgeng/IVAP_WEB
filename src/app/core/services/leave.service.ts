@@ -1,234 +1,128 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpParams } from '@angular/common/http';
+/**
+ * Leave Service
+ * 
+ * Service for managing leave requests
+ * Uses BaseCrudService and snake_case models to match backend
+ * All endpoints match backend API: /api/v1/leaves
+ */
+
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { BaseCrudService } from './base-crud.service';
 import { ApiService } from './api.service';
 import {
   Leave,
+  LeaveCreate,
+  LeaveUpdate,
+  LeaveApproval,
+  LeaveRejection,
   LeaveBalance,
-  CreateLeaveDto,
-  UpdateLeaveDto,
+  LeaveBalanceResponse,
+  LeaveStatistics,
   LeaveFilters
 } from '../models/leave.model';
+import { PaginatedApiResponse } from '../utils/response-handler';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LeaveService {
-  private api = inject(ApiService);
+export class LeaveService extends BaseCrudService<Leave, LeaveCreate, LeaveUpdate> {
+  protected baseEndpoint = '/leaves';
+
+  constructor(api: ApiService) {
+    super(api);
+  }
 
   /**
-   * Get all leaves with optional filters
-   * Returns Leave[] with guaranteed id and days properties
+   * Get leave requests with pagination
    * Backend: GET /api/v1/leaves/leave-requests
    */
-  getLeaves(filters?: LeaveFilters): Observable<Leave[]> {
-    return this.api.get<any>('/leaves/leave-requests', filters).pipe(
+  getLeaveRequests(filters?: LeaveFilters): Observable<PaginatedApiResponse<Leave>> {
+    const options = { skipTransform: true };
+    return this.api.get<any>(`${this.baseEndpoint}/leave-requests`, filters, options).pipe(
       map((response: any) => {
-        // Handle paginated response
-        let leaves: any[] = [];
-        if (response.data && Array.isArray(response.data)) {
-          leaves = response.data;
-        } else if (Array.isArray(response)) {
-          leaves = response;
-        }
-        
-        // Map backend response to frontend model with aliases
-        // Backend returns snake_case, we need to ensure id and days are always present
-        return leaves.map((leave: any) => {
-          // Get leave_request_id from various possible field names
-          const leaveRequestId = leave.leaveRequestId || leave.leave_request_id || leave.id || '';
-          // Get days_requested from various possible field names
-          const daysRequested = leave.daysRequested ?? leave.days_requested ?? leave.days ?? 0;
-          
-          return {
-            ...leave,
-            // Ensure required fields are always present
-            leaveRequestId: leaveRequestId,
-            id: leaveRequestId,  // REQUIRED alias
-            daysRequested: daysRequested,
-            days: daysRequested  // REQUIRED alias
-          };
-        });
+        const items = response.items || response.data || [];
+        return {
+          total: response.total || items.length,
+          data: items,
+          items: items,
+          page: response.page || 1,
+          size: response.size || response.page_size || items.length
+        } as PaginatedApiResponse<Leave>;
       })
     );
   }
 
   /**
-   * Get leave by ID
+   * Get leave request by ID
    * Backend: GET /api/v1/leaves/leave-requests/{leave_request_id}
    */
-  getLeaveById(id: string): Observable<Leave> {
-    return this.api.get<Leave>(`/leaves/leave-requests/${id}`).pipe(
-      map((response: any) => {
-        const leave = response.data || response;
-        const leaveRequestId = leave.leaveRequestId || leave.leave_request_id || leave.id || id;
-        const daysRequested = leave.daysRequested ?? leave.days_requested ?? leave.days ?? 0;
-        
-        return {
-          ...leave,
-          leaveRequestId: leaveRequestId,
-          id: leaveRequestId,  // REQUIRED alias
-          daysRequested: daysRequested,
-          days: daysRequested  // REQUIRED alias
-        };
-      })
-    );
+  getLeaveRequestById(leaveRequestId: string): Observable<Leave> {
+    const options = { skipTransform: true };
+    return this.api.get<Leave>(`${this.baseEndpoint}/leave-requests/${leaveRequestId}`, undefined, options);
   }
 
   /**
-   * Create a new leave request
+   * Create leave request
    * Backend: POST /api/v1/leaves/leave-requests
    */
-  createLeave(data: CreateLeaveDto): Observable<Leave> {
-    return this.api.post<Leave>('/leaves/leave-requests', data).pipe(
-      map((response: any) => {
-        const leave = response.data || response;
-        const leaveRequestId = leave.leaveRequestId || leave.leave_request_id || leave.id || '';
-        const daysRequested = leave.daysRequested ?? leave.days_requested ?? leave.days ?? 0;
-        
-        return {
-          ...leave,
-          leaveRequestId: leaveRequestId,
-          id: leaveRequestId,  // REQUIRED alias
-          daysRequested: daysRequested,
-          days: daysRequested  // REQUIRED alias
-        };
-      })
-    );
+  createLeaveRequest(data: LeaveCreate): Observable<Leave> {
+    const options = { skipTransform: true };
+    return this.api.post<Leave>(`${this.baseEndpoint}/leave-requests`, data, undefined, options);
   }
 
   /**
-   * Update an existing leave request
+   * Update leave request
    * Backend: PUT /api/v1/leaves/leave-requests/{leave_request_id}
    */
-  updateLeave(id: string, data: UpdateLeaveDto): Observable<Leave> {
-    return this.api.put<Leave>(`/leaves/leave-requests/${id}`, data).pipe(
-      map((response: any) => {
-        const leave = response.data || response;
-        const leaveRequestId = leave.leaveRequestId || leave.leave_request_id || leave.id || id;
-        const daysRequested = leave.daysRequested ?? leave.days_requested ?? leave.days ?? 0;
-        
-        return {
-          ...leave,
-          leaveRequestId: leaveRequestId,
-          id: leaveRequestId,  // REQUIRED alias
-          daysRequested: daysRequested,
-          days: daysRequested  // REQUIRED alias
-        };
-      })
-    );
+  updateLeaveRequest(leaveRequestId: string, data: LeaveUpdate): Observable<Leave> {
+    const options = { skipTransform: true };
+    return this.api.put<Leave>(`${this.baseEndpoint}/leave-requests/${leaveRequestId}`, data, undefined, options);
   }
 
   /**
-   * Delete a leave request
+   * Delete leave request
    * Backend: DELETE /api/v1/leaves/leave-requests/{leave_request_id}
    */
-  deleteLeave(id: string, employeeId: string): Observable<void> {
-    return this.api.delete<void>(`/leaves/leave-requests/${id}`, { employee_id: employeeId });
+  deleteLeaveRequest(leaveRequestId: string): Observable<void> {
+    const options = { skipTransform: true };
+    return this.api.delete<void>(`${this.baseEndpoint}/leave-requests/${leaveRequestId}`, undefined, undefined, options);
   }
 
   /**
-   * Approve a leave request
-   * Backend: PUT /api/v1/leaves/leave-requests/{leave_request_id}/approve
+   * Approve leave request
+   * Backend: POST /api/v1/leaves/leave-requests/{leave_request_id}/approve
    */
-  approveLeave(id: string, approvalData?: any): Observable<Leave> {
-    return this.api.put<Leave>(`/leaves/leave-requests/${id}/approve`, approvalData || {}).pipe(
-      map((response: any) => {
-        const leave = response.data || response;
-        const leaveRequestId = leave.leaveRequestId || leave.leave_request_id || leave.id || id;
-        const daysRequested = leave.daysRequested ?? leave.days_requested ?? leave.days ?? 0;
-        
-        return {
-          ...leave,
-          leaveRequestId: leaveRequestId,
-          id: leaveRequestId,  // REQUIRED alias
-          daysRequested: daysRequested,
-          days: daysRequested  // REQUIRED alias
-        };
-      })
-    );
+  approveLeaveRequest(leaveRequestId: string, data: LeaveApproval): Observable<Leave> {
+    const options = { skipTransform: true };
+    return this.api.post<Leave>(`${this.baseEndpoint}/leave-requests/${leaveRequestId}/approve`, data, undefined, options);
   }
 
   /**
-   * Reject a leave request
-   * Backend: PUT /api/v1/leaves/leave-requests/{leave_request_id}/reject
+   * Reject leave request
+   * Backend: POST /api/v1/leaves/leave-requests/{leave_request_id}/reject
    */
-  rejectLeave(id: string, reason: string): Observable<Leave> {
-    return this.api.put<Leave>(`/leaves/leave-requests/${id}/reject`, { reason }).pipe(
-      map((response: any) => {
-        const leave = response.data || response;
-        const leaveRequestId = leave.leaveRequestId || leave.leave_request_id || leave.id || id;
-        const daysRequested = leave.daysRequested ?? leave.days_requested ?? leave.days ?? 0;
-        
-        return {
-          ...leave,
-          leaveRequestId: leaveRequestId,
-          id: leaveRequestId,  // REQUIRED alias
-          daysRequested: daysRequested,
-          days: daysRequested  // REQUIRED alias
-        };
-      })
-    );
+  rejectLeaveRequest(leaveRequestId: string, data: LeaveRejection): Observable<Leave> {
+    const options = { skipTransform: true };
+    return this.api.post<Leave>(`${this.baseEndpoint}/leave-requests/${leaveRequestId}/reject`, data, undefined, options);
   }
 
   /**
-   * Get leave balance for an employee
-   * Backend: GET /api/v1/leaves/employees/{employee_id}/leave-balance
+   * Get leave balance for employee
+   * Backend: GET /api/v1/leaves/balance/{employee_id}
    */
-  getLeaveBalance(employeeId: string): Observable<LeaveBalance[]> {
-    return this.api.get<any>(`/leaves/employees/${employeeId}/leave-balance`).pipe(
-      map((response: any) => {
-        const balance = response.data || response;
-        // Convert to array format if needed
-        if (balance && !Array.isArray(balance)) {
-          return [balance];
-        }
-        return balance || [];
-      })
-    );
+  getLeaveBalance(employeeId: string): Observable<LeaveBalanceResponse> {
+    const options = { skipTransform: true };
+    return this.api.get<LeaveBalanceResponse>(`${this.baseEndpoint}/balance/${employeeId}`, undefined, options);
   }
 
   /**
    * Get leave statistics
-   * Backend: GET /api/v1/leaves/companies/{company_id}/leave-statistics
+   * Backend: GET /api/v1/leaves/statistics
    */
-  getLeaveStatistics(companyId: string, year?: number): Observable<any> {
-    const params = year ? { year: year.toString() } : undefined;
-    return this.api.get<any>(`/leaves/companies/${companyId}/leave-statistics`, params);
-  }
-
-  /**
-   * Calculate number of days between two dates
-   */
-  calculateDays(startDate: string, endDate: string): number {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    const diffTime = Math.abs(end.getTime() - start.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
-    return diffDays;
-  }
-
-  /**
-   * Check if user can approve leave
-   */
-  canApproveLeave(leave: Leave, currentUserId: string): boolean {
-    return leave.status === 'pending' && leave.employeeId !== currentUserId;
-  }
-
-  /**
-   * Check if user can edit leave
-   */
-  canEditLeave(leave: Leave, currentUserId: string): boolean {
-    return leave.status === 'pending' && leave.employeeId === currentUserId;
-  }
-
-  /**
-   * Check if user can cancel leave
-   */
-  canCancelLeave(leave: Leave, currentUserId: string): boolean {
-    return (leave.status === 'pending' || leave.status === 'approved') &&
-           leave.employeeId === currentUserId;
+  getLeaveStatistics(filters?: LeaveFilters): Observable<LeaveStatistics> {
+    const options = { skipTransform: true };
+    return this.api.get<LeaveStatistics>(`${this.baseEndpoint}/statistics`, filters, options);
   }
 }
-

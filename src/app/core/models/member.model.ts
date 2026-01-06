@@ -2,7 +2,7 @@
  * Member Models
  * 
  * Represents a member in the system (user account level)
- * Matches backend Member model
+ * Uses snake_case to match backend MemberResponse schema (member_schema.py)
  */
 
 import { UUID, BaseTimestamps } from './base.model';
@@ -11,22 +11,23 @@ import { ActorType, MemberType, StatusType } from './enums.model';
 /**
  * Member Interface
  * Core user account information
+ * Matches MemberResponse schema from backend
  */
 export interface Member extends BaseTimestamps {
-  memberId: UUID;
+  member_id: UUID;
   username: string;
   email: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber?: string;
+  first_name: string;
+  last_name: string;
+  phone_number?: string;
   
   // Actor classification
-  actorType: ActorType;
-  memberType?: MemberType;
+  actor_type: ActorType;
+  member_type?: MemberType;
   
   // Status flags
-  isActive: boolean;
-  isVerified: boolean;
+  is_active: boolean;
+  is_verified: boolean;
   status: StatusType;
   
   // Profile
@@ -34,43 +35,50 @@ export interface Member extends BaseTimestamps {
   
   // Permissions and roles
   roles: string[];
-  permissions: string[];
-  userMetadata?: Record<string, any>;
+  permissions?: string[];
+  user_metadata?: Record<string, any>;
   
   // Timestamps
-  lastLoginAt?: string;
+  last_login_at?: string;
 }
 
 /**
  * Member Create Request
+ * Matches MemberCreate schema from backend
  */
 export interface MemberCreate {
   username: string;
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber?: string;
-  actorType: ActorType;
-  memberType?: MemberType;
+  first_name: string;
+  last_name: string;
+  phone_number?: string;
+  actor_type: ActorType;
+  member_type?: MemberType;
 }
 
 /**
  * Member Update Request
+ * Matches MemberUpdate schema from backend
  */
 export interface MemberUpdate {
   username?: string;
   email?: string;
   password?: string;
-  firstName?: string;
-  lastName?: string;
-  phoneNumber?: string;
+  first_name?: string;
+  last_name?: string;
+  phone_number?: string;
   picture?: string;
-  isActive?: boolean;
+  is_active?: boolean;
+  is_verified?: boolean;
+  status?: StatusType;
+  actor_type?: ActorType;
+  member_type?: MemberType;
 }
 
 /**
  * Member Response (from API)
+ * Alias for Member (already matches backend)
  */
 export interface MemberResponse extends Member {
   // All fields from Member interface
@@ -81,10 +89,10 @@ export interface MemberResponse extends Member {
  */
 export interface MemberFilters {
   search?: string;
-  actorType?: ActorType;
-  memberType?: MemberType;
-  isActive?: boolean;
-  isVerified?: boolean;
+  actor_type?: ActorType;
+  member_type?: MemberType;
+  is_active?: boolean;
+  is_verified?: boolean;
   status?: StatusType;
 }
 
@@ -92,35 +100,35 @@ export interface MemberFilters {
  * Member Statistics
  */
 export interface MemberStatistics {
-  totalMembers: number;
-  activeMembers: number;
-  inactiveMembers: number;
-  verifiedMembers: number;
-  unverifiedMembers: number;
-  membersByActorType: Record<ActorType, number>;
-  membersByMemberType: Record<MemberType, number>;
+  total_members: number;
+  active_members: number;
+  inactive_members: number;
+  verified_members: number;
+  unverified_members: number;
+  members_by_actor_type: Record<ActorType, number>;
+  members_by_member_type: Record<MemberType, number>;
 }
 
 /**
  * Member Summary (lightweight)
  */
 export interface MemberSummary {
-  memberId: UUID;
+  member_id: UUID;
   username: string;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   email: string;
   picture?: string;
-  actorType: ActorType;
-  memberType?: MemberType;
-  isActive: boolean;
+  actor_type: ActorType;
+  member_type?: MemberType;
+  is_active: boolean;
 }
 
 /**
  * Helper function to get full name
  */
 export function getMemberFullName(member: Member | MemberSummary): string {
-  return `${member.firstName} ${member.lastName}`.trim();
+  return `${member.first_name} ${member.last_name}`.trim();
 }
 
 /**
@@ -135,21 +143,20 @@ export function getMemberDisplayName(member: Member | MemberSummary): string {
  * Helper function to check if member is admin
  */
 export function isMemberAdmin(member: Member): boolean {
-  return member.actorType === ActorType.ADMIN_SYSTEM || 
-         (member.actorType === ActorType.MEMBER && member.memberType === MemberType.ADMIN);
+  return member.actor_type === ActorType.ADMIN_SYSTEM || 
+         (member.actor_type === ActorType.MEMBER && member.member_type === MemberType.ADMIN);
 }
 
 /**
  * Helper function to check if member is employee
  */
 export function isMemberEmployee(member: Member): boolean {
-  return member.actorType === ActorType.MEMBER && member.memberType === MemberType.EMPLOYEE;
+  return member.actor_type === ActorType.MEMBER && member.member_type === MemberType.EMPLOYEE;
 }
 
 /**
  * Helper function to check if member is guest
  */
 export function isMemberGuest(member: Member): boolean {
-  return member.actorType === ActorType.GUEST;
+  return member.actor_type === ActorType.GUEST;
 }
-

@@ -221,14 +221,14 @@ export class GuestsComponent extends BaseComponent implements OnInit {
     { key: 'phone', label: 'Phone' },
     { key: 'company', label: 'Company' },
     { key: 'purpose', label: 'Purpose' },
-    { key: 'hostEmployeeName', label: 'Host' },
+    { key: 'host_employee_name', label: 'Host' },
     {
-      key: 'checkInTime',
+      key: 'check_in_time',
       label: 'Check-in',
       render: (value) => value ? new Date(value).toLocaleString() : '-'
     },
     {
-      key: 'checkOutTime',
+      key: 'check_out_time',
       label: 'Check-out',
       render: (value) => value ? new Date(value).toLocaleString() : '-'
     },
@@ -318,7 +318,7 @@ export class GuestsComponent extends BaseComponent implements OnInit {
       phone: guest.phone,
       company: guest.company,
       purpose: guest.purpose,
-      hostEmployeeName: guest.hostEmployeeName,
+      host_employee_name: guest.host_employee_name,
       notes: guest.notes
     };
     this.showModal.set(true);
@@ -368,7 +368,7 @@ export class GuestsComponent extends BaseComponent implements OnInit {
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
       this.guestService.checkInGuest(guest.id, {
-        checkInTime: new Date().toISOString()
+        check_in_time: new Date().toISOString()
       }),
       () => {
         alert('Guest checked in successfully!');
@@ -385,7 +385,7 @@ export class GuestsComponent extends BaseComponent implements OnInit {
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
       this.guestService.checkOutGuest(guest.id, {
-        checkOutTime: new Date().toISOString()
+        check_out_time: new Date().toISOString()
       }),
       () => {
         alert('Guest checked out successfully!');

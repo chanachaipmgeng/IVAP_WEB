@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { BaseCrudService } from './base-crud.service';
 import { ApiService } from './api.service';
 import { AuthService } from './auth.service';
 import { UUID, PaginatedResponse } from '../models/base.model';
@@ -24,21 +25,26 @@ import {
   getGuestDuration
 } from '../models/guest.model';
 import { GuestStatus } from '../models/enums.model';
+import { PaginatedApiResponse } from '../utils/response-handler';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GuestService {
+export class GuestService extends BaseCrudService<Guest, GuestCreate, GuestUpdate> {
+  protected baseEndpoint = '/guests';
+
   constructor(
-    private api: ApiService,
+    protected override api: ApiService,
     private auth: AuthService
-  ) {}
+  ) {
+    super(api);
+  }
 
   /**
    * Get current company ID from auth
    */
   private getCompanyId(): UUID {
-    const companyId = this.auth.currentUser()?.companyId;
+    const companyId = this.auth.currentUser()?.companyId || (this.auth.currentUser() as any)?.company_id;
     if (!companyId) {
       throw new Error('Company ID not found. User must be logged in.');
     }
@@ -46,75 +52,143 @@ export class GuestService {
     return typeof companyId === 'number' ? companyId.toString() : companyId;
   }
 
-  // ==================== Guest CRUD ====================
+  // ==================== Guest CRUD (Override BaseCrudService) ====================
 
   /**
    * Get all guests with filters and pagination
+   * Override to use company-specific endpoint
    */
-  getGuests(filters?: GuestFilters): Observable<PaginatedResponse<Guest>> {
+  override getAll(filters?: GuestFilters): Observable<PaginatedApiResponse<Guest>> {
     try {
       const companyId = this.getCompanyId();
-      return this.api.get<PaginatedResponse<Guest>>(`/guests/company/${companyId}`, filters);
+      const options = { skipTransform: true };
+      return this.api.get<any>(`${this.baseEndpoint}/company/${companyId}`, filters, options).pipe(
+        map((response: any) => {
+          const items = response.items || response.data || [];
+          return {
+            total: response.total || items.length,
+            data: items,
+            items: items,
+            page: response.page || 1,
+            size: response.size || response.page_size || items.length
+          } as PaginatedApiResponse<Guest>;
+        })
+      );
     } catch (error) {
       return throwError(() => error);
     }
+  }
+
+  /**
+   * Get guests with filters and pagination (alias for getAll)
+   */
+  getGuests(filters?: GuestFilters): Observable<PaginatedApiResponse<Guest>> {
+    return this.getAll(filters);
   }
 
   /**
    * Get guests as simple list
    */
   getGuestsList(filters?: GuestFilters): Observable<Guest[]> {
-    return this.getGuests(filters).pipe(
-      map(response => response.data)
+    return this.getAll(filters).pipe(
+      map(response => response.data || response.items || [])
     );
   }
 
   /**
    * Get guest by ID
+   * Override to use company-specific endpoint
    */
-  getGuestById(id: UUID): Observable<Guest> {
+  override getById(id: UUID): Observable<Guest> {
     try {
       const companyId = this.getCompanyId();
-      return this.api.get<Guest>(`/guests/company/${companyId}/${id}`);
+      const options = { skipTransform: true };
+      return this.api.get<any>(`${this.baseEndpoint}/company/${companyId}/${id}`, undefined, options).pipe(
+        map((response: any) => {
+          return response.data || response;
+        })
+      );
     } catch (error) {
       return throwError(() => error);
     }
+  }
+
+  /**
+   * Get guest by ID (alias)
+   */
+  getGuestById(id: UUID): Observable<Guest> {
+    return this.getById(id);
   }
 
   /**
    * Create new guest
+   * Override to use company-specific endpoint
    */
-  createGuest(guestData: GuestCreate): Observable<Guest> {
+  override create(data: GuestCreate): Observable<Guest> {
     try {
       const companyId = this.getCompanyId();
-      return this.api.post<Guest>(`/guests/company/${companyId}`, guestData);
+      const options = { skipTransform: true };
+      return this.api.post<any>(`${this.baseEndpoint}/company/${companyId}`, data, undefined, options).pipe(
+        map((response: any) => {
+          return response.data || response;
+        })
+      );
     } catch (error) {
       return throwError(() => error);
     }
+  }
+
+  /**
+   * Create guest (alias)
+   */
+  createGuest(guestData: GuestCreate): Observable<Guest> {
+    return this.create(guestData);
   }
 
   /**
    * Update existing guest
+   * Override to use company-specific endpoint
    */
-  updateGuest(id: UUID, updates: GuestUpdate): Observable<Guest> {
+  override update(id: UUID, data: GuestUpdate): Observable<Guest> {
     try {
       const companyId = this.getCompanyId();
-      return this.api.put<Guest>(`/guests/company/${companyId}/${id}`, updates);
+      const options = { skipTransform: true };
+      return this.api.put<any>(`${this.baseEndpoint}/company/${companyId}/${id}`, data, undefined, options).pipe(
+        map((response: any) => {
+          return response.data || response;
+        })
+      );
     } catch (error) {
       return throwError(() => error);
     }
   }
 
   /**
-   * Delete guest
+   * Update guest (alias)
    */
-  deleteGuest(id: UUID): Observable<void> {
+  updateGuest(id: UUID, updates: GuestUpdate): Observable<Guest> {
+    return this.update(id, updates);
+  }
+
+  /**
+   * Delete guest
+   * Override to use company-specific endpoint
+   */
+  override delete(id: UUID): Observable<void> {
     try {
       const companyId = this.getCompanyId();
-      return this.api.delete<void>(`/guests/company/${companyId}/${id}`);
+      const options = { skipTransform: true };
+      return this.api.delete<void>(`${this.baseEndpoint}/company/${companyId}/${id}`, undefined, undefined, options);
     } catch (error) {
       return throwError(() => error);
     }
+  }
+
+  /**
+   * Delete guest (alias)
+   */
+  deleteGuest(id: UUID): Observable<void> {
+    return this.delete(id);
   }
 
   // ==================== Check-in/out Operations ====================
@@ -151,10 +225,11 @@ export class GuestService {
   registerGuestForEvent(registrationData: GuestRegistrationCreate): Observable<GuestRegistration> {
     try {
       const companyId = this.getCompanyId();
+      const options = { skipTransform: true };
       return this.api.post<GuestRegistration>(`/guest-registrations`, {
         ...registrationData,
-        companyId
-      });
+        company_id: companyId
+      }, undefined, options);
     } catch (error) {
       return throwError(() => error);
     }
@@ -166,7 +241,8 @@ export class GuestService {
   getGuestRegistrations(guestId: UUID): Observable<GuestRegistration[]> {
     try {
       const companyId = this.getCompanyId();
-      return this.api.get<GuestRegistration[]>(`/guests/${guestId}/registrations`, { companyId });
+      const options = { skipTransform: true };
+      return this.api.get<GuestRegistration[]>(`/guests/${guestId}/registrations`, { company_id: companyId }, options);
     } catch (error) {
       return throwError(() => error);
     }
@@ -178,7 +254,8 @@ export class GuestService {
   getEventRegistrations(eventId: UUID): Observable<GuestRegistration[]> {
     try {
       const companyId = this.getCompanyId();
-      return this.api.get<GuestRegistration[]>(`/guest-registrations/event/${eventId}`, { companyId });
+      const options = { skipTransform: true };
+      return this.api.get<GuestRegistration[]>(`/guest-registrations/event/${eventId}`, { company_id: companyId }, options);
     } catch (error) {
       return throwError(() => error);
     }
@@ -190,7 +267,8 @@ export class GuestService {
   getRegistrationById(registrationId: UUID): Observable<GuestRegistration> {
     try {
       const companyId = this.getCompanyId();
-      return this.api.get<GuestRegistration>(`/guest-registrations/${registrationId}`, { companyId });
+      const options = { skipTransform: true };
+      return this.api.get<GuestRegistration>(`/guest-registrations/${registrationId}`, { company_id: companyId }, options);
     } catch (error) {
       return throwError(() => error);
     }
@@ -200,15 +278,16 @@ export class GuestService {
    * Update registration status
    */
   updateRegistrationStatus(
-    registrationId: UUID, 
+    registrationId: UUID,
     status: 'pending' | 'confirmed' | 'cancelled' | 'attended'
   ): Observable<GuestRegistration> {
     try {
       const companyId = this.getCompanyId();
-      return this.api.put<GuestRegistration>(`/guest-registrations/${registrationId}/status`, { 
+      const options = { skipTransform: true };
+      return this.api.put<GuestRegistration>(`/guest-registrations/${registrationId}/status`, {
         status,
-        companyId 
-      });
+        company_id: companyId
+      }, undefined, options);
     } catch (error) {
       return throwError(() => error);
     }
@@ -243,10 +322,11 @@ export class GuestService {
   requestGuestService(serviceData: GuestServiceCreate): Observable<GuestServiceModel> {
     try {
       const companyId = this.getCompanyId();
+      const options = { skipTransform: true };
       return this.api.post<GuestServiceModel>(`/guest-services`, {
         ...serviceData,
-        companyId
-      });
+        company_id: companyId
+      }, undefined, options);
     } catch (error) {
       return throwError(() => error);
     }
@@ -258,7 +338,8 @@ export class GuestService {
   getGuestServices(guestId: UUID): Observable<GuestServiceModel[]> {
     try {
       const companyId = this.getCompanyId();
-      return this.api.get<GuestServiceModel[]>(`/guests/${guestId}/services`, { companyId });
+      const options = { skipTransform: true };
+      return this.api.get<GuestServiceModel[]>(`/guests/${guestId}/services`, { company_id: companyId }, options);
     } catch (error) {
       return throwError(() => error);
     }
@@ -273,10 +354,11 @@ export class GuestService {
   ): Observable<GuestServiceModel> {
     try {
       const companyId = this.getCompanyId();
+      const options = { skipTransform: true };
       return this.api.put<GuestServiceModel>(`/guest-services/${serviceId}/status`, {
         status,
-        companyId
-      });
+        company_id: companyId
+      }, undefined, options);
     } catch (error) {
       return throwError(() => error);
     }
@@ -323,16 +405,19 @@ export class GuestService {
    */
   getGuestSummaries(filters?: GuestFilters): Observable<GuestSummary[]> {
     return this.getGuests(filters).pipe(
-      map(response => response.data.map(g => ({
-        id: g.id,
-        name: g.name,
-        email: g.email,
-        phone: g.phone,
-        company: g.company,
-        status: g.status,
-        hostEmployeeName: g.hostEmployeeName,
-        checkInTime: g.checkInTime
-      })))
+      map(response => {
+        const guests = response.data || response.items || [];
+        return guests.map(g => ({
+          id: g.id,
+          name: g.name,
+          email: g.email,
+          phone: g.phone,
+          company: g.company,
+          status: g.status,
+          host_employee_name: g.host_employee_name,
+          check_in_time: g.check_in_time
+        }));
+      })
     );
   }
 
@@ -431,10 +516,11 @@ export class GuestService {
   exportRegistrations(eventId: UUID, format: 'csv' | 'json' | 'excel' = 'csv'): Observable<Blob> {
     try {
       const companyId = this.getCompanyId();
+      const options = { skipTransform: true, responseType: 'blob' as const };
       return this.api.get<Blob>(`/guest-registrations/event/${eventId}/export`, {
-        companyId,
+        company_id: companyId,
         format
-      });
+      }, options);
     } catch (error) {
       return throwError(() => error);
     }

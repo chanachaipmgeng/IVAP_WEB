@@ -21,7 +21,7 @@ import {
   LeaveType,
   LeaveStatus,
   LeaveBalance,
-  CreateLeaveDto,
+  LeaveCreate,
   LeaveFilters,
   LEAVE_TYPE_LABELS,
   LEAVE_STATUS_LABELS
@@ -53,11 +53,11 @@ export class LeavesComponent extends BaseComponent implements OnInit {
   currentUser = signal<User | null>(null);
 
   // Form data
-  leaveForm = signal<CreateLeaveDto>({
-    employeeId: '',
-    leaveType: LeaveType.VACATION,
-    startDate: '',
-    endDate: '',
+  leaveForm = signal<LeaveCreate>({
+    employee_id: '',
+    leave_type: LeaveType.VACATION,
+    start_date: '',
+    end_date: '',
     reason: ''
   });
 
@@ -66,7 +66,7 @@ export class LeavesComponent extends BaseComponent implements OnInit {
   // Filters
   filters = signal<LeaveFilters>({
     status: undefined,
-    leaveType: undefined,
+    leave_type: undefined,
     search: ''
   });
 
@@ -94,8 +94,12 @@ export class LeavesComponent extends BaseComponent implements OnInit {
   // Calculated days
   calculatedDays = computed(() => {
     const form = this.leaveForm();
-    if (form.startDate && form.endDate) {
-      return this.leaveService.calculateDays(form.startDate, form.endDate);
+    if (form.start_date && form.end_date) {
+      const start = new Date(form.start_date);
+      const end = new Date(form.end_date);
+      const diffTime = Math.abs(end.getTime() - start.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+      return diffDays;
     }
     return 0;
   });
@@ -115,7 +119,7 @@ export class LeavesComponent extends BaseComponent implements OnInit {
     if (user && user.id) {
       this.leaveForm.update(form => ({
         ...form,
-        employeeId: String(user.id)
+        employee_id: String(user.id)
       }));
     }
   }
@@ -124,17 +128,10 @@ export class LeavesComponent extends BaseComponent implements OnInit {
     this.isLoading.set(true);
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
-      this.leaveService.getLeaves(this.filters()),
-      (leaves) => {
-        // Ensure all leaves have id and days properties
-        const mappedLeaves = leaves.map(leave => ({
-          ...leave,
-          // Ensure id is always present (for track by)
-          id: leave.id || leave.leaveRequestId,
-          // Ensure days is always present
-          days: leave.days ?? leave.daysRequested ?? leave.daysRequested ?? 0
-        }));
-        this.leaves.set(mappedLeaves as Leave[]);
+      this.leaveService.getLeaveRequests(this.filters()),
+      (response) => {
+        const items = response.items || response.data || [];
+        this.leaves.set(items);
         this.applyFilters();
         this.isLoading.set(false);
       },
@@ -154,8 +151,8 @@ export class LeavesComponent extends BaseComponent implements OnInit {
       // ✅ Auto-unsubscribe on component destroy
       this.subscribe(
         this.leaveService.getLeaveBalance(String(user.id)),
-        (balances) => {
-          this.leaveBalances.set(balances);
+        (balanceResponse) => {
+          this.leaveBalances.set(balanceResponse.balances || []);
         },
         (error) => {
           console.error('Error loading leave balances:', error);
@@ -175,14 +172,14 @@ export class LeavesComponent extends BaseComponent implements OnInit {
       filtered = filtered.filter(leave => leave.status === filters.status);
     }
 
-    if (filters.leaveType) {
-      filtered = filtered.filter(leave => leave.leaveType === filters.leaveType);
+    if (filters.leave_type) {
+      filtered = filtered.filter(leave => leave.leave_type === filters.leave_type);
     }
 
     if (filters.search) {
       const search = filters.search.toLowerCase();
       filtered = filtered.filter(leave =>
-        leave.employeeName.toLowerCase().includes(search) ||
+        leave.employee_name.toLowerCase().includes(search) ||
         leave.reason.toLowerCase().includes(search)
       );
     }
@@ -217,7 +214,7 @@ export class LeavesComponent extends BaseComponent implements OnInit {
    * Update leave type filter
    */
   updateFilterLeaveType(value: LeaveType | undefined): void {
-    this.filters.update(f => ({ ...f, leaveType: value }));
+    this.filters.update(f => ({ ...f, leave_type: value }));
     this.applyFilters();
   }
 
@@ -225,21 +222,21 @@ export class LeavesComponent extends BaseComponent implements OnInit {
    * Update form leave type
    */
   updateFormLeaveType(value: LeaveType): void {
-    this.leaveForm.update(f => ({ ...f, leaveType: value }));
+    this.leaveForm.update(f => ({ ...f, leave_type: value }));
   }
 
   /**
    * Update form start date
    */
   updateFormStartDate(value: string): void {
-    this.leaveForm.update(f => ({ ...f, startDate: value }));
+    this.leaveForm.update(f => ({ ...f, start_date: value }));
   }
 
   /**
    * Update form end date
    */
   updateFormEndDate(value: string): void {
-    this.leaveForm.update(f => ({ ...f, endDate: value }));
+    this.leaveForm.update(f => ({ ...f, end_date: value }));
   }
 
   /**
@@ -287,10 +284,10 @@ export class LeavesComponent extends BaseComponent implements OnInit {
   resetForm(): void {
     const user = this.currentUser();
     this.leaveForm.set({
-      employeeId: user?.id ? String(user.id) : '',
-      leaveType: LeaveType.VACATION,
-      startDate: '',
-      endDate: '',
+      employee_id: user?.id ? String(user.id) : '',
+      leave_type: LeaveType.VACATION,
+      start_date: '',
+      end_date: '',
       reason: ''
     });
   }
@@ -301,7 +298,7 @@ export class LeavesComponent extends BaseComponent implements OnInit {
   submitLeave(): void {
     const form = this.leaveForm();
 
-    if (!form.startDate || !form.endDate || !form.reason) {
+    if (!form.start_date || !form.end_date || !form.reason) {
       alert('กรุณากรอกข้อมูลให้ครบถ้วน');
       return;
     }
@@ -309,7 +306,7 @@ export class LeavesComponent extends BaseComponent implements OnInit {
     this.isLoading.set(true);
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
-      this.leaveService.createLeave(form),
+      this.leaveService.createLeaveRequest(form),
       (leave) => {
         this.loadLeaves();
         this.loadLeaveBalances();
@@ -328,15 +325,26 @@ export class LeavesComponent extends BaseComponent implements OnInit {
    * Approve leave request
    */
   approveLeave(leave: Leave): void {
-    if (!confirm(`ต้องการอนุมัติการลาของ ${leave.employeeName} หรือไม่?`)) {
+    if (!confirm(`ต้องการอนุมัติการลาของ ${leave.employee_name} หรือไม่?`)) {
       return;
     }
 
     this.isLoading.set(true);
-    const leaveId = leave.id || leave.leaveRequestId;
+    const user = this.currentUser();
+    if (!user || !user.id) {
+      alert('ไม่พบข้อมูลผู้ใช้');
+      this.isLoading.set(false);
+      return;
+    }
+
+    const approvalData = {
+      approved_by: String(user.id),
+      notes: undefined
+    };
+
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
-      this.leaveService.approveLeave(leaveId),
+      this.leaveService.approveLeaveRequest(leave.leave_request_id, approvalData),
       (updatedLeave) => {
         this.loadLeaves();
         alert('อนุมัติการลาสำเร็จ');
@@ -369,14 +377,26 @@ export class LeavesComponent extends BaseComponent implements OnInit {
       return;
     }
 
+    const user = this.currentUser();
+    if (!user || !user.id) {
+      alert('ไม่พบข้อมูลผู้ใช้');
+      return;
+    }
+
     this.isLoading.set(true);
+    const rejectionData = {
+      rejected_by: String(user.id),
+      rejection_reason: reason
+    };
+
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
-      this.leaveService.rejectLeave(leave.leaveRequestId, reason),
+      this.leaveService.rejectLeaveRequest(leave.leave_request_id, rejectionData),
       (updatedLeave) => {
         this.loadLeaves();
         this.closeRejectModal();
         alert('ปฏิเสธการลาสำเร็จ');
+        this.isLoading.set(false);
       },
       (error) => {
         console.error('Error rejecting leave:', error);
@@ -394,16 +414,10 @@ export class LeavesComponent extends BaseComponent implements OnInit {
       return;
     }
 
-    const user = this.currentUser();
-    if (!user || !user.id) {
-      alert('ไม่พบข้อมูลผู้ใช้');
-      return;
-    }
-
     this.isLoading.set(true);
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
-      this.leaveService.deleteLeave(leave.leaveRequestId, String(user.id)),
+      this.leaveService.deleteLeaveRequest(leave.leave_request_id),
       () => {
         this.loadLeaves();
         this.loadLeaveBalances();
@@ -422,8 +436,8 @@ export class LeavesComponent extends BaseComponent implements OnInit {
    * Check if user can approve leave
    */
   canApprove(leave: Leave): boolean {
-    const user = this.currentUser();
-    return user && user.id ? this.leaveService.canApproveLeave(leave, String(user.id)) : false;
+    // Only pending leaves can be approved
+    return leave.status === LeaveStatus.PENDING;
   }
 
   /**
@@ -431,7 +445,10 @@ export class LeavesComponent extends BaseComponent implements OnInit {
    */
   canEdit(leave: Leave): boolean {
     const user = this.currentUser();
-    return user && user.id ? this.leaveService.canEditLeave(leave, String(user.id)) : false;
+    // User can edit their own pending leave
+    return leave.status === LeaveStatus.PENDING && 
+           user && user.id && 
+           String(leave.employee_id) === String(user.id);
   }
 
   /**
@@ -439,7 +456,10 @@ export class LeavesComponent extends BaseComponent implements OnInit {
    */
   canCancel(leave: Leave): boolean {
     const user = this.currentUser();
-    return user && user.id ? this.leaveService.canCancelLeave(leave, String(user.id)) : false;
+    // User can cancel their own leave if it's pending or approved
+    return (leave.status === LeaveStatus.PENDING || leave.status === LeaveStatus.APPROVED) &&
+           user && user.id &&
+           String(leave.employee_id) === String(user.id);
   }
 
   /**

@@ -1,9 +1,14 @@
+/**
+ * Visitor Service
+ * 
+ * Service for managing visitors
+ * Uses BaseCrudService and snake_case models to match backend
+ */
+
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { BaseCrudService } from './base-crud.service';
 import { ApiService } from './api.service';
-import { AuthService } from './auth.service';
-import { UUID, PaginatedResponse } from '../models/base.model';
 import {
   Visitor,
   VisitorCreate,
@@ -13,390 +18,160 @@ import {
   VisitorApproval,
   VisitorBlacklist,
   VisitorVisit,
+  VisitorVisitCreate,
   VisitorInvitation,
+  VisitorInvitationCreate,
   VisitorBadge,
+  VisitorBadgeIssue,
+  VisitorBadgeReturn,
   VisitorFilters,
-  VisitorStats,
-  VisitorSummary,
-  getVisitorFullName,
-  isVisitorOnPremises,
-  needsApproval,
-  getVisitDuration
+  VisitorStatistics
 } from '../models/visitor.model';
-import { VisitorStatus } from '../models/enums.model';
-import { API_ENDPOINTS } from '../utils/api-endpoints';
-import { handlePaginatedResponse, PaginatedApiResponse } from '../utils/response-handler';
+import { PaginatedApiResponse } from '../utils/response-handler';
 
 @Injectable({
   providedIn: 'root'
 })
-export class VisitorService {
-  constructor(
-    private api: ApiService,
-    private auth: AuthService
-  ) {}
+export class VisitorService extends BaseCrudService<Visitor, VisitorCreate, VisitorUpdate> {
+  protected baseEndpoint = '/visitors';
 
-  /**
-   * Get current company ID from auth
-   */
-  private getCompanyId(): UUID {
-    const companyId = this.auth.currentUser()?.companyId;
-    if (!companyId) {
-      throw new Error('Company ID not found. User must be logged in.');
-    }
-    // Convert to string if it's a number
-    return typeof companyId === 'number' ? companyId.toString() : companyId;
+  constructor(api: ApiService) {
+    super(api);
   }
 
-  // ==================== Visitor CRUD ====================
-
   /**
-   * Get all visitors with filters and pagination
+   * Get visitors with filters and pagination
+   * Backend: GET /api/v1/visitors/
    */
   getVisitors(filters?: VisitorFilters): Observable<PaginatedApiResponse<Visitor>> {
-    try {
-      const companyId = this.getCompanyId();
-      return this.api.get<any>(API_ENDPOINTS.VISITORS.LIST(companyId), filters).pipe(
-        map(response => handlePaginatedResponse<Visitor>(response))
-      );
-    } catch (error) {
-      return throwError(() => error);
-    }
-  }
-
-  /**
-   * Get visitors as simple list
-   */
-  getVisitorsList(filters?: VisitorFilters): Observable<Visitor[]> {
-    return this.getVisitors(filters).pipe(
-      map(response => response.data || [])
-    );
+    return this.getAll(filters);
   }
 
   /**
    * Get visitor by ID
+   * Backend: GET /api/v1/visitors/{visitor_id}
    */
-  getVisitorById(id: UUID): Observable<Visitor> {
-    try {
-      const companyId = this.getCompanyId();
-      return this.api.get<Visitor>(API_ENDPOINTS.VISITORS.BY_ID(companyId, id));
-    } catch (error) {
-      return throwError(() => error);
-    }
+  getVisitorById(visitorId: string): Observable<Visitor> {
+    return this.getById(visitorId);
   }
 
   /**
    * Create new visitor
+   * Backend: POST /api/v1/visitors/
    */
-  createVisitor(visitorData: VisitorCreate): Observable<Visitor> {
-    try {
-      const companyId = this.getCompanyId();
-      // Ensure companyId is set
-      const data = { ...visitorData, companyId };
-      return this.api.post<Visitor>(API_ENDPOINTS.VISITORS.CREATE(companyId), data);
-    } catch (error) {
-      return throwError(() => error);
-    }
+  createVisitor(data: VisitorCreate): Observable<Visitor> {
+    return this.create(data);
   }
 
   /**
-   * Update existing visitor
+   * Update visitor
+   * Backend: PUT /api/v1/visitors/{visitor_id}
    */
-  updateVisitor(id: UUID, updates: VisitorUpdate): Observable<Visitor> {
-    try {
-      const companyId = this.getCompanyId();
-      return this.api.put<Visitor>(API_ENDPOINTS.VISITORS.UPDATE(companyId, id), updates);
-    } catch (error) {
-      return throwError(() => error);
-    }
+  updateVisitor(visitorId: string, data: VisitorUpdate): Observable<Visitor> {
+    return this.update(visitorId, data);
   }
 
   /**
    * Delete visitor
+   * Backend: DELETE /api/v1/visitors/{visitor_id}
    */
-  deleteVisitor(id: UUID): Observable<void> {
-    try {
-      const companyId = this.getCompanyId();
-      return this.api.delete<void>(API_ENDPOINTS.VISITORS.DELETE(companyId, id));
-    } catch (error) {
-      return throwError(() => error);
-    }
-  }
-
-  // ==================== Check-in/out Operations ====================
-
-  /**
-   * Check in visitor
-   */
-  checkInVisitor(id: UUID, checkInData: VisitorCheckIn): Observable<Visitor> {
-    try {
-      const companyId = this.getCompanyId();
-      return this.api.post<Visitor>(API_ENDPOINTS.VISITORS.CHECK_IN(companyId, id), checkInData);
-    } catch (error) {
-      return throwError(() => error);
-    }
+  deleteVisitor(visitorId: string): Observable<void> {
+    return this.delete(visitorId);
   }
 
   /**
-   * Check out visitor
+   * Check-in visitor
+   * Backend: POST /api/v1/visitors/{visitor_id}/check-in
    */
-  checkOutVisitor(id: UUID, checkOutData: VisitorCheckOut): Observable<Visitor> {
-    try {
-      const companyId = this.getCompanyId();
-      return this.api.post<Visitor>(API_ENDPOINTS.VISITORS.CHECK_OUT(companyId, id), checkOutData);
-    } catch (error) {
-      return throwError(() => error);
-    }
-  }
-
-  // ==================== Approval & Security ====================
-
-  /**
-   * Approve or reject visitor
-   */
-  approveVisitor(id: UUID, approval: VisitorApproval): Observable<Visitor> {
-    try {
-      const companyId = this.getCompanyId();
-      return this.api.post<Visitor>(API_ENDPOINTS.VISITORS.APPROVE(companyId, id), approval);
-    } catch (error) {
-      return throwError(() => error);
-    }
+  checkIn(visitorId: string, data: VisitorCheckIn): Observable<Visitor> {
+    const options = { skipTransform: true };
+    return this.api.post<Visitor>(`${this.baseEndpoint}/${visitorId}/check-in`, data, undefined, options);
   }
 
   /**
-   * Add visitor to blacklist
+   * Check-out visitor
+   * Backend: POST /api/v1/visitors/{visitor_id}/check-out
    */
-  blacklistVisitor(id: UUID, blacklist: VisitorBlacklist): Observable<Visitor> {
-    try {
-      const companyId = this.getCompanyId();
-      return this.api.post<Visitor>(API_ENDPOINTS.VISITORS.BLACKLIST(companyId, id), blacklist);
-    } catch (error) {
-      return throwError(() => error);
-    }
+  checkOut(visitorId: string, data: VisitorCheckOut): Observable<Visitor> {
+    const options = { skipTransform: true };
+    return this.api.post<Visitor>(`${this.baseEndpoint}/${visitorId}/check-out`, data, undefined, options);
   }
 
   /**
-   * Remove visitor from blacklist
+   * Approve visitor
+   * Backend: POST /api/v1/visitors/{visitor_id}/approve
    */
-  unblacklistVisitor(id: UUID): Observable<Visitor> {
-    return this.blacklistVisitor(id, { blacklisted: false });
+  approve(visitorId: string, data: VisitorApproval): Observable<Visitor> {
+    const options = { skipTransform: true };
+    return this.api.post<Visitor>(`${this.baseEndpoint}/${visitorId}/approve`, data, undefined, options);
+  }
+
+  /**
+   * Blacklist visitor
+   * Backend: POST /api/v1/visitors/{visitor_id}/blacklist
+   */
+  blacklist(visitorId: string, data: VisitorBlacklist): Observable<Visitor> {
+    const options = { skipTransform: true };
+    return this.api.post<Visitor>(`${this.baseEndpoint}/${visitorId}/blacklist`, data, undefined, options);
+  }
+
+  /**
+   * Get visitor statistics
+   * Backend: GET /api/v1/visitors/statistics
+   */
+  getStatistics(filters?: VisitorFilters): Observable<VisitorStatistics> {
+    const options = { skipTransform: true };
+    return this.api.get<VisitorStatistics>(`${this.baseEndpoint}/statistics`, filters, options);
   }
 
   // ==================== Visitor Visits ====================
 
   /**
-   * Get all visits for a visitor
+   * Create visitor visit
+   * Backend: POST /api/v1/visitor-visits/
    */
-  getVisitorVisits(visitorId: UUID): Observable<VisitorVisit[]> {
-    try {
-      return this.api.get<VisitorVisit[]>(API_ENDPOINTS.VISITORS.VISITS(visitorId));
-    } catch (error) {
-      return throwError(() => error);
-    }
+  createVisit(data: VisitorVisitCreate): Observable<VisitorVisit> {
+    const options = { skipTransform: true };
+    return this.api.post<VisitorVisit>('/visitor-visits', data, undefined, options);
   }
 
   /**
-   * Create new visit for visitor
+   * Get visitor visits
+   * Backend: GET /api/v1/visitor-visits/
    */
-  createVisitorVisit(visitorId: UUID, visitData: Partial<VisitorVisit>): Observable<VisitorVisit> {
-    try {
-      return this.api.post<VisitorVisit>(API_ENDPOINTS.VISITORS.VISITS(visitorId), visitData);
-    } catch (error) {
-      return throwError(() => error);
-    }
+  getVisits(filters?: VisitorFilters): Observable<PaginatedApiResponse<VisitorVisit>> {
+    const options = { skipTransform: true };
+    return this.api.get<PaginatedApiResponse<VisitorVisit>>('/visitor-visits', filters, options);
   }
 
   // ==================== Visitor Invitations ====================
 
   /**
    * Create visitor invitation
+   * Backend: POST /api/v1/visitor-invitations/
    */
-  createInvitation(invitationData: Partial<VisitorInvitation>): Observable<VisitorInvitation> {
-    try {
-      return this.api.post<VisitorInvitation>(API_ENDPOINTS.VISITORS.INVITATIONS, invitationData);
-    } catch (error) {
-      return throwError(() => error);
-    }
-  }
-
-  /**
-   * Get all invitations
-   */
-  getInvitations(filters?: any): Observable<VisitorInvitation[]> {
-    try {
-      return this.api.get<VisitorInvitation[]>(API_ENDPOINTS.VISITORS.INVITATIONS, filters);
-    } catch (error) {
-      return throwError(() => error);
-    }
-  }
-
-  /**
-   * Send invitation via email
-   */
-  sendInvitation(invitationId: UUID): Observable<any> {
-    try {
-      return this.api.post<any>(API_ENDPOINTS.VISITORS.INVITATION_SEND(invitationId), {});
-    } catch (error) {
-      return throwError(() => error);
-    }
+  createInvitation(data: VisitorInvitationCreate): Observable<VisitorInvitation> {
+    const options = { skipTransform: true };
+    return this.api.post<VisitorInvitation>('/visitor-invitations', data, undefined, options);
   }
 
   // ==================== Visitor Badges ====================
 
   /**
-   * Issue badge to visitor
+   * Issue visitor badge
+   * Backend: POST /api/v1/visitor-badges/issue
    */
-  issueBadge(visitorId: UUID, badgeData: Partial<VisitorBadge>): Observable<VisitorBadge> {
-    try {
-      return this.api.post<VisitorBadge>(API_ENDPOINTS.VISITORS.BADGES, badgeData);
-    } catch (error) {
-      return throwError(() => error);
-    }
+  issueBadge(data: VisitorBadgeIssue): Observable<VisitorBadge> {
+    const options = { skipTransform: true };
+    return this.api.post<VisitorBadge>('/visitor-badges/issue', data, undefined, options);
   }
 
   /**
-   * Return badge from visitor
+   * Return visitor badge
+   * Backend: POST /api/v1/visitor-badges/{badge_id}/return
    */
-  returnBadge(badgeId: UUID, returnNotes?: string): Observable<VisitorBadge> {
-    try {
-      return this.api.post<VisitorBadge>(API_ENDPOINTS.VISITORS.BADGE_RETURN(badgeId), { 
-        returnNotes 
-      });
-    } catch (error) {
-      return throwError(() => error);
-    }
-  }
-
-  /**
-   * Get all badges
-   */
-  getBadges(filters?: any): Observable<VisitorBadge[]> {
-    try {
-      return this.api.get<VisitorBadge[]>(API_ENDPOINTS.VISITORS.BADGES, filters);
-    } catch (error) {
-      return throwError(() => error);
-    }
-  }
-
-  // ==================== Statistics & Reports ====================
-
-  /**
-   * Get visitor statistics
-   */
-  getVisitorStats(filters?: any): Observable<VisitorStats> {
-    try {
-      const companyId = this.getCompanyId();
-      return this.api.get<VisitorStats>(API_ENDPOINTS.VISITORS.STATS(companyId), filters);
-    } catch (error) {
-      return throwError(() => error);
-    }
-  }
-
-  /**
-   * Get visitor summary list
-   */
-  getVisitorSummaries(filters?: VisitorFilters): Observable<VisitorSummary[]> {
-    return this.getVisitors(filters).pipe(
-      map(response => (response.data || []).map(v => ({
-        id: v.id,
-        fullName: getVisitorFullName(v),
-        email: v.email,
-        phone: v.phone,
-        companyName: v.companyName,
-        visitorType: v.visitorType,
-        visitPurpose: v.visitPurpose,
-        status: v.status,
-        appointmentDate: v.appointmentDate,
-        checkInTime: v.checkInTime
-      })))
-    );
-  }
-
-  // ==================== Filter Helpers ====================
-
-  /**
-   * Get visitors by status
-   */
-  getVisitorsByStatus(status: VisitorStatus): Observable<Visitor[]> {
-    return this.getVisitorsList({ status });
-  }
-
-  /**
-   * Get pending visitors (need approval)
-   */
-  getPendingVisitors(): Observable<Visitor[]> {
-    return this.getVisitorsByStatus(VisitorStatus.PENDING);
-  }
-
-  /**
-   * Get approved visitors
-   */
-  getApprovedVisitors(): Observable<Visitor[]> {
-    return this.getVisitorsByStatus(VisitorStatus.APPROVED);
-  }
-
-  /**
-   * Get checked-in visitors (currently on premises)
-   */
-  getCheckedInVisitors(): Observable<Visitor[]> {
-    return this.getVisitorsByStatus(VisitorStatus.CHECKED_IN);
-  }
-
-  /**
-   * Get blacklisted visitors
-   */
-  getBlacklistedVisitors(): Observable<Visitor[]> {
-    return this.getVisitorsList({ isBlacklisted: true });
-  }
-
-  /**
-   * Search visitors
-   */
-  searchVisitors(query: string): Observable<Visitor[]> {
-    return this.getVisitorsList({ search: query });
-  }
-
-  // ==================== Helper Methods ====================
-
-  /**
-   * Check if visitor is on premises
-   */
-  isOnPremises(visitor: Visitor): boolean {
-    return isVisitorOnPremises(visitor);
-  }
-
-  /**
-   * Check if visitor needs approval
-   */
-  needsApproval(visitor: Visitor): boolean {
-    return needsApproval(visitor);
-  }
-
-  /**
-   * Get visit duration
-   */
-  getVisitDuration(visitor: Visitor): number | null {
-    return getVisitDuration(visitor);
-  }
-
-  /**
-   * Get visitor full name
-   */
-  getFullName(visitor: Visitor): string {
-    return getVisitorFullName(visitor);
-  }
-
-  // ==================== Export ====================
-
-  /**
-   * Export visitors data
-   */
-  exportVisitors(format: 'csv' | 'json' | 'excel' = 'csv', filters?: VisitorFilters): Observable<Blob> {
-    try {
-      const companyId = this.getCompanyId();
-      return this.api.get<Blob>(API_ENDPOINTS.VISITORS.EXPORT(companyId), filters, { responseType: 'blob' });
-    } catch (error) {
-      return throwError(() => error);
-    }
+  returnBadge(badgeId: string, data: VisitorBadgeReturn): Observable<VisitorBadge> {
+    const options = { skipTransform: true };
+    return this.api.post<VisitorBadge>(`/visitor-badges/${badgeId}/return`, data, undefined, options);
   }
 }

@@ -32,7 +32,7 @@ export class ParkingEntryComponent implements OnInit {
   errorMessage = signal<string | null>(null);
   
   entryData: VehicleEntryRequest = {
-    plateNumber: '',
+    plate_number: '',
     notes: ''
   };
   
@@ -45,7 +45,7 @@ export class ParkingEntryComponent implements OnInit {
 
   openModal(): void {
     this.showModal.set(true);
-    this.entryData = { plateNumber: '', notes: '' };
+    this.entryData = { plate_number: '', notes: '' };
     this.success.set(false);
     this.errorMessage.set(null);
     this.entryResult.set(null);
@@ -58,7 +58,7 @@ export class ParkingEntryComponent implements OnInit {
   }
 
   async processEntry(): Promise<void> {
-    if (!this.entryData.plateNumber.trim()) {
+    if (!this.entryData.plate_number.trim()) {
       this.errorMessage.set('Please enter a valid plate number');
       return;
     }

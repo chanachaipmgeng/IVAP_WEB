@@ -1,62 +1,14 @@
 /**
- * Leave Request Interface
- * ตรงกับ LeaveRequestResponse ใน backend (leave_schema.py)
+ * Leave Models
  * 
- * Backend fields (snake_case):
- * - leave_request_id (primary key)
- * - employee_id
- * - leave_type
- * - start_date
- * - end_date
- * - days_requested
- * - reason
- * - contact_during_leave
- * - attachment_url
- * - status
- * - approved_by
- * - approved_by_name
- * - approved_at
- * - rejection_reason
- * - employee_name
- * - employee_department
- * - created_at
- * - updated_at
+ * Uses snake_case to match backend LeaveRequestResponse schema (leave_schema.py)
  */
-export interface Leave {
-  // Primary identifier - mapped from leave_request_id
-  leaveRequestId: string;  // leave_request_id from backend (REQUIRED)
-  id: string;  // REQUIRED: Alias for leaveRequestId for template compatibility (track by, etc.)
-  
-  // Employee information
-  employeeId: string;  // employee_id from backend (REQUIRED)
-  employeeName: string;  // employee_name from backend (REQUIRED)
-  employeeDepartment?: string;  // employee_department from backend (optional)
-  
-  // Leave details (from LeaveRequestBase)
-  leaveType: LeaveType;  // leave_type from backend (LeaveType enum, REQUIRED)
-  startDate: string;  // start_date from backend (date, REQUIRED)
-  endDate: string;  // end_date from backend (date, REQUIRED)
-  reason: string;  // reason from backend (REQUIRED, min_length=10, max_length=500)
-  contactDuringLeave?: string;  // contact_during_leave from backend (optional)
-  attachmentUrl?: string;  // attachment_url from backend (optional)
-  
-  // Status and approval (from LeaveRequestResponse)
-  status: LeaveStatus;  // status from backend (LeaveStatus enum, REQUIRED)
-  daysRequested: number;  // days_requested from backend (float, REQUIRED)
-  days: number;  // REQUIRED: Alias for daysRequested for template compatibility
-  approvedBy?: string;  // approved_by from backend (optional, ID of approver)
-  approverName?: string;  // approved_by_name from backend (optional)
-  approvedAt?: string;  // approved_at from backend (optional, datetime)
-  rejectionReason?: string;  // rejection_reason from backend (optional)
-  
-  // Timestamps
-  createdAt: string;  // created_at from backend (datetime, REQUIRED)
-  updatedAt?: string;  // updated_at from backend (optional, datetime)
-}
+
+import { UUID } from './base.model';
 
 /**
  * Leave Type Enum
- * ตรงกับ LeaveType ใน backend (leave_schema.py)
+ * Matches LeaveType enum from backend
  */
 export enum LeaveType {
   SICK = 'sick',
@@ -69,6 +21,10 @@ export enum LeaveType {
   UNPAID = 'unpaid'
 }
 
+/**
+ * Leave Status Enum
+ * Matches LeaveStatus enum from backend
+ */
 export enum LeaveStatus {
   PENDING = 'pending',
   APPROVED = 'approved',
@@ -77,53 +33,134 @@ export enum LeaveStatus {
 }
 
 /**
- * Leave Balance Interface
- * ตรงกับ LeaveBalance ใน backend (leave_schema.py)
+ * Leave Request Interface
+ * Matches LeaveRequestResponse schema from backend
  */
-export interface LeaveBalance {
-  employeeId: string;  // employee_id from backend (REQUIRED)
-  leaveType: LeaveType;  // leave_type from backend (LeaveType enum, REQUIRED)
-  totalDays: number;  // total_days from backend (float, REQUIRED)
-  usedDays: number;  // used_days from backend (float, REQUIRED)
-  pendingDays: number;  // pending_days from backend (float, REQUIRED)
-  remainingDays: number;  // remaining_days from backend (float, REQUIRED)
+export interface Leave {
+  leave_request_id: string;
+  employee_id: string;
+  employee_name: string;
+  employee_department?: string;
+  leave_type: LeaveType;
+  start_date: string; // date format: "YYYY-MM-DD"
+  end_date: string; // date format: "YYYY-MM-DD"
+  days_requested: number;
+  reason: string;
+  contact_during_leave?: string;
+  attachment_url?: string;
+  status: LeaveStatus;
+  approved_by?: string;
+  approved_by_name?: string;
+  approved_at?: string; // datetime ISO string
+  rejection_reason?: string;
+  created_at: string; // datetime ISO string
+  updated_at?: string; // datetime ISO string
 }
 
 /**
- * Leave Balance Response Interface
- * ตรงกับ LeaveBalanceResponse ใน backend
+ * Leave Create Request
+ * Matches LeaveRequestCreate schema from backend
+ */
+export interface LeaveCreate {
+  employee_id: string;
+  leave_type: LeaveType;
+  start_date: string; // date format: "YYYY-MM-DD"
+  end_date: string; // date format: "YYYY-MM-DD"
+  reason: string;
+  contact_during_leave?: string;
+  attachment_url?: string;
+}
+
+/**
+ * Leave Update Request
+ * Matches LeaveRequestUpdate schema from backend
+ */
+export interface LeaveUpdate {
+  leave_type?: LeaveType;
+  start_date?: string; // date format: "YYYY-MM-DD"
+  end_date?: string; // date format: "YYYY-MM-DD"
+  reason?: string;
+  contact_during_leave?: string;
+  attachment_url?: string;
+}
+
+/**
+ * Leave Approval Request
+ * Matches LeaveRequestApproval schema from backend
+ */
+export interface LeaveApproval {
+  approved_by: string;
+  notes?: string;
+}
+
+/**
+ * Leave Rejection Request
+ * Matches LeaveRequestRejection schema from backend
+ */
+export interface LeaveRejection {
+  rejected_by: string;
+  rejection_reason: string;
+}
+
+/**
+ * Leave Balance
+ * Matches LeaveBalance schema from backend
+ */
+export interface LeaveBalance {
+  employee_id: string;
+  leave_type: LeaveType;
+  total_days: number;
+  used_days: number;
+  pending_days: number;
+  remaining_days: number;
+}
+
+/**
+ * Leave Balance Response
+ * Matches LeaveBalanceResponse schema from backend
  */
 export interface LeaveBalanceResponse {
-  employeeId: string;  // employee_id from backend
-  employeeName: string;  // employee_name from backend
-  balances: LeaveBalance[];  // balances from backend
-  totalRemaining: number;  // total_remaining from backend (float)
+  employee_id: string;
+  employee_name: string;
+  balances: LeaveBalance[];
+  total_remaining: number;
 }
 
-export interface CreateLeaveDto {
-  employeeId: string;
-  leaveType: LeaveType;
-  startDate: string;
-  endDate: string;
-  reason: string;
+/**
+ * Leave Statistics
+ * Matches LeaveStatistics schema from backend
+ */
+export interface LeaveStatistics {
+  total_requests: number;
+  pending_requests: number;
+  approved_requests: number;
+  rejected_requests: number;
+  total_days_requested: number;
+  total_days_approved: number;
+  by_type: Record<string, number>;
+  by_month: Record<string, number>;
 }
 
-export interface UpdateLeaveDto {
-  leaveType?: LeaveType;
-  startDate?: string;
-  endDate?: string;
-  reason?: string;
-}
-
+/**
+ * Leave Filters
+ */
 export interface LeaveFilters {
-  employeeId?: string;
-  leaveType?: LeaveType;
+  employee_id?: string;
+  leave_type?: LeaveType;
   status?: LeaveStatus;
-  startDate?: string;
-  endDate?: string;
+  start_date?: string;
+  end_date?: string;
   search?: string;
+  page?: number;
+  size?: number;
+  page_size?: number;
+  sort_by?: string;
+  sort_order?: 'asc' | 'desc';
 }
 
+/**
+ * Thai labels for Leave Types
+ */
 export const LEAVE_TYPE_LABELS: Record<LeaveType, string> = {
   [LeaveType.SICK]: 'ลาป่วย',
   [LeaveType.VACATION]: 'ลาพักร้อน',
@@ -135,10 +172,12 @@ export const LEAVE_TYPE_LABELS: Record<LeaveType, string> = {
   [LeaveType.UNPAID]: 'ลาไม่รับค่าจ้าง'
 };
 
+/**
+ * Thai labels for Leave Status
+ */
 export const LEAVE_STATUS_LABELS: Record<LeaveStatus, string> = {
   [LeaveStatus.PENDING]: 'รออนุมัติ',
   [LeaveStatus.APPROVED]: 'อนุมัติ',
   [LeaveStatus.REJECTED]: 'ปฏิเสธ',
   [LeaveStatus.CANCELLED]: 'ยกเลิก'
 };
-

@@ -1,53 +1,45 @@
 /**
  * Position Models
  * 
- * Represents positions/job titles within a company
- * Matches backend Position model and schema
+ * Uses snake_case to match backend PositionResponse schema (position_schema.py)
  */
 
-import { UUID, BaseTimestamps } from './base.model';
+import { UUID } from './base.model';
 
 /**
  * Position Interface
- * Represents a job position in a company
- * Matches backend PositionResponse schema
+ * Matches PositionResponse schema from backend
  */
 export interface Position {
-  // Primary key
-  id: UUID;  // position_id in backend
-  
-  // Position information
-  thName: string;  // th_name in backend
-  engName: string;  // eng_name in backend
-  
-  // Foreign key
-  companyId: UUID;  // company_id in backend
-  
-  // Timestamps (optional - may not be in backend response)
-  createdAt?: string;  // created_at from backend (ISO datetime string)
-  updatedAt?: string;  // updated_at from backend (ISO datetime string)
+  position_id: UUID;
+  th_name: string;
+  eng_name: string;
+  company_id: UUID;
 }
 
 /**
  * Position Create Request
+ * Matches PositionCreate schema from backend
  */
 export interface PositionCreate {
-  thName: string;
-  engName: string;
-  companyId: UUID;
+  th_name: string;
+  eng_name: string;
+  company_id: UUID;
 }
 
 /**
  * Position Update Request
+ * Matches PositionUpdate schema from backend
  */
 export interface PositionUpdate {
-  thName?: string;
-  engName?: string;
-  companyId?: UUID;
+  th_name?: string;
+  eng_name?: string;
+  company_id?: UUID;
 }
 
 /**
  * Position Response (from API)
+ * Alias for Position - matches backend response
  */
 export interface PositionResponse extends Position {
   // All fields from Position interface
@@ -58,13 +50,18 @@ export interface PositionResponse extends Position {
  */
 export interface PositionFilters {
   search?: string;
-  companyId?: UUID;
+  company_id?: UUID;
+  page?: number;
+  size?: number;
+  page_size?: number;
+  sort_by?: string;
+  sort_order?: 'asc' | 'desc';
 }
 
 /**
  * Position Statistics
  */
 export interface PositionStatistics {
-  totalPositions: number;
-  positionsByCompany: Record<string, number>;
+  total_positions: number;
+  positions_by_company: Record<string, number>;
 }

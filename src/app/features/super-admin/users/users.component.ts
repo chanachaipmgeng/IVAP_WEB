@@ -14,6 +14,7 @@ import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { Observable } from 'rxjs';
 import { GlassCardComponent } from '../../../shared/components/glass-card/glass-card.component';
 import { GlassButtonComponent } from '../../../shared/components/glass-button/glass-button.component';
 import { DataTableComponent, TableColumn, TableAction } from '../../../shared/components/data-table/data-table.component';
@@ -22,8 +23,11 @@ import { PageLayoutComponent, PageAction } from '../../../shared/components/page
 import { StatisticsGridComponent, StatCard } from '../../../shared/components/statistics-grid/statistics-grid.component';
 import { FilterSectionComponent, FilterField } from '../../../shared/components/filter-section/filter-section.component';
 import { UserService } from '../../../core/services/user.service';
+import { MemberService } from '../../../core/services/member.service';
 import { I18nService } from '../../../core/services/i18n.service';
 import { User, Role, UserFilters, UserStatistics } from '../../../core/models/user.model';
+import { Member, MemberCreate, MemberUpdate } from '../../../core/models/member.model';
+import { memberToUser, membersToUsers, userToMember } from '../../../core/utils/member-utils';
 import { BaseComponent } from '../../../core/base/base.component';
 
 @Component({
@@ -53,18 +57,18 @@ export class UsersComponent extends BaseComponent implements OnInit {
   editingRoleRecord = signal<Role | null>(null);
 
   formData: any = {
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     username: '',
     email: '',
     password: '',
-    phoneNumber: '',
+    phone_number: '',
     picture: '',
-    actorType: 'member',
-    memberType: '',
+    actor_type: 'member',
+    member_type: '',
     role: '',
-    companyId: '',
-    isActive: true
+    company_id: '',
+    is_active: true
   };
 
   roleFormData: { name: string; description: string; permissionsInput: string } = {
@@ -77,7 +81,7 @@ export class UsersComponent extends BaseComponent implements OnInit {
     search: '',
     role: '',
     status: '',
-    companyId: ''
+    company_id: ''
   };
 
   // Computed signals for statistics
@@ -156,7 +160,7 @@ export class UsersComponent extends BaseComponent implements OnInit {
       ]
     },
     {
-      key: 'companyId',
+      key: 'company_id',
       label: this.i18n.t('pages.users.filterCompany'),
       type: 'select',
       placeholder: this.i18n.t('pages.users.filterCompany'),
@@ -171,17 +175,17 @@ filteredUsers = computed(() => {
   get columns(): TableColumn[] {
   return [
     { key: 'username', label: this.i18n.t('pages.users.usernameLabel'), sortable: true },
-    { key: 'firstName', label: this.i18n.t('pages.users.firstNameLabel'), sortable: true },
-    { key: 'lastName', label: this.i18n.t('pages.users.lastNameLabel'), sortable: true },
+    { key: 'first_name', label: this.i18n.t('pages.users.firstNameLabel'), sortable: true },
+    { key: 'last_name', label: this.i18n.t('pages.users.lastNameLabel'), sortable: true },
     { key: 'email', label: this.i18n.t('pages.users.emailLabel'), sortable: true },
     { key: 'role', label: this.i18n.t('pages.users.roleLabel'), sortable: true },
-    { key: 'companyName', label: this.i18n.t('pages.users.companyLabel'), sortable: true },
+    { key: 'company_name', label: this.i18n.t('pages.users.companyLabel'), sortable: true },
     {
-      key: 'isActive',
+      key: 'is_active',
       label: this.i18n.t('pages.users.statusLabel'),
       render: (value) => value ? '<span class="text-green-600">Active</span>' : '<span class="text-red-600">Inactive</span>'
     },
-    { key: 'lastLogin', label: this.i18n.t('pages.users.lastLogin'), sortable: true }
+    { key: 'last_login_at', label: this.i18n.t('pages.users.lastLogin'), sortable: true }
   ];
 }
 
@@ -208,6 +212,7 @@ filteredUsers = computed(() => {
 
 constructor(
   public userService: UserService,
+  public memberService: MemberService,
   public i18n: I18nService
 ) {
   super();
@@ -221,13 +226,23 @@ ngOnInit(): void {
 
 loadUsers(): void {
   // ✅ Auto-unsubscribe on component destroy
+  // Use MemberService to load members (snake_case from backend)
   this.subscribe(
-    this.userService.loadUsers(),
-    () => {
-      // Data is automatically updated via service
+    this.memberService.loadMembers(),
+    (members: Member[]) => {
+      // Convert Members to Users for backward compatibility
+      const users = membersToUsers(members);
+      // Update UserService state for backward compatibility
+      (this.userService as any).users.set(users);
     },
     (error) => {
       console.error('Error loading users:', error);
+      // Fallback to UserService if MemberService fails
+      this.subscribe(
+        this.userService.loadUsers(),
+        () => {},
+        (err) => console.error('Error loading users (fallback):', err)
+      );
     }
   );
 }
@@ -268,18 +283,18 @@ this.applyFilters();
 openAddModal(): void {
   this.editingUser.set(null);
   this.formData = {
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     username: '',
     email: '',
     password: '',
-    phoneNumber: '',
+    phone_number: '',
     picture: '',
-    actorType: 'member',
-    memberType: '',
+    actor_type: 'member',
+    member_type: '',
     role: '',
-    companyId: '',
-    isActive: true
+    company_id: '',
+    is_active: true
   };
   // Ensure companies and roles are loaded
   if (this.userService.getCompanies()().length === 0) {
@@ -304,19 +319,20 @@ editUser(user: User): void {
     }
   }
 
+  // Use snake_case from backend
   this.formData = {
-    firstName: user.firstName || '',
-    lastName: user.lastName || '',
+    first_name: user.first_name || '',
+    last_name: user.last_name || '',
     username: user.username || '',
     email: user.email || '',
     password: '', // Don't populate password
-    phoneNumber: (user as any).phoneNumber || (user as any).phone_number || '',
-    picture: (user as any).picture || '',
-    actorType: (user as any).actorType || (user as any).actor_type || 'member',
-    memberType: (user as any).memberType || (user as any).member_type || '',
+    phone_number: user.phone_number || '',
+    picture: user.picture || '',
+    actor_type: user.actor_type || 'member',
+    member_type: user.member_type || '',
     role: roleId,
-    companyId: user.companyId || (user as any).company_id || '',
-    isActive: user.isActive !== undefined ? user.isActive : ((user as any).is_active !== undefined ? (user as any).is_active : true)
+    company_id: user.company_id || '',
+    is_active: user.is_active !== undefined ? user.is_active : true
   };
   // Ensure companies and roles are loaded
   if (this.userService.getCompanies()().length === 0) {
@@ -335,7 +351,7 @@ closeModal(): void {
 
 saveUser(): void {
   // Validate required fields
-  if (!this.formData.username || !this.formData.email || !this.formData.firstName || !this.formData.lastName) {
+  if (!this.formData.username || !this.formData.email || !this.formData.first_name || !this.formData.last_name) {
     alert(this.i18n.t('pages.users.requiredFieldsMissing') || 'Please fill in all required fields');
     return;
   }
@@ -346,70 +362,77 @@ saveUser(): void {
   }
 
   // Validate actor_type
-  if (!this.formData.actorType) {
+  if (!this.formData.actor_type) {
     alert(this.i18n.t('pages.users.actorTypeRequired') || 'Actor Type is required');
     return;
   }
 
   // Validate actor_type enum values
   const validActorTypes = ['member', 'admin_system', 'guest', 'public', 'device', 'api', 'system'];
-  if (!validActorTypes.includes(this.formData.actorType)) {
+  if (!validActorTypes.includes(this.formData.actor_type)) {
     alert(this.i18n.t('pages.users.invalidActorType') || 'Invalid Actor Type');
     return;
   }
 
   this.saving.set(true);
 
-  // Send camelCase - ApiService will convert to snake_case automatically
-  const backendData: any = {
-    username: this.formData.username,
-    email: this.formData.email,
-    firstName: this.formData.firstName,
-    lastName: this.formData.lastName,
-    isActive: this.formData.isActive,
-    phoneNumber: this.formData.phoneNumber || null,
-    picture: this.formData.picture || null
-  };
-
-  // Add actorType only for create (not in MemberUpdate schema)
-  if (!this.editingUser()) {
-    backendData.actorType = this.formData.actorType || 'member';
-  }
-
-  // Add password only for create
-  if (!this.editingUser()) {
-    backendData.password = this.formData.password;
-    // Add member_type only for create (not in MemberUpdate schema)
-    if (this.formData.memberType) {
-      backendData.memberType = this.formData.memberType;
-    }
-  } else if (this.formData.password) {
-    // Optional password update
-    backendData.password = this.formData.password;
-  }
-  // Note: member_type is not in MemberUpdate schema, so we don't send it for updates
-
-  // Store role and companyId for later assignment
+  // Store role and company_id for later assignment
   const roleId = this.formData.role;
-  const companyId = this.formData.companyId;
+  const companyId = this.formData.company_id;
 
-  const editingUserId = this.editingUser()?.memberId || this.editingUser()?.id;
-  const request = this.editingUser() && editingUserId
-    ? this.userService.updateUser(editingUserId, backendData)
-    : this.userService.createUser(backendData);
+  const editingUserId = this.editingUser()?.memberId || this.editingUser()?.id || this.editingUser()?.member_id;
+
+  // Use MemberService with snake_case models
+  let request: Observable<Member>;
+
+  if (this.editingUser() && editingUserId) {
+    // Update existing member
+    const updateData: MemberUpdate = {
+      username: this.formData.username,
+      email: this.formData.email,
+      first_name: this.formData.first_name,
+      last_name: this.formData.last_name,
+      is_active: this.formData.is_active,
+      phone_number: this.formData.phone_number || undefined,
+      picture: this.formData.picture || undefined
+    };
+
+    // Optional password update
+    if (this.formData.password) {
+      updateData.password = this.formData.password;
+    }
+
+    request = this.memberService.updateMember(editingUserId, updateData);
+  } else {
+    // Create new member
+    const createData: MemberCreate = {
+      username: this.formData.username,
+      email: this.formData.email,
+      password: this.formData.password,
+      first_name: this.formData.first_name,
+      last_name: this.formData.last_name,
+      phone_number: this.formData.phone_number || undefined,
+      actor_type: this.formData.actor_type as any || 'member',
+      member_type: this.formData.member_type as any || undefined
+    };
+
+    request = this.memberService.createMember(createData);
+  }
 
   // ✅ Auto-unsubscribe on component destroy
   this.subscribe(
     request,
-    (response) => {
-      const userId = (response as any).memberId || (response as any).member_id || (response as any).id || this.editingUser()?.memberId || this.editingUser()?.id;
-      
+    (member: Member) => {
+      // Convert Member to User for compatibility
+      const user = memberToUser(member);
+      const userId = member.member_id;
+
       if (!userId) {
         console.error('User ID is missing from response');
         this.saving.set(false);
         return;
       }
-      
+
       // Assign role if provided
       if (roleId) {
         this.subscribe(
@@ -492,20 +515,27 @@ saveUser(): void {
 deleteUser(user: User): void {
   if(!confirm(`${this.i18n.t('pages.users.deleteUserConfirm')} ${user.username}?`)) return;
 
-  const userId = user.memberId || user.id;
+  const userId = user.memberId || user.member_id || user.id;
   if (!userId) {
     console.error('User ID is missing');
     return;
   }
 
   // ✅ Auto-unsubscribe on component destroy
+  // Use MemberService to delete
   this.subscribe(
-    this.userService.deleteUser(userId),
+    this.memberService.deleteMember(userId),
     () => {
       this.loadUsers();
     },
     (error) => {
       console.error('Error deleting user:', error);
+      // Fallback to UserService if MemberService fails
+      this.subscribe(
+        this.userService.deleteUser(userId),
+        () => this.loadUsers(),
+        (err) => console.error('Error deleting user (fallback):', err)
+      );
     }
   );
 }
@@ -609,7 +639,7 @@ saveRole(): void {
     request,
     (response) => {
       const roleId = response.id || this.editingRoleRecord()?.id;
-      
+
       // Assign permissions separately if provided
       if (permissionNames.length > 0 && roleId) {
         this.subscribe(

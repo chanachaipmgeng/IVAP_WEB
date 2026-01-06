@@ -74,16 +74,15 @@ export class PositionsComponent implements OnInit {
 
   // Form Data
   formData: PositionCreate = {
-    thName: '',
-    engName: '',
-    companyId: ''
+    th_name: '',
+    eng_name: '',
+    company_id: ''
   };
 
   // Table Configuration
   columns: TableColumn[] = [
-    { key: 'thName', label: 'ชื่อตำแหน่ง (ไทย)', sortable: true },
-    { key: 'engName', label: 'Position Name (EN)', sortable: true },
-    { key: 'createdAt', label: 'Created At', sortable: true, type: 'date' }
+    { key: 'th_name', label: 'ชื่อตำแหน่ง (ไทย)', sortable: true },
+    { key: 'eng_name', label: 'Position Name (EN)', sortable: true }
   ];
 
   actions: TableAction[] = [
@@ -132,20 +131,20 @@ export class PositionsComponent implements OnInit {
     const pos = this.editingPosition();
     return [
       {
-        key: 'thName',
+        key: 'th_name',
         label: 'ชื่อตำแหน่ง (ไทย)',
         type: 'text',
         placeholder: 'วิศวกรซอฟต์แวร์',
         required: true,
-        value: pos?.thName || this.formData.thName || ''
+        value: pos?.th_name || this.formData.th_name || ''
       },
       {
-        key: 'engName',
+        key: 'eng_name',
         label: 'Position Name (English)',
         type: 'text',
         placeholder: 'Software Engineer',
         required: true,
-        value: pos?.engName || this.formData.engName || ''
+        value: pos?.eng_name || this.formData.eng_name || ''
       }
     ];
   });
@@ -168,7 +167,7 @@ export class PositionsComponent implements OnInit {
     this.loading.set(true);
     this.errorMessage.set('');
 
-    const companyId = this.auth.currentUser()?.companyId;
+    const companyId = this.auth.currentUser()?.companyId || this.auth.currentUser()?.company_id;
     if (!companyId) {
       this.errorMessage.set('Company ID not found');
       this.loading.set(false);
@@ -177,7 +176,7 @@ export class PositionsComponent implements OnInit {
 
     const filters: any = {
       page: this.currentPage(),
-      limit: this.pageSize(),
+      size: this.pageSize(),
       ...this.filters()
     };
 
@@ -187,7 +186,8 @@ export class PositionsComponent implements OnInit {
 
     this.positionService.getByCompanyId(String(companyId), filters).subscribe({
       next: (response: PaginatedApiResponse<Position>) => {
-        this.positions.set(response.data || []);
+        const items = response.items || response.data || [];
+        this.positions.set(items);
         this.totalRecords.set(response.total || 0);
         this.loading.set(false);
       },
@@ -205,10 +205,11 @@ export class PositionsComponent implements OnInit {
    */
   openAddModal(): void {
     this.editingPosition.set(null);
+    const companyId = this.auth.currentUser()?.companyId || this.auth.currentUser()?.company_id;
     this.formData = {
-      thName: '',
-      engName: '',
-      companyId: String(this.auth.currentUser()?.companyId || '')
+      th_name: '',
+      eng_name: '',
+      company_id: String(companyId || '')
     };
     this.showModal.set(true);
   }
@@ -219,9 +220,9 @@ export class PositionsComponent implements OnInit {
   editPosition(pos: Position): void {
     this.editingPosition.set(pos);
     this.formData = {
-      thName: pos.thName,
-      engName: pos.engName,
-      companyId: pos.companyId
+      th_name: pos.th_name || '',
+      eng_name: pos.eng_name || '',
+      company_id: pos.company_id
     };
     this.showModal.set(true);
   }
@@ -233,9 +234,9 @@ export class PositionsComponent implements OnInit {
     this.showModal.set(false);
     this.editingPosition.set(null);
     this.formData = {
-      thName: '',
-      engName: '',
-      companyId: ''
+      th_name: '',
+      eng_name: '',
+      company_id: ''
     };
   }
 
@@ -243,10 +244,11 @@ export class PositionsComponent implements OnInit {
    * Handle form submission
    */
   onFormSubmitted(formData: Record<string, any>): void {
+    const companyId = this.auth.currentUser()?.companyId || this.auth.currentUser()?.company_id;
     this.formData = {
-      thName: formData['thName'] || '',
-      engName: formData['engName'] || '',
-      companyId: String(this.auth.currentUser()?.companyId || '')
+      th_name: formData['th_name'] || formData['thName'] || '',
+      eng_name: formData['eng_name'] || formData['engName'] || '',
+      company_id: String(companyId || '')
     };
     this.savePosition();
   }
@@ -255,7 +257,7 @@ export class PositionsComponent implements OnInit {
    * Save position (create or update)
    */
   savePosition(): void {
-    if (!this.formData.thName || !this.formData.engName) {
+    if (!this.formData.th_name || !this.formData.eng_name) {
       this.errorMessage.set('Please fill in all required fields');
       return;
     }
@@ -263,7 +265,7 @@ export class PositionsComponent implements OnInit {
     this.saving.set(true);
     this.errorMessage.set('');
 
-    const companyId = this.auth.currentUser()?.companyId;
+    const companyId = this.auth.currentUser()?.companyId || this.auth.currentUser()?.company_id;
     if (!companyId) {
       this.errorMessage.set('Company ID not found');
       this.saving.set(false);
@@ -271,9 +273,14 @@ export class PositionsComponent implements OnInit {
     }
 
     const pos = this.editingPosition();
+    const posData: PositionCreate = {
+      ...this.formData,
+      company_id: String(companyId)
+    };
+
     const request = pos
-      ? this.positionService.update(pos.id, this.formData as PositionUpdate)
-      : this.positionService.create({ ...this.formData, companyId: String(companyId) });
+      ? this.positionService.update(pos.position_id, posData)
+      : this.positionService.create(posData);
 
     request.subscribe({
       next: () => {
@@ -307,7 +314,7 @@ export class PositionsComponent implements OnInit {
     this.deleting.set(true);
     this.errorMessage.set('');
 
-    this.positionService.delete(pos.id).subscribe({
+    this.positionService.delete(pos.position_id).subscribe({
       next: () => {
         this.deleting.set(false);
         this.showDeleteModal.set(false);

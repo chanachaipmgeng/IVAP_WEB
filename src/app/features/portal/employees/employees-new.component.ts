@@ -24,9 +24,18 @@ import { DataTableComponent, TableColumn, TableAction } from '../../../shared/co
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
 
 // Services
-import { EmployeeService, Employee } from '../../../core/services/employee.service';
+import { CompanyEmployeeService } from '../../../core/services/company-employee.service';
+import { DepartmentService } from '../../../core/services/department.service';
+import { PositionService } from '../../../core/services/position.service';
+import { ErrorHandlerService } from '../../../core/services/error-handler.service';
 import { I18nService } from '../../../core/services/i18n.service';
 import { ThemeService } from '../../../core/services/theme.service';
+import { EmployeeDisplay } from '../../../core/models/employee-display.model';
+import { Department } from '../../../core/models/department.model';
+import { Position } from '../../../core/models/position.model';
+import { CompanyEmployeeCreate, CompanyEmployeeUpdate } from '../../../core/models/company-employee.model';
+import { EmpType, CompanyRoleType } from '../../../core/models/enums.model';
+import { BaseComponent } from '../../../core/base/base.component';
 
 // Animations
 import { fadeIn, slideInUp, listAnimation, scaleInOut } from '../../../core/animations/animations';
@@ -117,7 +126,7 @@ import { fadeIn, slideInUp, listAnimation, scaleInOut } from '../../../core/anim
             <label>{{ i18n.t('employees.department') }}</label>
             <select [(ngModel)]="filterDepartment" (ngModelChange)="onFilterChange()" class="glass-input">
               <option value="">{{ i18n.t('common.selectAll') }}</option>
-              <option *ngFor="let dept of departments" [value]="dept">{{ dept }}</option>
+              <option *ngFor="let dept of departmentNames()" [value]="dept">{{ dept }}</option>
             </select>
           </div>
 
@@ -186,12 +195,12 @@ import { fadeIn, slideInUp, listAnimation, scaleInOut } from '../../../core/anim
           <div class="form-grid">
             <div class="form-group">
               <label>{{ i18n.t('employees.firstName') }}</label>
-              <input type="text" [(ngModel)]="formData.firstName" name="firstName" class="glass-input" required />
+              <input type="text" [(ngModel)]="formData.first_name" name="first_name" class="glass-input" required />
             </div>
 
             <div class="form-group">
               <label>{{ i18n.t('employees.lastName') }}</label>
-              <input type="text" [(ngModel)]="formData.lastName" name="lastName" class="glass-input" required />
+              <input type="text" [(ngModel)]="formData.last_name" name="last_name" class="glass-input" required />
             </div>
 
             <div class="form-group">
@@ -201,20 +210,27 @@ import { fadeIn, slideInUp, listAnimation, scaleInOut } from '../../../core/anim
 
             <div class="form-group">
               <label>{{ i18n.t('employees.phone') }}</label>
-              <input type="tel" [(ngModel)]="formData.phone" name="phone" class="glass-input" />
+              <input type="tel" [(ngModel)]="formData.phone_number" name="phone_number" class="glass-input" />
             </div>
 
             <div class="form-group">
               <label>{{ i18n.t('employees.department') }}</label>
-              <select [(ngModel)]="formData.department" name="department" class="glass-input" required>
+              <select [(ngModel)]="formData.department_id" name="department_id" class="glass-input">
                 <option value="">{{ i18n.t('common.select') }}</option>
-                <option *ngFor="let dept of departments" [value]="dept">{{ dept }}</option>
+                <option *ngFor="let dept of departments()" [value]="dept.department_id">
+                  {{ dept.th_name || dept.eng_name }}
+                </option>
               </select>
             </div>
 
             <div class="form-group">
               <label>{{ i18n.t('employees.position') }}</label>
-              <input type="text" [(ngModel)]="formData.position" name="position" class="glass-input" required />
+              <select [(ngModel)]="formData.position_id" name="position_id" class="glass-input">
+                <option value="">{{ i18n.t('common.select') }}</option>
+                <option *ngFor="let pos of positions()" [value]="pos.position_id">
+                  {{ pos.th_name || pos.eng_name }}
+                </option>
+              </select>
             </div>
           </div>
 
@@ -385,13 +401,20 @@ import { fadeIn, slideInUp, listAnimation, scaleInOut } from '../../../core/anim
     }
   `]
 })
-export class EmployeesNewComponent implements OnInit {
+export class EmployeesNewComponent extends BaseComponent implements OnInit {
   // Signals
-  employees = signal<Employee[]>([]);
+  employees = signal<EmployeeDisplay[]>([]);
   loading = signal(true);
   showModal = signal(false);
   saving = signal(false);
   isEditing = signal(false);
+  editingEmployee = signal<EmployeeDisplay | null>(null);
+
+  // Dropdown Data
+  departments = signal<Department[]>([]);
+  positions = signal<Position[]>([]);
+  loadingDepartments = signal(false);
+  loadingPositions = signal(false);
 
   // Filters
   searchTerm = '';
@@ -399,7 +422,20 @@ export class EmployeesNewComponent implements OnInit {
   filterStatus = '';
 
   // Form Data
-  formData: any = {};
+  formData: any = {
+    first_name: '',
+    last_name: '',
+    email: '',
+    phone_number: '',
+    department_id: '',
+    position_id: '',
+    employee_id: '',
+    salary: 0,
+    boss_id: '',
+    company_role_type: CompanyRoleType.EMPLOYEE,
+    emp_type: EmpType.FULL_TIME,
+    start_date: new Date().toISOString().split('T')[0]
+  };
 
   // Computed
   filteredEmployees = computed(() => {
@@ -408,14 +444,18 @@ export class EmployeesNewComponent implements OnInit {
     if (this.searchTerm) {
       const search = this.searchTerm.toLowerCase();
       filtered = filtered.filter(emp =>
-        emp.firstName?.toLowerCase().includes(search) ||
-        emp.lastName?.toLowerCase().includes(search) ||
+        emp.first_name?.toLowerCase().includes(search) ||
+        emp.last_name?.toLowerCase().includes(search) ||
         emp.email?.toLowerCase().includes(search)
       );
     }
 
     if (this.filterDepartment) {
-      filtered = filtered.filter(emp => emp.department === this.filterDepartment);
+      filtered = filtered.filter(emp => 
+        (emp.department_th_name === this.filterDepartment) || 
+        (emp.department_eng_name === this.filterDepartment) ||
+        (emp.department_name === this.filterDepartment)
+      );
     }
 
     if (this.filterStatus) {
@@ -437,8 +477,11 @@ export class EmployeesNewComponent implements OnInit {
     this.employees().filter(emp => emp.status === 'on_leave').length
   );
 
-  // Departments list
-  departments = ['Engineering', 'Sales', 'Marketing', 'HR', 'Operations'];
+  // Computed departments list for filter (from department names)
+  departmentNames = computed(() => {
+    const depts = this.departments();
+    return [...new Set(depts.map(d => d.th_name || d.eng_name || '').filter(Boolean))];
+  });
 
   // Page Configuration
   breadcrumb!: BreadcrumbItem[];
@@ -449,8 +492,12 @@ export class EmployeesNewComponent implements OnInit {
   constructor(
     public i18n: I18nService,
     public theme: ThemeService,
-    private employeeService: EmployeeService
+    private employeeService: CompanyEmployeeService,
+    private departmentService: DepartmentService,
+    private positionService: PositionService,
+    private errorHandler: ErrorHandlerService
   ) {
+    super();
     // Initialize arrays in constructor after services are injected
     this.breadcrumb = [
       { label: this.i18n.t('navigation.dashboard'), link: '/portal/dashboard', icon: '🏠' },
@@ -479,11 +526,11 @@ export class EmployeesNewComponent implements OnInit {
     ];
 
     this.columns = [
-      { key: 'firstName', label: this.i18n.t('employees.firstName'), sortable: true },
-      { key: 'lastName', label: this.i18n.t('employees.lastName'), sortable: true },
+      { key: 'first_name', label: this.i18n.t('employees.firstName'), sortable: true },
+      { key: 'last_name', label: this.i18n.t('employees.lastName'), sortable: true },
       { key: 'email', label: this.i18n.t('employees.email'), sortable: true },
-      { key: 'department', label: this.i18n.t('employees.department'), sortable: true },
-      { key: 'position', label: this.i18n.t('employees.position'), sortable: true },
+      { key: 'department_name', label: this.i18n.t('employees.department'), sortable: true },
+      { key: 'position_name', label: this.i18n.t('employees.position'), sortable: true },
       {
         key: 'status',
         label: this.i18n.t('employees.status'),
@@ -514,21 +561,90 @@ export class EmployeesNewComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadEmployees();
+    this.loadDepartments();
+    this.loadPositions();
+  }
+
+  /**
+   * Get company ID from current user
+   */
+  private getCompanyId(): string {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      try {
+        const parts = token.split('.');
+        if (parts.length === 3) {
+          const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+          const companyId = payload.company_id || payload.companyId;
+          if (companyId) {
+            return companyId.toString();
+          }
+        }
+      } catch (e) {
+        console.warn('Failed to decode JWT token:', e);
+      }
+    }
+    throw new Error('Member is not associated with a company');
+  }
+
+  /**
+   * Load departments for dropdown
+   */
+  loadDepartments(): void {
+    this.loadingDepartments.set(true);
+    const companyId = this.getCompanyId();
+    this.subscribe(
+      this.departmentService.getByCompanyId(companyId, { page: 1, size: 100 } as any),
+      (response) => {
+        const items = response.items || response.data || [];
+        this.departments.set(items);
+        this.loadingDepartments.set(false);
+      },
+      (error) => {
+        console.error('Error loading departments:', error);
+        this.departments.set([]);
+        this.loadingDepartments.set(false);
+      }
+    );
+  }
+
+  /**
+   * Load positions for dropdown
+   */
+  loadPositions(): void {
+    this.loadingPositions.set(true);
+    const companyId = this.getCompanyId();
+    this.subscribe(
+      this.positionService.getByCompanyId(companyId, { page: 1, size: 100 } as any),
+      (response) => {
+        const items = response.items || response.data || [];
+        this.positions.set(items);
+        this.loadingPositions.set(false);
+      },
+      (error) => {
+        console.error('Error loading positions:', error);
+        this.positions.set([]);
+        this.loadingPositions.set(false);
+      }
+    );
   }
 
   // Data Loading
   private loadEmployees(): void {
     this.loading.set(true);
-    this.employeeService.getEmployees().subscribe({
-      next: (response) => {
-        this.employees.set(response.data);
+    // ✅ Auto-unsubscribe on component destroy
+    this.subscribe(
+      this.employeeService.getEmployees(),
+      (response) => {
+        const items = response.items || response.data || [];
+        this.employees.set(items);
         this.loading.set(false);
       },
-      error: (error) => {
+      (error) => {
         console.error('Error loading employees:', error);
         this.loading.set(false);
       }
-    });
+    );
   }
 
   // Filters
@@ -562,41 +678,172 @@ export class EmployeesNewComponent implements OnInit {
   // Modal Actions
   openAddModal(): void {
     this.isEditing.set(false);
-    this.formData = {};
+    this.editingEmployee.set(null);
+    this.formData = {
+      first_name: '',
+      last_name: '',
+      email: '',
+      phone_number: '',
+      department_id: '',
+      position_id: '',
+      employee_id: '',
+      salary: 0,
+      boss_id: '',
+      company_role_type: CompanyRoleType.EMPLOYEE,
+      emp_type: EmpType.FULL_TIME,
+      start_date: new Date().toISOString().split('T')[0]
+    };
     this.showModal.set(true);
   }
 
-  editEmployee(employee: Employee): void {
+  editEmployee(employee: EmployeeDisplay): void {
     this.isEditing.set(true);
-    this.formData = { ...employee };
+    this.editingEmployee.set(employee);
+    this.formData = {
+      first_name: employee.first_name || '',
+      last_name: employee.last_name || '',
+      email: employee.email || '',
+      phone_number: employee.phone_number || '',
+      department_id: employee.department_id || '',
+      position_id: employee.position_id || '',
+      employee_id: employee.employee_id || '',
+      salary: employee.salary || 0,
+      boss_id: employee.boss_id || '',
+      company_role_type: employee.company_role_type || CompanyRoleType.EMPLOYEE,
+      emp_type: employee.emp_type || EmpType.FULL_TIME,
+      start_date: employee.start_date ? new Date(employee.start_date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
+    };
     this.showModal.set(true);
   }
 
   closeModal(): void {
     this.showModal.set(false);
+    this.editingEmployee.set(null);
     this.formData = {};
   }
 
   saveEmployee(): void {
+    if (!this.formData.first_name || !this.formData.last_name || !this.formData.email) {
+      this.errorHandler.showError('กรุณากรอกข้อมูลให้ครบถ้วน');
+      return;
+    }
+
     this.saving.set(true);
-    // Implement save logic here
-    setTimeout(() => {
-      this.saving.set(false);
-      this.closeModal();
-      this.loadEmployees();
-    }, 1000);
+    const employee = this.editingEmployee();
+    const formValue = this.formData;
+
+    // Helper to convert empty string to undefined
+    const toUndefinedIfEmpty = (value: any): any => {
+      if (value === '' || value === 'undefined' || value === 'null') return undefined;
+      return value;
+    };
+
+    if (employee && employee.company_employee_id) {
+      // Update existing employee
+      const updateData: CompanyEmployeeUpdate = {
+        company_employee_id: employee.company_employee_id,
+        member: {
+          email: formValue.email,
+          first_name: formValue.first_name,
+          last_name: formValue.last_name,
+          picture: undefined
+        },
+        position: formValue.position_id ? {
+          position_id: formValue.position_id,
+          th_name: '',
+          eng_name: ''
+        } : undefined,
+        department: formValue.department_id ? {
+          department_id: formValue.department_id,
+          th_name: '',
+          eng_name: ''
+        } : undefined,
+        employee_id: toUndefinedIfEmpty(formValue.employee_id),
+        salary: formValue.salary || 0,
+        boss_id: toUndefinedIfEmpty(formValue.boss_id),
+        company_role_type: formValue.company_role_type || CompanyRoleType.EMPLOYEE,
+        emp_type: formValue.emp_type || EmpType.FULL_TIME,
+        start_date: new Date(formValue.start_date).toISOString()
+      };
+
+      this.subscribe(
+        this.employeeService.updateEmployee(employee.company_employee_id, updateData),
+        () => {
+          this.errorHandler.showSuccess('อัปเดต Employee สำเร็จ');
+          this.saving.set(false);
+          this.closeModal();
+          this.loadEmployees();
+        },
+        (error) => {
+          this.errorHandler.handleApiError(error);
+          this.saving.set(false);
+        }
+      );
+    } else {
+      // Create new employee
+      const createData: CompanyEmployeeCreate = {
+        member: {
+          email: formValue.email,
+          first_name: formValue.first_name,
+          last_name: formValue.last_name,
+          picture: undefined
+        },
+        position: formValue.position_id ? {
+          position_id: formValue.position_id,
+          th_name: '',
+          eng_name: ''
+        } : undefined,
+        department: formValue.department_id ? {
+          department_id: formValue.department_id,
+          th_name: '',
+          eng_name: ''
+        } : undefined,
+        employee_id: toUndefinedIfEmpty(formValue.employee_id),
+        salary: formValue.salary || 0,
+        boss_id: toUndefinedIfEmpty(formValue.boss_id),
+        company_role_type: formValue.company_role_type || CompanyRoleType.EMPLOYEE,
+        emp_type: formValue.emp_type || EmpType.FULL_TIME,
+        start_date: new Date(formValue.start_date).toISOString()
+      };
+
+      this.subscribe(
+        this.employeeService.createEmployee(createData),
+        () => {
+          this.errorHandler.showSuccess('สร้าง Employee สำเร็จ');
+          this.saving.set(false);
+          this.closeModal();
+          this.loadEmployees();
+        },
+        (error) => {
+          this.errorHandler.handleApiError(error);
+          this.saving.set(false);
+        }
+      );
+    }
   }
 
   // Actions
-  viewEmployee(employee: Employee): void {
+  viewEmployee(employee: EmployeeDisplay): void {
     // View employee details
     // TODO: Implement view employee modal or navigation
   }
 
-  deleteEmployee(employee: Employee): void {
+  deleteEmployee(employee: EmployeeDisplay): void {
     if (confirm(this.i18n.t('messages.confirmDelete'))) {
-      // Implement delete logic here
-      this.loadEmployees();
+      if (!employee.company_employee_id) {
+        console.error('Employee missing company_employee_id:', employee);
+        return;
+      }
+      // ✅ Auto-unsubscribe on component destroy
+      this.subscribe(
+        this.employeeService.deleteEmployee(employee.company_employee_id),
+        () => {
+          this.loadEmployees();
+        },
+        (error) => {
+          console.error('Error deleting employee:', error);
+        }
+      );
     }
   }
 

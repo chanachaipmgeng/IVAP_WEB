@@ -24,25 +24,18 @@ import { FormFieldConfig } from '../../../shared/components/form-field/form-fiel
 import { ApiService } from '../../../core/services/api.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { I18nService } from '../../../core/services/i18n.service';
-import { Department, Position } from '../../../core/models';
+import { Department, DepartmentCreate, DepartmentUpdate } from '../../../core/models/department.model';
+import { Position, PositionCreate, PositionUpdate } from '../../../core/models/position.model';
+import { DepartmentService } from '../../../core/services/department.service';
+import { PositionService } from '../../../core/services/position.service';
 import { BaseComponent } from '../../../core/base/base.component';
 
 /**
  * Department form data interface
  */
 interface DepartmentFormData {
-  name: string;
-  code: string;
-  description?: string;
-}
-
-/**
- * Position form data interface
- */
-interface PositionFormData {
-  name: string;
-  code: string;
-  description?: string;
+  th_name: string;
+  eng_name: string;
 }
 
 @Component({
@@ -98,15 +91,13 @@ export class StructureComponent extends BaseComponent implements OnInit {
   editingDept = signal<Department | null>(null);
 
   deptFormData: DepartmentFormData = {
-    name: '',
-    code: '',
-    description: ''
+    th_name: '',
+    eng_name: ''
   };
 
   deptColumns: TableColumn[] = [
-    { key: 'code', label: 'Code', sortable: true },
-    { key: 'name', label: 'Department Name', sortable: true },
-    { key: 'description', label: 'Description' }
+    { key: 'th_name', label: 'ชื่อแผนก (ไทย)', sortable: true },
+    { key: 'eng_name', label: 'Department Name (English)', sortable: true }
   ];
 
   deptActions: TableAction[] = [
@@ -129,10 +120,9 @@ export class StructureComponent extends BaseComponent implements OnInit {
   savingPos = signal(false);
   editingPos = signal<Position | null>(null);
 
-  posFormData: PositionFormData = {
-    name: '',
-    code: '',
-    description: ''
+  posFormData: { th_name: string; eng_name: string } = {
+    th_name: '',
+    eng_name: ''
   };
 
   // Form fields configuration for ModalFormComponent
@@ -140,29 +130,20 @@ export class StructureComponent extends BaseComponent implements OnInit {
     const dept = this.editingDept();
     return [
       {
-        key: 'code',
-        label: 'Department Code',
+        key: 'th_name',
+        label: 'ชื่อแผนก (ภาษาไทย)',
         type: 'text',
-        placeholder: 'DEPT001',
+        placeholder: 'แผนกเทคโนโลยี',
         required: true,
-        value: dept?.code || this.deptFormData.code || ''
+        value: dept?.th_name || this.deptFormData.th_name || ''
       },
       {
-        key: 'name',
-        label: 'Department Name',
+        key: 'eng_name',
+        label: 'Department Name (English)',
         type: 'text',
         placeholder: 'IT Department',
         required: true,
-        value: dept?.name || this.deptFormData.name || ''
-      },
-      {
-        key: 'description',
-        label: 'Description',
-        type: 'textarea',
-        placeholder: 'Department description...',
-        rows: 3,
-        fullWidth: true,
-        value: dept?.description || this.deptFormData.description || ''
+        value: dept?.eng_name || this.deptFormData.eng_name || ''
       }
     ];
   });
@@ -171,37 +152,27 @@ export class StructureComponent extends BaseComponent implements OnInit {
     const pos = this.editingPos();
     return [
       {
-        key: 'code',
-        label: 'Position Code',
+        key: 'th_name',
+        label: 'ชื่อตำแหน่ง (ภาษาไทย)',
         type: 'text',
-        placeholder: 'POS001',
+        placeholder: 'นักพัฒนาซอฟต์แวร์',
         required: true,
-        value: pos?.code || this.posFormData.code || ''
+        value: pos?.th_name || this.posFormData.th_name || ''
       },
       {
-        key: 'name',
-        label: 'Position Name',
+        key: 'eng_name',
+        label: 'Position Name (English)',
         type: 'text',
-        placeholder: 'Software Engineer',
+        placeholder: 'Software Developer',
         required: true,
-        value: pos?.name || this.posFormData.name || ''
-      },
-      {
-        key: 'description',
-        label: 'Description',
-        type: 'textarea',
-        placeholder: 'Position description...',
-        rows: 3,
-        fullWidth: true,
-        value: pos?.description || this.posFormData.description || ''
+        value: pos?.eng_name || this.posFormData.eng_name || ''
       }
     ];
   });
 
   posColumns: TableColumn[] = [
-    { key: 'code', label: 'Code', sortable: true },
-    { key: 'name', label: 'Position Name', sortable: true },
-    { key: 'description', label: 'Description' }
+    { key: 'th_name', label: 'ชื่อตำแหน่ง (ไทย)', sortable: true },
+    { key: 'eng_name', label: 'Position Name (English)', sortable: true }
   ];
 
   posActions: TableAction[] = [
@@ -221,7 +192,9 @@ export class StructureComponent extends BaseComponent implements OnInit {
   constructor(
     private api: ApiService,
     private auth: AuthService,
-    private i18n: I18nService
+    private i18n: I18nService,
+    private departmentService: DepartmentService,
+    private positionService: PositionService
   ) {
     super();
   }
@@ -235,15 +208,15 @@ export class StructureComponent extends BaseComponent implements OnInit {
    * Load departments for current company
    */
   loadDepartments(): void {
-    const companyId = this.auth.currentUser()?.companyId;
+    const companyId = this.auth.currentUser()?.companyId || this.auth.currentUser()?.company_id;
     if (!companyId) return;
 
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
-      this.api.get<{ data?: Department[] } | Department[]>(`/departments/company/${companyId}`),
-      (response: { data?: Department[] } | Department[]) => {
-        const departments = Array.isArray(response) ? response : (response.data || []);
-        this.departments.set(departments);
+      this.departmentService.getByCompanyId(String(companyId)),
+      (response) => {
+        const items = response.items || response.data || [];
+        this.departments.set(items);
       },
       (error) => {
         console.error('Error loading departments:', error);
@@ -254,13 +227,16 @@ export class StructureComponent extends BaseComponent implements OnInit {
 
   openAddDeptModal(): void {
     this.editingDept.set(null);
-    this.deptFormData = { name: '', code: '', description: '' };
+    this.deptFormData = { th_name: '', eng_name: '' };
     this.showDeptModal.set(true);
   }
 
   editDepartment(dept: Department): void {
     this.editingDept.set(dept);
-    this.deptFormData = { ...dept };
+    this.deptFormData = {
+      th_name: dept.th_name || '',
+      eng_name: dept.eng_name || ''
+    };
     this.showDeptModal.set(true);
   }
 
@@ -271,9 +247,8 @@ export class StructureComponent extends BaseComponent implements OnInit {
 
   onDeptFormSubmitted(formData: Record<string, any>): void {
     this.deptFormData = {
-      code: formData['code'] || '',
-      name: formData['name'] || '',
-      description: formData['description'] || ''
+      th_name: formData['th_name'] || '',
+      eng_name: formData['eng_name'] || ''
     };
     this.saveDepartment();
   }
@@ -284,17 +259,20 @@ export class StructureComponent extends BaseComponent implements OnInit {
   saveDepartment(): void {
     this.savingDept.set(true);
 
-    const companyId = this.auth.currentUser()?.companyId;
+    const companyId = this.auth.currentUser()?.companyId || this.auth.currentUser()?.company_id;
     if (!companyId) {
       this.savingDept.set(false);
       return;
     }
 
-    const data = { ...this.deptFormData, companyId };
+    const deptData: DepartmentCreate = {
+      ...this.deptFormData,
+      company_id: String(companyId)
+    };
 
     const request = this.editingDept()
-      ? this.api.put(`/departments/${this.editingDept()!.id}`, data)
-      : this.api.post('/departments', data);
+      ? this.departmentService.update(this.editingDept()!.department_id, deptData)
+      : this.departmentService.create(deptData);
 
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
@@ -315,11 +293,11 @@ export class StructureComponent extends BaseComponent implements OnInit {
    * Delete department
    */
   deleteDepartment(dept: Department): void {
-    if (!confirm(`Delete department ${dept.name}?`)) return;
+    if (!confirm(`Delete department ${dept.th_name || dept.eng_name}?`)) return;
 
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
-      this.api.delete(`/departments/${dept.id}`),
+      this.departmentService.delete(dept.department_id),
       () => {
         this.loadDepartments();
       },
@@ -331,14 +309,15 @@ export class StructureComponent extends BaseComponent implements OnInit {
 
   // Position methods
   loadPositions(): void {
-    const companyId = this.auth.currentUser()?.companyId;
+    const companyId = this.auth.currentUser()?.companyId || this.auth.currentUser()?.company_id;
     if (!companyId) return;
 
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
-      this.api.get<Position[]>(`/positions/company/${companyId}`),
-      (response: any) => {
-        this.positions.set(response.data || response || []);
+      this.positionService.getByCompanyId(String(companyId)),
+      (response) => {
+        const items = response.items || response.data || [];
+        this.positions.set(items);
       },
       (error) => {
         console.error('Error loading positions:', error);
@@ -349,13 +328,16 @@ export class StructureComponent extends BaseComponent implements OnInit {
 
   openAddPosModal(): void {
     this.editingPos.set(null);
-    this.posFormData = { name: '', code: '', description: '' };
+    this.posFormData = { th_name: '', eng_name: '' };
     this.showPosModal.set(true);
   }
 
   editPosition(pos: Position): void {
     this.editingPos.set(pos);
-    this.posFormData = { ...pos };
+    this.posFormData = {
+      th_name: pos.th_name || '',
+      eng_name: pos.eng_name || ''
+    };
     this.showPosModal.set(true);
   }
 
@@ -366,9 +348,8 @@ export class StructureComponent extends BaseComponent implements OnInit {
 
   onPosFormSubmitted(formData: Record<string, any>): void {
     this.posFormData = {
-      code: formData['code'] || '',
-      name: formData['name'] || '',
-      description: formData['description'] || ''
+      th_name: formData['th_name'] || '',
+      eng_name: formData['eng_name'] || ''
     };
     this.savePosition();
   }
@@ -379,17 +360,20 @@ export class StructureComponent extends BaseComponent implements OnInit {
   savePosition(): void {
     this.savingPos.set(true);
 
-    const companyId = this.auth.currentUser()?.companyId;
+    const companyId = this.auth.currentUser()?.companyId || this.auth.currentUser()?.company_id;
     if (!companyId) {
       this.savingPos.set(false);
       return;
     }
 
-    const data = { ...this.posFormData, companyId };
+    const posData: PositionCreate = {
+      ...this.posFormData,
+      company_id: String(companyId)
+    };
 
     const request = this.editingPos()
-      ? this.api.put(`/positions/${this.editingPos()!.id}`, data)
-      : this.api.post('/positions', data);
+      ? this.positionService.update(this.editingPos()!.position_id, posData)
+      : this.positionService.create(posData);
 
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
@@ -410,11 +394,11 @@ export class StructureComponent extends BaseComponent implements OnInit {
    * Delete position
    */
   deletePosition(pos: Position): void {
-    if (!confirm(`Delete position ${pos.name}?`)) return;
+    if (!confirm(`Delete position ${pos.th_name || pos.eng_name}?`)) return;
 
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
-      this.api.delete(`/positions/${pos.id}`),
+      this.positionService.delete(pos.position_id),
       () => {
         this.loadPositions();
       },
@@ -435,14 +419,14 @@ export class StructureComponent extends BaseComponent implements OnInit {
    * TrackBy function for departments
    */
   trackByDepartment(index: number, dept: Department): string {
-    return dept.id ? String(dept.id) : index.toString();
+    return dept.department_id ? String(dept.department_id) : index.toString();
   }
 
   /**
    * TrackBy function for positions
    */
   trackByPosition(index: number, pos: Position): string {
-    return pos.id ? String(pos.id) : index.toString();
+    return pos.position_id ? String(pos.position_id) : index.toString();
   }
 
   /**

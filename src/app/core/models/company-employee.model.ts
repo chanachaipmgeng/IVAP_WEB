@@ -1,106 +1,113 @@
 /**
  * Company Employee Models
  * 
- * Represents the association between a Member and a Company
- * Matches backend CompanyEmployee model
+ * Uses snake_case to match backend CompanyEmployeeResponse schema (company_employee_schema.py)
  */
 
-import { UUID, BaseTimestamps } from './base.model';
-import { EmpType, CompanyRoleType, AccessLevel } from './enums.model';
+import { UUID } from './base.model';
+import { Member } from './member.model';
 
 /**
- * Company Employee Interface
- * Represents a member's employment relationship with a company
- * ตรงกับ CompanyEmployeeResponse ใน backend
+ * Member Input (for create/update)
+ * Matches MemberInput schema from backend
  */
-export interface CompanyEmployee extends BaseTimestamps {
-  // Primary key
-  id: UUID;  // company_employee_id in backend
-  
-  // Foreign keys
-  memberId: UUID;  // member_id in backend
-  companyId: UUID;  // company_id in backend
-  positionId?: UUID;  // position_id in backend
-  departmentId?: UUID;  // department_id in backend
-  
-  // Employment identification
-  employeeId: string;  // employee_id in backend (REQUIRED in backend)
-  
-  // Employment details (from backend)
-  empType: EmpType;  // emp_type in backend
-  companyRoleType: CompanyRoleType;  // company_role_type in backend
-  salary: number;  // salary in backend (REQUIRED in backend)
-  bossId: string;  // boss_id in backend (REQUIRED in backend)
-  startDate: string;  // start_date in backend (REQUIRED in backend)
-  
-  // Nested objects from backend response
-  member?: {
-    memberId: UUID;
-    email: string;
-    firstName?: string;
-    lastName?: string;
-    picture?: string;
-  };
-  position?: {
-    positionId: UUID;
-    thName: string;
-    engName: string;
-  };
-  department?: {
-    departmentId: UUID;
-    thName: string;
-    engName: string;
-  };
-  
-  // Frontend-only fields (not in backend schema)
-  isPrimary?: boolean;   // Is this the primary company for this member
-  isActive?: boolean;    // Derived from status or other fields
-  accessLevel?: AccessLevel;  // Derived from companyRoleType
-  joinedAt?: string;     // Same as startDate
-  leftAt?: string;       // Not in backend schema
+export interface MemberInput {
+  member_id?: UUID;
+  email: string;
+  first_name?: string;
+  last_name?: string;
+  picture?: string;
+}
+
+/**
+ * Position Response
+ * Matches PositionResponse schema from backend
+ */
+export interface PositionResponse {
+  position_id: UUID;
+  th_name: string;
+  eng_name: string;
+}
+
+/**
+ * Department Response
+ * Matches DepartmentResponse schema from backend
+ */
+export interface DepartmentResponse {
+  department_id: UUID;
+  th_name: string;
+  eng_name: string;
+}
+
+/**
+ * Position Input (for create/update)
+ * Matches PositionInput schema from backend
+ */
+export interface PositionInput {
+  position_id: UUID;
+  th_name: string;
+  eng_name: string;
+}
+
+/**
+ * Department Input (for create/update)
+ * Matches DepartmentInput schema from backend
+ */
+export interface DepartmentInput {
+  department_id: UUID;
+  th_name: string;
+  eng_name: string;
+}
+
+/**
+ * Company Employee Response
+ * Matches CompanyEmployeeResponse schema from backend
+ */
+export interface CompanyEmployee {
+  company_employee_id: UUID;
+  company_id: UUID;
+  member: Member;
+  position?: PositionResponse;
+  department?: DepartmentResponse;
+  employee_id: string;
+  salary: number;
+  boss_id: string;
+  company_role_type: string; // CompanyRoleType enum
+  emp_type: string; // EmpType enum
+  start_date: string;
 }
 
 /**
  * Company Employee Create Request
+ * Matches CompanyEmployeePost schema from backend
  */
 export interface CompanyEmployeeCreate {
-  memberId: UUID;
-  companyId: UUID;
-  positionId?: UUID;
-  departmentId?: UUID;
-  employeeId?: string;
-  isPrimary?: boolean;
-  isActive?: boolean;
-  accessLevel?: AccessLevel;
-  startDate?: string;
-  empType?: EmpType;
-  companyRoleType?: CompanyRoleType;
+  member: MemberInput;
+  position?: PositionInput;
+  department?: DepartmentInput;
+  employee_id?: string;
   salary?: number;
-  bossId?: string;
+  boss_id?: string;
+  company_role_type: string; // CompanyRoleType enum
+  emp_type: string; // EmpType enum
+  start_date: string;
 }
 
 /**
  * Company Employee Update Request
+ * Matches CompanyEmployeeUpdate schema from backend
  */
 export interface CompanyEmployeeUpdate {
-  positionId?: UUID;
-  departmentId?: UUID;
-  employeeId?: string;
-  isPrimary?: boolean;
-  isActive?: boolean;
-  accessLevel?: AccessLevel;
-  leftAt?: string;
-  empType?: EmpType;
-  companyRoleType?: CompanyRoleType;
+  member: MemberInput;
+  position?: PositionInput;
+  department?: DepartmentInput;
+  employee_id?: string;
   salary?: number;
-  bossId?: string;
-}
-
-/**
- * Company Employee Response (from API)
- */
-export interface CompanyEmployeeResponse extends CompanyEmployee {
-  // All fields from CompanyEmployee interface
+  boss_id?: string;
+  company_employee_id: UUID;
+  company_role_type: string; // CompanyRoleType enum
+  emp_type: string; // EmpType enum
+  start_date: string;
 }
 
 /**
@@ -108,39 +115,10 @@ export interface CompanyEmployeeResponse extends CompanyEmployee {
  */
 export interface CompanyEmployeeFilters {
   search?: string;
-  companyId?: UUID;
-  departmentId?: UUID;
-  positionId?: UUID;
-  isActive?: boolean;
-  isPrimary?: boolean;
-  empType?: EmpType;
-  companyRoleType?: CompanyRoleType;
-  accessLevel?: AccessLevel;
+  company_id?: UUID;
+  department_id?: UUID;
+  position_id?: UUID;
+  company_role_type?: string;
+  emp_type?: string;
+  boss_id?: string;
 }
-
-/**
- * Company Employee Statistics
- */
-export interface CompanyEmployeeStatistics {
-  totalEmployees: number;
-  activeEmployees: number;
-  inactiveEmployees: number;
-  employeesByEmpType: Record<EmpType, number>;
-  employeesByCompanyRole: Record<CompanyRoleType, number>;
-  employeesByDepartment: Record<string, number>;
-  employeesByPosition: Record<string, number>;
-}
-
-/**
- * Company Employee Summary (lightweight)
- */
-export interface CompanyEmployeeSummary {
-  id: UUID;
-  memberId: UUID;
-  companyId: UUID;
-  employeeId?: string;
-  isActive: boolean;
-  isPrimary: boolean;
-  companyRoleType: CompanyRoleType;
-}
-

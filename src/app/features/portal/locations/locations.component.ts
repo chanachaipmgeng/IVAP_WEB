@@ -23,7 +23,8 @@ import { FormFieldConfig } from '../../../shared/components/form-field/form-fiel
 import { CompanyLocationService } from '../../../core/services/company-location.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { I18nService } from '../../../core/services/i18n.service';
-import { CompanyLocationModel } from '../../../core/models/company-location.model';
+import { CompanyLocation, CompanyLocationCreate, CompanyLocationUpdate } from '../../../core/models/company-location.model';
+import { BaseComponent } from '../../../core/base/base.component';
 
 @Component({
   selector: 'app-locations',
@@ -41,17 +42,12 @@ import { CompanyLocationModel } from '../../../core/models/company-location.mode
   templateUrl: './locations.component.html',
   styleUrl: './locations.component.scss'
 })
-export class LocationsComponent implements OnInit {
+export class LocationsComponent extends BaseComponent implements OnInit {
   showModal = signal(false);
   saving = signal(false);
-  editingLocation = signal<CompanyLocationModel | null>(null);
-
-  // Getters from service
-  getLocations = () => this.locationService.getLocations();
-  getLoading = () => this.locationService.getLoading();
-
-  // Computed signals
-  locations = computed(() => this.getLocations()());
+  editingLocation = signal<CompanyLocation | null>(null);
+  locations = signal<CompanyLocation[]>([]);
+  loading = signal(false);
 
   // Page actions
   pageActions = computed<PageAction[]>(() => [
@@ -62,12 +58,14 @@ export class LocationsComponent implements OnInit {
     }
   ]);
 
-  formData: Partial<CompanyLocationModel> = {
-    locationName: '',
-    address: '',
+  formData: Partial<CompanyLocationCreate> = {
+    location_name: '',
     latitude: 0,
     longitude: 0,
-    radius: 100
+    radius: 100,
+    start_date: new Date().toISOString(),
+    end_date: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(), // 1 year from now
+    location_type: 'OFFICE'
   };
 
   // Form fields configuration for ModalFormComponent
@@ -76,20 +74,12 @@ export class LocationsComponent implements OnInit {
     
     return [
       {
-        key: 'locationName',
+        key: 'location_name',
         label: 'Location Name',
         type: 'text',
         placeholder: 'Head Office',
         required: true,
-        value: location?.locationName || this.formData.locationName || ''
-      },
-      {
-        key: 'address',
-        label: 'Address',
-        type: 'text',
-        placeholder: '123 Main Street',
-        required: false,
-        value: location?.address || this.formData.address || ''
+        value: location?.location_name || this.formData.location_name || ''
       },
       {
         key: 'latitude',
@@ -111,24 +101,59 @@ export class LocationsComponent implements OnInit {
       },
       {
         key: 'radius',
-        label: 'Radius (meters)',
+        label: 'Radius (km)',
         type: 'number',
-        placeholder: '100',
+        placeholder: '0.1',
         required: true,
-        value: location?.radius?.toString() || this.formData.radius?.toString() || '100',
-        hint: 'Recommended: 50-500 meters depending on building size'
+        value: location?.radius?.toString() || this.formData.radius?.toString() || '0.1',
+        hint: 'Radius in kilometers (e.g., 0.1 = 100 meters)'
+      },
+      {
+        key: 'start_date',
+        label: 'Start Date',
+        type: 'date',
+        required: true,
+        value: location?.start_date ? new Date(location.start_date).toISOString().split('T')[0] : this.formData.start_date ? new Date(this.formData.start_date).toISOString().split('T')[0] : ''
+      },
+      {
+        key: 'end_date',
+        label: 'End Date',
+        type: 'date',
+        required: true,
+        value: location?.end_date ? new Date(location.end_date).toISOString().split('T')[0] : this.formData.end_date ? new Date(this.formData.end_date).toISOString().split('T')[0] : ''
+      },
+      {
+        key: 'location_type',
+        label: 'Location Type',
+        type: 'select',
+        required: true,
+        options: [
+          { value: 'OFFICE', label: 'Office' },
+          { value: 'WAREHOUSE', label: 'Warehouse' },
+          { value: 'FACTORY', label: 'Factory' },
+          { value: 'BRANCH', label: 'Branch' },
+          { value: 'REMOTE', label: 'Remote' },
+          { value: 'OTHER', label: 'Other' }
+        ],
+        value: location?.location_type || this.formData.location_type || 'OFFICE'
       }
     ];
   });
 
   columns: TableColumn[] = [
-    { key: 'locationName', label: 'Location Name', sortable: true },
-    { key: 'address', label: 'Address' },
-    { key: 'locationType', label: 'Type' },
+    { key: 'location_name', label: 'Location Name', sortable: true },
+    { key: 'location_type', label: 'Type', sortable: true },
     {
-      key: 'isActive',
-      label: 'Status',
-      render: (value) => (value ? '✅ Active' : '⏸️ Inactive')
+      key: 'start_date',
+      label: 'Start Date',
+      sortable: true,
+      render: (value) => value ? new Date(value).toLocaleDateString() : 'N/A'
+    },
+    {
+      key: 'end_date',
+      label: 'End Date',
+      sortable: true,
+      render: (value) => value ? new Date(value).toLocaleDateString() : 'N/A'
     }
   ];
 
@@ -155,43 +180,61 @@ export class LocationsComponent implements OnInit {
     private locationService: CompanyLocationService,
     private auth: AuthService,
     private i18n: I18nService
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.loadLocations();
   }
 
   loadLocations(): void {
-    this.locationService.loadLocations().subscribe({
-      next: () => {
-        // Locations data automatically updated via signals
+    this.loading.set(true);
+    const companyId = this.auth.currentUser()?.companyId || this.auth.currentUser()?.company_id;
+    if (!companyId) {
+      this.loading.set(false);
+      return;
+    }
+
+    // ✅ Auto-unsubscribe on component destroy
+    this.subscribe(
+      this.locationService.getByCompanyId(String(companyId)),
+      (response: any) => {
+        const items = response.items || response.data || [];
+        this.locations.set(items);
+        this.loading.set(false);
       },
-      error: (error) => {
+      (error: any) => {
         console.error('Error loading locations:', error);
+        this.loading.set(false);
       }
-    });
+    );
   }
 
   openAddModal(): void {
     this.editingLocation.set(null);
     this.formData = {
-      locationName: '',
-      address: '',
+      location_name: '',
       latitude: 0,
       longitude: 0,
-      radius: 100
+      radius: 0.1,
+      start_date: new Date().toISOString(),
+      end_date: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+      location_type: 'OFFICE'
     };
     this.showModal.set(true);
   }
 
-  editLocation(location: CompanyLocationModel): void {
+  editLocation(location: CompanyLocation): void {
     this.editingLocation.set(location);
     this.formData = {
-      locationName: location.locationName,
-      address: location.address || '',
+      location_name: location.location_name,
       latitude: location.latitude,
       longitude: location.longitude,
-      radius: location.radius
+      radius: location.radius,
+      start_date: location.start_date,
+      end_date: location.end_date,
+      location_type: location.location_type
     };
     this.showModal.set(true);
   }
@@ -203,11 +246,13 @@ export class LocationsComponent implements OnInit {
 
   onLocationFormSubmitted(formData: Record<string, any>): void {
     this.formData = {
-      locationName: formData['locationName'] || '',
-      address: formData['address'] || '',
+      location_name: formData['location_name'] || '',
       latitude: parseFloat(formData['latitude']) || 0,
       longitude: parseFloat(formData['longitude']) || 0,
-      radius: parseFloat(formData['radius']) || 100
+      radius: parseFloat(formData['radius']) || 0.1,
+      start_date: formData['start_date'] ? new Date(formData['start_date']).toISOString() : new Date().toISOString(),
+      end_date: formData['end_date'] ? new Date(formData['end_date']).toISOString() : new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+      location_type: formData['location_type'] || 'OFFICE'
     };
     this.saveLocation();
   }
@@ -215,37 +260,60 @@ export class LocationsComponent implements OnInit {
   saveLocation(): void {
     this.saving.set(true);
 
-    const request = this.editingLocation()
-      ? this.locationService.updateLocationForCurrentCompany(this.editingLocation()!.locationId, this.formData)
-      : this.locationService.createLocationForCurrentCompany(this.formData);
+    const companyId = this.auth.currentUser()?.companyId || this.auth.currentUser()?.company_id;
+    if (!companyId) {
+      this.saving.set(false);
+      return;
+    }
 
-    request.subscribe({
-      next: () => {
+    const locationData: CompanyLocationCreate = {
+      location_name: String(this.formData.location_name || ''),
+      latitude: this.formData.latitude || 0,
+      longitude: this.formData.longitude || 0,
+      radius: this.formData.radius || 0.1,
+      start_date: this.formData.start_date || new Date().toISOString(),
+      end_date: this.formData.end_date || new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+      location_type: String(this.formData.location_type || 'OFFICE')
+    };
+
+    const request = this.editingLocation()
+      ? this.locationService.updateLocation(String(companyId), this.editingLocation()!.location_id, locationData)
+      : this.locationService.createLocation(String(companyId), locationData);
+
+    // ✅ Auto-unsubscribe on component destroy
+    this.subscribe(
+      request,
+      () => {
         this.saving.set(false);
         this.closeModal();
         this.loadLocations();
       },
-      error: (error: any) => {
+      (error: any) => {
         console.error('Error saving location:', error);
         this.saving.set(false);
       }
-    });
+    );
   }
 
-  deleteLocation(location: CompanyLocationModel): void {
-    if (!confirm(`Delete location ${location.locationName}?`)) return;
+  deleteLocation(location: CompanyLocation): void {
+    if (!confirm(`Delete location ${location.location_name}?`)) return;
 
-    this.locationService.deleteLocationForCurrentCompany(location.locationId).subscribe({
-      next: () => {
+    const companyId = this.auth.currentUser()?.companyId || this.auth.currentUser()?.company_id;
+    if (!companyId) return;
+
+    // ✅ Auto-unsubscribe on component destroy
+    this.subscribe(
+      this.locationService.deleteLocation(String(companyId), location.location_id),
+      () => {
         this.loadLocations();
       },
-      error: (error: any) => {
+      (error: any) => {
         console.error('Error deleting location:', error);
       }
-    });
+    );
   }
 
-  viewOnMap(location: CompanyLocationModel): void {
+  viewOnMap(location: CompanyLocation): void {
     if (location.latitude && location.longitude) {
       const url = `https://www.google.com/maps?q=${location.latitude},${location.longitude}`;
       window.open(url, '_blank');

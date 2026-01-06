@@ -74,16 +74,15 @@ export class DepartmentsComponent implements OnInit {
 
   // Form Data
   formData: DepartmentCreate = {
-    thName: '',
-    engName: '',
-    companyId: ''
+    th_name: '',
+    eng_name: '',
+    company_id: ''
   };
 
   // Table Configuration
   columns: TableColumn[] = [
-    { key: 'thName', label: 'ชื่อแผนก (ไทย)', sortable: true },
-    { key: 'engName', label: 'Department Name (EN)', sortable: true },
-    { key: 'createdAt', label: 'Created At', sortable: true, type: 'date' }
+    { key: 'th_name', label: 'ชื่อแผนก (ไทย)', sortable: true },
+    { key: 'eng_name', label: 'Department Name (EN)', sortable: true }
   ];
 
   actions: TableAction[] = [
@@ -132,20 +131,20 @@ export class DepartmentsComponent implements OnInit {
     const dept = this.editingDepartment();
     return [
       {
-        key: 'thName',
+        key: 'th_name',
         label: 'ชื่อแผนก (ไทย)',
         type: 'text',
         placeholder: 'แผนกเทคโนโลยีสารสนเทศ',
         required: true,
-        value: dept?.thName || this.formData.thName || ''
+        value: dept?.th_name || this.formData.th_name || ''
       },
       {
-        key: 'engName',
+        key: 'eng_name',
         label: 'Department Name (English)',
         type: 'text',
         placeholder: 'Information Technology Department',
         required: true,
-        value: dept?.engName || this.formData.engName || ''
+        value: dept?.eng_name || this.formData.eng_name || ''
       }
     ];
   });
@@ -168,7 +167,7 @@ export class DepartmentsComponent implements OnInit {
     this.loading.set(true);
     this.errorMessage.set('');
 
-    const companyId = this.auth.currentUser()?.companyId;
+    const companyId = this.auth.currentUser()?.companyId || this.auth.currentUser()?.company_id;
     if (!companyId) {
       this.errorMessage.set('Company ID not found');
       this.loading.set(false);
@@ -177,7 +176,7 @@ export class DepartmentsComponent implements OnInit {
 
     const filters: any = {
       page: this.currentPage(),
-      limit: this.pageSize(),
+      size: this.pageSize(),
       ...this.filters()
     };
 
@@ -187,7 +186,8 @@ export class DepartmentsComponent implements OnInit {
 
     this.departmentService.getByCompanyId(String(companyId), filters).subscribe({
       next: (response: PaginatedApiResponse<Department>) => {
-        this.departments.set(response.data || []);
+        const items = response.items || response.data || [];
+        this.departments.set(items);
         this.totalRecords.set(response.total || 0);
         this.loading.set(false);
       },
@@ -205,10 +205,11 @@ export class DepartmentsComponent implements OnInit {
    */
   openAddModal(): void {
     this.editingDepartment.set(null);
+    const companyId = this.auth.currentUser()?.companyId || this.auth.currentUser()?.company_id;
     this.formData = {
-      thName: '',
-      engName: '',
-      companyId: String(this.auth.currentUser()?.companyId || '')
+      th_name: '',
+      eng_name: '',
+      company_id: String(companyId || '')
     };
     this.showModal.set(true);
   }
@@ -219,9 +220,9 @@ export class DepartmentsComponent implements OnInit {
   editDepartment(dept: Department): void {
     this.editingDepartment.set(dept);
     this.formData = {
-      thName: dept.thName,
-      engName: dept.engName,
-      companyId: dept.companyId
+      th_name: dept.th_name || '',
+      eng_name: dept.eng_name || '',
+      company_id: dept.company_id
     };
     this.showModal.set(true);
   }
@@ -233,9 +234,9 @@ export class DepartmentsComponent implements OnInit {
     this.showModal.set(false);
     this.editingDepartment.set(null);
     this.formData = {
-      thName: '',
-      engName: '',
-      companyId: ''
+      th_name: '',
+      eng_name: '',
+      company_id: ''
     };
   }
 
@@ -243,10 +244,11 @@ export class DepartmentsComponent implements OnInit {
    * Handle form submission
    */
   onFormSubmitted(formData: Record<string, any>): void {
+    const companyId = this.auth.currentUser()?.companyId || this.auth.currentUser()?.company_id;
     this.formData = {
-      thName: formData['thName'] || '',
-      engName: formData['engName'] || '',
-      companyId: String(this.auth.currentUser()?.companyId || '')
+      th_name: formData['th_name'] || formData['thName'] || '',
+      eng_name: formData['eng_name'] || formData['engName'] || '',
+      company_id: String(companyId || '')
     };
     this.saveDepartment();
   }
@@ -255,7 +257,7 @@ export class DepartmentsComponent implements OnInit {
    * Save department (create or update)
    */
   saveDepartment(): void {
-    if (!this.formData.thName || !this.formData.engName) {
+    if (!this.formData.th_name || !this.formData.eng_name) {
       this.errorMessage.set('Please fill in all required fields');
       return;
     }
@@ -263,7 +265,7 @@ export class DepartmentsComponent implements OnInit {
     this.saving.set(true);
     this.errorMessage.set('');
 
-    const companyId = this.auth.currentUser()?.companyId;
+    const companyId = this.auth.currentUser()?.companyId || this.auth.currentUser()?.company_id;
     if (!companyId) {
       this.errorMessage.set('Company ID not found');
       this.saving.set(false);
@@ -271,9 +273,14 @@ export class DepartmentsComponent implements OnInit {
     }
 
     const dept = this.editingDepartment();
+    const deptData: DepartmentCreate = {
+      ...this.formData,
+      company_id: String(companyId)
+    };
+
     const request = dept
-      ? this.departmentService.update(dept.id, this.formData as DepartmentUpdate)
-      : this.departmentService.create({ ...this.formData, companyId: String(companyId) });
+      ? this.departmentService.update(dept.department_id, deptData)
+      : this.departmentService.create(deptData);
 
     request.subscribe({
       next: () => {
@@ -307,7 +314,7 @@ export class DepartmentsComponent implements OnInit {
     this.deleting.set(true);
     this.errorMessage.set('');
 
-    this.departmentService.delete(dept.id).subscribe({
+    this.departmentService.delete(dept.department_id).subscribe({
       next: () => {
         this.deleting.set(false);
         this.showDeleteModal.set(false);

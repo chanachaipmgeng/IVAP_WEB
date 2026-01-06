@@ -105,8 +105,8 @@ export class UserService {
     const users = this.users();
     return {
       totalUsers: users.length,
-      activeUsers: users.filter(u => u.isActive).length,
-      inactiveUsers: users.filter(u => !u.isActive).length,
+      activeUsers: users.filter(u => u.is_active !== undefined ? u.is_active : (u.isActive !== undefined ? u.isActive : true)).length,
+      inactiveUsers: users.filter(u => u.is_active !== undefined ? !u.is_active : (u.isActive !== undefined ? !u.isActive : false)).length,
       adminUsers: users.filter(u => u.roles?.includes('admin') || u.roles?.includes('ADMIN')).length
     };
   }
@@ -174,8 +174,9 @@ export class UserService {
    * @returns Observable containing updated user
    */
   assignCompanyToUser(userId: string, companyId: string): Observable<User> {
-    // Update member with company_id
-    return this.api.put<any>(API_ENDPOINTS.ADMIN.MEMBER_BY_ID(userId), { companyId }).pipe(
+    // Update member with company_id (snake_case to match backend)
+    const options = { skipTransform: true };
+    return this.api.put<any>(API_ENDPOINTS.ADMIN.MEMBER_BY_ID(userId), { company_id: companyId }, undefined, options).pipe(
       map(response => handleApiResponse<User>(response))
     );
   }
@@ -193,7 +194,7 @@ export class UserService {
     if (isNaN(roleIdNum)) {
       throw new Error(`Invalid role ID: ${roleId}`);
     }
-    
+
     // Load all permissions first to map names to IDs
     return this.api.get<any>(API_ENDPOINTS.ADMIN.PERMISSIONS).pipe(
       switchMap((permissions: any) => {
@@ -205,10 +206,10 @@ export class UserService {
         } else if (permissions && typeof permissions === 'object') {
           allPermissions = permissions.data || permissions.items || [];
         }
-        
+
         for (const permissionName of permissionNames) {
-          const permission = allPermissions.find((p: any) => 
-            p.permissionName === permissionName || 
+          const permission = allPermissions.find((p: any) =>
+            p.permissionName === permissionName ||
             p.permission_name === permissionName ||
             p.permissionCode === permissionName ||
             p.permission_code === permissionName ||
@@ -220,7 +221,7 @@ export class UserService {
             console.warn(`Permission not found: ${permissionName}`);
           }
         }
-        
+
         // Now call the backend with permission IDs
         return this.api.put<any>(`/roles/${roleIdNum}/permissions`, permissionIds).pipe(
           map(response => handleApiResponse<Role>(response))

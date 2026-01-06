@@ -1,8 +1,9 @@
 /**
  * Device Service
- * 
+ *
  * Service for managing devices (kiosks, doors, etc.)
  * Matches backend device routes
+ * Uses snake_case models to match backend API
  */
 
 import { Injectable } from '@angular/core';
@@ -26,14 +27,24 @@ export class DeviceService {
   constructor(private api: ApiService) {}
 
   /**
+   * Helper to ensure skipTransform is used for all device API calls
+   */
+  private getOptions() {
+    return { skipTransform: true };
+  }
+
+  /**
    * Get device API key (public endpoint)
    * Backend: GET /api/v1/device/devices/{deviceId}/key
    * @param deviceId Device ID
    * @returns Observable containing API key
    */
   public getDeviceApiKeyPublic(deviceId: UUID): Observable<DeviceApiKeyResponse> {
-    return this.api.get<any>(`/devices/${deviceId}/key`).pipe(
-      map(response => handleApiResponse<DeviceApiKeyResponse>(response))
+    return this.api.get<any>(`/devices/${deviceId}/key`, undefined, this.getOptions()).pipe(
+      map(response => {
+        const data = handleApiResponse<DeviceApiKeyResponse>(response);
+        return data;
+      })
     );
   }
 
@@ -45,8 +56,11 @@ export class DeviceService {
    * @returns Observable containing created device
    */
   public createDevice(companyId: UUID, data: DeviceCreate): Observable<Device> {
-    return this.api.post<any>(`/devices/company/${companyId}/devices`, data).pipe(
-      map(response => handleApiResponse<Device>(response))
+    return this.api.post<any>(`/devices/company/${companyId}/devices`, data, undefined, this.getOptions()).pipe(
+      map(response => {
+        const data = handleApiResponse<Device>(response);
+        return data;
+      })
     );
   }
 
@@ -58,7 +72,7 @@ export class DeviceService {
    * @returns Observable containing paginated devices
    */
   public getDevices(companyId: UUID, filters?: DeviceFilters): Observable<PaginatedApiResponse<Device>> {
-    return this.api.get<any>(`/devices/company/${companyId}/devices`, filters).pipe(
+    return this.api.get<any>(`/devices/company/${companyId}/devices`, filters, this.getOptions()).pipe(
       map(response => handlePaginatedResponse<Device>(response))
     );
   }
@@ -71,8 +85,11 @@ export class DeviceService {
    * @returns Observable containing device
    */
   public getDeviceById(deviceId: UUID, companyId: UUID): Observable<Device> {
-    return this.api.get<any>(`/devices/${deviceId}`, { companyId }).pipe(
-      map(response => handleApiResponse<Device>(response))
+    return this.api.get<any>(`/devices/${deviceId}`, { companyId }, this.getOptions()).pipe(
+      map(response => {
+        const data = handleApiResponse<Device>(response);
+        return data;
+      })
     );
   }
 
@@ -92,12 +109,18 @@ export class DeviceService {
     useScopedPath: boolean = false
   ): Observable<Device> {
     if (useScopedPath) {
-      return this.api.put<any>(`/devices/company/${companyId}/devices/${deviceId}`, data).pipe(
-        map(response => handleApiResponse<Device>(response))
+      return this.api.put<any>(`/devices/company/${companyId}/devices/${deviceId}`, data, undefined, this.getOptions()).pipe(
+        map(response => {
+          const data = handleApiResponse<Device>(response);
+          return data;
+        })
       );
     } else {
-      return this.api.put<any>(`/devices/${deviceId}`, data, { companyId }).pipe(
-        map(response => handleApiResponse<Device>(response))
+      return this.api.put<any>(`/devices/${deviceId}`, data, { companyId }, this.getOptions()).pipe(
+        map(response => {
+          const data = handleApiResponse<Device>(response);
+          return data;
+        })
       );
     }
   }
@@ -116,9 +139,9 @@ export class DeviceService {
     useScopedPath: boolean = false
   ): Observable<void> {
     if (useScopedPath) {
-      return this.api.delete<void>(`/devices/company/${companyId}/devices/${deviceId}`);
+      return this.api.delete<void>(`/devices/company/${companyId}/devices/${deviceId}`, undefined, undefined, this.getOptions());
     } else {
-      return this.api.delete<void>(`/devices/${deviceId}`, { companyId });
+      return this.api.delete<void>(`/devices/${deviceId}`, { companyId }, undefined, this.getOptions());
     }
   }
 
@@ -130,7 +153,7 @@ export class DeviceService {
    * @returns Observable containing link result
    */
   public linkDeviceToEvent(deviceId: UUID, eventId: UUID | null): Observable<any> {
-    return this.api.post<any>(`/devices/${deviceId}/link-event`, { eventId }).pipe(
+    return this.api.post<any>(`/devices/${deviceId}/link-event`, { eventId }, undefined, this.getOptions()).pipe(
       map(response => handleApiResponse<any>(response))
     );
   }
@@ -142,7 +165,7 @@ export class DeviceService {
    * @returns Observable containing device statistics
    */
   public getDeviceStatistics(companyId: UUID): Observable<any> {
-    return this.api.get<any>(`/devices/company/${companyId}/devices/statistics`).pipe(
+    return this.api.get<any>(`/devices/company/${companyId}/devices/statistics`, undefined, this.getOptions()).pipe(
       map(response => handleApiResponse<any>(response))
     );
   }
@@ -154,7 +177,7 @@ export class DeviceService {
    * @returns Observable containing device configuration
    */
   public getDeviceConfig(deviceId: UUID): Observable<any> {
-    return this.api.get<any>(`/devices/${deviceId}/config`).pipe(
+    return this.api.get<any>(`/devices/${deviceId}/config`, undefined, this.getOptions()).pipe(
       map(response => handleApiResponse<any>(response))
     );
   }
@@ -167,7 +190,7 @@ export class DeviceService {
    * @returns Observable containing updated configuration
    */
   public updateDeviceConfig(deviceId: UUID, config: any): Observable<any> {
-    return this.api.put<any>(`/devices/${deviceId}/config`, config).pipe(
+    return this.api.put<any>(`/devices/${deviceId}/config`, config, undefined, this.getOptions()).pipe(
       map(response => handleApiResponse<any>(response))
     );
   }
@@ -180,7 +203,7 @@ export class DeviceService {
    * @returns Observable containing heartbeat response
    */
   public deviceHeartbeat(deviceId: UUID, status: any): Observable<any> {
-    return this.api.post<any>(`/devices/${deviceId}/heartbeat`, status).pipe(
+    return this.api.post<any>(`/devices/${deviceId}/heartbeat`, status, undefined, this.getOptions()).pipe(
       map(response => handleApiResponse<any>(response))
     );
   }
@@ -193,8 +216,11 @@ export class DeviceService {
    * @returns Observable containing updated device
    */
   public regenerateApiKey(deviceId: UUID, companyId: UUID): Observable<Device> {
-    return this.api.post<any>(`/devices/${deviceId}/regenerate-key`, {}, { companyId }).pipe(
-      map(response => handleApiResponse<Device>(response))
+    return this.api.post<any>(`/devices/${deviceId}/regenerate-key`, {}, { companyId }, this.getOptions()).pipe(
+      map(response => {
+        const data = handleApiResponse<Device>(response);
+        return data;
+      })
     );
   }
 
@@ -206,7 +232,7 @@ export class DeviceService {
    * @returns Observable containing API key
    */
   public getDeviceApiKey(deviceId: UUID, companyId: UUID): Observable<DeviceApiKeyResponse> {
-    return this.api.get<any>(`/devices/company/${companyId}/devices/${deviceId}/key`).pipe(
+    return this.api.get<any>(`/devices/company/${companyId}/devices/${deviceId}/key`, undefined, this.getOptions()).pipe(
       map(response => handleApiResponse<DeviceApiKeyResponse>(response))
     );
   }

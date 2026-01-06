@@ -1,9 +1,9 @@
 /**
  * Guest Management Models
- * 
+ *
  * Guest system for event registration and management
  * Includes Guest, GuestRegistration, GuestService
- * 
+ *
  * NOTE: Guest is different from Visitor
  * - Guest: For events and special occasions
  * - Visitor: For regular visits
@@ -15,52 +15,55 @@ import { GuestStatus } from './enums.model';
 /**
  * Guest Interface
  * Guest information for events
- * ตรงกับ GuestResponse ใน backend (guest_schema.py)
+ * Matches GuestResponse schema from backend (guest_schema.py)
+ * Uses snake_case to match backend
  */
 export interface Guest extends BaseTimestamps {
   // Primary identification
   id: UUID;  // id from backend (UUID)
-  companyId: UUID;  // company_id from backend (REQUIRED)
-  
+  company_id: UUID;  // company_id from backend (REQUIRED)
+
   // Personal information (from GuestBase)
   name: string;  // name from backend (REQUIRED)
   email: string;  // email from backend (EmailStr, REQUIRED)
   phone: string;  // phone from backend (REQUIRED)
   company?: string;  // company from backend (optional)
-  
+
   // Visit information (from GuestBase)
   purpose: string;  // purpose from backend (REQUIRED)
-  hostEmployeeId?: UUID;  // host_employee_id from backend (optional)
-  hostEmployeeName?: string;  // host_employee_name from backend (optional)
+  host_employee_id?: UUID;  // host_employee_id from backend (optional)
+  host_employee_name?: string;  // host_employee_name from backend (optional)
   notes?: string;  // notes from backend (optional)
-  expectedDuration?: number;  // expected_duration from backend (optional, in minutes)
-  expiryDate?: string;  // expiry_date from backend (optional, datetime)
-  
+  expected_duration?: number;  // expected_duration from backend (optional, in minutes)
+  expiry_date?: string;  // expiry_date from backend (optional, datetime)
+
   // Status and tracking (from GuestResponse)
   status: GuestStatus;  // status from backend (REQUIRED: 'pending', 'checked-in', 'checked-out', 'expired')
-  checkInTime?: string;  // check_in_time from backend (optional, datetime)
-  checkOutTime?: string;  // check_out_time from backend (optional, datetime)
+  check_in_time?: string;  // check_in_time from backend (optional, datetime)
+  check_out_time?: string;  // check_out_time from backend (optional, datetime)
 }
 
 /**
  * Guest Create Request
+ * Matches GuestCreate schema from backend
  */
 export interface GuestCreate {
-  companyId: UUID;  // REQUIRED
+  company_id: UUID;  // REQUIRED
   name: string;
   email: string;
   phone: string;
   company?: string;
   purpose: string;
-  hostEmployeeId?: UUID;
-  hostEmployeeName?: string;
+  host_employee_id?: UUID;
+  host_employee_name?: string;
   notes?: string;
-  expectedDuration?: number;
-  expiryDate?: string;
+  expected_duration?: number;
+  expiry_date?: string;
 }
 
 /**
  * Guest Update Request
+ * Matches GuestUpdate schema from backend
  */
 export interface GuestUpdate {
   name?: string;
@@ -68,28 +71,30 @@ export interface GuestUpdate {
   phone?: string;
   company?: string;
   purpose?: string;
-  hostEmployeeId?: UUID;
-  hostEmployeeName?: string;
+  host_employee_id?: UUID;
+  host_employee_name?: string;
   notes?: string;
-  expectedDuration?: number;
-  expiryDate?: string;
+  expected_duration?: number;
+  expiry_date?: string;
   status?: GuestStatus;
 }
 
 /**
  * Guest Check-in Request
+ * Matches GuestCheckIn schema from backend
  */
 export interface GuestCheckIn {
-  checkInTime?: string;
+  check_in_time?: string;
   location?: string;
   notes?: string;
 }
 
 /**
  * Guest Check-out Request
+ * Matches GuestCheckOut schema from backend
  */
 export interface GuestCheckOut {
-  checkOutTime?: string;
+  check_out_time?: string;
   notes?: string;
 }
 
@@ -101,10 +106,10 @@ export interface GuestRegistration extends BaseTimestamps {
   id: UUID;  // registration_id
   guestId: UUID;  // FK to guests.guest_id
   eventId: UUID;  // FK to events.event_id
-  
+
   registrationCode: string;
   registrationType?: string;
-  
+
   // Guest info (denormalized for performance)
   fullName: string;
   email: string;
@@ -112,7 +117,7 @@ export interface GuestRegistration extends BaseTimestamps {
   organization?: string;
   position?: string;
   specialRequirements?: string;
-  
+
   // Status
   status: 'pending' | 'confirmed' | 'cancelled' | 'attended';
   confirmedAt?: string;
@@ -142,14 +147,14 @@ export interface GuestRegistrationCreate {
 export interface GuestService extends BaseTimestamps {
   id: UUID;  // service_id
   guestId: UUID;  // FK to member.member_id (guest actor)
-  
+
   serviceType: string;
   serviceName: string;
   description?: string;
-  
+
   providedAt?: string;
   providedBy?: UUID;
-  
+
   cost?: number;
   status: 'requested' | 'approved' | 'provided' | 'cancelled';
   notes?: string;
@@ -172,13 +177,13 @@ export interface GuestServiceCreate {
  */
 export interface GuestFilters {
   search?: string;
-  companyId?: UUID;
+  company_id?: UUID;
   status?: GuestStatus;
-  hostEmployeeId?: UUID;
-  expiryFrom?: string;
-  expiryTo?: string;
-  checkInFrom?: string;
-  checkInTo?: string;
+  host_employee_id?: UUID;
+  expiry_from?: string;
+  expiry_to?: string;
+  check_in_from?: string;
+  check_in_to?: string;
 }
 
 /**
@@ -194,12 +199,12 @@ export interface GuestStats {
   todayGuests: number;
   thisWeekGuests: number;
   thisMonthGuests: number;
-  
+
   // Event related
   totalRegistrations: number;
   confirmedRegistrations: number;
   attendedRegistrations: number;
-  
+
   // Service related
   totalServices: number;
   requestedServices: number;
@@ -216,8 +221,8 @@ export interface GuestSummary {
   phone: string;
   company?: string;
   status: GuestStatus;
-  hostEmployeeName?: string;
-  checkInTime?: string;
+  host_employee_name?: string;
+  check_in_time?: string;
 }
 
 // ==================== Helper Functions ====================
@@ -233,21 +238,21 @@ export function isGuestCheckedIn(guest: Guest): boolean {
  * Check if guest has expired
  */
 export function isGuestExpired(guest: Guest): boolean {
-  if (!guest.expiryDate) {
+  if (!guest.expiry_date) {
     return false;
   }
-  return new Date(guest.expiryDate) < new Date();
+  return new Date(guest.expiry_date) < new Date();
 }
 
 /**
  * Get guest duration in minutes
  */
 export function getGuestDuration(guest: Guest): number | null {
-  if (!guest.checkInTime || !guest.checkOutTime) {
+  if (!guest.check_in_time || !guest.check_out_time) {
     return null;
   }
-  const checkIn = new Date(guest.checkInTime);
-  const checkOut = new Date(guest.checkOutTime);
+  const checkIn = new Date(guest.check_in_time);
+  const checkOut = new Date(guest.check_out_time);
   return Math.floor((checkOut.getTime() - checkIn.getTime()) / (1000 * 60));
 }
 
