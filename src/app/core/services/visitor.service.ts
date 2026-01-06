@@ -174,4 +174,15 @@ export class VisitorService extends BaseCrudService<Visitor, VisitorCreate, Visi
     const options = { skipTransform: true };
     return this.api.post<VisitorBadge>(`/visitor-badges/${badgeId}/return`, data, undefined, options);
   }
+
+  // ==================== Export ====================
+
+  /**
+   * Export visitors data
+   * Backend: GET /api/v1/visitors/export
+   */
+  exportVisitors(filters?: VisitorFilters): Observable<Blob> {
+    const options = { skipTransform: true, responseType: 'blob' as const };
+    return this.api.get<Blob>(`${this.baseEndpoint}/export`, filters, options);
+  }
 }

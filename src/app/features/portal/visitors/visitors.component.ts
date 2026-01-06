@@ -82,12 +82,12 @@ export class VisitorsComponent extends BaseComponent implements OnInit {
   ]);
 
   columns: TableColumn[] = [
-    { key: 'firstName', label: 'First Name', sortable: true },
-    { key: 'lastName', label: 'Last Name', sortable: true },
-    { key: 'companyName', label: 'Company', sortable: true },
-    { key: 'visitPurpose', label: 'Purpose' },
-    { key: 'hostName', label: 'Host' },
-    { key: 'checkInTime', label: 'Check-in', render: (value) => value ? new Date(value).toLocaleString() : '-' },
+    { key: 'first_name', label: 'First Name', sortable: true },  // snake_case
+    { key: 'last_name', label: 'Last Name', sortable: true },  // snake_case
+    { key: 'company_name', label: 'Company', sortable: true },  // snake_case
+    { key: 'visit_purpose', label: 'Purpose' },  // snake_case
+    { key: 'host_name', label: 'Host' },  // snake_case
+    { key: 'check_in_time', label: 'Check-in', render: (value) => value ? new Date(value).toLocaleString() : '-' },  // snake_case
     {
       key: 'status',
       label: 'Status',
@@ -115,13 +115,13 @@ export class VisitorsComponent extends BaseComponent implements OnInit {
   ) {
     super();
     this.visitorForm = this.fb.group({
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
+      first_name: ['', [Validators.required]],  // snake_case
+      last_name: ['', [Validators.required]],  // snake_case
       email: ['', [this.validationService.emailValidator()]],
       phone: ['', [this.validationService.phoneValidator()]],
-      companyName: [''],
-      visitorType: [VisitorType.GUEST, [Validators.required]],
-      visitPurpose: [VisitPurpose.MEETING, [Validators.required]]
+      company_name: [''],  // snake_case
+      visitor_type: [VisitorType.GUEST, [Validators.required]],  // snake_case
+      visit_purpose: [VisitPurpose.MEETING, [Validators.required]]  // snake_case
     });
   }
 
@@ -154,13 +154,13 @@ export class VisitorsComponent extends BaseComponent implements OnInit {
   openAddModal(): void {
     this.editingVisitor.set(null);
     this.visitorForm.reset({
-      firstName: '',
-      lastName: '',
+      first_name: '',  // snake_case
+      last_name: '',  // snake_case
       email: '',
       phone: '',
-      companyName: '',
-      visitorType: VisitorType.GUEST,
-      visitPurpose: VisitPurpose.MEETING
+      company_name: '',  // snake_case
+      visitor_type: VisitorType.GUEST,  // snake_case
+      visit_purpose: VisitPurpose.MEETING  // snake_case
     });
     this.visitorForm.markAsUntouched();
     this.errorMessage.set('');
@@ -173,13 +173,13 @@ export class VisitorsComponent extends BaseComponent implements OnInit {
   editVisitor(visitor: Visitor): void {
     this.editingVisitor.set(visitor);
     this.visitorForm.patchValue({
-      firstName: visitor.firstName,
-      lastName: visitor.lastName,
+      first_name: visitor.first_name,  // snake_case
+      last_name: visitor.last_name,  // snake_case
       email: visitor.email,
       phone: visitor.phone,
-      companyName: visitor.companyName,
-      visitorType: visitor.visitorType,
-      visitPurpose: visitor.visitPurpose
+      company_name: visitor.company_name,  // snake_case
+      visitor_type: visitor.visitor_type,  // snake_case
+      visit_purpose: visitor.visit_purpose  // snake_case
     });
     this.visitorForm.markAsUntouched();
     this.errorMessage.set('');
@@ -206,7 +206,7 @@ export class VisitorsComponent extends BaseComponent implements OnInit {
     this.errorMessage.set('');
     const formValue = this.visitorForm.value;
     const request = this.editingVisitor()
-      ? this.visitorService.updateVisitor(this.editingVisitor()!.id, formValue as any)
+      ? this.visitorService.updateVisitor(this.editingVisitor()!.visitor_id, formValue as VisitorCreate)  // snake_case: visitor_id
       : this.visitorService.createVisitor(formValue as VisitorCreate);
 
     // ✅ Auto-unsubscribe on component destroy
@@ -236,12 +236,12 @@ export class VisitorsComponent extends BaseComponent implements OnInit {
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
       forkJoin({
-        info: this.visitorService.getVisitorById(visitor.id),
-        visits: this.visitorService.getVisitorVisits(visitor.id)
+        info: this.visitorService.getVisitorById(visitor.visitor_id),  // snake_case: visitor_id
+        visits: this.visitorService.getVisits({ visitor_id: visitor.visitor_id })  // snake_case: visitor_id, ใช้ getVisits แทน getVisitorVisits
       }).pipe(finalize(() => this.detailLoading.set(false))),
       ({ info, visits }) => {
         this.detailVisitor.set(info);
-        this.detailVisits.set(visits);
+        this.detailVisits.set(visits.data || []);  // Extract data from PaginatedApiResponse
       },
       (error) => {
         this.errorHandler.handleApiError(error);
@@ -299,13 +299,13 @@ export class VisitorsComponent extends BaseComponent implements OnInit {
 
   getFieldLabel(fieldName: string): string {
     const labels: Record<string, string> = {
-      'firstName': 'ชื่อ',
-      'lastName': 'นามสกุล',
+      'first_name': 'ชื่อ',  // snake_case
+      'last_name': 'นามสกุล',  // snake_case
       'email': 'Email',
       'phone': 'เบอร์โทรศัพท์',
-      'companyName': 'Company Name',
-      'visitorType': 'Visitor Type',
-      'visitPurpose': 'Visit Purpose'
+      'company_name': 'Company Name',  // snake_case
+      'visitor_type': 'Visitor Type',  // snake_case
+      'visit_purpose': 'Visit Purpose'  // snake_case
     };
     return labels[fieldName] || fieldName;
   }

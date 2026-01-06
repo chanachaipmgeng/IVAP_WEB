@@ -68,12 +68,13 @@ export class ShiftsComponent extends BaseComponent implements OnInit {
   selectedEmployees = signal<string[]>([]);
   loadingAssignments = signal(false);
 
-  // Getters from service
-  getShifts = () => this.shiftService.getShifts();
-  getLoading = () => this.shiftService.getLoading();
-
-  // Computed signals
-  shifts = computed(() => this.getShifts()());
+  // Local signals for shifts data
+  private _shifts = signal<Shift[]>([]);
+  private _loading = signal(false);
+  
+  // Public readonly signals
+  shifts = this._shifts.asReadonly();
+  loading = this._loading.asReadonly();
 
   // Page actions
   pageActions = computed<PageAction[]>(() => [
@@ -186,14 +187,17 @@ export class ShiftsComponent extends BaseComponent implements OnInit {
     const companyId = this.auth.getCurrentUser()?.companyId || this.auth.getCurrentUser()?.company_id;
     if (!companyId) return;
 
+    this._loading.set(true);
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
       this.shiftService.getByCompanyId(String(companyId)),
       (response) => {
-        // Data will be handled by service signals if available
+        this._shifts.set(response.data || []);
+        this._loading.set(false);
       },
       (error) => {
         console.error('Error loading shifts:', error);
+        this._loading.set(false);
       }
     );
   }
@@ -364,7 +368,7 @@ export class ShiftsComponent extends BaseComponent implements OnInit {
       .then(() => {
         this.saving.set(false);
         this.selectedEmployees.set([]);
-        this.loadShiftAssignments(shift.id);
+        this.loadShiftAssignments(shift.shift_id);  // snake_case: shift_id
         alert('Shift assigned successfully!');
       })
       .catch(error => {
@@ -407,7 +411,7 @@ export class ShiftsComponent extends BaseComponent implements OnInit {
    */
   getEmployeeDetails(employeeId: string): string {
     const employee = this.employees().find(e => e.id === employeeId);
-    return employee ? `${employee.department} - ${employee.position}` : '';
+    return employee ? `${employee.department || ''} - ${employee.position || ''}` : '';
   }
 
   /**

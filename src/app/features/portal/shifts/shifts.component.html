@@ -33,7 +33,7 @@
   <!-- Assignment Modal -->
   <app-modal
     [isOpen]="showAssignmentModal()"
-    [title]="('pages.shifts.assignEmployees' | translate) + ' - ' + (selectedShiftForAssignment()?.shiftName || '')"
+    [title]="('pages.shifts.assignEmployees' | translate) + ' - ' + (selectedShiftForAssignment()?.shift_name || '')"
     [loading]="saving()"
     (closed)="closeAssignmentModal()"
   >
@@ -49,10 +49,10 @@
           <div class="flex items-center justify-between">
             <div>
               <p class="font-medium text-gray-900 dark:text-gray-100">
-                {{ selectedShiftForAssignment()?.shiftName }}
+                {{ selectedShiftForAssignment()?.shift_name }}
               </p>
               <p class="text-sm text-gray-600 dark:text-gray-400">
-                ⏰ {{ selectedShiftForAssignment()?.startTime }} - {{ selectedShiftForAssignment()?.endTime }}
+                ⏰ {{ selectedShiftForAssignment()?.start_time }} - {{ selectedShiftForAssignment()?.end_time }}
               </p>
             </div>
             <div class="text-right">
@@ -75,16 +75,16 @@
             </div>
           } @else {
             <div class="space-y-2 max-h-60 overflow-y-auto">
-              @for (assignment of shiftAssignments(); track assignment.id) {
+              @for (assignment of shiftAssignments(); track assignment.user_shift_id) {
                 <div class="flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
                   <div class="flex items-center space-x-3">
                     <span class="text-2xl">👤</span>
                     <div>
                       <p class="font-medium text-gray-900 dark:text-gray-100">
-                        {{ getEmployeeName(assignment.companyEmployeeId) }}
+                        {{ getEmployeeName(assignment.company_employee_id) }}
                       </p>
                       <p class="text-sm text-gray-500 dark:text-gray-400">
-                        {{ getEmployeeDetails(assignment.companyEmployeeId) }}
+                        {{ getEmployeeDetails(assignment.company_employee_id) }}
                       </p>
                     </div>
                   </div>

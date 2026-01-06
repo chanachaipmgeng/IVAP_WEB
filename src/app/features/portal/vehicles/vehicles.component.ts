@@ -153,7 +153,7 @@ export class VehiclesComponent extends BaseComponent implements OnInit {
           { value: 'motorcycle', label: 'Motorcycle' },
           { value: 'truck', label: 'Truck' }
         ],
-        value: this.filters.vehicleType
+        value: this.filters.vehicle_type  // snake_case
       }
   ]);
 

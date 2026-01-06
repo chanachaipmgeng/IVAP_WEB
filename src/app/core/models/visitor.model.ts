@@ -1,6 +1,6 @@
 /**
  * Visitor Management Models
- * 
+ *
  * Uses snake_case to match backend VisitorResponse schema (visitor_schema.py)
  */
 
@@ -15,54 +15,54 @@ export interface Visitor extends BaseTimestamps {
   // Primary identification
   visitor_id: UUID;
   company_id: UUID;
-  
+
   // Personal information (from VisitorBase)
   first_name: string;
   last_name: string;
   email?: string;
   phone?: string;
   id_card_number?: string;
-  
+
   // Company information (from VisitorBase)
   company_name?: string;
   position?: string;
   address?: string;
-  
+
   // Visit classification (from VisitorBase)
   visitor_type: VisitorType;
   visit_purpose: VisitPurpose;
-  
+
   // Host information (from VisitorBase)
   host_employee_id?: UUID;
   host_name?: string;
   host_phone?: string;
   host_email?: string;
-  
+
   // Schedule (from VisitorBase)
   appointment_date?: string;
   expected_duration_hours?: number;
   meeting_room?: string;
   notes?: string;
-  
+
   // Status and tracking (from VisitorResponse)
   status: VisitorStatus;
   qr_code?: string;
   badge_number?: string;
-  
+
   // Check-in/out information (from VisitorResponse)
   check_in_time?: string;
   check_out_time?: string;
   actual_duration_minutes?: number;
-  
+
   // Photos (from VisitorResponse)
   photo_path?: string;
   id_card_photo_path?: string;
-  
+
   // Approval workflow (from VisitorResponse)
   approved_by?: UUID;
   approved_at?: string;
   approval_notes?: string;
-  
+
   // Security (from VisitorResponse)
   is_blacklisted: boolean;
   blacklist_reason?: string;
@@ -163,36 +163,36 @@ export interface VisitorVisit extends BaseTimestamps {
   visit_id: UUID;
   visitor_id: UUID;
   company_id: UUID;
-  
+
   // Schedule
   visit_date: string;
   expected_start_time?: string;
   expected_end_time?: string;
   actual_start_time?: string;
   actual_end_time?: string;
-  
+
   // Host info
   host_employee_id?: UUID;
   host_name?: string;
   host_phone?: string;
-  
+
   // Visit details
   visitor_type: VisitorType;
   visit_purpose: VisitPurpose;
   meeting_room?: string;
   notes?: string;
-  
+
   // Status and tracking
   status: VisitorStatus;
   qr_code?: string;
   badge_number?: string;
-  
+
   // Check-in/out
   check_in_time?: string;
   check_out_time?: string;
   check_in_location?: string;
   check_out_location?: string;
-  
+
   // Approval
   approved_by?: UUID;
   approved_at?: string;
@@ -227,17 +227,17 @@ export interface VisitorInvitation extends BaseTimestamps {
   invitation_code: string;
   invitation_type: string;
   invitation_status: string;
-  
+
   // Inviter info
   invited_by: UUID;
   invited_by_name: string;
   invited_by_email?: string;
-  
+
   // Guest info
   guest_email?: string;
   guest_phone?: string;
   guest_name?: string;
-  
+
   // Visit details
   visit_date: string;
   expected_start_time?: string;
@@ -245,7 +245,7 @@ export interface VisitorInvitation extends BaseTimestamps {
   meeting_room?: string;
   visit_purpose: VisitPurpose;
   notes?: string;
-  
+
   // Tracking
   sent_at?: string;
   delivered_at?: string;
@@ -282,18 +282,18 @@ export interface VisitorBadge extends BaseTimestamps {
   badge_number: string;
   badge_type: string;
   badge_status: string;
-  
+
   // Assignment
   issued_to_visitor_id?: UUID;
   issued_to_visit_id?: UUID;
   issued_by: UUID;
   issued_at: string;
-  
+
   // Return
   returned_at?: string;
   returned_by?: UUID;
   return_notes?: string;
-  
+
   expires_at?: string;
 }
 
@@ -323,6 +323,7 @@ export interface VisitorBadgeReturn {
 export interface VisitorFilters {
   search?: string;
   company_id?: UUID;
+  visitor_id?: UUID;  // For filtering visits by specific visitor
   status?: VisitorStatus;
   visitor_type?: VisitorType;
   visit_purpose?: VisitPurpose;
@@ -349,11 +350,11 @@ export interface VisitorStatistics {
   today_visitors: number;
   this_week_visitors: number;
   this_month_visitors: number;
-  
+
   // By type
   visitors_by_type: Record<VisitorType, number>;
   visitors_by_purpose: Record<VisitPurpose, number>;
-  
+
   // Average metrics
   average_visit_duration?: number;
   average_wait_time?: number;
