@@ -58,20 +58,20 @@
           <div class="flex-1">
             <h4 class="font-bold text-green-800">Reservation Created Successfully!</h4>
             <div class="mt-2 space-y-1 text-sm text-green-700">
-              @if (reservationResult()?.spaceId) {
-                <p><strong>Space:</strong> {{ reservationResult()?.spaceId }}</p>
+              @if (reservationResult()?.space_id) {
+                <p><strong>Space:</strong> {{ reservationResult()?.space_id }}</p>
               }
-              @if (reservationResult()?.startTime && reservationResult()?.endTime) {
+              @if (reservationResult()?.start_time && reservationResult()?.end_time) {
                 <p><strong>Period:</strong> 
-                  {{ formatDateTime(reservationResult()!.startTime) }} - 
-                  {{ formatDateTime(reservationResult()!.endTime) }}
+                  {{ formatDateTime(reservationResult()!.start_time) }} - 
+                  {{ formatDateTime(reservationResult()!.end_time) }}
                 </p>
               }
-              @if (reservationResult()?.qrCode) {
-                <p><strong>QR Code:</strong> {{ reservationResult()?.qrCode }}</p>
+              @if (reservationResult()?.qr_code) {
+                <p><strong>QR Code:</strong> {{ reservationResult()?.qr_code }}</p>
               }
-              @if (reservationResult()?.totalCost) {
-                <p><strong>Total Cost:</strong> ฿{{ reservationResult()?.totalCost }}</p>
+              @if (reservationResult()?.total_cost) {
+                <p><strong>Total Cost:</strong> ฿{{ reservationResult()?.total_cost }}</p>
               }
             </div>
           </div>
@@ -86,16 +86,16 @@
           Select Parking Space *
         </label>
         <select
-          [(ngModel)]="reservationData.spaceId"
+          [(ngModel)]="reservationData.space_id"
           class="glass-input w-full"
           required
           [disabled]="processing()"
         >
           <option value="">-- Select Space --</option>
-          @for (space of availableSpaces(); track space.spaceId) {
-            <option [value]="space.spaceId">
-              {{ space.spaceNumber }} @if (space.zone) { - {{ space.zone }} }
-              @if (space.hourlyRate) { - {{ space.hourlyRate }}฿/hr }
+          @for (space of availableSpaces(); track space.space_id) {
+            <option [value]="space.space_id">
+              {{ space.space_number }} @if (space.zone) { - {{ space.zone }} }
+              @if (space.hourly_rate) { - {{ space.hourly_rate }}฿/hr }
             </option>
           }
         </select>
@@ -109,7 +109,7 @@
           License Plate (Optional)
         </label>
         <input
-          [(ngModel)]="reservationData.plateNumber"
+          [(ngModel)]="reservationData.plate_number"
           type="text"
           class="glass-input w-full"
           placeholder="e.g., ABC-1234"
@@ -123,7 +123,7 @@
             Start Time *
           </label>
           <input
-            [(ngModel)]="reservationData.startTime"
+            [(ngModel)]="reservationData.start_time"
             type="datetime-local"
             class="glass-input w-full"
             required
@@ -136,7 +136,7 @@
             End Time *
           </label>
           <input
-            [(ngModel)]="reservationData.endTime"
+            [(ngModel)]="reservationData.end_time"
             type="datetime-local"
             class="glass-input w-full"
             required
@@ -150,7 +150,7 @@
           Reserver Name *
         </label>
         <input
-          [(ngModel)]="reservationData.reserverName"
+          [(ngModel)]="reservationData.reserver_name"
           type="text"
           class="glass-input w-full"
           placeholder="John Doe"
@@ -165,7 +165,7 @@
             Phone
           </label>
           <input
-            [(ngModel)]="reservationData.reserverPhone"
+            [(ngModel)]="reservationData.reserver_phone"
             type="tel"
             class="glass-input w-full"
             placeholder="08X-XXX-XXXX"
@@ -178,7 +178,7 @@
             Email
           </label>
           <input
-            [(ngModel)]="reservationData.reserverEmail"
+            [(ngModel)]="reservationData.reserver_email"
             type="email"
             class="glass-input w-full"
             placeholder="john@example.com"

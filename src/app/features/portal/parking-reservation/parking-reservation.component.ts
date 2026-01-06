@@ -32,13 +32,13 @@ export class ParkingReservationComponent implements OnInit {
   errorMessage = signal<string | null>(null);
   
   reservationData: Partial<ParkingReservationCreate> = {
-    spaceId: '',
-    plateNumber: '',
-    reserverName: '',
-    reserverPhone: '',
-    reserverEmail: '',
-    startTime: new Date().toISOString().slice(0, 16),
-    endTime: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString().slice(0, 16),
+    space_id: '',  // snake_case
+    plate_number: '',  // snake_case
+    reserver_name: '',  // snake_case
+    reserver_phone: '',  // snake_case
+    reserver_email: '',  // snake_case
+    start_time: new Date().toISOString().slice(0, 16),  // snake_case
+    end_time: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString().slice(0, 16),  // snake_case
     notes: ''
   };
   
@@ -68,13 +68,13 @@ export class ParkingReservationComponent implements OnInit {
   openModal(): void {
     this.showModal.set(true);
     this.reservationData = {
-      spaceId: '',
-      plateNumber: '',
-      reserverName: '',
-      reserverPhone: '',
-      reserverEmail: '',
-      startTime: new Date().toISOString().slice(0, 16),
-      endTime: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString().slice(0, 16),
+      space_id: '',  // snake_case
+      plate_number: '',  // snake_case
+      reserver_name: '',  // snake_case
+      reserver_phone: '',  // snake_case
+      reserver_email: '',  // snake_case
+      start_time: new Date().toISOString().slice(0, 16),  // snake_case
+      end_time: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString().slice(0, 16),  // snake_case
       notes: ''
     };
     this.success.set(false);
@@ -89,15 +89,15 @@ export class ParkingReservationComponent implements OnInit {
   }
 
   async createReservation(): Promise<void> {
-    if (!this.reservationData.spaceId?.trim()) {
+    if (!this.reservationData.space_id?.trim()) {  // snake_case
       this.errorMessage.set('Please select a parking space');
       return;
     }
-    if (!this.reservationData.reserverName?.trim()) {
+    if (!this.reservationData.reserver_name?.trim()) {  // snake_case
       this.errorMessage.set('Please enter reserver name');
       return;
     }
-    if (!this.reservationData.startTime || !this.reservationData.endTime) {
+    if (!this.reservationData.start_time || !this.reservationData.end_time) {  // snake_case
       this.errorMessage.set('Please select start and end times');
       return;
     }
@@ -107,10 +107,10 @@ export class ParkingReservationComponent implements OnInit {
 
     const createData: ParkingReservationCreate = {
       ...this.reservationData,
-      spaceId: this.reservationData.spaceId!,
-      reserverName: this.reservationData.reserverName!,
-      startTime: this.reservationData.startTime!,
-      endTime: this.reservationData.endTime!
+      space_id: this.reservationData.space_id!,  // snake_case
+      reserver_name: this.reservationData.reserver_name!,  // snake_case
+      start_time: this.reservationData.start_time!,  // snake_case
+      end_time: this.reservationData.end_time!  // snake_case
     };
 
     this.parkingService.createReservation(createData).subscribe({

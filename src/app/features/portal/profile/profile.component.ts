@@ -98,16 +98,16 @@ export class ProfileComponent implements OnInit {
       next: (user) => {
         this.profile = {
           id: user.member_id || user.memberId || user.id || '',
-          firstName: user.firstName || user.first_name || '',
-          lastName: user.lastName || user.last_name || '',
+          firstName: user.first_name || '',  // snake_case only
+          lastName: user.last_name || '',  // snake_case only
           email: user.email || '',
-          phone: user.phoneNumber || user.phone_number || '',
+          phone: user.phone_number || '',  // snake_case only
           department: '', // ถ้ามี endpoint สำหรับดึง department
           position: '', // ถ้ามี endpoint สำหรับดึง position
           role: user.roles?.[0] || 'user',
           avatar: user.picture || '',
-          createdAt: user.createdAt || user.created_at || new Date().toISOString(),
-          updatedAt: user.updatedAt || user.updated_at || new Date().toISOString()
+          createdAt: user.created_at || new Date().toISOString(),  // snake_case only
+          updatedAt: user.updated_at || new Date().toISOString()  // snake_case only
         };
         this.loading.set(false);
       },
@@ -118,16 +118,16 @@ export class ProfileComponent implements OnInit {
         if (currentUser) {
           this.profile = {
             id: currentUser.id || currentUser.member_id || '',
-            firstName: currentUser.firstName || currentUser.first_name || '',
-            lastName: currentUser.lastName || currentUser.last_name || '',
+            firstName: currentUser.first_name || '',  // snake_case only
+            lastName: currentUser.last_name || '',  // snake_case only
             email: currentUser.email,
-            phone: currentUser.phoneNumber || (currentUser as any).phone_number || '',
+            phone: currentUser.phone_number || '',  // snake_case only
             department: '',
             position: '',
             role: currentUser.roles?.[0] || 'user',
             avatar: currentUser.picture || '',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
+            createdAt: currentUser.created_at || new Date().toISOString(),  // snake_case only
+            updatedAt: currentUser.updated_at || new Date().toISOString()  // snake_case only
           };
         }
         this.loading.set(false);

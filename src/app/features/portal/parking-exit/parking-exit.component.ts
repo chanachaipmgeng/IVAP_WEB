@@ -32,8 +32,8 @@ export class ParkingExitComponent implements OnInit {
   errorMessage = signal<string | null>(null);
   
   exitData: VehicleExitRequest = {
-    plateNumber: '',
-    paymentMethod: '',
+    plate_number: '',  // snake_case
+    payment_method: '',  // snake_case
     notes: ''
   };
   
@@ -52,7 +52,7 @@ export class ParkingExitComponent implements OnInit {
 
   openModal(): void {
     this.showModal.set(true);
-    this.exitData = { plateNumber: '', paymentMethod: '', notes: '' };
+    this.exitData = { plate_number: '', payment_method: '', notes: '' };  // snake_case
     this.success.set(false);
     this.errorMessage.set(null);
     this.exitResult.set(null);
@@ -64,7 +64,7 @@ export class ParkingExitComponent implements OnInit {
   }
 
   async processExit(): Promise<void> {
-    if (!this.exitData.plateNumber.trim()) {
+    if (!this.exitData.plate_number.trim()) {  // snake_case
       this.errorMessage.set('Please enter a valid plate number');
       return;
     }
