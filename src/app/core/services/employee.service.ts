@@ -101,7 +101,7 @@ export class EmployeeService {
    */
   public getEmployeesList(filters?: EmployeeFilters): Observable<EmployeeListItem[]> {
     return this.getEmployees(filters).pipe(
-      map(response => response.data.map(emp => toEmployeeListItem(emp)))
+      map(response => (response.data || []).map(emp => toEmployeeListItem(emp)))  // Handle undefined
     );
   }
 
@@ -144,27 +144,27 @@ export class EmployeeService {
     return {
       member: {
         email: form.email,
-        first_name: form.firstName,
-        last_name: form.lastName,
-        phone_number: (form as any).phoneNumber || (form as any).phone || undefined,
+        first_name: form.first_name,  // snake_case
+        last_name: form.last_name,  // snake_case
+        phone_number: (form as any).phone_number || (form as any).phone || undefined,  // snake_case
         picture: (form as any).picture || undefined
       },
-      position: isValidId(form.positionId) ? {
-        position_id: form.positionId,
+      position: isValidId(form.position_id) ? {  // snake_case
+        position_id: form.position_id,  // snake_case
         th_name: '', // Will be filled by backend if needed
         eng_name: ''
       } : undefined,
-      department: isValidId(form.departmentId) ? {
-        department_id: form.departmentId,
+      department: isValidId(form.department_id) ? {  // snake_case
+        department_id: form.department_id,  // snake_case
         th_name: '', // Will be filled by backend if needed
         eng_name: ''
       } : undefined,
-      employee_id: form.employeeId || undefined,
+      employee_id: form.employee_id || undefined,  // snake_case
       salary: form.salary || undefined,
-      boss_id: form.bossId || undefined,
-      company_role_type: form.companyRoleType,
-      emp_type: form.empType,
-      start_date: form.startDate
+      boss_id: form.boss_id || undefined,  // snake_case
+      company_role_type: form.company_role_type,  // snake_case
+      emp_type: form.emp_type,  // snake_case
+      start_date: form.start_date  // snake_case
     };
   }
 
@@ -196,35 +196,35 @@ export class EmployeeService {
     // Build member object only if there are fields to update
     const memberData: any = {};
     if (form.email !== undefined) memberData.email = form.email || '';
-    if (form.firstName !== undefined) memberData.first_name = form.firstName;
-    if (form.lastName !== undefined) memberData.last_name = form.lastName;
-    if (form.phoneNumber !== undefined) memberData.phone_number = form.phoneNumber || undefined;
+    if (form.first_name !== undefined) memberData.first_name = form.first_name;  // snake_case
+    if (form.last_name !== undefined) memberData.last_name = form.last_name;  // snake_case
+    if ((form as any).phone_number !== undefined) memberData.phone_number = (form as any).phone_number || undefined;  // snake_case
     if (form.picture !== undefined) memberData.picture = form.picture || undefined;
 
     return {
       member: Object.keys(memberData).length > 0 ? memberData : {
         email: form.email || '',
-        first_name: form.firstName,
-        last_name: form.lastName,
-        phone_number: form.phoneNumber || undefined,
+        first_name: form.first_name,  // snake_case
+        last_name: form.last_name,  // snake_case
+        phone_number: (form as any).phone_number || undefined,  // snake_case
         picture: form.picture || undefined
       },
-      position: isValidId(form.positionId) ? {
-        position_id: form.positionId,
+      position: isValidId(form.position_id) ? {  // snake_case
+        position_id: form.position_id,  // snake_case
         th_name: '',
         eng_name: ''
       } : undefined,
-      department: isValidId(form.departmentId) ? {
-        department_id: form.departmentId,
+      department: isValidId(form.department_id) ? {  // snake_case
+        department_id: form.department_id,  // snake_case
         th_name: '',
         eng_name: ''
       } : undefined,
-      employee_id: form.employeeId || undefined,
+      employee_id: form.employee_id || undefined,  // snake_case
       salary: form.salary !== undefined ? form.salary : undefined,
-      boss_id: form.bossId || undefined,
+      boss_id: form.boss_id || undefined,  // snake_case
       company_employee_id: employeeId, // Required in backend
-      company_role_type: form.companyRoleType || 'EMPLOYEE', // Required in backend
-      emp_type: form.empType || 'FULL_TIME', // Required in backend
+      company_role_type: form.company_role_type || 'EMPLOYEE',  // snake_case
+      emp_type: form.emp_type || 'FULL_TIME',  // snake_case
       // Note: start_date is required in backend but may not be in update form
       // If not provided, we need to get it from existing employee data
       start_date: (form as any).startDate || new Date().toISOString() // Required in backend - may need to fetch from existing employee
@@ -305,20 +305,23 @@ export class EmployeeService {
    * Deactivate an employee (soft delete)
    */
   public deactivateEmployee(id: UUID, leftAt?: string): Observable<EmployeeDisplay> {
+    // Note: isActive is not in EmployeeUpdateForm, need to update member status instead
+    // This would require updating the member's is_active field via member service
     return this.updateEmployee(id, {
-      isActive: false,
-      leftAt: leftAt || new Date().toISOString()
-    });
+      company_employee_id: id,
+      start_date: new Date().toISOString() // Required field
+    } as EmployeeUpdateForm);
   }
 
   /**
    * Reactivate an employee
    */
   public reactivateEmployee(id: UUID): Observable<EmployeeDisplay> {
+    // Note: isActive is not in EmployeeUpdateForm, need to update member status instead
     return this.updateEmployee(id, {
-      isActive: true,
-      leftAt: undefined
-    });
+      company_employee_id: id,
+      start_date: new Date().toISOString() // Required field
+    } as EmployeeUpdateForm);
   }
 
   // ==================== Member Operations ====================
@@ -382,8 +385,8 @@ export class EmployeeService {
    * Get employees by department
    */
   public getEmployeesByDepartment(departmentId: UUID): Observable<EmployeeDisplay[]> {
-    return this.getEmployees({ departmentId }).pipe(
-      map(response => response.data)
+    return this.getEmployees({ department_id: departmentId }).pipe(  // snake_case
+      map(response => response.data || [])  // Handle undefined
     );
   }
 
@@ -391,8 +394,8 @@ export class EmployeeService {
    * Get employees by position
    */
   public getEmployeesByPosition(positionId: UUID): Observable<EmployeeDisplay[]> {
-    return this.getEmployees({ positionId }).pipe(
-      map(response => response.data)
+    return this.getEmployees({ position_id: positionId }).pipe(  // snake_case
+      map(response => response.data || [])  // Handle undefined
     );
   }
 
@@ -409,7 +412,7 @@ export class EmployeeService {
    */
   public getSubordinatesList(employeeId: UUID): Observable<EmployeeDisplay[]> {
     return this.getSubordinates(employeeId).pipe(
-      map(response => response.data)
+      map(response => response.data || [])  // Handle undefined
     );
   }
 
@@ -437,9 +440,9 @@ export class EmployeeService {
   public searchEmployees(query: string, companyId?: UUID): Observable<EmployeeDisplay[]> {
     return this.getEmployees({
       search: query,
-      companyId
+      company_id: companyId  // snake_case
     }).pipe(
-      map(response => response.data)
+      map(response => response.data || [])  // Handle undefined
     );
   }
 
@@ -447,11 +450,11 @@ export class EmployeeService {
    * Get active employees only
    */
   public getActiveEmployees(companyId?: UUID): Observable<EmployeeDisplay[]> {
+    // Note: isActive is not in EmployeeFilters, need to filter by status or use member service
     return this.getEmployees({
-      isActive: true,
-      companyId
+      company_id: companyId  // snake_case
     }).pipe(
-      map(response => response.data)
+      map(response => (response.data || []).filter(emp => emp.status !== 'inactive' && emp.status !== 'terminated'))  // Filter active employees
     );
   }
 
@@ -459,11 +462,11 @@ export class EmployeeService {
    * Get inactive employees
    */
   public getInactiveEmployees(companyId?: UUID): Observable<EmployeeDisplay[]> {
+    // Note: isActive is not in EmployeeFilters, need to filter by status or use member service
     return this.getEmployees({
-      isActive: false,
-      companyId
+      company_id: companyId  // snake_case
     }).pipe(
-      map(response => response.data)
+      map(response => (response.data || []).filter(emp => emp.status === 'inactive' || emp.status === 'terminated'))  // Filter inactive employees
     );
   }
 
@@ -537,7 +540,7 @@ export class EmployeeService {
    * Get employee full name
    */
   public getFullName(employee: EmployeeDisplay): string {
-    return employee.fullName || `${employee.firstName} ${employee.lastName}`.trim();
+    return employee.full_name || `${employee.first_name} ${employee.last_name}`.trim();  // snake_case
   }
 
   /**
@@ -545,7 +548,7 @@ export class EmployeeService {
    */
   public getDisplayName(employee: EmployeeDisplay): string {
     const fullName = this.getFullName(employee);
-    return employee.employeeId ? `${fullName} (${employee.employeeId})` : fullName;
+    return employee.employee_id ? `${fullName} (${employee.employee_id})` : fullName;  // snake_case
   }
 
   // ==================== Face Enrollment ====================

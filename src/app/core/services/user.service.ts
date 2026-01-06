@@ -105,8 +105,8 @@ export class UserService {
     const users = this.users();
     return {
       totalUsers: users.length,
-      activeUsers: users.filter(u => u.is_active !== undefined ? u.is_active : (u.isActive !== undefined ? u.isActive : true)).length,
-      inactiveUsers: users.filter(u => u.is_active !== undefined ? !u.is_active : (u.isActive !== undefined ? !u.isActive : false)).length,
+      activeUsers: users.filter(u => u.is_active !== undefined ? u.is_active : true).length,  // snake_case only
+      inactiveUsers: users.filter(u => u.is_active !== undefined ? !u.is_active : false).length,  // snake_case only
       adminUsers: users.filter(u => u.roles?.includes('admin') || u.roles?.includes('ADMIN')).length
     };
   }
@@ -118,20 +118,21 @@ export class UserService {
     if (filters.search) {
       const search = filters.search.toLowerCase();
       filtered = filtered.filter(user =>
-        user.firstName.toLowerCase().includes(search) ||
-        user.lastName.toLowerCase().includes(search) ||
-        user.username.toLowerCase().includes(search) ||
-        user.email.toLowerCase().includes(search)
+        user.first_name?.toLowerCase().includes(search) ||  // snake_case
+        user.last_name?.toLowerCase().includes(search) ||  // snake_case
+        user.username?.toLowerCase().includes(search) ||
+        user.email?.toLowerCase().includes(search)
       );
     }
 
     if (filters.role) {
-      filtered = filtered.filter(user => user.roles?.includes(filters.role) || user.roles?.includes(filters.role.toUpperCase()));
+      const role = filters.role;
+      filtered = filtered.filter(user => user.roles?.includes(role) || user.roles?.includes(role.toUpperCase()));
     }
 
     if (filters.status) {
       filtered = filtered.filter(user =>
-        filters.status === 'active' ? user.isActive : !user.isActive
+        filters.status === 'active' ? user.is_active : !user.is_active  // snake_case
       );
     }
 

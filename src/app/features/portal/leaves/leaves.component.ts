@@ -446,9 +446,9 @@ export class LeavesComponent extends BaseComponent implements OnInit {
   canEdit(leave: Leave): boolean {
     const user = this.currentUser();
     // User can edit their own pending leave
-    return leave.status === LeaveStatus.PENDING && 
-           user && user.id && 
-           String(leave.employee_id) === String(user.id);
+    if (leave.status !== LeaveStatus.PENDING) return false;
+    if (!user || (!user.member_id && !user.id)) return false;
+    return String(leave.employee_id) === String(user.member_id || user.id);
   }
 
   /**
@@ -457,9 +457,9 @@ export class LeavesComponent extends BaseComponent implements OnInit {
   canCancel(leave: Leave): boolean {
     const user = this.currentUser();
     // User can cancel their own leave if it's pending or approved
-    return (leave.status === LeaveStatus.PENDING || leave.status === LeaveStatus.APPROVED) &&
-           user && user.id &&
-           String(leave.employee_id) === String(user.id);
+    if (leave.status !== LeaveStatus.PENDING && leave.status !== LeaveStatus.APPROVED) return false;
+    if (!user || (!user.member_id && !user.id)) return false;
+    return String(leave.employee_id) === String(user.member_id || user.id);
   }
 
   /**
@@ -495,22 +495,22 @@ export class LeavesComponent extends BaseComponent implements OnInit {
    * Get remaining days for leave type
    */
   getRemainingDays(leaveType: LeaveType): number {
-    const balance = this.leaveBalances().find(b => b.leaveType === leaveType);
-    return balance?.remainingDays || 0;
+    const balance = this.leaveBalances().find(b => b.leave_type === leaveType);  // snake_case
+    return balance?.remaining_days || 0;  // snake_case
   }
 
   /**
    * TrackBy function for leaves
    */
   trackByLeave(index: number, leave: Leave): string {
-    return leave.id || leave.leaveRequestId || index.toString();
+    return leave.leave_request_id || index.toString();  // snake_case
   }
 
   /**
    * TrackBy function for leave balances
    */
   trackByLeaveBalance(index: number, balance: LeaveBalance): string {
-    return balance.leaveType || index.toString();
+    return balance.leave_type || index.toString();  // snake_case
   }
 }
 

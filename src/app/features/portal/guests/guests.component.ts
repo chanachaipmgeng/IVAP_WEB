@@ -29,7 +29,8 @@ import { AuthService } from '../../../core/services/auth.service';
 import { I18nService } from '../../../core/services/i18n.service';
 import { Guest, GuestCreate } from '../../../core/models/guest.model';
 import { GuestStatus } from '../../../core/models/enums.model';
-import { UUID, PaginatedResponse } from '../../../core/models/base.model';
+import { UUID } from '../../../core/models/base.model';
+import { PaginatedApiResponse } from '../../../core/utils/response-handler';
 import { BaseComponent } from '../../../core/base/base.component';
 
 @Component({
@@ -283,8 +284,8 @@ export class GuestsComponent extends BaseComponent implements OnInit {
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
       this.guestService.getGuests(),
-      (response: PaginatedResponse<Guest>) => {
-        this.guests.set(response.data);
+      (response: PaginatedApiResponse<Guest>) => {
+        this.guests.set(response.data || []);
         this.totalRecords.set(response.total);
         this.loading.set(false);
       },

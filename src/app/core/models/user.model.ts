@@ -9,7 +9,7 @@ import { Member } from './member.model';
  * This interface is used throughout the application for user/member data
  * and provides backward compatibility with existing code.
  */
-export interface User extends Omit<Member, 'memberId'> {
+export interface User extends Omit<Member, 'memberId' | 'created_at'> {
   // Primary identifiers - support both formats
   id?: string;  // UUID as string (alias for member_id, for backward compatibility)
   member_id?: string;  // UUID as string (snake_case from backend)

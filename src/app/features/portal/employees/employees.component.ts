@@ -788,9 +788,8 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
     }
 
     // Use ApiService directly for face enrollment
-    const options = { skipTransform: true };
     this.subscribe(
-      this.apiService.upload(`/face/members/${memberId}/add-face`, this.faceImageFile!, undefined, options),
+      this.apiService.upload(`/face/members/${memberId}/add-face`, this.faceImageFile!),
       () => {
         this.errorHandler.showSuccess('Enroll Face สำเร็จ');
         this.enrollingFace.set(false);

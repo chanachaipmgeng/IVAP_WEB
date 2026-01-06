@@ -103,7 +103,8 @@ export interface CompanyLocation {
 // Company Models - Export from company.model.ts to avoid duplication
 export type {
   Company,
-  CompanyForm,
+  CompanyCreate,
+  CompanyUpdate,
   CompanySettings,
   CompanyFilters,
   CompanyStatistics

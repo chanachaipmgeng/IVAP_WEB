@@ -71,8 +71,8 @@ export class AuthService {
       memberId,
       username,
       email,
-      firstName,
-      lastName,
+      first_name: rawUser.first_name || firstName,  // snake_case
+      last_name: rawUser.last_name || lastName,  // snake_case
       actorType,
       isActive,
       isVerified,
@@ -175,8 +175,8 @@ export class AuthService {
     const user = this.currentUser();
     if (!user) return false;
     
-    // Check by actor_type or actorType (admin_system) - support both camelCase and snake_case
-    const actorType = user.actorType || user.actor_type;
+    // Check by actor_type (snake_case only)
+    const actorType = user.actor_type;
     if (actorType === 'admin_system') {
       return true;
     }
@@ -187,8 +187,8 @@ export class AuthService {
     const user = this.currentUser();
     if (!user) return false;
     
-    // Support both camelCase and snake_case
-    const actorType = user.actorType || user.actor_type;
+    // Use snake_case only
+    const actorType = user.actor_type;
     return actorType === 'admin_system';
   }
 
@@ -196,9 +196,9 @@ export class AuthService {
     const user = this.currentUser();
     if (!user) return false;
     
-    // Support both camelCase and snake_case
-    const memberType = user.memberType || user.member_type;
-    const actorType = user.actorType || user.actor_type;
+    // Use snake_case only
+    const memberType = user.member_type;
+    const actorType = user.actor_type;
     
     if (memberType === 'admin' || actorType === 'member') {
       return true;
@@ -210,7 +210,7 @@ export class AuthService {
     const user = this.currentUser();
     if (!user) return false;
     
-    const actorType = user.actorType || user.actor_type;
+    const actorType = user.actor_type;  // snake_case only
     return actorType === 'member';
   }
 
@@ -218,7 +218,7 @@ export class AuthService {
     const user = this.currentUser();
     if (!user) return false;
     
-    const actorType = user.actorType || user.actor_type;
+    const actorType = user.actor_type;  // snake_case only
     return actorType === 'guest';
   }
 
@@ -229,9 +229,9 @@ export class AuthService {
     const user = this.currentUser();
     if (!user) return '/portal/login';
 
-    // Support both camelCase and snake_case
-    const actorType = user.actorType || user.actor_type;
-    const memberType = user.memberType || user.member_type;
+    // Use snake_case only
+    const actorType = user.actor_type;
+    const memberType = user.member_type;
 
     // Admin System (Super Admin)
     if (actorType === 'admin_system' || this.isSuperAdmin()) {

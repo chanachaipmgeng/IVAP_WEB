@@ -16,8 +16,10 @@ import { FormsModule } from '@angular/forms';
 import { GlassCardComponent } from '../../../shared/components/glass-card/glass-card.component';
 import { GlassButtonComponent } from '../../../shared/components/glass-button/glass-button.component';
 import { GlassInputComponent } from '../../../shared/components/glass-input/glass-input.component';
-import { EmployeeService, Employee, EmployeeStats } from '../../../core/services/employee.service';
-import { CompanyService, Company } from '../../../core/services/company.service';
+import { EmployeeService } from '../../../core/services/employee.service';
+import { EmployeeDisplay as Employee, EmployeeStatistics } from '../../../core/models/employee-display.model';
+import { CompanyService } from '../../../core/services/company.service';
+import { Company } from '../../../core/models/company.model';
 import { ApprovalService, ApprovalRequest, ApprovalStats } from '../../../core/services/approval.service';
 import { SubordinateManagementService, SubordinateTask, TeamMember, TeamStats } from '../../../core/services/subordinate-management.service';
 import { BaseComponent } from '../../../core/base/base.component';
@@ -50,25 +52,16 @@ export class HrDashboardComponent extends BaseComponent implements OnInit {
   teamMembers: TeamMember[] = [];
 
   // Statistics
-  employeeStats: EmployeeStats = {
-    totalEmployees: 0,
-    activeEmployees: 0,
-    inactiveEmployees: 0,
-    terminatedEmployees: 0,
-    onLeaveEmployees: 0,
-    newHiresThisMonth: 0,
-    newHiresThisYear: 0,
-    leftThisMonth: 0,
-    leftThisYear: 0,
-    averageTenure: 0,
-    employeesByDepartment: {},
-    employeesByPosition: {},
-    employeesByEmpType: {} as any,
-    employeesByRole: {} as any,
-    departmentDistribution: {},
-    positionDistribution: {},
-    averageSalary: 0,
-    turnoverRate: 0
+  employeeStats: EmployeeStatistics = {
+    total_employees: 0,  // snake_case
+    active_employees: 0,  // snake_case
+    inactive_employees: 0,  // snake_case
+    employees_by_department: {},  // snake_case
+    employees_by_position: {},  // snake_case
+    employees_by_emp_type: {},  // snake_case
+    employees_by_role: {},  // snake_case
+    average_tenure: 0,  // snake_case
+    average_salary: 0  // snake_case
   };
 
   companyStats: any = {
@@ -158,7 +151,7 @@ export class HrDashboardComponent extends BaseComponent implements OnInit {
     this.subscribe(
       this.employeeService.getEmployees(),
       (response) => {
-        this.employees = response.data;
+        this.employees = response.data || [];
         this.calculateStats();
       },
       (error) => {
@@ -168,7 +161,7 @@ export class HrDashboardComponent extends BaseComponent implements OnInit {
 
     // Load company data
     this.subscribe(
-      this.companyService.loadCompanies({
+      this.companyService.getAll({
         page: 1,
         limit: 1,
         filters: {
@@ -182,7 +175,7 @@ export class HrDashboardComponent extends BaseComponent implements OnInit {
         sortBy: 'createdAt',
         sortOrder: 'desc'
       }),
-      (response) => {
+      (response: any) => {
         if (response.data && response.data.length > 0) {
           this.company = response.data[0];
         }
@@ -252,14 +245,14 @@ export class HrDashboardComponent extends BaseComponent implements OnInit {
     if (filter.search) {
       const searchLower = filter.search.toLowerCase();
       filtered = filtered.filter(emp =>
-        emp.firstName?.toLowerCase().includes(searchLower) ||
-        emp.lastName?.toLowerCase().includes(searchLower) ||
+        emp.first_name?.toLowerCase().includes(searchLower) ||  // snake_case
+        emp.last_name?.toLowerCase().includes(searchLower) ||  // snake_case
         emp.email?.toLowerCase().includes(searchLower)
       );
     }
 
     if (filter.department) {
-      filtered = filtered.filter(emp => emp.department === filter.department);
+      filtered = filtered.filter(emp => emp.department_id === filter.department);  // snake_case
     }
 
     if (filter.status) {
@@ -280,24 +273,15 @@ export class HrDashboardComponent extends BaseComponent implements OnInit {
     const onLeaveEmployees = this.employees.filter(emp => emp.status === 'on_leave').length;
 
     this.employeeStats = {
-      totalEmployees,
-      activeEmployees,
-      inactiveEmployees,
-      terminatedEmployees,
-      onLeaveEmployees,
-      newHiresThisMonth: 0,
-      newHiresThisYear: 0,
-      leftThisMonth: 0,
-      leftThisYear: 0,
-      averageTenure: 0,
-      employeesByDepartment: {},
-      employeesByPosition: {},
-      employeesByEmpType: {} as any,
-      employeesByRole: {} as any,
-      departmentDistribution: {},
-      positionDistribution: {},
-      averageSalary: 0,
-      turnoverRate: 0
+      total_employees: totalEmployees,  // snake_case
+      active_employees: activeEmployees,  // snake_case
+      inactive_employees: inactiveEmployees,  // snake_case
+      employees_by_department: {},  // snake_case
+      employees_by_position: {},  // snake_case
+      employees_by_emp_type: {},  // snake_case
+      employees_by_role: {},  // snake_case
+      average_tenure: 0,  // snake_case
+      average_salary: 0  // snake_case
     };
   }
 
@@ -364,8 +348,8 @@ export class HrDashboardComponent extends BaseComponent implements OnInit {
    * Get employee name by ID
    */
   getEmployeeName(id: string): string {
-    const employee = this.employees.find(emp => emp.id === id);
-    return employee ? `${employee.firstName} ${employee.lastName}` : 'ไม่ระบุ';
+    const employee = this.employees.find(emp => emp.company_employee_id === id || emp.employee_id === id);  // snake_case
+    return employee ? `${employee.first_name} ${employee.last_name}` : 'ไม่ระบุ';  // snake_case
   }
 
   /**
@@ -564,14 +548,14 @@ export class HrDashboardComponent extends BaseComponent implements OnInit {
 
     // Add recent employees
     this.employees
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime())  // snake_case
       .slice(0, 3)
       .forEach(emp => {
         activities.push({
           type: 'employee',
-          title: `พนักงานใหม่: ${emp.firstName} ${emp.lastName}`,
-          description: `${emp.positionName || 'N/A'} - ${emp.departmentName || 'N/A'}`,
-          date: emp.createdAt,
+          title: `พนักงานใหม่: ${emp.first_name} ${emp.last_name}`,  // snake_case
+          description: `${emp.position_name || 'N/A'} - ${emp.department_name || 'N/A'}`,  // snake_case
+          date: emp.created_at,  // snake_case
           icon: 'fa-user-plus'
         });
       });

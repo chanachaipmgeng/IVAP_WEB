@@ -162,7 +162,7 @@ export abstract class BaseCrudService<T, TCreate = Partial<T>, TUpdate = Partial
   count(filters?: any): Observable<number> {
     const options = this.useSnakeCase ? { skipTransform: true } : undefined;
     return this.api.get<{ count: number }>(`${this.baseEndpoint}/count`, filters, options).pipe(
-      map(response => {
+      map((response: any) => {
         if (typeof response === 'number') {
           return response;
         }
@@ -184,7 +184,7 @@ export abstract class BaseCrudService<T, TCreate = Partial<T>, TUpdate = Partial
   exists(id: string): Observable<boolean> {
     const options = this.useSnakeCase ? { skipTransform: true } : undefined;
     return this.api.get<{ exists: boolean }>(`${this.baseEndpoint}/${id}/exists`, undefined, options).pipe(
-      map(response => {
+      map((response: any) => {
         if (typeof response === 'boolean') {
           return response;
         }
