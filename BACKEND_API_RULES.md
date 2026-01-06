@@ -2,7 +2,7 @@
 
 กฎและแนวทางปฏิบัติสำหรับการพัฒนา Angular Frontend ให้สอดคล้องกับ Backend API
 
-**อัปเดตล่าสุด:** 2024-12-19
+**อัปเดตล่าสุด:** 2024-12-20
 
 ---
 
@@ -334,10 +334,28 @@ export class CompaniesComponent {
 - ✅ `RbacService` - แก้ไข endpoints เป็น `/rbac/roles`, `/rbac/permissions`
 - ✅ `MemberService` - เพิ่ม `resetPassword()`, `exportMembers()`
 - ✅ `CompanyEmployeeService` - แก้ไข trailing slash สำหรับ `/employees/`
+- ✅ `BiometricDataService` - Extend `BaseCrudService`, เปลี่ยน `HttpClient` → `ApiService`
+- ✅ `QRCodeService` - Extend `BaseCrudService`, เปลี่ยน `HttpClient` → `ApiService`
+- ✅ `RFIDCardService` - Extend `BaseCrudService`, เปลี่ยน `HttpClient` → `ApiService`
+- ✅ `GuestAdminService` - Extend `BaseCrudService`
+- ✅ `NotificationApiService` - ใช้ `snake_case` และ `skipTransform: true`
+- ✅ `VisitorExtendedService` - ใช้ `snake_case` และ `skipTransform: true`
+- ✅ `TimestampService` - ใช้ `snake_case` และ `skipTransform: true` สำหรับ API calls
 
 ### Components ที่ปรับปรุง
 - ✅ `users.component.ts` - ใช้ `MemberService`, `RbacService`, `CompanyService`
 - ✅ `users.component.html` - ใช้ `getRoles()`, `getCompanies()` getters
 - ✅ `doors.component.html` - ใช้ `snake_case` properties
 - ✅ `hr-dashboard.component.ts` - ใช้ `CompanyEmployeeService`
+- ✅ `events.component.ts` & `.html` - ใช้ `snake_case` properties
+- ✅ `qr-codes.component.ts` - ใช้ `snake_case` properties และ `BaseCrudService` methods
+- ✅ `rfid-cards.component.ts` - ใช้ `snake_case` properties และ `BaseCrudService` methods
+- ✅ `biometric-data.component.ts` - ใช้ `snake_case` properties และ `BaseCrudService` methods
+
+### สถานะปัจจุบัน
+- ✅ **22 services** ตรงกับ Backend API 100%
+- ✅ **All services** ใช้ `snake_case` models
+- ✅ **All services** ใช้ `ApiService` แทน `HttpClient`
+- ✅ **CRUD services** extend `BaseCrudService`
+- ✅ **No linter errors**
 

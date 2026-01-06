@@ -27,11 +27,11 @@ import { MemberService } from '../../../core/services/member.service';
 import { CompanyService } from '../../../core/services/company.service';
 import { RbacService } from '../../../core/services/rbac.service';
 import { I18nService } from '../../../core/services/i18n.service';
-import { User, Role, UserFilters, UserStatistics } from '../../../core/models/user.model';
+import { User, UserFilters, UserStatistics } from '../../../core/models/user.model';
 import { Member, MemberCreate, MemberUpdate } from '../../../core/models/member.model';
 import { memberToUser, membersToUsers, userToMember } from '../../../core/utils/member-utils';
 import { BaseComponent } from '../../../core/base/base.component';
-import { RoleForm } from '../../../core/models/rbac.model';
+import { Role, RoleForm } from '../../../core/models/rbac.model';
 
 @Component({
   selector: 'app-users',

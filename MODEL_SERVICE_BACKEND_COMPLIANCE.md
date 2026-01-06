@@ -286,13 +286,13 @@
 - **Service:** `audit.service.ts` ⚠️
   - ต้องตรวจสอบว่า extend `BaseCrudService` หรือไม่
 
-### 10. **System / System Configuration**
+### 7. **System / System Configuration**
 - **Model:** `system.model.ts` ⚠️
   - ต้องตรวจสอบว่าใช้ `snake_case` หรือไม่
 - **Service:** `system.service.ts` / `system-configuration.service.ts` ⚠️
   - ต้องตรวจสอบว่า extend `BaseCrudService` หรือไม่
 
-### 11. **Other Services** (ยังไม่ได้ตรวจสอบ)
+### 8. **Other Services** (ยังไม่ได้ตรวจสอบ)
 - `kiosk.service.ts`
 - `license.service.ts`
 - `maintenance.service.ts`
@@ -312,8 +312,8 @@
 ## 📊 สรุปสถิติ
 
 ### ✅ ตรงกับ Backend API แล้ว
-- **Models:** 15+ models
-- **Services:** 15+ services
+- **Models:** 22+ models
+- **Services:** 22+ services
 
 ### ⚠️ ยังต้องปรับปรุง
 - **Models:** ~35+ models (ต้องตรวจสอบ)

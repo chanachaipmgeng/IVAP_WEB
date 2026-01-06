@@ -1,104 +1,21 @@
-// Employee Models
-export interface Employee {
-  id: number;
-  employeeCode: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone?: string;
-  departmentId?: number;
-  positionId?: number;
-  companyId: number;
-  isActive: boolean;
-  faceImages?: string[];
-}
-
-// Department Models
-export interface Department {
-  id: number;
-  name: string;
-  code: string;
-  description?: string;
-  companyId: number;
-}
-
-// Position Models
-export interface Position {
-  id: number;
-  name: string;
-  code: string;
-  description?: string;
-  companyId: number;
-}
-
-// Device Models
-export interface Device {
-  id: number;
-  name: string;
-  deviceCode: string;
-  deviceType: 'camera' | 'kiosk' | 'door';
-  location?: string;
-  isActive: boolean;
-  companyId: number;
-}
-
-// Door Models
-export interface Door {
-  id: number;
-  name: string;
-  doorCode: string;
-  location?: string;
-  deviceId?: number;
-  companyId: number;
-}
-
-export interface DoorPermission {
-  doorId: number;
-  employeeIds: number[];
-}
-
-// Event Models
-export interface Event {
-  id: number;
-  name: string;
-  description?: string;
-  startTime: string;
-  endTime: string;
-  location?: string;
-  publicUrl?: string;
-  companyId: number;
-  isActive: boolean;
-}
-
-export interface EventAttendee {
-  id: number;
-  eventId: number;
-  name: string;
-  email?: string;
-  phone?: string;
-  checkedIn: boolean;
-  checkInTime?: string;
-  faceImage?: string;
-}
-
-// Shift Models
-export interface Shift {
-  id: number;
-  name: string;
-  startTime: string;
-  endTime: string;
-  companyId: number;
-}
-
-// Location Models
-export interface CompanyLocation {
-  id: number;
-  name: string;
-  latitude: number;
-  longitude: number;
-  radius: number;
-  companyId: number;
-}
+/**
+ * Models Index
+ * 
+ * This file re-exports all models from their respective files.
+ * Legacy interfaces (Employee, Department, Position, Device, Door, Event, Shift, CompanyLocation, Role)
+ * have been removed as they were redundant with snake_case models in separate files.
+ * 
+ * Use models from their respective files:
+ * - Employee → Use CompanyEmployee from './company-employee.model'
+ * - Department → Use Department from './department.model' (snake_case)
+ * - Position → Use Position from './position.model' (snake_case)
+ * - Device → Use Device from './device.model' (snake_case)
+ * - Door → Use Door from './door.model' (snake_case)
+ * - Event → Use Event from './event.model' (snake_case)
+ * - Shift → Use Shift from './shift.model' (snake_case)
+ * - CompanyLocation → Use CompanyLocation from './company-location.model' (snake_case)
+ * - Role → Use Role from './rbac.model'
+ */
 
 // Company Models - Export from company.model.ts to avoid duplication
 export type {
@@ -110,15 +27,22 @@ export type {
   CompanyStatistics
 } from './company.model';
 
-// Role & Permission Models
-export interface Role {
-  id: number;
-  name: string;
-  code: string;
-  description?: string;
-  permissions: string[];
-  companyId?: number;
-}
+// Role & Permission Models - Export from rbac.model.ts (explicit to avoid conflict with user.model.ts)
+export type {
+  Role,
+  Permission,
+  UserRole,
+  RolePermission,
+  RBACFilters,
+  RBACStatistics,
+  RoleForm,
+  PermissionForm,
+  UserRoleForm,
+  PermissionCategory
+} from './rbac.model';
+// Note: Role interface in user.model.ts is different from rbac.model.ts
+// This export uses Role from rbac.model.ts (the correct one for RBAC operations)
+// If you need Role from user.model.ts, import it directly from './user.model'
 
 // Report Models
 export interface AttendanceReport {
@@ -166,11 +90,27 @@ export type { VisitorVisit as VisitorVisitExtended, VisitorVisitCreate } from '.
 export type { VisitorInvitation as VisitorInvitationExtended, VisitorInvitationCreate, VisitorInvitationVerify } from './visitor-extended.model';
 export type { VisitorBadge as VisitorBadgeExtended, VisitorBadgeIssue, VisitorBadgeReturn } from './visitor-extended.model';
 
-// Department Models
-export * from './department.model';
+// Department Models - Explicit export to avoid conflicts with company-employee.model
+export type {
+  Department,
+  DepartmentCreate,
+  DepartmentUpdate,
+  DepartmentFilters,
+  DepartmentStatistics
+} from './department.model';
+// Note: DepartmentResponse is also exported from company-employee.model.ts with different structure
+// Use DepartmentResponse from company-employee.model.ts for CompanyEmployee context
 
-// Position Models
-export * from './position.model';
+// Position Models - Explicit export to avoid conflicts with company-employee.model
+export type {
+  Position,
+  PositionCreate,
+  PositionUpdate,
+  PositionFilters,
+  PositionStatistics
+} from './position.model';
+// Note: PositionResponse is also exported from company-employee.model.ts with different structure
+// Use PositionResponse from company-employee.model.ts for CompanyEmployee context
 
 // Shift Models
 export * from './shift.model';
@@ -245,4 +185,29 @@ export type {
 
 // Device Models (re-export from device.model.ts)
 export * from './device.model';
+
+// Company Location Models (re-export from company-location.model.ts)
+export * from './company-location.model';
+
+// Member Models (re-export from member.model.ts)
+export * from './member.model';
+
+// Company Employee Models (re-export from company-employee.model.ts)
+export * from './company-employee.model';
+
+// Employee Display Models (re-export from employee-display.model.ts)
+export * from './employee-display.model';
+
+// Employee Models (re-export from employee.model.ts - contains EmployeeHierarchy only)
+export * from './employee.model';
+
+// User Models (re-export from user.model.ts - frontend-specific interface)
+export type {
+  User,
+  UserFilters,
+  UserStatistics
+} from './user.model';
+// Note: Role interface in user.model.ts is different from rbac.model.ts
+// Use Role from './rbac.model' for RBAC operations
+// Use Role from './user.model' only if needed for backward compatibility
 
