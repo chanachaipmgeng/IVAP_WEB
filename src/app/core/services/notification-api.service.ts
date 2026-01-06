@@ -38,6 +38,7 @@ export class NotificationApiService {
    * Backend: POST /api/v1/notifications/email
    */
   sendEmail(request: EmailNotificationRequest): Observable<NotificationResponse> {
+    const options = { skipTransform: true };
     return this.api.post<any>(`${this.baseEndpoint}/email`, {
       to: request.to,
       subject: request.subject,
@@ -45,7 +46,7 @@ export class NotificationApiService {
       html_body: request.htmlBody,
       cc: request.cc,
       bcc: request.bcc
-    }).pipe(
+    }, undefined, options).pipe(
       map(response => handleApiResponse<NotificationResponse>(response))
     );
   }
@@ -55,12 +56,13 @@ export class NotificationApiService {
    * Backend: POST /api/v1/notifications/line
    */
   sendLine(request: LineNotificationRequest): Observable<NotificationResponse> {
+    const options = { skipTransform: true };
     return this.api.post<any>(`${this.baseEndpoint}/line`, {
       message: request.message,
       image_path: request.imagePath,
       sticker_package_id: request.stickerPackageId,
       sticker_id: request.stickerId
-    }).pipe(
+    }, undefined, options).pipe(
       map(response => handleApiResponse<NotificationResponse>(response))
     );
   }
@@ -70,11 +72,12 @@ export class NotificationApiService {
    * Backend: POST /api/v1/notifications/webhook
    */
   sendWebhook(request: WebhookNotificationRequest): Observable<NotificationResponse> {
+    const options = { skipTransform: true };
     return this.api.post<any>(`${this.baseEndpoint}/webhook`, {
       webhook_name: request.webhookName,
       data: request.data,
       headers: request.headers
-    }).pipe(
+    }, undefined, options).pipe(
       map(response => handleApiResponse<NotificationResponse>(response))
     );
   }
@@ -84,11 +87,12 @@ export class NotificationApiService {
    * Backend: POST /api/v1/notifications/sms
    */
   sendSMS(request: SMSNotificationRequest): Observable<NotificationResponse> {
+    const options = { skipTransform: true };
     return this.api.post<any>(`${this.baseEndpoint}/sms`, {
       phone: request.phone,
       message: request.message,
       provider: request.provider || 'twilio'
-    }).pipe(
+    }, undefined, options).pipe(
       map(response => handleApiResponse<NotificationResponse>(response))
     );
   }
@@ -98,9 +102,10 @@ export class NotificationApiService {
    * Backend: POST /api/v1/notifications/bulk
    */
   sendBulk(request: BulkNotificationRequest): Observable<BulkNotificationResponse> {
+    const options = { skipTransform: true };
     return this.api.post<any>(`${this.baseEndpoint}/bulk`, {
       notifications: request.notifications
-    }).pipe(
+    }, undefined, options).pipe(
       map(response => handleApiResponse<BulkNotificationResponse>(response))
     );
   }
@@ -110,12 +115,13 @@ export class NotificationApiService {
    * Backend: POST /api/v1/notifications/template
    */
   sendTemplate(request: TemplateNotificationRequest): Observable<NotificationResponse> {
+    const options = { skipTransform: true };
     return this.api.post<any>(`${this.baseEndpoint}/template`, {
       template_id: request.templateId,
       recipient: request.recipient,
       variables: request.variables,
       additional_data: request.additionalData
-    }).pipe(
+    }, undefined, options).pipe(
       map(response => handleApiResponse<NotificationResponse>(response))
     );
   }
@@ -125,13 +131,14 @@ export class NotificationApiService {
    * Backend: POST /api/v1/notifications/event
    */
   sendEvent(request: EventNotificationRequest): Observable<BulkNotificationResponse> {
+    const options = { skipTransform: true };
     return this.api.post<any>(`${this.baseEndpoint}/event`, {
       event_type: request.eventType,
       company_id: request.companyId,
       user_id: request.userId,
       data: request.data,
       notification_channels: request.notificationChannels
-    }).pipe(
+    }, undefined, options).pipe(
       map(response => handleApiResponse<BulkNotificationResponse>(response))
     );
   }
@@ -141,6 +148,7 @@ export class NotificationApiService {
    * Backend: POST /api/v1/notifications/system
    */
   sendSystem(request: SystemNotificationRequest): Observable<BulkNotificationResponse> {
+    const options = { skipTransform: true };
     return this.api.post<any>(`${this.baseEndpoint}/system`, {
       title: request.title,
       message: request.message,
@@ -149,7 +157,7 @@ export class NotificationApiService {
       user_id: request.userId,
       channels: request.channels,
       data: request.data
-    }).pipe(
+    }, undefined, options).pipe(
       map(response => handleApiResponse<BulkNotificationResponse>(response))
     );
   }
@@ -159,7 +167,8 @@ export class NotificationApiService {
    * Backend: GET /api/v1/notifications/templates
    */
   getTemplates(): Observable<NotificationTemplate[]> {
-    return this.api.get<any>(`${this.baseEndpoint}/templates`).pipe(
+    const options = { skipTransform: true };
+    return this.api.get<any>(`${this.baseEndpoint}/templates`, undefined, options).pipe(
       map(response => {
         if (Array.isArray(response)) {
           return response;
@@ -174,7 +183,8 @@ export class NotificationApiService {
    * Backend: GET /api/v1/notifications/status
    */
   getStatus(): Observable<NotificationStatusResponse> {
-    return this.api.get<any>(`${this.baseEndpoint}/status`).pipe(
+    const options = { skipTransform: true };
+    return this.api.get<any>(`${this.baseEndpoint}/status`, undefined, options).pipe(
       map(response => handleApiResponse<NotificationStatusResponse>(response))
     );
   }

@@ -64,9 +64,9 @@ export class QRCodesComponent extends BaseComponent implements OnInit {
 
   // Form
   qrCodeForm = signal<CreateQRCodeDto>({
-    type: QRCodeType.ACCESS,
-    ownerId: '',
-    ownerType: 'employee'
+    qr_type: QRCodeType.ACCESS,
+    owner_id: '',
+    owner_type: 'employee'
   });
 
   // Scanner
@@ -187,13 +187,14 @@ export class QRCodesComponent extends BaseComponent implements OnInit {
     this.isLoading.set(true);
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
-      this.qrCodeService.getQRCodes(),
-      (codes) => {
+      this.qrCodeService.getAll(),
+      (response) => {
+        const codes = response.data || response.items || [];
         this.qrCodes.set(codes);
         this.applyFilters();
         this.isLoading.set(false);
       },
-      (error) => {
+      (error: any) => {
         console.error('Error loading QR codes:', error);
         // Mock data for demo
         this.loadMockData();
@@ -207,44 +208,44 @@ export class QRCodesComponent extends BaseComponent implements OnInit {
       {
         id: '1',
         code: 'QR001',
-        type: QRCodeType.ACCESS,
-        ownerId: 'emp1',
-        ownerName: 'สมชาย ใจดี',
-        ownerType: 'employee',
+        qr_type: QRCodeType.ACCESS,
+        owner_id: 'emp1',
+        owner_name: 'สมชาย ใจดี',
+        owner_type: 'employee',
         data: {},
         status: QRCodeStatus.ACTIVE,
-        scanCount: 45,
-        lastScannedAt: new Date().toISOString(),
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        scan_count: 45,
+        last_scanned_at: new Date().toISOString(),
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
       },
       {
         id: '2',
         code: 'QR002',
-        type: QRCodeType.VISITOR,
-        ownerId: 'vis1',
-        ownerName: 'ประเสริฐ มาเยือน',
-        ownerType: 'visitor',
+        qr_type: QRCodeType.VISITOR,
+        owner_id: 'vis1',
+        owner_name: 'ประเสริฐ มาเยือน',
+        owner_type: 'visitor',
         data: {},
         status: QRCodeStatus.ACTIVE,
-        scanCount: 2,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        scan_count: 2,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
       },
       {
         id: '3',
         code: 'QR003',
-        type: QRCodeType.EVENT,
-        ownerId: 'evt1',
-        ownerName: 'งานสัมมนาประจำปี',
-        ownerType: 'event',
+        qr_type: QRCodeType.EVENT,
+        owner_id: 'evt1',
+        owner_name: 'งานสัมมนาประจำปี',
+        owner_type: 'event',
         data: {},
         status: QRCodeStatus.EXPIRED,
-        scanCount: 120,
-        validFrom: '2025-10-01',
-        validUntil: '2025-10-15',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        scan_count: 120,
+        valid_from: '2025-10-01',
+        valid_until: '2025-10-15',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
       }
     ];
     this.qrCodes.set(mockData);
@@ -289,14 +290,14 @@ export class QRCodesComponent extends BaseComponent implements OnInit {
     }
 
     if (type) {
-      filtered = filtered.filter(q => q.type === type);
+      filtered = filtered.filter(q => q.qr_type === type);
     }
 
     if (search) {
       const searchLower = search.toLowerCase();
       filtered = filtered.filter(q =>
         q.code.toLowerCase().includes(searchLower) ||
-        q.ownerName.toLowerCase().includes(searchLower)
+        (q.owner_name && q.owner_name.toLowerCase().includes(searchLower))
       );
     }
 
@@ -305,16 +306,16 @@ export class QRCodesComponent extends BaseComponent implements OnInit {
 
   columns: TableColumn[] = [
     { key: 'code', label: 'Code', sortable: true },
-    { key: 'type', label: 'Type', sortable: true },
-    { key: 'ownerName', label: 'Owner', sortable: true },
-    { key: 'ownerType', label: 'Owner Type' },
+    { key: 'qr_type', label: 'Type', sortable: true },
+    { key: 'owner_name', label: 'Owner', sortable: true },
+    { key: 'owner_type', label: 'Owner Type' },
     {
       key: 'status',
       label: 'Status',
       render: (value) => QR_CODE_STATUS_LABELS[value as QRCodeStatus] || value
     },
     {
-      key: 'scanCount',
+      key: 'scan_count',
       label: 'Scan Count',
       render: (value) => value || 0
     }
@@ -343,11 +344,11 @@ export class QRCodesComponent extends BaseComponent implements OnInit {
     if (!confirm(`ต้องการลบ QR Code ${qrCode.code} หรือไม่?`)) {
       return;
     }
-    this.qrCodeService.deleteQRCode(qrCode.id).subscribe({
+    this.qrCodeService.delete(qrCode.id).subscribe({
       next: () => {
         this.loadQRCodes();
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error deleting QR code:', error);
       }
     });
@@ -365,9 +366,9 @@ export class QRCodesComponent extends BaseComponent implements OnInit {
 
   resetForm() {
     this.qrCodeForm.set({
-      type: QRCodeType.ACCESS,
-      ownerId: '',
-      ownerType: 'employee'
+      qr_type: QRCodeType.ACCESS,
+      owner_id: '',
+      owner_type: 'employee'
     });
   }
 
@@ -375,7 +376,7 @@ export class QRCodesComponent extends BaseComponent implements OnInit {
     const current = this.qrCodeForm();
     this.qrCodeForm.set({
       ...current,
-      type: type
+      qr_type: type
     });
   }
 
@@ -383,7 +384,7 @@ export class QRCodesComponent extends BaseComponent implements OnInit {
     const current = this.qrCodeForm();
     this.qrCodeForm.set({
       ...current,
-      ownerType: ownerType
+      owner_type: ownerType
     });
   }
 
@@ -391,14 +392,14 @@ export class QRCodesComponent extends BaseComponent implements OnInit {
     const current = this.qrCodeForm();
     this.qrCodeForm.set({
       ...current,
-      ownerId: ownerId
+      owner_id: ownerId
     });
   }
 
   submitQRCode() {
     const form = this.qrCodeForm();
 
-    if (!form.ownerId) {
+    if (!form.owner_id) {
       alert('กรุณากรอกข้อมูลให้ครบถ้วน');
       return;
     }
@@ -406,7 +407,7 @@ export class QRCodesComponent extends BaseComponent implements OnInit {
     this.isLoading.set(true);
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
-      this.qrCodeService.createQRCode(form),
+      this.qrCodeService.create(form),
       (qrCode) => {
         this.loadQRCodes();
         this.closeModal();
@@ -434,7 +435,7 @@ export class QRCodesComponent extends BaseComponent implements OnInit {
   }
 
   regenerateQRCode(qrCode: QRCode) {
-    if (!confirm(`ต้องการสร้าง QR Code ใหม่สำหรับ ${qrCode.ownerName} หรือไม่?`)) {
+    if (!confirm(`ต้องการสร้าง QR Code ใหม่สำหรับ ${qrCode.owner_name || qrCode.owner_id} หรือไม่?`)) {
       return;
     }
 

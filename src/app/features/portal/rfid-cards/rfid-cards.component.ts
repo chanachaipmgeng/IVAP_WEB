@@ -22,6 +22,7 @@ import {
   RFIDCardType,
   RFIDCardStatus,
   CreateRFIDCardDto,
+  UpdateRFIDCardDto,
   RFID_CARD_TYPE_LABELS,
   RFID_CARD_STATUS_LABELS
 } from '../../../core/models/rfid-card.model';
@@ -200,8 +201,10 @@ export class RFIDCardsComponent implements OnInit {
       this.filterType() || undefined
     ).subscribe({
       next: (response) => {
-        this.rfidCards.set(response.items);
-        this.total.set(response.total);
+        const items = response.items || [];
+        const total = response.total || 0;
+        this.rfidCards.set(items);
+        this.total.set(total);
         this.applyFilters();
         this.isLoading.set(false);
       },
@@ -347,8 +350,8 @@ export class RFIDCardsComponent implements OnInit {
     this.errorMessage.set('');
     const formValue = this.cardForm.value as CreateRFIDCardDto;
     const request = this.selectedCard()
-      ? this.rfidService.updateRFIDCard(this.selectedCard()!.id, formValue as any)
-      : this.rfidService.createRFIDCard(formValue);
+      ? this.rfidService.update(this.selectedCard()!.id, formValue as UpdateRFIDCardDto)
+      : this.rfidService.create(formValue);
     
     request.subscribe({
       next: () => {
@@ -371,7 +374,7 @@ export class RFIDCardsComponent implements OnInit {
 
     this.isLoading.set(true);
     this.errorMessage.set('');
-    this.rfidService.deleteRFIDCard(card.id).subscribe({
+    this.rfidService.delete(card.id).subscribe({
       next: () => {
         this.errorHandler.showSuccess('ลบสำเร็จ');
         this.loadRFIDCards();

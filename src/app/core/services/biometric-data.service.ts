@@ -1,8 +1,16 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { environment } from '../../../environments/environment';
+/**
+ * Biometric Data Service
+ * 
+ * Service for managing biometric data (fingerprint, face, iris, etc.)
+ * Extends BaseCrudService for standard CRUD operations
+ * Uses snake_case to match backend API directly
+ */
+
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ApiService } from './api.service';
+import { BaseCrudService } from './base-crud.service';
 import {
   BiometricData,
   CreateBiometricDataDto,
@@ -10,99 +18,93 @@ import {
   BiometricVerifyRequest,
   BiometricVerifyResponse,
   BiometricStatistics,
-  BiometricTypesResponse,
-  BiometricType
+  BiometricTypesResponse
 } from '../models/biometric-data.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class BiometricDataService {
-  private http = inject(HttpClient);
-  private apiUrl = `${environment.apiUrl}/biometric-data`;
+export class BiometricDataService extends BaseCrudService<BiometricData, CreateBiometricDataDto, UpdateBiometricDataDto> {
+  protected baseEndpoint = '/biometric-data';
+
+  constructor(api: ApiService) {
+    super(api);
+  }
 
   /**
-   * Get all biometric data records
+   * Get biometric data with filters
+   * Backend: GET /api/v1/biometric-data?member_id={id}&biometric_type={type}
    */
-  getBiometricData(memberId?: string, type?: BiometricType): Observable<BiometricData[]> {
-    let params = new HttpParams();
+  getBiometricData(memberId?: string, type?: string): Observable<BiometricData[]> {
+    const filters: any = {};
     if (memberId) {
-      params = params.set('member_id', memberId);
+      filters.member_id = memberId;
     }
     if (type) {
-      params = params.set('biometric_type', type);
+      filters.biometric_type = type;
     }
-    return this.http.get<BiometricData[]>(this.apiUrl, { params }).pipe(
-      catchError((error) => {
-        console.warn('Error loading biometric data (API may not be available):', error);
-        return of([] as BiometricData[]);
+    
+    const options = { skipTransform: true };
+    return this.api.get<BiometricData[]>(this.baseEndpoint, filters, options).pipe(
+      map((response: any) => {
+        if (Array.isArray(response)) {
+          return response;
+        }
+        return response?.data || response?.items || [];
       })
     );
   }
 
   /**
-   * Get biometric data by ID
-   */
-  getBiometricDataById(id: string): Observable<BiometricData> {
-    return this.http.get<BiometricData>(`${this.apiUrl}/${id}`);
-  }
-
-  /**
-   * Create new biometric data
-   */
-  createBiometricData(data: CreateBiometricDataDto): Observable<BiometricData> {
-    return this.http.post<BiometricData>(this.apiUrl, data);
-  }
-
-  /**
-   * Update biometric data
-   */
-  updateBiometricData(id: string, data: UpdateBiometricDataDto): Observable<BiometricData> {
-    return this.http.put<BiometricData>(`${this.apiUrl}/${id}`, data);
-  }
-
-  /**
-   * Delete biometric data
-   */
-  deleteBiometricData(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
-  }
-
-  /**
    * Verify biometric data
+   * Backend: POST /api/v1/biometric-data/verify
    */
   verifyBiometricData(request: BiometricVerifyRequest): Observable<BiometricVerifyResponse> {
-    return this.http.post<BiometricVerifyResponse>(`${this.apiUrl}/verify`, request);
+    const options = { skipTransform: true };
+    return this.api.post<BiometricVerifyResponse>(`${this.baseEndpoint}/verify`, request, undefined, options);
   }
 
   /**
    * Get biometric data statistics
+   * Backend: GET /api/v1/biometric-data/statistics
    */
   getStatistics(): Observable<BiometricStatistics> {
-    return this.http.get<BiometricStatistics>(`${this.apiUrl}/statistics`);
+    const options = { skipTransform: true };
+    return this.api.get<BiometricStatistics>(`${this.baseEndpoint}/statistics`, undefined, options).pipe(
+      map((response: any) => response?.data || response)
+    );
   }
 
   /**
    * Get biometric data types
+   * Backend: GET /api/v1/biometric-data/types
    */
   getTypes(): Observable<BiometricTypesResponse> {
-    return this.http.get<BiometricTypesResponse>(`${this.apiUrl}/types`);
+    const options = { skipTransform: true };
+    return this.api.get<BiometricTypesResponse>(`${this.baseEndpoint}/types`, undefined, options).pipe(
+      map((response: any) => response?.data || response)
+    );
   }
 
   /**
    * Upload biometric file
+   * Backend: POST /api/v1/biometric-data/{id}/upload
    */
   uploadFile(id: string, file: File): Observable<BiometricData> {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post<BiometricData>(`${this.apiUrl}/${id}/upload`, formData);
+    const options = { skipTransform: true };
+    return this.api.post<BiometricData>(`${this.baseEndpoint}/${id}/upload`, formData, undefined, options).pipe(
+      map((response: any) => response?.data || response)
+    );
   }
 
   /**
    * Download biometric file
+   * Backend: GET /api/v1/biometric-data/{id}/download
    */
   downloadFile(id: string): Observable<Blob> {
-    return this.http.get(`${this.apiUrl}/${id}/download`, { responseType: 'blob' });
+    const options = { skipTransform: true, responseType: 'blob' as 'json' };
+    return this.api.get<Blob>(`${this.baseEndpoint}/${id}/download`, undefined, options);
   }
 }
-

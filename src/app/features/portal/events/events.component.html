@@ -57,12 +57,12 @@
           Event Name <span class="text-red-500">*</span>
         </label>
         <input
-          formControlName="eventName"
+          formControlName="event_name"
           type="text"
           class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
           placeholder="Enter event name"
         />
-        <p *ngIf="eventForm.get('eventName')?.invalid && eventForm.get('eventName')?.touched" class="text-red-500 text-sm mt-1">
+        <p *ngIf="eventForm.get('event_name')?.invalid && eventForm.get('event_name')?.touched" class="text-red-500 text-sm mt-1">
           Event name is required
         </p>
       </div>
@@ -86,12 +86,12 @@
           Start Date <span class="text-red-500">*</span>
         </label>
         <input
-          formControlName="startDate"
+          formControlName="start_date"
           type="datetime-local"
           [min]="!editingEvent() ? getCurrentDateTimeLocal() : ''"
           class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
         />
-        <p *ngIf="eventForm.get('startDate')?.invalid && eventForm.get('startDate')?.touched" class="text-red-500 text-sm mt-1">
+        <p *ngIf="eventForm.get('start_date')?.invalid && eventForm.get('start_date')?.touched" class="text-red-500 text-sm mt-1">
           Start date is required
         </p>
       </div>
@@ -102,12 +102,12 @@
           End Date <span class="text-red-500">*</span>
         </label>
         <input
-          formControlName="endDate"
+          formControlName="end_date"
           type="datetime-local"
-          [min]="eventForm.get('startDate')?.value || (!editingEvent() ? getCurrentDateTimeLocal() : '')"
+          [min]="eventForm.get('start_date')?.value || (!editingEvent() ? getCurrentDateTimeLocal() : '')"
           class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
         />
-        <p *ngIf="eventForm.get('endDate')?.invalid && eventForm.get('endDate')?.touched" class="text-red-500 text-sm mt-1">
+        <p *ngIf="eventForm.get('end_date')?.invalid && eventForm.get('end_date')?.touched" class="text-red-500 text-sm mt-1">
           End date is required
         </p>
       </div>
@@ -138,7 +138,7 @@
           Event Type <span class="text-red-500">*</span>
         </label>
         <select
-          formControlName="eventType"
+          formControlName="event_type"
           class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
         >
           <option value="meeting">Meeting</option>
@@ -190,7 +190,7 @@
   <!-- Event Details Modal -->
   <app-modal
     [isOpen]="showDetailModal()"
-    [title]="'Event Details - ' + (selectedEvent()?.eventName || 'Event')"
+    [title]="'Event Details - ' + (selectedEvent()?.event_name || 'Event')"
     (closed)="closeDetailModal()"
     [config]="{ size: 'xl' }"
   >
@@ -202,19 +202,19 @@
           <div class="grid grid-cols-2 gap-4 text-sm">
             <div>
               <span class="text-gray-600 dark:text-gray-400">Name:</span>
-              <p class="font-medium text-gray-900 dark:text-gray-100">{{ selectedEvent()?.eventName }}</p>
+              <p class="font-medium text-gray-900 dark:text-gray-100">{{ selectedEvent()?.event_name }}</p>
             </div>
             <div>
               <span class="text-gray-600 dark:text-gray-400">Type:</span>
-              <p class="font-medium text-gray-900 dark:text-gray-100">{{ selectedEvent()?.eventType || 'other' }}</p>
+              <p class="font-medium text-gray-900 dark:text-gray-100">{{ selectedEvent()?.event_type || 'other' }}</p>
             </div>
             <div>
               <span class="text-gray-600 dark:text-gray-400">Start Date:</span>
-              <p class="font-medium text-gray-900 dark:text-gray-100">{{ selectedEvent()?.startDate ? portalService.formatDateTime(selectedEvent()!.startDate) : 'N/A' }}</p>
+              <p class="font-medium text-gray-900 dark:text-gray-100">{{ selectedEvent()?.start_date ? portalService.formatDateTime(selectedEvent()!.start_date) : 'N/A' }}</p>
             </div>
             <div>
               <span class="text-gray-600 dark:text-gray-400">End Date:</span>
-              <p class="font-medium text-gray-900 dark:text-gray-100">{{ selectedEvent()?.endDate ? portalService.formatDateTime(selectedEvent()!.endDate) : 'N/A' }}</p>
+              <p class="font-medium text-gray-900 dark:text-gray-100">{{ selectedEvent()?.end_date ? portalService.formatDateTime(selectedEvent()!.end_date) : 'N/A' }}</p>
             </div>
             <div class="col-span-2">
               <span class="text-gray-600 dark:text-gray-400">Location:</span>
@@ -233,12 +233,12 @@
                 {{ selectedEvent()?.status || calculateEventStatus(selectedEvent()!) }}
               </p>
             </div>
-            @if (selectedEvent()?.publicUrl) {
+            @if (selectedEvent()?.public_url) {
               <div class="col-span-2">
                 <span class="text-gray-600 dark:text-gray-400">Public URL:</span>
                 <div class="flex items-center gap-2 mt-1">
                   <code class="flex-1 px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded text-sm text-gray-900 dark:text-gray-100">
-                    {{ window.location.origin }}/events/register/{{ selectedEvent()?.publicUrl }}
+                    {{ window.location.origin }}/events/register/{{ selectedEvent()?.public_url }}
                   </code>
                   <app-glass-button (clicked)="copyPublicLink(selectedEvent()!)" variant="secondary" size="sm">
                     📋 Copy
@@ -376,7 +376,7 @@
   <!-- Attendees Modal -->
   <app-modal
     [isOpen]="showAttendeesModal()"
-    [title]="'Event Attendees - ' + (selectedEvent()?.eventName || 'Event')"
+    [title]="'Event Attendees - ' + (selectedEvent()?.event_name || 'Event')"
     (closed)="closeAttendeesModal()"
     [config]="{ size: 'xl' }"
   >
@@ -490,7 +490,7 @@
   <!-- Link Device Modal -->
   <app-modal
     [isOpen]="showLinkDeviceModal()"
-    [title]="'Link Device to Event - ' + (linkingEvent()?.eventName || 'Event')"
+    [title]="'Link Device to Event - ' + (linkingEvent()?.event_name || 'Event')"
     [loading]="linkingDevice()"
     (closed)="closeLinkDeviceModal()"
     (confirmed)="confirmLinkDevice()"

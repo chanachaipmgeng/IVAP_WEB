@@ -170,11 +170,15 @@ export class TimestampService {
     if (!this.api) {
       throw new Error('ApiService is not available');
     }
-    return this.api.get<any>(`/timestamps/company/${companyId}`, filters).pipe(
-      map(response => ({
-        ...response,
-        data: response.data?.map((item: any) => this.transformBackendToEmployeeTimestamp(item)) || []
-      }))
+    const options = { skipTransform: true };
+    return this.api.get<any>(`/timestamps/company/${companyId}`, filters, options).pipe(
+      map((response: any) => {
+        const data = response?.data || response?.items || [];
+        return {
+          ...response,
+          data: data.map((item: any) => this.transformBackendToEmployeeTimestamp(item))
+        };
+      })
     );
   }
 
@@ -186,8 +190,9 @@ export class TimestampService {
     if (!this.api) {
       throw new Error('ApiService is not available');
     }
-    return this.api.get<any>(`/timestamps/company/${companyId}/${timestampId}`).pipe(
-      map(response => this.transformBackendToEmployeeTimestamp(response))
+    const options = { skipTransform: true };
+    return this.api.get<any>(`/timestamps/company/${companyId}/${timestampId}`, undefined, options).pipe(
+      map((response: any) => this.transformBackendToEmployeeTimestamp(response?.data || response))
     );
   }
 
@@ -201,8 +206,9 @@ export class TimestampService {
     }
     // Transform frontend format to backend format
     const backendData = this.transformCreateToBackend(data);
-    return this.api.post<any>(`/timestamps/company/${companyId}`, backendData).pipe(
-      map(response => this.transformBackendToEmployeeTimestamp(response))
+    const options = { skipTransform: true };
+    return this.api.post<any>(`/timestamps/company/${companyId}`, backendData, undefined, options).pipe(
+      map((response: any) => this.transformBackendToEmployeeTimestamp(response?.data || response))
     );
   }
 
@@ -216,8 +222,9 @@ export class TimestampService {
     }
     // Transform frontend format to backend format
     const backendData = this.transformUpdateToBackend(data);
-    return this.api.put<any>(`/timestamps/company/${companyId}/${timestampId}`, backendData).pipe(
-      map(response => this.transformBackendToEmployeeTimestamp(response))
+    const options = { skipTransform: true };
+    return this.api.put<any>(`/timestamps/company/${companyId}/${timestampId}`, backendData, undefined, options).pipe(
+      map((response: any) => this.transformBackendToEmployeeTimestamp(response?.data || response))
     );
   }
 
@@ -229,7 +236,8 @@ export class TimestampService {
     if (!this.api) {
       throw new Error('ApiService is not available');
     }
-    return this.api.delete<void>(`/timestamps/company/${companyId}/${timestampId}`);
+    const options = { skipTransform: true };
+    return this.api.delete<void>(`/timestamps/company/${companyId}/${timestampId}`, undefined, options);
   }
 
   /**
@@ -240,8 +248,9 @@ export class TimestampService {
     if (!this.api) {
       throw new Error('ApiService is not available');
     }
-    return this.api.post<any>(`/timestamps/company/${companyId}/${timestampId}/approve`, {}).pipe(
-      map(response => this.transformBackendToEmployeeTimestamp(response))
+    const options = { skipTransform: true };
+    return this.api.post<any>(`/timestamps/company/${companyId}/${timestampId}/approve`, {}, undefined, options).pipe(
+      map((response: any) => this.transformBackendToEmployeeTimestamp(response?.data || response))
     );
   }
 
@@ -253,11 +262,12 @@ export class TimestampService {
     if (!this.api) {
       throw new Error('ApiService is not available');
     }
+    const options = { skipTransform: true };
     return this.api.post<any>(`/timestamps/company/${companyId}/${timestampId}/reject`, {
       status: 'rejected',
       rejection_reason: reason
-    }).pipe(
-      map(response => this.transformBackendToEmployeeTimestamp(response))
+    }, undefined, options).pipe(
+      map((response: any) => this.transformBackendToEmployeeTimestamp(response?.data || response))
     );
   }
 
@@ -269,8 +279,12 @@ export class TimestampService {
     if (!this.api) {
       throw new Error('ApiService is not available');
     }
-    return this.api.post<any[]>(`/timestamps/company/${companyId}/bulk-approve`, timestampIds).pipe(
-      map(response => response.map(item => this.transformBackendToEmployeeTimestamp(item)))
+    const options = { skipTransform: true };
+    return this.api.post<any[]>(`/timestamps/company/${companyId}/bulk-approve`, timestampIds, undefined, options).pipe(
+      map((response: any) => {
+        const data = response?.data || response || [];
+        return Array.isArray(data) ? data.map((item: any) => this.transformBackendToEmployeeTimestamp(item)) : [];
+      })
     );
   }
 
@@ -282,7 +296,8 @@ export class TimestampService {
     if (!this.api) {
       throw new Error('ApiService is not available');
     }
-    return this.api.get<Blob>(`/timestamps/company/${companyId}/export`, filters);
+    const options = { skipTransform: true, responseType: 'blob' as 'json' };
+    return this.api.get<Blob>(`/timestamps/company/${companyId}/export`, filters, options);
   }
 
   /**

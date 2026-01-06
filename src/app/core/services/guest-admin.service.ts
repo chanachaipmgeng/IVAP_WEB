@@ -2,75 +2,27 @@
  * Guest Admin Service
  * 
  * Service for admin guest management
- * Matches backend admin guest routes
+ * Extends BaseCrudService for standard CRUD operations
+ * Uses snake_case to match backend API directly
+ * Endpoint: /admin/guests
  */
 
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ApiService } from './api.service';
+import { BaseCrudService } from './base-crud.service';
 import { Guest, GuestCreate, GuestUpdate } from '../models/guest.model';
-import { handleApiResponse, handlePaginatedResponse, PaginatedApiResponse } from '../utils/response-handler';
+import { PaginatedApiResponse } from '../utils/response-handler';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GuestAdminService {
-  constructor(private api: ApiService) {}
+export class GuestAdminService extends BaseCrudService<Guest, GuestCreate, GuestUpdate> {
+  protected baseEndpoint = '/admin/guests';
 
-  /**
-   * Get guests for admin management with pagination
-   * Backend: GET /api/v1/admin/guests
-   */
-  getAdminGuests(params?: {
-    page?: number;
-    size?: number;
-    sort?: string;
-    order?: string;
-    search?: string;
-    status?: string;
-  }): Observable<PaginatedApiResponse<Guest>> {
-    return this.api.get<any>('/admin/guests', params).pipe(
-      map(response => handlePaginatedResponse<Guest>(response))
-    );
-  }
-
-  /**
-   * Get a single guest by ID for admin management
-   * Backend: GET /api/v1/admin/guests/{guest_id}
-   */
-  getAdminGuestById(guestId: string): Observable<Guest> {
-    return this.api.get<any>(`/admin/guests/${guestId}`).pipe(
-      map(response => handleApiResponse<Guest>(response))
-    );
-  }
-
-  /**
-   * Create a new guest via admin API
-   * Backend: POST /api/v1/admin/guests
-   */
-  createAdminGuest(guestData: GuestCreate): Observable<Guest> {
-    return this.api.post<any>('/admin/guests', guestData).pipe(
-      map(response => handleApiResponse<Guest>(response))
-    );
-  }
-
-  /**
-   * Update an existing guest via admin API
-   * Backend: PUT /api/v1/admin/guests/{guest_id}
-   */
-  updateAdminGuest(guestId: string, guestData: GuestUpdate): Observable<Guest> {
-    return this.api.put<any>(`/admin/guests/${guestId}`, guestData).pipe(
-      map(response => handleApiResponse<Guest>(response))
-    );
-  }
-
-  /**
-   * Delete a guest via admin API
-   * Backend: DELETE /api/v1/admin/guests/{guest_id}
-   */
-  deleteAdminGuest(guestId: string): Observable<void> {
-    return this.api.delete<void>(`/admin/guests/${guestId}`);
+  constructor(api: ApiService) {
+    super(api);
   }
 
   /**
@@ -78,8 +30,9 @@ export class GuestAdminService {
    * Backend: PATCH /api/v1/admin/guests/{guest_id}/checkin
    */
   checkinGuest(guestId: string): Observable<Guest> {
-    return this.api.patch<any>(`/admin/guests/${guestId}/checkin`, {}).pipe(
-      map(response => handleApiResponse<Guest>(response))
+    const options = { skipTransform: true };
+    return this.api.patch<Guest>(`${this.baseEndpoint}/${guestId}/checkin`, {}, undefined, options).pipe(
+      map((response: any) => response?.data || response)
     );
   }
 
@@ -88,8 +41,9 @@ export class GuestAdminService {
    * Backend: PATCH /api/v1/admin/guests/{guest_id}/checkout
    */
   checkoutGuest(guestId: string): Observable<Guest> {
-    return this.api.patch<any>(`/admin/guests/${guestId}/checkout`, {}).pipe(
-      map(response => handleApiResponse<Guest>(response))
+    const options = { skipTransform: true };
+    return this.api.patch<Guest>(`${this.baseEndpoint}/${guestId}/checkout`, {}, undefined, options).pipe(
+      map((response: any) => response?.data || response)
     );
   }
 }

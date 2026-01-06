@@ -14,6 +14,13 @@
 - ✅ แก้ไข `users.component.html`: ใช้ `getRoles()` และ `getCompanies()` getters แทน `userService`
 - ✅ แก้ไข `doors.component.html`: ใช้ `snake_case` (`company_employee_id`, `employee_id`, `access_type`)
 - ✅ เพิ่ม `resetPassword()` และ `exportMembers()` ใน `MemberService`
+- ✅ **ปรับปรุง `BiometricData Service`** - Extend `BaseCrudService`, เปลี่ยน `HttpClient` → `ApiService`
+- ✅ **ปรับปรุง `QRCode Service`** - Extend `BaseCrudService`, เปลี่ยน `HttpClient` → `ApiService`
+- ✅ **ปรับปรุง `RFIDCard Service`** - Extend `BaseCrudService`, เปลี่ยน `HttpClient` → `ApiService`
+- ✅ **ปรับปรุง `GuestAdmin Service`** - Extend `BaseCrudService`
+- ✅ **ปรับปรุง `NotificationAPI Service`** - ใช้ `snake_case` และ `skipTransform: true`
+- ✅ **ปรับปรุง `VisitorExtended Service`** - ใช้ `snake_case` และ `skipTransform: true`
+- ✅ **ปรับปรุง `Timestamp Service`** - ใช้ `snake_case` และ `skipTransform: true` สำหรับ API calls
 
 ### 2024-12-19
 - ✅ แก้ไข `user.model.ts`: ปรับ `User` interface ให้ extend `Member` โดยตรง (simplified)
@@ -159,6 +166,76 @@
   - ใช้ `skipTransform: true` ในทุก API calls
   - Endpoint: `/doors`
 
+### 16. **BiometricData** ✅
+- **Model:** `biometric-data.model.ts` ✅
+  - ใช้ `snake_case` ทั้งหมด (`member_id`, `biometric_type`, `biometric_value`, `is_primary`, `created_at`, `updated_at`)
+  - ตรงกับ `biometric_data_schema.py`
+- **Service:** `biometric-data.service.ts` ✅
+  - Extend `BaseCrudService<BiometricData, CreateBiometricDataDto, UpdateBiometricDataDto>`
+  - ใช้ `skipTransform: true` ในทุก API calls
+  - Endpoint: `/biometric-data`
+  - Custom methods: `verifyBiometric()`, `getStatistics()`, `getTypes()`, `uploadFile()`, `downloadFile()`
+
+### 17. **QRCode** ✅
+- **Model:** `qr-code.model.ts` ✅
+  - ใช้ `snake_case` ทั้งหมด (`qr_type`, `owner_id`, `owner_type`, `valid_from`, `valid_until`, `scan_count`, `last_scanned_at`)
+  - ตรงกับ `qr_code_schema.py`
+- **Service:** `qr-code.service.ts` ✅
+  - Extend `BaseCrudService<QRCode, CreateQRCodeDto, QRCodeUpdate>`
+  - ใช้ `skipTransform: true` ในทุก API calls
+  - Endpoint: `/qr-codes`
+  - Custom methods: `regenerateQRCode()`, `activateQRCode()`, `deactivateQRCode()`, `scanQRCode()`, `getScanHistory()`
+
+### 18. **RFIDCard** ✅
+- **Model:** `rfid-card.model.ts` ✅
+  - ใช้ `snake_case` ทั้งหมด (`card_number`, `holder_id`, `holder_name`, `holder_type`, `card_type`, `is_authorized`, `issued_at`, `expires_at`, `last_used_at`, `usage_count`)
+  - ตรงกับ `rfid_card_schema.py`
+- **Service:** `rfid-card.service.ts` ✅
+  - Extend `BaseCrudService<RFIDCard, CreateRFIDCardDto, UpdateRFIDCardDto>`
+  - ใช้ `skipTransform: true` ในทุก API calls
+  - Endpoint: `/rfid-cards`
+  - Custom methods: `getRFIDCardByNumber()`, `verifyRFIDCard()`, `getStatistics()`, `getTypes()`, `updateStatus()`, `updateAuthorization()`, `importCards()`, `exportCards()`
+
+### 19. **GuestAdmin** ✅
+- **Model:** `guest.model.ts` ✅ (ใช้ model เดียวกับ Guest)
+- **Service:** `guest-admin.service.ts` ✅
+  - Extend `BaseCrudService<Guest, GuestCreate, GuestUpdate>`
+  - ใช้ `skipTransform: true` ในทุก API calls
+  - Endpoint: `/admin/guests`
+  - Custom methods: `checkinGuest()`, `checkoutGuest()`
+
+### 20. **NotificationAPI** ✅
+- **Model:** `notification-api.model.ts` ✅
+  - ใช้ `camelCase` สำหรับ frontend models
+  - Convert เป็น `snake_case` เมื่อส่งไป backend
+- **Service:** `notification-api.service.ts` ✅
+  - Notification Service (ไม่ใช่ CRUD)
+  - ใช้ `skipTransform: true` ในทุก API calls
+  - Endpoint: `/notifications`
+  - Methods: `sendEmail()`, `sendLine()`, `sendWebhook()`, `sendSMS()`, `sendBulk()`, `sendTemplate()`, `sendEvent()`, `sendSystem()`, `getTemplates()`, `getStatus()`
+
+### 21. **VisitorExtended** ✅
+- **Model:** `visitor-extended.model.ts` ✅
+  - ใช้ `snake_case` ทั้งหมด (`visit_id`, `visitor_id`, `company_id`, `visit_date`, `expected_start_time`, `expected_end_time`, `actual_start_time`, `actual_end_time`, `host_employee_id`, `host_name`, `host_phone`, `visitor_type`, `visit_purpose`, `meeting_room`, `check_in_time`, `check_out_time`)
+  - ตรงกับ `visitor_extended_schema.py`
+- **Service:** `visitor-extended.service.ts` ✅
+  - Extended Service (ไม่ใช่ CRUD)
+  - ใช้ `skipTransform: true` ในทุก API calls
+  - Endpoint: `/visitor-extended`
+  - 3 ส่วน: VisitorVisit, VisitorInvitation, VisitorBadge
+
+### 22. **Timestamp** ✅
+- **Model:** `timestamp.model.ts` / `employee-timestamp.model.ts` ✅
+  - ใช้ `snake_case` สำหรับ backend API (`timestamp_id`, `company_employee_id`, `timestamp_type`, `timestamp`, `location_name`, `latitude`, `longitude`, `photo_timestamp`, `status`, `approved_by`, `approved_at`, `rejection_reason`)
+  - ตรงกับ `employee_timestamp_schema.py`
+- **Service:** `timestamp.service.ts` ✅
+  - Complex Service (CRUD + Custom Logic)
+  - ใช้ `skipTransform: true` สำหรับ API calls
+  - Endpoint: `/timestamps/company/{company_id}`
+  - CRUD operations: `getTimestamps()`, `getTimestampById()`, `createTimestamp()`, `updateTimestamp()`, `deleteTimestamp()`
+  - Custom methods: `approveTimestamp()`, `rejectTimestamp()`, `bulkApproveTimestamps()`, `exportTimestamps()`
+  - Client-side logic: Location tracking, geofence, statistics
+
 ---
 
 ## ⚠️ Models และ Services ที่ยังต้องปรับปรุง
@@ -189,43 +266,21 @@
   - **Migration:** ใช้ `CompanyEmployeeService` แทน
   - **Components Migrated:** `hr-dashboard.component.ts`, `access-control.component.ts`
 
-### 3. **Timestamp / EmployeeTimestamp**
-- **Model:** `timestamp.model.ts` / `employee-timestamp.model.ts` ⚠️
-  - ต้องตรวจสอบว่าใช้ `snake_case` หรือไม่
-- **Service:** `timestamp.service.ts` ⚠️
-  - ต้องตรวจสอบว่า extend `BaseCrudService` หรือไม่
+### 3. **Report**
 
-### 4. **Visitor Extended**
-- **Model:** `visitor-extended.model.ts` ⚠️
-  - ต้องตรวจสอบว่าใช้ `snake_case` หรือไม่
-- **Service:** `visitor-extended.service.ts` ⚠️
-  - ต้องตรวจสอบว่า extend `BaseCrudService` หรือไม่
-
-### 5. **RFID Card**
-- **Model:** `rfid-card.model.ts` ⚠️
-  - ต้องตรวจสอบว่าใช้ `snake_case` หรือไม่
-- **Service:** `rfid-card.service.ts` ⚠️
-  - ต้องตรวจสอบว่า extend `BaseCrudService` หรือไม่
-
-### 6. **QR Code**
-- **Model:** `qr-code.model.ts` ⚠️
-  - ต้องตรวจสอบว่าใช้ `snake_case` หรือไม่
-- **Service:** `qr-code.service.ts` ⚠️
-  - ต้องตรวจสอบว่า extend `BaseCrudService` หรือไม่
-
-### 7. **Report**
+### 4. **Report**
 - **Model:** `report.model.ts` ⚠️
   - ต้องตรวจสอบว่าใช้ `snake_case` หรือไม่
 - **Service:** `report.service.ts` ⚠️
   - ต้องตรวจสอบว่า extend `BaseCrudService` หรือไม่
 
-### 8. **Notification**
+### 5. **Notification** (UI Service)
 - **Model:** `notification.model.ts` ⚠️
   - ต้องตรวจสอบว่าใช้ `snake_case` หรือไม่
 - **Service:** `notification.service.ts` ⚠️
   - ต้องตรวจสอบว่า extend `BaseCrudService` หรือไม่
 
-### 9. **Audit**
+### 6. **Audit**
 - **Model:** `audit.model.ts` ⚠️
   - ต้องตรวจสอบว่าใช้ `snake_case` หรือไม่
 - **Service:** `audit.service.ts` ⚠️

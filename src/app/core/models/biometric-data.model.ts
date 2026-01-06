@@ -1,18 +1,19 @@
 /**
  * Biometric Data Interface
  * ตรงกับ BiometricDataResponse ใน backend (biometric_schema.py)
+ * ใช้ snake_case ตรงกับ backend
  */
 export interface BiometricData {
   id: string;  // id from backend (UUID, REQUIRED)
-  memberId: string;  // member_id from backend (UUID, REQUIRED)
-  biometricType: BiometricType;  // biometric_type from backend (BiometricType enum, REQUIRED)
-  biometricValue: string;  // biometric_value from backend (REQUIRED, Base64 encoded)
-  isPrimary: boolean;  // is_primary from backend (bool, default=False)
+  member_id: string;  // member_id from backend (UUID, REQUIRED)
+  biometric_type: BiometricType;  // biometric_type from backend (BiometricType enum, REQUIRED)
+  biometric_value: string;  // biometric_value from backend (REQUIRED, Base64 encoded)
+  is_primary: boolean;  // is_primary from backend (bool, default=False)
   metadata?: Record<string, any>;  // metadata from backend (optional, dict)
   
   // Timestamps
-  createdAt: string;  // created_at from backend (datetime)
-  updatedAt: string;  // updated_at from backend (datetime)
+  created_at: string;  // created_at from backend (datetime)
+  updated_at: string;  // updated_at from backend (datetime)
 }
 
 export enum BiometricType {
@@ -26,45 +27,49 @@ export enum BiometricType {
 /**
  * Biometric Data Create Request
  * ตรงกับ BiometricDataCreate ใน backend
+ * ใช้ snake_case ตรงกับ backend
  */
 export interface CreateBiometricDataDto {
-  memberId: string;  // member_id from backend (UUID, REQUIRED)
-  biometricType: BiometricType;  // biometric_type from backend (BiometricType enum, REQUIRED)
-  biometricValue: string;  // biometric_value from backend (REQUIRED, Base64 encoded)
-  isPrimary?: boolean;  // is_primary from backend (optional, default=False)
+  member_id: string;  // member_id from backend (UUID, REQUIRED)
+  biometric_type: BiometricType;  // biometric_type from backend (BiometricType enum, REQUIRED)
+  biometric_value: string;  // biometric_value from backend (REQUIRED, Base64 encoded)
+  is_primary?: boolean;  // is_primary from backend (optional, default=False)
   metadata?: Record<string, any>;  // metadata from backend (optional, dict)
 }
 
 /**
  * Biometric Data Update Request
  * ตรงกับ BiometricDataUpdate ใน backend
+ * ใช้ snake_case ตรงกับ backend
  */
 export interface UpdateBiometricDataDto {
-  biometricValue?: string;  // biometric_value from backend (optional)
-  isPrimary?: boolean;  // is_primary from backend (optional)
+  biometric_value?: string;  // biometric_value from backend (optional)
+  is_primary?: boolean;  // is_primary from backend (optional)
   metadata?: Record<string, any>;  // metadata from backend (optional)
 }
 
 /**
  * Biometric Data Verify Request
  * ตรงกับ BiometricDataVerifyRequest ใน backend
+ * ใช้ snake_case ตรงกับ backend
  */
 export interface BiometricVerifyRequest {
-  memberId?: string;  // member_id from backend (optional, UUID)
-  biometricType: BiometricType;  // biometric_type from backend (BiometricType enum, REQUIRED)
-  biometricValue: string;  // biometric_value from backend (REQUIRED, Base64 encoded)
-  deviceId?: string;  // device_id from backend (optional, UUID)
+  member_id?: string;  // member_id from backend (optional, UUID)
+  biometric_type: BiometricType;  // biometric_type from backend (BiometricType enum, REQUIRED)
+  biometric_value: string;  // biometric_value from backend (REQUIRED, Base64 encoded)
+  device_id?: string;  // device_id from backend (optional, UUID)
 }
 
 /**
  * Biometric Data Verify Response
  * ตรงกับ BiometricDataVerifyResponse ใน backend
+ * ใช้ snake_case ตรงกับ backend
  */
 export interface BiometricVerifyResponse {
   success: boolean;  // success from backend (REQUIRED)
   message: string;  // message from backend (REQUIRED)
-  memberId?: string;  // member_id from backend (optional, UUID)
-  isMatch?: boolean;  // is_match from backend (optional, bool)
+  member_id?: string;  // member_id from backend (optional, UUID)
+  is_match?: boolean;  // is_match from backend (optional, bool)
   confidence?: number;  // confidence from backend (optional, float)
 }
 

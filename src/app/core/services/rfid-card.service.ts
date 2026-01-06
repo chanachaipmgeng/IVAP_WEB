@@ -1,8 +1,16 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { environment } from '../../../environments/environment';
+/**
+ * RFID Card Service
+ * 
+ * Service for managing RFID cards
+ * Extends BaseCrudService for standard CRUD operations
+ * Uses snake_case to match backend API directly
+ */
+
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ApiService } from './api.service';
+import { BaseCrudService } from './base-crud.service';
 import {
   RFIDCard,
   CreateRFIDCardDto,
@@ -18,12 +26,16 @@ import {
 @Injectable({
   providedIn: 'root'
 })
-export class RFIDCardService {
-  private http = inject(HttpClient);
-  private apiUrl = `${environment.apiUrl}/rfid-cards`;
+export class RFIDCardService extends BaseCrudService<RFIDCard, CreateRFIDCardDto, UpdateRFIDCardDto> {
+  protected baseEndpoint = '/rfid-cards';
+
+  constructor(api: ApiService) {
+    super(api);
+  }
 
   /**
-   * Get all RFID cards with pagination and filters
+   * Get RFID cards with pagination and filters
+   * Backend: GET /api/v1/rfid-cards?page={page}&size={size}&search={search}&status={status}&card_type={cardType}
    */
   getRFIDCards(
     page: number = 1,
@@ -32,118 +44,124 @@ export class RFIDCardService {
     status?: RFIDCardStatus,
     cardType?: RFIDCardType
   ): Observable<PaginatedResponse<RFIDCard>> {
-    let params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString());
+    const filters: any = {
+      page,
+      size
+    };
     
     if (search) {
-      params = params.set('search', search);
+      filters.search = search;
     }
     if (status) {
-      params = params.set('status', status);
+      filters.status = status;
     }
     if (cardType) {
-      params = params.set('card_type', cardType);
+      filters.card_type = cardType;
     }
     
-    return this.http.get<PaginatedResponse<RFIDCard>>(this.apiUrl, { params }).pipe(
-      catchError((error) => {
-        console.warn('Error loading RFID cards (API may not be available):', error);
-        return of({
-          items: [],
-          total: 0,
-          page: page,
-          size: size,
-          totalPages: 0
-        } as PaginatedResponse<RFIDCard>);
+    return this.getAll(filters).pipe(
+      map((response) => {
+        // Map PaginatedApiResponse to PaginatedResponse
+        return {
+          items: response.items || response.data || [],
+          total: response.total || 0,
+          page: response.page || page,
+          size: response.size || size
+        } as PaginatedResponse<RFIDCard>;
       })
     );
   }
 
   /**
-   * Get RFID card by ID
-   */
-  getRFIDCardById(id: string): Observable<RFIDCard> {
-    return this.http.get<RFIDCard>(`${this.apiUrl}/${id}`);
-  }
-
-  /**
    * Get RFID card by card number
+   * Backend: GET /api/v1/rfid-cards/number/{cardNumber}
    */
   getRFIDCardByNumber(cardNumber: string): Observable<RFIDCard> {
-    return this.http.get<RFIDCard>(`${this.apiUrl}/number/${cardNumber}`);
-  }
-
-  /**
-   * Create new RFID card
-   */
-  createRFIDCard(data: CreateRFIDCardDto): Observable<RFIDCard> {
-    return this.http.post<RFIDCard>(this.apiUrl, data);
-  }
-
-  /**
-   * Update RFID card
-   */
-  updateRFIDCard(id: string, data: UpdateRFIDCardDto): Observable<RFIDCard> {
-    return this.http.put<RFIDCard>(`${this.apiUrl}/${id}`, data);
-  }
-
-  /**
-   * Delete RFID card
-   */
-  deleteRFIDCard(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    const options = { skipTransform: true };
+    return this.api.get<RFIDCard>(`${this.baseEndpoint}/number/${cardNumber}`, undefined, options).pipe(
+      map((response: any) => response?.data || response)
+    );
   }
 
   /**
    * Verify RFID card
+   * Backend: POST /api/v1/rfid-cards/verify
    */
   verifyRFIDCard(request: RFIDVerifyRequest): Observable<RFIDVerifyResponse> {
-    return this.http.post<RFIDVerifyResponse>(`${this.apiUrl}/verify`, request);
+    const options = { skipTransform: true };
+    return this.api.post<RFIDVerifyResponse>(`${this.baseEndpoint}/verify`, request, undefined, options).pipe(
+      map((response: any) => response?.data || response)
+    );
   }
 
   /**
    * Get RFID card statistics
+   * Backend: GET /api/v1/rfid-cards/statistics
    */
   getStatistics(): Observable<RFIDStatistics> {
-    return this.http.get<RFIDStatistics>(`${this.apiUrl}/statistics`);
+    const options = { skipTransform: true };
+    return this.api.get<RFIDStatistics>(`${this.baseEndpoint}/statistics`, undefined, options).pipe(
+      map((response: any) => response?.data || response)
+    );
   }
 
   /**
    * Get RFID card types
+   * Backend: GET /api/v1/rfid-cards/types
    */
   getTypes(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.apiUrl}/types`);
+    const options = { skipTransform: true };
+    return this.api.get<string[]>(`${this.baseEndpoint}/types`, undefined, options).pipe(
+      map((response: any) => {
+        if (Array.isArray(response)) {
+          return response;
+        }
+        return response?.data || response?.items || [];
+      })
+    );
   }
 
   /**
    * Update RFID card status
+   * Backend: PATCH /api/v1/rfid-cards/{id}/status
    */
   updateStatus(id: string, status: RFIDCardStatus): Observable<RFIDCard> {
-    return this.http.patch<RFIDCard>(`${this.apiUrl}/${id}/status`, { new_status: status });
+    const options = { skipTransform: true };
+    return this.api.patch<RFIDCard>(`${this.baseEndpoint}/${id}/status`, { new_status: status }, undefined, options).pipe(
+      map((response: any) => response?.data || response)
+    );
   }
 
   /**
    * Update RFID card authorization
+   * Backend: PATCH /api/v1/rfid-cards/{id}/authorization
    */
   updateAuthorization(id: string, isAuthorized: boolean): Observable<RFIDCard> {
-    return this.http.patch<RFIDCard>(`${this.apiUrl}/${id}/authorization`, { is_authorized: isAuthorized });
+    const options = { skipTransform: true };
+    return this.api.patch<RFIDCard>(`${this.baseEndpoint}/${id}/authorization`, { is_authorized: isAuthorized }, undefined, options).pipe(
+      map((response: any) => response?.data || response)
+    );
   }
 
   /**
    * Import RFID cards from CSV
+   * Backend: POST /api/v1/rfid-cards/import
    */
   importCards(file: File): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post<any>(`${this.apiUrl}/import`, formData);
+    const options = { skipTransform: true };
+    return this.api.post<any>(`${this.baseEndpoint}/import`, formData, undefined, options).pipe(
+      map((response: any) => response?.data || response)
+    );
   }
 
   /**
    * Export RFID cards to CSV
+   * Backend: GET /api/v1/rfid-cards/export
    */
   exportCards(): Observable<Blob> {
-    return this.http.get(`${this.apiUrl}/export`, { responseType: 'blob' });
+    const options = { skipTransform: true, responseType: 'blob' as 'json' };
+    return this.api.get<Blob>(`${this.baseEndpoint}/export`, undefined, options);
   }
 }
-
