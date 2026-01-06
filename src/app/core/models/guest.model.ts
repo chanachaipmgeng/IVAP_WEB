@@ -46,9 +46,9 @@ export interface Guest extends BaseTimestamps {
 /**
  * Guest Create Request
  * Matches GuestCreate schema from backend
+ * NOTE: company_id is NOT in the body - it's in the URL path parameter
  */
 export interface GuestCreate {
-  company_id: UUID;  // REQUIRED
   name: string;
   email: string;
   phone: string;

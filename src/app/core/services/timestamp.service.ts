@@ -304,18 +304,19 @@ export class TimestampService {
 
   /**
    * Transform EmployeeTimestampCreate to backend format
+   * Backend expects snake_case: company_employee_id, timestamp_type, location_name, photo_timestamp
    */
   private transformCreateToBackend(data: EmployeeTimestampCreate): any {
     // Map frontend timestampType to backend format
     const backendTimestampType = this.mapTimestampTypeToBackend(data.timestampType);
 
     return {
-      company_employeeId: data.companyEmployeeId,
-      timestampType: backendTimestampType,
-      locationName: data.locationName,
+      company_employee_id: data.companyEmployeeId,  // snake_case for backend
+      timestamp_type: backendTimestampType,  // snake_case for backend
+      location_name: data.locationName,  // snake_case for backend
       latitude: data.latitude,
       longitude: data.longitude,
-      photoTimestamp: data.photoTimestamp
+      photo_timestamp: data.photoTimestamp  // snake_case for backend
     };
   }
 
@@ -350,6 +351,7 @@ export class TimestampService {
 
   /**
    * Transform EmployeeTimestampUpdate to backend format
+   * Backend expects snake_case: timestamp_type, location_name, photo_timestamp
    */
   private transformUpdateToBackend(data: EmployeeTimestampUpdate): any {
     // Map frontend timestampType to backend format if provided
@@ -358,11 +360,11 @@ export class TimestampService {
       : undefined;
 
     return {
-      timestampType: backendTimestampType,
+      timestamp_type: backendTimestampType,  // snake_case for backend
       latitude: data.latitude,
       longitude: data.longitude,
-      locationName: data.locationName,
-      photoTimestamp: data.photoTimestamp
+      location_name: data.locationName,  // snake_case for backend
+      photo_timestamp: data.photoTimestamp  // snake_case for backend
     };
   }
 
