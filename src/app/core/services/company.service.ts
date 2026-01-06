@@ -90,10 +90,46 @@ export class CompanyService extends BaseCrudService<Company, CompanyCreate, Comp
 
   /**
    * Get company statistics
-   * Backend: GET /api/v1/companies/statistics
+   * Backend: GET /api/v1/companies/stats
    */
   getStatistics(): Observable<CompanyStatistics> {
     const options = { skipTransform: true };
-    return this.api.get<CompanyStatistics>(`${this.baseEndpoint}/statistics`, undefined, options);
+    return this.api.get<CompanyStatistics>(`${this.baseEndpoint}/stats`, undefined, options);
+  }
+
+  /**
+   * Export companies data
+   * Backend: GET /api/v1/companies/export
+   */
+  exportCompanies(filters?: CompanyFilters): Observable<Blob> {
+    const options = { skipTransform: true, responseType: 'blob' as const };
+    return this.api.get<Blob>(`${this.baseEndpoint}/export`, filters, options);
+  }
+
+  /**
+   * Activate company
+   * Backend: POST /api/v1/companies/{company_id}/activate
+   */
+  activateCompany(companyId: string): Observable<any> {
+    const options = { skipTransform: true };
+    return this.api.post<any>(`${this.baseEndpoint}/${companyId}/activate`, {}, undefined, options);
+  }
+
+  /**
+   * Deactivate company
+   * Backend: POST /api/v1/companies/{company_id}/deactivate
+   */
+  deactivateCompany(companyId: string): Observable<any> {
+    const options = { skipTransform: true };
+    return this.api.post<any>(`${this.baseEndpoint}/${companyId}/deactivate`, {}, undefined, options);
+  }
+
+  /**
+   * Suspend company
+   * Backend: POST /api/v1/companies/{company_id}/suspend
+   */
+  suspendCompany(companyId: string, reason: string): Observable<any> {
+    const options = { skipTransform: true };
+    return this.api.post<any>(`${this.baseEndpoint}/${companyId}/suspend`, { reason }, undefined, options);
   }
 }

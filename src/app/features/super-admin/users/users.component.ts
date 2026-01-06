@@ -637,7 +637,7 @@ deleteRole(role: Role): void {
   // ✅ Auto-unsubscribe on component destroy
   // Use RbacService instead of UserService
   this.subscribe(
-    this.rbacService.deleteRole(role.id),
+    this.rbacService.deleteRole(Number(role.id)),
     () => {
       this.loadRoles();
     },
@@ -679,7 +679,7 @@ saveRole(): void {
   // For update, use Partial<RoleForm> which doesn't require permissions
   // For create, use payload with empty permissions array
   const request = this.editingRoleRecord()
-    ? this.rbacService.updateRole(this.editingRoleRecord()!.id, { name: payload.name, description: payload.description })
+    ? this.rbacService.updateRole(Number(this.editingRoleRecord()!.id), { name: payload.name, description: payload.description })
     : this.rbacService.createRole(payload);
 
   // ✅ Auto-unsubscribe on component destroy
@@ -745,11 +745,7 @@ assignRoleToUser(userId: string, roleId: string, companyId?: string) {
   // Get company_id from parameter or formData
   const company_id = companyId || this.formData.company_id || '';
 
-  return this.rbacService.assignUserRole({
-    userId,
-    roleId,
-    companyId: company_id.toString()
-  });
+  return this.rbacService.assignUserRole(userId, Number(roleId));
 }
 
 assignCompanyToUser(userId: string, companyId: string) {
@@ -781,7 +777,7 @@ updateRolePermissions(roleId: string, permissionNames: string[]) {
         }
       }
 
-      return this.rbacService.updateRolePermissions(roleId, permissionIds);
+      return this.rbacService.updateRolePermissions(Number(roleId), permissionIds);
     })
   );
 }

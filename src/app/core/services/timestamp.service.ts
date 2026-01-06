@@ -257,15 +257,17 @@ export class TimestampService {
   /**
    * Reject timestamp
    * Backend: POST /api/v1/timestamps/company/{company_id}/{timestamp_id}/reject
+   * Backend expects EmployeeTimestampStatusUpdate with status='rejected' and rejection_reason
    */
   public rejectTimestamp(companyId: UUID, timestampId: UUID, reason: string): Observable<EmployeeTimestamp> {
     if (!this.api) {
       throw new Error('ApiService is not available');
     }
     const options = { skipTransform: true };
+    // Backend expects EmployeeTimestampStatusUpdate schema
     return this.api.post<any>(`/timestamps/company/${companyId}/${timestampId}/reject`, {
       status: 'rejected',
-      rejection_reason: reason
+      rejection_reason: reason || 'No reason provided'
     }, undefined, options).pipe(
       map((response: any) => this.transformBackendToEmployeeTimestamp(response?.data || response))
     );

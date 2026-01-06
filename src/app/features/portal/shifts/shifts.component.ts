@@ -192,7 +192,8 @@ export class ShiftsComponent extends BaseComponent implements OnInit {
     this.subscribe(
       this.shiftService.getByCompanyId(String(companyId)),
       (response) => {
-        this._shifts.set(response.data || []);
+        // Backend returns List[ShiftResponse] directly, not paginated
+        this._shifts.set(Array.isArray(response) ? response : []);
         this._loading.set(false);
       },
       (error) => {

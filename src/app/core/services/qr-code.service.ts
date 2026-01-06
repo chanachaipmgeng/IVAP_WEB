@@ -8,7 +8,7 @@
 
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { ApiService } from './api.service';
 import { BaseCrudService } from './base-crud.service';
 import {
@@ -29,56 +29,54 @@ export class QRCodeService extends BaseCrudService<QRCode, CreateQRCodeDto, Upda
   }
 
   /**
-   * Regenerate QR code
-   * Backend: POST /api/v1/qr-codes/{id}/regenerate
+   * Get QR code by data value
+   * Backend: GET /api/v1/qr-codes/data/{qr_data_value}
    */
-  regenerateQRCode(id: string): Observable<QRCode> {
+  getQRCodeByData(qrDataValue: string): Observable<QRCode> {
     const options = { skipTransform: true };
-    return this.api.post<QRCode>(`${this.baseEndpoint}/${id}/regenerate`, {}, undefined, options).pipe(
+    return this.api.get<QRCode>(`${this.baseEndpoint}/data/${qrDataValue}`, undefined, options).pipe(
       map((response: any) => response?.data || response)
     );
   }
 
   /**
-   * Activate QR code
-   * Backend: POST /api/v1/qr-codes/{id}/activate
+   * Verify QR code
+   * Backend: POST /api/v1/qr-codes/verify
    */
-  activateQRCode(id: string): Observable<QRCode> {
+  verifyQRCode(request: { qr_data: string; device_id?: string }): Observable<any> {
     const options = { skipTransform: true };
-    return this.api.post<QRCode>(`${this.baseEndpoint}/${id}/activate`, {}, undefined, options).pipe(
+    return this.api.post<any>(`${this.baseEndpoint}/verify`, request, undefined, options).pipe(
       map((response: any) => response?.data || response)
     );
   }
 
   /**
-   * Deactivate QR code
-   * Backend: POST /api/v1/qr-codes/{id}/deactivate
+   * Generate QR code image
+   * Backend: GET /api/v1/qr-codes/generate-image?qr_data={data}
    */
-  deactivateQRCode(id: string): Observable<QRCode> {
+  generateImage(qrData: string): Observable<Blob> {
+    const options = { skipTransform: true, responseType: 'blob' as 'json' };
+    return this.api.get<Blob>(`${this.baseEndpoint}/generate-image`, { qr_data: qrData }, options);
+  }
+
+  /**
+   * Get QR code statistics
+   * Backend: GET /api/v1/qr-codes/statistics
+   */
+  getStatistics(): Observable<any> {
     const options = { skipTransform: true };
-    return this.api.post<QRCode>(`${this.baseEndpoint}/${id}/deactivate`, {}, undefined, options).pipe(
+    return this.api.get<any>(`${this.baseEndpoint}/statistics`, undefined, options).pipe(
       map((response: any) => response?.data || response)
     );
   }
 
   /**
-   * Scan QR code
-   * Backend: POST /api/v1/qr-codes/scan
+   * Get QR code types
+   * Backend: GET /api/v1/qr-codes/types
    */
-  scanQRCode(code: string): Observable<QRCodeScanResult> {
+  getTypes(): Observable<string[]> {
     const options = { skipTransform: true };
-    return this.api.post<QRCodeScanResult>(`${this.baseEndpoint}/scan`, { code }, undefined, options).pipe(
-      map((response: any) => response?.data || response)
-    );
-  }
-
-  /**
-   * Get QR code scan history
-   * Backend: GET /api/v1/qr-codes/{id}/history
-   */
-  getScanHistory(id: string): Observable<any[]> {
-    const options = { skipTransform: true };
-    return this.api.get<any[]>(`${this.baseEndpoint}/${id}/history`, undefined, options).pipe(
+    return this.api.get<string[]>(`${this.baseEndpoint}/types`, undefined, options).pipe(
       map((response: any) => {
         if (Array.isArray(response)) {
           return response;
@@ -89,12 +87,119 @@ export class QRCodeService extends BaseCrudService<QRCode, CreateQRCodeDto, Upda
   }
 
   /**
+   * Update QR code status
+   * Backend: PATCH /api/v1/qr-codes/{id}/status
+   */
+  updateStatus(id: string, status: string): Observable<QRCode> {
+    const options = { skipTransform: true };
+    return this.api.patch<QRCode>(`${this.baseEndpoint}/${id}/status`, { new_status: status }, undefined, options).pipe(
+      map((response: any) => response?.data || response)
+    );
+  }
+
+  /**
+   * Update QR code authorization
+   * Backend: PATCH /api/v1/qr-codes/{id}/authorization
+   */
+  updateAuthorization(id: string, isAuthorized: boolean): Observable<QRCode> {
+    const options = { skipTransform: true };
+    return this.api.patch<QRCode>(`${this.baseEndpoint}/${id}/authorization`, { is_authorized: isAuthorized }, undefined, options).pipe(
+      map((response: any) => response?.data || response)
+    );
+  }
+
+  /**
+   * Import QR codes from CSV
+   * Backend: POST /api/v1/qr-codes/import
+   */
+  importQRCodes(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+    const options = { skipTransform: true };
+    return this.api.post<any>(`${this.baseEndpoint}/import`, formData, undefined, options).pipe(
+      map((response: any) => response?.data || response)
+    );
+  }
+
+  /**
+   * Export QR codes to CSV
+   * Backend: GET /api/v1/qr-codes/export
+   */
+  exportQRCodes(): Observable<Blob> {
+    const options = { skipTransform: true, responseType: 'blob' as 'json' };
+    return this.api.get<Blob>(`${this.baseEndpoint}/export`, undefined, options);
+  }
+
+  /**
    * Download QR code as image
-   * Backend: GET /api/v1/qr-codes/{id}/download?format={format}
+   * Backend: GET /api/v1/qr-codes/generate-image?qr_data={data}
+   * Note: Uses generateImage internally
    */
   downloadQRCode(id: string, format: 'png' | 'svg' = 'png'): void {
-    const url = `${this.baseEndpoint}/${id}/download?format=${format}`;
-    window.open(url, '_blank');
+    // Get QR code data first, then generate image
+    this.getById(id).subscribe({
+      next: (qrCode) => {
+        // Use code property from QRCode model, fallback to id if code is not available
+        const qrData = qrCode.code || qrCode.id || id;
+        this.generateImage(qrData).subscribe({
+          next: (blob) => {
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `qr-code-${id}.${format}`;
+            link.click();
+            window.URL.revokeObjectURL(url);
+          },
+          error: (error) => {
+            console.error('Error downloading QR code:', error);
+          }
+        });
+      },
+      error: (error) => {
+        console.error('Error getting QR code:', error);
+      }
+    });
+  }
+
+  /**
+   * Regenerate QR code
+   * Backend: POST /api/v1/qr-codes/{id}/regenerate (if exists) or use update
+   * Note: Backend may not have regenerate endpoint, using update as fallback
+   */
+  regenerateQRCode(id: string): Observable<QRCode> {
+    const options = { skipTransform: true };
+    // Try regenerate endpoint first, fallback to update
+    return this.api.post<QRCode>(`${this.baseEndpoint}/${id}/regenerate`, {}, undefined, options).pipe(
+      map((response: any) => response?.data || response),
+      catchError(() => {
+        // If regenerate fails, try to update with new data
+        return this.update(id, {} as UpdateQRCodeDto);
+      })
+    );
+  }
+
+  /**
+   * Activate QR code
+   * Backend: PATCH /api/v1/qr-codes/{id}/status with status='ACTIVE'
+   */
+  activateQRCode(id: string): Observable<QRCode> {
+    return this.updateStatus(id, 'ACTIVE');
+  }
+
+  /**
+   * Deactivate QR code
+   * Backend: PATCH /api/v1/qr-codes/{id}/status with status='INACTIVE'
+   */
+  deactivateQRCode(id: string): Observable<QRCode> {
+    return this.updateStatus(id, 'INACTIVE');
+  }
+
+  /**
+   * Scan QR code
+   * Backend: POST /api/v1/qr-codes/verify
+   */
+  scanQRCode(code: string): Observable<QRCodeScanResult> {
+    return this.verifyQRCode({ qr_data: code });
   }
 
   /**

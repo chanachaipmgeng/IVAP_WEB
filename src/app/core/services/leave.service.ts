@@ -92,37 +92,38 @@ export class LeaveService extends BaseCrudService<Leave, LeaveCreate, LeaveUpdat
 
   /**
    * Approve leave request
-   * Backend: POST /api/v1/leaves/leave-requests/{leave_request_id}/approve
+   * Backend: PUT /api/v1/leaves/leave-requests/{leave_request_id}/approve
    */
   approveLeaveRequest(leaveRequestId: string, data: LeaveApproval): Observable<Leave> {
     const options = { skipTransform: true };
-    return this.api.post<Leave>(`${this.baseEndpoint}/leave-requests/${leaveRequestId}/approve`, data, undefined, options);
+    return this.api.put<Leave>(`${this.baseEndpoint}/leave-requests/${leaveRequestId}/approve`, data, undefined, options);
   }
 
   /**
    * Reject leave request
-   * Backend: POST /api/v1/leaves/leave-requests/{leave_request_id}/reject
+   * Backend: PUT /api/v1/leaves/leave-requests/{leave_request_id}/reject
    */
   rejectLeaveRequest(leaveRequestId: string, data: LeaveRejection): Observable<Leave> {
     const options = { skipTransform: true };
-    return this.api.post<Leave>(`${this.baseEndpoint}/leave-requests/${leaveRequestId}/reject`, data, undefined, options);
+    return this.api.put<Leave>(`${this.baseEndpoint}/leave-requests/${leaveRequestId}/reject`, data, undefined, options);
   }
 
   /**
    * Get leave balance for employee
-   * Backend: GET /api/v1/leaves/balance/{employee_id}
+   * Backend: GET /api/v1/leaves/employees/{employee_id}/leave-balance
    */
   getLeaveBalance(employeeId: string): Observable<LeaveBalanceResponse> {
     const options = { skipTransform: true };
-    return this.api.get<LeaveBalanceResponse>(`${this.baseEndpoint}/balance/${employeeId}`, undefined, options);
+    return this.api.get<LeaveBalanceResponse>(`${this.baseEndpoint}/employees/${employeeId}/leave-balance`, undefined, options);
   }
 
   /**
    * Get leave statistics
-   * Backend: GET /api/v1/leaves/statistics
+   * Backend: GET /api/v1/leaves/companies/{company_id}/leave-statistics
    */
-  getLeaveStatistics(filters?: LeaveFilters): Observable<LeaveStatistics> {
+  getLeaveStatistics(companyId: string, year?: number): Observable<LeaveStatistics> {
     const options = { skipTransform: true };
-    return this.api.get<LeaveStatistics>(`${this.baseEndpoint}/statistics`, filters, options);
+    const params = year ? { year } : {};
+    return this.api.get<LeaveStatistics>(`${this.baseEndpoint}/companies/${companyId}/leave-statistics`, params, options);
   }
 }

@@ -25,7 +25,8 @@ export class RbacService {
   loadRoles(): Observable<Role[]> {
     this.loading.set(true);
     // Backend: GET /api/v1/rbac/roles
-    return this.api.get<Role[]>('/rbac/roles').pipe(
+    const options = { skipTransform: true };
+    return this.api.get<Role[]>('/rbac/roles', undefined, options).pipe(
       tap((response: any) => {
         const data = Array.isArray(response) ? response : (response?.data || []);
         this.roles.set(data);
@@ -42,7 +43,8 @@ export class RbacService {
 
   loadPermissions(): Observable<Permission[]> {
     // Backend: GET /api/v1/rbac/permissions
-    return this.api.get<Permission[]>('/rbac/permissions').pipe(
+    const options = { skipTransform: true };
+    return this.api.get<Permission[]>('/rbac/permissions', undefined, options).pipe(
       tap((response: any) => {
         const data = Array.isArray(response) ? response : (response?.data || []);
         this.permissions.set(data);
@@ -69,17 +71,46 @@ export class RbacService {
   // Role operations
   createRole(roleData: RoleForm): Observable<Role> {
     // Backend: POST /api/v1/rbac/roles
-    return this.api.post<Role>('/rbac/roles', roleData);
+    const options = { skipTransform: true };
+    return this.api.post<Role>('/rbac/roles', roleData, undefined, options).pipe(
+      tap((role: any) => {
+        // Update local state
+        const roles = this.roles();
+        this.roles.set([...roles, role]);
+      })
+    );
   }
 
-  updateRole(roleId: string, roleData: Partial<RoleForm>): Observable<Role> {
+  updateRole(roleId: number, roleData: Partial<RoleForm>): Observable<Role> {
     // Backend: PUT /api/v1/rbac/roles/{role_id}
-    return this.api.put<Role>(`/rbac/roles/${roleId}`, roleData);
+    // Note: Backend expects role_id as number, but frontend Role.id is string
+    const options = { skipTransform: true };
+    return this.api.put<Role>(`/rbac/roles/${roleId}`, roleData, undefined, options).pipe(
+      tap((role: any) => {
+        // Update local state
+        const roles = this.roles();
+        const roleIdStr = String(roleId);
+        const index = roles.findIndex(r => r.id === roleIdStr || String(r.id) === roleIdStr);
+        if (index >= 0) {
+          roles[index] = role;
+          this.roles.set([...roles]);
+        }
+      })
+    );
   }
 
-  deleteRole(roleId: string): Observable<void> {
+  deleteRole(roleId: number): Observable<void> {
     // Backend: DELETE /api/v1/rbac/roles/{role_id}
-    return this.api.delete<void>(`/rbac/roles/${roleId}`);
+    // Note: Backend expects role_id as number, but frontend Role.id is string
+    const options = { skipTransform: true };
+    return this.api.delete<void>(`/rbac/roles/${roleId}`, undefined, undefined, options).pipe(
+      tap(() => {
+        // Update local state
+        const roles = this.roles();
+        const roleIdStr = String(roleId);
+        this.roles.set(roles.filter(r => r.id !== roleIdStr && String(r.id) !== roleIdStr));
+      })
+    );
   }
 
   // Permission operations
@@ -100,42 +131,110 @@ export class RbacService {
   }
 
   // User role operations
-  assignUserRole(userRoleData: UserRoleForm): Observable<any> {
+  assignUserRole(userId: string, roleId: number): Observable<any> {
     // Backend: POST /api/v1/rbac/users/{user_id}/roles/{role_id}
-    return this.api.post<any>(`/rbac/users/${userRoleData.userId}/roles/${userRoleData.roleId}`, {});
+    // Note: Backend expects user_id as UUID (string) and role_id as number
+    const options = { skipTransform: true };
+    return this.api.post<any>(`/rbac/users/${userId}/roles/${roleId}`, {}, undefined, options);
   }
 
-  removeUserRole(userId: string, roleId: string): Observable<void> {
+  removeUserRole(userId: string, roleId: number): Observable<void> {
     // Backend: DELETE /api/v1/rbac/users/{user_id}/roles/{role_id}
-    return this.api.delete<void>(`/rbac/users/${userId}/roles/${roleId}`);
+    // Note: Backend expects user_id as UUID (string) and role_id as number
+    const options = { skipTransform: true };
+    return this.api.delete<void>(`/rbac/users/${userId}/roles/${roleId}`, undefined, undefined, options);
   }
 
   // Role permission operations
-  assignPermissionToRole(roleId: string, permissionId: string): Observable<Role> {
+  assignPermissionToRole(roleId: number, permissionId: number): Observable<Role> {
     // Backend: POST /api/v1/rbac/roles/{role_id}/permissions/{permission_id}
-    return this.api.post<Role>(`/rbac/roles/${roleId}/permissions/${permissionId}`, {});
+    // Note: Backend expects role_id and permission_id as numbers, but frontend Role.id is string
+    const options = { skipTransform: true };
+    return this.api.post<Role>(`/rbac/roles/${roleId}/permissions/${permissionId}`, {}, undefined, options).pipe(
+      tap((role: any) => {
+        // Update local state
+        const roles = this.roles();
+        const roleIdStr = String(roleId);
+        const index = roles.findIndex(r => r.id === roleIdStr || String(r.id) === roleIdStr);
+        if (index >= 0) {
+          roles[index] = role;
+          this.roles.set([...roles]);
+        }
+      })
+    );
   }
 
-  removePermissionFromRole(roleId: string, permissionId: string): Observable<Role> {
+  removePermissionFromRole(roleId: number, permissionId: number): Observable<Role> {
     // Backend: DELETE /api/v1/rbac/roles/{role_id}/permissions/{permission_id}
-    return this.api.delete<Role>(`/rbac/roles/${roleId}/permissions/${permissionId}`);
+    // Note: Backend expects role_id and permission_id as numbers, but frontend Role.id is string
+    const options = { skipTransform: true };
+    return this.api.delete<Role>(`/rbac/roles/${roleId}/permissions/${permissionId}`, undefined, undefined, options).pipe(
+      tap((role: any) => {
+        // Update local state
+        const roles = this.roles();
+        const roleIdStr = String(roleId);
+        const index = roles.findIndex(r => r.id === roleIdStr || String(r.id) === roleIdStr);
+        if (index >= 0) {
+          roles[index] = role;
+          this.roles.set([...roles]);
+        }
+      })
+    );
   }
 
-  bulkAssignPermissionsToRole(roleId: string, permissionIds: number[]): Observable<Role> {
+  bulkAssignPermissionsToRole(roleId: number, permissionIds: number[]): Observable<Role> {
     // Backend: POST /api/v1/rbac/roles/{role_id}/permissions/bulk
-    return this.api.post<Role>(`/rbac/roles/${roleId}/permissions/bulk`, permissionIds);
+    // Note: Backend expects role_id as number and permission_ids as array of numbers, but frontend Role.id is string
+    const options = { skipTransform: true };
+    return this.api.post<Role>(`/rbac/roles/${roleId}/permissions/bulk`, permissionIds, undefined, options).pipe(
+      tap((role: any) => {
+        // Update local state
+        const roles = this.roles();
+        const roleIdStr = String(roleId);
+        const index = roles.findIndex(r => r.id === roleIdStr || String(r.id) === roleIdStr);
+        if (index >= 0) {
+          roles[index] = role;
+          this.roles.set([...roles]);
+        }
+      })
+    );
   }
 
-  bulkRemovePermissionsFromRole(roleId: string, permissionIds: number[]): Observable<Role> {
+  bulkRemovePermissionsFromRole(roleId: number, permissionIds: number[]): Observable<Role> {
     // Backend: DELETE /api/v1/rbac/roles/{role_id}/permissions/bulk
     // Backend accepts body in DELETE request
-    return this.api.delete<Role>(`/rbac/roles/${roleId}/permissions/bulk`, undefined, permissionIds);
+    // Note: Backend expects role_id as number and permission_ids as array of numbers, but frontend Role.id is string
+    const options = { skipTransform: true };
+    return this.api.delete<Role>(`/rbac/roles/${roleId}/permissions/bulk`, undefined, permissionIds, options).pipe(
+      tap((role: any) => {
+        // Update local state
+        const roles = this.roles();
+        const roleIdStr = String(roleId);
+        const index = roles.findIndex(r => r.id === roleIdStr || String(r.id) === roleIdStr);
+        if (index >= 0) {
+          roles[index] = role;
+          this.roles.set([...roles]);
+        }
+      })
+    );
   }
 
-  updateRolePermissions(roleId: string, permissionIds: number[]): Observable<Role> {
+  updateRolePermissions(roleId: number, permissionIds: number[]): Observable<Role> {
     // Backend: PUT /api/v1/rbac/roles/{role_id}/permissions
-    // Note: Backend expects permission_ids (numbers), not permission strings
-    return this.api.put<Role>(`/rbac/roles/${roleId}/permissions`, permissionIds);
+    // Note: Backend expects role_id as number and permission_ids as array of numbers, but frontend Role.id is string
+    const options = { skipTransform: true };
+    return this.api.put<Role>(`/rbac/roles/${roleId}/permissions`, permissionIds, undefined, options).pipe(
+      tap((role: any) => {
+        // Update local state
+        const roles = this.roles();
+        const roleIdStr = String(roleId);
+        const index = roles.findIndex(r => r.id === roleIdStr || String(r.id) === roleIdStr);
+        if (index >= 0) {
+          roles[index] = role;
+          this.roles.set([...roles]);
+        }
+      })
+    );
   }
 
   // Statistics

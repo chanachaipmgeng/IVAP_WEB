@@ -470,7 +470,7 @@ export class RbacComponent extends BaseComponent implements OnInit {
     this.saving.set(true);
 
     const request = this.editingRole()
-      ? this.rbacService.updateRole(this.editingRole()!.id, this.roleForm)
+      ? this.rbacService.updateRole(Number(this.editingRole()!.id), this.roleForm)
       : this.rbacService.createRole(this.roleForm);
 
     // ✅ Auto-unsubscribe on component destroy
@@ -493,7 +493,7 @@ export class RbacComponent extends BaseComponent implements OnInit {
 
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
-      this.rbacService.deleteRole(role.id),
+      this.rbacService.deleteRole(Number(role.id)),
       () => {
         this.loadData();
       },
@@ -545,7 +545,7 @@ export class RbacComponent extends BaseComponent implements OnInit {
 
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
-      this.rbacService.assignUserRole(this.userRoleForm),
+      this.rbacService.assignUserRole(this.userRoleForm.userId, Number(this.userRoleForm.roleId)),
       () => {
         this.saving.set(false);
         this.closeAssignRoleModal();
@@ -563,7 +563,7 @@ export class RbacComponent extends BaseComponent implements OnInit {
 
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
-      this.rbacService.removeUserRole(userRole.userId, userRole.roleId),
+      this.rbacService.removeUserRole(userRole.userId, Number(userRole.roleId)),
       () => {
         this.loadData();
       },
