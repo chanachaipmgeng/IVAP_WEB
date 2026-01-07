@@ -66,8 +66,12 @@
 
             <div class="pt-4">
                 <app-glass-button type="submit" variant="primary" class="w-full justify-center" [disabled]="isExporting()">
-                    <span *ngIf="!isExporting()"><i class="fas fa-file-export mr-2"></i> Export Data</span>
-                    <span *ngIf="isExporting()"><i class="fas fa-spinner fa-spin mr-2"></i> Processing...</span>
+                    @if (!isExporting()) {
+                        <span><i class="fas fa-file-export mr-2"></i> Export Data</span>
+                    }
+                    @if (isExporting()) {
+                        <span><i class="fas fa-spinner fa-spin mr-2"></i> Processing...</span>
+                    }
                 </app-glass-button>
             </div>
         </form>
@@ -77,16 +81,20 @@
     <div class="w-full lg:w-1/2 flex flex-col gap-6">
         <app-glass-card class="p-6">
             <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">Last Export</h2>
-            <div *ngIf="lastExport()" class="flex items-center gap-4">
-                <div class="p-3 bg-green-100 dark:bg-green-900/30 rounded-full text-green-600 dark:text-green-400">
-                    <i class="fas fa-check-circle text-2xl"></i>
+            @if (lastExport()) {
+                <div class="flex items-center gap-4">
+                    <div class="p-3 bg-green-100 dark:bg-green-900/30 rounded-full text-green-600 dark:text-green-400">
+                        <i class="fas fa-check-circle text-2xl"></i>
+                    </div>
+                    <div>
+                        <div class="text-sm text-gray-500 dark:text-gray-400">Successfully exported on</div>
+                        <div class="text-lg font-bold text-gray-900 dark:text-gray-100">{{ lastExport() | date:'medium' }}</div>
+                    </div>
                 </div>
-                <div>
-                    <div class="text-sm text-gray-500 dark:text-gray-400">Successfully exported on</div>
-                    <div class="text-lg font-bold text-gray-900 dark:text-gray-100">{{ lastExport() | date:'medium' }}</div>
-                </div>
-            </div>
-            <div *ngIf="!lastExport()" class="text-gray-500 dark:text-gray-400 italic">No exports in this session.</div>
+            }
+            @if (!lastExport()) {
+                <div class="text-gray-500 dark:text-gray-400 italic">No exports in this session.</div>
+            }
         </app-glass-card>
 
         <app-glass-card class="flex-1 p-6">

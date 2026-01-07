@@ -349,7 +349,55 @@ const style = {
 
 ## 📚 Best Practices
 
-### 1. **Component Structure**
+### 1. **Modern Angular Template Syntax** (New Standard)
+
+We strictly follow Angular 17+ Control Flow syntax.
+
+#### Conditional Rendering (`@if`)
+```html
+<!-- ✅ DO THIS -->
+@if (isLoggedIn) {
+  <user-profile />
+} @else {
+  <login-button />
+}
+
+<!-- ❌ DON'T DO THIS -->
+<user-profile *ngIf="isLoggedIn"></user-profile>
+<login-button *ngIf="!isLoggedIn"></login-button>
+```
+
+#### List Rendering (`@for`)
+```html
+<!-- ✅ DO THIS -->
+@for (item of items; track item.id) {
+  <app-card [data]="item" />
+} @empty {
+  <p>No items found</p>
+}
+
+<!-- ❌ DON'T DO THIS -->
+<app-card *ngFor="let item of items; trackBy: trackById" [data]="item"></app-card>
+```
+
+#### Switch Cases (`@switch`)
+```html
+<!-- ✅ DO THIS -->
+@switch (status) {
+  @case ('active') { <active-badge /> }
+  @case ('pending') { <pending-badge /> }
+  @default { <unknown-badge /> }
+}
+
+<!-- ❌ DON'T DO THIS -->
+<container [ngSwitch]="status">
+  <active-badge *ngSwitchCase="'active'"></active-badge>
+  <pending-badge *ngSwitchCase="'pending'"></pending-badge>
+  <unknown-badge *ngSwitchDefault></unknown-badge>
+</container>
+```
+
+### 2. **Component Structure**
 
 ```typescript
 @Component({

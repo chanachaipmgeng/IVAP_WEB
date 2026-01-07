@@ -39,27 +39,29 @@
           </tr>
         </thead>
         <tbody class="bg-white/30 dark:bg-gray-800/30 divide-y divide-gray-200/50 dark:divide-gray-700/50">
-          <tr *ngFor="let log of filteredLogs" class="hover:bg-white/60 dark:hover:bg-gray-700/60 transition-all duration-200">
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-              <div class="font-medium">{{ log.timestamp | date:'HH:mm:ss' }}</div>
-              <div class="text-xs text-gray-500 dark:text-gray-400">{{ log.timestamp | date:'MMM d, y' }}</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ log.personName }}</div>
-              <div class="text-xs text-gray-500 dark:text-gray-400 font-mono">{{ log.personId }}</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">
-              {{ log.doorName }}
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-center">
-              <i class="fas text-gray-400 dark:text-gray-500" [ngClass]="getMethodIcon(log.method)"></i>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-center">
-              <span class="px-2.5 py-0.5 rounded-full text-xs font-medium" [ngClass]="getStatusColor(log.status)">
-                {{ log.status | titlecase }}
-              </span>
-            </td>
-          </tr>
+          @for (log of filteredLogs; track log.timestamp) {
+            <tr class="hover:bg-white/60 dark:hover:bg-gray-700/60 transition-all duration-200">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                <div class="font-medium">{{ log.timestamp | date:'HH:mm:ss' }}</div>
+                <div class="text-xs text-gray-500 dark:text-gray-400">{{ log.timestamp | date:'MMM d, y' }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ log.personName }}</div>
+                <div class="text-xs text-gray-500 dark:text-gray-400 font-mono">{{ log.personId }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">
+                {{ log.doorName }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-center">
+                <i class="fas text-gray-400 dark:text-gray-500" [ngClass]="getMethodIcon(log.method)"></i>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-center">
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-medium" [ngClass]="getStatusColor(log.status)">
+                  {{ log.status | titlecase }}
+                </span>
+              </td>
+            </tr>
+          }
         </tbody>
       </table>
     </div>

@@ -22,35 +22,39 @@
           </tr>
         </thead>
         <tbody class="bg-white/30 dark:bg-gray-800/30 divide-y divide-gray-200/50 dark:divide-gray-700/50">
-          <tr *ngFor="let req of requests()" class="hover:bg-white/60 dark:hover:bg-gray-700/60 transition-all duration-200">
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ req.employeeName }}</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-              {{ req.date | date:'mediumDate' }}
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-indigo-600 dark:text-indigo-400">
-              {{ req.startTime }} - {{ req.endTime }}
-            </td>
-            <td class="px-6 py-4">
-              <div class="text-sm text-gray-600 dark:text-gray-300">{{ req.reason }}</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-center">
-              <span class="px-2.5 py-0.5 rounded-full text-xs font-medium" [ngClass]="getStatusColor(req.status)">
-                {{ req.status | titlecase }}
-              </span>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-              <div class="flex justify-end gap-2" *ngIf="req.status === 'pending'">
-                <button (click)="updateStatus(req.id, 'approved')" class="p-1.5 text-green-600 hover:text-green-900 hover:bg-green-50 rounded-lg transition-colors" title="Approve">
-                  <i class="fas fa-check"></i>
-                </button>
-                <button (click)="updateStatus(req.id, 'rejected')" class="p-1.5 text-red-600 hover:text-red-900 hover:bg-red-50 rounded-lg transition-colors" title="Reject">
-                  <i class="fas fa-times"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
+          @for (req of requests(); track req.id) {
+            <tr class="hover:bg-white/60 dark:hover:bg-gray-700/60 transition-all duration-200">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ req.employeeName }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                {{ req.date | date:'mediumDate' }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-indigo-600 dark:text-indigo-400">
+                {{ req.startTime }} - {{ req.endTime }}
+              </td>
+              <td class="px-6 py-4">
+                <div class="text-sm text-gray-600 dark:text-gray-300">{{ req.reason }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-center">
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-medium" [ngClass]="getStatusColor(req.status)">
+                  {{ req.status | titlecase }}
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                @if (req.status === 'pending') {
+                  <div class="flex justify-end gap-2">
+                    <button (click)="updateStatus(req.id, 'approved')" class="p-1.5 text-green-600 hover:text-green-900 hover:bg-green-50 rounded-lg transition-colors" title="Approve">
+                      <i class="fas fa-check"></i>
+                    </button>
+                    <button (click)="updateStatus(req.id, 'rejected')" class="p-1.5 text-red-600 hover:text-red-900 hover:bg-red-50 rounded-lg transition-colors" title="Reject">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                }
+              </td>
+            </tr>
+          }
         </tbody>
       </table>
     </div>

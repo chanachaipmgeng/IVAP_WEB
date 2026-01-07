@@ -23,21 +23,25 @@
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-200/50 dark:divide-gray-700/50">
-          <tr *ngFor="let item of parcels()" class="hover:bg-white/60 dark:hover:bg-gray-700/60 transition-colors">
-            <td class="px-6 py-4 font-mono text-sm text-gray-900 dark:text-gray-100">{{ item.tracking }}</td>
-            <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">{{ item.recipient }}</td>
-            <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{{ item.carrier }}</td>
-            <td class="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400">{{ item.arrived | date:'medium' }}</td>
-            <td class="px-6 py-4 text-center">
-              <span class="px-2 py-1 rounded-full text-xs font-medium" 
-                    [ngClass]="item.status === 'Picked Up' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'">
-                {{ item.status }}
-              </span>
-            </td>
-            <td class="px-6 py-4 text-right">
-              <button class="text-indigo-500 hover:text-indigo-700 text-sm" *ngIf="item.status !== 'Picked Up'">Mark as Picked Up</button>
-            </td>
-          </tr>
+          @for (item of parcels(); track item.tracking) {
+            <tr class="hover:bg-white/60 dark:hover:bg-gray-700/60 transition-colors">
+              <td class="px-6 py-4 font-mono text-sm text-gray-900 dark:text-gray-100">{{ item.tracking }}</td>
+              <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">{{ item.recipient }}</td>
+              <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{{ item.carrier }}</td>
+              <td class="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400">{{ item.arrived | date:'medium' }}</td>
+              <td class="px-6 py-4 text-center">
+                <span class="px-2 py-1 rounded-full text-xs font-medium"
+                      [ngClass]="item.status === 'Picked Up' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'">
+                  {{ item.status }}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-right">
+                @if (item.status !== 'Picked Up') {
+                  <button class="text-indigo-500 hover:text-indigo-700 text-sm">Mark as Picked Up</button>
+                }
+              </td>
+            </tr>
+          }
         </tbody>
       </table>
     </div>

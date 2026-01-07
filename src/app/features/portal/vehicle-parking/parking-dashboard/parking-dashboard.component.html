@@ -33,17 +33,19 @@
     <app-glass-card class="p-6 flex flex-col">
       <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Zone Status</h2>
       <div class="space-y-6">
-        <div *ngFor="let zone of zones()" class="space-y-2">
-          <div class="flex justify-between items-end">
-            <span class="font-medium text-gray-700 dark:text-gray-300">{{ zone.name }}</span>
-            <span class="text-sm text-gray-500 dark:text-gray-400">{{ zone.occupied }} / {{ zone.capacity }}</span>
+        @for (zone of zones(); track zone.name) {
+          <div class="space-y-2">
+            <div class="flex justify-between items-end">
+              <span class="font-medium text-gray-700 dark:text-gray-300">{{ zone.name }}</span>
+              <span class="text-sm text-gray-500 dark:text-gray-400">{{ zone.occupied }} / {{ zone.capacity }}</span>
+            </div>
+            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+              <div class="bg-current h-2.5 rounded-full transition-all duration-500"
+                   [ngClass]="zone.color"
+                   [style.width.%]="(zone.occupied / zone.capacity) * 100"></div>
+            </div>
           </div>
-          <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-            <div class="bg-current h-2.5 rounded-full transition-all duration-500" 
-                 [ngClass]="zone.color"
-                 [style.width.%]="(zone.occupied / zone.capacity) * 100"></div>
-          </div>
-        </div>
+        }
       </div>
     </app-glass-card>
 

@@ -234,7 +234,7 @@ Event Management System ได้รับการปรับปรุงใ�
 
 ## 🛠️ Technologies
 
-- **Angular 17+** - Framework (Standalone Components)
+- **Angular 17+** - Framework (Standalone Components, Control Flow @if/@for)
 - **TypeScript** - Language (Strict Mode)
 - **Tailwind CSS** - Utility-first CSS framework
 - **SCSS** - CSS Preprocessor

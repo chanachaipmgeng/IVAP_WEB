@@ -42,22 +42,28 @@
               </div>
             </div>
             <div #videoContainer1 class="video-container">
-              <div *ngIf="!videoStreams[0].isActive && !videoStreams[0].isLoading" class="video-placeholder">
-                <i class="fas fa-video-slash"></i>
-                <p>กล้องถูกปิดใช้งาน</p>
-                <p class="hint">กด "เปิดกล้อง" เพื่อเริ่มการทำงาน</p>
-              </div>
-              <div *ngIf="videoStreams[0].isLoading" class="video-placeholder">
-                <i class="fas fa-circle-notch fa-spin"></i>
-                <p>กำลังเชื่อมต่อกล้อง...</p>
-              </div>
+              @if (!videoStreams[0].isActive && !videoStreams[0].isLoading) {
+                <div class="video-placeholder">
+                  <i class="fas fa-video-slash"></i>
+                  <p>กล้องถูกปิดใช้งาน</p>
+                  <p class="hint">กด "เปิดกล้อง" เพื่อเริ่มการทำงาน</p>
+                </div>
+              }
+              @if (videoStreams[0].isLoading) {
+                <div class="video-placeholder">
+                  <i class="fas fa-circle-notch fa-spin"></i>
+                  <p>กำลังเชื่อมต่อกล้อง...</p>
+                </div>
+              }
               
               <!-- Fullscreen Exit Button (Only visible in fullscreen) -->
-              <button *ngIf="videoStreams[0].isFullscreen" 
-                      class="fullscreen-exit-btn"
-                      (click)="toggleFullScreen(0)">
-                <i class="fas fa-compress"></i>
-              </button>
+              @if (videoStreams[0].isFullscreen) {
+                <button
+                        class="fullscreen-exit-btn"
+                        (click)="toggleFullScreen(0)">
+                  <i class="fas fa-compress"></i>
+                </button>
+              }
             </div>
             <div class="stream-controls-single">
               <div class="camera-dropdown-wrapper">
@@ -69,12 +75,13 @@
                   class="camera-dropdown"
                   [value]="videoStreams[0].selectedDeviceId || ''"
                   (change)="onCameraChange($event, 0)">
-                  <option 
-                    *ngFor="let camera of availableCameras; trackBy: trackByCamera" 
-                    [value]="camera.deviceId"
-                    [selected]="videoStreams[0].selectedDeviceId === camera.deviceId">
-                    {{ camera.label }}
-                  </option>
+                  @for (camera of availableCameras; track trackByCamera($index, camera)) {
+                    <option 
+                      [value]="camera.deviceId"
+                      [selected]="videoStreams[0].selectedDeviceId === camera.deviceId">
+                      {{ camera.label }}
+                    </option>
+                  }
                 </select>
               </div>
               
@@ -86,22 +93,24 @@
                 {{ videoStreams[0].isActive ? 'ปิดกล้อง' : 'เปิดกล้อง' }}
               </app-glass-button>
 
-              <app-glass-button
-                *ngIf="videoStreams[0].isActive"
-                variant="secondary"
-                size="sm"
-                (click)="toggleLandmarks(0)">
-                <i class="fas" [class.fa-eye]="videoStreams[0].showLandmarks" [class.fa-eye-slash]="!videoStreams[0].showLandmarks"></i>
-                {{ videoStreams[0].showLandmarks ? 'ซ่อน' : 'แสดง' }} Landmarks
-              </app-glass-button>
-              <app-glass-button
-                *ngIf="videoStreams[0].isActive"
-                variant="secondary"
-                size="sm"
-                (click)="toggleFullScreen(0)">
-                <i class="fas" [class.fa-expand]="!videoStreams[0].isFullscreen" [class.fa-compress]="videoStreams[0].isFullscreen"></i>
-                {{ videoStreams[0].isFullscreen ? 'ย่อหน้าจอ' : 'เต็มจอ' }}
-              </app-glass-button>
+              @if (videoStreams[0].isActive) {
+                <app-glass-button
+                  variant="secondary"
+                  size="sm"
+                  (click)="toggleLandmarks(0)">
+                  <i class="fas" [class.fa-eye]="videoStreams[0].showLandmarks" [class.fa-eye-slash]="!videoStreams[0].showLandmarks"></i>
+                  {{ videoStreams[0].showLandmarks ? 'ซ่อน' : 'แสดง' }} Landmarks
+                </app-glass-button>
+              }
+              @if (videoStreams[0].isActive) {
+                <app-glass-button
+                  variant="secondary"
+                  size="sm"
+                  (click)="toggleFullScreen(0)">
+                  <i class="fas" [class.fa-expand]="!videoStreams[0].isFullscreen" [class.fa-compress]="videoStreams[0].isFullscreen"></i>
+                  {{ videoStreams[0].isFullscreen ? 'ย่อหน้าจอ' : 'เต็มจอ' }}
+                </app-glass-button>
+              }
             </div>
           </div>
         </div>
@@ -138,45 +147,55 @@
         </div>
 
         <div class="detected-faces-list">
-          <div *ngIf="detectedFaces.length === 0" class="no-faces">
-            <i class="fas fa-user-slash"></i>
-            <p>ยังไม่พบใบหน้า</p>
-            <p class="hint">เริ่มสตรีมวิดีโอเพื่อเริ่มตรวจจับใบหน้า</p>
-          </div>
+          @if (detectedFaces.length === 0) {
+            <div class="no-faces">
+              <i class="fas fa-user-slash"></i>
+              <p>ยังไม่พบใบหน้า</p>
+              <p class="hint">เริ่มสตรีมวิดีโอเพื่อเริ่มตรวจจับใบหน้า</p>
+            </div>
+          }
 
-          <div *ngFor="let face of detectedFaces; trackBy: trackByFace" class="face-item">
-            <div class="face-image">
-              <img appImageOptimization [ngSrc]="face.image" alt="Detected Face" loading="lazy"/>
-              <div *ngIf="face.recognized" class="recognized-badge">
-                <i class="fas fa-check-circle"></i>
-                <span>จดจำได้</span>
+          @for (face of detectedFaces; track trackByFace($index, face)) {
+            <div class="face-item">
+              <div class="face-image">
+                <img appImageOptimization [ngSrc]="face.image" alt="Detected Face" loading="lazy"/>
+                @if (face.recognized) {
+                  <div class="recognized-badge">
+                    <i class="fas fa-check-circle"></i>
+                    <span>จดจำได้</span>
+                  </div>
+                }
+              </div>
+              <div class="face-info">
+                <div class="face-name">
+                  <i class="fas fa-user"></i>
+                  <span>{{ face.name || 'ไม่ทราบชื่อ' }}</span>
+                </div>
+                <div class="face-details">
+                  @if (face.gender) {
+                    <div class="detail-item">
+                      <i class="fas fa-venus-mars"></i>
+                      <span>{{ getGenderText(face.gender) }}</span>
+                    </div>
+                  }
+                  @if (face.age) {
+                    <div class="detail-item">
+                      <i class="fas fa-birthday-cake"></i>
+                      <span>{{ face.age }} ปี</span>
+                    </div>
+                  }
+                  <div class="detail-item">
+                    <i class="fas fa-video"></i>
+                    <span>สตรีม #{{ face.streamId + 1 }}</span>
+                  </div>
+                </div>
+                <div class="face-time">
+                  <i class="fas fa-clock"></i>
+                  <span>{{ formatTimestamp(face.timestamp) }}</span>
+                </div>
               </div>
             </div>
-            <div class="face-info">
-              <div class="face-name">
-                <i class="fas fa-user"></i>
-                <span>{{ face.name || 'ไม่ทราบชื่อ' }}</span>
-              </div>
-              <div class="face-details">
-                <div class="detail-item" *ngIf="face.gender">
-                  <i class="fas fa-venus-mars"></i>
-                  <span>{{ getGenderText(face.gender) }}</span>
-                </div>
-                <div class="detail-item" *ngIf="face.age">
-                  <i class="fas fa-birthday-cake"></i>
-                  <span>{{ face.age }} ปี</span>
-                </div>
-                <div class="detail-item">
-                  <i class="fas fa-video"></i>
-                  <span>สตรีม #{{ face.streamId + 1 }}</span>
-                </div>
-              </div>
-              <div class="face-time">
-                <i class="fas fa-clock"></i>
-                <span>{{ formatTimestamp(face.timestamp) }}</span>
-              </div>
-            </div>
-          </div>
+          }
         </div>
       </app-glass-card>
     </div>

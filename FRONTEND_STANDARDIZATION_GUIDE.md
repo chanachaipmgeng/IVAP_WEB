@@ -107,5 +107,46 @@ features/
   │   └── [feature-name].component.ts|html|scss
 ```
 
+## 6. Angular Modernization Standards
+
+### ✅ Do: Use New Control Flow Syntax
+
+Angular 17+ introduced a new built-in control flow syntax that is more performant and readable.
+
+-   **@if**: Replaces `*ngIf`
+-   **@for**: Replaces `*ngFor`. Note: `track` expression is mandatory.
+-   **@switch**: Replaces `[ngSwitch]`
+
+**Example:**
+
+```html
+<!-- Correct: New Syntax -->
+@if (isLoggedIn) {
+  <user-profile />
+} @else {
+  <login-form />
+}
+
+@for (user of users; track user.id) {
+  <user-card [user]="user" />
+} @empty {
+  <p>No users found.</p>
+}
+```
+
+**Incorrect (Legacy Syntax):**
+
+```html
+<!-- Incorrect: Old Syntax -->
+<user-profile *ngIf="isLoggedIn; else loginTemplate"></user-profile>
+<ng-template #loginTemplate><login-form></login-form></ng-template>
+
+<user-card *ngFor="let user of users" [user]="user"></user-card>
+```
+
+### ✅ Do: Use Signals
+
+Prefer Angular Signals for reactive state management over `BehaviorSubject` where appropriate, especially for local component state.
+
 ---
 **Note**: If you encounter `Unknown at rule @apply` warnings in SCSS files, you can safely ignore them as they are valid Tailwind directives.

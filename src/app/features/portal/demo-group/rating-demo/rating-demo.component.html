@@ -89,50 +89,52 @@
   <app-glass-card class="p-6">
     <h3 class="text-xl font-semibold text-white mb-4">Product Reviews</h3>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div *ngFor="let product of products()" class="product-card">
-        <div class="relative">
-          <img appImageOptimization [ngSrc]="product.image" [alt]="product.name" class="w-full h-48 object-cover rounded-lg" loading="lazy">
-          <div class="absolute top-2 right-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-sm">
-            {{ product.category }}
+      @for (product of products(); track product.id) {
+        <div class="product-card">
+          <div class="relative">
+            <img appImageOptimization [ngSrc]="product.image" [alt]="product.name" class="w-full h-48 object-cover rounded-lg" loading="lazy">
+            <div class="absolute top-2 right-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-sm">
+              {{ product.category }}
+            </div>
           </div>
-        </div>
 
-        <div class="p-4">
-          <h4 class="text-lg font-semibold text-white mb-2">{{ product.name }}</h4>
-          <p class="text-gray-400 text-sm mb-3">{{ product.description }}</p>
+          <div class="p-4">
+            <h4 class="text-lg font-semibold text-white mb-2">{{ product.name }}</h4>
+            <p class="text-gray-400 text-sm mb-3">{{ product.description }}</p>
 
-          <div class="flex items-center justify-between mb-3">
-            <div class="flex items-center space-x-2">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center space-x-2">
+                <app-rating
+                  [config]="basicRatingConfig"
+                  [editable]="false"
+                  [showValue]="false"
+                  [showText]="false"
+                  [value]="getProductRating(product.id)">
+                </app-rating>
+                <span class="text-sm text-gray-400">
+                  {{ getProductRating(product.id) | number:'1.1-1' }} ({{ getProductReviewCount(product.id) }} reviews)
+                </span>
+              </div>
+              <span class="text-lg font-bold text-white">${{ product.price }}</span>
+            </div>
+
+            <div class="space-y-2">
+              <label class="block text-sm font-medium text-gray-300">Rate this product:</label>
               <app-rating
                 [config]="basicRatingConfig"
-                [editable]="false"
+                [editable]="true"
                 [showValue]="false"
                 [showText]="false"
-                [value]="getProductRating(product.id)">
+                (ratingChange)="onRatingChange($event, 'product')"
+                (ratingHover)="onRatingHover($event, 'product')"
+                (ratingLeave)="onRatingLeave('product')"
+                (ratingSelect)="onRatingSelect($event, 'product')"
+                (ratingClear)="onRatingClear('product')">
               </app-rating>
-              <span class="text-sm text-gray-400">
-                {{ getProductRating(product.id) | number:'1.1-1' }} ({{ getProductReviewCount(product.id) }} reviews)
-              </span>
             </div>
-            <span class="text-lg font-bold text-white">${{ product.price }}</span>
-          </div>
-
-          <div class="space-y-2">
-            <label class="block text-sm font-medium text-gray-300">Rate this product:</label>
-            <app-rating
-              [config]="basicRatingConfig"
-              [editable]="true"
-              [showValue]="false"
-              [showText]="false"
-              (ratingChange)="onRatingChange($event, 'product')"
-              (ratingHover)="onRatingHover($event, 'product')"
-              (ratingLeave)="onRatingLeave('product')"
-              (ratingSelect)="onRatingSelect($event, 'product')"
-              (ratingClear)="onRatingClear('product')">
-            </app-rating>
           </div>
         </div>
-      </div>
+      }
     </div>
   </app-glass-card>
 
@@ -163,13 +165,15 @@
       <div>
         <h4 class="text-lg font-medium text-gray-300 mb-3">Rating Distribution</h4>
         <div class="space-y-2">
-          <div *ngFor="let dist of ratingStats().distribution" class="flex items-center space-x-2">
-            <span class="text-sm text-gray-400 w-8">{{ dist.rating }}★</span>
-            <div class="flex-1 bg-gray-700 rounded-full h-2">
-              <div class="bg-yellow-400 h-2 rounded-full" [style.width.%]="dist.percentage"></div>
+          @for (dist of ratingStats().distribution; track dist.rating) {
+            <div class="flex items-center space-x-2">
+              <span class="text-sm text-gray-400 w-8">{{ dist.rating }}★</span>
+              <div class="flex-1 bg-gray-700 rounded-full h-2">
+                <div class="bg-yellow-400 h-2 rounded-full" [style.width.%]="dist.percentage"></div>
+              </div>
+              <span class="text-sm text-gray-400 w-12">{{ dist.count }}</span>
             </div>
-            <span class="text-sm text-gray-400 w-12">{{ dist.count }}</span>
-          </div>
+          }
         </div>
       </div>
     </div>
@@ -240,37 +244,41 @@
   <app-glass-card class="p-6">
     <h3 class="text-xl font-semibold text-white mb-4">Recent Reviews</h3>
     <div class="space-y-4">
-      <div *ngFor="let review of reviews()" class="review-item">
-        <div class="flex items-start space-x-3">
-          <img appImageOptimization [ngSrc]="review.userAvatar" [alt]="review.userName" class="w-10 h-10 rounded-full" loading="lazy">
-          <div class="flex-1">
-            <div class="flex items-center space-x-2 mb-1">
-              <span class="font-medium text-white">{{ review.userName }}</span>
-              <span *ngIf="review.verified" class="text-xs bg-green-500 text-white px-2 py-1 rounded">
-                Verified
-              </span>
-              <app-rating
-                [config]="basicRatingConfig"
-                [editable]="false"
-                [showValue]="false"
-                [showText]="false"
-                [value]="review.rating">
-              </app-rating>
-            </div>
-            <h5 class="font-medium text-gray-300 mb-1">{{ review.title }}</h5>
-            <p class="text-gray-400 text-sm mb-2">{{ review.comment }}</p>
-            <div class="flex items-center justify-between text-xs text-gray-500">
-              <span>{{ formatDate(review.date) }}</span>
-              <button
-                (click)="markHelpful(review.id)"
-                class="flex items-center space-x-1 hover:text-blue-400 transition-colors">
-                <i class="fas fa-thumbs-up"></i>
-                <span>Helpful ({{ review.helpful }})</span>
-              </button>
+      @for (review of reviews(); track review.id) {
+        <div class="review-item">
+          <div class="flex items-start space-x-3">
+            <img appImageOptimization [ngSrc]="review.userAvatar" [alt]="review.userName" class="w-10 h-10 rounded-full" loading="lazy">
+            <div class="flex-1">
+              <div class="flex items-center space-x-2 mb-1">
+                <span class="font-medium text-white">{{ review.userName }}</span>
+                @if (review.verified) {
+                  <span class="text-xs bg-green-500 text-white px-2 py-1 rounded">
+                    Verified
+                  </span>
+                }
+                <app-rating
+                  [config]="basicRatingConfig"
+                  [editable]="false"
+                  [showValue]="false"
+                  [showText]="false"
+                  [value]="review.rating">
+                </app-rating>
+              </div>
+              <h5 class="font-medium text-gray-300 mb-1">{{ review.title }}</h5>
+              <p class="text-gray-400 text-sm mb-2">{{ review.comment }}</p>
+              <div class="flex items-center justify-between text-xs text-gray-500">
+                <span>{{ formatDate(review.date) }}</span>
+                <button
+                  (click)="markHelpful(review.id)"
+                  class="flex items-center space-x-1 hover:text-blue-400 transition-colors">
+                  <i class="fas fa-thumbs-up"></i>
+                  <span>Helpful ({{ review.helpful }})</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      }
     </div>
   </app-glass-card>
 </div>

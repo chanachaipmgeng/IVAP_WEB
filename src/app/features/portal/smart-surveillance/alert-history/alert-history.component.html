@@ -26,30 +26,32 @@
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-200/50 dark:divide-gray-700/50">
-          <tr *ngFor="let alert of alerts()" class="hover:bg-white/60 dark:hover:bg-gray-700/60 transition-colors">
-            <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900 dark:text-gray-100">{{ alert.type }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ alert.timestamp | date:'medium' }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ alert.location }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-center">
-              <span class="px-2 py-1 rounded-full text-xs font-medium" 
-                    [ngClass]="{
-                      'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300': alert.severity === 'High',
-                      'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300': alert.severity === 'Medium',
-                      'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300': alert.severity === 'Low'
-                    }">
-                {{ alert.severity }}
-              </span>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-center">
-                <span class="px-2 py-1 rounded-full text-xs font-medium" 
-                      [ngClass]="alert.status === 'Resolved' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'">
-                  {{ alert.status }}
+          @for (alert of alerts(); track alert.type) {
+            <tr class="hover:bg-white/60 dark:hover:bg-gray-700/60 transition-colors">
+              <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900 dark:text-gray-100">{{ alert.type }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ alert.timestamp | date:'medium' }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ alert.location }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-center">
+                <span class="px-2 py-1 rounded-full text-xs font-medium"
+                      [ngClass]="{
+                        'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300': alert.severity === 'High',
+                        'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300': alert.severity === 'Medium',
+                        'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300': alert.severity === 'Low'
+                      }">
+                  {{ alert.severity }}
                 </span>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
-              <button class="text-indigo-500 hover:text-indigo-700">View Details</button>
-            </td>
-          </tr>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-center">
+                  <span class="px-2 py-1 rounded-full text-xs font-medium"
+                        [ngClass]="alert.status === 'Resolved' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'">
+                    {{ alert.status }}
+                  </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+                <button class="text-indigo-500 hover:text-indigo-700">View Details</button>
+              </td>
+            </tr>
+          }
         </tbody>
       </table>
     </div>

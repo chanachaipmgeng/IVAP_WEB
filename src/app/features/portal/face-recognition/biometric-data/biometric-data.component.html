@@ -48,7 +48,9 @@
                 class="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 transition-all"
                 placeholder="Enter member UUID"
                 [class.border-red-500]="getFieldError('member_id')">
-            <p *ngIf="getFieldError('member_id')" class="mt-1 text-xs text-red-500">{{ getFieldError('member_id') }}</p>
+            @if (getFieldError('member_id')) {
+                <p class="mt-1 text-xs text-red-500">{{ getFieldError('member_id') }}</p>
+            }
         </div>
 
         <!-- Biometric Type -->
@@ -58,82 +60,96 @@
             </label>
             <select formControlName="biometric_type"
                 class="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 transition-all">
-                <option *ngFor="let type of biometricTypes()" [value]="type">
-                    {{ BIOMETRIC_TYPE_LABELS[type] }}
-                </option>
+                @for (type of biometricTypes(); track type) {
+                    <option [value]="type">
+                        {{ BIOMETRIC_TYPE_LABELS[type] }}
+                    </option>
+                }
             </select>
         </div>
 
         <!-- Enrollment Section (Only for Face) -->
-        <div *ngIf="biometricForm.get('biometric_type')?.value === BiometricType.FACE" class="space-y-4">
-            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                Face Enrollment <span class="text-red-500">*</span>
-            </label>
+        @if (biometricForm.get('biometric_type')?.value === BiometricType.FACE) {
+            <div class="space-y-4">
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                    Face Enrollment <span class="text-red-500">*</span>
+                </label>
 
-            <!-- Mode Switcher -->
-            <div class="flex space-x-2 mb-2">
-                <button type="button" (click)="setEnrollmentMode('upload')" 
-                    class="px-3 py-1 rounded text-sm transition-all border"
-                    [class.bg-primary-500]="enrollmentMode() === 'upload'"
-                    [class.text-white]="enrollmentMode() === 'upload'"
-                    [class.border-primary-500]="enrollmentMode() === 'upload'">
-                    📁 Upload
-                </button>
-                <button type="button" (click)="setEnrollmentMode('camera')" 
-                    class="px-3 py-1 rounded text-sm transition-all border"
-                    [class.bg-primary-500]="enrollmentMode() === 'camera'"
-                    [class.text-white]="enrollmentMode() === 'camera'"
-                    [class.border-primary-500]="enrollmentMode() === 'camera'">
-                    📷 Camera
-                </button>
-            </div>
-
-            <!-- Upload UI -->
-            <div *ngIf="enrollmentMode() === 'upload' && !capturedImage" class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" (click)="fileInput.click()">
-                <div class="text-4xl mb-2">📁</div>
-                <p class="text-sm text-slate-500">Click to upload face image</p>
-                <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" class="hidden">
-            </div>
-
-            <!-- Camera UI -->
-            <div *ngIf="enrollmentMode() === 'camera'" class="relative w-full aspect-video bg-black rounded-lg overflow-hidden">
-                <video #videoElement autoplay playsinline class="w-full h-full object-cover"></video>
-                <canvas #canvasElement class="hidden"></canvas>
-                
-                <!-- Overlay -->
-                <div class="absolute inset-0 border-2 border-primary-500/50 rounded-lg pointer-events-none">
-                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 border-2 border-white/50 rounded-lg"></div>
-                </div>
-
-                <div class="absolute bottom-4 left-0 right-0 flex justify-center">
-                    <button type="button" (click)="captureImage()" class="bg-white rounded-full p-4 shadow-lg hover:scale-105 transition-transform">
-                        <div class="w-4 h-4 bg-red-500 rounded-full"></div>
+                <!-- Mode Switcher -->
+                <div class="flex space-x-2 mb-2">
+                    <button type="button" (click)="setEnrollmentMode('upload')"
+                        class="px-3 py-1 rounded text-sm transition-all border"
+                        [class.bg-primary-500]="enrollmentMode() === 'upload'"
+                        [class.text-white]="enrollmentMode() === 'upload'"
+                        [class.border-primary-500]="enrollmentMode() === 'upload'">
+                        📁 Upload
+                    </button>
+                    <button type="button" (click)="setEnrollmentMode('camera')"
+                        class="px-3 py-1 rounded text-sm transition-all border"
+                        [class.bg-primary-500]="enrollmentMode() === 'camera'"
+                        [class.text-white]="enrollmentMode() === 'camera'"
+                        [class.border-primary-500]="enrollmentMode() === 'camera'">
+                        📷 Camera
                     </button>
                 </div>
-            </div>
 
-            <!-- Preview -->
-            <div *ngIf="capturedImage && enrollmentMode() === 'upload'" class="relative inline-block">
-                <img [src]="capturedImage" class="h-48 rounded-lg shadow-md border border-slate-200 dark:border-slate-700 object-cover">
-                <button type="button" (click)="clearImage()" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 shadow-md hover:bg-red-600">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
+                <!-- Upload UI -->
+                @if (enrollmentMode() === 'upload' && !capturedImage) {
+                    <div class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" (click)="fileInput.click()">
+                        <div class="text-4xl mb-2">📁</div>
+                        <p class="text-sm text-slate-500">Click to upload face image</p>
+                        <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" class="hidden">
+                    </div>
+                }
 
-            <input type="hidden" formControlName="biometric_value">
-            <p *ngIf="getFieldError('biometric_value')" class="mt-1 text-xs text-red-500">{{ getFieldError('biometric_value') }}</p>
-        </div>
+                <!-- Camera UI -->
+                @if (enrollmentMode() === 'camera') {
+                    <div class="relative w-full aspect-video bg-black rounded-lg overflow-hidden">
+                        <video #videoElement autoplay playsinline class="w-full h-full object-cover"></video>
+                        <canvas #canvasElement class="hidden"></canvas>
+                        
+                        <!-- Overlay -->
+                        <div class="absolute inset-0 border-2 border-primary-500/50 rounded-lg pointer-events-none">
+                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 border-2 border-white/50 rounded-lg"></div>
+                        </div>
+
+                        <div class="absolute bottom-4 left-0 right-0 flex justify-center">
+                            <button type="button" (click)="captureImage()" class="bg-white rounded-full p-4 shadow-lg hover:scale-105 transition-transform">
+                                <div class="w-4 h-4 bg-red-500 rounded-full"></div>
+                            </button>
+                        </div>
+                    </div>
+                }
+
+                <!-- Preview -->
+                @if (capturedImage && enrollmentMode() === 'upload') {
+                    <div class="relative inline-block">
+                        <img [src]="capturedImage" class="h-48 rounded-lg shadow-md border border-slate-200 dark:border-slate-700 object-cover">
+                        <button type="button" (click)="clearImage()" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 shadow-md hover:bg-red-600">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                }
+
+                <input type="hidden" formControlName="biometric_value">
+                @if (getFieldError('biometric_value')) {
+                    <p class="mt-1 text-xs text-red-500">{{ getFieldError('biometric_value') }}</p>
+                }
+            </div>
+        }
 
         <!-- Raw Value Input (For other types) -->
-        <div *ngIf="biometricForm.get('biometric_type')?.value !== BiometricType.FACE">
-            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                Biometric Value (Base64) <span class="text-red-500">*</span>
-            </label>
-            <textarea formControlName="biometric_value" rows="3"
-                class="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 transition-all font-mono text-xs"></textarea>
-        </div>
+        @if (biometricForm.get('biometric_type')?.value !== BiometricType.FACE) {
+            <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                    Biometric Value (Base64) <span class="text-red-500">*</span>
+                </label>
+                <textarea formControlName="biometric_value" rows="3"
+                    class="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 transition-all font-mono text-xs"></textarea>
+            </div>
+        }
 
         <!-- Is Primary -->
         <div class="flex items-center">

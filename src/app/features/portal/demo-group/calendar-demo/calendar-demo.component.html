@@ -23,165 +23,187 @@
     </div>
   </div>
 
-  <!-- Tabs -->
-  <app-glass-card class="p-6">
-    <div class="flex space-x-1 mb-6">
-      <button *ngFor="let tab of tabs" (click)="selectTab(tab)"
-        [class]="'px-4 py-2 rounded-lg font-medium transition-all ' + (activeTab() === tab ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-700')">
-        <i
-          [class]="'mr-2 ' + (tab === 'calendar' ? 'fas fa-calendar-alt' : tab === 'events' ? 'fas fa-list-alt' : tab === 'stats' ? 'fas fa-chart-bar' : 'fas fa-cog')"></i>
-        {{ tab | titlecase }}
-      </button>
-    </div>
-
-    <!-- Calendar Tab -->
-    <div *ngIf="activeTab() === 'calendar'" class="w-full">
-      <app-calendar [view]="view()" [viewDate]="viewDate()" [events]="events()" [activeDayIsOpen]="activeDayIsOpen()"
-        [showToolbar]="true" [showWeekends]="showWeekends()" [dayStartHour]="dayStartHour()" [dayEndHour]="dayEndHour()"
-        [hourSegments]="hourSegments()" [weekStartsOn]="weekStartsOn()" [excludeDays]="excludeDays()"
-        [weekendDays]="weekendDays()" [eventActions]="eventActions" [refresh]="refresh"
-        (viewChange)="onViewChange($event)" (viewDateChange)="onViewDateChange($event)"
-        (eventClicked)="onEventClicked($event)" (dayClicked)="onDayClicked($event)"
-        (eventTimesChanged)="onEventTimesChanged($event)" (eventDropped)="onEventDropped($event)"
-        (refreshClicked)="onRefreshClicked()"></app-calendar>
-    </div>
-
-    <!-- Events Tab -->
-    <div *ngIf="activeTab() === 'events'" class="w-full">
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="text-xl font-semibold text-white">All Events</h3>
-        <input type="text" placeholder="Search events..."
-          class="w-1/3 p-2 bg-gray-700 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+    <!-- Tabs -->
+    <app-glass-card class="p-6">
+      <div class="flex space-x-1 mb-6">
+        @for (tab of tabs; track tab) {
+          <button (click)="selectTab(tab)"
+            [class]="'px-4 py-2 rounded-lg font-medium transition-all ' + (activeTab() === tab ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-700')">
+            <i
+              [class]="'mr-2 ' + (tab === 'calendar' ? 'fas fa-calendar-alt' : tab === 'events' ? 'fas fa-list-alt' : tab === 'stats' ? 'fas fa-chart-bar' : 'fas fa-cog')"></i>
+            {{ tab | titlecase }}
+          </button>
+        }
       </div>
-      <div class="space-y-4">
-        <app-glass-card *ngFor="let event of events()" customClass="p-4 flex items-center justify-between">
-          <div class="flex items-center space-x-4">
-            <div class="text-2xl text-blue-400">
-              <i [class]="getEventIcon(event)"></i>
-            </div>
-            <div>
-              <h4 class="font-medium text-white">{{ event.title }}</h4>
-              <p class="text-sm text-gray-400">{{ formatEventDate(event) }}</p>
-              <p *ngIf="event.meta?.description" class="text-sm text-gray-500 mt-1">{{ event.meta?.description }}</p>
-              <div class="flex items-center space-x-4 mt-2">
-                <span *ngIf="event.meta?.category" class="text-xs px-2 py-1 bg-blue-500/20 text-blue-400 rounded">
-                  {{ event.meta?.category }}
-                </span>
-                <span *ngIf="event.meta?.priority" [class]="'text-xs px-2 py-1 rounded ' + getEventColor(event)">
-                  {{ event.meta?.priority | titlecase }}
-                </span>
-                <span *ngIf="event.meta?.status" class="text-xs px-2 py-1 bg-gray-500/20 text-gray-400 rounded">
-                  {{ event.meta?.status | titlecase }}
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="flex items-center space-x-2">
-            <app-glass-button (clicked)="editEvent(event)" variant="secondary" size="sm">
-              <i class="fas fa-edit"></i>
-            </app-glass-button>
-            <app-glass-button (clicked)="deleteEvent(event)" variant="danger" size="sm">
-              <i class="fas fa-trash-alt"></i>
-            </app-glass-button>
-          </div>
-        </app-glass-card>
-        <div *ngIf="events().length === 0" class="text-center text-gray-400 p-4">
-          No events found.
+
+      <!-- Calendar Tab -->
+      @if (activeTab() === 'calendar') {
+        <div class="w-full">
+          <app-calendar [view]="view()" [viewDate]="viewDate()" [events]="events()" [activeDayIsOpen]="activeDayIsOpen()"
+            [showToolbar]="true" [showWeekends]="showWeekends()" [dayStartHour]="dayStartHour()" [dayEndHour]="dayEndHour()"
+            [hourSegments]="hourSegments()" [weekStartsOn]="weekStartsOn()" [excludeDays]="excludeDays()"
+            [weekendDays]="weekendDays()" [eventActions]="eventActions" [refresh]="refresh"
+            (viewChange)="onViewChange($event)" (viewDateChange)="onViewDateChange($event)"
+            (eventClicked)="onEventClicked($event)" (dayClicked)="onDayClicked($event)"
+            (eventTimesChanged)="onEventTimesChanged($event)" (eventDropped)="onEventDropped($event)"
+            (refreshClicked)="onRefreshClicked()"></app-calendar>
         </div>
-      </div>
-    </div>
+      }
 
-    <!-- Statistics Tab -->
-    <div *ngIf="activeTab() === 'stats'" class="w-full">
-      <h3 class="text-xl font-semibold text-white mb-4">Event Statistics</h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <app-glass-card customClass="p-4 text-center">
-          <h4 class="text-lg font-medium text-white">Total Events</h4>
-          <p class="text-4xl font-bold text-blue-400 mt-2">{{ totalEvents() }}</p>
-        </app-glass-card>
-        <app-glass-card customClass="p-4 text-center">
-          <h4 class="text-lg font-medium text-white">Upcoming Events</h4>
-          <p class="text-4xl font-bold text-green-400 mt-2">{{ upcomingEvents() }}</p>
-        </app-glass-card>
-        <app-glass-card customClass="p-4 text-center">
-          <h4 class="text-lg font-medium text-white">Completed Events</h4>
-          <p class="text-4xl font-bold text-purple-400 mt-2">{{ completedEvents() }}</p>
-        </app-glass-card>
-        <app-glass-card customClass="p-4 text-center">
-          <h4 class="text-lg font-medium text-white">Cancelled Events</h4>
-          <p class="text-4xl font-bold text-red-400 mt-2">{{ cancelledEvents() }}</p>
-        </app-glass-card>
-      </div>
-    </div>
-
-    <!-- Settings Tab -->
-    <div *ngIf="activeTab() === 'settings'" class="w-full">
-      <h3 class="text-xl font-semibold text-white mb-4">Calendar Settings</h3>
-      <p class="text-gray-300 mb-4">
-        Configure various display and interaction settings for the calendar.
-      </p>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <app-glass-card customClass="p-4">
-          <label class="block text-white font-medium mb-2">Default View</label>
-          <select [ngModel]="view()" (ngModelChange)="onViewChange($event)"
-            class="w-full p-2 bg-gray-700 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
-            <option [value]="CalendarView.Month">Month</option>
-            <option [value]="CalendarView.Week">Week</option>
-            <option [value]="CalendarView.Day">Day</option>
-          </select>
-        </app-glass-card>
-
-        <app-glass-card customClass="p-4">
-          <label class="block text-white font-medium mb-2">Week Starts On</label>
-          <select [ngModel]="weekStartsOn()" (ngModelChange)="weekStartsOn.set($event)"
-            class="w-full p-2 bg-gray-700 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
-            <option [value]="0">Sunday</option>
-            <option [value]="1">Monday</option>
-          </select>
-        </app-glass-card>
-
-        <app-glass-card customClass="p-4">
-          <label class="block text-white font-medium mb-2">Day Start Hour</label>
-          <input type="number" [ngModel]="dayStartHour()" (ngModelChange)="dayStartHour.set($event)" min="0" max="23"
-            class="w-full p-2 bg-gray-700 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
-        </app-glass-card>
-
-        <app-glass-card customClass="p-4">
-          <label class="block text-white font-medium mb-2">Day End Hour</label>
-          <input type="number" [ngModel]="dayEndHour()" (ngModelChange)="dayEndHour.set($event)" min="0" max="23"
-            class="w-full p-2 bg-gray-700 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
-        </app-glass-card>
-
-        <app-glass-card customClass="p-4 flex flex-col justify-between">
-          <div>
-            <h4 class="font-medium text-white mb-2">Show Weekends</h4>
-            <p class="text-sm text-gray-400 mb-3">Display weekend days in the calendar.</p>
+      <!-- Events Tab -->
+      @if (activeTab() === 'events') {
+        <div class="w-full">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-xl font-semibold text-white">All Events</h3>
+            <input type="text" placeholder="Search events..."
+              class="w-1/3 p-2 bg-gray-700 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
           </div>
-          <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" [checked]="showWeekends()" (change)="showWeekends.set($event.target.checked)"
-              class="sr-only peer">
-            <div
-              class="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600">
-            </div>
-          </label>
-        </app-glass-card>
-
-        <app-glass-card customClass="p-4 flex flex-col justify-between">
-          <div>
-            <h4 class="font-medium text-white mb-2">Active Day Open</h4>
-            <p class="text-sm text-gray-400 mb-3">Keep the active day's events expanded in month view.</p>
+          <div class="space-y-4">
+            @for (event of events(); track event) {
+              <app-glass-card customClass="p-4 flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                  <div class="text-2xl text-blue-400">
+                    <i [class]="getEventIcon(event)"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-medium text-white">{{ event.title }}</h4>
+                    <p class="text-sm text-gray-400">{{ formatEventDate(event) }}</p>
+                    @if (event.meta?.description) {
+                      <p class="text-sm text-gray-500 mt-1">{{ event.meta?.description }}</p>
+                    }
+                    <div class="flex items-center space-x-4 mt-2">
+                      @if (event.meta?.category) {
+                        <span class="text-xs px-2 py-1 bg-blue-500/20 text-blue-400 rounded">
+                          {{ event.meta?.category }}
+                        </span>
+                      }
+                      @if (event.meta?.priority) {
+                        <span [class]="'text-xs px-2 py-1 rounded ' + getEventColor(event)">
+                          {{ event.meta?.priority | titlecase }}
+                        </span>
+                      }
+                      @if (event.meta?.status) {
+                        <span class="text-xs px-2 py-1 bg-gray-500/20 text-gray-400 rounded">
+                          {{ event.meta?.status | titlecase }}
+                        </span>
+                      }
+                    </div>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <app-glass-button (clicked)="editEvent(event)" variant="secondary" size="sm">
+                    <i class="fas fa-edit"></i>
+                  </app-glass-button>
+                  <app-glass-button (clicked)="deleteEvent(event)" variant="danger" size="sm">
+                    <i class="fas fa-trash-alt"></i>
+                  </app-glass-button>
+                </div>
+              </app-glass-card>
+            }
+            @if (events().length === 0) {
+              <div class="text-center text-gray-400 p-4">
+                No events found.
+              </div>
+            }
           </div>
-          <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" [checked]="activeDayIsOpen()" (change)="activeDayIsOpen.set($event.target.checked)"
-              class="sr-only peer">
-            <div
-              class="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600">
-            </div>
-          </label>
-        </app-glass-card>
-      </div>
-    </div>
-  </app-glass-card>
+        </div>
+      }
+
+      <!-- Statistics Tab -->
+      @if (activeTab() === 'stats') {
+        <div class="w-full">
+          <h3 class="text-xl font-semibold text-white mb-4">Event Statistics</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <app-glass-card customClass="p-4 text-center">
+              <h4 class="text-lg font-medium text-white">Total Events</h4>
+              <p class="text-4xl font-bold text-blue-400 mt-2">{{ totalEvents() }}</p>
+            </app-glass-card>
+            <app-glass-card customClass="p-4 text-center">
+              <h4 class="text-lg font-medium text-white">Upcoming Events</h4>
+              <p class="text-4xl font-bold text-green-400 mt-2">{{ upcomingEvents() }}</p>
+            </app-glass-card>
+            <app-glass-card customClass="p-4 text-center">
+              <h4 class="text-lg font-medium text-white">Completed Events</h4>
+              <p class="text-4xl font-bold text-purple-400 mt-2">{{ completedEvents() }}</p>
+            </app-glass-card>
+            <app-glass-card customClass="p-4 text-center">
+              <h4 class="text-lg font-medium text-white">Cancelled Events</h4>
+              <p class="text-4xl font-bold text-red-400 mt-2">{{ cancelledEvents() }}</p>
+            </app-glass-card>
+          </div>
+        </div>
+      }
+
+      <!-- Settings Tab -->
+      @if (activeTab() === 'settings') {
+        <div class="w-full">
+          <h3 class="text-xl font-semibold text-white mb-4">Calendar Settings</h3>
+          <p class="text-gray-300 mb-4">
+            Configure various display and interaction settings for the calendar.
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <app-glass-card customClass="p-4">
+              <label class="block text-white font-medium mb-2">Default View</label>
+              <select [ngModel]="view()" (ngModelChange)="onViewChange($event)"
+                class="w-full p-2 bg-gray-700 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                <option [value]="CalendarView.Month">Month</option>
+                <option [value]="CalendarView.Week">Week</option>
+                <option [value]="CalendarView.Day">Day</option>
+              </select>
+            </app-glass-card>
+
+            <app-glass-card customClass="p-4">
+              <label class="block text-white font-medium mb-2">Week Starts On</label>
+              <select [ngModel]="weekStartsOn()" (ngModelChange)="weekStartsOn.set($event)"
+                class="w-full p-2 bg-gray-700 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                <option [value]="0">Sunday</option>
+                <option [value]="1">Monday</option>
+              </select>
+            </app-glass-card>
+
+            <app-glass-card customClass="p-4">
+              <label class="block text-white font-medium mb-2">Day Start Hour</label>
+              <input type="number" [ngModel]="dayStartHour()" (ngModelChange)="dayStartHour.set($event)" min="0" max="23"
+                class="w-full p-2 bg-gray-700 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+            </app-glass-card>
+
+            <app-glass-card customClass="p-4">
+              <label class="block text-white font-medium mb-2">Day End Hour</label>
+              <input type="number" [ngModel]="dayEndHour()" (ngModelChange)="dayEndHour.set($event)" min="0" max="23"
+                class="w-full p-2 bg-gray-700 text-white rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+            </app-glass-card>
+
+            <app-glass-card customClass="p-4 flex flex-col justify-between">
+              <div>
+                <h4 class="font-medium text-white mb-2">Show Weekends</h4>
+                <p class="text-sm text-gray-400 mb-3">Display weekend days in the calendar.</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" [checked]="showWeekends()" (change)="showWeekends.set($event.target.checked)"
+                  class="sr-only peer">
+                <div
+                  class="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600">
+                </div>
+              </label>
+            </app-glass-card>
+
+            <app-glass-card customClass="p-4 flex flex-col justify-between">
+              <div>
+                <h4 class="font-medium text-white mb-2">Active Day Open</h4>
+                <p class="text-sm text-gray-400 mb-3">Keep the active day's events expanded in month view.</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" [checked]="activeDayIsOpen()" (change)="activeDayIsOpen.set($event.target.checked)"
+                  class="sr-only peer">
+                <div
+                  class="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600">
+                </div>
+              </label>
+            </app-glass-card>
+          </div>
+        </div>
+      }
+    </app-glass-card>
 
   <!-- Event Form Modal -->
   <div *ngIf="showEventForm()" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">

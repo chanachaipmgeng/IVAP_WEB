@@ -60,61 +60,67 @@
           </tr>
         </thead>
         <tbody class="bg-white/30 dark:bg-gray-800/30 divide-y divide-gray-200/50 dark:divide-gray-700/50">
-          <tr *ngFor="let log of filteredLogs" class="hover:bg-white/60 dark:hover:bg-gray-700/60 transition-all duration-200 group">
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="h-12 w-12 rounded-xl bg-gray-100 dark:bg-gray-700 overflow-hidden border border-gray-200 dark:border-gray-600 shadow-sm ring-2 ring-white dark:ring-gray-800 cursor-pointer group-hover:scale-110 transition-transform duration-200">
-                <img [src]="log.snapshotUrl" alt="Snapshot" class="h-full w-full object-cover">
-              </div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-              <div class="font-semibold text-primary-900 dark:text-primary-300">{{ log.timestamp | date:'HH:mm:ss' }}</div>
-              <div class="text-xs text-gray-500 dark:text-gray-400">{{ log.timestamp | date:'MMM d, y' }}</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="flex flex-col">
-                <span class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ log.personName }}</span>
-                <span class="text-xs text-gray-500 dark:text-gray-400 inline-flex items-center gap-1">
-                  {{ log.type }} 
-                  <span *ngIf="log.personId" class="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 font-mono text-[10px]">{{ log.personId }}</span>
+          @for (log of filteredLogs; track log.id) {
+            <tr class="hover:bg-white/60 dark:hover:bg-gray-700/60 transition-all duration-200 group">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="h-12 w-12 rounded-xl bg-gray-100 dark:bg-gray-700 overflow-hidden border border-gray-200 dark:border-gray-600 shadow-sm ring-2 ring-white dark:ring-gray-800 cursor-pointer group-hover:scale-110 transition-transform duration-200">
+                  <img [src]="log.snapshotUrl" alt="Snapshot" class="h-full w-full object-cover">
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                <div class="font-semibold text-primary-900 dark:text-primary-300">{{ log.timestamp | date:'HH:mm:ss' }}</div>
+                <div class="text-xs text-gray-500 dark:text-gray-400">{{ log.timestamp | date:'MMM d, y' }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex flex-col">
+                  <span class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ log.personName }}</span>
+                  <span class="text-xs text-gray-500 dark:text-gray-400 inline-flex items-center gap-1">
+                    {{ log.type }} 
+                    @if (log.personId) {
+                      <span class="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 font-mono text-[10px]">{{ log.personId }}</span>
+                    }
+                  </span>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <div class="w-16 bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 mr-2 overflow-hidden">
+                    <div class="h-1.5 rounded-full transition-all duration-500" 
+                         [class.bg-green-500]="log.confidence >= 0.9"
+                         [class.bg-yellow-500]="log.confidence >= 0.7 && log.confidence < 0.9"
+                         [class.bg-red-500]="log.confidence < 0.7"
+                         [style.width.%]="log.confidence * 100"></div>
+                  </div>
+                  <span class="text-sm font-medium" [ngClass]="getConfidenceColor(log.confidence)">{{ (log.confidence * 100).toFixed(1) }}%</span>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900 dark:text-gray-100 font-medium">{{ log.location }}</div>
+                <div class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                  <i class="fas fa-video"></i>
+                  {{ log.cameraName }}
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span [class]="'px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full border shadow-sm backdrop-blur-sm ' + getStatusBadge(log.status)">
+                  {{ log.status }}
                 </span>
-              </div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="flex items-center">
-                <div class="w-16 bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 mr-2 overflow-hidden">
-                  <div class="h-1.5 rounded-full transition-all duration-500" 
-                       [class.bg-green-500]="log.confidence >= 0.9"
-                       [class.bg-yellow-500]="log.confidence >= 0.7 && log.confidence < 0.9"
-                       [class.bg-red-500]="log.confidence < 0.7"
-                       [style.width.%]="log.confidence * 100"></div>
+              </td>
+            </tr>
+          }
+          @if (filteredLogs.length === 0) {
+            <tr>
+              <td colspan="6" class="px-6 py-16 text-center">
+                <div class="flex flex-col items-center justify-center">
+                  <div class="h-16 w-16 bg-gray-50 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
+                    <i class="fas fa-search text-2xl text-gray-300 dark:text-gray-600"></i>
+                  </div>
+                  <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100">No records found</h3>
+                  <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Try adjusting your search or filters.</p>
                 </div>
-                <span class="text-sm font-medium" [ngClass]="getConfidenceColor(log.confidence)">{{ (log.confidence * 100).toFixed(1) }}%</span>
-              </div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900 dark:text-gray-100 font-medium">{{ log.location }}</div>
-              <div class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
-                <i class="fas fa-video"></i>
-                {{ log.cameraName }}
-              </div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <span [class]="'px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full border shadow-sm backdrop-blur-sm ' + getStatusBadge(log.status)">
-                {{ log.status }}
-              </span>
-            </td>
-          </tr>
-          <tr *ngIf="filteredLogs.length === 0">
-            <td colspan="6" class="px-6 py-16 text-center">
-              <div class="flex flex-col items-center justify-center">
-                <div class="h-16 w-16 bg-gray-50 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
-                  <i class="fas fa-search text-2xl text-gray-300 dark:text-gray-600"></i>
-                </div>
-                <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100">No records found</h3>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Try adjusting your search or filters.</p>
-              </div>
-            </td>
-          </tr>
+              </td>
+            </tr>
+          }
         </tbody>
       </table>
     </div>

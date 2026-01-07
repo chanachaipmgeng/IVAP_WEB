@@ -11,28 +11,32 @@
   <app-tabs [tabs]="tabs()" [activeTab]="activeTab()" (activeTabChange)="onTabChange($event)">
     
     <!-- Vehicles Tab -->
-    <div *ngIf="activeTab() === 'vehicles'" class="space-y-6">
-      <!-- Filters -->
-      <app-filter-section
-        [fields]="filterFields()"
-        [columns]="3"
-        (filterChange)="onFilterChange($event)"
-      />
+    @if (activeTab() === 'vehicles') {
+      <div class="space-y-6">
+        <!-- Filters -->
+        <app-filter-section
+          [fields]="filterFields()"
+          [columns]="3"
+          (filterChange)="onFilterChange($event)"
+        />
 
-      <!-- Vehicles Table -->
-      <app-data-table
-        [columns]="columns"
-        [data]="vehicles()"
-        [actions]="actions"
-        [searchable]="false"
-      />
-    </div>
+        <!-- Vehicles Table -->
+        <app-data-table
+          [columns]="columns"
+          [data]="vehicles()"
+          [actions]="actions"
+          [searchable]="false"
+        />
+      </div>
+    }
 
     <!-- Parking Tab -->
-    <div *ngIf="activeTab() === 'parking'" class="space-y-6">
-      <!-- Parking content -->
-      <p class="text-gray-600 dark:text-gray-400">{{ 'pages.vehicles.parkingManagement' | translate }}</p>
-    </div>
+    @if (activeTab() === 'parking') {
+      <div class="space-y-6">
+        <!-- Parking content -->
+        <p class="text-gray-600 dark:text-gray-400">{{ 'pages.vehicles.parkingManagement' | translate }}</p>
+      </div>
+    }
   </app-tabs>
 
   <!-- Add/Edit Vehicle Modal -->
