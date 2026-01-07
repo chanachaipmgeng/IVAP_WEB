@@ -1,0 +1,2573 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  ThemeSwitcherComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/shared/components/theme-switcher/theme-switcher.component.ts</code>
+</p>
+
+
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-theme-switcher</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../interfaces/Module.html" target="_self" >CommonModule</a></code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">styles</td>
+                <td class="col-md-9"><code>
+    .theme-switcher {
+      position: relative;
+      display: inline-block;
+    }
+
+    .theme-button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: var(--color-textPrimary);
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .theme-button:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: var(--color-primary);
+      transform: translateY(-1px);
+    }
+
+    .theme-icon {
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .theme-label {
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      .theme-label {
+        display: inline;
+      }
+    }
+
+    .dropdown-arrow {
+      font-size: 0.75rem;
+      transition: transform 0.3s ease;
+    }
+
+    .dropdown-arrow.open {
+      transform: rotate(180deg);
+    }
+
+    .theme-dropdown {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      right: 0;
+      min-width: 320px;
+      max-width: 400px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 1rem;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      padding: 1rem;
+      z-index: 1070;
+      backdrop-filter: blur(10px);
+    }
+
+    .dropdown-section {
+      padding: 0.5rem 0;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--color-textSecondary);
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+
+    .mode-buttons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+    }
+
+    .mode-button {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.75rem 0.5rem;
+      background: rgba(0, 0, 0, 0.02);
+      border: 2px solid transparent;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--color-textPrimary);
+    }
+
+    .mode-button:hover {
+      background: rgba(var(--color-primary-rgb), 0.05);
+      border-color: var(--color-primary);
+    }
+
+    .mode-button.active {
+      background: var(--color-primary);
+      color: white;
+      border-color: var(--color-primary);
+    }
+
+    .mode-icon {
+      font-size: 1.5rem;
+    }
+
+    .mode-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .dropdown-divider {
+      height: 1px;
+      background: var(--color-border);
+      margin: 0.75rem 0;
+    }
+
+    .color-schemes {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .color-scheme-button {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      background: rgba(0, 0, 0, 0.02);
+      border: 2px solid transparent;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+    }
+
+    .color-scheme-button:hover {
+      background: rgba(var(--color-primary-rgb), 0.05);
+      border-color: var(--color-primary);
+    }
+
+    .color-scheme-button.active {
+      background: rgba(var(--color-primary-rgb), 0.1);
+      border-color: var(--color-primary);
+    }
+
+    .color-preview {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .color-dot {
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      border: 2px solid white;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .scheme-name {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--color-textPrimary);
+    }
+
+    .language-button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0.75rem;
+      background: rgba(0, 0, 0, 0.02);
+      border: 2px solid transparent;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--color-textPrimary);
+      font-weight: 500;
+    }
+
+    .language-button:hover {
+      background: rgba(var(--color-primary-rgb), 0.05);
+      border-color: var(--color-primary);
+    }
+
+    .language-icon {
+      font-size: 1.25rem;
+    }
+
+    :host-context(.dark) .theme-button {
+      background: rgba(0, 0, 0, 0.3);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    :host-context(.dark) .mode-button,
+    :host-context(.dark) .color-scheme-button,
+    :host-context(.dark) .language-button {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    :host-context(.dark) .mode-button:hover,
+    :host-context(.dark) .color-scheme-button:hover,
+    :host-context(.dark) .language-button:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  </code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">template</td>
+                <td class="col-md-9"><pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;theme-switcher&quot; [class]&#x3D;&quot;customClass || &#x27;&#x27;&quot; role&#x3D;&quot;group&quot; [attr.aria-label]&#x3D;&quot;ariaLabel || &#x27;Theme switcher&#x27;&quot;&gt;
+  &lt;!-- Mode Toggle --&gt;
+  &lt;button
+    (click)&#x3D;&quot;toggleDropdown()&quot;
+    class&#x3D;&quot;theme-button&quot;
+    [title]&#x3D;&quot;getThemeTooltip()&quot;
+    [attr.aria-label]&#x3D;&quot;ariaLabel || &#x27;Theme switcher&#x27;&quot;
+    [attr.aria-expanded]&#x3D;&quot;showDropdown() ? &#x27;true&#x27; : &#x27;false&#x27;&quot;
+    [attr.aria-haspopup]&#x3D;&quot;&#x27;true&#x27;&quot;
+    [attr.aria-controls]&#x3D;&quot;showDropdown() ? dropdownId : null&quot;
+    [attr.tabindex]&#x3D;&quot;0&quot;
+    (keydown.enter)&#x3D;&quot;toggleDropdown()&quot;
+    (keydown.space)&#x3D;&quot;toggleDropdown(); $event.preventDefault()&quot;
+    (keydown.escape)&#x3D;&quot;closeDropdown()&quot;&gt;
+    &lt;span class&#x3D;&quot;theme-icon&quot; [attr.aria-hidden]&#x3D;&quot;true&quot;&gt;{{ getModeIcon() }}&lt;/span&gt;
+    &lt;span class&#x3D;&quot;theme-label&quot;&gt;{{ getModeLabel() }}&lt;/span&gt;
+    &lt;span class&#x3D;&quot;dropdown-arrow&quot; [class.open]&#x3D;&quot;showDropdown()&quot; [attr.aria-hidden]&#x3D;&quot;true&quot;&gt;▼&lt;/span&gt;
+  &lt;/button&gt;
+
+  &lt;!-- Dropdown Menu --&gt;
+  @if (showDropdown()) {
+    &lt;div [id]&#x3D;&quot;dropdownId&quot; class&#x3D;&quot;theme-dropdown&quot; @dropdownAnimation role&#x3D;&quot;menu&quot; [attr.aria-label]&#x3D;&quot;&#x27;Theme options&#x27;&quot;&gt;
+      &lt;!-- Mode Selection --&gt;
+      &lt;div class&#x3D;&quot;dropdown-section&quot; role&#x3D;&quot;group&quot; [attr.aria-label]&#x3D;&quot;&#x27;Theme mode&#x27;&quot;&gt;
+        &lt;div class&#x3D;&quot;section-label&quot;&gt;{{ i18n.t(&#x27;theme.title&#x27;) }}&lt;/div&gt;
+        &lt;div class&#x3D;&quot;mode-buttons&quot; role&#x3D;&quot;radiogroup&quot; [attr.aria-label]&#x3D;&quot;&#x27;Select theme mode&#x27;&quot;&gt;
+          &lt;button
+            *ngFor&#x3D;&quot;let mode of modes; trackBy: trackByMode&quot;
+            (click)&#x3D;&quot;selectMode(mode)&quot;
+            [class.active]&#x3D;&quot;theme.mode() &#x3D;&#x3D;&#x3D; mode&quot;
+            class&#x3D;&quot;mode-button&quot;
+            role&#x3D;&quot;radio&quot;
+            [attr.aria-checked]&#x3D;&quot;theme.mode() &#x3D;&#x3D;&#x3D; mode ? &#x27;true&#x27; : &#x27;false&#x27;&quot;
+            [attr.aria-label]&#x3D;&quot;&#x27;Select &#x27; + getModeLabelFor(mode) + &#x27; mode&#x27;&quot;
+            [attr.tabindex]&#x3D;&quot;theme.mode() &#x3D;&#x3D;&#x3D; mode ? 0 : -1&quot;
+            (keydown.enter)&#x3D;&quot;selectMode(mode)&quot;
+            (keydown.space)&#x3D;&quot;selectMode(mode); $event.preventDefault()&quot;&gt;
+            &lt;span class&#x3D;&quot;mode-icon&quot; [attr.aria-hidden]&#x3D;&quot;true&quot;&gt;{{ getModeIconFor(mode) }}&lt;/span&gt;
+            &lt;span class&#x3D;&quot;mode-label&quot;&gt;{{ getModeLabelFor(mode) }}&lt;/span&gt;
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Divider --&gt;
+      &lt;div class&#x3D;&quot;dropdown-divider&quot;&gt;&lt;/div&gt;
+
+      &lt;!-- Color Scheme Selection --&gt;
+      &lt;div class&#x3D;&quot;dropdown-section&quot; role&#x3D;&quot;group&quot; [attr.aria-label]&#x3D;&quot;&#x27;Color scheme&#x27;&quot;&gt;
+        &lt;div class&#x3D;&quot;section-label&quot;&gt;{{ i18n.t(&#x27;theme.colorScheme&#x27;) }}&lt;/div&gt;
+        &lt;div class&#x3D;&quot;color-schemes&quot; role&#x3D;&quot;radiogroup&quot; [attr.aria-label]&#x3D;&quot;&#x27;Select color scheme&#x27;&quot;&gt;
+          &lt;button
+            *ngFor&#x3D;&quot;let scheme of availableSchemes(); trackBy: trackByScheme&quot;
+            (click)&#x3D;&quot;selectColorScheme(scheme.id)&quot;
+            [class.active]&#x3D;&quot;theme.colorSchemeId() &#x3D;&#x3D;&#x3D; scheme.id&quot;
+            class&#x3D;&quot;color-scheme-button&quot;
+            [title]&#x3D;&quot;getColorSchemeLabel(scheme)&quot;
+            role&#x3D;&quot;radio&quot;
+            [attr.aria-checked]&#x3D;&quot;theme.colorSchemeId() &#x3D;&#x3D;&#x3D; scheme.id ? &#x27;true&#x27; : &#x27;false&#x27;&quot;
+            [attr.aria-label]&#x3D;&quot;&#x27;Select &#x27; + getColorSchemeLabel(scheme) + &#x27; color scheme&#x27;&quot;
+            [attr.tabindex]&#x3D;&quot;theme.colorSchemeId() &#x3D;&#x3D;&#x3D; scheme.id ? 0 : -1&quot;
+            (keydown.enter)&#x3D;&quot;selectColorScheme(scheme.id)&quot;
+            (keydown.space)&#x3D;&quot;selectColorScheme(scheme.id); $event.preventDefault()&quot;&gt;
+            &lt;div class&#x3D;&quot;color-preview&quot; [attr.aria-hidden]&#x3D;&quot;true&quot;&gt;
+              &lt;span class&#x3D;&quot;color-dot&quot; [style.background-color]&#x3D;&quot;scheme.primary&quot;&gt;&lt;/span&gt;
+              &lt;span class&#x3D;&quot;color-dot&quot; [style.background-color]&#x3D;&quot;scheme.secondary&quot;&gt;&lt;/span&gt;
+              &lt;span class&#x3D;&quot;color-dot&quot; [style.background-color]&#x3D;&quot;scheme.accent&quot;&gt;&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;span class&#x3D;&quot;scheme-name&quot;&gt;{{ getColorSchemeLabel(scheme) }}&lt;/span&gt;
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Language Toggle (bonus) --&gt;
+      &lt;div class&#x3D;&quot;dropdown-divider&quot; [attr.aria-hidden]&#x3D;&quot;true&quot;&gt;&lt;/div&gt;
+      &lt;div class&#x3D;&quot;dropdown-section&quot;&gt;
+        &lt;button
+          (click)&#x3D;&quot;toggleLanguage()&quot;
+          class&#x3D;&quot;language-button&quot;
+          role&#x3D;&quot;button&quot;
+          [attr.aria-label]&#x3D;&quot;&#x27;Toggle language to &#x27; + (i18n.currentLanguage() &#x3D;&#x3D;&#x3D; &#x27;th&#x27; ? &#x27;English&#x27; : &#x27;Thai&#x27;)&quot;
+          [attr.tabindex]&#x3D;&quot;0&quot;
+          (keydown.enter)&#x3D;&quot;toggleLanguage()&quot;
+          (keydown.space)&#x3D;&quot;toggleLanguage(); $event.preventDefault()&quot;&gt;
+          &lt;span class&#x3D;&quot;language-icon&quot; [attr.aria-hidden]&#x3D;&quot;true&quot;&gt;🌐&lt;/span&gt;
+          &lt;span&gt;{{ i18n.currentLanguage() &#x3D;&#x3D;&#x3D; &#x27;th&#x27; ? &#x27;ไทย&#x27; : &#x27;English&#x27; }}&lt;/span&gt;
+          &lt;span class&#x3D;&quot;text-xs text-gray-500&quot; [attr.aria-hidden]&#x3D;&quot;true&quot;&gt;→ {{ i18n.currentLanguage() &#x3D;&#x3D;&#x3D; &#x27;th&#x27; ? &#x27;EN&#x27; : &#x27;TH&#x27; }}&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  }
+&lt;/div&gt;
+</code></pre></td>
+            </tr>
+
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#availableSchemes" >availableSchemes</a>
+                            </li>
+                            <li>
+                                <a href="#dropdownId" >dropdownId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#i18n" >i18n</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#modes" >modes</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_showDropdown" >_showDropdown</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#showDropdown" >showDropdown</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#theme" >theme</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#closeDropdown" >closeDropdown</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getColorSchemeLabel" >getColorSchemeLabel</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getModeIcon" >getModeIcon</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getModeIconFor" >getModeIconFor</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getModeLabel" >getModeLabel</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getModeLabelFor" >getModeLabelFor</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getThemeTooltip" >getThemeTooltip</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#selectColorScheme" >selectColorScheme</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#selectMode" >selectMode</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#toggleDropdown" >toggleDropdown</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#toggleLanguage" >toggleLanguage</a>
+                            </li>
+                            <li>
+                                <a href="#trackByMode" >trackByMode</a>
+                            </li>
+                            <li>
+                                <a href="#trackByScheme" >trackByScheme</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#ariaLabel" >ariaLabel</a>
+                            </li>
+                            <li>
+                                <a href="#customClass" >customClass</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(theme: <a href="../injectables/ThemeService.html" target="_self">ThemeService</a>, i18n: <a href="../injectables/I18nService.html" target="_self">I18nService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="372" class="link-to-prism">src/app/shared/components/theme-switcher/theme-switcher.component.ts:372</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>theme</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ThemeService.html" target="_self" >ThemeService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>i18n</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/I18nService.html" target="_self" >I18nService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section data-compodoc="block-inputs">
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="ariaLabel"></a>
+                        <b>ariaLabel</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="347" class="link-to-prism">src/app/shared/components/theme-switcher/theme-switcher.component.ts:347</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>ARIA label for the component</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="customClass"></a>
+                        <b>customClass</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="342" class="link-to-prism">src/app/shared/components/theme-switcher/theme-switcher.component.ts:342</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Custom CSS classes</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="closeDropdown"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>closeDropdown</b></span>
+                        <a href="#closeDropdown"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>closeDropdown()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="399"
+                                    class="link-to-prism">src/app/shared/components/theme-switcher/theme-switcher.component.ts:399</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Close dropdown</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getColorSchemeLabel"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>getColorSchemeLabel</b></span>
+                        <a href="#getColorSchemeLabel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getColorSchemeLabel(scheme: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="468"
+                                    class="link-to-prism">src/app/shared/components/theme-switcher/theme-switcher.component.ts:468</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>scheme</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getModeIcon"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>getModeIcon</b></span>
+                        <a href="#getModeIcon"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getModeIcon()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="440"
+                                    class="link-to-prism">src/app/shared/components/theme-switcher/theme-switcher.component.ts:440</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getModeIconFor"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>getModeIconFor</b></span>
+                        <a href="#getModeIconFor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getModeIconFor(mode: <a href="../undefineds/ThemeMode.html" target="_self">ThemeMode</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="450"
+                                    class="link-to-prism">src/app/shared/components/theme-switcher/theme-switcher.component.ts:450</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>mode</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#ThemeMode" target="_self" >ThemeMode</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getModeLabel"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>getModeLabel</b></span>
+                        <a href="#getModeLabel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getModeLabel()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="459"
+                                    class="link-to-prism">src/app/shared/components/theme-switcher/theme-switcher.component.ts:459</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getModeLabelFor"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>getModeLabelFor</b></span>
+                        <a href="#getModeLabelFor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getModeLabelFor(mode: <a href="../undefineds/ThemeMode.html" target="_self">ThemeMode</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="464"
+                                    class="link-to-prism">src/app/shared/components/theme-switcher/theme-switcher.component.ts:464</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>mode</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#ThemeMode" target="_self" >ThemeMode</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getThemeTooltip"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>getThemeTooltip</b></span>
+                        <a href="#getThemeTooltip"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getThemeTooltip()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="473"
+                                    class="link-to-prism">src/app/shared/components/theme-switcher/theme-switcher.component.ts:473</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectColorScheme"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>selectColorScheme</b></span>
+                        <a href="#selectColorScheme"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>selectColorScheme(schemeId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="414"
+                                    class="link-to-prism">src/app/shared/components/theme-switcher/theme-switcher.component.ts:414</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Select color scheme</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>schemeId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectMode"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>selectMode</b></span>
+                        <a href="#selectMode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>selectMode(mode: <a href="../undefineds/ThemeMode.html" target="_self">ThemeMode</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="406"
+                                    class="link-to-prism">src/app/shared/components/theme-switcher/theme-switcher.component.ts:406</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Select theme mode</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>mode</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#ThemeMode" target="_self" >ThemeMode</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleDropdown"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>toggleDropdown</b></span>
+                        <a href="#toggleDropdown"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>toggleDropdown()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="392"
+                                    class="link-to-prism">src/app/shared/components/theme-switcher/theme-switcher.component.ts:392</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Toggle dropdown</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleLanguage"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>toggleLanguage</b></span>
+                        <a href="#toggleLanguage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>toggleLanguage()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="422"
+                                    class="link-to-prism">src/app/shared/components/theme-switcher/theme-switcher.component.ts:422</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Toggle language</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="trackByMode"></a>
+                    <span class="name">
+                        <span ><b>trackByMode</b></span>
+                        <a href="#trackByMode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>trackByMode(index: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, mode: <a href="../undefineds/ThemeMode.html" target="_self">ThemeMode</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="429"
+                                    class="link-to-prism">src/app/shared/components/theme-switcher/theme-switcher.component.ts:429</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>TrackBy function for theme modes</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>index</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>mode</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#ThemeMode" target="_self" >ThemeMode</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="trackByScheme"></a>
+                    <span class="name">
+                        <span ><b>trackByScheme</b></span>
+                        <a href="#trackByScheme"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>trackByScheme(index: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, scheme: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="436"
+                                    class="link-to-prism">src/app/shared/components/theme-switcher/theme-switcher.component.ts:436</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>TrackBy function for color schemes</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>index</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>scheme</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="availableSchemes"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>availableSchemes</b></span>
+                        <a href="#availableSchemes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; this.theme.availableColorSchemes())</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="367" class="link-to-prism">src/app/shared/components/theme-switcher/theme-switcher.component.ts:367</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Available color schemes computed signal</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="dropdownId"></a>
+                    <span class="name">
+                        <span ><b>dropdownId</b></span>
+                        <a href="#dropdownId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x60;theme-dropdown-${Math.random().toString(36).substr(2, 9)}&#x60;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="372" class="link-to-prism">src/app/shared/components/theme-switcher/theme-switcher.component.ts:372</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Unique dropdown ID</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="i18n"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>i18n</b></span>
+                        <a href="#i18n"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../injectables/I18nService.html" target="_self" >I18nService</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="376" class="link-to-prism">src/app/shared/components/theme-switcher/theme-switcher.component.ts:376</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="modes"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>modes</b></span>
+                        <a href="#modes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Theme.html" target="_self" >ThemeMode[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[&#x27;light&#x27;, &#x27;dark&#x27;, &#x27;auto&#x27;]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="362" class="link-to-prism">src/app/shared/components/theme-switcher/theme-switcher.component.ts:362</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Available theme modes</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_showDropdown"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_showDropdown</b></span>
+                        <a href="#_showDropdown"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="352" class="link-to-prism">src/app/shared/components/theme-switcher/theme-switcher.component.ts:352</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Show dropdown state (private)</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showDropdown"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>showDropdown</b></span>
+                        <a href="#showDropdown"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; this._showDropdown)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="357" class="link-to-prism">src/app/shared/components/theme-switcher/theme-switcher.component.ts:357</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Show dropdown computed signal</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="theme"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>theme</b></span>
+                        <a href="#theme"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../injectables/ThemeService.html" target="_self" >ThemeService</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="375" class="link-to-prism">src/app/shared/components/theme-switcher/theme-switcher.component.ts:375</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, computed, Input } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { ThemeService, ThemeMode } from &#x27;../../../core/services/theme.service&#x27;;
+import { I18nService } from &#x27;../../../core/services/i18n.service&#x27;;
+import { COLOR_SCHEMES } from &#x27;../../../core/config/design-system.config&#x27;;
+import { dropdownAnimation } from &#x27;../../../core/animations/animations&#x27;;
+
+@Component({
+  selector: &#x27;app-theme-switcher&#x27;,
+  standalone: true,
+  imports: [CommonModule],
+  animations: [dropdownAnimation],
+  template: &#x60;
+    &lt;div class&#x3D;&quot;theme-switcher&quot; [class]&#x3D;&quot;customClass || &#x27;&#x27;&quot; role&#x3D;&quot;group&quot; [attr.aria-label]&#x3D;&quot;ariaLabel || &#x27;Theme switcher&#x27;&quot;&gt;
+      &lt;!-- Mode Toggle --&gt;
+      &lt;button
+        (click)&#x3D;&quot;toggleDropdown()&quot;
+        class&#x3D;&quot;theme-button&quot;
+        [title]&#x3D;&quot;getThemeTooltip()&quot;
+        [attr.aria-label]&#x3D;&quot;ariaLabel || &#x27;Theme switcher&#x27;&quot;
+        [attr.aria-expanded]&#x3D;&quot;showDropdown() ? &#x27;true&#x27; : &#x27;false&#x27;&quot;
+        [attr.aria-haspopup]&#x3D;&quot;&#x27;true&#x27;&quot;
+        [attr.aria-controls]&#x3D;&quot;showDropdown() ? dropdownId : null&quot;
+        [attr.tabindex]&#x3D;&quot;0&quot;
+        (keydown.enter)&#x3D;&quot;toggleDropdown()&quot;
+        (keydown.space)&#x3D;&quot;toggleDropdown(); $event.preventDefault()&quot;
+        (keydown.escape)&#x3D;&quot;closeDropdown()&quot;&gt;
+        &lt;span class&#x3D;&quot;theme-icon&quot; [attr.aria-hidden]&#x3D;&quot;true&quot;&gt;{{ getModeIcon() }}&lt;/span&gt;
+        &lt;span class&#x3D;&quot;theme-label&quot;&gt;{{ getModeLabel() }}&lt;/span&gt;
+        &lt;span class&#x3D;&quot;dropdown-arrow&quot; [class.open]&#x3D;&quot;showDropdown()&quot; [attr.aria-hidden]&#x3D;&quot;true&quot;&gt;▼&lt;/span&gt;
+      &lt;/button&gt;
+
+      &lt;!-- Dropdown Menu --&gt;
+      @if (showDropdown()) {
+        &lt;div [id]&#x3D;&quot;dropdownId&quot; class&#x3D;&quot;theme-dropdown&quot; @dropdownAnimation role&#x3D;&quot;menu&quot; [attr.aria-label]&#x3D;&quot;&#x27;Theme options&#x27;&quot;&gt;
+          &lt;!-- Mode Selection --&gt;
+          &lt;div class&#x3D;&quot;dropdown-section&quot; role&#x3D;&quot;group&quot; [attr.aria-label]&#x3D;&quot;&#x27;Theme mode&#x27;&quot;&gt;
+            &lt;div class&#x3D;&quot;section-label&quot;&gt;{{ i18n.t(&#x27;theme.title&#x27;) }}&lt;/div&gt;
+            &lt;div class&#x3D;&quot;mode-buttons&quot; role&#x3D;&quot;radiogroup&quot; [attr.aria-label]&#x3D;&quot;&#x27;Select theme mode&#x27;&quot;&gt;
+              &lt;button
+                *ngFor&#x3D;&quot;let mode of modes; trackBy: trackByMode&quot;
+                (click)&#x3D;&quot;selectMode(mode)&quot;
+                [class.active]&#x3D;&quot;theme.mode() &#x3D;&#x3D;&#x3D; mode&quot;
+                class&#x3D;&quot;mode-button&quot;
+                role&#x3D;&quot;radio&quot;
+                [attr.aria-checked]&#x3D;&quot;theme.mode() &#x3D;&#x3D;&#x3D; mode ? &#x27;true&#x27; : &#x27;false&#x27;&quot;
+                [attr.aria-label]&#x3D;&quot;&#x27;Select &#x27; + getModeLabelFor(mode) + &#x27; mode&#x27;&quot;
+                [attr.tabindex]&#x3D;&quot;theme.mode() &#x3D;&#x3D;&#x3D; mode ? 0 : -1&quot;
+                (keydown.enter)&#x3D;&quot;selectMode(mode)&quot;
+                (keydown.space)&#x3D;&quot;selectMode(mode); $event.preventDefault()&quot;&gt;
+                &lt;span class&#x3D;&quot;mode-icon&quot; [attr.aria-hidden]&#x3D;&quot;true&quot;&gt;{{ getModeIconFor(mode) }}&lt;/span&gt;
+                &lt;span class&#x3D;&quot;mode-label&quot;&gt;{{ getModeLabelFor(mode) }}&lt;/span&gt;
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Divider --&gt;
+          &lt;div class&#x3D;&quot;dropdown-divider&quot;&gt;&lt;/div&gt;
+
+          &lt;!-- Color Scheme Selection --&gt;
+          &lt;div class&#x3D;&quot;dropdown-section&quot; role&#x3D;&quot;group&quot; [attr.aria-label]&#x3D;&quot;&#x27;Color scheme&#x27;&quot;&gt;
+            &lt;div class&#x3D;&quot;section-label&quot;&gt;{{ i18n.t(&#x27;theme.colorScheme&#x27;) }}&lt;/div&gt;
+            &lt;div class&#x3D;&quot;color-schemes&quot; role&#x3D;&quot;radiogroup&quot; [attr.aria-label]&#x3D;&quot;&#x27;Select color scheme&#x27;&quot;&gt;
+              &lt;button
+                *ngFor&#x3D;&quot;let scheme of availableSchemes(); trackBy: trackByScheme&quot;
+                (click)&#x3D;&quot;selectColorScheme(scheme.id)&quot;
+                [class.active]&#x3D;&quot;theme.colorSchemeId() &#x3D;&#x3D;&#x3D; scheme.id&quot;
+                class&#x3D;&quot;color-scheme-button&quot;
+                [title]&#x3D;&quot;getColorSchemeLabel(scheme)&quot;
+                role&#x3D;&quot;radio&quot;
+                [attr.aria-checked]&#x3D;&quot;theme.colorSchemeId() &#x3D;&#x3D;&#x3D; scheme.id ? &#x27;true&#x27; : &#x27;false&#x27;&quot;
+                [attr.aria-label]&#x3D;&quot;&#x27;Select &#x27; + getColorSchemeLabel(scheme) + &#x27; color scheme&#x27;&quot;
+                [attr.tabindex]&#x3D;&quot;theme.colorSchemeId() &#x3D;&#x3D;&#x3D; scheme.id ? 0 : -1&quot;
+                (keydown.enter)&#x3D;&quot;selectColorScheme(scheme.id)&quot;
+                (keydown.space)&#x3D;&quot;selectColorScheme(scheme.id); $event.preventDefault()&quot;&gt;
+                &lt;div class&#x3D;&quot;color-preview&quot; [attr.aria-hidden]&#x3D;&quot;true&quot;&gt;
+                  &lt;span class&#x3D;&quot;color-dot&quot; [style.background-color]&#x3D;&quot;scheme.primary&quot;&gt;&lt;/span&gt;
+                  &lt;span class&#x3D;&quot;color-dot&quot; [style.background-color]&#x3D;&quot;scheme.secondary&quot;&gt;&lt;/span&gt;
+                  &lt;span class&#x3D;&quot;color-dot&quot; [style.background-color]&#x3D;&quot;scheme.accent&quot;&gt;&lt;/span&gt;
+                &lt;/div&gt;
+                &lt;span class&#x3D;&quot;scheme-name&quot;&gt;{{ getColorSchemeLabel(scheme) }}&lt;/span&gt;
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Language Toggle (bonus) --&gt;
+          &lt;div class&#x3D;&quot;dropdown-divider&quot; [attr.aria-hidden]&#x3D;&quot;true&quot;&gt;&lt;/div&gt;
+          &lt;div class&#x3D;&quot;dropdown-section&quot;&gt;
+            &lt;button
+              (click)&#x3D;&quot;toggleLanguage()&quot;
+              class&#x3D;&quot;language-button&quot;
+              role&#x3D;&quot;button&quot;
+              [attr.aria-label]&#x3D;&quot;&#x27;Toggle language to &#x27; + (i18n.currentLanguage() &#x3D;&#x3D;&#x3D; &#x27;th&#x27; ? &#x27;English&#x27; : &#x27;Thai&#x27;)&quot;
+              [attr.tabindex]&#x3D;&quot;0&quot;
+              (keydown.enter)&#x3D;&quot;toggleLanguage()&quot;
+              (keydown.space)&#x3D;&quot;toggleLanguage(); $event.preventDefault()&quot;&gt;
+              &lt;span class&#x3D;&quot;language-icon&quot; [attr.aria-hidden]&#x3D;&quot;true&quot;&gt;🌐&lt;/span&gt;
+              &lt;span&gt;{{ i18n.currentLanguage() &#x3D;&#x3D;&#x3D; &#x27;th&#x27; ? &#x27;ไทย&#x27; : &#x27;English&#x27; }}&lt;/span&gt;
+              &lt;span class&#x3D;&quot;text-xs text-gray-500&quot; [attr.aria-hidden]&#x3D;&quot;true&quot;&gt;→ {{ i18n.currentLanguage() &#x3D;&#x3D;&#x3D; &#x27;th&#x27; ? &#x27;EN&#x27; : &#x27;TH&#x27; }}&lt;/span&gt;
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      }
+    &lt;/div&gt;
+  &#x60;,
+  styles: [&#x60;
+    .theme-switcher {
+      position: relative;
+      display: inline-block;
+    }
+
+    .theme-button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: var(--color-textPrimary);
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .theme-button:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: var(--color-primary);
+      transform: translateY(-1px);
+    }
+
+    .theme-icon {
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .theme-label {
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      .theme-label {
+        display: inline;
+      }
+    }
+
+    .dropdown-arrow {
+      font-size: 0.75rem;
+      transition: transform 0.3s ease;
+    }
+
+    .dropdown-arrow.open {
+      transform: rotate(180deg);
+    }
+
+    .theme-dropdown {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      right: 0;
+      min-width: 320px;
+      max-width: 400px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 1rem;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      padding: 1rem;
+      z-index: 1070;
+      backdrop-filter: blur(10px);
+    }
+
+    .dropdown-section {
+      padding: 0.5rem 0;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--color-textSecondary);
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+
+    .mode-buttons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+    }
+
+    .mode-button {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.75rem 0.5rem;
+      background: rgba(0, 0, 0, 0.02);
+      border: 2px solid transparent;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--color-textPrimary);
+    }
+
+    .mode-button:hover {
+      background: rgba(var(--color-primary-rgb), 0.05);
+      border-color: var(--color-primary);
+    }
+
+    .mode-button.active {
+      background: var(--color-primary);
+      color: white;
+      border-color: var(--color-primary);
+    }
+
+    .mode-icon {
+      font-size: 1.5rem;
+    }
+
+    .mode-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .dropdown-divider {
+      height: 1px;
+      background: var(--color-border);
+      margin: 0.75rem 0;
+    }
+
+    .color-schemes {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .color-scheme-button {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      background: rgba(0, 0, 0, 0.02);
+      border: 2px solid transparent;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+    }
+
+    .color-scheme-button:hover {
+      background: rgba(var(--color-primary-rgb), 0.05);
+      border-color: var(--color-primary);
+    }
+
+    .color-scheme-button.active {
+      background: rgba(var(--color-primary-rgb), 0.1);
+      border-color: var(--color-primary);
+    }
+
+    .color-preview {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .color-dot {
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      border: 2px solid white;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .scheme-name {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--color-textPrimary);
+    }
+
+    .language-button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0.75rem;
+      background: rgba(0, 0, 0, 0.02);
+      border: 2px solid transparent;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--color-textPrimary);
+      font-weight: 500;
+    }
+
+    .language-button:hover {
+      background: rgba(var(--color-primary-rgb), 0.05);
+      border-color: var(--color-primary);
+    }
+
+    .language-icon {
+      font-size: 1.25rem;
+    }
+
+    :host-context(.dark) .theme-button {
+      background: rgba(0, 0, 0, 0.3);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    :host-context(.dark) .mode-button,
+    :host-context(.dark) .color-scheme-button,
+    :host-context(.dark) .language-button {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    :host-context(.dark) .mode-button:hover,
+    :host-context(.dark) .color-scheme-button:hover,
+    :host-context(.dark) .language-button:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  &#x60;]
+})
+export class ThemeSwitcherComponent {
+  /**
+   * Custom CSS classes
+   */
+  @Input() customClass?: string;
+
+  /**
+   * ARIA label for the component
+   */
+  @Input() ariaLabel?: string;
+
+  /**
+   * Show dropdown state (private)
+   */
+  private _showDropdown &#x3D; false;
+
+  /**
+   * Show dropdown computed signal
+   */
+  public showDropdown &#x3D; computed(() &#x3D;&gt; this._showDropdown);
+
+  /**
+   * Available theme modes
+   */
+  public modes: ThemeMode[] &#x3D; [&#x27;light&#x27;, &#x27;dark&#x27;, &#x27;auto&#x27;];
+
+  /**
+   * Available color schemes computed signal
+   */
+  public availableSchemes &#x3D; computed(() &#x3D;&gt; this.theme.availableColorSchemes());
+
+  /**
+   * Unique dropdown ID
+   */
+  dropdownId: string &#x3D; &#x60;theme-dropdown-${Math.random().toString(36).substr(2, 9)}&#x60;;
+
+  constructor(
+    public theme: ThemeService,
+    public i18n: I18nService
+  ) {
+    // Close dropdown when clicking outside
+    if (typeof document !&#x3D;&#x3D; &#x27;undefined&#x27;) {
+      document.addEventListener(&#x27;click&#x27;, (e) &#x3D;&gt; {
+        const target &#x3D; e.target as HTMLElement;
+        if (!target.closest(&#x27;.theme-switcher&#x27;)) {
+          this._showDropdown &#x3D; false;
+        }
+      });
+    }
+  }
+
+  /**
+   * Toggle dropdown
+   */
+  public toggleDropdown(): void {
+    this._showDropdown &#x3D; !this._showDropdown;
+  }
+
+  /**
+   * Close dropdown
+   */
+  public closeDropdown(): void {
+    this._showDropdown &#x3D; false;
+  }
+
+  /**
+   * Select theme mode
+   */
+  public selectMode(mode: ThemeMode): void {
+    this.theme.setMode(mode);
+    this.closeDropdown();
+  }
+
+  /**
+   * Select color scheme
+   */
+  public selectColorScheme(schemeId: string): void {
+    this.theme.setColorScheme(schemeId);
+    this.closeDropdown();
+  }
+
+  /**
+   * Toggle language
+   */
+  public toggleLanguage(): void {
+    this.i18n.toggleLanguage();
+  }
+
+  /**
+   * TrackBy function for theme modes
+   */
+  trackByMode(index: number, mode: ThemeMode): string {
+    return mode;
+  }
+
+  /**
+   * TrackBy function for color schemes
+   */
+  trackByScheme(index: number, scheme: { id: string }): string {
+    return scheme.id;
+  }
+
+  public getModeIcon(): string {
+    const mode &#x3D; this.theme.mode();
+    const isDark &#x3D; this.theme.isDark();
+
+    if (mode &#x3D;&#x3D;&#x3D; &#x27;auto&#x27;) {
+      return isDark ? &#x27;🌙&#x27; : &#x27;☀️&#x27;;
+    }
+    return mode &#x3D;&#x3D;&#x3D; &#x27;dark&#x27; ? &#x27;🌙&#x27; : &#x27;☀️&#x27;;
+  }
+
+  public getModeIconFor(mode: ThemeMode): string {
+    switch (mode) {
+      case &#x27;light&#x27;: return &#x27;☀️&#x27;;
+      case &#x27;dark&#x27;: return &#x27;🌙&#x27;;
+      case &#x27;auto&#x27;: return &#x27;🔄&#x27;;
+      default: return &#x27;☀️&#x27;;
+    }
+  }
+
+  public getModeLabel(): string {
+    const mode &#x3D; this.theme.mode();
+    return this.i18n.t(&#x60;theme.${mode}&#x60;);
+  }
+
+  public getModeLabelFor(mode: ThemeMode): string {
+    return this.i18n.t(&#x60;theme.${mode}&#x60;);
+  }
+
+  public getColorSchemeLabel(scheme: any): string {
+    const lang &#x3D; this.i18n.currentLanguage();
+    return lang &#x3D;&#x3D;&#x3D; &#x27;th&#x27; ? scheme.nameTh : scheme.name;
+  }
+
+  public getThemeTooltip(): string {
+    return &#x60;${this.i18n.t(&#x27;common.theme&#x27;)}: ${this.getModeLabel()}&#x60;;
+  }
+}
+
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="styleData">
+            <pre class="line-numbers"><code class="language-scss">
+    .theme-switcher {
+      position: relative;
+      display: inline-block;
+    }
+
+    .theme-button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: var(--color-textPrimary);
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .theme-button:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: var(--color-primary);
+      transform: translateY(-1px);
+    }
+
+    .theme-icon {
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .theme-label {
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      .theme-label {
+        display: inline;
+      }
+    }
+
+    .dropdown-arrow {
+      font-size: 0.75rem;
+      transition: transform 0.3s ease;
+    }
+
+    .dropdown-arrow.open {
+      transform: rotate(180deg);
+    }
+
+    .theme-dropdown {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      right: 0;
+      min-width: 320px;
+      max-width: 400px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 1rem;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      padding: 1rem;
+      z-index: 1070;
+      backdrop-filter: blur(10px);
+    }
+
+    .dropdown-section {
+      padding: 0.5rem 0;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--color-textSecondary);
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+
+    .mode-buttons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+    }
+
+    .mode-button {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.75rem 0.5rem;
+      background: rgba(0, 0, 0, 0.02);
+      border: 2px solid transparent;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--color-textPrimary);
+    }
+
+    .mode-button:hover {
+      background: rgba(var(--color-primary-rgb), 0.05);
+      border-color: var(--color-primary);
+    }
+
+    .mode-button.active {
+      background: var(--color-primary);
+      color: white;
+      border-color: var(--color-primary);
+    }
+
+    .mode-icon {
+      font-size: 1.5rem;
+    }
+
+    .mode-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .dropdown-divider {
+      height: 1px;
+      background: var(--color-border);
+      margin: 0.75rem 0;
+    }
+
+    .color-schemes {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .color-scheme-button {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      background: rgba(0, 0, 0, 0.02);
+      border: 2px solid transparent;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+    }
+
+    .color-scheme-button:hover {
+      background: rgba(var(--color-primary-rgb), 0.05);
+      border-color: var(--color-primary);
+    }
+
+    .color-scheme-button.active {
+      background: rgba(var(--color-primary-rgb), 0.1);
+      border-color: var(--color-primary);
+    }
+
+    .color-preview {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .color-dot {
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      border: 2px solid white;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .scheme-name {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--color-textPrimary);
+    }
+
+    .language-button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0.75rem;
+      background: rgba(0, 0, 0, 0.02);
+      border: 2px solid transparent;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--color-textPrimary);
+      font-weight: 500;
+    }
+
+    .language-button:hover {
+      background: rgba(var(--color-primary-rgb), 0.05);
+      border-color: var(--color-primary);
+    }
+
+    .language-icon {
+      font-size: 1.25rem;
+    }
+
+    :host-context(.dark) .theme-button {
+      background: rgba(0, 0, 0, 0.3);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    :host-context(.dark) .mode-button,
+    :host-context(.dark) .color-scheme-button,
+    :host-context(.dark) .language-button {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    :host-context(.dark) .mode-button:hover,
+    :host-context(.dark) .color-scheme-button:hover,
+    :host-context(.dark) .language-button:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="theme-switcher" [class]="customClass || \'\'" role="group" [attr.aria-label]="ariaLabel || \'Theme switcher\'">  <!-- Mode Toggle -->  <button    (click)="toggleDropdown()"    class="theme-button"    [title]="getThemeTooltip()"    [attr.aria-label]="ariaLabel || \'Theme switcher\'"    [attr.aria-expanded]="showDropdown() ? \'true\' : \'false\'"    [attr.aria-haspopup]="\'true\'"    [attr.aria-controls]="showDropdown() ? dropdownId : null"    [attr.tabindex]="0"    (keydown.enter)="toggleDropdown()"    (keydown.space)="toggleDropdown(); $event.preventDefault()"    (keydown.escape)="closeDropdown()">    <span class="theme-icon" [attr.aria-hidden]="true">{{ getModeIcon() }}</span>    <span class="theme-label">{{ getModeLabel() }}</span>    <span class="dropdown-arrow" [class.open]="showDropdown()" [attr.aria-hidden]="true">▼</span>  </button>  <!-- Dropdown Menu -->  @if (showDropdown()) {    <div [id]="dropdownId" class="theme-dropdown" @dropdownAnimation role="menu" [attr.aria-label]="\'Theme options\'">      <!-- Mode Selection -->      <div class="dropdown-section" role="group" [attr.aria-label]="\'Theme mode\'">        <div class="section-label">{{ i18n.t(\'theme.title\') }}</div>        <div class="mode-buttons" role="radiogroup" [attr.aria-label]="\'Select theme mode\'">          <button            *ngFor="let mode of modes; trackBy: trackByMode"            (click)="selectMode(mode)"            [class.active]="theme.mode() === mode"            class="mode-button"            role="radio"            [attr.aria-checked]="theme.mode() === mode ? \'true\' : \'false\'"            [attr.aria-label]="\'Select \' + getModeLabelFor(mode) + \' mode\'"            [attr.tabindex]="theme.mode() === mode ? 0 : -1"            (keydown.enter)="selectMode(mode)"            (keydown.space)="selectMode(mode); $event.preventDefault()">            <span class="mode-icon" [attr.aria-hidden]="true">{{ getModeIconFor(mode) }}</span>            <span class="mode-label">{{ getModeLabelFor(mode) }}</span>          </button>        </div>      </div>      <!-- Divider -->      <div class="dropdown-divider"></div>      <!-- Color Scheme Selection -->      <div class="dropdown-section" role="group" [attr.aria-label]="\'Color scheme\'">        <div class="section-label">{{ i18n.t(\'theme.colorScheme\') }}</div>        <div class="color-schemes" role="radiogroup" [attr.aria-label]="\'Select color scheme\'">          <button            *ngFor="let scheme of availableSchemes(); trackBy: trackByScheme"            (click)="selectColorScheme(scheme.id)"            [class.active]="theme.colorSchemeId() === scheme.id"            class="color-scheme-button"            [title]="getColorSchemeLabel(scheme)"            role="radio"            [attr.aria-checked]="theme.colorSchemeId() === scheme.id ? \'true\' : \'false\'"            [attr.aria-label]="\'Select \' + getColorSchemeLabel(scheme) + \' color scheme\'"            [attr.tabindex]="theme.colorSchemeId() === scheme.id ? 0 : -1"            (keydown.enter)="selectColorScheme(scheme.id)"            (keydown.space)="selectColorScheme(scheme.id); $event.preventDefault()">            <div class="color-preview" [attr.aria-hidden]="true">              <span class="color-dot" [style.background-color]="scheme.primary"></span>              <span class="color-dot" [style.background-color]="scheme.secondary"></span>              <span class="color-dot" [style.background-color]="scheme.accent"></span>            </div>            <span class="scheme-name">{{ getColorSchemeLabel(scheme) }}</span>          </button>        </div>      </div>      <!-- Language Toggle (bonus) -->      <div class="dropdown-divider" [attr.aria-hidden]="true"></div>      <div class="dropdown-section">        <button          (click)="toggleLanguage()"          class="language-button"          role="button"          [attr.aria-label]="\'Toggle language to \' + (i18n.currentLanguage() === \'th\' ? \'English\' : \'Thai\')"          [attr.tabindex]="0"          (keydown.enter)="toggleLanguage()"          (keydown.space)="toggleLanguage(); $event.preventDefault()">          <span class="language-icon" [attr.aria-hidden]="true">🌐</span>          <span>{{ i18n.currentLanguage() === \'th\' ? \'ไทย\' : \'English\' }}</span>          <span class="text-xs text-gray-500" [attr.aria-hidden]="true">→ {{ i18n.currentLanguage() === \'th\' ? \'EN\' : \'TH\' }}</span>        </button>      </div>    </div>  }</div></div>'
+    var COMPONENTS = [{'name': 'AccessControlComponent', 'selector': 'app-access-control'},{'name': 'AccessGroupsComponent', 'selector': 'app-access-groups'},{'name': 'AccessibilityDashboardComponent', 'selector': 'app-accessibility-dashboard'},{'name': 'AccessLogsComponent', 'selector': 'app-access-logs'},{'name': 'AccessSchedulesComponent', 'selector': 'app-access-schedules'},{'name': 'AccordionComponent', 'selector': 'app-accordion'},{'name': 'AccordionDemoComponent', 'selector': 'app-accordion-demo'},{'name': 'AdvancedDataTableComponent', 'selector': 'app-advanced-data-table'},{'name': 'AdvancedDataTableDemoComponent', 'selector': 'app-advanced-data-table-demo'},{'name': 'AdvancedFeaturesDashboardComponent', 'selector': 'app-advanced-features-dashboard'},{'name': 'AdvancedFormsComponent', 'selector': 'app-advanced-forms'},{'name': 'AdvancedRichTextComponent', 'selector': 'app-advanced-rich-text'},{'name': 'AdvancedUiDemoComponent', 'selector': 'app-advanced-ui-demo'},{'name': 'AIModelsComponent', 'selector': 'app-ai-models'},{'name': 'AlertComponent', 'selector': 'app-alert'},{'name': 'AlertHistoryComponent', 'selector': 'app-alert-history'},{'name': 'AlertsComponent', 'selector': 'app-alerts'},{'name': 'ApexChartComponent', 'selector': 'app-apex-chart'},{'name': 'App', 'selector': 'app-root'},{'name': 'AttendanceComponent', 'selector': 'app-attendance'},{'name': 'AuditLogsComponent', 'selector': 'app-audit-logs'},{'name': 'AvatarComponent', 'selector': 'app-avatar'},{'name': 'BackupRestoreComponent', 'selector': 'app-backup-restore'},{'name': 'BadgeComponent', 'selector': 'app-badge'},{'name': 'BaseComponent', 'selector': ''},{'name': 'BiometricDataComponent', 'selector': 'app-biometric-data'},{'name': 'BreadcrumbComponent', 'selector': 'app-breadcrumb'},{'name': 'CalendarComponent', 'selector': 'app-calendar'},{'name': 'CalendarDemoComponent', 'selector': 'app-calendar-demo'},{'name': 'ChartComponent', 'selector': 'app-chart'},{'name': 'CheckboxComponent', 'selector': 'app-checkbox'},{'name': 'ColorPickerComponent', 'selector': 'app-color-picker'},{'name': 'ComingSoonComponent', 'selector': 'app-coming-soon'},{'name': 'CompaniesComponent', 'selector': 'app-companies'},{'name': 'CompanyDocumentsComponent', 'selector': 'app-company-documents'},{'name': 'CompanyHolidaysComponent', 'selector': 'app-company-holidays'},{'name': 'ComponentShowcaseComponent', 'selector': 'app-component-showcase'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DataTableComponent', 'selector': 'app-data-table'},{'name': 'DateTimePickerComponent', 'selector': 'app-date-time-picker'},{'name': 'DepartmentsComponent', 'selector': 'app-departments'},{'name': 'DevicesComponent', 'selector': 'app-devices'},{'name': 'DividerComponent', 'selector': 'app-divider'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DoorsComponent', 'selector': 'app-doors'},{'name': 'DraggableCardsComponent', 'selector': 'app-draggable-cards'},{'name': 'DraggableCardsDemoComponent', 'selector': 'app-draggable-cards-demo'},{'name': 'EChartsChartComponent', 'selector': 'app-echarts-chart'},{'name': 'EChartsDemoComponent', 'selector': 'app-echarts-demo'},{'name': 'EmployeesComponent', 'selector': 'app-employees'},{'name': 'EmployeesNewComponent', 'selector': 'app-employees-new'},{'name': 'EmptyStateComponent', 'selector': 'app-empty-state'},{'name': 'Error401Component', 'selector': 'app-error-401'},{'name': 'Error404Component', 'selector': 'app-error-404'},{'name': 'Error500Component', 'selector': 'app-error-500'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'ErrorToastComponent', 'selector': 'app-error-toast'},{'name': 'EventAnalyticsComponent', 'selector': 'app-event-analytics'},{'name': 'EventCheckinHistoryComponent', 'selector': 'app-event-checkin-history'},{'name': 'EventEmailConfirmationComponent', 'selector': 'app-event-email-confirmation'},{'name': 'EventKioskConfigComponent', 'selector': 'app-event-kiosk-config'},{'name': 'EventRegistrationComponent', 'selector': 'app-event-registration'},{'name': 'EventRegistrationFieldsComponent', 'selector': 'app-event-registration-fields'},{'name': 'EventsComponent', 'selector': 'app-events'},{'name': 'FaceRecognitionComponent', 'selector': 'app-face-recognition'},{'name': 'FaceRecognitionDemoComponent', 'selector': 'app-face-recognition-demo'},{'name': 'FaceRecognitionLiveComponent', 'selector': 'app-face-recognition-live'},{'name': 'FaceRecognitionTestComponent', 'selector': 'app-face-recognition-test'},{'name': 'FaqComponent', 'selector': 'app-faq'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'FilterSectionComponent', 'selector': 'app-filter-section'},{'name': 'ForgotPasswordComponent', 'selector': 'app-forgot-password'},{'name': 'FormFieldComponent', 'selector': 'app-form-field'},{'name': 'GalleryComponent', 'selector': 'app-gallery'},{'name': 'GalleryDemoComponent', 'selector': 'app-gallery-demo'},{'name': 'GlassButtonComponent', 'selector': 'app-glass-button'},{'name': 'GlassCardComponent', 'selector': 'app-glass-card'},{'name': 'GlassInputComponent', 'selector': 'app-glass-input'},{'name': 'GroupFaceRecognitionComponent', 'selector': 'app-group-face-recognition'},{'name': 'GuestsComponent', 'selector': 'app-guests'},{'name': 'HardwareStatusDashboardComponent', 'selector': 'app-hardware-status-dashboard'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HeatmapAnalyticsComponent', 'selector': 'app-heatmap-analytics'},{'name': 'HelpCenter', 'selector': 'app-help-center'},{'name': 'HelpCenterComponent', 'selector': 'app-help-center'},{'name': 'HrDashboardComponent', 'selector': 'app-hr-dashboard'},{'name': 'IconComponent', 'selector': 'app-icon'},{'name': 'IncidentReportsComponent', 'selector': 'app-incident-reports'},{'name': 'KioskViewComponent', 'selector': 'app-kiosk-view'},{'name': 'LandingComponent', 'selector': 'app-landing'},{'name': 'LeafletMapComponent', 'selector': 'app-leaflet-map'},{'name': 'LeavesComponent', 'selector': 'app-leaves'},{'name': 'LicenseManagementComponent', 'selector': 'app-license-management'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoadingStateComponent', 'selector': 'app-loading-state'},{'name': 'LocationsComponent', 'selector': 'app-locations'},{'name': 'LockScreenComponent', 'selector': 'app-lock-screen'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MapDemoComponent', 'selector': 'app-map-demo'},{'name': 'MaterialButtonComponent', 'selector': 'app-material-button'},{'name': 'MaterialCardComponent', 'selector': 'app-material-card'},{'name': 'MaterialDialogComponent', 'selector': 'app-material-dialog'},{'name': 'MaterialInputComponent', 'selector': 'app-material-input'},{'name': 'MaterialTableComponent', 'selector': 'app-material-table'},{'name': 'MfaSetupComponent', 'selector': 'app-mfa-setup'},{'name': 'MobileCameraComponent', 'selector': 'app-mobile-camera'},{'name': 'MobileDemoComponent', 'selector': 'app-mobile-demo'},{'name': 'ModalComponent', 'selector': 'app-modal'},{'name': 'ModalFormComponent', 'selector': 'app-modal-form'},{'name': 'ModuleSubscriptionComponent', 'selector': 'app-module-subscription'},{'name': 'MonitoringComponent', 'selector': 'app-monitoring'},{'name': 'NotificationCenterComponent', 'selector': 'app-notification-center'},{'name': 'NotificationDemoComponent', 'selector': 'app-notification-demo'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'NotificationSettingsComponent', 'selector': 'app-notification-settings'},{'name': 'OffcanvasComponent', 'selector': 'app-offcanvas'},{'name': 'OffcanvasDemoComponent', 'selector': 'app-offcanvas-demo'},{'name': 'OvertimeRequestsComponent', 'selector': 'app-overtime-requests'},{'name': 'PageLayoutComponent', 'selector': 'app-page-layout'},{'name': 'PaginationComponent', 'selector': 'app-pagination'},{'name': 'ParkingBlacklistComponent', 'selector': 'app-parking-blacklist'},{'name': 'ParkingDashboardComponent', 'selector': 'app-parking-dashboard'},{'name': 'ParkingEntryComponent', 'selector': 'app-parking-entry'},{'name': 'ParkingExitComponent', 'selector': 'app-parking-exit'},{'name': 'ParkingLogsComponent', 'selector': 'app-parking-logs'},{'name': 'ParkingReservationComponent', 'selector': 'app-parking-reservation'},{'name': 'ParkingRulesComponent', 'selector': 'app-parking-rules'},{'name': 'ParkingSpotsComponent', 'selector': 'app-parking-spots'},{'name': 'ParkingStatisticsComponent', 'selector': 'app-parking-statistics'},{'name': 'PayrollExportComponent', 'selector': 'app-payroll-export'},{'name': 'PerformanceDashboardComponent', 'selector': 'app-performance-dashboard'},{'name': 'PopoverComponent', 'selector': 'app-popover'},{'name': 'PortalLayoutComponent', 'selector': 'app-portal-layout'},{'name': 'PositionsComponent', 'selector': 'app-positions'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'PublicVerificationComponent', 'selector': 'app-public-verification'},{'name': 'QRCodesComponent', 'selector': 'app-qr-codes'},{'name': 'RadioComponent', 'selector': 'app-radio'},{'name': 'RangeSliderComponent', 'selector': 'app-range-slider'},{'name': 'RatingComponent', 'selector': 'app-rating'},{'name': 'RatingDemoComponent', 'selector': 'app-rating-demo'},{'name': 'RbacComponent', 'selector': 'app-rbac'},{'name': 'RecognitionHistoryComponent', 'selector': 'app-recognition-history'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReportsComponent', 'selector': 'app-reports'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'RFIDCardsComponent', 'selector': 'app-rfid-cards'},{'name': 'RichTextComponent', 'selector': 'app-rich-text'},{'name': 'RichTextEditorComponent', 'selector': 'app-rich-text-editor'},{'name': 'RichTextEditorDemoComponent', 'selector': 'app-rich-text-editor-demo'},{'name': 'SafetyDashboardComponent', 'selector': 'app-safety-dashboard'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ShiftsComponent', 'selector': 'app-shifts'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SkeletonComponent', 'selector': 'app-skeleton'},{'name': 'StatisticsCardComponent', 'selector': 'app-statistics-card'},{'name': 'StatisticsGridComponent', 'selector': 'app-statistics-grid'},{'name': 'StepperComponent', 'selector': 'app-stepper'},{'name': 'StructureComponent', 'selector': 'app-structure'},{'name': 'SuperAdminAnnouncementsComponent', 'selector': 'app-super-admin-announcements'},{'name': 'SuperAdminDashboardComponent', 'selector': 'app-super-admin-dashboard'},{'name': 'SuperAdminLayoutComponent', 'selector': 'app-super-admin-layout'},{'name': 'SuperAdminReportsComponent', 'selector': 'app-super-admin-reports'},{'name': 'SurveillanceMapComponent', 'selector': 'app-surveillance-map'},{'name': 'SwiperGalleryComponent', 'selector': 'app-swiper-gallery'},{'name': 'SwiperGalleryDemoComponent', 'selector': 'app-swiper-gallery-demo'},{'name': 'SwitchComponent', 'selector': 'app-switch'},{'name': 'SystemSettingsComponent', 'selector': 'app-system-settings'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TemplateManagementComponent', 'selector': 'app-template-management'},{'name': 'TestApiComponent', 'selector': 'app-test-api'},{'name': 'ThemeSwitcherComponent', 'selector': 'app-theme-switcher'},{'name': 'TimelineComponent', 'selector': 'app-timeline'},{'name': 'TimelineDemoComponent', 'selector': 'app-timeline-demo'},{'name': 'TimesheetsComponent', 'selector': 'app-timesheets'},{'name': 'TimestampComponent', 'selector': 'app-timestamp'},{'name': 'TimestampDemoComponent', 'selector': 'app-timestamp-demo'},{'name': 'TooltipComponent', 'selector': 'app-tooltip'},{'name': 'UsersComponent', 'selector': 'app-users'},{'name': 'ValidationDemoComponent', 'selector': 'app-validation-demo'},{'name': 'VehiclesComponent', 'selector': 'app-vehicles'},{'name': 'VideoAnalyticsComponent', 'selector': 'app-video-analytics'},{'name': 'VideoPlaybackComponent', 'selector': 'app-video-playback'},{'name': 'VisitorBadgesComponent', 'selector': 'app-visitor-badges'},{'name': 'VisitorBlacklistComponent', 'selector': 'app-visitor-blacklist'},{'name': 'VisitorDashboardComponent', 'selector': 'app-visitor-dashboard'},{'name': 'VisitorInvitationsComponent', 'selector': 'app-visitor-invitations'},{'name': 'VisitorParcelsComponent', 'selector': 'app-visitor-parcels'},{'name': 'VisitorReportsComponent', 'selector': 'app-visitor-reports'},{'name': 'VisitorsComponent', 'selector': 'app-visitors'},{'name': 'WatchlistComponent', 'selector': 'app-watchlist'},{'name': 'ZoneConfigComponent', 'selector': 'app-zone-config'}];
+    var DIRECTIVES = [{'name': 'HasPermissionDirective', 'selector': '[appHasPermission]'},{'name': 'ImageOptimizationDirective', 'selector': '[appImageOptimization]'}];
+    var ACTUAL_COMPONENT = {'name': 'ThemeSwitcherComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'ThemeSwitcherComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

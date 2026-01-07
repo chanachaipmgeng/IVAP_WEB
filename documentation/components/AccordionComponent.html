@@ -1,0 +1,2680 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  AccordionComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/shared/components/accordion/accordion.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+                <code>OnChanges</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-accordion</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../interfaces/Module.html" target="_self" >CommonModule</a></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./accordion.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./accordion.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#defaultConfig" >defaultConfig</a>
+                            </li>
+                            <li>
+                                <a href="#openItems" >openItems</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#closeAll" >closeAll</a>
+                            </li>
+                            <li>
+                                <a href="#closeItem" >closeItem</a>
+                            </li>
+                            <li>
+                                <a href="#getAccordionClasses" >getAccordionClasses</a>
+                            </li>
+                            <li>
+                                <a href="#getBadgeClasses" >getBadgeClasses</a>
+                            </li>
+                            <li>
+                                <a href="#getClosedItems" >getClosedItems</a>
+                            </li>
+                            <li>
+                                <a href="#getContentClasses" >getContentClasses</a>
+                            </li>
+                            <li>
+                                <a href="#getContentStyles" >getContentStyles</a>
+                            </li>
+                            <li>
+                                <a href="#getHeaderClasses" >getHeaderClasses</a>
+                            </li>
+                            <li>
+                                <a href="#getIconClasses" >getIconClasses</a>
+                            </li>
+                            <li>
+                                <a href="#getItemClasses" >getItemClasses</a>
+                            </li>
+                            <li>
+                                <a href="#getOpenItems" >getOpenItems</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#initializeOpenItems" >initializeOpenItems</a>
+                            </li>
+                            <li>
+                                <a href="#isItemOpen" >isItemOpen</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnChanges" >ngOnChanges</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onItemClick" >onItemClick</a>
+                            </li>
+                            <li>
+                                <a href="#openAll" >openAll</a>
+                            </li>
+                            <li>
+                                <a href="#openItem" >openItem</a>
+                            </li>
+                            <li>
+                                <a href="#toggleAll" >toggleAll</a>
+                            </li>
+                            <li>
+                                <a href="#toggleItem" >toggleItem</a>
+                            </li>
+                            <li>
+                                <a href="#trackByItemId" >trackByItemId</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#ariaLabel" >ariaLabel</a>
+                            </li>
+                            <li>
+                                <a href="#config" >config</a>
+                            </li>
+                            <li>
+                                <a href="#customClass" >customClass</a>
+                            </li>
+                            <li>
+                                <a href="#items" >items</a>
+                            </li>
+                            <li>
+                                <a href="#loading" >loading</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#itemClick" >itemClick</a>
+                            </li>
+                            <li>
+                                <a href="#itemToggle" >itemToggle</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#mergedConfig" >mergedConfig</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+
+    <section data-compodoc="block-inputs">
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="ariaLabel"></a>
+                        <b>ariaLabel</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="76" class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:76</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>ARIA label for the accordion</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="config"></a>
+                        <b>config</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/AccordionConfig.html" target="_self" >Partial&lt;AccordionConfig&gt;</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{}</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:60</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Configuration object for accordion behavior</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="customClass"></a>
+                        <b>customClass</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:71</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Custom CSS classes</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="items"></a>
+                        <b>items</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/AccordionItem.html" target="_self" >AccordionItem[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:54</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Accordion items to display</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="loading"></a>
+                        <b>loading</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:66</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Whether the component is in loading state</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+    <section data-compodoc="block-outputs">
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="itemClick"></a>
+                        <b>itemClick</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="86" class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:86</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Emitted when an item is clicked</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="itemToggle"></a>
+                        <b>itemToggle</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="81" class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:81</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Emitted when an item is toggled (opened/closed)</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="closeAll"></a>
+                    <span class="name">
+                        <span ><b>closeAll</b></span>
+                        <a href="#closeAll"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>closeAll()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="338"
+                                    class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:338</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Close all items</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="closeItem"></a>
+                    <span class="name">
+                        <span ><b>closeItem</b></span>
+                        <a href="#closeItem"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>closeItem(itemId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="165"
+                                    class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:165</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Close specific item</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>itemId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAccordionClasses"></a>
+                    <span class="name">
+                        <span ><b>getAccordionClasses</b></span>
+                        <a href="#getAccordionClasses"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getAccordionClasses()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="186"
+                                    class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:186</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get accordion classes</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>string[]</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getBadgeClasses"></a>
+                    <span class="name">
+                        <span ><b>getBadgeClasses</b></span>
+                        <a href="#getBadgeClasses"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getBadgeClasses(item: <a href="../interfaces/AccordionItem.html" target="_self">AccordionItem</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="285"
+                                    class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:285</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get badge classes</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>item</td>
+                                            <td>
+                                                            <code><a href="../interfaces/AccordionItem.html" target="_self" >AccordionItem</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>string[]</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getClosedItems"></a>
+                    <span class="name">
+                        <span ><b>getClosedItems</b></span>
+                        <a href="#getClosedItems"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getClosedItems()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="319"
+                                    class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:319</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get all closed items</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/AccordionItem.html" target="_self" >AccordionItem[]</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getContentClasses"></a>
+                    <span class="name">
+                        <span ><b>getContentClasses</b></span>
+                        <a href="#getContentClasses"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getContentClasses(item: <a href="../interfaces/AccordionItem.html" target="_self">AccordionItem</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="246"
+                                    class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:246</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get content classes</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>item</td>
+                                            <td>
+                                                            <code><a href="../interfaces/AccordionItem.html" target="_self" >AccordionItem</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>string[]</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getContentStyles"></a>
+                    <span class="name">
+                        <span ><b>getContentStyles</b></span>
+                        <a href="#getContentStyles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getContentStyles(item: <a href="../interfaces/AccordionItem.html" target="_self">AccordionItem</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="298"
+                                    class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:298</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get content styles</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>item</td>
+                                            <td>
+                                                            <code><a href="../interfaces/AccordionItem.html" target="_self" >AccordionItem</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>literal type</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getHeaderClasses"></a>
+                    <span class="name">
+                        <span ><b>getHeaderClasses</b></span>
+                        <a href="#getHeaderClasses"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getHeaderClasses(item: <a href="../interfaces/AccordionItem.html" target="_self">AccordionItem</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="224"
+                                    class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:224</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get header classes</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>item</td>
+                                            <td>
+                                                            <code><a href="../interfaces/AccordionItem.html" target="_self" >AccordionItem</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>string[]</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getIconClasses"></a>
+                    <span class="name">
+                        <span ><b>getIconClasses</b></span>
+                        <a href="#getIconClasses"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getIconClasses(item: <a href="../interfaces/AccordionItem.html" target="_self">AccordionItem</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="266"
+                                    class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:266</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get icon classes</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>item</td>
+                                            <td>
+                                                            <code><a href="../interfaces/AccordionItem.html" target="_self" >AccordionItem</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>string[]</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getItemClasses"></a>
+                    <span class="name">
+                        <span ><b>getItemClasses</b></span>
+                        <a href="#getItemClasses"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getItemClasses(item: <a href="../interfaces/AccordionItem.html" target="_self">AccordionItem</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="202"
+                                    class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:202</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get item classes</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>item</td>
+                                            <td>
+                                                            <code><a href="../interfaces/AccordionItem.html" target="_self" >AccordionItem</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>string[]</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getOpenItems"></a>
+                    <span class="name">
+                        <span ><b>getOpenItems</b></span>
+                        <a href="#getOpenItems"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getOpenItems()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="312"
+                                    class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:312</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get all open items</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/AccordionItem.html" target="_self" >AccordionItem[]</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="initializeOpenItems"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>initializeOpenItems</b></span>
+                        <a href="#initializeOpenItems"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>initializeOpenItems()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="122"
+                                    class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:122</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Initialize open items based on items configuration</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isItemOpen"></a>
+                    <span class="name">
+                        <span ><b>isItemOpen</b></span>
+                        <a href="#isItemOpen"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isItemOpen(itemId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="172"
+                                    class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:172</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Check if item is open</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>itemId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnChanges"></a>
+                    <span class="name">
+                        <span ><b>ngOnChanges</b></span>
+                        <a href="#ngOnChanges"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnChanges(changes: SimpleChanges)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="106"
+                                    class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:106</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>changes</td>
+                                            <td>
+                                                        <code>SimpleChanges</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="102"
+                                    class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:102</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onItemClick"></a>
+                    <span class="name">
+                        <span ><b>onItemClick</b></span>
+                        <a href="#onItemClick"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onItemClick(item: <a href="../interfaces/AccordionItem.html" target="_self">AccordionItem</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="179"
+                                    class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:179</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle item click</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>item</td>
+                                            <td>
+                                                            <code><a href="../interfaces/AccordionItem.html" target="_self" >AccordionItem</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openAll"></a>
+                    <span class="name">
+                        <span ><b>openAll</b></span>
+                        <a href="#openAll"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>openAll()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="326"
+                                    class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:326</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Open all items</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openItem"></a>
+                    <span class="name">
+                        <span ><b>openItem</b></span>
+                        <a href="#openItem"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>openItem(itemId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="155"
+                                    class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:155</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Open specific item</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>itemId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleAll"></a>
+                    <span class="name">
+                        <span ><b>toggleAll</b></span>
+                        <a href="#toggleAll"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleAll()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="348"
+                                    class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:348</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Toggle all items</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleItem"></a>
+                    <span class="name">
+                        <span ><b>toggleItem</b></span>
+                        <a href="#toggleItem"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleItem(item: <a href="../interfaces/AccordionItem.html" target="_self">AccordionItem</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="134"
+                                    class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:134</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Toggle accordion item</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>item</td>
+                                            <td>
+                                                            <code><a href="../interfaces/AccordionItem.html" target="_self" >AccordionItem</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="trackByItemId"></a>
+                    <span class="name">
+                        <span ><b>trackByItemId</b></span>
+                        <a href="#trackByItemId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>trackByItemId(index: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, item: <a href="../interfaces/AccordionItem.html" target="_self">AccordionItem</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="360"
+                                    class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:360</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Track by function for ngFor</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>index</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>item</td>
+                                            <td>
+                                                            <code><a href="../interfaces/AccordionItem.html" target="_self" >AccordionItem</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="defaultConfig"></a>
+                    <span class="name">
+                        <span ><b>defaultConfig</b></span>
+                        <a href="#defaultConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/AccordionConfig.html" target="_self" >AccordionConfig</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    allowMultiple: false,
+    animation: true,
+    animationDuration: 300,
+    iconPosition: &#x27;right&#x27;,
+    showIcons: true,
+    variant: &#x27;default&#x27;,
+    size: &#x27;md&#x27;
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="89" class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:89</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openItems"></a>
+                    <span class="name">
+                        <span ><b>openItems</b></span>
+                        <a href="#openItems"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Set&lt;string&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Set()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="100" class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:100</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="mergedConfig"></a>
+                        <span class="name"><b>mergedConfig</b><a href="#mergedConfig"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>mergedConfig()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="115" class="link-to-prism">src/app/shared/components/accordion/accordion.component.ts:115</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Get merged configuration</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="../interfaces/AccordionConfig.html" target="_self" >AccordionConfig</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+
+export interface AccordionItem {
+  id: string;
+  title: string;
+  content: string;
+  isOpen: boolean;
+  disabled?: boolean;
+  icon?: string;
+  badge?: string;
+  badgeColor?: string;
+}
+
+export interface AccordionConfig {
+  allowMultiple: boolean;
+  animation: boolean;
+  animationDuration: number;
+  iconPosition: &#x27;left&#x27; | &#x27;right&#x27;;
+  showIcons: boolean;
+  variant: &#x27;default&#x27; | &#x27;bordered&#x27; | &#x27;flush&#x27; | &#x27;minimal&#x27;;
+  size: &#x27;sm&#x27; | &#x27;md&#x27; | &#x27;lg&#x27;;
+}
+
+@Component({
+  selector: &#x27;app-accordion&#x27;,
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: &#x27;./accordion.component.html&#x27;,
+  styleUrls: [&#x27;./accordion.component.scss&#x27;]
+})
+export class AccordionComponent implements OnInit, OnChanges {
+  /**
+   * Accordion items to display
+   * @default []
+   */
+  @Input() items: AccordionItem[] &#x3D; [];
+
+  /**
+   * Configuration object for accordion behavior
+   * @default {}
+   */
+  @Input() config: Partial&lt;AccordionConfig&gt; &#x3D; {};
+
+  /**
+   * Whether the component is in loading state
+   * @default false
+   */
+  @Input() loading: boolean &#x3D; false;
+
+  /**
+   * Custom CSS classes
+   */
+  @Input() customClass?: string;
+
+  /**
+   * ARIA label for the accordion
+   */
+  @Input() ariaLabel?: string;
+
+  /**
+   * Emitted when an item is toggled (opened/closed)
+   */
+  @Output() itemToggle &#x3D; new EventEmitter&lt;AccordionItem&gt;();
+
+  /**
+   * Emitted when an item is clicked
+   */
+  @Output() itemClick &#x3D; new EventEmitter&lt;AccordionItem&gt;();
+
+  // Default configuration
+  defaultConfig: AccordionConfig &#x3D; {
+    allowMultiple: false,
+    animation: true,
+    animationDuration: 300,
+    iconPosition: &#x27;right&#x27;,
+    showIcons: true,
+    variant: &#x27;default&#x27;,
+    size: &#x27;md&#x27;
+  };
+
+  // Component state
+  openItems: Set&lt;string&gt; &#x3D; new Set();
+
+  ngOnInit(): void {
+    this.initializeOpenItems();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes[&#x27;items&#x27;]) {
+      this.initializeOpenItems();
+    }
+  }
+
+  /**
+   * Get merged configuration
+   */
+  get mergedConfig(): AccordionConfig {
+    return { ...this.defaultConfig, ...this.config };
+  }
+
+  /**
+   * Initialize open items based on items configuration
+   */
+  private initializeOpenItems(): void {
+    this.openItems.clear();
+    this.items.forEach(item &#x3D;&gt; {
+      if (item.isOpen) {
+        this.openItems.add(item.id);
+      }
+    });
+  }
+
+  /**
+   * Toggle accordion item
+   */
+  toggleItem(item: AccordionItem): void {
+    if (item.disabled) {
+      return;
+    }
+
+    const isCurrentlyOpen &#x3D; this.isItemOpen(item.id);
+
+    if (isCurrentlyOpen) {
+      this.closeItem(item.id);
+    } else {
+      this.openItem(item.id);
+    }
+
+    // Update item state
+    item.isOpen &#x3D; !isCurrentlyOpen;
+    this.itemToggle.emit(item);
+  }
+
+  /**
+   * Open specific item
+   */
+  openItem(itemId: string): void {
+    if (!this.mergedConfig.allowMultiple) {
+      this.openItems.clear();
+    }
+    this.openItems.add(itemId);
+  }
+
+  /**
+   * Close specific item
+   */
+  closeItem(itemId: string): void {
+    this.openItems.delete(itemId);
+  }
+
+  /**
+   * Check if item is open
+   */
+  isItemOpen(itemId: string): boolean {
+    return this.openItems.has(itemId);
+  }
+
+  /**
+   * Handle item click
+   */
+  onItemClick(item: AccordionItem): void {
+    this.itemClick.emit(item);
+  }
+
+  /**
+   * Get accordion classes
+   */
+  getAccordionClasses(): string[] {
+    const classes &#x3D; [&#x27;accordion&#x27;];
+    const config &#x3D; this.mergedConfig;
+
+    // Variant classes
+    classes.push(&#x60;accordion-${config.variant}&#x60;);
+
+    // Size classes
+    classes.push(&#x60;accordion-${config.size}&#x60;);
+
+    return classes;
+  }
+
+  /**
+   * Get item classes
+   */
+  getItemClasses(item: AccordionItem): string[] {
+    const classes &#x3D; [&#x27;accordion-item&#x27;];
+    const config &#x3D; this.mergedConfig;
+
+    // State classes
+    if (this.isItemOpen(item.id)) {
+      classes.push(&#x27;accordion-item-open&#x27;);
+    }
+
+    if (item.disabled) {
+      classes.push(&#x27;accordion-item-disabled&#x27;);
+    }
+
+    // Variant classes
+    classes.push(&#x60;accordion-item-${config.variant}&#x60;);
+
+    return classes;
+  }
+
+  /**
+   * Get header classes
+   */
+  getHeaderClasses(item: AccordionItem): string[] {
+    const classes &#x3D; [&#x27;accordion-header&#x27;];
+    const config &#x3D; this.mergedConfig;
+
+    // State classes
+    if (this.isItemOpen(item.id)) {
+      classes.push(&#x27;accordion-header-open&#x27;);
+    }
+
+    if (item.disabled) {
+      classes.push(&#x27;accordion-header-disabled&#x27;);
+    }
+
+    // Icon position classes
+    classes.push(&#x60;accordion-header-${config.iconPosition}&#x60;);
+
+    return classes;
+  }
+
+  /**
+   * Get content classes
+   */
+  getContentClasses(item: AccordionItem): string[] {
+    const classes &#x3D; [&#x27;accordion-content&#x27;];
+    const config &#x3D; this.mergedConfig;
+
+    // State classes
+    if (this.isItemOpen(item.id)) {
+      classes.push(&#x27;accordion-content-open&#x27;);
+    }
+
+    // Animation classes
+    if (config.animation) {
+      classes.push(&#x27;accordion-content-animated&#x27;);
+    }
+
+    return classes;
+  }
+
+  /**
+   * Get icon classes
+   */
+  getIconClasses(item: AccordionItem): string[] {
+    const classes &#x3D; [&#x27;accordion-icon&#x27;];
+    const config &#x3D; this.mergedConfig;
+
+    // State classes
+    if (this.isItemOpen(item.id)) {
+      classes.push(&#x27;accordion-icon-open&#x27;);
+    }
+
+    if (item.disabled) {
+      classes.push(&#x27;accordion-icon-disabled&#x27;);
+    }
+
+    return classes;
+  }
+
+  /**
+   * Get badge classes
+   */
+  getBadgeClasses(item: AccordionItem): string[] {
+    const classes &#x3D; [&#x27;accordion-badge&#x27;];
+
+    if (item.badgeColor) {
+      classes.push(&#x60;accordion-badge-${item.badgeColor}&#x60;);
+    }
+
+    return classes;
+  }
+
+  /**
+   * Get content styles
+   */
+  getContentStyles(item: AccordionItem): { [key: string]: string } {
+    const config &#x3D; this.mergedConfig;
+    const styles: { [key: string]: string } &#x3D; {};
+
+    if (config.animation) {
+      styles[&#x27;transitionDuration&#x27;] &#x3D; &#x60;${config.animationDuration}ms&#x60;;
+    }
+
+    return styles;
+  }
+
+  /**
+   * Get all open items
+   */
+  getOpenItems(): AccordionItem[] {
+    return this.items.filter(item &#x3D;&gt; this.isItemOpen(item.id));
+  }
+
+  /**
+   * Get all closed items
+   */
+  getClosedItems(): AccordionItem[] {
+    return this.items.filter(item &#x3D;&gt; !this.isItemOpen(item.id));
+  }
+
+  /**
+   * Open all items
+   */
+  openAll(): void {
+    this.items.forEach(item &#x3D;&gt; {
+      if (!item.disabled) {
+        this.openItems.add(item.id);
+        item.isOpen &#x3D; true;
+      }
+    });
+  }
+
+  /**
+   * Close all items
+   */
+  closeAll(): void {
+    this.openItems.clear();
+    this.items.forEach(item &#x3D;&gt; {
+      item.isOpen &#x3D; false;
+    });
+  }
+
+  /**
+   * Toggle all items
+   */
+  toggleAll(): void {
+    const hasOpenItems &#x3D; this.openItems.size &gt; 0;
+    if (hasOpenItems) {
+      this.closeAll();
+    } else {
+      this.openAll();
+    }
+  }
+
+  /**
+   * Track by function for ngFor
+   */
+  trackByItemId(index: number, item: AccordionItem): string {
+    return item.id;
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div
+  class&#x3D;&quot;accordion-container w-full relative&quot;
+  [ngClass]&#x3D;&quot;getAccordionClasses()&quot;
+  [class]&#x3D;&quot;customClass || &#x27;&#x27;&quot;
+  role&#x3D;&quot;group&quot;
+  [attr.aria-label]&#x3D;&quot;ariaLabel || &#x27;Accordion&#x27;&quot;&gt;
+  &lt;!-- Loading State --&gt;
+  &lt;div *ngIf&#x3D;&quot;loading&quot; class&#x3D;&quot;accordion-loading flex flex-col items-center justify-center p-12 text-gray-400&quot;&gt;
+    &lt;div class&#x3D;&quot;loading-spinner w-8 h-8 border-2 border-white/10 border-t-primary-500 rounded-full animate-spin mb-4&quot;&gt;&lt;/div&gt;
+    &lt;p class&#x3D;&quot;m-0 text-sm&quot;&gt;กำลังโหลดข้อมูล...&lt;/p&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Empty State --&gt;
+  &lt;div *ngIf&#x3D;&quot;!loading &amp;&amp; items.length &#x3D;&#x3D;&#x3D; 0&quot; class&#x3D;&quot;accordion-empty flex flex-col items-center justify-center p-12 text-gray-400&quot;&gt;
+    &lt;i class&#x3D;&quot;fas fa-list text-5xl mb-4 opacity-50&quot;&gt;&lt;/i&gt;
+    &lt;p class&#x3D;&quot;m-0 text-base&quot;&gt;ไม่มีข้อมูล Accordion&lt;/p&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Accordion Items --&gt;
+  &lt;div *ngIf&#x3D;&quot;!loading &amp;&amp; items.length &gt; 0&quot; class&#x3D;&quot;accordion-items&quot;&gt;
+    &lt;div
+      *ngFor&#x3D;&quot;let item of items; trackBy: trackByItemId&quot;
+      class&#x3D;&quot;accordion-item relative transition-all hover:-translate-y-0.5 hover:shadow-lg&quot;
+      [ngClass]&#x3D;&quot;getItemClasses(item)&quot;
+      [class.opacity-60]&#x3D;&quot;item.disabled&quot;
+      [class.cursor-not-allowed]&#x3D;&quot;item.disabled&quot;&gt;
+
+      &lt;!-- Accordion Header --&gt;
+      &lt;div
+        class&#x3D;&quot;accordion-header flex items-center justify-between px-4 py-3 bg-white/5 cursor-pointer transition-all select-none hover:bg-white/8 focus:outline-2 focus:outline-primary-500 focus:outline-offset-2&quot;
+        [ngClass]&#x3D;&quot;getHeaderClasses(item)&quot;
+        [class.bg-white/8]&#x3D;&quot;isItemOpen(item.id)&quot;
+        [class.border-b]&#x3D;&quot;isItemOpen(item.id)&quot;
+        [class.border-white/10]&#x3D;&quot;isItemOpen(item.id)&quot;
+        [class.cursor-not-allowed]&#x3D;&quot;item.disabled&quot;
+        [class.opacity-60]&#x3D;&quot;item.disabled&quot;
+        (click)&#x3D;&quot;toggleItem(item)&quot;
+        [attr.aria-expanded]&#x3D;&quot;isItemOpen(item.id)&quot;
+        [attr.aria-disabled]&#x3D;&quot;item.disabled ? &#x27;true&#x27; : null&quot;
+        [attr.aria-controls]&#x3D;&quot;&#x27;accordion-content-&#x27; + item.id&quot;
+        [attr.id]&#x3D;&quot;&#x27;accordion-header-&#x27; + item.id&quot;
+        role&#x3D;&quot;button&quot;
+        [attr.tabindex]&#x3D;&quot;item.disabled ? -1 : 0&quot;
+        (keydown.enter)&#x3D;&quot;toggleItem(item)&quot;
+        (keydown.space)&#x3D;&quot;toggleItem(item); $event.preventDefault()&quot;&gt;
+
+        &lt;!-- Left Icon --&gt;
+        &lt;div *ngIf&#x3D;&quot;mergedConfig.showIcons &amp;&amp; mergedConfig.iconPosition &#x3D;&#x3D;&#x3D; &#x27;left&#x27;&quot; class&#x3D;&quot;accordion-icon-left flex items-center justify-center w-6 h-6 text-gray-400 transition-all mr-3&quot; [class.rotate-90]&#x3D;&quot;isItemOpen(item.id)&quot;&gt;
+          &lt;i *ngIf&#x3D;&quot;item.icon&quot; [class]&#x3D;&quot;item.icon&quot;&gt;&lt;/i&gt;
+          &lt;i *ngIf&#x3D;&quot;!item.icon&quot; class&#x3D;&quot;fas fa-chevron-right text-sm&quot;&gt;&lt;/i&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Title and Badge --&gt;
+        &lt;div class&#x3D;&quot;accordion-title-container flex items-center flex-1 gap-2 md:flex-col md:items-start md:gap-1&quot;&gt;
+          &lt;h3 class&#x3D;&quot;accordion-title m-0 text-base font-semibold text-white leading-relaxed&quot;&gt;{{ item.title }}&lt;/h3&gt;
+          &lt;span *ngIf&#x3D;&quot;item.badge&quot; class&#x3D;&quot;accordion-badge px-2 py-1 rounded text-xs font-medium text-white bg-primary-500 md:text-[10px] md:px-1.5 md:py-0.5&quot; [ngClass]&#x3D;&quot;getBadgeClasses(item)&quot;
+            [class.bg-success-500]&#x3D;&quot;getBadgeClasses(item).includes(&#x27;accordion-badge-success&#x27;)&quot;
+            [class.bg-warning-500]&#x3D;&quot;getBadgeClasses(item).includes(&#x27;accordion-badge-warning&#x27;)&quot;
+            [class.bg-error-500]&#x3D;&quot;getBadgeClasses(item).includes(&#x27;accordion-badge-danger&#x27;)&quot;
+            [class.bg-info-500]&#x3D;&quot;getBadgeClasses(item).includes(&#x27;accordion-badge-info&#x27;)&quot;
+            [class.bg-gray-500]&#x3D;&quot;getBadgeClasses(item).includes(&#x27;accordion-badge-secondary&#x27;)&quot;&gt;
+            {{ item.badge }}
+          &lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Right Icon --&gt;
+        &lt;div *ngIf&#x3D;&quot;mergedConfig.showIcons &amp;&amp; mergedConfig.iconPosition &#x3D;&#x3D;&#x3D; &#x27;right&#x27;&quot; class&#x3D;&quot;accordion-icon-right flex items-center justify-center w-6 h-6 text-gray-400 transition-all ml-3&quot; [class.rotate-180]&#x3D;&quot;isItemOpen(item.id)&quot; [class.opacity-50]&#x3D;&quot;item.disabled&quot;&gt;
+          &lt;i *ngIf&#x3D;&quot;item.icon&quot; [class]&#x3D;&quot;item.icon&quot;&gt;&lt;/i&gt;
+          &lt;i *ngIf&#x3D;&quot;!item.icon&quot; class&#x3D;&quot;fas fa-chevron-down text-sm&quot; [ngClass]&#x3D;&quot;getIconClasses(item)&quot;&gt;&lt;/i&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Accordion Content --&gt;
+      &lt;div
+        [id]&#x3D;&quot;&#x27;accordion-content-&#x27; + item.id&quot;
+        class&#x3D;&quot;accordion-content max-h-0 overflow-hidden opacity-0 transition-all bg-white/2&quot;
+        [ngClass]&#x3D;&quot;getContentClasses(item)&quot;
+        [class.max-h-[1000px]]&#x3D;&quot;isItemOpen(item.id)&quot;
+        [class.opacity-100]&#x3D;&quot;isItemOpen(item.id)&quot;
+        [class.px-4]&#x3D;&quot;isItemOpen(item.id)&quot;
+        [class.py-3]&#x3D;&quot;isItemOpen(item.id)&quot;
+        [style]&#x3D;&quot;getContentStyles(item)&quot;
+        [attr.aria-hidden]&#x3D;&quot;!isItemOpen(item.id)&quot;
+        [attr.aria-labelledby]&#x3D;&quot;&#x27;accordion-header-&#x27; + item.id&quot;
+        role&#x3D;&quot;region&quot;&gt;
+
+        &lt;div class&#x3D;&quot;accordion-content-inner px-4 py-3&quot;&gt;
+          &lt;div class&#x3D;&quot;accordion-content-body text-white leading-relaxed&quot; [innerHTML]&#x3D;&quot;item.content&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Accordion Controls --&gt;
+  &lt;div *ngIf&#x3D;&quot;!loading &amp;&amp; items.length &gt; 0&quot; class&#x3D;&quot;accordion-controls flex justify-center mt-4 pt-4 border-t border-white/10&quot;&gt;
+    &lt;button
+      type&#x3D;&quot;button&quot;
+      class&#x3D;&quot;accordion-control-btn flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-white text-sm cursor-pointer transition-all hover:bg-white/10 hover:-translate-y-0.5 focus:outline-2 focus:outline-primary-500 focus:outline-offset-2&quot;
+      (click)&#x3D;&quot;toggleAll()&quot;
+      [title]&#x3D;&quot;openItems.size &gt; 0 ? &#x27;ปิดทั้งหมด&#x27; : &#x27;เปิดทั้งหมด&#x27;&quot;&gt;
+      &lt;i class&#x3D;&quot;fas&quot; [class.fa-chevron-up]&#x3D;&quot;openItems.size &gt; 0&quot; [class.fa-chevron-down]&#x3D;&quot;openItems.size &#x3D;&#x3D;&#x3D; 0&quot;&gt;&lt;/i&gt;
+      {{ openItems.size &gt; 0 ? &#x27;ปิดทั้งหมด&#x27; : &#x27;เปิดทั้งหมด&#x27; }}
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./accordion.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">// Accordion Component Styles
+// Most styles migrated to Tailwind classes in HTML template
+// Keeping only complex styles that require SCSS (variants, animations, complex selectors)
+
+// Variant styles - keeping in SCSS for complex border/background combinations
+.accordion-container {
+  &amp;.accordion-default {
+    .accordion-item {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-lg); /* 12px */
+      margin-bottom: var(--spacing-sm); /* 8px */
+      background: rgba(255, 255, 255, 0.02);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  &amp;.accordion-bordered {
+    .accordion-item {
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-lg); /* 12px */
+      margin-bottom: var(--spacing-md); /* 16px */
+      background: rgba(255, 255, 255, 0.02);
+    }
+  }
+
+  &amp;.accordion-flush {
+    .accordion-item {
+      border: none;
+      border-radius: 0;
+      margin-bottom: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+  }
+
+  &amp;.accordion-minimal {
+    .accordion-item {
+      border: none;
+      border-radius: 0;
+      margin-bottom: var(--spacing-xs); /* 4px */
+      background: transparent;
+      box-shadow: none;
+    }
+  }
+
+  // Size variants - keeping in SCSS for dynamic padding/font-size
+  &amp;.accordion-sm {
+    .accordion-header {
+      padding: var(--spacing-sm) calc(var(--spacing-sm) + var(--spacing-xs)); /* 8px 12px */
+      font-size: var(--font-size-sm); /* 14px */
+    }
+
+    .accordion-content-inner {
+      padding: var(--spacing-sm) calc(var(--spacing-sm) + var(--spacing-xs)); /* 8px 12px */
+    }
+  }
+
+  &amp;.accordion-md {
+    .accordion-header {
+      padding: calc(var(--spacing-sm) + var(--spacing-xs)) var(--spacing-md); /* 12px 16px */
+      font-size: var(--font-size-base); /* 16px */
+    }
+
+    .accordion-content-inner {
+      padding: calc(var(--spacing-sm) + var(--spacing-xs)) var(--spacing-md); /* 12px 16px */
+    }
+  }
+
+  &amp;.accordion-lg {
+    .accordion-header {
+      padding: var(--spacing-md) calc(var(--spacing-md) + var(--spacing-xs)); /* 16px 20px */
+      font-size: var(--font-size-lg); /* 18px */
+    }
+
+    .accordion-content-inner {
+      padding: var(--spacing-md) calc(var(--spacing-md) + var(--spacing-xs)); /* 16px 20px */
+    }
+  }
+}
+
+// Content body styles - keeping for complex nested selectors
+.accordion-content-body {
+  p {
+    margin: 0 0 var(--spacing-md) 0; /* 16px */
+
+    &amp;:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  ul, ol {
+    margin: 0 0 var(--spacing-md) 0; /* 16px */
+    padding-left: var(--spacing-lg); /* 24px */
+  }
+
+  li {
+    margin: var(--spacing-xs) 0; /* 4px */
+  }
+
+  code {
+    background: rgba(0, 0, 0, 0.2);
+    padding: calc(var(--spacing-xs) / 2) var(--spacing-xs); /* 2px 4px */
+    border-radius: var(--radius-sm); /* 4px */
+    font-family: &#x27;Courier New&#x27;, monospace;
+    font-size: var(--font-size-sm); /* 14px */
+  }
+
+  pre {
+    background: rgba(0, 0, 0, 0.2);
+    padding: var(--spacing-md); /* 16px */
+    border-radius: var(--radius-lg); /* 12px */
+    overflow-x: auto;
+    margin: var(--spacing-md) 0; /* 16px */
+
+    code {
+      background: none;
+      padding: 0;
+    }
+  }
+}
+
+// Animation keyframes
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Dark theme adjustments
+@media (prefers-color-scheme: dark) {
+  :root {
+    --accordion-bg: rgba(0, 0, 0, 0.2);
+    --accordion-header-bg: rgba(0, 0, 0, 0.3);
+    --accordion-content-bg: rgba(0, 0, 0, 0.2);
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .accordion-item {
+    border: 2px solid #ffffff;
+  }
+
+  .accordion-header {
+    border-bottom: 2px solid #ffffff;
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .accordion-item,
+  .accordion-header,
+  .accordion-content,
+  .accordion-icon {
+    transition: none;
+  }
+
+  .accordion-content-animated {
+    transition: none;
+  }
+}
+
+// Responsive styles migrated to Tailwind responsive classes in HTML template
+// Using md: breakpoint for mobile-first responsive design
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div  class="accordion-container w-full relative"  [ngClass]="getAccordionClasses()"  [class]="customClass || \'\'"  role="group"  [attr.aria-label]="ariaLabel || \'Accordion\'">  <!-- Loading State -->  <div *ngIf="loading" class="accordion-loading flex flex-col items-center justify-center p-12 text-gray-400">    <div class="loading-spinner w-8 h-8 border-2 border-white/10 border-t-primary-500 rounded-full animate-spin mb-4"></div>    <p class="m-0 text-sm">กำลังโหลดข้อมูล...</p>  </div>  <!-- Empty State -->  <div *ngIf="!loading && items.length === 0" class="accordion-empty flex flex-col items-center justify-center p-12 text-gray-400">    <i class="fas fa-list text-5xl mb-4 opacity-50"></i>    <p class="m-0 text-base">ไม่มีข้อมูล Accordion</p>  </div>  <!-- Accordion Items -->  <div *ngIf="!loading && items.length > 0" class="accordion-items">    <div      *ngFor="let item of items; trackBy: trackByItemId"      class="accordion-item relative transition-all hover:-translate-y-0.5 hover:shadow-lg"      [ngClass]="getItemClasses(item)"      [class.opacity-60]="item.disabled"      [class.cursor-not-allowed]="item.disabled">      <!-- Accordion Header -->      <div        class="accordion-header flex items-center justify-between px-4 py-3 bg-white/5 cursor-pointer transition-all select-none hover:bg-white/8 focus:outline-2 focus:outline-primary-500 focus:outline-offset-2"        [ngClass]="getHeaderClasses(item)"        [class.bg-white/8]="isItemOpen(item.id)"        [class.border-b]="isItemOpen(item.id)"        [class.border-white/10]="isItemOpen(item.id)"        [class.cursor-not-allowed]="item.disabled"        [class.opacity-60]="item.disabled"        (click)="toggleItem(item)"        [attr.aria-expanded]="isItemOpen(item.id)"        [attr.aria-disabled]="item.disabled ? \'true\' : null"        [attr.aria-controls]="\'accordion-content-\' + item.id"        [attr.id]="\'accordion-header-\' + item.id"        role="button"        [attr.tabindex]="item.disabled ? -1 : 0"        (keydown.enter)="toggleItem(item)"        (keydown.space)="toggleItem(item); $event.preventDefault()">        <!-- Left Icon -->        <div *ngIf="mergedConfig.showIcons && mergedConfig.iconPosition === \'left\'" class="accordion-icon-left flex items-center justify-center w-6 h-6 text-gray-400 transition-all mr-3" [class.rotate-90]="isItemOpen(item.id)">          <i *ngIf="item.icon" [class]="item.icon"></i>          <i *ngIf="!item.icon" class="fas fa-chevron-right text-sm"></i>        </div>        <!-- Title and Badge -->        <div class="accordion-title-container flex items-center flex-1 gap-2 md:flex-col md:items-start md:gap-1">          <h3 class="accordion-title m-0 text-base font-semibold text-white leading-relaxed">{{ item.title }}</h3>          <span *ngIf="item.badge" class="accordion-badge px-2 py-1 rounded text-xs font-medium text-white bg-primary-500 md:text-[10px] md:px-1.5 md:py-0.5" [ngClass]="getBadgeClasses(item)"            [class.bg-success-500]="getBadgeClasses(item).includes(\'accordion-badge-success\')"            [class.bg-warning-500]="getBadgeClasses(item).includes(\'accordion-badge-warning\')"            [class.bg-error-500]="getBadgeClasses(item).includes(\'accordion-badge-danger\')"            [class.bg-info-500]="getBadgeClasses(item).includes(\'accordion-badge-info\')"            [class.bg-gray-500]="getBadgeClasses(item).includes(\'accordion-badge-secondary\')">            {{ item.badge }}          </span>        </div>        <!-- Right Icon -->        <div *ngIf="mergedConfig.showIcons && mergedConfig.iconPosition === \'right\'" class="accordion-icon-right flex items-center justify-center w-6 h-6 text-gray-400 transition-all ml-3" [class.rotate-180]="isItemOpen(item.id)" [class.opacity-50]="item.disabled">          <i *ngIf="item.icon" [class]="item.icon"></i>          <i *ngIf="!item.icon" class="fas fa-chevron-down text-sm" [ngClass]="getIconClasses(item)"></i>        </div>      </div>      <!-- Accordion Content -->      <div        [id]="\'accordion-content-\' + item.id"        class="accordion-content max-h-0 overflow-hidden opacity-0 transition-all bg-white/2"        [ngClass]="getContentClasses(item)"        [class.max-h-[1000px]]="isItemOpen(item.id)"        [class.opacity-100]="isItemOpen(item.id)"        [class.px-4]="isItemOpen(item.id)"        [class.py-3]="isItemOpen(item.id)"        [style]="getContentStyles(item)"        [attr.aria-hidden]="!isItemOpen(item.id)"        [attr.aria-labelledby]="\'accordion-header-\' + item.id"        role="region">        <div class="accordion-content-inner px-4 py-3">          <div class="accordion-content-body text-white leading-relaxed" [innerHTML]="item.content"></div>        </div>      </div>    </div>  </div>  <!-- Accordion Controls -->  <div *ngIf="!loading && items.length > 0" class="accordion-controls flex justify-center mt-4 pt-4 border-t border-white/10">    <button      type="button"      class="accordion-control-btn flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-white text-sm cursor-pointer transition-all hover:bg-white/10 hover:-translate-y-0.5 focus:outline-2 focus:outline-primary-500 focus:outline-offset-2"      (click)="toggleAll()"      [title]="openItems.size > 0 ? \'ปิดทั้งหมด\' : \'เปิดทั้งหมด\'">      <i class="fas" [class.fa-chevron-up]="openItems.size > 0" [class.fa-chevron-down]="openItems.size === 0"></i>      {{ openItems.size > 0 ? \'ปิดทั้งหมด\' : \'เปิดทั้งหมด\' }}    </button>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AccessControlComponent', 'selector': 'app-access-control'},{'name': 'AccessGroupsComponent', 'selector': 'app-access-groups'},{'name': 'AccessibilityDashboardComponent', 'selector': 'app-accessibility-dashboard'},{'name': 'AccessLogsComponent', 'selector': 'app-access-logs'},{'name': 'AccessSchedulesComponent', 'selector': 'app-access-schedules'},{'name': 'AccordionComponent', 'selector': 'app-accordion'},{'name': 'AccordionDemoComponent', 'selector': 'app-accordion-demo'},{'name': 'AdvancedDataTableComponent', 'selector': 'app-advanced-data-table'},{'name': 'AdvancedDataTableDemoComponent', 'selector': 'app-advanced-data-table-demo'},{'name': 'AdvancedFeaturesDashboardComponent', 'selector': 'app-advanced-features-dashboard'},{'name': 'AdvancedFormsComponent', 'selector': 'app-advanced-forms'},{'name': 'AdvancedRichTextComponent', 'selector': 'app-advanced-rich-text'},{'name': 'AdvancedUiDemoComponent', 'selector': 'app-advanced-ui-demo'},{'name': 'AIModelsComponent', 'selector': 'app-ai-models'},{'name': 'AlertComponent', 'selector': 'app-alert'},{'name': 'AlertHistoryComponent', 'selector': 'app-alert-history'},{'name': 'AlertsComponent', 'selector': 'app-alerts'},{'name': 'ApexChartComponent', 'selector': 'app-apex-chart'},{'name': 'App', 'selector': 'app-root'},{'name': 'AttendanceComponent', 'selector': 'app-attendance'},{'name': 'AuditLogsComponent', 'selector': 'app-audit-logs'},{'name': 'AvatarComponent', 'selector': 'app-avatar'},{'name': 'BackupRestoreComponent', 'selector': 'app-backup-restore'},{'name': 'BadgeComponent', 'selector': 'app-badge'},{'name': 'BaseComponent', 'selector': ''},{'name': 'BiometricDataComponent', 'selector': 'app-biometric-data'},{'name': 'BreadcrumbComponent', 'selector': 'app-breadcrumb'},{'name': 'CalendarComponent', 'selector': 'app-calendar'},{'name': 'CalendarDemoComponent', 'selector': 'app-calendar-demo'},{'name': 'ChartComponent', 'selector': 'app-chart'},{'name': 'CheckboxComponent', 'selector': 'app-checkbox'},{'name': 'ColorPickerComponent', 'selector': 'app-color-picker'},{'name': 'ComingSoonComponent', 'selector': 'app-coming-soon'},{'name': 'CompaniesComponent', 'selector': 'app-companies'},{'name': 'CompanyDocumentsComponent', 'selector': 'app-company-documents'},{'name': 'CompanyHolidaysComponent', 'selector': 'app-company-holidays'},{'name': 'ComponentShowcaseComponent', 'selector': 'app-component-showcase'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DataTableComponent', 'selector': 'app-data-table'},{'name': 'DateTimePickerComponent', 'selector': 'app-date-time-picker'},{'name': 'DepartmentsComponent', 'selector': 'app-departments'},{'name': 'DevicesComponent', 'selector': 'app-devices'},{'name': 'DividerComponent', 'selector': 'app-divider'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DoorsComponent', 'selector': 'app-doors'},{'name': 'DraggableCardsComponent', 'selector': 'app-draggable-cards'},{'name': 'DraggableCardsDemoComponent', 'selector': 'app-draggable-cards-demo'},{'name': 'EChartsChartComponent', 'selector': 'app-echarts-chart'},{'name': 'EChartsDemoComponent', 'selector': 'app-echarts-demo'},{'name': 'EmployeesComponent', 'selector': 'app-employees'},{'name': 'EmployeesNewComponent', 'selector': 'app-employees-new'},{'name': 'EmptyStateComponent', 'selector': 'app-empty-state'},{'name': 'Error401Component', 'selector': 'app-error-401'},{'name': 'Error404Component', 'selector': 'app-error-404'},{'name': 'Error500Component', 'selector': 'app-error-500'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'ErrorToastComponent', 'selector': 'app-error-toast'},{'name': 'EventAnalyticsComponent', 'selector': 'app-event-analytics'},{'name': 'EventCheckinHistoryComponent', 'selector': 'app-event-checkin-history'},{'name': 'EventEmailConfirmationComponent', 'selector': 'app-event-email-confirmation'},{'name': 'EventKioskConfigComponent', 'selector': 'app-event-kiosk-config'},{'name': 'EventRegistrationComponent', 'selector': 'app-event-registration'},{'name': 'EventRegistrationFieldsComponent', 'selector': 'app-event-registration-fields'},{'name': 'EventsComponent', 'selector': 'app-events'},{'name': 'FaceRecognitionComponent', 'selector': 'app-face-recognition'},{'name': 'FaceRecognitionDemoComponent', 'selector': 'app-face-recognition-demo'},{'name': 'FaceRecognitionLiveComponent', 'selector': 'app-face-recognition-live'},{'name': 'FaceRecognitionTestComponent', 'selector': 'app-face-recognition-test'},{'name': 'FaqComponent', 'selector': 'app-faq'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'FilterSectionComponent', 'selector': 'app-filter-section'},{'name': 'ForgotPasswordComponent', 'selector': 'app-forgot-password'},{'name': 'FormFieldComponent', 'selector': 'app-form-field'},{'name': 'GalleryComponent', 'selector': 'app-gallery'},{'name': 'GalleryDemoComponent', 'selector': 'app-gallery-demo'},{'name': 'GlassButtonComponent', 'selector': 'app-glass-button'},{'name': 'GlassCardComponent', 'selector': 'app-glass-card'},{'name': 'GlassInputComponent', 'selector': 'app-glass-input'},{'name': 'GroupFaceRecognitionComponent', 'selector': 'app-group-face-recognition'},{'name': 'GuestsComponent', 'selector': 'app-guests'},{'name': 'HardwareStatusDashboardComponent', 'selector': 'app-hardware-status-dashboard'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HeatmapAnalyticsComponent', 'selector': 'app-heatmap-analytics'},{'name': 'HelpCenter', 'selector': 'app-help-center'},{'name': 'HelpCenterComponent', 'selector': 'app-help-center'},{'name': 'HrDashboardComponent', 'selector': 'app-hr-dashboard'},{'name': 'IconComponent', 'selector': 'app-icon'},{'name': 'IncidentReportsComponent', 'selector': 'app-incident-reports'},{'name': 'KioskViewComponent', 'selector': 'app-kiosk-view'},{'name': 'LandingComponent', 'selector': 'app-landing'},{'name': 'LeafletMapComponent', 'selector': 'app-leaflet-map'},{'name': 'LeavesComponent', 'selector': 'app-leaves'},{'name': 'LicenseManagementComponent', 'selector': 'app-license-management'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoadingStateComponent', 'selector': 'app-loading-state'},{'name': 'LocationsComponent', 'selector': 'app-locations'},{'name': 'LockScreenComponent', 'selector': 'app-lock-screen'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MapDemoComponent', 'selector': 'app-map-demo'},{'name': 'MaterialButtonComponent', 'selector': 'app-material-button'},{'name': 'MaterialCardComponent', 'selector': 'app-material-card'},{'name': 'MaterialDialogComponent', 'selector': 'app-material-dialog'},{'name': 'MaterialInputComponent', 'selector': 'app-material-input'},{'name': 'MaterialTableComponent', 'selector': 'app-material-table'},{'name': 'MfaSetupComponent', 'selector': 'app-mfa-setup'},{'name': 'MobileCameraComponent', 'selector': 'app-mobile-camera'},{'name': 'MobileDemoComponent', 'selector': 'app-mobile-demo'},{'name': 'ModalComponent', 'selector': 'app-modal'},{'name': 'ModalFormComponent', 'selector': 'app-modal-form'},{'name': 'ModuleSubscriptionComponent', 'selector': 'app-module-subscription'},{'name': 'MonitoringComponent', 'selector': 'app-monitoring'},{'name': 'NotificationCenterComponent', 'selector': 'app-notification-center'},{'name': 'NotificationDemoComponent', 'selector': 'app-notification-demo'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'NotificationSettingsComponent', 'selector': 'app-notification-settings'},{'name': 'OffcanvasComponent', 'selector': 'app-offcanvas'},{'name': 'OffcanvasDemoComponent', 'selector': 'app-offcanvas-demo'},{'name': 'OvertimeRequestsComponent', 'selector': 'app-overtime-requests'},{'name': 'PageLayoutComponent', 'selector': 'app-page-layout'},{'name': 'PaginationComponent', 'selector': 'app-pagination'},{'name': 'ParkingBlacklistComponent', 'selector': 'app-parking-blacklist'},{'name': 'ParkingDashboardComponent', 'selector': 'app-parking-dashboard'},{'name': 'ParkingEntryComponent', 'selector': 'app-parking-entry'},{'name': 'ParkingExitComponent', 'selector': 'app-parking-exit'},{'name': 'ParkingLogsComponent', 'selector': 'app-parking-logs'},{'name': 'ParkingReservationComponent', 'selector': 'app-parking-reservation'},{'name': 'ParkingRulesComponent', 'selector': 'app-parking-rules'},{'name': 'ParkingSpotsComponent', 'selector': 'app-parking-spots'},{'name': 'ParkingStatisticsComponent', 'selector': 'app-parking-statistics'},{'name': 'PayrollExportComponent', 'selector': 'app-payroll-export'},{'name': 'PerformanceDashboardComponent', 'selector': 'app-performance-dashboard'},{'name': 'PopoverComponent', 'selector': 'app-popover'},{'name': 'PortalLayoutComponent', 'selector': 'app-portal-layout'},{'name': 'PositionsComponent', 'selector': 'app-positions'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'PublicVerificationComponent', 'selector': 'app-public-verification'},{'name': 'QRCodesComponent', 'selector': 'app-qr-codes'},{'name': 'RadioComponent', 'selector': 'app-radio'},{'name': 'RangeSliderComponent', 'selector': 'app-range-slider'},{'name': 'RatingComponent', 'selector': 'app-rating'},{'name': 'RatingDemoComponent', 'selector': 'app-rating-demo'},{'name': 'RbacComponent', 'selector': 'app-rbac'},{'name': 'RecognitionHistoryComponent', 'selector': 'app-recognition-history'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReportsComponent', 'selector': 'app-reports'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'RFIDCardsComponent', 'selector': 'app-rfid-cards'},{'name': 'RichTextComponent', 'selector': 'app-rich-text'},{'name': 'RichTextEditorComponent', 'selector': 'app-rich-text-editor'},{'name': 'RichTextEditorDemoComponent', 'selector': 'app-rich-text-editor-demo'},{'name': 'SafetyDashboardComponent', 'selector': 'app-safety-dashboard'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ShiftsComponent', 'selector': 'app-shifts'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SkeletonComponent', 'selector': 'app-skeleton'},{'name': 'StatisticsCardComponent', 'selector': 'app-statistics-card'},{'name': 'StatisticsGridComponent', 'selector': 'app-statistics-grid'},{'name': 'StepperComponent', 'selector': 'app-stepper'},{'name': 'StructureComponent', 'selector': 'app-structure'},{'name': 'SuperAdminAnnouncementsComponent', 'selector': 'app-super-admin-announcements'},{'name': 'SuperAdminDashboardComponent', 'selector': 'app-super-admin-dashboard'},{'name': 'SuperAdminLayoutComponent', 'selector': 'app-super-admin-layout'},{'name': 'SuperAdminReportsComponent', 'selector': 'app-super-admin-reports'},{'name': 'SurveillanceMapComponent', 'selector': 'app-surveillance-map'},{'name': 'SwiperGalleryComponent', 'selector': 'app-swiper-gallery'},{'name': 'SwiperGalleryDemoComponent', 'selector': 'app-swiper-gallery-demo'},{'name': 'SwitchComponent', 'selector': 'app-switch'},{'name': 'SystemSettingsComponent', 'selector': 'app-system-settings'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TemplateManagementComponent', 'selector': 'app-template-management'},{'name': 'TestApiComponent', 'selector': 'app-test-api'},{'name': 'ThemeSwitcherComponent', 'selector': 'app-theme-switcher'},{'name': 'TimelineComponent', 'selector': 'app-timeline'},{'name': 'TimelineDemoComponent', 'selector': 'app-timeline-demo'},{'name': 'TimesheetsComponent', 'selector': 'app-timesheets'},{'name': 'TimestampComponent', 'selector': 'app-timestamp'},{'name': 'TimestampDemoComponent', 'selector': 'app-timestamp-demo'},{'name': 'TooltipComponent', 'selector': 'app-tooltip'},{'name': 'UsersComponent', 'selector': 'app-users'},{'name': 'ValidationDemoComponent', 'selector': 'app-validation-demo'},{'name': 'VehiclesComponent', 'selector': 'app-vehicles'},{'name': 'VideoAnalyticsComponent', 'selector': 'app-video-analytics'},{'name': 'VideoPlaybackComponent', 'selector': 'app-video-playback'},{'name': 'VisitorBadgesComponent', 'selector': 'app-visitor-badges'},{'name': 'VisitorBlacklistComponent', 'selector': 'app-visitor-blacklist'},{'name': 'VisitorDashboardComponent', 'selector': 'app-visitor-dashboard'},{'name': 'VisitorInvitationsComponent', 'selector': 'app-visitor-invitations'},{'name': 'VisitorParcelsComponent', 'selector': 'app-visitor-parcels'},{'name': 'VisitorReportsComponent', 'selector': 'app-visitor-reports'},{'name': 'VisitorsComponent', 'selector': 'app-visitors'},{'name': 'WatchlistComponent', 'selector': 'app-watchlist'},{'name': 'ZoneConfigComponent', 'selector': 'app-zone-config'}];
+    var DIRECTIVES = [{'name': 'HasPermissionDirective', 'selector': '[appHasPermission]'},{'name': 'ImageOptimizationDirective', 'selector': '[appImageOptimization]'}];
+    var ACTUAL_COMPONENT = {'name': 'AccordionComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'AccordionComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

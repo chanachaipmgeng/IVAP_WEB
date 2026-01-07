@@ -1,0 +1,1187 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  LoginComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/auth/login/login.component.ts</code>
+</p>
+
+
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-login</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../interfaces/Module.html" target="_self" >CommonModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >ReactiveFormsModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >RouterModule</a></code>
+                                <code><a href="../components/GlassCardComponent.html" target="_self" >GlassCardComponent</a></code>
+                                <code><a href="../components/GlassButtonComponent.html" target="_self" >GlassButtonComponent</a></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./login.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./login.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#currentLang" >currentLang</a>
+                            </li>
+                            <li>
+                                <a href="#errorMessage" >errorMessage</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#i18n" >i18n</a>
+                            </li>
+                            <li>
+                                <a href="#loading" >loading</a>
+                            </li>
+                            <li>
+                                <a href="#loginForm" >loginForm</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#getThemeIcon" >getThemeIcon</a>
+                            </li>
+                            <li>
+                                <a href="#navigateToLanding" >navigateToLanding</a>
+                            </li>
+                            <li>
+                                <a href="#navigateToRegister" >navigateToRegister</a>
+                            </li>
+                            <li>
+                                <a href="#onSubmit" >onSubmit</a>
+                            </li>
+                            <li>
+                                <a href="#t" >t</a>
+                            </li>
+                            <li>
+                                <a href="#toggleLanguage" >toggleLanguage</a>
+                            </li>
+                            <li>
+                                <a href="#toggleTheme" >toggleTheme</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(fb: FormBuilder, auth: <a href="../injectables/AuthService.html" target="_self">AuthService</a>, router: Router, i18n: <a href="../injectables/I18nService.html" target="_self">I18nService</a>, theme: <a href="../injectables/ThemeService.html" target="_self">ThemeService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/app/features/auth/login/login.component.ts:40</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>fb</td>
+                                                  
+                                                        <td>
+                                                                    <code>FormBuilder</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>auth</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AuthService.html" target="_self" >AuthService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                    <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>i18n</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/I18nService.html" target="_self" >I18nService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>theme</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ThemeService.html" target="_self" >ThemeService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getThemeIcon"></a>
+                    <span class="name">
+                        <span ><b>getThemeIcon</b></span>
+                        <a href="#getThemeIcon"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getThemeIcon()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="98"
+                                    class="link-to-prism">src/app/features/auth/login/login.component.ts:98</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="navigateToLanding"></a>
+                    <span class="name">
+                        <span ><b>navigateToLanding</b></span>
+                        <a href="#navigateToLanding"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>navigateToLanding()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="107"
+                                    class="link-to-prism">src/app/features/auth/login/login.component.ts:107</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="navigateToRegister"></a>
+                    <span class="name">
+                        <span ><b>navigateToRegister</b></span>
+                        <a href="#navigateToRegister"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>navigateToRegister()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="111"
+                                    class="link-to-prism">src/app/features/auth/login/login.component.ts:111</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSubmit"></a>
+                    <span class="name">
+                        <span ><b>onSubmit</b></span>
+                        <a href="#onSubmit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSubmit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="58"
+                                    class="link-to-prism">src/app/features/auth/login/login.component.ts:58</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="t"></a>
+                    <span class="name">
+                        <span ><b>t</b></span>
+                        <a href="#t"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>t(key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="103"
+                                    class="link-to-prism">src/app/features/auth/login/login.component.ts:103</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>key</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleLanguage"></a>
+                    <span class="name">
+                        <span ><b>toggleLanguage</b></span>
+                        <a href="#toggleLanguage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleLanguage()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="89"
+                                    class="link-to-prism">src/app/features/auth/login/login.component.ts:89</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleTheme"></a>
+                    <span class="name">
+                        <span ><b>toggleTheme</b></span>
+                        <a href="#toggleTheme"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleTheme()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="94"
+                                    class="link-to-prism">src/app/features/auth/login/login.component.ts:94</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currentLang"></a>
+                    <span class="name">
+                        <span ><b>currentLang</b></span>
+                        <a href="#currentLang"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(&#x27;en&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/app/features/auth/login/login.component.ts:40</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="errorMessage"></a>
+                    <span class="name">
+                        <span ><b>errorMessage</b></span>
+                        <a href="#errorMessage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(&#x27;&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/features/auth/login/login.component.ts:39</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="i18n"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>i18n</b></span>
+                        <a href="#i18n"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../injectables/I18nService.html" target="_self" >I18nService</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/features/auth/login/login.component.ts:46</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loading"></a>
+                    <span class="name">
+                        <span ><b>loading</b></span>
+                        <a href="#loading"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/features/auth/login/login.component.ts:38</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loginForm"></a>
+                    <span class="name">
+                        <span ><b>loginForm</b></span>
+                        <a href="#loginForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>FormGroup</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/features/auth/login/login.component.ts:37</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, signal } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { Router, RouterModule } from &#x27;@angular/router&#x27;;
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from &#x27;@angular/forms&#x27;;
+import { GlassCardComponent } from &#x27;../../../shared/components/glass-card/glass-card.component&#x27;;
+import { GlassButtonComponent } from &#x27;../../../shared/components/glass-button/glass-button.component&#x27;;
+import { AuthService } from &#x27;../../../core/services/auth.service&#x27;;
+import { I18nService } from &#x27;../../../core/services/i18n.service&#x27;;
+import { ThemeService } from &#x27;../../../core/services/theme.service&#x27;;
+
+@Component({
+  selector: &#x27;app-login&#x27;,
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    GlassCardComponent,
+    GlassButtonComponent
+  ],
+  templateUrl: &#x27;./login.component.html&#x27;,
+  styleUrls: [&#x27;./login.component.scss&#x27;]
+})
+export class LoginComponent {
+  loginForm: FormGroup;
+  loading &#x3D; signal(false);
+  errorMessage &#x3D; signal(&#x27;&#x27;);
+  currentLang &#x3D; signal(&#x27;en&#x27;);
+
+  constructor(
+    private fb: FormBuilder,
+    private auth: AuthService,
+    private router: Router,
+    public i18n: I18nService,
+    private theme: ThemeService
+  ) {
+    this.loginForm &#x3D; this.fb.group({
+      username: [&#x27;&#x27;, Validators.required],
+      password: [&#x27;&#x27;, Validators.required]
+    });
+
+    // Initialize current language after i18n is available
+    this.currentLang.set(this.i18n.currentLanguage());
+  }
+
+  onSubmit(): void {
+    if (this.loginForm.invalid) return;
+
+    this.loading.set(true);
+    this.errorMessage.set(&#x27;&#x27;);
+
+    const credentials &#x3D; {
+      username: this.loginForm.get(&#x27;username&#x27;)?.value,
+      password: this.loginForm.get(&#x27;password&#x27;)?.value
+    };
+
+    this.auth.login(credentials).subscribe({
+      next: (response) &#x3D;&gt; {
+        this.loading.set(false);
+        
+        // Get redirect path based on user role/type
+        const redirectPath &#x3D; this.auth.getRedirectPath();
+        this.router.navigate([redirectPath]);
+      },
+      error: (error) &#x3D;&gt; {
+        this.loading.set(false);
+        // Extract error message from response
+        const errorMsg &#x3D; error?.error?.error?.message || 
+                        error?.error?.message || 
+                        error?.message || 
+                        this.i18n.t(&#x27;login.loginFailed&#x27;);
+        this.errorMessage.set(errorMsg);
+      }
+    });
+  }
+
+  toggleLanguage(): void {
+    this.i18n.toggleLanguage();
+    this.currentLang.set(this.i18n.currentLanguage());
+  }
+
+  toggleTheme(): void {
+    this.theme.toggleMode();
+  }
+
+  getThemeIcon(): string {
+    const themeValue &#x3D; this.theme.mode();
+    return themeValue &#x3D;&#x3D;&#x3D; &#x27;light&#x27; ? &#x27;☀️ Light&#x27; : themeValue &#x3D;&#x3D;&#x3D; &#x27;dark&#x27; ? &#x27;🌙 Dark&#x27; : &#x27;💻 Auto&#x27;;
+  }
+
+  t(key: string): string {
+    return this.i18n.translate(key);
+  }
+
+  navigateToLanding(): void {
+    this.router.navigate([&#x27;/&#x27;]);
+  }
+
+  navigateToRegister(): void {
+    this.router.navigate([&#x27;/register&#x27;]);
+  }
+}
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;login-container min-h-screen flex items-center justify-center p-4 relative&quot;&gt;
+  &lt;!-- Background Graphics --&gt;
+  &lt;!-- Background Graphics handled globally --&gt;
+
+  &lt;!-- Header with Back to Landing Button --&gt;
+  &lt;div
+    class&#x3D;&quot;fixed top-0 left-0 right-0 z-50 glass-card !rounded-none !border-x-0 !border-t-0 border-b border-white/10 p-4&quot;&gt;
+    &lt;div class&#x3D;&quot;container mx-auto flex items-center justify-between&quot;&gt;
+      &lt;div class&#x3D;&quot;flex items-center space-x-3&quot;&gt;
+        &lt;button (click)&#x3D;&quot;navigateToLanding()&quot; class&#x3D;&quot;glass-button flex items-center space-x-2&quot;
+          [title]&#x3D;&quot;i18n.t(&#x27;login.backToHome&#x27;)&quot; [attr.aria-label]&#x3D;&quot;i18n.t(&#x27;login.backToHome&#x27;)&quot;&gt;
+          &lt;span class&#x3D;&quot;text-lg&quot;&gt;←&lt;/span&gt;
+          &lt;span class&#x3D;&quot;hidden md:inline font-medium&quot;&gt;{{ i18n.t(&#x27;login.home&#x27;) }}&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;div class&#x3D;&quot;text-3xl&quot;&gt;🎥&lt;/div&gt;
+        &lt;h1 class&#x3D;&quot;text-xl font-bold ai-gradient-text&quot;&gt;IVAP Platform&lt;/h1&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;app-glass-card customClass&#x3D;&quot;max-w-md w-full relative z-10 mt-20&quot;&gt;
+    &lt;!-- Header --&gt;
+    &lt;div class&#x3D;&quot;text-center mb-8&quot;&gt;
+      &lt;h1 class&#x3D;&quot;text-4xl font-bold bg-gradient-to-r from-primary-500 to-purple-600 bg-clip-text text-transparent mb-2&quot;&gt;
+        {{ i18n.t(&#x27;login.title&#x27;) }}
+      &lt;/h1&gt;
+      &lt;p class&#x3D;&quot;text-gray-600 dark:text-gray-400&quot;&gt;
+        {{ i18n.t(&#x27;login.subtitle&#x27;) }}
+      &lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Login Form --&gt;
+    &lt;form [formGroup]&#x3D;&quot;loginForm&quot; (ngSubmit)&#x3D;&quot;onSubmit()&quot; class&#x3D;&quot;space-y-6&quot;&gt;
+      &lt;!-- Username --&gt;
+      &lt;div&gt;
+        &lt;label class&#x3D;&quot;block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300&quot;&gt;
+          {{ i18n.t(&#x27;login.username&#x27;) }} &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;
+        &lt;/label&gt;
+        &lt;input formControlName&#x3D;&quot;username&quot; type&#x3D;&quot;text&quot; class&#x3D;&quot;glass-input w-full&quot;
+          [placeholder]&#x3D;&quot;i18n.t(&#x27;login.enterUsername&#x27;)&quot;
+          [class.border-red-500]&#x3D;&quot;loginForm.get(&#x27;username&#x27;)?.invalid &amp;&amp; loginForm.get(&#x27;username&#x27;)?.touched&quot;
+          [attr.aria-label]&#x3D;&quot;i18n.t(&#x27;login.username&#x27;)&quot; [attr.aria-required]&#x3D;&quot;true&quot;
+          [attr.aria-invalid]&#x3D;&quot;loginForm.get(&#x27;username&#x27;)?.invalid &amp;&amp; loginForm.get(&#x27;username&#x27;)?.touched&quot; /&gt;
+        &lt;p *ngIf&#x3D;&quot;loginForm.get(&#x27;username&#x27;)?.invalid &amp;&amp; loginForm.get(&#x27;username&#x27;)?.touched&quot;
+          class&#x3D;&quot;text-red-500 text-sm mt-1&quot;&gt;
+          {{ i18n.t(&#x27;login.usernameRequired&#x27;) }}
+        &lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Password --&gt;
+      &lt;div&gt;
+        &lt;label class&#x3D;&quot;block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300&quot;&gt;
+          {{ i18n.t(&#x27;login.password&#x27;) }} &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;
+        &lt;/label&gt;
+        &lt;input formControlName&#x3D;&quot;password&quot; type&#x3D;&quot;password&quot; class&#x3D;&quot;glass-input w-full&quot;
+          [placeholder]&#x3D;&quot;i18n.t(&#x27;login.enterPassword&#x27;)&quot;
+          [class.border-red-500]&#x3D;&quot;loginForm.get(&#x27;password&#x27;)?.invalid &amp;&amp; loginForm.get(&#x27;password&#x27;)?.touched&quot;
+          [attr.aria-label]&#x3D;&quot;i18n.t(&#x27;login.password&#x27;)&quot; [attr.aria-required]&#x3D;&quot;true&quot;
+          [attr.aria-invalid]&#x3D;&quot;loginForm.get(&#x27;password&#x27;)?.invalid &amp;&amp; loginForm.get(&#x27;password&#x27;)?.touched&quot; /&gt;
+        &lt;p *ngIf&#x3D;&quot;loginForm.get(&#x27;password&#x27;)?.invalid &amp;&amp; loginForm.get(&#x27;password&#x27;)?.touched&quot;
+          class&#x3D;&quot;text-red-500 text-sm mt-1&quot;&gt;
+          {{ i18n.t(&#x27;login.passwordRequired&#x27;) }}
+        &lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Error Message --&gt;
+      &lt;div *ngIf&#x3D;&quot;errorMessage()&quot; class&#x3D;&quot;glass bg-red-500/20 border border-red-500 p-4 rounded-lg&quot; role&#x3D;&quot;alert&quot;
+        [attr.aria-live]&#x3D;&quot;&#x27;polite&#x27;&quot;&gt;
+        &lt;p class&#x3D;&quot;text-red-700 dark:text-red-400 text-sm&quot;&gt;
+          ✗ {{ errorMessage() }}
+        &lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Submit Button --&gt;
+      &lt;app-glass-button type&#x3D;&quot;submit&quot; variant&#x3D;&quot;primary&quot; [fullWidth]&#x3D;&quot;true&quot; [loading]&#x3D;&quot;loading()&quot;
+        [disabled]&#x3D;&quot;loginForm.invalid || loading()&quot; [attr.aria-label]&#x3D;&quot;t(&#x27;common.login&#x27;)&quot; [attr.aria-busy]&#x3D;&quot;loading()&quot;&gt;
+        {{ t(&#x27;common.login&#x27;) }}
+      &lt;/app-glass-button&gt;
+    &lt;/form&gt;
+
+    &lt;!-- Register Button --&gt;
+    &lt;div class&#x3D;&quot;mt-6&quot;&gt;
+      &lt;app-glass-button (clicked)&#x3D;&quot;navigateToRegister()&quot; variant&#x3D;&quot;secondary&quot; [fullWidth]&#x3D;&quot;true&quot;
+        [attr.aria-label]&#x3D;&quot;i18n.t(&#x27;login.createAccount&#x27;)&quot;&gt;
+        {{ i18n.t(&#x27;login.createAccount&#x27;) }}
+      &lt;/app-glass-button&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Forgot Password Link --&gt;
+    &lt;div class&#x3D;&quot;text-center mt-6&quot;&gt;
+      &lt;a routerLink&#x3D;&quot;/portal/forgot-password&quot; class&#x3D;&quot;text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500&quot;&gt;
+        {{ i18n.t(&#x27;login.forgotPassword&#x27;) }}
+      &lt;/a&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Language &amp; Theme Toggle --&gt;
+    &lt;div class&#x3D;&quot;mt-8 flex justify-center space-x-4&quot;&gt;
+      &lt;button (click)&#x3D;&quot;toggleLanguage()&quot; class&#x3D;&quot;text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500&quot;
+        [attr.aria-label]&#x3D;&quot;currentLang() &#x3D;&#x3D;&#x3D; &#x27;th&#x27; ? i18n.t(&#x27;login.switchToEnglish&#x27;) : i18n.t(&#x27;login.switchToThai&#x27;)&quot;&gt;
+        {{ currentLang() &#x3D;&#x3D;&#x3D; &#x27;th&#x27; ? i18n.t(&#x27;login.switchToEnglish&#x27;) : i18n.t(&#x27;login.switchToThai&#x27;) }}
+      &lt;/button&gt;
+      &lt;span class&#x3D;&quot;text-gray-400&quot; aria-hidden&#x3D;&quot;true&quot;&gt;|&lt;/span&gt;
+      &lt;button (click)&#x3D;&quot;toggleTheme()&quot; class&#x3D;&quot;text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500&quot;
+        [attr.aria-label]&#x3D;&quot;getThemeIcon()&quot;&gt;
+        {{ getThemeIcon() }}
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/app-glass-card&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./login.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">// Login Component Styles - Gemini 2.0 Flash Style
+// Migrated to Tailwind CSS + Global Styles
+
+.login-container {
+  // Keeping simplified container for layout if needed, otherwise this can be empty
+  // if standard Tailwind classes are sufficient.
+}
+
+// All previous SCSS (gradients, graphics, theme overrides) has been removed
+// in favor of global styles in src/styles.scss and Tailwind classes in HTML.</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="login-container min-h-screen flex items-center justify-center p-4 relative">  <!-- Background Graphics -->  <!-- Background Graphics handled globally -->  <!-- Header with Back to Landing Button -->  <div    class="fixed top-0 left-0 right-0 z-50 glass-card !rounded-none !border-x-0 !border-t-0 border-b border-white/10 p-4">    <div class="container mx-auto flex items-center justify-between">      <div class="flex items-center space-x-3">        <button (click)="navigateToLanding()" class="glass-button flex items-center space-x-2"          [title]="i18n.t(\'login.backToHome\')" [attr.aria-label]="i18n.t(\'login.backToHome\')">          <span class="text-lg">←</span>          <span class="hidden md:inline font-medium">{{ i18n.t(\'login.home\') }}</span>        </button>        <div class="text-3xl">🎥</div>        <h1 class="text-xl font-bold ai-gradient-text">IVAP Platform</h1>      </div>    </div>  </div>  <app-glass-card customClass="max-w-md w-full relative z-10 mt-20">    <!-- Header -->    <div class="text-center mb-8">      <h1 class="text-4xl font-bold bg-gradient-to-r from-primary-500 to-purple-600 bg-clip-text text-transparent mb-2">        {{ i18n.t(\'login.title\') }}      </h1>      <p class="text-gray-600 dark:text-gray-400">        {{ i18n.t(\'login.subtitle\') }}      </p>    </div>    <!-- Login Form -->    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">      <!-- Username -->      <div>        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">          {{ i18n.t(\'login.username\') }} <span class="text-red-500">*</span>        </label>        <input formControlName="username" type="text" class="glass-input w-full"          [placeholder]="i18n.t(\'login.enterUsername\')"          [class.border-red-500]="loginForm.get(\'username\')?.invalid && loginForm.get(\'username\')?.touched"          [attr.aria-label]="i18n.t(\'login.username\')" [attr.aria-required]="true"          [attr.aria-invalid]="loginForm.get(\'username\')?.invalid && loginForm.get(\'username\')?.touched" />        <p *ngIf="loginForm.get(\'username\')?.invalid && loginForm.get(\'username\')?.touched"          class="text-red-500 text-sm mt-1">          {{ i18n.t(\'login.usernameRequired\') }}        </p>      </div>      <!-- Password -->      <div>        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">          {{ i18n.t(\'login.password\') }} <span class="text-red-500">*</span>        </label>        <input formControlName="password" type="password" class="glass-input w-full"          [placeholder]="i18n.t(\'login.enterPassword\')"          [class.border-red-500]="loginForm.get(\'password\')?.invalid && loginForm.get(\'password\')?.touched"          [attr.aria-label]="i18n.t(\'login.password\')" [attr.aria-required]="true"          [attr.aria-invalid]="loginForm.get(\'password\')?.invalid && loginForm.get(\'password\')?.touched" />        <p *ngIf="loginForm.get(\'password\')?.invalid && loginForm.get(\'password\')?.touched"          class="text-red-500 text-sm mt-1">          {{ i18n.t(\'login.passwordRequired\') }}        </p>      </div>      <!-- Error Message -->      <div *ngIf="errorMessage()" class="glass bg-red-500/20 border border-red-500 p-4 rounded-lg" role="alert"        [attr.aria-live]="\'polite\'">        <p class="text-red-700 dark:text-red-400 text-sm">          ✗ {{ errorMessage() }}        </p>      </div>      <!-- Submit Button -->      <app-glass-button type="submit" variant="primary" [fullWidth]="true" [loading]="loading()"        [disabled]="loginForm.invalid || loading()" [attr.aria-label]="t(\'common.login\')" [attr.aria-busy]="loading()">        {{ t(\'common.login\') }}      </app-glass-button>    </form>    <!-- Register Button -->    <div class="mt-6">      <app-glass-button (clicked)="navigateToRegister()" variant="secondary" [fullWidth]="true"        [attr.aria-label]="i18n.t(\'login.createAccount\')">        {{ i18n.t(\'login.createAccount\') }}      </app-glass-button>    </div>    <!-- Forgot Password Link -->    <div class="text-center mt-6">      <a routerLink="/portal/forgot-password" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500">        {{ i18n.t(\'login.forgotPassword\') }}      </a>    </div>    <!-- Language & Theme Toggle -->    <div class="mt-8 flex justify-center space-x-4">      <button (click)="toggleLanguage()" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500"        [attr.aria-label]="currentLang() === \'th\' ? i18n.t(\'login.switchToEnglish\') : i18n.t(\'login.switchToThai\')">        {{ currentLang() === \'th\' ? i18n.t(\'login.switchToEnglish\') : i18n.t(\'login.switchToThai\') }}      </button>      <span class="text-gray-400" aria-hidden="true">|</span>      <button (click)="toggleTheme()" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500"        [attr.aria-label]="getThemeIcon()">        {{ getThemeIcon() }}      </button>    </div>  </app-glass-card></div></div>'
+    var COMPONENTS = [{'name': 'AccessControlComponent', 'selector': 'app-access-control'},{'name': 'AccessGroupsComponent', 'selector': 'app-access-groups'},{'name': 'AccessibilityDashboardComponent', 'selector': 'app-accessibility-dashboard'},{'name': 'AccessLogsComponent', 'selector': 'app-access-logs'},{'name': 'AccessSchedulesComponent', 'selector': 'app-access-schedules'},{'name': 'AccordionComponent', 'selector': 'app-accordion'},{'name': 'AccordionDemoComponent', 'selector': 'app-accordion-demo'},{'name': 'AdvancedDataTableComponent', 'selector': 'app-advanced-data-table'},{'name': 'AdvancedDataTableDemoComponent', 'selector': 'app-advanced-data-table-demo'},{'name': 'AdvancedFeaturesDashboardComponent', 'selector': 'app-advanced-features-dashboard'},{'name': 'AdvancedFormsComponent', 'selector': 'app-advanced-forms'},{'name': 'AdvancedRichTextComponent', 'selector': 'app-advanced-rich-text'},{'name': 'AdvancedUiDemoComponent', 'selector': 'app-advanced-ui-demo'},{'name': 'AIModelsComponent', 'selector': 'app-ai-models'},{'name': 'AlertComponent', 'selector': 'app-alert'},{'name': 'AlertHistoryComponent', 'selector': 'app-alert-history'},{'name': 'AlertsComponent', 'selector': 'app-alerts'},{'name': 'ApexChartComponent', 'selector': 'app-apex-chart'},{'name': 'App', 'selector': 'app-root'},{'name': 'AttendanceComponent', 'selector': 'app-attendance'},{'name': 'AuditLogsComponent', 'selector': 'app-audit-logs'},{'name': 'AvatarComponent', 'selector': 'app-avatar'},{'name': 'BackupRestoreComponent', 'selector': 'app-backup-restore'},{'name': 'BadgeComponent', 'selector': 'app-badge'},{'name': 'BaseComponent', 'selector': ''},{'name': 'BiometricDataComponent', 'selector': 'app-biometric-data'},{'name': 'BreadcrumbComponent', 'selector': 'app-breadcrumb'},{'name': 'CalendarComponent', 'selector': 'app-calendar'},{'name': 'CalendarDemoComponent', 'selector': 'app-calendar-demo'},{'name': 'ChartComponent', 'selector': 'app-chart'},{'name': 'CheckboxComponent', 'selector': 'app-checkbox'},{'name': 'ColorPickerComponent', 'selector': 'app-color-picker'},{'name': 'ComingSoonComponent', 'selector': 'app-coming-soon'},{'name': 'CompaniesComponent', 'selector': 'app-companies'},{'name': 'CompanyDocumentsComponent', 'selector': 'app-company-documents'},{'name': 'CompanyHolidaysComponent', 'selector': 'app-company-holidays'},{'name': 'ComponentShowcaseComponent', 'selector': 'app-component-showcase'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DataTableComponent', 'selector': 'app-data-table'},{'name': 'DateTimePickerComponent', 'selector': 'app-date-time-picker'},{'name': 'DepartmentsComponent', 'selector': 'app-departments'},{'name': 'DevicesComponent', 'selector': 'app-devices'},{'name': 'DividerComponent', 'selector': 'app-divider'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DoorsComponent', 'selector': 'app-doors'},{'name': 'DraggableCardsComponent', 'selector': 'app-draggable-cards'},{'name': 'DraggableCardsDemoComponent', 'selector': 'app-draggable-cards-demo'},{'name': 'EChartsChartComponent', 'selector': 'app-echarts-chart'},{'name': 'EChartsDemoComponent', 'selector': 'app-echarts-demo'},{'name': 'EmployeesComponent', 'selector': 'app-employees'},{'name': 'EmployeesNewComponent', 'selector': 'app-employees-new'},{'name': 'EmptyStateComponent', 'selector': 'app-empty-state'},{'name': 'Error401Component', 'selector': 'app-error-401'},{'name': 'Error404Component', 'selector': 'app-error-404'},{'name': 'Error500Component', 'selector': 'app-error-500'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'ErrorToastComponent', 'selector': 'app-error-toast'},{'name': 'EventAnalyticsComponent', 'selector': 'app-event-analytics'},{'name': 'EventCheckinHistoryComponent', 'selector': 'app-event-checkin-history'},{'name': 'EventEmailConfirmationComponent', 'selector': 'app-event-email-confirmation'},{'name': 'EventKioskConfigComponent', 'selector': 'app-event-kiosk-config'},{'name': 'EventRegistrationComponent', 'selector': 'app-event-registration'},{'name': 'EventRegistrationFieldsComponent', 'selector': 'app-event-registration-fields'},{'name': 'EventsComponent', 'selector': 'app-events'},{'name': 'FaceRecognitionComponent', 'selector': 'app-face-recognition'},{'name': 'FaceRecognitionDemoComponent', 'selector': 'app-face-recognition-demo'},{'name': 'FaceRecognitionLiveComponent', 'selector': 'app-face-recognition-live'},{'name': 'FaceRecognitionTestComponent', 'selector': 'app-face-recognition-test'},{'name': 'FaqComponent', 'selector': 'app-faq'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'FilterSectionComponent', 'selector': 'app-filter-section'},{'name': 'ForgotPasswordComponent', 'selector': 'app-forgot-password'},{'name': 'FormFieldComponent', 'selector': 'app-form-field'},{'name': 'GalleryComponent', 'selector': 'app-gallery'},{'name': 'GalleryDemoComponent', 'selector': 'app-gallery-demo'},{'name': 'GlassButtonComponent', 'selector': 'app-glass-button'},{'name': 'GlassCardComponent', 'selector': 'app-glass-card'},{'name': 'GlassInputComponent', 'selector': 'app-glass-input'},{'name': 'GroupFaceRecognitionComponent', 'selector': 'app-group-face-recognition'},{'name': 'GuestsComponent', 'selector': 'app-guests'},{'name': 'HardwareStatusDashboardComponent', 'selector': 'app-hardware-status-dashboard'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HeatmapAnalyticsComponent', 'selector': 'app-heatmap-analytics'},{'name': 'HelpCenter', 'selector': 'app-help-center'},{'name': 'HelpCenterComponent', 'selector': 'app-help-center'},{'name': 'HrDashboardComponent', 'selector': 'app-hr-dashboard'},{'name': 'IconComponent', 'selector': 'app-icon'},{'name': 'IncidentReportsComponent', 'selector': 'app-incident-reports'},{'name': 'KioskViewComponent', 'selector': 'app-kiosk-view'},{'name': 'LandingComponent', 'selector': 'app-landing'},{'name': 'LeafletMapComponent', 'selector': 'app-leaflet-map'},{'name': 'LeavesComponent', 'selector': 'app-leaves'},{'name': 'LicenseManagementComponent', 'selector': 'app-license-management'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoadingStateComponent', 'selector': 'app-loading-state'},{'name': 'LocationsComponent', 'selector': 'app-locations'},{'name': 'LockScreenComponent', 'selector': 'app-lock-screen'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MapDemoComponent', 'selector': 'app-map-demo'},{'name': 'MaterialButtonComponent', 'selector': 'app-material-button'},{'name': 'MaterialCardComponent', 'selector': 'app-material-card'},{'name': 'MaterialDialogComponent', 'selector': 'app-material-dialog'},{'name': 'MaterialInputComponent', 'selector': 'app-material-input'},{'name': 'MaterialTableComponent', 'selector': 'app-material-table'},{'name': 'MfaSetupComponent', 'selector': 'app-mfa-setup'},{'name': 'MobileCameraComponent', 'selector': 'app-mobile-camera'},{'name': 'MobileDemoComponent', 'selector': 'app-mobile-demo'},{'name': 'ModalComponent', 'selector': 'app-modal'},{'name': 'ModalFormComponent', 'selector': 'app-modal-form'},{'name': 'ModuleSubscriptionComponent', 'selector': 'app-module-subscription'},{'name': 'MonitoringComponent', 'selector': 'app-monitoring'},{'name': 'NotificationCenterComponent', 'selector': 'app-notification-center'},{'name': 'NotificationDemoComponent', 'selector': 'app-notification-demo'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'NotificationSettingsComponent', 'selector': 'app-notification-settings'},{'name': 'OffcanvasComponent', 'selector': 'app-offcanvas'},{'name': 'OffcanvasDemoComponent', 'selector': 'app-offcanvas-demo'},{'name': 'OvertimeRequestsComponent', 'selector': 'app-overtime-requests'},{'name': 'PageLayoutComponent', 'selector': 'app-page-layout'},{'name': 'PaginationComponent', 'selector': 'app-pagination'},{'name': 'ParkingBlacklistComponent', 'selector': 'app-parking-blacklist'},{'name': 'ParkingDashboardComponent', 'selector': 'app-parking-dashboard'},{'name': 'ParkingEntryComponent', 'selector': 'app-parking-entry'},{'name': 'ParkingExitComponent', 'selector': 'app-parking-exit'},{'name': 'ParkingLogsComponent', 'selector': 'app-parking-logs'},{'name': 'ParkingReservationComponent', 'selector': 'app-parking-reservation'},{'name': 'ParkingRulesComponent', 'selector': 'app-parking-rules'},{'name': 'ParkingSpotsComponent', 'selector': 'app-parking-spots'},{'name': 'ParkingStatisticsComponent', 'selector': 'app-parking-statistics'},{'name': 'PayrollExportComponent', 'selector': 'app-payroll-export'},{'name': 'PerformanceDashboardComponent', 'selector': 'app-performance-dashboard'},{'name': 'PopoverComponent', 'selector': 'app-popover'},{'name': 'PortalLayoutComponent', 'selector': 'app-portal-layout'},{'name': 'PositionsComponent', 'selector': 'app-positions'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'PublicVerificationComponent', 'selector': 'app-public-verification'},{'name': 'QRCodesComponent', 'selector': 'app-qr-codes'},{'name': 'RadioComponent', 'selector': 'app-radio'},{'name': 'RangeSliderComponent', 'selector': 'app-range-slider'},{'name': 'RatingComponent', 'selector': 'app-rating'},{'name': 'RatingDemoComponent', 'selector': 'app-rating-demo'},{'name': 'RbacComponent', 'selector': 'app-rbac'},{'name': 'RecognitionHistoryComponent', 'selector': 'app-recognition-history'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReportsComponent', 'selector': 'app-reports'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'RFIDCardsComponent', 'selector': 'app-rfid-cards'},{'name': 'RichTextComponent', 'selector': 'app-rich-text'},{'name': 'RichTextEditorComponent', 'selector': 'app-rich-text-editor'},{'name': 'RichTextEditorDemoComponent', 'selector': 'app-rich-text-editor-demo'},{'name': 'SafetyDashboardComponent', 'selector': 'app-safety-dashboard'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ShiftsComponent', 'selector': 'app-shifts'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SkeletonComponent', 'selector': 'app-skeleton'},{'name': 'StatisticsCardComponent', 'selector': 'app-statistics-card'},{'name': 'StatisticsGridComponent', 'selector': 'app-statistics-grid'},{'name': 'StepperComponent', 'selector': 'app-stepper'},{'name': 'StructureComponent', 'selector': 'app-structure'},{'name': 'SuperAdminAnnouncementsComponent', 'selector': 'app-super-admin-announcements'},{'name': 'SuperAdminDashboardComponent', 'selector': 'app-super-admin-dashboard'},{'name': 'SuperAdminLayoutComponent', 'selector': 'app-super-admin-layout'},{'name': 'SuperAdminReportsComponent', 'selector': 'app-super-admin-reports'},{'name': 'SurveillanceMapComponent', 'selector': 'app-surveillance-map'},{'name': 'SwiperGalleryComponent', 'selector': 'app-swiper-gallery'},{'name': 'SwiperGalleryDemoComponent', 'selector': 'app-swiper-gallery-demo'},{'name': 'SwitchComponent', 'selector': 'app-switch'},{'name': 'SystemSettingsComponent', 'selector': 'app-system-settings'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TemplateManagementComponent', 'selector': 'app-template-management'},{'name': 'TestApiComponent', 'selector': 'app-test-api'},{'name': 'ThemeSwitcherComponent', 'selector': 'app-theme-switcher'},{'name': 'TimelineComponent', 'selector': 'app-timeline'},{'name': 'TimelineDemoComponent', 'selector': 'app-timeline-demo'},{'name': 'TimesheetsComponent', 'selector': 'app-timesheets'},{'name': 'TimestampComponent', 'selector': 'app-timestamp'},{'name': 'TimestampDemoComponent', 'selector': 'app-timestamp-demo'},{'name': 'TooltipComponent', 'selector': 'app-tooltip'},{'name': 'UsersComponent', 'selector': 'app-users'},{'name': 'ValidationDemoComponent', 'selector': 'app-validation-demo'},{'name': 'VehiclesComponent', 'selector': 'app-vehicles'},{'name': 'VideoAnalyticsComponent', 'selector': 'app-video-analytics'},{'name': 'VideoPlaybackComponent', 'selector': 'app-video-playback'},{'name': 'VisitorBadgesComponent', 'selector': 'app-visitor-badges'},{'name': 'VisitorBlacklistComponent', 'selector': 'app-visitor-blacklist'},{'name': 'VisitorDashboardComponent', 'selector': 'app-visitor-dashboard'},{'name': 'VisitorInvitationsComponent', 'selector': 'app-visitor-invitations'},{'name': 'VisitorParcelsComponent', 'selector': 'app-visitor-parcels'},{'name': 'VisitorReportsComponent', 'selector': 'app-visitor-reports'},{'name': 'VisitorsComponent', 'selector': 'app-visitors'},{'name': 'WatchlistComponent', 'selector': 'app-watchlist'},{'name': 'ZoneConfigComponent', 'selector': 'app-zone-config'}];
+    var DIRECTIVES = [{'name': 'HasPermissionDirective', 'selector': '[appHasPermission]'},{'name': 'ImageOptimizationDirective', 'selector': '[appImageOptimization]'}];
+    var ACTUAL_COMPONENT = {'name': 'LoginComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'LoginComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

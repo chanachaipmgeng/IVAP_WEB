@@ -1,0 +1,4051 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >WorkerSafetyService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/core/services/worker-safety.service.ts</code>
+        </p>
+
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#activeViolationsCount" >activeViolationsCount</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#activeZonesCount" >activeZonesCount</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_alerts" >_alerts</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#alerts" >alerts</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#alerts$" >alerts$</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#alertsCount" >alertsCount</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#apiUrl" >apiUrl</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#http" >http</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#isMonitoring" >isMonitoring</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_metrics" >_metrics</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#metrics" >metrics</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#metrics$" >metrics$</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Optional</span>
+                                <a href="#monitoringInterval" >monitoringInterval</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#unreadAlertsCount" >unreadAlertsCount</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_violations" >_violations</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#violations" >violations</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#violations$" >violations$</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#violationsCount" >violationsCount</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_zones" >_zones</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#zones" >zones</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#zones$" >zones$</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#zonesCount" >zonesCount</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#acknowledgeViolation" >acknowledgeViolation</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#calculateAverageResponseTime" >calculateAverageResponseTime</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#calculateMetrics" >calculateMetrics</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#calculateResolutionRate" >calculateResolutionRate</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#calculateSafetyScore" >calculateSafetyScore</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#calculateSeverity" >calculateSeverity</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#calculateTrend" >calculateTrend</a>
+                            </li>
+                            <li>
+                                <a href="#createZone" >createZone</a>
+                            </li>
+                            <li>
+                                <a href="#deleteZone" >deleteZone</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#detectViolations" >detectViolations</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#generateAlert" >generateAlert</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#generateId" >generateId</a>
+                            </li>
+                            <li>
+                                <a href="#generateSafetyReport" >generateSafetyReport</a>
+                            </li>
+                            <li>
+                                <a href="#getAlerts" >getAlerts</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getDefaultMetrics" >getDefaultMetrics</a>
+                            </li>
+                            <li>
+                                <a href="#getMetrics" >getMetrics</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getViolationDescription" >getViolationDescription</a>
+                            </li>
+                            <li>
+                                <a href="#getViolations" >getViolations</a>
+                            </li>
+                            <li>
+                                <a href="#getZones" >getZones</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#groupBy" >groupBy</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#initializeDemoData" >initializeDemoData</a>
+                            </li>
+                            <li>
+                                <a href="#loadMetrics" >loadMetrics</a>
+                            </li>
+                            <li>
+                                <a href="#loadViolations" >loadViolations</a>
+                            </li>
+                            <li>
+                                <a href="#loadZones" >loadZones</a>
+                            </li>
+                            <li>
+                                <a href="#resolveViolation" >resolveViolation</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#simulateAIDetection" >simulateAIDetection</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#simulateSafetyDetection" >simulateSafetyDetection</a>
+                            </li>
+                            <li>
+                                <a href="#startMonitoring" >startMonitoring</a>
+                            </li>
+                            <li>
+                                <a href="#stopMonitoring" >stopMonitoring</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#updateMetrics" >updateMetrics</a>
+                            </li>
+                            <li>
+                                <a href="#updateZone" >updateZone</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/core/services/worker-safety.service.ts:60</a></div>
+                            </td>
+                        </tr>
+
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="acknowledgeViolation"></a>
+                    <span class="name">
+                        <span ><b>acknowledgeViolation</b></span>
+                        <a href="#acknowledgeViolation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>acknowledgeViolation(violationId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, companyId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, acknowledgedBy: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="136"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:136</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Acknowledge violation</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>violationId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>companyId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>acknowledgedBy</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;SafetyViolation&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calculateAverageResponseTime"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>calculateAverageResponseTime</b></span>
+                        <a href="#calculateAverageResponseTime"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>calculateAverageResponseTime(violations: SafetyViolation[])</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="604"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:604</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Calculate average response time</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>violations</td>
+                                            <td>
+                                                        <code>SafetyViolation[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calculateMetrics"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>calculateMetrics</b></span>
+                        <a href="#calculateMetrics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>calculateMetrics(violations: SafetyViolation[])</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="577"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:577</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Calculate safety metrics</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>violations</td>
+                                            <td>
+                                                        <code>SafetyViolation[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/SafetyMetrics.html" target="_self" >SafetyMetrics</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calculateResolutionRate"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>calculateResolutionRate</b></span>
+                        <a href="#calculateResolutionRate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>calculateResolutionRate(violations: SafetyViolation[])</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="623"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:623</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Calculate resolution rate</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>violations</td>
+                                            <td>
+                                                        <code>SafetyViolation[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calculateSafetyScore"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>calculateSafetyScore</b></span>
+                        <a href="#calculateSafetyScore"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>calculateSafetyScore(violations: SafetyViolation[])</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="632"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:632</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Calculate safety score</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>violations</td>
+                                            <td>
+                                                        <code>SafetyViolation[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calculateSeverity"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>calculateSeverity</b></span>
+                        <a href="#calculateSeverity"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>calculateSeverity(confidence: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="544"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:544</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Calculate violation severity</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>confidence</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>type</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>&quot;low&quot; | &quot;medium&quot; | &quot;high&quot; | &quot;critical&quot;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calculateTrend"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>calculateTrend</b></span>
+                        <a href="#calculateTrend"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>calculateTrend(violations: SafetyViolation[])</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="647"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:647</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Calculate trend</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>violations</td>
+                                            <td>
+                                                        <code>SafetyViolation[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>&quot;improving&quot; | &quot;stable&quot; | &quot;declining&quot;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createZone"></a>
+                    <span class="name">
+                        <span ><b>createZone</b></span>
+                        <a href="#createZone"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>createZone(companyId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, zone: Omit<SafetyZone | "id" | "createdAt" | "updatedAt">)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="337"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:337</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Create safety zone</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>companyId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>zone</td>
+                                            <td>
+                                                        <code>Omit&lt;SafetyZone | &quot;id&quot; | &quot;createdAt&quot; | &quot;updatedAt&quot;&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;SafetyZone&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteZone"></a>
+                    <span class="name">
+                        <span ><b>deleteZone</b></span>
+                        <a href="#deleteZone"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>deleteZone(zoneId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, companyId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="422"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:422</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Delete safety zone</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>zoneId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>companyId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="detectViolations"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>detectViolations</b></span>
+                        <a href="#detectViolations"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>detectViolations(frameData: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, zoneId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="92"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:92</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Detect safety violations from video frame</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>frameData</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>zoneId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;SafetyViolation[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateAlert"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>generateAlert</b></span>
+                        <a href="#generateAlert"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generateAlert(violation: <a href="../interfaces/SafetyViolation.html" target="_self">SafetyViolation</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="525"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:525</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Generate alert for violation</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>violation</td>
+                                            <td>
+                                                            <code><a href="../interfaces/SafetyViolation.html" target="_self" >SafetyViolation</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateId"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>generateId</b></span>
+                        <a href="#generateId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generateId()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="788"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:788</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Generate unique ID</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateSafetyReport"></a>
+                    <span class="name">
+                        <span ><b>generateSafetyReport</b></span>
+                        <a href="#generateSafetyReport"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>generateSafetyReport(options: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="450"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:450</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Generate safety report</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>options</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAlerts"></a>
+                    <span class="name">
+                        <span ><b>getAlerts</b></span>
+                        <a href="#getAlerts"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getAlerts()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="443"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:443</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get safety alerts</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>SafetyAlert[]</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDefaultMetrics"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getDefaultMetrics</b></span>
+                        <a href="#getDefaultMetrics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getDefaultMetrics()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="674"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:674</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get default metrics</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/SafetyMetrics.html" target="_self" >SafetyMetrics</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getMetrics"></a>
+                    <span class="name">
+                        <span ><b>getMetrics</b></span>
+                        <a href="#getMetrics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getMetrics()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="300"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:300</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get safety metrics (from local cache)</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/SafetyMetrics.html" target="_self" >SafetyMetrics</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getViolationDescription"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getViolationDescription</b></span>
+                        <a href="#getViolationDescription"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getViolationDescription(type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="554"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:554</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get violation description</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>type</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getViolations"></a>
+                    <span class="name">
+                        <span ><b>getViolations</b></span>
+                        <a href="#getViolations"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getViolations(filter?: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="246"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:246</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get violations by filter (from local cache)</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>filter</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>SafetyViolation[]</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getZones"></a>
+                    <span class="name">
+                        <span ><b>getZones</b></span>
+                        <a href="#getZones"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getZones()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="330"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:330</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get safety zones (from local cache)</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>SafetyZone[]</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="groupBy"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>groupBy</b></span>
+                        <a href="#groupBy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>groupBy(array: T[], property: unknown)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="663"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:663</a></div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Type parameters :</b>
+                            <ul class="type-parameters">
+                                    <li>T</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Group array by property</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>array</td>
+                                            <td>
+                                                        <code>T[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>property</td>
+                                            <td>
+                                                        <code>unknown</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>literal type</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="initializeDemoData"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>initializeDemoData</b></span>
+                        <a href="#initializeDemoData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>initializeDemoData()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="690"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:690</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Initialize demo data</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadMetrics"></a>
+                    <span class="name">
+                        <span ><b>loadMetrics</b></span>
+                        <a href="#loadMetrics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>loadMetrics(companyId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="283"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:283</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Load safety metrics from API</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>companyId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/SafetyMetrics.html" target="_self" >Observable&lt;SafetyMetrics&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadViolations"></a>
+                    <span class="name">
+                        <span ><b>loadViolations</b></span>
+                        <a href="#loadViolations"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>loadViolations(companyId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, filter?: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="202"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:202</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Load violations from API</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>companyId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>filter</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;SafetyViolation[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadZones"></a>
+                    <span class="name">
+                        <span ><b>loadZones</b></span>
+                        <a href="#loadZones"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>loadZones(companyId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="307"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:307</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Load safety zones from API</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>companyId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;SafetyZone[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resolveViolation"></a>
+                    <span class="name">
+                        <span ><b>resolveViolation</b></span>
+                        <a href="#resolveViolation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>resolveViolation(violationId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, companyId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, resolvedBy: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="169"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:169</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Resolve violation</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>violationId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>companyId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>resolvedBy</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;SafetyViolation&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="simulateAIDetection"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>simulateAIDetection</b></span>
+                        <a href="#simulateAIDetection"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>simulateAIDetection(frameData: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="488"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:488</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Simulate AI detection</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>frameData</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;any[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="simulateSafetyDetection"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>simulateSafetyDetection</b></span>
+                        <a href="#simulateSafetyDetection"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>simulateSafetyDetection()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="512"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:512</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Simulate safety detection</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="startMonitoring"></a>
+                    <span class="name">
+                        <span ><b>startMonitoring</b></span>
+                        <a href="#startMonitoring"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>startMonitoring()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="69"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:69</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Start safety monitoring</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="stopMonitoring"></a>
+                    <span class="name">
+                        <span ><b>stopMonitoring</b></span>
+                        <a href="#stopMonitoring"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>stopMonitoring()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="81"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:81</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Stop safety monitoring</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateMetrics"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>updateMetrics</b></span>
+                        <a href="#updateMetrics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateMetrics()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="568"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:568</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Update safety metrics</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateZone"></a>
+                    <span class="name">
+                        <span ><b>updateZone</b></span>
+                        <a href="#updateZone"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateZone(zoneId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, companyId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, updates: Partial<SafetyZone>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="376"
+                                    class="link-to-prism">src/app/core/services/worker-safety.service.ts:376</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Update safety zone</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>zoneId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>companyId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>updates</td>
+                                            <td>
+                                                        <code>Partial&lt;SafetyZone&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;SafetyZone&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="activeViolationsCount"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>activeViolationsCount</b></span>
+                        <a href="#activeViolationsCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; this._violations().filter(v &#x3D;&gt; v.status &#x3D;&#x3D;&#x3D; &#x27;active&#x27;).length)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/app/core/services/worker-safety.service.ts:35</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="activeZonesCount"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>activeZonesCount</b></span>
+                        <a href="#activeZonesCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; this._zones().filter(z &#x3D;&gt; z.isActive).length)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/core/services/worker-safety.service.ts:37</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_alerts"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_alerts</b></span>
+                        <a href="#_alerts"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;SafetyAlert[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/core/services/worker-safety.service.ts:24</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="alerts"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>alerts</b></span>
+                        <a href="#alerts"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this._alerts.asReadonly()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/core/services/worker-safety.service.ts:30</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="alerts$"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>alerts$</b></span>
+                        <a href="#alerts$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Observable&lt;SafetyAlert[]&gt;(observer &#x3D;&gt; {
+    observer.next(this._alerts());
+    // Note: This is a compatibility layer - prefer using signals directly
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/app/core/services/worker-safety.service.ts:50</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="alertsCount"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>alertsCount</b></span>
+                        <a href="#alertsCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; this._alerts().length)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/core/services/worker-safety.service.ts:38</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="apiUrl"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>apiUrl</b></span>
+                        <a href="#apiUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x60;${environment.apiUrl}/safety&#x60;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/app/core/services/worker-safety.service.ts:19</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="http"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>http</b></span>
+                        <a href="#http"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(HttpClient)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/core/services/worker-safety.service.ts:18</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isMonitoring"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>isMonitoring</b></span>
+                        <a href="#isMonitoring"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/app/core/services/worker-safety.service.ts:59</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_metrics"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_metrics</b></span>
+                        <a href="#_metrics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;SafetyMetrics&gt;(this.getDefaultMetrics())</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/core/services/worker-safety.service.ts:25</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="metrics"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>metrics</b></span>
+                        <a href="#metrics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this._metrics.asReadonly()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/core/services/worker-safety.service.ts:31</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="metrics$"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>metrics$</b></span>
+                        <a href="#metrics$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Observable&lt;SafetyMetrics&gt;(observer &#x3D;&gt; {
+    observer.next(this._metrics());
+    // Note: This is a compatibility layer - prefer using signals directly
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">src/app/core/services/worker-safety.service.ts:54</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="monitoringInterval"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Optional</span>
+                        <span ><b>monitoringInterval</b></span>
+                        <a href="#monitoringInterval"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/core/services/worker-safety.service.ts:60</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unreadAlertsCount"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>unreadAlertsCount</b></span>
+                        <a href="#unreadAlertsCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; this._alerts().filter(a &#x3D;&gt; a.status &#x3D;&#x3D;&#x3D; &#x27;pending&#x27; || a.status &#x3D;&#x3D;&#x3D; &#x27;sent&#x27;).length)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/core/services/worker-safety.service.ts:39</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_violations"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_violations</b></span>
+                        <a href="#_violations"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;SafetyViolation[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/core/services/worker-safety.service.ts:22</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="violations"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>violations</b></span>
+                        <a href="#violations"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this._violations.asReadonly()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/core/services/worker-safety.service.ts:28</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="violations$"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>violations$</b></span>
+                        <a href="#violations$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Observable&lt;SafetyViolation[]&gt;(observer &#x3D;&gt; {
+    observer.next(this._violations());
+    // Note: This is a compatibility layer - prefer using signals directly
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/app/core/services/worker-safety.service.ts:42</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="violationsCount"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>violationsCount</b></span>
+                        <a href="#violationsCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; this._violations().length)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/core/services/worker-safety.service.ts:34</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_zones"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_zones</b></span>
+                        <a href="#_zones"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;SafetyZone[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/core/services/worker-safety.service.ts:23</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="zones"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>zones</b></span>
+                        <a href="#zones"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this._zones.asReadonly()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/core/services/worker-safety.service.ts:29</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="zones$"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>zones$</b></span>
+                        <a href="#zones$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Observable&lt;SafetyZone[]&gt;(observer &#x3D;&gt; {
+    observer.next(this._zones());
+    // Note: This is a compatibility layer - prefer using signals directly
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/core/services/worker-safety.service.ts:46</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="zonesCount"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>zonesCount</b></span>
+                        <a href="#zonesCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; this._zones().length)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/core/services/worker-safety.service.ts:36</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, inject, signal, computed } from &#x27;@angular/core&#x27;;
+import { HttpClient, HttpParams } from &#x27;@angular/common/http&#x27;;
+import { Observable, interval, of } from &#x27;rxjs&#x27;;
+import { map, takeUntil, catchError, tap } from &#x27;rxjs/operators&#x27;;
+import { environment } from &#x27;../../../environments/environment&#x27;;
+import {
+  SafetyViolation,
+  SafetyMetrics,
+  SafetyZone,
+  SafetyRule,
+  SafetyAlert
+} from &#x27;../models/safety.model&#x27;;
+
+@Injectable({
+  providedIn: &#x27;root&#x27;
+})
+export class WorkerSafetyService {
+  private http &#x3D; inject(HttpClient);
+  private apiUrl &#x3D; &#x60;${environment.apiUrl}/safety&#x60;;
+
+  // ✅ Signals for reactive state
+  private _violations &#x3D; signal&lt;SafetyViolation[]&gt;([]);
+  private _zones &#x3D; signal&lt;SafetyZone[]&gt;([]);
+  private _alerts &#x3D; signal&lt;SafetyAlert[]&gt;([]);
+  private _metrics &#x3D; signal&lt;SafetyMetrics&gt;(this.getDefaultMetrics());
+
+  // ✅ Readonly signals for public access
+  public readonly violations &#x3D; this._violations.asReadonly();
+  public readonly zones &#x3D; this._zones.asReadonly();
+  public readonly alerts &#x3D; this._alerts.asReadonly();
+  public readonly metrics &#x3D; this._metrics.asReadonly();
+
+  // ✅ Computed signals for derived state
+  public readonly violationsCount &#x3D; computed(() &#x3D;&gt; this._violations().length);
+  public readonly activeViolationsCount &#x3D; computed(() &#x3D;&gt; this._violations().filter(v &#x3D;&gt; v.status &#x3D;&#x3D;&#x3D; &#x27;active&#x27;).length);
+  public readonly zonesCount &#x3D; computed(() &#x3D;&gt; this._zones().length);
+  public readonly activeZonesCount &#x3D; computed(() &#x3D;&gt; this._zones().filter(z &#x3D;&gt; z.isActive).length);
+  public readonly alertsCount &#x3D; computed(() &#x3D;&gt; this._alerts().length);
+  public readonly unreadAlertsCount &#x3D; computed(() &#x3D;&gt; this._alerts().filter(a &#x3D;&gt; a.status &#x3D;&#x3D;&#x3D; &#x27;pending&#x27; || a.status &#x3D;&#x3D;&#x3D; &#x27;sent&#x27;).length);
+
+  // ✅ Observable compatibility layer (for backward compatibility)
+  public violations$ &#x3D; new Observable&lt;SafetyViolation[]&gt;(observer &#x3D;&gt; {
+    observer.next(this._violations());
+    // Note: This is a compatibility layer - prefer using signals directly
+  });
+  public zones$ &#x3D; new Observable&lt;SafetyZone[]&gt;(observer &#x3D;&gt; {
+    observer.next(this._zones());
+    // Note: This is a compatibility layer - prefer using signals directly
+  });
+  public alerts$ &#x3D; new Observable&lt;SafetyAlert[]&gt;(observer &#x3D;&gt; {
+    observer.next(this._alerts());
+    // Note: This is a compatibility layer - prefer using signals directly
+  });
+  public metrics$ &#x3D; new Observable&lt;SafetyMetrics&gt;(observer &#x3D;&gt; {
+    observer.next(this._metrics());
+    // Note: This is a compatibility layer - prefer using signals directly
+  });
+
+  private isMonitoring &#x3D; false;
+  private monitoringInterval?: any;
+
+  constructor() {
+    // Initialize with empty data, load from API when needed
+  }
+
+  /**
+   * Start safety monitoring
+   */
+  startMonitoring(): void {
+    if (this.isMonitoring) return;
+
+    this.isMonitoring &#x3D; true;
+    this.monitoringInterval &#x3D; setInterval(() &#x3D;&gt; {
+      this.simulateSafetyDetection();
+    }, 5000); // Check every 5 seconds
+  }
+
+  /**
+   * Stop safety monitoring
+   */
+  stopMonitoring(): void {
+    if (this.monitoringInterval) {
+      clearInterval(this.monitoringInterval);
+      this.monitoringInterval &#x3D; undefined;
+    }
+    this.isMonitoring &#x3D; false;
+  }
+
+  /**
+   * Detect safety violations from video frame
+   */
+  async detectViolations(frameData: any, zoneId: string): Promise&lt;SafetyViolation[]&gt; {
+    const violations: SafetyViolation[] &#x3D; [];
+
+    // Simulate AI detection
+    const detectionResults &#x3D; await this.simulateAIDetection(frameData);
+
+    for (const result of detectionResults) {
+      const violation: SafetyViolation &#x3D; {
+        id: this.generateId(),
+        type: result.type,
+        severity: this.calculateSeverity(result.confidence, result.type),
+        confidence: result.confidence,
+        location: result.location,
+        zoneId: zoneId,
+        timestamp: new Date(),
+        imageUrl: result.imageUrl,
+        videoUrl: result.videoUrl,
+        employeeId: result.employeeId,
+        description: this.getViolationDescription(result.type),
+        status: &#x27;active&#x27;
+      };
+
+      violations.push(violation);
+    }
+
+    // Add to violations list
+    this._violations.update(current &#x3D;&gt; [...current, ...violations]);
+
+    // Generate alerts for high severity violations
+    for (const violation of violations) {
+      if (violation.severity &#x3D;&#x3D;&#x3D; &#x27;high&#x27; || violation.severity &#x3D;&#x3D;&#x3D; &#x27;critical&#x27;) {
+        await this.generateAlert(violation);
+      }
+    }
+
+    // Update metrics
+    this.updateMetrics();
+
+    return violations;
+  }
+
+  /**
+   * Acknowledge violation
+   */
+  acknowledgeViolation(violationId: string, companyId: string, acknowledgedBy: string): Observable&lt;SafetyViolation&gt; {
+    return this.http.post&lt;SafetyViolation&gt;(&#x60;${this.apiUrl}/violations/${violationId}/acknowledge&#x60;, {}, {
+      params: new HttpParams().set(&#x27;company_id&#x27;, companyId)
+    }).pipe(
+      tap((violation) &#x3D;&gt; {
+        const violations &#x3D; this._violations();
+        const index &#x3D; violations.findIndex(v &#x3D;&gt; v.id &#x3D;&#x3D;&#x3D; violation.id);
+        if (index !&#x3D;&#x3D; -1) {
+          violations[index] &#x3D; violation;
+          this._violations.set([...violations]);
+          this.loadMetrics(companyId).subscribe();
+        }
+      }),
+      catchError((error) &#x3D;&gt; {
+        console.error(&#x27;Error acknowledging violation:&#x27;, error);
+        // Fallback to local update
+        const violations &#x3D; this._violations();
+        const violation &#x3D; violations.find(v &#x3D;&gt; v.id &#x3D;&#x3D;&#x3D; violationId);
+        if (violation) {
+          violation.status &#x3D; &#x27;acknowledged&#x27;;
+          violation.acknowledgedBy &#x3D; acknowledgedBy;
+          violation.acknowledgedAt &#x3D; new Date();
+          this._violations.set([...violations]);
+          this.updateMetrics();
+        }
+        return of(violation!);
+      })
+    );
+  }
+
+  /**
+   * Resolve violation
+   */
+  resolveViolation(violationId: string, companyId: string, resolvedBy: string): Observable&lt;SafetyViolation&gt; {
+    return this.http.post&lt;SafetyViolation&gt;(&#x60;${this.apiUrl}/violations/${violationId}/resolve&#x60;, {}, {
+      params: new HttpParams().set(&#x27;company_id&#x27;, companyId)
+    }).pipe(
+      tap((violation) &#x3D;&gt; {
+        const violations &#x3D; this._violations();
+        const index &#x3D; violations.findIndex(v &#x3D;&gt; v.id &#x3D;&#x3D;&#x3D; violation.id);
+        if (index !&#x3D;&#x3D; -1) {
+          violations[index] &#x3D; violation;
+          this._violations.set([...violations]);
+          this.loadMetrics(companyId).subscribe();
+        }
+      }),
+      catchError((error) &#x3D;&gt; {
+        console.error(&#x27;Error resolving violation:&#x27;, error);
+        // Fallback to local update
+        const violations &#x3D; this._violations();
+        const violation &#x3D; violations.find(v &#x3D;&gt; v.id &#x3D;&#x3D;&#x3D; violationId);
+        if (violation) {
+          violation.status &#x3D; &#x27;resolved&#x27;;
+          violation.resolvedBy &#x3D; resolvedBy;
+          violation.resolvedAt &#x3D; new Date();
+          this._violations.set([...violations]);
+          this.updateMetrics();
+        }
+        return of(violation!);
+      })
+    );
+  }
+
+  /**
+   * Load violations from API
+   */
+  loadViolations(companyId: string, filter?: {
+    type?: string;
+    severity?: string;
+    status?: string;
+    zoneId?: string;
+    dateFrom?: Date;
+    dateTo?: Date;
+    page?: number;
+    size?: number;
+  }): Observable&lt;SafetyViolation[]&gt; {
+    let params &#x3D; new HttpParams().set(&#x27;company_id&#x27;, companyId);
+
+    if (filter) {
+      if (filter.type) params &#x3D; params.set(&#x27;violation_type&#x27;, filter.type);
+      if (filter.severity) params &#x3D; params.set(&#x27;severity&#x27;, filter.severity);
+      if (filter.status) params &#x3D; params.set(&#x27;status&#x27;, filter.status);
+      if (filter.zoneId) params &#x3D; params.set(&#x27;zone_id&#x27;, filter.zoneId);
+      if (filter.dateFrom) params &#x3D; params.set(&#x27;start_date&#x27;, filter.dateFrom.toISOString());
+      if (filter.dateTo) params &#x3D; params.set(&#x27;end_date&#x27;, filter.dateTo.toISOString());
+      if (filter.page) params &#x3D; params.set(&#x27;page&#x27;, filter.page.toString());
+      if (filter.size) params &#x3D; params.set(&#x27;size&#x27;, filter.size.toString());
+    }
+
+    return this.http.get&lt;{ items: SafetyViolation[], total: number }&gt;(&#x60;${this.apiUrl}/violations&#x60;, { params }).pipe(
+      map((response) &#x3D;&gt; {
+        const violations &#x3D; response.items.map(v &#x3D;&gt; ({
+          ...v,
+          timestamp: new Date(v.timestamp),
+          acknowledgedAt: v.acknowledgedAt ? new Date(v.acknowledgedAt) : undefined,
+          resolvedAt: v.resolvedAt ? new Date(v.resolvedAt) : undefined
+        }));
+        this._violations.set(violations);
+        return violations;
+      }),
+      catchError((error) &#x3D;&gt; {
+        console.error(&#x27;Error loading violations:&#x27;, error);
+        return of(this._violations());
+      })
+    );
+  }
+
+  /**
+   * Get violations by filter (from local cache)
+   */
+  getViolations(filter?: {
+    type?: string;
+    severity?: string;
+    status?: string;
+    zoneId?: string;
+    dateFrom?: Date;
+    dateTo?: Date;
+  }): SafetyViolation[] {
+    let violations &#x3D; this._violations();
+
+    if (filter) {
+      if (filter.type) {
+        violations &#x3D; violations.filter(v &#x3D;&gt; v.type &#x3D;&#x3D;&#x3D; filter.type);
+      }
+      if (filter.severity) {
+        violations &#x3D; violations.filter(v &#x3D;&gt; v.severity &#x3D;&#x3D;&#x3D; filter.severity);
+      }
+      if (filter.status) {
+        violations &#x3D; violations.filter(v &#x3D;&gt; v.status &#x3D;&#x3D;&#x3D; filter.status);
+      }
+      if (filter.zoneId) {
+        violations &#x3D; violations.filter(v &#x3D;&gt; v.zoneId &#x3D;&#x3D;&#x3D; filter.zoneId);
+      }
+      if (filter.dateFrom) {
+        violations &#x3D; violations.filter(v &#x3D;&gt; v.timestamp &gt;&#x3D; filter.dateFrom!);
+      }
+      if (filter.dateTo) {
+        violations &#x3D; violations.filter(v &#x3D;&gt; v.timestamp &lt;&#x3D; filter.dateTo!);
+      }
+    }
+
+    return violations;
+  }
+
+  /**
+   * Load safety metrics from API
+   */
+  loadMetrics(companyId: string): Observable&lt;SafetyMetrics&gt; {
+    const params &#x3D; new HttpParams().set(&#x27;company_id&#x27;, companyId);
+
+    return this.http.get&lt;SafetyMetrics&gt;(&#x60;${this.apiUrl}/metrics&#x60;, { params }).pipe(
+      tap((metrics) &#x3D;&gt; {
+        this._metrics.set(metrics);
+      }),
+      catchError((error) &#x3D;&gt; {
+        console.error(&#x27;Error loading metrics:&#x27;, error);
+        return of(this._metrics());
+      })
+    );
+  }
+
+  /**
+   * Get safety metrics (from local cache)
+   */
+  getMetrics(): SafetyMetrics {
+    return this._metrics();
+  }
+
+  /**
+   * Load safety zones from API
+   */
+  loadZones(companyId: string): Observable&lt;SafetyZone[]&gt; {
+    const params &#x3D; new HttpParams().set(&#x27;company_id&#x27;, companyId);
+
+    return this.http.get&lt;SafetyZone[]&gt;(&#x60;${this.apiUrl}/zones&#x60;, { params }).pipe(
+      map((zones) &#x3D;&gt; {
+        const formattedZones &#x3D; zones.map(z &#x3D;&gt; ({
+          ...z,
+          createdAt: z.createdAt ? (typeof z.createdAt &#x3D;&#x3D;&#x3D; &#x27;string&#x27; ? new Date(z.createdAt) : z.createdAt) : new Date(),
+          updatedAt: z.updatedAt ? (typeof z.updatedAt &#x3D;&#x3D;&#x3D; &#x27;string&#x27; ? new Date(z.updatedAt) : z.updatedAt) : new Date()
+        }));
+        this._zones.set(formattedZones);
+        return formattedZones;
+      }),
+      catchError((error) &#x3D;&gt; {
+        console.error(&#x27;Error loading zones:&#x27;, error);
+        return of(this._zones());
+      })
+    );
+  }
+
+  /**
+   * Get safety zones (from local cache)
+   */
+  getZones(): SafetyZone[] {
+    return this._zones();
+  }
+
+  /**
+   * Create safety zone
+   */
+  createZone(companyId: string, zone: Omit&lt;SafetyZone, &#x27;id&#x27; | &#x27;createdAt&#x27; | &#x27;updatedAt&#x27;&gt;): Observable&lt;SafetyZone&gt; {
+    const params &#x3D; new HttpParams().set(&#x27;company_id&#x27;, companyId);
+
+    return this.http.post&lt;SafetyZone&gt;(&#x60;${this.apiUrl}/zones&#x60;, {
+      name: zone.name,
+      zone_type: zone.type,
+      coordinates: zone.coordinates,
+      rules: zone.rules,
+      metadata: {}
+    }, { params }).pipe(
+      map((newZone) &#x3D;&gt; {
+        const formattedZone: SafetyZone &#x3D; {
+          ...newZone,
+          createdAt: newZone.createdAt ? (typeof newZone.createdAt &#x3D;&#x3D;&#x3D; &#x27;string&#x27; ? new Date(newZone.createdAt) : newZone.createdAt) : new Date(),
+          updatedAt: newZone.updatedAt ? (typeof newZone.updatedAt &#x3D;&#x3D;&#x3D; &#x27;string&#x27; ? new Date(newZone.updatedAt) : newZone.updatedAt) : new Date()
+        };
+        const zones &#x3D; this._zones();
+        this._zones.set([...zones, formattedZone]);
+        return formattedZone;
+      }),
+      catchError((error) &#x3D;&gt; {
+        console.error(&#x27;Error creating zone:&#x27;, error);
+        // Fallback to local creation
+        const fallbackZone: SafetyZone &#x3D; {
+          ...zone,
+          id: this.generateId(),
+          createdAt: new Date(),
+          updatedAt: new Date()
+        };
+        const zones &#x3D; this._zones();
+        this._zones.set([...zones, fallbackZone]);
+        return of(fallbackZone);
+      })
+    );
+  }
+
+  /**
+   * Update safety zone
+   */
+  updateZone(zoneId: string, companyId: string, updates: Partial&lt;SafetyZone&gt;): Observable&lt;SafetyZone&gt; {
+    const params &#x3D; new HttpParams().set(&#x27;company_id&#x27;, companyId);
+
+    return this.http.put&lt;SafetyZone&gt;(&#x60;${this.apiUrl}/zones/${zoneId}&#x60;, {
+      name: updates.name,
+      zone_type: updates.type,
+      coordinates: updates.coordinates,
+      is_active: updates.isActive,
+      rules: updates.rules,
+      metadata: {}
+    }, { params }).pipe(
+      map((updatedZone) &#x3D;&gt; {
+        const formattedZone: SafetyZone &#x3D; {
+          ...updatedZone,
+          createdAt: updatedZone.createdAt ? (typeof updatedZone.createdAt &#x3D;&#x3D;&#x3D; &#x27;string&#x27; ? new Date(updatedZone.createdAt) : updatedZone.createdAt) : new Date(),
+          updatedAt: updatedZone.updatedAt ? (typeof updatedZone.updatedAt &#x3D;&#x3D;&#x3D; &#x27;string&#x27; ? new Date(updatedZone.updatedAt) : updatedZone.updatedAt) : new Date()
+        };
+        const zones &#x3D; this._zones();
+        const zoneIndex &#x3D; zones.findIndex(z &#x3D;&gt; z.id &#x3D;&#x3D;&#x3D; zoneId);
+        if (zoneIndex !&#x3D;&#x3D; -1) {
+          zones[zoneIndex] &#x3D; formattedZone;
+          this._zones.set([...zones]);
+        }
+        return formattedZone;
+      }),
+      catchError((error) &#x3D;&gt; {
+        console.error(&#x27;Error updating zone:&#x27;, error);
+        // Fallback to local update
+        const zones &#x3D; this._zones();
+        const zoneIndex &#x3D; zones.findIndex(z &#x3D;&gt; z.id &#x3D;&#x3D;&#x3D; zoneId);
+        if (zoneIndex !&#x3D;&#x3D; -1) {
+          zones[zoneIndex] &#x3D; {
+            ...zones[zoneIndex],
+            ...updates,
+            updatedAt: new Date()
+          };
+          this._zones.set([...zones]);
+        }
+        return of(zones[zoneIndex]);
+      })
+    );
+  }
+
+  /**
+   * Delete safety zone
+   */
+  deleteZone(zoneId: string, companyId: string): Observable&lt;void&gt; {
+    const params &#x3D; new HttpParams().set(&#x27;company_id&#x27;, companyId);
+
+    return this.http.delete&lt;void&gt;(&#x60;${this.apiUrl}/zones/${zoneId}&#x60;, { params }).pipe(
+      tap(() &#x3D;&gt; {
+        const zones &#x3D; this._zones();
+        this._zones.set(zones.filter(z &#x3D;&gt; z.id !&#x3D;&#x3D; zoneId));
+      }),
+      catchError((error) &#x3D;&gt; {
+        console.error(&#x27;Error deleting zone:&#x27;, error);
+        // Fallback to local delete
+        const zones &#x3D; this._zones();
+        this._zones.set(zones.filter(z &#x3D;&gt; z.id !&#x3D;&#x3D; zoneId));
+        return of(undefined);
+      })
+    );
+  }
+
+  /**
+   * Get safety alerts
+   */
+  getAlerts(): SafetyAlert[] {
+    return this._alerts();
+  }
+
+  /**
+   * Generate safety report
+   */
+  generateSafetyReport(options: {
+    dateFrom: Date;
+    dateTo: Date;
+    zoneIds?: string[];
+    includeImages?: boolean;
+  }): any {
+    const violations &#x3D; this.getViolations({
+      dateFrom: options.dateFrom,
+      dateTo: options.dateTo,
+      zoneId: options.zoneIds?.[0]
+    });
+
+    const report &#x3D; {
+      period: {
+        from: options.dateFrom,
+        to: options.dateTo
+      },
+      summary: {
+        totalViolations: violations.length,
+        violationsByType: this.groupBy(violations, &#x27;type&#x27;),
+        violationsBySeverity: this.groupBy(violations, &#x27;severity&#x27;),
+        violationsByLocation: this.groupBy(violations, &#x27;location&#x27;),
+        averageResponseTime: this.calculateAverageResponseTime(violations),
+        resolutionRate: this.calculateResolutionRate(violations)
+      },
+      violations: violations.map(v &#x3D;&gt; ({
+        ...v,
+        imageUrl: options.includeImages ? v.imageUrl : undefined
+      })),
+      generatedAt: new Date()
+    };
+
+    return report;
+  }
+
+  /**
+   * Simulate AI detection
+   */
+  private async simulateAIDetection(frameData: any): Promise&lt;any[]&gt; {
+    // Simulate random detection results
+    const detectionTypes &#x3D; [&#x27;helmet&#x27;, &#x27;safety_vest&#x27;, &#x27;smoking&#x27;, &#x27;phone_usage&#x27;, &#x27;fall_detection&#x27;];
+    const results &#x3D; [];
+
+    // Random chance of detection
+    if (Math.random() &lt; 0.1) { // 10% chance
+      const type &#x3D; detectionTypes[Math.floor(Math.random() * detectionTypes.length)];
+      results.push({
+        type: type,
+        confidence: Math.random() * 0.4 + 0.6, // 60-100% confidence
+        location: &#x60;Zone ${Math.floor(Math.random() * 5) + 1}&#x60;,
+        imageUrl: &#x60;assets/images/safety-violations/${type}-${Date.now()}.jpg&#x60;,
+        videoUrl: &#x60;assets/videos/safety-violations/${type}-${Date.now()}.mp4&#x60;,
+        employeeId: &#x60;EMP${Math.floor(Math.random() * 1000).toString().padStart(3, &#x27;0&#x27;)}&#x60;
+      });
+    }
+
+    return results;
+  }
+
+  /**
+   * Simulate safety detection
+   */
+  private simulateSafetyDetection(): void {
+    if (Math.random() &lt; 0.05) { // 5% chance every 5 seconds
+      const zones &#x3D; this._zones().filter(z &#x3D;&gt; z.isActive);
+      if (zones.length &gt; 0) {
+        const randomZone &#x3D; zones[Math.floor(Math.random() * zones.length)];
+        this.detectViolations({}, randomZone.id);
+      }
+    }
+  }
+
+  /**
+   * Generate alert for violation
+   */
+  private async generateAlert(violation: SafetyViolation): Promise&lt;void&gt; {
+    const alert: SafetyAlert &#x3D; {
+      id: this.generateId(),
+      violationId: violation.id,
+      type: &#x27;immediate&#x27;,
+      priority: violation.severity &#x3D;&#x3D;&#x3D; &#x27;critical&#x27; ? &#x27;critical&#x27; : &#x27;high&#x27;,
+      message: &#x60;Safety violation detected: ${violation.description} in ${violation.location}&#x60;,
+      recipients: [&#x27;safety@company.com&#x27;, &#x27;supervisor@company.com&#x27;],
+      sentAt: new Date(),
+      status: &#x27;sent&#x27;,
+      deliveryMethod: &#x27;dashboard&#x27;
+    };
+
+    this._alerts.update(alerts &#x3D;&gt; [...alerts, alert]);
+  }
+
+  /**
+   * Calculate violation severity
+   */
+  private calculateSeverity(confidence: number, type: string): &#x27;low&#x27; | &#x27;medium&#x27; | &#x27;high&#x27; | &#x27;critical&#x27; {
+    if (confidence &gt;&#x3D; 0.9) return &#x27;critical&#x27;;
+    if (confidence &gt;&#x3D; 0.8) return &#x27;high&#x27;;
+    if (confidence &gt;&#x3D; 0.7) return &#x27;medium&#x27;;
+    return &#x27;low&#x27;;
+  }
+
+  /**
+   * Get violation description
+   */
+  private getViolationDescription(type: string): string {
+    const descriptions &#x3D; {
+      helmet: &#x27;Worker not wearing safety helmet&#x27;,
+      safety_vest: &#x27;Worker not wearing safety vest&#x27;,
+      smoking: &#x27;Smoking detected in restricted area&#x27;,
+      phone_usage: &#x27;Phone usage detected during work&#x27;,
+      fall_detection: &#x27;Potential fall or slip detected&#x27;
+    };
+    return descriptions[type as keyof typeof descriptions] || &#x27;Unknown safety violation&#x27;;
+  }
+
+  /**
+   * Update safety metrics
+   */
+  private updateMetrics(): void {
+    const violations &#x3D; this._violations();
+    const metrics &#x3D; this.calculateMetrics(violations);
+    this._metrics.set(metrics);
+  }
+
+  /**
+   * Calculate safety metrics
+   */
+  private calculateMetrics(violations: SafetyViolation[]): SafetyMetrics {
+    const totalViolations &#x3D; violations.length;
+    const violationsByType &#x3D; this.groupBy(violations, &#x27;type&#x27;);
+    const violationsBySeverity &#x3D; this.groupBy(violations, &#x27;severity&#x27;);
+    const violationsByLocation &#x3D; this.groupBy(violations, &#x27;location&#x27;);
+
+    const averageResponseTime &#x3D; this.calculateAverageResponseTime(violations);
+    const resolutionRate &#x3D; this.calculateResolutionRate(violations);
+
+    const safetyScore &#x3D; this.calculateSafetyScore(violations);
+    const trend &#x3D; this.calculateTrend(violations);
+
+    return {
+      totalViolations,
+      violationsByType,
+      violationsBySeverity,
+      violationsByLocation,
+      averageResponseTime,
+      resolutionRate,
+      safetyScore,
+      trend
+    };
+  }
+
+  /**
+   * Calculate average response time
+   */
+  private calculateAverageResponseTime(violations: SafetyViolation[]): number {
+    const acknowledgedViolations &#x3D; violations.filter(v &#x3D;&gt; v.acknowledgedAt &amp;&amp; v.timestamp);
+    if (acknowledgedViolations.length &#x3D;&#x3D;&#x3D; 0) return 0;
+
+    const totalTime &#x3D; acknowledgedViolations.reduce((sum, v) &#x3D;&gt; {
+      if (v.acknowledgedAt &amp;&amp; v.timestamp) {
+        const acknowledgedAt &#x3D; typeof v.acknowledgedAt &#x3D;&#x3D;&#x3D; &#x27;string&#x27; ? new Date(v.acknowledgedAt) : v.acknowledgedAt;
+        const timestamp &#x3D; typeof v.timestamp &#x3D;&#x3D;&#x3D; &#x27;string&#x27; ? new Date(v.timestamp) : v.timestamp;
+        return sum + (acknowledgedAt.getTime() - timestamp.getTime());
+      }
+      return sum;
+    }, 0);
+
+    return totalTime / acknowledgedViolations.length / 1000 / 60; // in minutes
+  }
+
+  /**
+   * Calculate resolution rate
+   */
+  private calculateResolutionRate(violations: SafetyViolation[]): number {
+    if (violations.length &#x3D;&#x3D;&#x3D; 0) return 0;
+    const resolvedViolations &#x3D; violations.filter(v &#x3D;&gt; v.status &#x3D;&#x3D;&#x3D; &#x27;resolved&#x27;);
+    return (resolvedViolations.length / violations.length) * 100;
+  }
+
+  /**
+   * Calculate safety score
+   */
+  private calculateSafetyScore(violations: SafetyViolation[]): number {
+    if (violations.length &#x3D;&#x3D;&#x3D; 0) return 100;
+
+    const criticalViolations &#x3D; violations.filter(v &#x3D;&gt; v.severity &#x3D;&#x3D;&#x3D; &#x27;critical&#x27;).length;
+    const highViolations &#x3D; violations.filter(v &#x3D;&gt; v.severity &#x3D;&#x3D;&#x3D; &#x27;high&#x27;).length;
+    const mediumViolations &#x3D; violations.filter(v &#x3D;&gt; v.severity &#x3D;&#x3D;&#x3D; &#x27;medium&#x27;).length;
+    const lowViolations &#x3D; violations.filter(v &#x3D;&gt; v.severity &#x3D;&#x3D;&#x3D; &#x27;low&#x27;).length;
+
+    const score &#x3D; 100 - (criticalViolations * 10 + highViolations * 5 + mediumViolations * 2 + lowViolations * 1);
+    return Math.max(0, Math.min(100, score));
+  }
+
+  /**
+   * Calculate trend
+   */
+  private calculateTrend(violations: SafetyViolation[]): &#x27;improving&#x27; | &#x27;stable&#x27; | &#x27;declining&#x27; {
+    const now &#x3D; new Date();
+    const lastWeek &#x3D; new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const twoWeeksAgo &#x3D; new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
+
+    const recentViolations &#x3D; violations.filter(v &#x3D;&gt; v.timestamp &gt;&#x3D; lastWeek);
+    const olderViolations &#x3D; violations.filter(v &#x3D;&gt; v.timestamp &gt;&#x3D; twoWeeksAgo &amp;&amp; v.timestamp &lt; lastWeek);
+
+    if (recentViolations.length &lt; olderViolations.length) return &#x27;improving&#x27;;
+    if (recentViolations.length &gt; olderViolations.length) return &#x27;declining&#x27;;
+    return &#x27;stable&#x27;;
+  }
+
+  /**
+   * Group array by property
+   */
+  private groupBy&lt;T&gt;(array: T[], property: keyof T): { [key: string]: number } {
+    return array.reduce((groups, item) &#x3D;&gt; {
+      const key &#x3D; String(item[property]);
+      groups[key] &#x3D; (groups[key] || 0) + 1;
+      return groups;
+    }, {} as { [key: string]: number });
+  }
+
+  /**
+   * Get default metrics
+   */
+  private getDefaultMetrics(): SafetyMetrics {
+    return {
+      totalViolations: 0,
+      violationsByType: {},
+      violationsBySeverity: {},
+      violationsByLocation: {},
+      averageResponseTime: 0,
+      resolutionRate: 0,
+      safetyScore: 100,
+      trend: &#x27;stable&#x27;
+    };
+  }
+
+  /**
+   * Initialize demo data
+   */
+  private initializeDemoData(): void {
+    // Create demo zones
+    const demoZones: SafetyZone[] &#x3D; [
+      {
+        id: &#x27;zone-1&#x27;,
+        name: &#x27;Construction Site A&#x27;,
+        type: &#x27;construction&#x27;,
+        coordinates: { x: 100, y: 100, width: 200, height: 150 },
+        rules: [
+          {
+            id: &#x27;rule-1&#x27;,
+            type: &#x27;helmet_required&#x27;,
+            severity: &#x27;critical&#x27;,
+            isEnabled: true,
+            threshold: 0.8,
+            description: &#x27;Hard hat required in construction area&#x27;
+          },
+          {
+            id: &#x27;rule-2&#x27;,
+            type: &#x27;safety_vest_required&#x27;,
+            severity: &#x27;high&#x27;,
+            isEnabled: true,
+            threshold: 0.7,
+            description: &#x27;Safety vest required in construction area&#x27;
+          }
+        ],
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: &#x27;zone-2&#x27;,
+        name: &#x27;Manufacturing Floor&#x27;,
+        type: &#x27;manufacturing&#x27;,
+        coordinates: { x: 300, y: 100, width: 250, height: 200 },
+        rules: [
+          {
+            id: &#x27;rule-3&#x27;,
+            type: &#x27;no_smoking&#x27;,
+            severity: &#x27;high&#x27;,
+            isEnabled: true,
+            threshold: 0.9,
+            description: &#x27;No smoking in manufacturing area&#x27;
+          },
+          {
+            id: &#x27;rule-4&#x27;,
+            type: &#x27;no_phone&#x27;,
+            severity: &#x27;medium&#x27;,
+            isEnabled: true,
+            threshold: 0.8,
+            description: &#x27;No phone usage during work&#x27;
+          }
+        ],
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ];
+
+    this._zones.set(demoZones);
+
+    // Create demo violations
+    const demoViolations: SafetyViolation[] &#x3D; [
+      {
+        id: &#x27;violation-1&#x27;,
+        type: &#x27;helmet&#x27;,
+        severity: &#x27;high&#x27;,
+        confidence: 0.92,
+        location: &#x27;Construction Site A&#x27;,
+        zoneId: &#x27;zone-1&#x27;,
+        timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
+        imageUrl: &#x27;assets/images/safety-violations/helmet-1.jpg&#x27;,
+        description: &#x27;Worker not wearing safety helmet&#x27;,
+        status: &#x27;acknowledged&#x27;,
+        acknowledgedBy: &#x27;supervisor-1&#x27;,
+        acknowledgedAt: new Date(Date.now() - 1.5 * 60 * 60 * 1000)
+      },
+      {
+        id: &#x27;violation-2&#x27;,
+        type: &#x27;smoking&#x27;,
+        severity: &#x27;critical&#x27;,
+        confidence: 0.95,
+        location: &#x27;Manufacturing Floor&#x27;,
+        zoneId: &#x27;zone-2&#x27;,
+        timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000), // 1 hour ago
+        imageUrl: &#x27;assets/images/safety-violations/smoking-1.jpg&#x27;,
+        description: &#x27;Smoking detected in restricted area&#x27;,
+        status: &#x27;active&#x27;
+      }
+    ];
+
+    this._violations.set(demoViolations);
+    this.updateMetrics();
+  }
+
+  /**
+   * Generate unique ID
+   */
+  private generateId(): string {
+    return &#x27;safety-&#x27; + Date.now() + &#x27;-&#x27; + Math.random().toString(36).substr(2, 9);
+  }
+}
+
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'WorkerSafetyService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

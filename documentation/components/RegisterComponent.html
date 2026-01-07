@@ -1,0 +1,3631 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  RegisterComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/auth/register/register.component.ts</code>
+</p>
+
+
+
+    <p class="comment">
+        <h3>Extends</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+    </p>
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-register</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../interfaces/Module.html" target="_self" >CommonModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >FormsModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >RouterModule</a></code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./register.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./register.component.scss</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#canResend" >canResend</a>
+                            </li>
+                            <li>
+                                <a href="#currentLang" >currentLang</a>
+                            </li>
+                            <li>
+                                <a href="#currentStep" >currentStep</a>
+                            </li>
+                            <li>
+                                <a href="#currentTheme" >currentTheme</a>
+                            </li>
+                            <li>
+                                <a href="#formData" >formData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#i18n" >i18n</a>
+                            </li>
+                            <li>
+                                <a href="#loading" >loading</a>
+                            </li>
+                            <li>
+                                <a href="#passwordRequirements" >passwordRequirements</a>
+                            </li>
+                            <li>
+                                <a href="#passwordStrength" >passwordStrength</a>
+                            </li>
+                            <li>
+                                <a href="#resendCountdown" >resendCountdown</a>
+                            </li>
+                            <li>
+                                <a href="#showConfirmPassword" >showConfirmPassword</a>
+                            </li>
+                            <li>
+                                <a href="#showPassword" >showPassword</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#theme" >theme</a>
+                            </li>
+                            <li>
+                                <a href="#verificationCode" >verificationCode</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#destroy$" >destroy$</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#subscriptions" >subscriptions</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#checkPasswordStrength" >checkPasswordStrength</a>
+                            </li>
+                            <li>
+                                <a href="#getPasswordStrengthColor" >getPasswordStrengthColor</a>
+                            </li>
+                            <li>
+                                <a href="#getPasswordStrengthText" >getPasswordStrengthText</a>
+                            </li>
+                            <li>
+                                <a href="#getThemeIcon" >getThemeIcon</a>
+                            </li>
+                            <li>
+                                <a href="#getThemeLabel" >getThemeLabel</a>
+                            </li>
+                            <li>
+                                <a href="#goBack" >goBack</a>
+                            </li>
+                            <li>
+                                <a href="#goToLogin" >goToLogin</a>
+                            </li>
+                            <li>
+                                <a href="#isValidEmail" >isValidEmail</a>
+                            </li>
+                            <li>
+                                <a href="#navigateToLanding" >navigateToLanding</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onSubmit" >onSubmit</a>
+                            </li>
+                            <li>
+                                <a href="#onVerificationSubmit" >onVerificationSubmit</a>
+                            </li>
+                            <li>
+                                <a href="#resendCode" >resendCode</a>
+                            </li>
+                            <li>
+                                <a href="#startResendCountdown" >startResendCountdown</a>
+                            </li>
+                            <li>
+                                <a href="#t" >t</a>
+                            </li>
+                            <li>
+                                <a href="#toggleConfirmPasswordVisibility" >toggleConfirmPasswordVisibility</a>
+                            </li>
+                            <li>
+                                <a href="#toggleLanguage" >toggleLanguage</a>
+                            </li>
+                            <li>
+                                <a href="#togglePasswordVisibility" >togglePasswordVisibility</a>
+                            </li>
+                            <li>
+                                <a href="#toggleTheme" >toggleTheme</a>
+                            </li>
+                            <li>
+                                <a href="#validateForm" >validateForm</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#debounce" >debounce</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#isActive" >isActive</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#safeAsync" >safeAsync</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#safeUpdate" >safeUpdate</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#subscribe" >subscribe</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#subscribeUntil" >subscribeUntil</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#throttle" >throttle</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#trackSubscription" >trackSubscription</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#unsubscribe" >unsubscribe</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#unsubscribeAll" >unsubscribeAll</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(router: Router, auth: <a href="../injectables/AuthService.html" target="_self">AuthService</a>, api: <a href="../injectables/ApiService.html" target="_self">ApiService</a>, theme: <a href="../injectables/ThemeService.html" target="_self">ThemeService</a>, i18n: <a href="../injectables/I18nService.html" target="_self">I18nService</a>, cdr: ChangeDetectorRef)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/app/features/auth/register/register.component.ts:73</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                    <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>auth</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AuthService.html" target="_self" >AuthService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>api</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ApiService.html" target="_self" >ApiService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>theme</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ThemeService.html" target="_self" >ThemeService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>i18n</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/I18nService.html" target="_self" >I18nService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>cdr</td>
+                                                  
+                                                        <td>
+                                                                    <code>ChangeDetectorRef</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="checkPasswordStrength"></a>
+                    <span class="name">
+                        <span ><b>checkPasswordStrength</b></span>
+                        <a href="#checkPasswordStrength"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>checkPasswordStrength(password: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="117"
+                                    class="link-to-prism">src/app/features/auth/register/register.component.ts:117</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>password</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPasswordStrengthColor"></a>
+                    <span class="name">
+                        <span ><b>getPasswordStrengthColor</b></span>
+                        <a href="#getPasswordStrengthColor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getPasswordStrengthColor()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="138"
+                                    class="link-to-prism">src/app/features/auth/register/register.component.ts:138</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPasswordStrengthText"></a>
+                    <span class="name">
+                        <span ><b>getPasswordStrengthText</b></span>
+                        <a href="#getPasswordStrengthText"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getPasswordStrengthText()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="145"
+                                    class="link-to-prism">src/app/features/auth/register/register.component.ts:145</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getThemeIcon"></a>
+                    <span class="name">
+                        <span ><b>getThemeIcon</b></span>
+                        <a href="#getThemeIcon"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getThemeIcon()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="275"
+                                    class="link-to-prism">src/app/features/auth/register/register.component.ts:275</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getThemeLabel"></a>
+                    <span class="name">
+                        <span ><b>getThemeLabel</b></span>
+                        <a href="#getThemeLabel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getThemeLabel()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="285"
+                                    class="link-to-prism">src/app/features/auth/register/register.component.ts:285</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="goBack"></a>
+                    <span class="name">
+                        <span ><b>goBack</b></span>
+                        <a href="#goBack"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>goBack()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="262"
+                                    class="link-to-prism">src/app/features/auth/register/register.component.ts:262</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="goToLogin"></a>
+                    <span class="name">
+                        <span ><b>goToLogin</b></span>
+                        <a href="#goToLogin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>goToLogin()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="250"
+                                    class="link-to-prism">src/app/features/auth/register/register.component.ts:250</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isValidEmail"></a>
+                    <span class="name">
+                        <span ><b>isValidEmail</b></span>
+                        <a href="#isValidEmail"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isValidEmail(email: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="181"
+                                    class="link-to-prism">src/app/features/auth/register/register.component.ts:181</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>email</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="navigateToLanding"></a>
+                    <span class="name">
+                        <span ><b>navigateToLanding</b></span>
+                        <a href="#navigateToLanding"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>navigateToLanding()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="299"
+                                    class="link-to-prism">src/app/features/auth/register/register.component.ts:299</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="98"
+                                    class="link-to-prism">src/app/features/auth/register/register.component.ts:98</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSubmit"></a>
+                    <span class="name">
+                        <span ><b>onSubmit</b></span>
+                        <a href="#onSubmit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSubmit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="185"
+                                    class="link-to-prism">src/app/features/auth/register/register.component.ts:185</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onVerificationSubmit"></a>
+                    <span class="name">
+                        <span ><b>onVerificationSubmit</b></span>
+                        <a href="#onVerificationSubmit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onVerificationSubmit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="221"
+                                    class="link-to-prism">src/app/features/auth/register/register.component.ts:221</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resendCode"></a>
+                    <span class="name">
+                        <span ><b>resendCode</b></span>
+                        <a href="#resendCode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>resendCode()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="236"
+                                    class="link-to-prism">src/app/features/auth/register/register.component.ts:236</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="startResendCountdown"></a>
+                    <span class="name">
+                        <span ><b>startResendCountdown</b></span>
+                        <a href="#startResendCountdown"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>startResendCountdown()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="103"
+                                    class="link-to-prism">src/app/features/auth/register/register.component.ts:103</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="t"></a>
+                    <span class="name">
+                        <span ><b>t</b></span>
+                        <a href="#t"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>t(key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="295"
+                                    class="link-to-prism">src/app/features/auth/register/register.component.ts:295</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>key</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleConfirmPasswordVisibility"></a>
+                    <span class="name">
+                        <span ><b>toggleConfirmPasswordVisibility</b></span>
+                        <a href="#toggleConfirmPasswordVisibility"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleConfirmPasswordVisibility()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="258"
+                                    class="link-to-prism">src/app/features/auth/register/register.component.ts:258</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleLanguage"></a>
+                    <span class="name">
+                        <span ><b>toggleLanguage</b></span>
+                        <a href="#toggleLanguage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleLanguage()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="290"
+                                    class="link-to-prism">src/app/features/auth/register/register.component.ts:290</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="togglePasswordVisibility"></a>
+                    <span class="name">
+                        <span ><b>togglePasswordVisibility</b></span>
+                        <a href="#togglePasswordVisibility"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>togglePasswordVisibility()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="254"
+                                    class="link-to-prism">src/app/features/auth/register/register.component.ts:254</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleTheme"></a>
+                    <span class="name">
+                        <span ><b>toggleTheme</b></span>
+                        <a href="#toggleTheme"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleTheme()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="268"
+                                    class="link-to-prism">src/app/features/auth/register/register.component.ts:268</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="validateForm"></a>
+                    <span class="name">
+                        <span ><b>validateForm</b></span>
+                        <a href="#validateForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>validateForm()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="152"
+                                    class="link-to-prism">src/app/features/auth/register/register.component.ts:152</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="debounce"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>debounce</b></span>
+                        <a href="#debounce"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>debounce(fn: T, delay: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:231</a></code>
+</div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Type parameters :</b>
+                            <ul class="type-parameters">
+                                    <li>T</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Helper method to debounce function calls</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const debouncedSearch = this.debounce((query: string) =&gt; {
+  this.search(query);
+}, 300);
+
+
+onInputChange(query: string): void {
+  debouncedSearch(query);
+}</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>fn</td>
+                                            <td>
+                                                        <code>T</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                            <td>
+                                                    <ul>
+<li>Function to debounce</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>delay</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>300</code>
+                                            </td>
+
+                                            <td>
+                                                    <ul>
+<li>Delay in milliseconds</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Debounced function</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isActive"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>isActive</b></span>
+                        <a href="#isActive"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isActive()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:290</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Helper method to check if component is still active
+Useful for async operations that might complete after component is destroyed</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>true if component is still active</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:63</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Component lifecycle hook
+Automatically called when component is destroyed</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="safeAsync"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>safeAsync</b></span>
+                        <a href="#safeAsync"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>safeAsync(fn: () => void, onError?: (error?: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>) => void)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:200</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Helper method to safely execute async operations</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">this.safeAsync(async () =&gt; {
+  const data = await this.service.loadData();
+  this.data = data;
+});</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>fn</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Async function to execute</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>onError</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Optional error handler</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="safeUpdate"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>safeUpdate</b></span>
+                        <a href="#safeUpdate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>safeUpdate(updateFn: () => void)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:308</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Helper method to safely update component state
+Only updates if component is still active</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">this.safeUpdate(() =&gt; {
+  this.data = newData;
+  this.loading = false;
+});</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>updateFn</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Function that updates component state</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="subscribe"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>subscribe</b></span>
+                        <a href="#subscribe"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>subscribe(observable: Observable<T>, next?: (value?: T) => void, error?: (error?: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>) => void, complete?: () => void)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:94</a></code>
+</div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Type parameters :</b>
+                            <ul class="type-parameters">
+                                    <li>T</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Subscribe to an Observable with automatic unsubscribe</p>
+<p>Uses takeUntil pattern for automatic cleanup</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">ngOnInit(): void {
+  this.subscribe(
+    this.service.data$,
+    data =&gt; this.data = data,
+    error =&gt; console.error(error)
+  );
+}</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>observable</td>
+                                            <td>
+                                                        <code>Observable&lt;T&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The Observable to subscribe to</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>next</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Callback function for next values</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>error</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Optional error callback</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>complete</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Optional complete callback</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Subscription.html" target="_self" >Subscription</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Subscription (for manual control if needed)</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="subscribeUntil"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>subscribeUntil</b></span>
+                        <a href="#subscribeUntil"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>subscribeUntil(observable: Observable<T>, next?: (value?: T) => void, error?: (error?: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>) => void, complete?: () => void)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:135</a></code>
+</div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Type parameters :</b>
+                            <ul class="type-parameters">
+                                    <li>T</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Subscribe to an Observable using takeUntil pattern (backward compatibility)</p>
+<p>Use this if you need manual control or are on Angular &lt; 16</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">ngOnInit(): void {
+  this.subscribeUntil(
+    this.service.data$,
+    data =&gt; this.data = data
+  );
+}</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>observable</td>
+                                            <td>
+                                                        <code>Observable&lt;T&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The Observable to subscribe to</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>next</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Callback function for next values</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>error</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Optional error callback</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>complete</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Optional complete callback</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Subscription.html" target="_self" >Subscription</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Subscription</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="throttle"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>throttle</b></span>
+                        <a href="#throttle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>throttle(fn: T, limit: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:267</a></code>
+</div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Type parameters :</b>
+                            <ul class="type-parameters">
+                                    <li>T</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Helper method to throttle function calls</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const throttledScroll = this.throttle(() =&gt; {
+  this.handleScroll();
+}, 100);
+
+
+onScroll(): void {
+  throttledScroll();
+}</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>fn</td>
+                                            <td>
+                                                        <code>T</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                            <td>
+                                                    <ul>
+<li>Function to throttle</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>limit</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>100</code>
+                                            </td>
+
+                                            <td>
+                                                    <ul>
+<li>Time limit in milliseconds</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Throttled function</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="trackSubscription"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>trackSubscription</b></span>
+                        <a href="#trackSubscription"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>trackSubscription(subscription: <a href="../interfaces/Subscription.html" target="_self">Subscription</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:182</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Track a subscription for automatic cleanup</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>subscription</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Subscription.html" target="_self" >Subscription</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The subscription to track</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unsubscribe"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>unsubscribe</b></span>
+                        <a href="#unsubscribe"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>unsubscribe(subscription: <a href="../interfaces/Subscription.html" target="_self">Subscription</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:158</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Manually unsubscribe from a specific subscription</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>subscription</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Subscription.html" target="_self" >Subscription</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The subscription to unsubscribe</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unsubscribeAll"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>unsubscribeAll</b></span>
+                        <a href="#unsubscribeAll"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>unsubscribeAll()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:168</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Unsubscribe from all tracked subscriptions</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="canResend"></a>
+                    <span class="name">
+                        <span ><b>canResend</b></span>
+                        <a href="#canResend"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/features/auth/register/register.component.ts:61</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currentLang"></a>
+                    <span class="name">
+                        <span ><b>currentLang</b></span>
+                        <a href="#currentLang"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(&#x27;en&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/app/features/auth/register/register.component.ts:73</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currentStep"></a>
+                    <span class="name">
+                        <span ><b>currentStep</b></span>
+                        <a href="#currentStep"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;&#x27;info&#x27; | &#x27;verification&#x27; | &#x27;success&#x27;&gt;(&#x27;info&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/app/features/auth/register/register.component.ts:44</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currentTheme"></a>
+                    <span class="name">
+                        <span ><b>currentTheme</b></span>
+                        <a href="#currentTheme"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(&#x27;light&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">src/app/features/auth/register/register.component.ts:72</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="formData"></a>
+                    <span class="name">
+                        <span ><b>formData</b></span>
+                        <a href="#formData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/RegisterForm.html" target="_self" >RegisterForm</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    firstName: &#x27;&#x27;,
+    lastName: &#x27;&#x27;,
+    email: &#x27;&#x27;,
+    password: &#x27;&#x27;,
+    confirmPassword: &#x27;&#x27;,
+    acceptTerms: false
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/features/auth/register/register.component.ts:49</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="i18n"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>i18n</b></span>
+                        <a href="#i18n"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../injectables/I18nService.html" target="_self" >I18nService</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="80" class="link-to-prism">src/app/features/auth/register/register.component.ts:80</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loading"></a>
+                    <span class="name">
+                        <span ><b>loading</b></span>
+                        <a href="#loading"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/features/auth/register/register.component.ts:43</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="passwordRequirements"></a>
+                    <span class="name">
+                        <span ><b>passwordRequirements</b></span>
+                        <a href="#passwordRequirements"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal({
+    minLength: false,
+    hasUppercase: false,
+    hasLowercase: false,
+    hasNumber: false,
+    hasSpecial: false
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">src/app/features/auth/register/register.component.ts:64</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="passwordStrength"></a>
+                    <span class="name">
+                        <span ><b>passwordStrength</b></span>
+                        <a href="#passwordStrength"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(0)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/features/auth/register/register.component.ts:45</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resendCountdown"></a>
+                    <span class="name">
+                        <span ><b>resendCountdown</b></span>
+                        <a href="#resendCountdown"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(0)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/features/auth/register/register.component.ts:60</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showConfirmPassword"></a>
+                    <span class="name">
+                        <span ><b>showConfirmPassword</b></span>
+                        <a href="#showConfirmPassword"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/features/auth/register/register.component.ts:47</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showPassword"></a>
+                    <span class="name">
+                        <span ><b>showPassword</b></span>
+                        <a href="#showPassword"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/features/auth/register/register.component.ts:46</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="theme"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>theme</b></span>
+                        <a href="#theme"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../injectables/ThemeService.html" target="_self" >ThemeService</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="79" class="link-to-prism">src/app/features/auth/register/register.component.ts:79</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="verificationCode"></a>
+                    <span class="name">
+                        <span ><b>verificationCode</b></span>
+                        <a href="#verificationCode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/app/features/auth/register/register.component.ts:59</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="destroy$"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>destroy$</b></span>
+                        <a href="#destroy$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Subject&lt;void&gt;()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:52</a></code>
+</div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Subject for subscription management
+Automatically completed in ngOnDestroy</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="subscriptions"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>subscriptions</b></span>
+                        <a href="#subscriptions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Subscription.html" target="_self" >Subscription[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:57</a></code>
+</div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Track all subscriptions for manual cleanup if needed</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, signal, effect, ChangeDetectorRef } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormsModule } from &#x27;@angular/forms&#x27;;
+import { Router, RouterModule } from &#x27;@angular/router&#x27;;
+import { AuthService } from &#x27;../../../core/services/auth.service&#x27;;
+import { ApiService } from &#x27;../../../core/services/api.service&#x27;;
+import { ThemeService } from &#x27;../../../core/services/theme.service&#x27;;
+import { I18nService } from &#x27;../../../core/services/i18n.service&#x27;;
+import { BaseComponent } from &#x27;../../../core/base/base.component&#x27;;
+
+/**
+ * Registration form interface
+ */
+export interface RegisterForm {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  acceptTerms: boolean;
+}
+
+@Component({
+  selector: &#x27;app-register&#x27;,
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule],
+  templateUrl: &#x27;./register.component.html&#x27;,
+  styleUrl: &#x27;./register.component.scss&#x27;
+})
+export class RegisterComponent extends BaseComponent implements OnInit {
+  loading &#x3D; signal(false);
+  currentStep &#x3D; signal&lt;&#x27;info&#x27; | &#x27;verification&#x27; | &#x27;success&#x27;&gt;(&#x27;info&#x27;);
+  passwordStrength &#x3D; signal(0);
+  showPassword &#x3D; signal(false);
+  showConfirmPassword &#x3D; signal(false);
+
+  formData: RegisterForm &#x3D; {
+    firstName: &#x27;&#x27;,
+    lastName: &#x27;&#x27;,
+    email: &#x27;&#x27;,
+    password: &#x27;&#x27;,
+    confirmPassword: &#x27;&#x27;,
+    acceptTerms: false
+  };
+
+  // Verification
+  verificationCode &#x3D; &#x27;&#x27;;
+  resendCountdown &#x3D; signal(0);
+  canResend &#x3D; signal(false);
+
+  // Password requirements
+  passwordRequirements &#x3D; signal({
+    minLength: false,
+    hasUppercase: false,
+    hasLowercase: false,
+    hasNumber: false,
+    hasSpecial: false
+  });
+
+  currentTheme &#x3D; signal(&#x27;light&#x27;);
+  currentLang &#x3D; signal(&#x27;en&#x27;);
+
+  constructor(
+    private router: Router,
+    private auth: AuthService,
+    private api: ApiService,
+    public theme: ThemeService,
+    public i18n: I18nService,
+    private cdr: ChangeDetectorRef
+  ) {
+    super();
+    // Watch theme changes
+    effect(() &#x3D;&gt; {
+      const isDark &#x3D; this.theme.isDark();
+      this.currentTheme.set(isDark ? &#x27;dark&#x27; : &#x27;light&#x27;);
+      this.cdr.detectChanges();
+    });
+
+    // Watch language changes
+    effect(() &#x3D;&gt; {
+      const lang &#x3D; this.i18n.currentLanguage();
+      this.currentLang.set(lang);
+    });
+  }
+
+  ngOnInit(): void {
+    // Initialize countdown
+    this.startResendCountdown();
+  }
+
+  startResendCountdown(): void {
+    this.resendCountdown.set(60);
+    this.canResend.set(false);
+
+    const countdown &#x3D; setInterval(() &#x3D;&gt; {
+      if (this.resendCountdown() &gt; 0) {
+        this.resendCountdown.set(this.resendCountdown() - 1);
+      } else {
+        clearInterval(countdown);
+        this.canResend.set(true);
+      }
+    }, 1000);
+  }
+
+  checkPasswordStrength(password: string): void {
+    let strength &#x3D; 0;
+    const requirements &#x3D; {
+      minLength: password.length &gt;&#x3D; 8,
+      hasUppercase: /[A-Z]/.test(password),
+      hasLowercase: /[a-z]/.test(password),
+      hasNumber: /[0-9]/.test(password),
+      hasSpecial: /[^A-Za-z0-9]/.test(password)
+    };
+
+    this.passwordRequirements.set(requirements);
+
+    if (requirements.minLength) strength +&#x3D; 20;
+    if (requirements.hasUppercase) strength +&#x3D; 20;
+    if (requirements.hasLowercase) strength +&#x3D; 20;
+    if (requirements.hasNumber) strength +&#x3D; 20;
+    if (requirements.hasSpecial) strength +&#x3D; 20;
+
+    this.passwordStrength.set(strength);
+  }
+
+  getPasswordStrengthColor(): string {
+    const strength &#x3D; this.passwordStrength();
+    if (strength &lt; 40) return &#x27;weak&#x27;;
+    if (strength &lt; 80) return &#x27;medium&#x27;;
+    return &#x27;strong&#x27;;
+  }
+
+  getPasswordStrengthText(): string {
+    const strength &#x3D; this.passwordStrength();
+    if (strength &lt; 40) return &#x27;Weak&#x27;;
+    if (strength &lt; 80) return &#x27;Medium&#x27;;
+    return &#x27;Strong&#x27;;
+  }
+
+  validateForm(): boolean {
+    if (!this.formData.firstName || !this.formData.lastName) {
+      alert(&#x27;Please enter your name&#x27;);
+      return false;
+    }
+
+    if (!this.formData.email || !this.isValidEmail(this.formData.email)) {
+      alert(&#x27;Please enter a valid email address&#x27;);
+      return false;
+    }
+
+    if (!this.formData.password || this.passwordStrength() &lt; 50) {
+      alert(&#x27;Password is too weak. Please choose a stronger password.&#x27;);
+      return false;
+    }
+
+    if (this.formData.password !&#x3D;&#x3D; this.formData.confirmPassword) {
+      alert(&#x27;Passwords do not match&#x27;);
+      return false;
+    }
+
+    if (!this.formData.acceptTerms) {
+      alert(&#x27;Please accept the Terms and Conditions&#x27;);
+      return false;
+    }
+
+    return true;
+  }
+
+  isValidEmail(email: string): boolean {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  onSubmit(): void {
+    if (!this.validateForm()) {
+      return;
+    }
+
+    this.loading.set(true);
+
+    // เรียกใช้ auth.register() จริง
+    // ✅ Auto-unsubscribe on component destroy
+    this.subscribe(
+      this.auth.register({
+        username: this.formData.email, // ใช้ email เป็น username
+        password: this.formData.password,
+        firstName: this.formData.firstName,
+        lastName: this.formData.lastName,
+        email: this.formData.email,
+        actor_type: &#x27;member&#x27;, // ตั้งค่า default เป็น member
+        member_type: &#x27;employee&#x27;, // ตั้งค่า default เป็น employee
+        phone_number: &#x27;&#x27; // ถ้ามี field phone number ใน form
+      }),
+      (user) &#x3D;&gt; {
+        this.loading.set(false);
+        this.currentStep.set(&#x27;verification&#x27;);
+        this.startResendCountdown();
+      },
+      (error) &#x3D;&gt; {
+        this.loading.set(false);
+        const errorMsg &#x3D; error?.error?.error?.message || 
+                        error?.error?.message || 
+                        error?.message || 
+                        &#x27;Registration failed. Please try again.&#x27;;
+        alert(errorMsg);
+      }
+    );
+  }
+
+  onVerificationSubmit(): void {
+    if (!this.verificationCode || this.verificationCode.length &lt; 6) {
+      alert(&#x27;Please enter a valid verification code&#x27;);
+      return;
+    }
+
+    this.loading.set(true);
+
+    // Simulate API call
+    setTimeout(() &#x3D;&gt; {
+      this.loading.set(false);
+      this.currentStep.set(&#x27;success&#x27;);
+    }, 1000);
+  }
+
+  resendCode(): void {
+    if (!this.canResend()) {
+      return;
+    }
+
+    this.loading.set(true);
+
+    // Simulate API call
+    setTimeout(() &#x3D;&gt; {
+      this.loading.set(false);
+      this.startResendCountdown();
+    }, 500);
+  }
+
+  goToLogin(): void {
+    this.router.navigate([&#x27;/portal/login&#x27;]);
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword.set(!this.showPassword());
+  }
+
+  toggleConfirmPasswordVisibility(): void {
+    this.showConfirmPassword.set(!this.showConfirmPassword());
+  }
+
+  goBack(): void {
+    if (this.currentStep() &#x3D;&#x3D;&#x3D; &#x27;verification&#x27;) {
+      this.currentStep.set(&#x27;info&#x27;);
+    }
+  }
+
+  toggleTheme(): void {
+    this.theme.toggleMode();
+    const isDark &#x3D; this.theme.isDark();
+    this.currentTheme.set(isDark ? &#x27;dark&#x27; : &#x27;light&#x27;);
+    this.cdr.detectChanges();
+  }
+
+  getThemeIcon(): string {
+    const mode &#x3D; this.theme.mode();
+    const isDark &#x3D; this.theme.isDark();
+    
+    if (mode &#x3D;&#x3D;&#x3D; &#x27;auto&#x27;) {
+      return isDark ? &#x27;🌙&#x27; : &#x27;☀️&#x27;;
+    }
+    return mode &#x3D;&#x3D;&#x3D; &#x27;dark&#x27; ? &#x27;🌙&#x27; : &#x27;☀️&#x27;;
+  }
+
+  getThemeLabel(): string {
+    const mode &#x3D; this.theme.mode();
+    return this.i18n.t(&#x60;theme.${mode}&#x60;);
+  }
+
+  toggleLanguage(): void {
+    this.i18n.toggleLanguage();
+    this.currentLang.set(this.i18n.currentLanguage());
+  }
+
+  t(key: string): string {
+    return this.i18n.translate(key);
+  }
+
+  navigateToLanding(): void {
+    this.router.navigate([&#x27;/&#x27;]);
+  }
+}
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;register-container min-h-screen flex items-center justify-center p-4 relative&quot;&gt;
+  &lt;!-- Background Graphics --&gt;
+  &lt;!-- Background Graphics handled globally --&gt;
+
+  &lt;!-- Header with Theme/Language Switcher --&gt;
+  &lt;div
+    class&#x3D;&quot;fixed top-0 left-0 right-0 z-50 glass-card !rounded-none !border-x-0 !border-t-0 border-b border-white/10 p-4&quot;&gt;
+    &lt;div class&#x3D;&quot;container mx-auto flex items-center justify-between&quot;&gt;
+      &lt;div class&#x3D;&quot;flex items-center space-x-3&quot;&gt;
+        &lt;button (click)&#x3D;&quot;navigateToLanding()&quot; class&#x3D;&quot;glass-button flex items-center space-x-2&quot;
+          [title]&#x3D;&quot;i18n.t(&#x27;login.backToHome&#x27;)&quot;&gt;
+          &lt;span class&#x3D;&quot;text-lg&quot;&gt;←&lt;/span&gt;
+          &lt;span class&#x3D;&quot;hidden md:inline font-medium&quot;&gt;{{ i18n.t(&#x27;login.home&#x27;) }}&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;div class&#x3D;&quot;text-3xl&quot;&gt;🎥&lt;/div&gt;
+        &lt;h1 class&#x3D;&quot;text-xl font-bold ai-gradient-text&quot;&gt;IVAP Platform&lt;/h1&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;flex items-center space-x-3&quot;&gt;
+        &lt;!-- Language Switcher --&gt;
+        &lt;button (click)&#x3D;&quot;toggleLanguage()&quot; class&#x3D;&quot;glass-button flex items-center space-x-2&quot;
+          [title]&#x3D;&quot;currentLang() &#x3D;&#x3D;&#x3D; &#x27;th&#x27; ? i18n.t(&#x27;kiosk.switchToEnglish&#x27;) : i18n.t(&#x27;kiosk.switchToThai&#x27;)&quot;&gt;
+          &lt;span class&#x3D;&quot;text-lg&quot;&gt;{{ currentLang() &#x3D;&#x3D;&#x3D; &#x27;th&#x27; ? &#x27;🇹🇭&#x27; : &#x27;🇬🇧&#x27; }}&lt;/span&gt;
+          &lt;span class&#x3D;&quot;hidden md:inline font-medium&quot;&gt;{{ currentLang() &#x3D;&#x3D;&#x3D; &#x27;th&#x27; ? i18n.t(&#x27;kiosk.thai&#x27;) :
+            i18n.t(&#x27;kiosk.english&#x27;) }}&lt;/span&gt;
+        &lt;/button&gt;
+
+        &lt;!-- Theme Switcher --&gt;
+        &lt;button (click)&#x3D;&quot;toggleTheme()&quot; class&#x3D;&quot;glass-button flex items-center space-x-2&quot; [title]&#x3D;&quot;getThemeLabel()&quot;&gt;
+          &lt;span class&#x3D;&quot;text-lg&quot;&gt;{{ getThemeIcon() }}&lt;/span&gt;
+          &lt;span class&#x3D;&quot;hidden md:inline font-medium&quot;&gt;{{ getThemeLabel() }}&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class&#x3D;&quot;register-card glass-card max-w-lg w-full relative z-10 mt-20 p-8 sm:p-12&quot;&gt;
+    &lt;!-- Step 1: Information --&gt;
+    &lt;div *ngIf&#x3D;&quot;currentStep() &#x3D;&#x3D;&#x3D; &#x27;info&#x27;&quot; class&#x3D;&quot;step-content&quot;&gt;
+      &lt;!-- Header --&gt;
+      &lt;div class&#x3D;&quot;header text-center mb-8&quot;&gt;
+        &lt;div class&#x3D;&quot;logo text-primary-500 mb-4 inline-block&quot;&gt;
+          &lt;svg width&#x3D;&quot;48&quot; height&#x3D;&quot;48&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;&gt;
+            &lt;path d&#x3D;&quot;M12 2L2 7l10 5 10-5-10-5z&quot;&gt;&lt;/path&gt;
+            &lt;path d&#x3D;&quot;M2 17l10 5 10-5&quot;&gt;&lt;/path&gt;
+            &lt;path d&#x3D;&quot;M2 12l10 5 10-5&quot;&gt;&lt;/path&gt;
+          &lt;/svg&gt;
+        &lt;/div&gt;
+        &lt;h1 class&#x3D;&quot;title text-3xl font-bold m-0 mb-2 text-slate-900 dark:text-white&quot;&gt;{{ i18n.t(&#x27;register.createAccount&#x27;)
+          }}&lt;/h1&gt;
+        &lt;p class&#x3D;&quot;subtitle m-0 text-slate-700 dark:text-gray-300&quot;&gt;{{ i18n.t(&#x27;register.signUpToGetStarted&#x27;) }}&lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Form --&gt;
+      &lt;form (ngSubmit)&#x3D;&quot;onSubmit()&quot; class&#x3D;&quot;form&quot;&gt;
+        &lt;div class&#x3D;&quot;form-row grid grid-cols-2 gap-4 mb-6&quot;&gt;
+          &lt;div class&#x3D;&quot;form-group mb-6&quot;&gt;
+            &lt;label for&#x3D;&quot;firstName&quot; class&#x3D;&quot;block font-semibold mb-2 text-slate-900 dark:text-white&quot;&gt;{{
+              i18n.t(&#x27;register.firstName&#x27;) }}&lt;/label&gt;
+            &lt;input id&#x3D;&quot;firstName&quot; type&#x3D;&quot;text&quot; [(ngModel)]&#x3D;&quot;formData.firstName&quot; name&#x3D;&quot;firstName&quot; placeholder&#x3D;&quot;John&quot;
+              class&#x3D;&quot;glass-input w-full&quot; required /&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;form-group mb-6&quot;&gt;
+            &lt;label for&#x3D;&quot;lastName&quot; class&#x3D;&quot;block font-semibold mb-2 text-slate-900 dark:text-white&quot;&gt;{{
+              i18n.t(&#x27;register.lastName&#x27;) }}&lt;/label&gt;
+            &lt;input id&#x3D;&quot;lastName&quot; type&#x3D;&quot;text&quot; [(ngModel)]&#x3D;&quot;formData.lastName&quot; name&#x3D;&quot;lastName&quot; placeholder&#x3D;&quot;Doe&quot;
+              class&#x3D;&quot;glass-input w-full&quot; required /&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;form-group mb-6&quot;&gt;
+          &lt;label for&#x3D;&quot;email&quot; class&#x3D;&quot;block font-semibold mb-2 text-slate-900 dark:text-white&quot;&gt;{{ i18n.t(&#x27;register.email&#x27;)
+            }}&lt;/label&gt;
+          &lt;input id&#x3D;&quot;email&quot; type&#x3D;&quot;email&quot; [(ngModel)]&#x3D;&quot;formData.email&quot; name&#x3D;&quot;email&quot; placeholder&#x3D;&quot;john.doe@example.com&quot;
+            class&#x3D;&quot;glass-input w-full&quot; required /&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;form-group mb-6&quot;&gt;
+          &lt;label for&#x3D;&quot;password&quot; class&#x3D;&quot;block font-semibold mb-2 text-slate-900 dark:text-white&quot;&gt;{{
+            i18n.t(&#x27;register.password&#x27;) }}&lt;/label&gt;
+          &lt;div class&#x3D;&quot;password-input-wrapper relative&quot;&gt;
+            &lt;input id&#x3D;&quot;password&quot; [type]&#x3D;&quot;showPassword() ? &#x27;text&#x27; : &#x27;password&#x27;&quot; [(ngModel)]&#x3D;&quot;formData.password&quot;
+              (input)&#x3D;&quot;checkPasswordStrength(formData.password)&quot; name&#x3D;&quot;password&quot;
+              [placeholder]&#x3D;&quot;i18n.t(&#x27;register.enterPassword&#x27;)&quot;
+              class&#x3D;&quot;form-input w-full px-4 py-3 pr-12 rounded-lg text-base transition-all backdrop-blur-sm&quot; required /&gt;
+            &lt;button type&#x3D;&quot;button&quot; (click)&#x3D;&quot;togglePasswordVisibility()&quot;
+              class&#x3D;&quot;password-toggle absolute right-3 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-gray-500 p-0 flex items-center justify-center hover:text-primary-500&quot;&gt;
+              &lt;svg *ngIf&#x3D;&quot;!showPassword()&quot; width&#x3D;&quot;20&quot; height&#x3D;&quot;20&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot;
+                stroke-width&#x3D;&quot;2&quot;&gt;
+                &lt;path d&#x3D;&quot;M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z&quot;&gt;&lt;/path&gt;
+                &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;3&quot;&gt;&lt;/circle&gt;
+              &lt;/svg&gt;
+              &lt;svg *ngIf&#x3D;&quot;showPassword()&quot; width&#x3D;&quot;20&quot; height&#x3D;&quot;20&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot;
+                stroke-width&#x3D;&quot;2&quot;&gt;
+                &lt;path
+                  d&#x3D;&quot;M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24&quot;&gt;
+                &lt;/path&gt;
+                &lt;line x1&#x3D;&quot;1&quot; y1&#x3D;&quot;1&quot; x2&#x3D;&quot;23&quot; y2&#x3D;&quot;23&quot;&gt;&lt;/line&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;password-strength flex items-center gap-2 mt-2&quot; *ngIf&#x3D;&quot;formData.password&quot;&gt;
+            &lt;div class&#x3D;&quot;strength-bar flex-1 h-1 bg-gray-200 dark:bg-gray-700 rounded overflow-hidden&quot;
+              [class]&#x3D;&quot;getPasswordStrengthColor()&quot;&gt;
+              &lt;div class&#x3D;&quot;strength-fill h-full transition-all&quot; [style.width.%]&#x3D;&quot;passwordStrength()&quot;&gt;&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;span class&#x3D;&quot;strength-text text-sm font-semibold text-gray-500&quot;&gt;{{ getPasswordStrengthText() }}&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;password-requirements mt-3 text-sm&quot; *ngIf&#x3D;&quot;formData.password&quot;&gt;
+            &lt;div class&#x3D;&quot;requirement flex items-center gap-2 text-gray-400 mb-1&quot;
+              [class.met]&#x3D;&quot;passwordRequirements().minLength&quot;
+              [class.text-success-500]&#x3D;&quot;passwordRequirements().minLength&quot;&gt;
+              &lt;span class&#x3D;&quot;font-semibold&quot;&gt;{{ passwordRequirements().minLength ? &#x27;✓&#x27; : &#x27;○&#x27; }}&lt;/span&gt;
+              {{ i18n.t(&#x27;register.atLeast8Characters&#x27;) }}
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;requirement flex items-center gap-2 text-gray-400 mb-1&quot;
+              [class.met]&#x3D;&quot;passwordRequirements().hasUppercase&quot;
+              [class.text-success-500]&#x3D;&quot;passwordRequirements().hasUppercase&quot;&gt;
+              &lt;span class&#x3D;&quot;font-semibold&quot;&gt;{{ passwordRequirements().hasUppercase ? &#x27;✓&#x27; : &#x27;○&#x27; }}&lt;/span&gt;
+              {{ i18n.t(&#x27;register.containsUppercase&#x27;) }}
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;requirement flex items-center gap-2 text-gray-400 mb-1&quot;
+              [class.met]&#x3D;&quot;passwordRequirements().hasLowercase&quot;
+              [class.text-success-500]&#x3D;&quot;passwordRequirements().hasLowercase&quot;&gt;
+              &lt;span class&#x3D;&quot;font-semibold&quot;&gt;{{ passwordRequirements().hasLowercase ? &#x27;✓&#x27; : &#x27;○&#x27; }}&lt;/span&gt;
+              {{ i18n.t(&#x27;register.containsLowercase&#x27;) }}
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;requirement flex items-center gap-2 text-gray-400 mb-1&quot;
+              [class.met]&#x3D;&quot;passwordRequirements().hasNumber&quot;
+              [class.text-success-500]&#x3D;&quot;passwordRequirements().hasNumber&quot;&gt;
+              &lt;span class&#x3D;&quot;font-semibold&quot;&gt;{{ passwordRequirements().hasNumber ? &#x27;✓&#x27; : &#x27;○&#x27; }}&lt;/span&gt;
+              {{ i18n.t(&#x27;register.containsNumber&#x27;) }}
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;requirement flex items-center gap-2 text-gray-400 mb-1&quot;
+              [class.met]&#x3D;&quot;passwordRequirements().hasSpecial&quot;
+              [class.text-success-500]&#x3D;&quot;passwordRequirements().hasSpecial&quot;&gt;
+              &lt;span class&#x3D;&quot;font-semibold&quot;&gt;{{ passwordRequirements().hasSpecial ? &#x27;✓&#x27; : &#x27;○&#x27; }}&lt;/span&gt;
+              {{ i18n.t(&#x27;register.containsSpecial&#x27;) }}
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;form-group mb-6&quot;&gt;
+          &lt;label for&#x3D;&quot;confirmPassword&quot; class&#x3D;&quot;block font-semibold mb-2 text-slate-900 dark:text-white&quot;&gt;{{
+            i18n.t(&#x27;register.confirmPassword&#x27;) }}&lt;/label&gt;
+          &lt;div class&#x3D;&quot;password-input-wrapper relative&quot;&gt;
+            &lt;input id&#x3D;&quot;confirmPassword&quot; [type]&#x3D;&quot;showConfirmPassword() ? &#x27;text&#x27; : &#x27;password&#x27;&quot;
+              [(ngModel)]&#x3D;&quot;formData.confirmPassword&quot; name&#x3D;&quot;confirmPassword&quot;
+              [placeholder]&#x3D;&quot;i18n.t(&#x27;register.confirmYourPassword&#x27;)&quot; class&#x3D;&quot;glass-input w-full px-4 py-3 pr-12&quot;
+              required /&gt;
+            &lt;button type&#x3D;&quot;button&quot; (click)&#x3D;&quot;toggleConfirmPasswordVisibility()&quot;
+              class&#x3D;&quot;password-toggle absolute right-3 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-gray-500 p-0 flex items-center justify-center hover:text-primary-500&quot;&gt;
+              &lt;svg *ngIf&#x3D;&quot;!showConfirmPassword()&quot; width&#x3D;&quot;20&quot; height&#x3D;&quot;20&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;
+                stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;&gt;
+                &lt;path d&#x3D;&quot;M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z&quot;&gt;&lt;/path&gt;
+                &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;3&quot;&gt;&lt;/circle&gt;
+              &lt;/svg&gt;
+              &lt;svg *ngIf&#x3D;&quot;showConfirmPassword()&quot; width&#x3D;&quot;20&quot; height&#x3D;&quot;20&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;
+                stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;&gt;
+                &lt;path
+                  d&#x3D;&quot;M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24&quot;&gt;
+                &lt;/path&gt;
+                &lt;line x1&#x3D;&quot;1&quot; y1&#x3D;&quot;1&quot; x2&#x3D;&quot;23&quot; y2&#x3D;&quot;23&quot;&gt;&lt;/line&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;form-group checkbox-group mb-6&quot;&gt;
+          &lt;label
+            class&#x3D;&quot;checkbox-label flex items-start gap-3 cursor-pointer text-sm leading-relaxed text-slate-700 dark:text-gray-300&quot;&gt;
+            &lt;input type&#x3D;&quot;checkbox&quot; [(ngModel)]&#x3D;&quot;formData.acceptTerms&quot; name&#x3D;&quot;acceptTerms&quot;
+              class&#x3D;&quot;checkbox mt-1 cursor-pointer&quot; /&gt;
+            &lt;span&gt;
+              {{ i18n.t(&#x27;register.acceptTerms&#x27;) }}
+              &lt;a href&#x3D;&quot;/terms&quot; target&#x3D;&quot;_blank&quot; class&#x3D;&quot;link text-primary-500 hover:underline&quot;&gt;{{
+                i18n.t(&#x27;register.termsAndConditions&#x27;) }}&lt;/a&gt;
+              {{ i18n.t(&#x27;register.and&#x27;) }}
+              &lt;a href&#x3D;&quot;/privacy&quot; target&#x3D;&quot;_blank&quot; class&#x3D;&quot;link text-primary-500 hover:underline&quot;&gt;{{
+                i18n.t(&#x27;register.privacyPolicy&#x27;) }}&lt;/a&gt;
+            &lt;/span&gt;
+          &lt;/label&gt;
+        &lt;/div&gt;
+
+        &lt;button type&#x3D;&quot;submit&quot; [disabled]&#x3D;&quot;loading()&quot;
+          class&#x3D;&quot;btn btn-primary w-full px-6 py-3 rounded-lg font-semibold text-white bg-gradient-to-r from-primary-500 to-purple-600 border-none cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed&quot;&gt;
+          &lt;span *ngIf&#x3D;&quot;!loading()&quot;&gt;{{ i18n.t(&#x27;register.createAccount&#x27;) }}&lt;/span&gt;
+          &lt;span *ngIf&#x3D;&quot;loading()&quot;&gt;{{ i18n.t(&#x27;register.creating&#x27;) }}&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/form&gt;
+
+      &lt;!-- Footer --&gt;
+      &lt;div class&#x3D;&quot;footer text-center mt-6&quot;&gt;
+        &lt;p class&#x3D;&quot;m-0 text-slate-700 dark:text-gray-300&quot;&gt;{{ i18n.t(&#x27;register.alreadyHaveAccount&#x27;) }} &lt;a
+            routerLink&#x3D;&quot;/portal/login&quot; class&#x3D;&quot;link text-primary-500 hover:underline&quot;&gt;{{ i18n.t(&#x27;register.signIn&#x27;) }}&lt;/a&gt;
+        &lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Step 2: Verification --&gt;
+    &lt;div *ngIf&#x3D;&quot;currentStep() &#x3D;&#x3D;&#x3D; &#x27;verification&#x27;&quot; class&#x3D;&quot;step-content&quot;&gt;
+      &lt;div class&#x3D;&quot;header text-center mb-8&quot;&gt;
+        &lt;button (click)&#x3D;&quot;goBack()&quot;
+          class&#x3D;&quot;back-button absolute top-0 left-0 w-10 h-10 flex items-center justify-center bg-white/10 rounded-lg border border-white/20 text-white cursor-pointer transition-all hover:bg-white/20&quot;&gt;
+          &lt;svg width&#x3D;&quot;20&quot; height&#x3D;&quot;20&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;&gt;
+            &lt;path d&#x3D;&quot;M19 12H5M12 19l-7-7 7-7&quot;&gt;&lt;/path&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+        &lt;h1 class&#x3D;&quot;title text-3xl font-bold m-0 mb-2 text-white dark:text-gray-900&quot;&gt;{{ i18n.t(&#x27;register.verifyEmail&#x27;) }}
+        &lt;/h1&gt;
+        &lt;p class&#x3D;&quot;subtitle m-0 text-white/80 dark:text-gray-600&quot;&gt;{{ i18n.t(&#x27;register.verificationCodeSent&#x27;) }} {{
+          formData.email }}&lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;form (ngSubmit)&#x3D;&quot;onVerificationSubmit()&quot; class&#x3D;&quot;form&quot;&gt;
+        &lt;div class&#x3D;&quot;form-group mb-6&quot;&gt;
+          &lt;label for&#x3D;&quot;verificationCode&quot; class&#x3D;&quot;block font-semibold mb-2 text-white dark:text-gray-900&quot;&gt;{{
+            i18n.t(&#x27;register.verificationCode&#x27;) }}&lt;/label&gt;
+          &lt;input id&#x3D;&quot;verificationCode&quot; type&#x3D;&quot;text&quot; [(ngModel)]&#x3D;&quot;verificationCode&quot; name&#x3D;&quot;verificationCode&quot;
+            [placeholder]&#x3D;&quot;i18n.t(&#x27;register.enter6DigitCode&#x27;)&quot; maxlength&#x3D;&quot;6&quot;
+            class&#x3D;&quot;glass-input verification-input w-full text-2xl text-center tracking-[0.5rem] font-bold&quot; required /&gt;
+          &lt;div class&#x3D;&quot;resend-section text-center mt-4&quot;&gt;
+            &lt;p class&#x3D;&quot;resend-text m-0 mb-2 text-gray-500&quot;&gt;{{ i18n.t(&#x27;register.didntReceiveCode&#x27;) }}&lt;/p&gt;
+            &lt;button type&#x3D;&quot;button&quot; (click)&#x3D;&quot;resendCode()&quot; [disabled]&#x3D;&quot;!canResend() || loading()&quot;
+              class&#x3D;&quot;resend-button bg-transparent border-none text-primary-500 cursor-pointer font-semibold px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed hover:underline&quot;&gt;
+              &lt;span *ngIf&#x3D;&quot;!canResend() &amp;&amp; !loading()&quot;&gt;{{ i18n.t(&#x27;register.resendIn&#x27;) }} {{ resendCountdown() }}s&lt;/span&gt;
+              &lt;span *ngIf&#x3D;&quot;canResend() &amp;&amp; !loading()&quot;&gt;{{ i18n.t(&#x27;register.resendCode&#x27;) }}&lt;/span&gt;
+              &lt;span *ngIf&#x3D;&quot;loading()&quot;&gt;{{ i18n.t(&#x27;register.sending&#x27;) }}&lt;/span&gt;
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;button type&#x3D;&quot;submit&quot; [disabled]&#x3D;&quot;loading()&quot;
+          class&#x3D;&quot;btn btn-primary w-full px-6 py-3 rounded-lg font-semibold text-white bg-gradient-to-r from-primary-500 to-purple-600 border-none cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed&quot;&gt;
+          &lt;span *ngIf&#x3D;&quot;!loading()&quot;&gt;{{ i18n.t(&#x27;register.verifyEmail&#x27;) }}&lt;/span&gt;
+          &lt;span *ngIf&#x3D;&quot;loading()&quot;&gt;{{ i18n.t(&#x27;register.verifying&#x27;) }}&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Step 3: Success --&gt;
+    &lt;div *ngIf&#x3D;&quot;currentStep() &#x3D;&#x3D;&#x3D; &#x27;success&#x27;&quot; class&#x3D;&quot;step-content success-content text-center&quot;&gt;
+      &lt;div class&#x3D;&quot;success-icon text-success-500 mb-6&quot;&gt;
+        &lt;svg width&#x3D;&quot;80&quot; height&#x3D;&quot;80&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;&gt;
+          &lt;path d&#x3D;&quot;M22 11.08V12a10 10 0 1 1-5.93-9.14&quot;&gt;&lt;/path&gt;
+          &lt;polyline points&#x3D;&quot;22 4 12 14.01 9 11.01&quot;&gt;&lt;/polyline&gt;
+        &lt;/svg&gt;
+      &lt;/div&gt;
+      &lt;h1 class&#x3D;&quot;title text-3xl font-bold m-0 mb-2 text-white dark:text-gray-900&quot;&gt;{{ i18n.t(&#x27;register.accountCreated&#x27;)
+        }}&lt;/h1&gt;
+      &lt;p class&#x3D;&quot;subtitle m-0 mb-6 text-white/80 dark:text-gray-600&quot;&gt;{{ i18n.t(&#x27;register.accountCreatedSuccess&#x27;) }}&lt;/p&gt;
+      &lt;button (click)&#x3D;&quot;goToLogin()&quot;
+        class&#x3D;&quot;btn btn-primary w-full px-6 py-3 rounded-lg font-semibold text-white bg-gradient-to-r from-primary-500 to-purple-600 border-none cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-lg&quot;&gt;{{
+        i18n.t(&#x27;register.goToLogin&#x27;) }}&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="register-container min-h-screen flex items-center justify-center p-4 relative">  <!-- Background Graphics -->  <!-- Background Graphics handled globally -->  <!-- Header with Theme/Language Switcher -->  <div    class="fixed top-0 left-0 right-0 z-50 glass-card !rounded-none !border-x-0 !border-t-0 border-b border-white/10 p-4">    <div class="container mx-auto flex items-center justify-between">      <div class="flex items-center space-x-3">        <button (click)="navigateToLanding()" class="glass-button flex items-center space-x-2"          [title]="i18n.t(\'login.backToHome\')">          <span class="text-lg">←</span>          <span class="hidden md:inline font-medium">{{ i18n.t(\'login.home\') }}</span>        </button>        <div class="text-3xl">🎥</div>        <h1 class="text-xl font-bold ai-gradient-text">IVAP Platform</h1>      </div>      <div class="flex items-center space-x-3">        <!-- Language Switcher -->        <button (click)="toggleLanguage()" class="glass-button flex items-center space-x-2"          [title]="currentLang() === \'th\' ? i18n.t(\'kiosk.switchToEnglish\') : i18n.t(\'kiosk.switchToThai\')">          <span class="text-lg">{{ currentLang() === \'th\' ? \'🇹🇭\' : \'🇬🇧\' }}</span>          <span class="hidden md:inline font-medium">{{ currentLang() === \'th\' ? i18n.t(\'kiosk.thai\') :            i18n.t(\'kiosk.english\') }}</span>        </button>        <!-- Theme Switcher -->        <button (click)="toggleTheme()" class="glass-button flex items-center space-x-2" [title]="getThemeLabel()">          <span class="text-lg">{{ getThemeIcon() }}</span>          <span class="hidden md:inline font-medium">{{ getThemeLabel() }}</span>        </button>      </div>    </div>  </div>  <div class="register-card glass-card max-w-lg w-full relative z-10 mt-20 p-8 sm:p-12">    <!-- Step 1: Information -->    <div *ngIf="currentStep() === \'info\'" class="step-content">      <!-- Header -->      <div class="header text-center mb-8">        <div class="logo text-primary-500 mb-4 inline-block">          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>            <path d="M2 17l10 5 10-5"></path>            <path d="M2 12l10 5 10-5"></path>          </svg>        </div>        <h1 class="title text-3xl font-bold m-0 mb-2 text-slate-900 dark:text-white">{{ i18n.t(\'register.createAccount\')          }}</h1>        <p class="subtitle m-0 text-slate-700 dark:text-gray-300">{{ i18n.t(\'register.signUpToGetStarted\') }}</p>      </div>      <!-- Form -->      <form (ngSubmit)="onSubmit()" class="form">        <div class="form-row grid grid-cols-2 gap-4 mb-6">          <div class="form-group mb-6">            <label for="firstName" class="block font-semibold mb-2 text-slate-900 dark:text-white">{{              i18n.t(\'register.firstName\') }}</label>            <input id="firstName" type="text" [(ngModel)]="formData.firstName" name="firstName" placeholder="John"              class="glass-input w-full" required />          </div>          <div class="form-group mb-6">            <label for="lastName" class="block font-semibold mb-2 text-slate-900 dark:text-white">{{              i18n.t(\'register.lastName\') }}</label>            <input id="lastName" type="text" [(ngModel)]="formData.lastName" name="lastName" placeholder="Doe"              class="glass-input w-full" required />          </div>        </div>        <div class="form-group mb-6">          <label for="email" class="block font-semibold mb-2 text-slate-900 dark:text-white">{{ i18n.t(\'register.email\')            }}</label>          <input id="email" type="email" [(ngModel)]="formData.email" name="email" placeholder="john.doe@example.com"            class="glass-input w-full" required />        </div>        <div class="form-group mb-6">          <label for="password" class="block font-semibold mb-2 text-slate-900 dark:text-white">{{            i18n.t(\'register.password\') }}</label>          <div class="password-input-wrapper relative">            <input id="password" [type]="showPassword() ? \'text\' : \'password\'" [(ngModel)]="formData.password"              (input)="checkPasswordStrength(formData.password)" name="password"              [placeholder]="i18n.t(\'register.enterPassword\')"              class="form-input w-full px-4 py-3 pr-12 rounded-lg text-base transition-all backdrop-blur-sm" required />            <button type="button" (click)="togglePasswordVisibility()"              class="password-toggle absolute right-3 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-gray-500 p-0 flex items-center justify-center hover:text-primary-500">              <svg *ngIf="!showPassword()" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"                stroke-width="2">                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>                <circle cx="12" cy="12" r="3"></circle>              </svg>              <svg *ngIf="showPassword()" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"                stroke-width="2">                <path                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">                </path>                <line x1="1" y1="1" x2="23" y2="23"></line>              </svg>            </button>          </div>          <div class="password-strength flex items-center gap-2 mt-2" *ngIf="formData.password">            <div class="strength-bar flex-1 h-1 bg-gray-200 dark:bg-gray-700 rounded overflow-hidden"              [class]="getPasswordStrengthColor()">              <div class="strength-fill h-full transition-all" [style.width.%]="passwordStrength()"></div>            </div>            <span class="strength-text text-sm font-semibold text-gray-500">{{ getPasswordStrengthText() }}</span>          </div>          <div class="password-requirements mt-3 text-sm" *ngIf="formData.password">            <div class="requirement flex items-center gap-2 text-gray-400 mb-1"              [class.met]="passwordRequirements().minLength"              [class.text-success-500]="passwordRequirements().minLength">              <span class="font-semibold">{{ passwordRequirements().minLength ? \'✓\' : \'○\' }}</span>              {{ i18n.t(\'register.atLeast8Characters\') }}            </div>            <div class="requirement flex items-center gap-2 text-gray-400 mb-1"              [class.met]="passwordRequirements().hasUppercase"              [class.text-success-500]="passwordRequirements().hasUppercase">              <span class="font-semibold">{{ passwordRequirements().hasUppercase ? \'✓\' : \'○\' }}</span>              {{ i18n.t(\'register.containsUppercase\') }}            </div>            <div class="requirement flex items-center gap-2 text-gray-400 mb-1"              [class.met]="passwordRequirements().hasLowercase"              [class.text-success-500]="passwordRequirements().hasLowercase">              <span class="font-semibold">{{ passwordRequirements().hasLowercase ? \'✓\' : \'○\' }}</span>              {{ i18n.t(\'register.containsLowercase\') }}            </div>            <div class="requirement flex items-center gap-2 text-gray-400 mb-1"              [class.met]="passwordRequirements().hasNumber"              [class.text-success-500]="passwordRequirements().hasNumber">              <span class="font-semibold">{{ passwordRequirements().hasNumber ? \'✓\' : \'○\' }}</span>              {{ i18n.t(\'register.containsNumber\') }}            </div>            <div class="requirement flex items-center gap-2 text-gray-400 mb-1"              [class.met]="passwordRequirements().hasSpecial"              [class.text-success-500]="passwordRequirements().hasSpecial">              <span class="font-semibold">{{ passwordRequirements().hasSpecial ? \'✓\' : \'○\' }}</span>              {{ i18n.t(\'register.containsSpecial\') }}            </div>          </div>        </div>        <div class="form-group mb-6">          <label for="confirmPassword" class="block font-semibold mb-2 text-slate-900 dark:text-white">{{            i18n.t(\'register.confirmPassword\') }}</label>          <div class="password-input-wrapper relative">            <input id="confirmPassword" [type]="showConfirmPassword() ? \'text\' : \'password\'"              [(ngModel)]="formData.confirmPassword" name="confirmPassword"              [placeholder]="i18n.t(\'register.confirmYourPassword\')" class="glass-input w-full px-4 py-3 pr-12"              required />            <button type="button" (click)="toggleConfirmPasswordVisibility()"              class="password-toggle absolute right-3 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-gray-500 p-0 flex items-center justify-center hover:text-primary-500">              <svg *ngIf="!showConfirmPassword()" width="20" height="20" viewBox="0 0 24 24" fill="none"                stroke="currentColor" stroke-width="2">                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>                <circle cx="12" cy="12" r="3"></circle>              </svg>              <svg *ngIf="showConfirmPassword()" width="20" height="20" viewBox="0 0 24 24" fill="none"                stroke="currentColor" stroke-width="2">                <path                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">                </path>                <line x1="1" y1="1" x2="23" y2="23"></line>              </svg>            </button>          </div>        </div>        <div class="form-group checkbox-group mb-6">          <label            class="checkbox-label flex items-start gap-3 cursor-pointer text-sm leading-relaxed text-slate-700 dark:text-gray-300">            <input type="checkbox" [(ngModel)]="formData.acceptTerms" name="acceptTerms"              class="checkbox mt-1 cursor-pointer" />            <span>              {{ i18n.t(\'register.acceptTerms\') }}              <a href="/terms" target="_blank" class="link text-primary-500 hover:underline">{{                i18n.t(\'register.termsAndConditions\') }}</a>              {{ i18n.t(\'register.and\') }}              <a href="/privacy" target="_blank" class="link text-primary-500 hover:underline">{{                i18n.t(\'register.privacyPolicy\') }}</a>            </span>          </label>        </div>        <button type="submit" [disabled]="loading()"          class="btn btn-primary w-full px-6 py-3 rounded-lg font-semibold text-white bg-gradient-to-r from-primary-500 to-purple-600 border-none cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed">          <span *ngIf="!loading()">{{ i18n.t(\'register.createAccount\') }}</span>          <span *ngIf="loading()">{{ i18n.t(\'register.creating\') }}</span>        </button>      </form>      <!-- Footer -->      <div class="footer text-center mt-6">        <p class="m-0 text-slate-700 dark:text-gray-300">{{ i18n.t(\'register.alreadyHaveAccount\') }} <a            routerLink="/portal/login" class="link text-primary-500 hover:underline">{{ i18n.t(\'register.signIn\') }}</a>        </p>      </div>    </div>    <!-- Step 2: Verification -->    <div *ngIf="currentStep() === \'verification\'" class="step-content">      <div class="header text-center mb-8">        <button (click)="goBack()"          class="back-button absolute top-0 left-0 w-10 h-10 flex items-center justify-center bg-white/10 rounded-lg border border-white/20 text-white cursor-pointer transition-all hover:bg-white/20">          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">            <path d="M19 12H5M12 19l-7-7 7-7"></path>          </svg>        </button>        <h1 class="title text-3xl font-bold m-0 mb-2 text-white dark:text-gray-900">{{ i18n.t(\'register.verifyEmail\') }}        </h1>        <p class="subtitle m-0 text-white/80 dark:text-gray-600">{{ i18n.t(\'register.verificationCodeSent\') }} {{          formData.email }}</p>      </div>      <form (ngSubmit)="onVerificationSubmit()" class="form">        <div class="form-group mb-6">          <label for="verificationCode" class="block font-semibold mb-2 text-white dark:text-gray-900">{{            i18n.t(\'register.verificationCode\') }}</label>          <input id="verificationCode" type="text" [(ngModel)]="verificationCode" name="verificationCode"            [placeholder]="i18n.t(\'register.enter6DigitCode\')" maxlength="6"            class="glass-input verification-input w-full text-2xl text-center tracking-[0.5rem] font-bold" required />          <div class="resend-section text-center mt-4">            <p class="resend-text m-0 mb-2 text-gray-500">{{ i18n.t(\'register.didntReceiveCode\') }}</p>            <button type="button" (click)="resendCode()" [disabled]="!canResend() || loading()"              class="resend-button bg-transparent border-none text-primary-500 cursor-pointer font-semibold px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed hover:underline">              <span *ngIf="!canResend() && !loading()">{{ i18n.t(\'register.resendIn\') }} {{ resendCountdown() }}s</span>              <span *ngIf="canResend() && !loading()">{{ i18n.t(\'register.resendCode\') }}</span>              <span *ngIf="loading()">{{ i18n.t(\'register.sending\') }}</span>            </button>          </div>        </div>        <button type="submit" [disabled]="loading()"          class="btn btn-primary w-full px-6 py-3 rounded-lg font-semibold text-white bg-gradient-to-r from-primary-500 to-purple-600 border-none cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed">          <span *ngIf="!loading()">{{ i18n.t(\'register.verifyEmail\') }}</span>          <span *ngIf="loading()">{{ i18n.t(\'register.verifying\') }}</span>        </button>      </form>    </div>    <!-- Step 3: Success -->    <div *ngIf="currentStep() === \'success\'" class="step-content success-content text-center">      <div class="success-icon text-success-500 mb-6">        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>          <polyline points="22 4 12 14.01 9 11.01"></polyline>        </svg>      </div>      <h1 class="title text-3xl font-bold m-0 mb-2 text-white dark:text-gray-900">{{ i18n.t(\'register.accountCreated\')        }}</h1>      <p class="subtitle m-0 mb-6 text-white/80 dark:text-gray-600">{{ i18n.t(\'register.accountCreatedSuccess\') }}</p>      <button (click)="goToLogin()"        class="btn btn-primary w-full px-6 py-3 rounded-lg font-semibold text-white bg-gradient-to-r from-primary-500 to-purple-600 border-none cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-lg">{{        i18n.t(\'register.goToLogin\') }}</button>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AccessControlComponent', 'selector': 'app-access-control'},{'name': 'AccessGroupsComponent', 'selector': 'app-access-groups'},{'name': 'AccessibilityDashboardComponent', 'selector': 'app-accessibility-dashboard'},{'name': 'AccessLogsComponent', 'selector': 'app-access-logs'},{'name': 'AccessSchedulesComponent', 'selector': 'app-access-schedules'},{'name': 'AccordionComponent', 'selector': 'app-accordion'},{'name': 'AccordionDemoComponent', 'selector': 'app-accordion-demo'},{'name': 'AdvancedDataTableComponent', 'selector': 'app-advanced-data-table'},{'name': 'AdvancedDataTableDemoComponent', 'selector': 'app-advanced-data-table-demo'},{'name': 'AdvancedFeaturesDashboardComponent', 'selector': 'app-advanced-features-dashboard'},{'name': 'AdvancedFormsComponent', 'selector': 'app-advanced-forms'},{'name': 'AdvancedRichTextComponent', 'selector': 'app-advanced-rich-text'},{'name': 'AdvancedUiDemoComponent', 'selector': 'app-advanced-ui-demo'},{'name': 'AIModelsComponent', 'selector': 'app-ai-models'},{'name': 'AlertComponent', 'selector': 'app-alert'},{'name': 'AlertHistoryComponent', 'selector': 'app-alert-history'},{'name': 'AlertsComponent', 'selector': 'app-alerts'},{'name': 'ApexChartComponent', 'selector': 'app-apex-chart'},{'name': 'App', 'selector': 'app-root'},{'name': 'AttendanceComponent', 'selector': 'app-attendance'},{'name': 'AuditLogsComponent', 'selector': 'app-audit-logs'},{'name': 'AvatarComponent', 'selector': 'app-avatar'},{'name': 'BackupRestoreComponent', 'selector': 'app-backup-restore'},{'name': 'BadgeComponent', 'selector': 'app-badge'},{'name': 'BaseComponent', 'selector': ''},{'name': 'BiometricDataComponent', 'selector': 'app-biometric-data'},{'name': 'BreadcrumbComponent', 'selector': 'app-breadcrumb'},{'name': 'CalendarComponent', 'selector': 'app-calendar'},{'name': 'CalendarDemoComponent', 'selector': 'app-calendar-demo'},{'name': 'ChartComponent', 'selector': 'app-chart'},{'name': 'CheckboxComponent', 'selector': 'app-checkbox'},{'name': 'ColorPickerComponent', 'selector': 'app-color-picker'},{'name': 'ComingSoonComponent', 'selector': 'app-coming-soon'},{'name': 'CompaniesComponent', 'selector': 'app-companies'},{'name': 'CompanyDocumentsComponent', 'selector': 'app-company-documents'},{'name': 'CompanyHolidaysComponent', 'selector': 'app-company-holidays'},{'name': 'ComponentShowcaseComponent', 'selector': 'app-component-showcase'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DataTableComponent', 'selector': 'app-data-table'},{'name': 'DateTimePickerComponent', 'selector': 'app-date-time-picker'},{'name': 'DepartmentsComponent', 'selector': 'app-departments'},{'name': 'DevicesComponent', 'selector': 'app-devices'},{'name': 'DividerComponent', 'selector': 'app-divider'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DoorsComponent', 'selector': 'app-doors'},{'name': 'DraggableCardsComponent', 'selector': 'app-draggable-cards'},{'name': 'DraggableCardsDemoComponent', 'selector': 'app-draggable-cards-demo'},{'name': 'EChartsChartComponent', 'selector': 'app-echarts-chart'},{'name': 'EChartsDemoComponent', 'selector': 'app-echarts-demo'},{'name': 'EmployeesComponent', 'selector': 'app-employees'},{'name': 'EmployeesNewComponent', 'selector': 'app-employees-new'},{'name': 'EmptyStateComponent', 'selector': 'app-empty-state'},{'name': 'Error401Component', 'selector': 'app-error-401'},{'name': 'Error404Component', 'selector': 'app-error-404'},{'name': 'Error500Component', 'selector': 'app-error-500'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'ErrorToastComponent', 'selector': 'app-error-toast'},{'name': 'EventAnalyticsComponent', 'selector': 'app-event-analytics'},{'name': 'EventCheckinHistoryComponent', 'selector': 'app-event-checkin-history'},{'name': 'EventEmailConfirmationComponent', 'selector': 'app-event-email-confirmation'},{'name': 'EventKioskConfigComponent', 'selector': 'app-event-kiosk-config'},{'name': 'EventRegistrationComponent', 'selector': 'app-event-registration'},{'name': 'EventRegistrationFieldsComponent', 'selector': 'app-event-registration-fields'},{'name': 'EventsComponent', 'selector': 'app-events'},{'name': 'FaceRecognitionComponent', 'selector': 'app-face-recognition'},{'name': 'FaceRecognitionDemoComponent', 'selector': 'app-face-recognition-demo'},{'name': 'FaceRecognitionLiveComponent', 'selector': 'app-face-recognition-live'},{'name': 'FaceRecognitionTestComponent', 'selector': 'app-face-recognition-test'},{'name': 'FaqComponent', 'selector': 'app-faq'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'FilterSectionComponent', 'selector': 'app-filter-section'},{'name': 'ForgotPasswordComponent', 'selector': 'app-forgot-password'},{'name': 'FormFieldComponent', 'selector': 'app-form-field'},{'name': 'GalleryComponent', 'selector': 'app-gallery'},{'name': 'GalleryDemoComponent', 'selector': 'app-gallery-demo'},{'name': 'GlassButtonComponent', 'selector': 'app-glass-button'},{'name': 'GlassCardComponent', 'selector': 'app-glass-card'},{'name': 'GlassInputComponent', 'selector': 'app-glass-input'},{'name': 'GroupFaceRecognitionComponent', 'selector': 'app-group-face-recognition'},{'name': 'GuestsComponent', 'selector': 'app-guests'},{'name': 'HardwareStatusDashboardComponent', 'selector': 'app-hardware-status-dashboard'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HeatmapAnalyticsComponent', 'selector': 'app-heatmap-analytics'},{'name': 'HelpCenter', 'selector': 'app-help-center'},{'name': 'HelpCenterComponent', 'selector': 'app-help-center'},{'name': 'HrDashboardComponent', 'selector': 'app-hr-dashboard'},{'name': 'IconComponent', 'selector': 'app-icon'},{'name': 'IncidentReportsComponent', 'selector': 'app-incident-reports'},{'name': 'KioskViewComponent', 'selector': 'app-kiosk-view'},{'name': 'LandingComponent', 'selector': 'app-landing'},{'name': 'LeafletMapComponent', 'selector': 'app-leaflet-map'},{'name': 'LeavesComponent', 'selector': 'app-leaves'},{'name': 'LicenseManagementComponent', 'selector': 'app-license-management'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoadingStateComponent', 'selector': 'app-loading-state'},{'name': 'LocationsComponent', 'selector': 'app-locations'},{'name': 'LockScreenComponent', 'selector': 'app-lock-screen'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MapDemoComponent', 'selector': 'app-map-demo'},{'name': 'MaterialButtonComponent', 'selector': 'app-material-button'},{'name': 'MaterialCardComponent', 'selector': 'app-material-card'},{'name': 'MaterialDialogComponent', 'selector': 'app-material-dialog'},{'name': 'MaterialInputComponent', 'selector': 'app-material-input'},{'name': 'MaterialTableComponent', 'selector': 'app-material-table'},{'name': 'MfaSetupComponent', 'selector': 'app-mfa-setup'},{'name': 'MobileCameraComponent', 'selector': 'app-mobile-camera'},{'name': 'MobileDemoComponent', 'selector': 'app-mobile-demo'},{'name': 'ModalComponent', 'selector': 'app-modal'},{'name': 'ModalFormComponent', 'selector': 'app-modal-form'},{'name': 'ModuleSubscriptionComponent', 'selector': 'app-module-subscription'},{'name': 'MonitoringComponent', 'selector': 'app-monitoring'},{'name': 'NotificationCenterComponent', 'selector': 'app-notification-center'},{'name': 'NotificationDemoComponent', 'selector': 'app-notification-demo'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'NotificationSettingsComponent', 'selector': 'app-notification-settings'},{'name': 'OffcanvasComponent', 'selector': 'app-offcanvas'},{'name': 'OffcanvasDemoComponent', 'selector': 'app-offcanvas-demo'},{'name': 'OvertimeRequestsComponent', 'selector': 'app-overtime-requests'},{'name': 'PageLayoutComponent', 'selector': 'app-page-layout'},{'name': 'PaginationComponent', 'selector': 'app-pagination'},{'name': 'ParkingBlacklistComponent', 'selector': 'app-parking-blacklist'},{'name': 'ParkingDashboardComponent', 'selector': 'app-parking-dashboard'},{'name': 'ParkingEntryComponent', 'selector': 'app-parking-entry'},{'name': 'ParkingExitComponent', 'selector': 'app-parking-exit'},{'name': 'ParkingLogsComponent', 'selector': 'app-parking-logs'},{'name': 'ParkingReservationComponent', 'selector': 'app-parking-reservation'},{'name': 'ParkingRulesComponent', 'selector': 'app-parking-rules'},{'name': 'ParkingSpotsComponent', 'selector': 'app-parking-spots'},{'name': 'ParkingStatisticsComponent', 'selector': 'app-parking-statistics'},{'name': 'PayrollExportComponent', 'selector': 'app-payroll-export'},{'name': 'PerformanceDashboardComponent', 'selector': 'app-performance-dashboard'},{'name': 'PopoverComponent', 'selector': 'app-popover'},{'name': 'PortalLayoutComponent', 'selector': 'app-portal-layout'},{'name': 'PositionsComponent', 'selector': 'app-positions'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'PublicVerificationComponent', 'selector': 'app-public-verification'},{'name': 'QRCodesComponent', 'selector': 'app-qr-codes'},{'name': 'RadioComponent', 'selector': 'app-radio'},{'name': 'RangeSliderComponent', 'selector': 'app-range-slider'},{'name': 'RatingComponent', 'selector': 'app-rating'},{'name': 'RatingDemoComponent', 'selector': 'app-rating-demo'},{'name': 'RbacComponent', 'selector': 'app-rbac'},{'name': 'RecognitionHistoryComponent', 'selector': 'app-recognition-history'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReportsComponent', 'selector': 'app-reports'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'RFIDCardsComponent', 'selector': 'app-rfid-cards'},{'name': 'RichTextComponent', 'selector': 'app-rich-text'},{'name': 'RichTextEditorComponent', 'selector': 'app-rich-text-editor'},{'name': 'RichTextEditorDemoComponent', 'selector': 'app-rich-text-editor-demo'},{'name': 'SafetyDashboardComponent', 'selector': 'app-safety-dashboard'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ShiftsComponent', 'selector': 'app-shifts'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SkeletonComponent', 'selector': 'app-skeleton'},{'name': 'StatisticsCardComponent', 'selector': 'app-statistics-card'},{'name': 'StatisticsGridComponent', 'selector': 'app-statistics-grid'},{'name': 'StepperComponent', 'selector': 'app-stepper'},{'name': 'StructureComponent', 'selector': 'app-structure'},{'name': 'SuperAdminAnnouncementsComponent', 'selector': 'app-super-admin-announcements'},{'name': 'SuperAdminDashboardComponent', 'selector': 'app-super-admin-dashboard'},{'name': 'SuperAdminLayoutComponent', 'selector': 'app-super-admin-layout'},{'name': 'SuperAdminReportsComponent', 'selector': 'app-super-admin-reports'},{'name': 'SurveillanceMapComponent', 'selector': 'app-surveillance-map'},{'name': 'SwiperGalleryComponent', 'selector': 'app-swiper-gallery'},{'name': 'SwiperGalleryDemoComponent', 'selector': 'app-swiper-gallery-demo'},{'name': 'SwitchComponent', 'selector': 'app-switch'},{'name': 'SystemSettingsComponent', 'selector': 'app-system-settings'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TemplateManagementComponent', 'selector': 'app-template-management'},{'name': 'TestApiComponent', 'selector': 'app-test-api'},{'name': 'ThemeSwitcherComponent', 'selector': 'app-theme-switcher'},{'name': 'TimelineComponent', 'selector': 'app-timeline'},{'name': 'TimelineDemoComponent', 'selector': 'app-timeline-demo'},{'name': 'TimesheetsComponent', 'selector': 'app-timesheets'},{'name': 'TimestampComponent', 'selector': 'app-timestamp'},{'name': 'TimestampDemoComponent', 'selector': 'app-timestamp-demo'},{'name': 'TooltipComponent', 'selector': 'app-tooltip'},{'name': 'UsersComponent', 'selector': 'app-users'},{'name': 'ValidationDemoComponent', 'selector': 'app-validation-demo'},{'name': 'VehiclesComponent', 'selector': 'app-vehicles'},{'name': 'VideoAnalyticsComponent', 'selector': 'app-video-analytics'},{'name': 'VideoPlaybackComponent', 'selector': 'app-video-playback'},{'name': 'VisitorBadgesComponent', 'selector': 'app-visitor-badges'},{'name': 'VisitorBlacklistComponent', 'selector': 'app-visitor-blacklist'},{'name': 'VisitorDashboardComponent', 'selector': 'app-visitor-dashboard'},{'name': 'VisitorInvitationsComponent', 'selector': 'app-visitor-invitations'},{'name': 'VisitorParcelsComponent', 'selector': 'app-visitor-parcels'},{'name': 'VisitorReportsComponent', 'selector': 'app-visitor-reports'},{'name': 'VisitorsComponent', 'selector': 'app-visitors'},{'name': 'WatchlistComponent', 'selector': 'app-watchlist'},{'name': 'ZoneConfigComponent', 'selector': 'app-zone-config'}];
+    var DIRECTIVES = [{'name': 'HasPermissionDirective', 'selector': '[appHasPermission]'},{'name': 'ImageOptimizationDirective', 'selector': '[appImageOptimization]'}];
+    var ACTUAL_COMPONENT = {'name': 'RegisterComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'RegisterComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

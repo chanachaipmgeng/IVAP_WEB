@@ -1,0 +1,1526 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  VideoAnalyticsComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/portal/video-analytics-group/video-analytics/video-analytics.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-video-analytics</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../interfaces/Module.html" target="_self" >CommonModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >FormsModule</a></code>
+                                <code><a href="../components/GlassCardComponent.html" target="_self" >GlassCardComponent</a></code>
+                                <code><a href="../components/GlassButtonComponent.html" target="_self" >GlassButtonComponent</a></code>
+                                <code><a href="../components/DataTableComponent.html" target="_self" >DataTableComponent</a></code>
+                                <code><a href="../components/ModalComponent.html" target="_self" >ModalComponent</a></code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./video-analytics.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./video-analytics.component.scss</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#actions" >actions</a>
+                            </li>
+                            <li>
+                                <a href="#analyticsTypes" >analyticsTypes</a>
+                            </li>
+                            <li>
+                                <a href="#columns" >columns</a>
+                            </li>
+                            <li>
+                                <a href="#formData" >formData</a>
+                            </li>
+                            <li>
+                                <a href="#saving" >saving</a>
+                            </li>
+                            <li>
+                                <a href="#showModal" >showModal</a>
+                            </li>
+                            <li>
+                                <a href="#tasks" >tasks</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#closeModal" >closeModal</a>
+                            </li>
+                            <li>
+                                <a href="#configureTask" >configureTask</a>
+                            </li>
+                            <li>
+                                <a href="#deleteTask" >deleteTask</a>
+                            </li>
+                            <li>
+                                <a href="#loadTasks" >loadTasks</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#openAddModal" >openAddModal</a>
+                            </li>
+                            <li>
+                                <a href="#saveTask" >saveTask</a>
+                            </li>
+                            <li>
+                                <a href="#t" >t</a>
+                            </li>
+                            <li>
+                                <a href="#toggleTask" >toggleTask</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(api: <a href="../injectables/ApiService.html" target="_self">ApiService</a>, auth: <a href="../injectables/AuthService.html" target="_self">AuthService</a>, i18n: <a href="../injectables/I18nService.html" target="_self">I18nService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="110" class="link-to-prism">src/app/features/portal/video-analytics-group/video-analytics/video-analytics.component.ts:110</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>api</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ApiService.html" target="_self" >ApiService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>auth</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AuthService.html" target="_self" >AuthService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>i18n</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/I18nService.html" target="_self" >I18nService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="closeModal"></a>
+                    <span class="name">
+                        <span ><b>closeModal</b></span>
+                        <a href="#closeModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>closeModal()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="147"
+                                    class="link-to-prism">src/app/features/portal/video-analytics-group/video-analytics/video-analytics.component.ts:147</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="configureTask"></a>
+                    <span class="name">
+                        <span ><b>configureTask</b></span>
+                        <a href="#configureTask"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>configureTask(task: <a href="../interfaces/AnalyticsTask.html" target="_self">AnalyticsTask</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="187"
+                                    class="link-to-prism">src/app/features/portal/video-analytics-group/video-analytics/video-analytics.component.ts:187</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>task</td>
+                                            <td>
+                                                            <code><a href="../interfaces/AnalyticsTask.html" target="_self" >AnalyticsTask</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteTask"></a>
+                    <span class="name">
+                        <span ><b>deleteTask</b></span>
+                        <a href="#deleteTask"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>deleteTask(task: <a href="../interfaces/AnalyticsTask.html" target="_self">AnalyticsTask</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="192"
+                                    class="link-to-prism">src/app/features/portal/video-analytics-group/video-analytics/video-analytics.component.ts:192</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>task</td>
+                                            <td>
+                                                            <code><a href="../interfaces/AnalyticsTask.html" target="_self" >AnalyticsTask</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadTasks"></a>
+                    <span class="name">
+                        <span ><b>loadTasks</b></span>
+                        <a href="#loadTasks"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>loadTasks()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="122"
+                                    class="link-to-prism">src/app/features/portal/video-analytics-group/video-analytics/video-analytics.component.ts:122</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="118"
+                                    class="link-to-prism">src/app/features/portal/video-analytics-group/video-analytics/video-analytics.component.ts:118</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openAddModal"></a>
+                    <span class="name">
+                        <span ><b>openAddModal</b></span>
+                        <a href="#openAddModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>openAddModal()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="138"
+                                    class="link-to-prism">src/app/features/portal/video-analytics-group/video-analytics/video-analytics.component.ts:138</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveTask"></a>
+                    <span class="name">
+                        <span ><b>saveTask</b></span>
+                        <a href="#saveTask"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>saveTask()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="151"
+                                    class="link-to-prism">src/app/features/portal/video-analytics-group/video-analytics/video-analytics.component.ts:151</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="t"></a>
+                    <span class="name">
+                        <span ><b>t</b></span>
+                        <a href="#t"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>t(key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="206"
+                                    class="link-to-prism">src/app/features/portal/video-analytics-group/video-analytics/video-analytics.component.ts:206</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>key</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleTask"></a>
+                    <span class="name">
+                        <span ><b>toggleTask</b></span>
+                        <a href="#toggleTask"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleTask(task: <a href="../interfaces/AnalyticsTask.html" target="_self">AnalyticsTask</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="174"
+                                    class="link-to-prism">src/app/features/portal/video-analytics-group/video-analytics/video-analytics.component.ts:174</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>task</td>
+                                            <td>
+                                                            <code><a href="../interfaces/AnalyticsTask.html" target="_self" >AnalyticsTask</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="actions"></a>
+                    <span class="name">
+                        <span ><b>actions</b></span>
+                        <a href="#actions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>TableAction[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+    {
+      icon: &#x27;⏸️&#x27;,
+      label: &#x27;Pause/Resume&#x27;,
+      onClick: (row) &#x3D;&gt; this.toggleTask(row)
+    },
+    {
+      icon: &#x27;⚙️&#x27;,
+      label: &#x27;Configure&#x27;,
+      onClick: (row) &#x3D;&gt; this.configureTask(row)
+    },
+    {
+      icon: &#x27;🗑️&#x27;,
+      label: &#x27;Delete&#x27;,
+      variant: &#x27;danger&#x27;,
+      onClick: (row) &#x3D;&gt; this.deleteTask(row)
+    }
+  ]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="93" class="link-to-prism">src/app/features/portal/video-analytics-group/video-analytics/video-analytics.component.ts:93</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="analyticsTypes"></a>
+                    <span class="name">
+                        <span ><b>analyticsTypes</b></span>
+                        <a href="#analyticsTypes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+    { value: &#x27;face_recognition&#x27;, label: &#x27;Face Recognition&#x27; },
+    { value: &#x27;intrusion_detection&#x27;, label: &#x27;Intrusion Detection&#x27; },
+    { value: &#x27;crowd_counting&#x27;, label: &#x27;Crowd Counting&#x27; },
+    { value: &#x27;violence_detection&#x27;, label: &#x27;Violence Detection&#x27; },
+    { value: &#x27;fire_detection&#x27;, label: &#x27;Fire &amp; Smoke Detection&#x27; }
+  ]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/app/features/portal/video-analytics-group/video-analytics/video-analytics.component.ts:62</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="columns"></a>
+                    <span class="name">
+                        <span ><b>columns</b></span>
+                        <a href="#columns"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>TableColumn[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+    { key: &#x27;name&#x27;, label: &#x27;Task Name&#x27;, sortable: true },
+    { key: &#x27;type&#x27;, label: &#x27;Type&#x27;, sortable: true },
+    { key: &#x27;cameraName&#x27;, label: &#x27;Camera&#x27; },
+    {
+      key: &#x27;status&#x27;,
+      label: &#x27;Status&#x27;,
+      render: (value) &#x3D;&gt; {
+        const colors &#x3D; {
+          &#x27;active&#x27;: &#x27;&lt;span class&#x3D;&quot;text-green-600&quot;&gt;●&lt;/span&gt; Active&#x27;,
+          &#x27;paused&#x27;: &#x27;&lt;span class&#x3D;&quot;text-yellow-600&quot;&gt;●&lt;/span&gt; Paused&#x27;,
+          &#x27;stopped&#x27;: &#x27;&lt;span class&#x3D;&quot;text-red-600&quot;&gt;●&lt;/span&gt; Stopped&#x27;
+        };
+        return colors[value as keyof typeof colors] || value;
+      }
+    },
+    {
+      key: &#x27;createdAt&#x27;,
+      label: &#x27;Created&#x27;,
+      render: (value) &#x3D;&gt; new Date(value).toLocaleDateString()
+    }
+  ]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">src/app/features/portal/video-analytics-group/video-analytics/video-analytics.component.ts:70</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="formData"></a>
+                    <span class="name">
+                        <span ><b>formData</b></span>
+                        <a href="#formData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    name: &#x27;&#x27;,
+    type: &#x27;face_recognition&#x27;,
+    cameraId: null
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/features/portal/video-analytics-group/video-analytics/video-analytics.component.ts:56</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saving"></a>
+                    <span class="name">
+                        <span ><b>saving</b></span>
+                        <a href="#saving"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">src/app/features/portal/video-analytics-group/video-analytics/video-analytics.component.ts:54</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showModal"></a>
+                    <span class="name">
+                        <span ><b>showModal</b></span>
+                        <a href="#showModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/app/features/portal/video-analytics-group/video-analytics/video-analytics.component.ts:53</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tasks"></a>
+                    <span class="name">
+                        <span ><b>tasks</b></span>
+                        <a href="#tasks"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;AnalyticsTask[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/app/features/portal/video-analytics-group/video-analytics/video-analytics.component.ts:52</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, signal } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormsModule } from &#x27;@angular/forms&#x27;;
+import { GlassCardComponent } from &#x27;../../../../shared/components/glass-card/glass-card.component&#x27;;
+import { GlassButtonComponent } from &#x27;../../../../shared/components/glass-button/glass-button.component&#x27;;
+import { DataTableComponent, TableColumn, TableAction } from &#x27;../../../../shared/components/data-table/data-table.component&#x27;;
+import { ModalComponent } from &#x27;../../../../shared/components/modal/modal.component&#x27;;
+import { ApiService } from &#x27;../../../../core/services/api.service&#x27;;
+import { AuthService } from &#x27;../../../../core/services/auth.service&#x27;;
+import { I18nService } from &#x27;../../../../core/services/i18n.service&#x27;;
+
+/**
+ * Analytics task interface
+ */
+interface AnalyticsTask {
+  id: number;
+  name: string;
+  type: string;
+  cameraId: number;
+  cameraName: string;
+  status: &#x27;active&#x27; | &#x27;paused&#x27; | &#x27;stopped&#x27;;
+  createdAt: string;
+}
+
+@Component({
+  selector: &#x27;app-video-analytics&#x27;,
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    GlassCardComponent,
+    GlassButtonComponent,
+    DataTableComponent,
+    ModalComponent
+  ],
+  templateUrl: &#x27;./video-analytics.component.html&#x27;,
+  styleUrl: &#x27;./video-analytics.component.scss&#x27;
+})
+export class VideoAnalyticsComponent implements OnInit {
+  tasks &#x3D; signal&lt;AnalyticsTask[]&gt;([]);
+  showModal &#x3D; signal(false);
+  saving &#x3D; signal(false);
+
+  formData: any &#x3D; {
+    name: &#x27;&#x27;,
+    type: &#x27;face_recognition&#x27;,
+    cameraId: null
+  };
+
+  analyticsTypes &#x3D; [
+    { value: &#x27;face_recognition&#x27;, label: &#x27;Face Recognition&#x27; },
+    { value: &#x27;intrusion_detection&#x27;, label: &#x27;Intrusion Detection&#x27; },
+    { value: &#x27;crowd_counting&#x27;, label: &#x27;Crowd Counting&#x27; },
+    { value: &#x27;violence_detection&#x27;, label: &#x27;Violence Detection&#x27; },
+    { value: &#x27;fire_detection&#x27;, label: &#x27;Fire &amp; Smoke Detection&#x27; }
+  ];
+
+  columns: TableColumn[] &#x3D; [
+    { key: &#x27;name&#x27;, label: &#x27;Task Name&#x27;, sortable: true },
+    { key: &#x27;type&#x27;, label: &#x27;Type&#x27;, sortable: true },
+    { key: &#x27;cameraName&#x27;, label: &#x27;Camera&#x27; },
+    {
+      key: &#x27;status&#x27;,
+      label: &#x27;Status&#x27;,
+      render: (value) &#x3D;&gt; {
+        const colors &#x3D; {
+          &#x27;active&#x27;: &#x27;&lt;span class&#x3D;&quot;text-green-600&quot;&gt;●&lt;/span&gt; Active&#x27;,
+          &#x27;paused&#x27;: &#x27;&lt;span class&#x3D;&quot;text-yellow-600&quot;&gt;●&lt;/span&gt; Paused&#x27;,
+          &#x27;stopped&#x27;: &#x27;&lt;span class&#x3D;&quot;text-red-600&quot;&gt;●&lt;/span&gt; Stopped&#x27;
+        };
+        return colors[value as keyof typeof colors] || value;
+      }
+    },
+    {
+      key: &#x27;createdAt&#x27;,
+      label: &#x27;Created&#x27;,
+      render: (value) &#x3D;&gt; new Date(value).toLocaleDateString()
+    }
+  ];
+
+  actions: TableAction[] &#x3D; [
+    {
+      icon: &#x27;⏸️&#x27;,
+      label: &#x27;Pause/Resume&#x27;,
+      onClick: (row) &#x3D;&gt; this.toggleTask(row)
+    },
+    {
+      icon: &#x27;⚙️&#x27;,
+      label: &#x27;Configure&#x27;,
+      onClick: (row) &#x3D;&gt; this.configureTask(row)
+    },
+    {
+      icon: &#x27;🗑️&#x27;,
+      label: &#x27;Delete&#x27;,
+      variant: &#x27;danger&#x27;,
+      onClick: (row) &#x3D;&gt; this.deleteTask(row)
+    }
+  ];
+
+  constructor(
+    private api: ApiService,
+    private auth: AuthService,
+    private i18n: I18nService
+  ) {}
+
+  ngOnInit(): void {
+    this.loadTasks();
+  }
+
+  loadTasks(): void {
+    const companyId &#x3D; this.auth.currentUser()?.companyId;
+    if (!companyId) return;
+
+    // Use correct backend endpoint: /video-analytics/analytics-tasks
+    this.api.get&lt;AnalyticsTask[]&gt;(&#x60;/video-analytics/analytics-tasks&#x60;, { company_id: companyId }).subscribe({
+      next: (response: any) &#x3D;&gt; {
+        this.tasks.set(response.data || response || []);
+      },
+      error: (error) &#x3D;&gt; {
+        console.error(&#x27;Error loading tasks:&#x27;, error);
+        this.tasks.set([]);
+      }
+    });
+  }
+
+  openAddModal(): void {
+    this.formData &#x3D; {
+      name: &#x27;&#x27;,
+      type: &#x27;face_recognition&#x27;,
+      cameraId: null
+    };
+    this.showModal.set(true);
+  }
+
+  closeModal(): void {
+    this.showModal.set(false);
+  }
+
+  saveTask(): void {
+    this.saving.set(true);
+
+    const companyId &#x3D; this.auth.currentUser()?.companyId;
+    const data &#x3D; {
+      ...this.formData,
+      company_id: companyId
+    };
+
+    // Use correct backend endpoint: /video-analytics/analytics-tasks
+    this.api.post(&#x27;/video-analytics/analytics-tasks&#x27;, data).subscribe({
+      next: () &#x3D;&gt; {
+        this.saving.set(false);
+        this.closeModal();
+        this.loadTasks();
+      },
+      error: (error) &#x3D;&gt; {
+        console.error(&#x27;Error saving task:&#x27;, error);
+        this.saving.set(false);
+      }
+    });
+  }
+
+  toggleTask(task: AnalyticsTask): void {
+    const newStatus &#x3D; task.status &#x3D;&#x3D;&#x3D; &#x27;active&#x27; ? &#x27;paused&#x27; : &#x27;active&#x27;;
+    // Use correct backend endpoint: /video-analytics/analytics-tasks/{task_id}
+    this.api.put(&#x60;/video-analytics/analytics-tasks/${task.id}&#x60;, { status: newStatus }).subscribe({
+      next: () &#x3D;&gt; {
+        this.loadTasks();
+      },
+      error: (error) &#x3D;&gt; {
+        console.error(&#x27;Error toggling task:&#x27;, error);
+      }
+    });
+  }
+
+  configureTask(task: AnalyticsTask): void {
+    // Task configuration functionality
+    alert(&#x27;Task configuration coming soon!&#x27;);
+  }
+
+  deleteTask(task: AnalyticsTask): void {
+    if (!confirm(&#x60;Delete task ${task.name}?&#x60;)) return;
+
+    // Use correct backend endpoint: /video-analytics/analytics-tasks/{task_id}
+    this.api.delete(&#x60;/video-analytics/analytics-tasks/${task.id}&#x60;).subscribe({
+      next: () &#x3D;&gt; {
+        this.loadTasks();
+      },
+      error: (error) &#x3D;&gt; {
+        console.error(&#x27;Error deleting task:&#x27;, error);
+      }
+    });
+  }
+
+  t(key: string): string {
+    return this.i18n.translate(key);
+  }
+}
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;space-y-6&quot;&gt;
+  &lt;!-- Header --&gt;
+  &lt;div class&#x3D;&quot;flex items-center justify-between&quot;&gt;
+    &lt;h1 class&#x3D;&quot;text-3xl font-bold text-gray-900 dark:text-gray-100&quot;&gt;
+      Video Analytics Task Management
+    &lt;/h1&gt;
+    &lt;app-glass-button variant&#x3D;&quot;primary&quot; (clicked)&#x3D;&quot;openAddModal()&quot;&gt;
+      ➕ Create Task
+    &lt;/app-glass-button&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Info Card --&gt;
+  &lt;app-glass-card&gt;
+    &lt;div class&#x3D;&quot;flex items-start space-x-4&quot;&gt;
+      &lt;span class&#x3D;&quot;text-3xl&quot;&gt;🔬&lt;/span&gt;
+      &lt;div&gt;
+        &lt;h3 class&#x3D;&quot;font-medium text-gray-900 dark:text-gray-100 mb-1&quot;&gt;AI-Powered Video Analytics&lt;/h3&gt;
+        &lt;p class&#x3D;&quot;text-sm text-gray-600 dark:text-gray-400&quot;&gt;
+          Configure and monitor AI analytics tasks for real-time video processing, detection, and alerts.
+        &lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/app-glass-card&gt;
+
+  &lt;!-- Tasks Table --&gt;
+  &lt;app-data-table
+    [columns]&#x3D;&quot;columns&quot;
+    [data]&#x3D;&quot;tasks()&quot;
+    [actions]&#x3D;&quot;actions&quot;
+    [searchable]&#x3D;&quot;true&quot;
+  &gt;
+    &lt;div actions&gt;
+      &lt;app-glass-button (clicked)&#x3D;&quot;loadTasks()&quot;&gt;
+        🔄 Refresh
+      &lt;/app-glass-button&gt;
+    &lt;/div&gt;
+  &lt;/app-data-table&gt;
+
+  &lt;!-- Create Task Modal --&gt;
+  &lt;app-modal
+    [isOpen]&#x3D;&quot;showModal()&quot;
+    title&#x3D;&quot;Create Analytics Task&quot;
+    [loading]&#x3D;&quot;saving()&quot;
+    (closed)&#x3D;&quot;closeModal()&quot;
+    (confirmed)&#x3D;&quot;saveTask()&quot;
+  &gt;
+    &lt;div class&#x3D;&quot;space-y-4&quot;&gt;
+      &lt;div&gt;
+        &lt;label class&#x3D;&quot;block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300&quot;&gt;
+          Task Name &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;
+        &lt;/label&gt;
+        &lt;input
+          [(ngModel)]&#x3D;&quot;formData.name&quot;
+          type&#x3D;&quot;text&quot;
+          class&#x3D;&quot;glass-input w-full&quot;
+          placeholder&#x3D;&quot;Main Entrance Face Recognition&quot;
+        /&gt;
+      &lt;/div&gt;
+
+      &lt;div&gt;
+        &lt;label class&#x3D;&quot;block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300&quot;&gt;
+          Analytics Type &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;
+        &lt;/label&gt;
+        &lt;select
+          [(ngModel)]&#x3D;&quot;formData.type&quot;
+          class&#x3D;&quot;glass-input w-full&quot;
+        &gt;
+          &lt;option *ngFor&#x3D;&quot;let type of analyticsTypes&quot; [value]&#x3D;&quot;type.value&quot;&gt;
+            {{ type.label }}
+          &lt;/option&gt;
+        &lt;/select&gt;
+      &lt;/div&gt;
+
+      &lt;div&gt;
+        &lt;label class&#x3D;&quot;block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300&quot;&gt;
+          Camera ID &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;
+        &lt;/label&gt;
+        &lt;input
+          [(ngModel)]&#x3D;&quot;formData.cameraId&quot;
+          type&#x3D;&quot;number&quot;
+          class&#x3D;&quot;glass-input w-full&quot;
+          placeholder&#x3D;&quot;1&quot;
+        /&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;glass bg-blue-500/10 border border-blue-500 p-4 rounded-lg&quot;&gt;
+        &lt;p class&#x3D;&quot;text-sm text-blue-700 dark:text-blue-400&quot;&gt;
+          💡 &lt;strong&gt;Tip:&lt;/strong&gt; After creating the task, you can configure advanced settings such as detection zones, confidence thresholds, and alert rules.
+        &lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/app-modal&gt;
+&lt;/div&gt;
+
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="space-y-6">  <!-- Header -->  <div class="flex items-center justify-between">    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">      Video Analytics Task Management    </h1>    <app-glass-button variant="primary" (clicked)="openAddModal()">      ➕ Create Task    </app-glass-button>  </div>  <!-- Info Card -->  <app-glass-card>    <div class="flex items-start space-x-4">      <span class="text-3xl">🔬</span>      <div>        <h3 class="font-medium text-gray-900 dark:text-gray-100 mb-1">AI-Powered Video Analytics</h3>        <p class="text-sm text-gray-600 dark:text-gray-400">          Configure and monitor AI analytics tasks for real-time video processing, detection, and alerts.        </p>      </div>    </div>  </app-glass-card>  <!-- Tasks Table -->  <app-data-table    [columns]="columns"    [data]="tasks()"    [actions]="actions"    [searchable]="true"  >    <div actions>      <app-glass-button (clicked)="loadTasks()">        🔄 Refresh      </app-glass-button>    </div>  </app-data-table>  <!-- Create Task Modal -->  <app-modal    [isOpen]="showModal()"    title="Create Analytics Task"    [loading]="saving()"    (closed)="closeModal()"    (confirmed)="saveTask()"  >    <div class="space-y-4">      <div>        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">          Task Name <span class="text-red-500">*</span>        </label>        <input          [(ngModel)]="formData.name"          type="text"          class="glass-input w-full"          placeholder="Main Entrance Face Recognition"        />      </div>      <div>        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">          Analytics Type <span class="text-red-500">*</span>        </label>        <select          [(ngModel)]="formData.type"          class="glass-input w-full"        >          <option *ngFor="let type of analyticsTypes" [value]="type.value">            {{ type.label }}          </option>        </select>      </div>      <div>        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">          Camera ID <span class="text-red-500">*</span>        </label>        <input          [(ngModel)]="formData.cameraId"          type="number"          class="glass-input w-full"          placeholder="1"        />      </div>      <div class="glass bg-blue-500/10 border border-blue-500 p-4 rounded-lg">        <p class="text-sm text-blue-700 dark:text-blue-400">          💡 <strong>Tip:</strong> After creating the task, you can configure advanced settings such as detection zones, confidence thresholds, and alert rules.        </p>      </div>    </div>  </app-modal></div></div>'
+    var COMPONENTS = [{'name': 'AccessControlComponent', 'selector': 'app-access-control'},{'name': 'AccessGroupsComponent', 'selector': 'app-access-groups'},{'name': 'AccessibilityDashboardComponent', 'selector': 'app-accessibility-dashboard'},{'name': 'AccessLogsComponent', 'selector': 'app-access-logs'},{'name': 'AccessSchedulesComponent', 'selector': 'app-access-schedules'},{'name': 'AccordionComponent', 'selector': 'app-accordion'},{'name': 'AccordionDemoComponent', 'selector': 'app-accordion-demo'},{'name': 'AdvancedDataTableComponent', 'selector': 'app-advanced-data-table'},{'name': 'AdvancedDataTableDemoComponent', 'selector': 'app-advanced-data-table-demo'},{'name': 'AdvancedFeaturesDashboardComponent', 'selector': 'app-advanced-features-dashboard'},{'name': 'AdvancedFormsComponent', 'selector': 'app-advanced-forms'},{'name': 'AdvancedRichTextComponent', 'selector': 'app-advanced-rich-text'},{'name': 'AdvancedUiDemoComponent', 'selector': 'app-advanced-ui-demo'},{'name': 'AIModelsComponent', 'selector': 'app-ai-models'},{'name': 'AlertComponent', 'selector': 'app-alert'},{'name': 'AlertHistoryComponent', 'selector': 'app-alert-history'},{'name': 'AlertsComponent', 'selector': 'app-alerts'},{'name': 'ApexChartComponent', 'selector': 'app-apex-chart'},{'name': 'App', 'selector': 'app-root'},{'name': 'AttendanceComponent', 'selector': 'app-attendance'},{'name': 'AuditLogsComponent', 'selector': 'app-audit-logs'},{'name': 'AvatarComponent', 'selector': 'app-avatar'},{'name': 'BackupRestoreComponent', 'selector': 'app-backup-restore'},{'name': 'BadgeComponent', 'selector': 'app-badge'},{'name': 'BaseComponent', 'selector': ''},{'name': 'BiometricDataComponent', 'selector': 'app-biometric-data'},{'name': 'BreadcrumbComponent', 'selector': 'app-breadcrumb'},{'name': 'CalendarComponent', 'selector': 'app-calendar'},{'name': 'CalendarDemoComponent', 'selector': 'app-calendar-demo'},{'name': 'ChartComponent', 'selector': 'app-chart'},{'name': 'CheckboxComponent', 'selector': 'app-checkbox'},{'name': 'ColorPickerComponent', 'selector': 'app-color-picker'},{'name': 'ComingSoonComponent', 'selector': 'app-coming-soon'},{'name': 'CompaniesComponent', 'selector': 'app-companies'},{'name': 'CompanyDocumentsComponent', 'selector': 'app-company-documents'},{'name': 'CompanyHolidaysComponent', 'selector': 'app-company-holidays'},{'name': 'ComponentShowcaseComponent', 'selector': 'app-component-showcase'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DataTableComponent', 'selector': 'app-data-table'},{'name': 'DateTimePickerComponent', 'selector': 'app-date-time-picker'},{'name': 'DepartmentsComponent', 'selector': 'app-departments'},{'name': 'DevicesComponent', 'selector': 'app-devices'},{'name': 'DividerComponent', 'selector': 'app-divider'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DoorsComponent', 'selector': 'app-doors'},{'name': 'DraggableCardsComponent', 'selector': 'app-draggable-cards'},{'name': 'DraggableCardsDemoComponent', 'selector': 'app-draggable-cards-demo'},{'name': 'EChartsChartComponent', 'selector': 'app-echarts-chart'},{'name': 'EChartsDemoComponent', 'selector': 'app-echarts-demo'},{'name': 'EmployeesComponent', 'selector': 'app-employees'},{'name': 'EmployeesNewComponent', 'selector': 'app-employees-new'},{'name': 'EmptyStateComponent', 'selector': 'app-empty-state'},{'name': 'Error401Component', 'selector': 'app-error-401'},{'name': 'Error404Component', 'selector': 'app-error-404'},{'name': 'Error500Component', 'selector': 'app-error-500'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'ErrorToastComponent', 'selector': 'app-error-toast'},{'name': 'EventAnalyticsComponent', 'selector': 'app-event-analytics'},{'name': 'EventCheckinHistoryComponent', 'selector': 'app-event-checkin-history'},{'name': 'EventEmailConfirmationComponent', 'selector': 'app-event-email-confirmation'},{'name': 'EventKioskConfigComponent', 'selector': 'app-event-kiosk-config'},{'name': 'EventRegistrationComponent', 'selector': 'app-event-registration'},{'name': 'EventRegistrationFieldsComponent', 'selector': 'app-event-registration-fields'},{'name': 'EventsComponent', 'selector': 'app-events'},{'name': 'FaceRecognitionComponent', 'selector': 'app-face-recognition'},{'name': 'FaceRecognitionDemoComponent', 'selector': 'app-face-recognition-demo'},{'name': 'FaceRecognitionLiveComponent', 'selector': 'app-face-recognition-live'},{'name': 'FaceRecognitionTestComponent', 'selector': 'app-face-recognition-test'},{'name': 'FaqComponent', 'selector': 'app-faq'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'FilterSectionComponent', 'selector': 'app-filter-section'},{'name': 'ForgotPasswordComponent', 'selector': 'app-forgot-password'},{'name': 'FormFieldComponent', 'selector': 'app-form-field'},{'name': 'GalleryComponent', 'selector': 'app-gallery'},{'name': 'GalleryDemoComponent', 'selector': 'app-gallery-demo'},{'name': 'GlassButtonComponent', 'selector': 'app-glass-button'},{'name': 'GlassCardComponent', 'selector': 'app-glass-card'},{'name': 'GlassInputComponent', 'selector': 'app-glass-input'},{'name': 'GroupFaceRecognitionComponent', 'selector': 'app-group-face-recognition'},{'name': 'GuestsComponent', 'selector': 'app-guests'},{'name': 'HardwareStatusDashboardComponent', 'selector': 'app-hardware-status-dashboard'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HeatmapAnalyticsComponent', 'selector': 'app-heatmap-analytics'},{'name': 'HelpCenter', 'selector': 'app-help-center'},{'name': 'HelpCenterComponent', 'selector': 'app-help-center'},{'name': 'HrDashboardComponent', 'selector': 'app-hr-dashboard'},{'name': 'IconComponent', 'selector': 'app-icon'},{'name': 'IncidentReportsComponent', 'selector': 'app-incident-reports'},{'name': 'KioskViewComponent', 'selector': 'app-kiosk-view'},{'name': 'LandingComponent', 'selector': 'app-landing'},{'name': 'LeafletMapComponent', 'selector': 'app-leaflet-map'},{'name': 'LeavesComponent', 'selector': 'app-leaves'},{'name': 'LicenseManagementComponent', 'selector': 'app-license-management'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoadingStateComponent', 'selector': 'app-loading-state'},{'name': 'LocationsComponent', 'selector': 'app-locations'},{'name': 'LockScreenComponent', 'selector': 'app-lock-screen'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MapDemoComponent', 'selector': 'app-map-demo'},{'name': 'MaterialButtonComponent', 'selector': 'app-material-button'},{'name': 'MaterialCardComponent', 'selector': 'app-material-card'},{'name': 'MaterialDialogComponent', 'selector': 'app-material-dialog'},{'name': 'MaterialInputComponent', 'selector': 'app-material-input'},{'name': 'MaterialTableComponent', 'selector': 'app-material-table'},{'name': 'MfaSetupComponent', 'selector': 'app-mfa-setup'},{'name': 'MobileCameraComponent', 'selector': 'app-mobile-camera'},{'name': 'MobileDemoComponent', 'selector': 'app-mobile-demo'},{'name': 'ModalComponent', 'selector': 'app-modal'},{'name': 'ModalFormComponent', 'selector': 'app-modal-form'},{'name': 'ModuleSubscriptionComponent', 'selector': 'app-module-subscription'},{'name': 'MonitoringComponent', 'selector': 'app-monitoring'},{'name': 'NotificationCenterComponent', 'selector': 'app-notification-center'},{'name': 'NotificationDemoComponent', 'selector': 'app-notification-demo'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'NotificationSettingsComponent', 'selector': 'app-notification-settings'},{'name': 'OffcanvasComponent', 'selector': 'app-offcanvas'},{'name': 'OffcanvasDemoComponent', 'selector': 'app-offcanvas-demo'},{'name': 'OvertimeRequestsComponent', 'selector': 'app-overtime-requests'},{'name': 'PageLayoutComponent', 'selector': 'app-page-layout'},{'name': 'PaginationComponent', 'selector': 'app-pagination'},{'name': 'ParkingBlacklistComponent', 'selector': 'app-parking-blacklist'},{'name': 'ParkingDashboardComponent', 'selector': 'app-parking-dashboard'},{'name': 'ParkingEntryComponent', 'selector': 'app-parking-entry'},{'name': 'ParkingExitComponent', 'selector': 'app-parking-exit'},{'name': 'ParkingLogsComponent', 'selector': 'app-parking-logs'},{'name': 'ParkingReservationComponent', 'selector': 'app-parking-reservation'},{'name': 'ParkingRulesComponent', 'selector': 'app-parking-rules'},{'name': 'ParkingSpotsComponent', 'selector': 'app-parking-spots'},{'name': 'ParkingStatisticsComponent', 'selector': 'app-parking-statistics'},{'name': 'PayrollExportComponent', 'selector': 'app-payroll-export'},{'name': 'PerformanceDashboardComponent', 'selector': 'app-performance-dashboard'},{'name': 'PopoverComponent', 'selector': 'app-popover'},{'name': 'PortalLayoutComponent', 'selector': 'app-portal-layout'},{'name': 'PositionsComponent', 'selector': 'app-positions'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'PublicVerificationComponent', 'selector': 'app-public-verification'},{'name': 'QRCodesComponent', 'selector': 'app-qr-codes'},{'name': 'RadioComponent', 'selector': 'app-radio'},{'name': 'RangeSliderComponent', 'selector': 'app-range-slider'},{'name': 'RatingComponent', 'selector': 'app-rating'},{'name': 'RatingDemoComponent', 'selector': 'app-rating-demo'},{'name': 'RbacComponent', 'selector': 'app-rbac'},{'name': 'RecognitionHistoryComponent', 'selector': 'app-recognition-history'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReportsComponent', 'selector': 'app-reports'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'RFIDCardsComponent', 'selector': 'app-rfid-cards'},{'name': 'RichTextComponent', 'selector': 'app-rich-text'},{'name': 'RichTextEditorComponent', 'selector': 'app-rich-text-editor'},{'name': 'RichTextEditorDemoComponent', 'selector': 'app-rich-text-editor-demo'},{'name': 'SafetyDashboardComponent', 'selector': 'app-safety-dashboard'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ShiftsComponent', 'selector': 'app-shifts'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SkeletonComponent', 'selector': 'app-skeleton'},{'name': 'StatisticsCardComponent', 'selector': 'app-statistics-card'},{'name': 'StatisticsGridComponent', 'selector': 'app-statistics-grid'},{'name': 'StepperComponent', 'selector': 'app-stepper'},{'name': 'StructureComponent', 'selector': 'app-structure'},{'name': 'SuperAdminAnnouncementsComponent', 'selector': 'app-super-admin-announcements'},{'name': 'SuperAdminDashboardComponent', 'selector': 'app-super-admin-dashboard'},{'name': 'SuperAdminLayoutComponent', 'selector': 'app-super-admin-layout'},{'name': 'SuperAdminReportsComponent', 'selector': 'app-super-admin-reports'},{'name': 'SurveillanceMapComponent', 'selector': 'app-surveillance-map'},{'name': 'SwiperGalleryComponent', 'selector': 'app-swiper-gallery'},{'name': 'SwiperGalleryDemoComponent', 'selector': 'app-swiper-gallery-demo'},{'name': 'SwitchComponent', 'selector': 'app-switch'},{'name': 'SystemSettingsComponent', 'selector': 'app-system-settings'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TemplateManagementComponent', 'selector': 'app-template-management'},{'name': 'TestApiComponent', 'selector': 'app-test-api'},{'name': 'ThemeSwitcherComponent', 'selector': 'app-theme-switcher'},{'name': 'TimelineComponent', 'selector': 'app-timeline'},{'name': 'TimelineDemoComponent', 'selector': 'app-timeline-demo'},{'name': 'TimesheetsComponent', 'selector': 'app-timesheets'},{'name': 'TimestampComponent', 'selector': 'app-timestamp'},{'name': 'TimestampDemoComponent', 'selector': 'app-timestamp-demo'},{'name': 'TooltipComponent', 'selector': 'app-tooltip'},{'name': 'UsersComponent', 'selector': 'app-users'},{'name': 'ValidationDemoComponent', 'selector': 'app-validation-demo'},{'name': 'VehiclesComponent', 'selector': 'app-vehicles'},{'name': 'VideoAnalyticsComponent', 'selector': 'app-video-analytics'},{'name': 'VideoPlaybackComponent', 'selector': 'app-video-playback'},{'name': 'VisitorBadgesComponent', 'selector': 'app-visitor-badges'},{'name': 'VisitorBlacklistComponent', 'selector': 'app-visitor-blacklist'},{'name': 'VisitorDashboardComponent', 'selector': 'app-visitor-dashboard'},{'name': 'VisitorInvitationsComponent', 'selector': 'app-visitor-invitations'},{'name': 'VisitorParcelsComponent', 'selector': 'app-visitor-parcels'},{'name': 'VisitorReportsComponent', 'selector': 'app-visitor-reports'},{'name': 'VisitorsComponent', 'selector': 'app-visitors'},{'name': 'WatchlistComponent', 'selector': 'app-watchlist'},{'name': 'ZoneConfigComponent', 'selector': 'app-zone-config'}];
+    var DIRECTIVES = [{'name': 'HasPermissionDirective', 'selector': '[appHasPermission]'},{'name': 'ImageOptimizationDirective', 'selector': '[appImageOptimization]'}];
+    var ACTUAL_COMPONENT = {'name': 'VideoAnalyticsComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'VideoAnalyticsComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

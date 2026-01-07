@@ -1,0 +1,1195 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  EventRegistrationFieldsComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/portal/event-management/events/event-registration-fields/event-registration-fields.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-event-registration-fields</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../interfaces/Module.html" target="_self" >CommonModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >FormsModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >ReactiveFormsModule</a></code>
+                                <code><a href="../components/GlassCardComponent.html" target="_self" >GlassCardComponent</a></code>
+                                <code><a href="../components/GlassButtonComponent.html" target="_self" >GlassButtonComponent</a></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./event-registration-fields.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./event-registration-fields.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#fieldTypes" >fieldTypes</a>
+                            </li>
+                            <li>
+                                <a href="#form" >form</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#addField" >addField</a>
+                            </li>
+                            <li>
+                                <a href="#moveField" >moveField</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#removeField" >removeField</a>
+                            </li>
+                            <li>
+                                <a href="#saveFields" >saveFields</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#fields" >fields</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(fb: FormBuilder)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/features/portal/event-management/events/event-registration-fields/event-registration-fields.component.ts:24</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>fb</td>
+                                                  
+                                                        <td>
+                                                                    <code>FormBuilder</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addField"></a>
+                    <span class="name">
+                        <span ><b>addField</b></span>
+                        <a href="#addField"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>addField(label: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, required: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="43"
+                                    class="link-to-prism">src/app/features/portal/event-management/events/event-registration-fields/event-registration-fields.component.ts:43</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>label</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>&#x27;&#x27;</code>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>key</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>&#x27;&#x27;</code>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>type</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>&#x27;text&#x27;</code>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>required</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>false</code>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="moveField"></a>
+                    <span class="name">
+                        <span ><b>moveField</b></span>
+                        <a href="#moveField"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>moveField(index: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, direction: "up" | "down")</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="68"
+                                    class="link-to-prism">src/app/features/portal/event-management/events/event-registration-fields/event-registration-fields.component.ts:68</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>index</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>direction</td>
+                                            <td>
+                                                        <code>&quot;up&quot; | &quot;down&quot;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="32"
+                                    class="link-to-prism">src/app/features/portal/event-management/events/event-registration-fields/event-registration-fields.component.ts:32</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="removeField"></a>
+                    <span class="name">
+                        <span ><b>removeField</b></span>
+                        <a href="#removeField"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>removeField(index: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="64"
+                                    class="link-to-prism">src/app/features/portal/event-management/events/event-registration-fields/event-registration-fields.component.ts:64</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>index</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveFields"></a>
+                    <span class="name">
+                        <span ><b>saveFields</b></span>
+                        <a href="#saveFields"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>saveFields()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="80"
+                                    class="link-to-prism">src/app/features/portal/event-management/events/event-registration-fields/event-registration-fields.component.ts:80</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fieldTypes"></a>
+                    <span class="name">
+                        <span ><b>fieldTypes</b></span>
+                        <a href="#fieldTypes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+    { value: &#x27;text&#x27;, label: &#x27;Text Input&#x27;, icon: &#x27;fa-font&#x27; },
+    { value: &#x27;number&#x27;, label: &#x27;Number&#x27;, icon: &#x27;fa-hashtag&#x27; },
+    { value: &#x27;email&#x27;, label: &#x27;Email&#x27;, icon: &#x27;fa-envelope&#x27; },
+    { value: &#x27;tel&#x27;, label: &#x27;Phone&#x27;, icon: &#x27;fa-phone&#x27; },
+    { value: &#x27;select&#x27;, label: &#x27;Dropdown&#x27;, icon: &#x27;fa-list&#x27; },
+    { value: &#x27;checkbox&#x27;, label: &#x27;Checkbox&#x27;, icon: &#x27;fa-check-square&#x27; },
+    { value: &#x27;date&#x27;, label: &#x27;Date&#x27;, icon: &#x27;fa-calendar&#x27; }
+  ]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/features/portal/event-management/events/event-registration-fields/event-registration-fields.component.ts:16</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="form"></a>
+                    <span class="name">
+                        <span ><b>form</b></span>
+                        <a href="#form"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>FormGroup</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/features/portal/event-management/events/event-registration-fields/event-registration-fields.component.ts:15</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="fields"></a>
+                        <span class="name"><b>fields</b><a href="#fields"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>fields()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/features/portal/event-management/events/event-registration-fields/event-registration-fields.component.ts:39</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, signal } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from &#x27;@angular/forms&#x27;;
+import { GlassCardComponent } from &#x27;../../../../../shared/components/glass-card/glass-card.component&#x27;;
+import { GlassButtonComponent } from &#x27;../../../../../shared/components/glass-button/glass-button.component&#x27;;
+
+@Component({
+  selector: &#x27;app-event-registration-fields&#x27;,
+  standalone: true,
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, GlassCardComponent, GlassButtonComponent],
+  templateUrl: &#x27;./event-registration-fields.component.html&#x27;,
+  styleUrls: [&#x27;./event-registration-fields.component.scss&#x27;]
+})
+export class EventRegistrationFieldsComponent implements OnInit {
+  form: FormGroup;
+  fieldTypes &#x3D; [
+    { value: &#x27;text&#x27;, label: &#x27;Text Input&#x27;, icon: &#x27;fa-font&#x27; },
+    { value: &#x27;number&#x27;, label: &#x27;Number&#x27;, icon: &#x27;fa-hashtag&#x27; },
+    { value: &#x27;email&#x27;, label: &#x27;Email&#x27;, icon: &#x27;fa-envelope&#x27; },
+    { value: &#x27;tel&#x27;, label: &#x27;Phone&#x27;, icon: &#x27;fa-phone&#x27; },
+    { value: &#x27;select&#x27;, label: &#x27;Dropdown&#x27;, icon: &#x27;fa-list&#x27; },
+    { value: &#x27;checkbox&#x27;, label: &#x27;Checkbox&#x27;, icon: &#x27;fa-check-square&#x27; },
+    { value: &#x27;date&#x27;, label: &#x27;Date&#x27;, icon: &#x27;fa-calendar&#x27; }
+  ];
+
+  constructor(private fb: FormBuilder) {
+    this.form &#x3D; this.fb.group({
+      fields: this.fb.array([])
+    });
+  }
+
+  ngOnInit() {
+    // Add default fields
+    this.addField(&#x27;First Name&#x27;, &#x27;first_name&#x27;, &#x27;text&#x27;, true);
+    this.addField(&#x27;Last Name&#x27;, &#x27;last_name&#x27;, &#x27;text&#x27;, true);
+    this.addField(&#x27;Email&#x27;, &#x27;email&#x27;, &#x27;email&#x27;, true);
+  }
+
+  get fields() {
+    return this.form.get(&#x27;fields&#x27;) as FormArray;
+  }
+
+  addField(label: string &#x3D; &#x27;&#x27;, key: string &#x3D; &#x27;&#x27;, type: string &#x3D; &#x27;text&#x27;, required: boolean &#x3D; false) {
+    const fieldGroup &#x3D; this.fb.group({
+      label: [label, Validators.required],
+      key: [key, Validators.required], // Should be snake_case
+      type: [type, Validators.required],
+      required: [required],
+      options: [&#x27;&#x27;], // Comma separated for select
+      placeholder: [&#x27;&#x27;]
+    });
+
+    // Auto-generate key from label changes
+    fieldGroup.get(&#x27;label&#x27;)?.valueChanges.subscribe(val &#x3D;&gt; {
+      if (!fieldGroup.get(&#x27;key&#x27;)?.dirty &amp;&amp; val) {
+        const key &#x3D; val.toLowerCase().replace(/[^a-z0-9]/g, &#x27;_&#x27;);
+        fieldGroup.get(&#x27;key&#x27;)?.setValue(key);
+      }
+    });
+
+    this.fields.push(fieldGroup);
+  }
+
+  removeField(index: number) {
+    this.fields.removeAt(index);
+  }
+
+  moveField(index: number, direction: &#x27;up&#x27; | &#x27;down&#x27;) {
+    if (direction &#x3D;&#x3D;&#x3D; &#x27;up&#x27; &amp;&amp; index &gt; 0) {
+      const field &#x3D; this.fields.at(index);
+      this.fields.removeAt(index);
+      this.fields.insert(index - 1, field);
+    } else if (direction &#x3D;&#x3D;&#x3D; &#x27;down&#x27; &amp;&amp; index &lt; this.fields.length - 1) {
+      const field &#x3D; this.fields.at(index);
+      this.fields.removeAt(index);
+      this.fields.insert(index + 1, field);
+    }
+  }
+
+  saveFields() {
+    if (this.form.valid) {
+      const formData &#x3D; this.form.value;
+      console.log(&#x27;Saving registration fields:&#x27;, formData);
+      // Process options string to array for backend
+      const processedFields &#x3D; formData.fields.map((f: any) &#x3D;&gt; ({
+        ...f,
+        options: f.options ? f.options.split(&#x27;,&#x27;).map((o: string) &#x3D;&gt; o.trim()) : []
+      }));
+      console.log(&#x27;Processed for backend:&#x27;, processedFields);
+      alert(&#x27;Registration form configuration saved!&#x27;);
+    } else {
+        this.form.markAllAsTouched();
+    }
+  }
+}
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;h-full flex flex-col p-6 space-y-6&quot;&gt;
+  &lt;!-- Header --&gt;
+  &lt;div class&#x3D;&quot;flex justify-between items-center&quot;&gt;
+    &lt;div&gt;
+      &lt;h1 class&#x3D;&quot;text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400&quot;&gt;
+        Registration Form Builder
+      &lt;/h1&gt;
+      &lt;p class&#x3D;&quot;text-gray-500 dark:text-gray-400 mt-1&quot;&gt;Configure data collection fields for event registration&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;flex gap-2&quot;&gt;
+      &lt;app-glass-button (click)&#x3D;&quot;addField()&quot; variant&#x3D;&quot;secondary&quot; icon&#x3D;&quot;add&quot;&gt;
+        Add Field
+      &lt;/app-glass-button&gt;
+      &lt;app-glass-button (click)&#x3D;&quot;saveFields()&quot; variant&#x3D;&quot;primary&quot; icon&#x3D;&quot;save&quot;&gt;
+        Save Form
+      &lt;/app-glass-button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class&#x3D;&quot;flex flex-col lg:flex-row gap-6 flex-1 overflow-hidden&quot;&gt;
+    &lt;!-- Form Builder --&gt;
+    &lt;app-glass-card class&#x3D;&quot;w-full lg:w-2/3 flex flex-col overflow-y-auto custom-scrollbar bg-gray-50/50 dark:bg-gray-800/50&quot;&gt;
+      &lt;div class&#x3D;&quot;p-4 space-y-4&quot; [formGroup]&#x3D;&quot;form&quot;&gt;
+        &lt;div formArrayName&#x3D;&quot;fields&quot; class&#x3D;&quot;space-y-4&quot;&gt;
+          &lt;div *ngFor&#x3D;&quot;let field of fields.controls; let i &#x3D; index&quot; [formGroupName]&#x3D;&quot;i&quot; 
+               class&#x3D;&quot;bg-white dark:bg-gray-900 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700 transition-all hover:shadow-md group&quot;&gt;
+            
+            &lt;div class&#x3D;&quot;flex items-start gap-4&quot;&gt;
+              &lt;!-- Drag Handle / Order --&gt;
+              &lt;div class&#x3D;&quot;flex flex-col gap-1 pt-2 text-gray-400&quot;&gt;
+                &lt;button (click)&#x3D;&quot;moveField(i, &#x27;up&#x27;)&quot; [disabled]&#x3D;&quot;i &#x3D;&#x3D;&#x3D; 0&quot; class&#x3D;&quot;hover:text-indigo-600 disabled:opacity-30 disabled:cursor-not-allowed&quot;&gt;
+                  &lt;i class&#x3D;&quot;fas fa-chevron-up&quot;&gt;&lt;/i&gt;
+                &lt;/button&gt;
+                &lt;div class&#x3D;&quot;bg-gray-100 dark:bg-gray-800 rounded px-1.5 py-0.5 text-xs font-mono text-center&quot;&gt;{{ i + 1 }}&lt;/div&gt;
+                &lt;button (click)&#x3D;&quot;moveField(i, &#x27;down&#x27;)&quot; [disabled]&#x3D;&quot;i &#x3D;&#x3D;&#x3D; fields.length - 1&quot; class&#x3D;&quot;hover:text-indigo-600 disabled:opacity-30 disabled:cursor-not-allowed&quot;&gt;
+                  &lt;i class&#x3D;&quot;fas fa-chevron-down&quot;&gt;&lt;/i&gt;
+                &lt;/button&gt;
+              &lt;/div&gt;
+
+              &lt;!-- Field Config --&gt;
+              &lt;div class&#x3D;&quot;flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4&quot;&gt;
+                &lt;!-- Label --&gt;
+                &lt;div class&#x3D;&quot;lg:col-span-2&quot;&gt;
+                  &lt;label class&#x3D;&quot;block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1&quot;&gt;Field Label&lt;/label&gt;
+                  &lt;input type&#x3D;&quot;text&quot; formControlName&#x3D;&quot;label&quot; placeholder&#x3D;&quot;e.g. T-Shirt Size&quot;
+                         class&#x3D;&quot;w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-sm text-gray-900 dark:text-gray-100&quot;&gt;
+                &lt;/div&gt;
+
+                &lt;!-- Type --&gt;
+                &lt;div&gt;
+                  &lt;label class&#x3D;&quot;block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1&quot;&gt;Type&lt;/label&gt;
+                  &lt;select formControlName&#x3D;&quot;type&quot;
+                          class&#x3D;&quot;w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-sm text-gray-900 dark:text-gray-100&quot;&gt;
+                    &lt;option *ngFor&#x3D;&quot;let type of fieldTypes&quot; [value]&#x3D;&quot;type.value&quot;&gt;{{ type.label }}&lt;/option&gt;
+                  &lt;/select&gt;
+                &lt;/div&gt;
+
+                &lt;!-- Required Toggle --&gt;
+                &lt;div class&#x3D;&quot;flex items-center pt-6&quot;&gt;
+                    &lt;label class&#x3D;&quot;inline-flex items-center cursor-pointer&quot;&gt;
+                        &lt;input type&#x3D;&quot;checkbox&quot; formControlName&#x3D;&quot;required&quot; class&#x3D;&quot;sr-only peer&quot;&gt;
+                        &lt;div class&#x3D;&quot;relative w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[&#x27;&#x27;] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600&quot;&gt;&lt;/div&gt;
+                        &lt;span class&#x3D;&quot;ms-2 text-sm font-medium text-gray-700 dark:text-gray-300&quot;&gt;Required&lt;/span&gt;
+                    &lt;/label&gt;
+                &lt;/div&gt;
+
+                &lt;!-- Advanced / Options (Conditional) --&gt;
+                &lt;div class&#x3D;&quot;lg:col-span-4 grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 border-t border-gray-100 dark:border-gray-800&quot;
+                     *ngIf&#x3D;&quot;[&#x27;select&#x27;, &#x27;radio&#x27;, &#x27;checkbox&#x27;].includes(field.get(&#x27;type&#x27;)?.value) || true&quot;&gt; &lt;!-- Always show for now for simplicity, can filter --&gt;
+                   
+                   &lt;div *ngIf&#x3D;&quot;[&#x27;select&#x27;, &#x27;radio&#x27;].includes(field.get(&#x27;type&#x27;)?.value)&quot;&gt;
+                     &lt;label class&#x3D;&quot;block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1&quot;&gt;Options (comma separated)&lt;/label&gt;
+                     &lt;input type&#x3D;&quot;text&quot; formControlName&#x3D;&quot;options&quot; placeholder&#x3D;&quot;Option A, Option B, Option C&quot;
+                            class&#x3D;&quot;w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-sm text-gray-900 dark:text-gray-100&quot;&gt;
+                   &lt;/div&gt;
+
+                   &lt;div&gt;
+                     &lt;label class&#x3D;&quot;block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1&quot;&gt;Placeholder / Hint&lt;/label&gt;
+                     &lt;input type&#x3D;&quot;text&quot; formControlName&#x3D;&quot;placeholder&quot; placeholder&#x3D;&quot;e.g. Please select size&quot;
+                            class&#x3D;&quot;w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-sm text-gray-900 dark:text-gray-100&quot;&gt;
+                   &lt;/div&gt;
+
+                   &lt;div class&#x3D;&quot;md:col-span-2&quot;&gt;
+                     &lt;label class&#x3D;&quot;block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1&quot;&gt;Field Key (Auto-generated)&lt;/label&gt;
+                     &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+                       &lt;code class&#x3D;&quot;px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-xs font-mono text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700&quot;&gt;
+                         {{ field.get(&#x27;key&#x27;)?.value || &#x27;...&#x27; }}
+                       &lt;/code&gt;
+                       &lt;span class&#x3D;&quot;text-xs text-gray-400 italic&quot;&gt;Used for database &amp; API&lt;/span&gt;
+                     &lt;/div&gt;
+                   &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+
+              &lt;!-- Remove Button --&gt;
+              &lt;div class&#x3D;&quot;pt-2&quot;&gt;
+                &lt;button (click)&#x3D;&quot;removeField(i)&quot; class&#x3D;&quot;p-2 text-red-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors&quot; title&#x3D;&quot;Remove Field&quot;&gt;
+                  &lt;i class&#x3D;&quot;fas fa-trash-alt&quot;&gt;&lt;/i&gt;
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Empty State --&gt;
+          &lt;div *ngIf&#x3D;&quot;fields.length &#x3D;&#x3D;&#x3D; 0&quot; class&#x3D;&quot;text-center py-12 bg-white dark:bg-gray-900 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-700&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-clipboard-list text-4xl text-gray-300 dark:text-gray-600 mb-3&quot;&gt;&lt;/i&gt;
+            &lt;h3 class&#x3D;&quot;text-lg font-medium text-gray-900 dark:text-gray-100&quot;&gt;No fields added&lt;/h3&gt;
+            &lt;p class&#x3D;&quot;text-gray-500 dark:text-gray-400 mb-4&quot;&gt;Start building your registration form by adding fields.&lt;/p&gt;
+            &lt;app-glass-button (click)&#x3D;&quot;addField()&quot; variant&#x3D;&quot;secondary&quot; size&#x3D;&quot;sm&quot;&gt;
+              Add Your First Field
+            &lt;/app-glass-button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/app-glass-card&gt;
+
+    &lt;!-- Live Preview (Right Side) --&gt;
+    &lt;div class&#x3D;&quot;w-full lg:w-1/3 flex flex-col&quot;&gt;
+      &lt;div class&#x3D;&quot;bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden border border-gray-200 dark:border-gray-700 flex flex-col h-full max-h-[800px]&quot;&gt;
+        &lt;div class&#x3D;&quot;bg-indigo-600 p-6 text-white text-center&quot;&gt;
+          &lt;h2 class&#x3D;&quot;text-xl font-bold&quot;&gt;Event Registration&lt;/h2&gt;
+          &lt;p class&#x3D;&quot;text-indigo-100 text-sm mt-1&quot;&gt;Please fill in your details&lt;/p&gt;
+        &lt;/div&gt;
+        
+        &lt;div class&#x3D;&quot;p-6 flex-1 overflow-y-auto space-y-4 bg-gray-50 dark:bg-gray-800&quot;&gt;
+          &lt;ng-container *ngFor&#x3D;&quot;let field of fields.controls&quot;&gt;
+            &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+              &lt;label class&#x3D;&quot;block text-sm font-medium text-gray-700 dark:text-gray-300&quot;&gt;
+                {{ field.get(&#x27;label&#x27;)?.value || &#x27;Untitled Field&#x27; }}
+                &lt;span *ngIf&#x3D;&quot;field.get(&#x27;required&#x27;)?.value&quot; class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;
+              &lt;/label&gt;
+              
+              &lt;!-- Text / Number / Email / Date --&gt;
+              &lt;div *ngIf&#x3D;&quot;[&#x27;text&#x27;, &#x27;number&#x27;, &#x27;email&#x27;, &#x27;tel&#x27;, &#x27;date&#x27;].includes(field.get(&#x27;type&#x27;)?.value)&quot;&gt;
+                 &lt;input [type]&#x3D;&quot;field.get(&#x27;type&#x27;)?.value&quot; disabled
+                        [placeholder]&#x3D;&quot;field.get(&#x27;placeholder&#x27;)?.value || &#x27;&#x27;&quot;
+                        class&#x3D;&quot;w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm disabled:bg-gray-100 dark:disabled:bg-gray-800 disabled:cursor-not-allowed&quot;&gt;
+              &lt;/div&gt;
+
+              &lt;!-- Select --&gt;
+              &lt;div *ngIf&#x3D;&quot;field.get(&#x27;type&#x27;)?.value &#x3D;&#x3D;&#x3D; &#x27;select&#x27;&quot;&gt;
+                &lt;select disabled class&#x3D;&quot;w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm disabled:bg-gray-100 dark:disabled:bg-gray-800 disabled:cursor-not-allowed&quot;&gt;
+                  &lt;option selected disabled&gt;{{ field.get(&#x27;placeholder&#x27;)?.value || &#x27;Select an option&#x27; }}&lt;/option&gt;
+                  &lt;option *ngFor&#x3D;&quot;let opt of field.get(&#x27;options&#x27;)?.value?.split(&#x27;,&#x27;)&quot;&gt;{{ opt.trim() }}&lt;/option&gt;
+                &lt;/select&gt;
+              &lt;/div&gt;
+
+              &lt;!-- Checkbox --&gt;
+              &lt;div *ngIf&#x3D;&quot;field.get(&#x27;type&#x27;)?.value &#x3D;&#x3D;&#x3D; &#x27;checkbox&#x27;&quot; class&#x3D;&quot;flex items-center&quot;&gt;
+                 &lt;input type&#x3D;&quot;checkbox&quot; disabled class&#x3D;&quot;h-4 w-4 text-indigo-600 border-gray-300 rounded disabled:opacity-50&quot;&gt;
+                 &lt;span class&#x3D;&quot;ml-2 text-sm text-gray-600 dark:text-gray-400&quot;&gt;{{ field.get(&#x27;placeholder&#x27;)?.value || &#x27;Yes, I agree&#x27; }}&lt;/span&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/ng-container&gt;
+
+          &lt;div class&#x3D;&quot;pt-4&quot;&gt;
+            &lt;button disabled class&#x3D;&quot;w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed&quot;&gt;
+              Register Now
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./event-registration-fields.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">.custom-scrollbar {
+  &amp;::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  &amp;::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &amp;::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.5);
+    border-radius: 20px;
+    &amp;:hover {
+      background-color: rgba(156, 163, 175, 0.8);
+    }
+  }
+}
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="h-full flex flex-col p-6 space-y-6">  <!-- Header -->  <div class="flex justify-between items-center">    <div>      <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">        Registration Form Builder      </h1>      <p class="text-gray-500 dark:text-gray-400 mt-1">Configure data collection fields for event registration</p>    </div>    <div class="flex gap-2">      <app-glass-button (click)="addField()" variant="secondary" icon="add">        Add Field      </app-glass-button>      <app-glass-button (click)="saveFields()" variant="primary" icon="save">        Save Form      </app-glass-button>    </div>  </div>  <div class="flex flex-col lg:flex-row gap-6 flex-1 overflow-hidden">    <!-- Form Builder -->    <app-glass-card class="w-full lg:w-2/3 flex flex-col overflow-y-auto custom-scrollbar bg-gray-50/50 dark:bg-gray-800/50">      <div class="p-4 space-y-4" [formGroup]="form">        <div formArrayName="fields" class="space-y-4">          <div *ngFor="let field of fields.controls; let i = index" [formGroupName]="i"                class="bg-white dark:bg-gray-900 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700 transition-all hover:shadow-md group">                        <div class="flex items-start gap-4">              <!-- Drag Handle / Order -->              <div class="flex flex-col gap-1 pt-2 text-gray-400">                <button (click)="moveField(i, \'up\')" [disabled]="i === 0" class="hover:text-indigo-600 disabled:opacity-30 disabled:cursor-not-allowed">                  <i class="fas fa-chevron-up"></i>                </button>                <div class="bg-gray-100 dark:bg-gray-800 rounded px-1.5 py-0.5 text-xs font-mono text-center">{{ i + 1 }}</div>                <button (click)="moveField(i, \'down\')" [disabled]="i === fields.length - 1" class="hover:text-indigo-600 disabled:opacity-30 disabled:cursor-not-allowed">                  <i class="fas fa-chevron-down"></i>                </button>              </div>              <!-- Field Config -->              <div class="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">                <!-- Label -->                <div class="lg:col-span-2">                  <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Field Label</label>                  <input type="text" formControlName="label" placeholder="e.g. T-Shirt Size"                         class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-sm text-gray-900 dark:text-gray-100">                </div>                <!-- Type -->                <div>                  <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Type</label>                  <select formControlName="type"                          class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-sm text-gray-900 dark:text-gray-100">                    <option *ngFor="let type of fieldTypes" [value]="type.value">{{ type.label }}</option>                  </select>                </div>                <!-- Required Toggle -->                <div class="flex items-center pt-6">                    <label class="inline-flex items-center cursor-pointer">                        <input type="checkbox" formControlName="required" class="sr-only peer">                        <div class="relative w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[\'\'] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600"></div>                        <span class="ms-2 text-sm font-medium text-gray-700 dark:text-gray-300">Required</span>                    </label>                </div>                <!-- Advanced / Options (Conditional) -->                <div class="lg:col-span-4 grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 border-t border-gray-100 dark:border-gray-800"                     *ngIf="[\'select\', \'radio\', \'checkbox\'].includes(field.get(\'type\')?.value) || true"> <!-- Always show for now for simplicity, can filter -->                                      <div *ngIf="[\'select\', \'radio\'].includes(field.get(\'type\')?.value)">                     <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Options (comma separated)</label>                     <input type="text" formControlName="options" placeholder="Option A, Option B, Option C"                            class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-sm text-gray-900 dark:text-gray-100">                   </div>                   <div>                     <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Placeholder / Hint</label>                     <input type="text" formControlName="placeholder" placeholder="e.g. Please select size"                            class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-sm text-gray-900 dark:text-gray-100">                   </div>                   <div class="md:col-span-2">                     <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Field Key (Auto-generated)</label>                     <div class="flex items-center gap-2">                       <code class="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-xs font-mono text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700">                         {{ field.get(\'key\')?.value || \'...\' }}                       </code>                       <span class="text-xs text-gray-400 italic">Used for database & API</span>                     </div>                   </div>                </div>              </div>              <!-- Remove Button -->              <div class="pt-2">                <button (click)="removeField(i)" class="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors" title="Remove Field">                  <i class="fas fa-trash-alt"></i>                </button>              </div>            </div>          </div>          <!-- Empty State -->          <div *ngIf="fields.length === 0" class="text-center py-12 bg-white dark:bg-gray-900 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-700">            <i class="fas fa-clipboard-list text-4xl text-gray-300 dark:text-gray-600 mb-3"></i>            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">No fields added</h3>            <p class="text-gray-500 dark:text-gray-400 mb-4">Start building your registration form by adding fields.</p>            <app-glass-button (click)="addField()" variant="secondary" size="sm">              Add Your First Field            </app-glass-button>          </div>        </div>      </div>    </app-glass-card>    <!-- Live Preview (Right Side) -->    <div class="w-full lg:w-1/3 flex flex-col">      <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden border border-gray-200 dark:border-gray-700 flex flex-col h-full max-h-[800px]">        <div class="bg-indigo-600 p-6 text-white text-center">          <h2 class="text-xl font-bold">Event Registration</h2>          <p class="text-indigo-100 text-sm mt-1">Please fill in your details</p>        </div>                <div class="p-6 flex-1 overflow-y-auto space-y-4 bg-gray-50 dark:bg-gray-800">          <ng-container *ngFor="let field of fields.controls">            <div class="space-y-1">              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">                {{ field.get(\'label\')?.value || \'Untitled Field\' }}                <span *ngIf="field.get(\'required\')?.value" class="text-red-500">*</span>              </label>                            <!-- Text / Number / Email / Date -->              <div *ngIf="[\'text\', \'number\', \'email\', \'tel\', \'date\'].includes(field.get(\'type\')?.value)">                 <input [type]="field.get(\'type\')?.value" disabled                        [placeholder]="field.get(\'placeholder\')?.value || \'\'"                        class="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm disabled:bg-gray-100 dark:disabled:bg-gray-800 disabled:cursor-not-allowed">              </div>              <!-- Select -->              <div *ngIf="field.get(\'type\')?.value === \'select\'">                <select disabled class="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm disabled:bg-gray-100 dark:disabled:bg-gray-800 disabled:cursor-not-allowed">                  <option selected disabled>{{ field.get(\'placeholder\')?.value || \'Select an option\' }}</option>                  <option *ngFor="let opt of field.get(\'options\')?.value?.split(\',\')">{{ opt.trim() }}</option>                </select>              </div>              <!-- Checkbox -->              <div *ngIf="field.get(\'type\')?.value === \'checkbox\'" class="flex items-center">                 <input type="checkbox" disabled class="h-4 w-4 text-indigo-600 border-gray-300 rounded disabled:opacity-50">                 <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">{{ field.get(\'placeholder\')?.value || \'Yes, I agree\' }}</span>              </div>            </div>          </ng-container>          <div class="pt-4">            <button disabled class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed">              Register Now            </button>          </div>        </div>      </div>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AccessControlComponent', 'selector': 'app-access-control'},{'name': 'AccessGroupsComponent', 'selector': 'app-access-groups'},{'name': 'AccessibilityDashboardComponent', 'selector': 'app-accessibility-dashboard'},{'name': 'AccessLogsComponent', 'selector': 'app-access-logs'},{'name': 'AccessSchedulesComponent', 'selector': 'app-access-schedules'},{'name': 'AccordionComponent', 'selector': 'app-accordion'},{'name': 'AccordionDemoComponent', 'selector': 'app-accordion-demo'},{'name': 'AdvancedDataTableComponent', 'selector': 'app-advanced-data-table'},{'name': 'AdvancedDataTableDemoComponent', 'selector': 'app-advanced-data-table-demo'},{'name': 'AdvancedFeaturesDashboardComponent', 'selector': 'app-advanced-features-dashboard'},{'name': 'AdvancedFormsComponent', 'selector': 'app-advanced-forms'},{'name': 'AdvancedRichTextComponent', 'selector': 'app-advanced-rich-text'},{'name': 'AdvancedUiDemoComponent', 'selector': 'app-advanced-ui-demo'},{'name': 'AIModelsComponent', 'selector': 'app-ai-models'},{'name': 'AlertComponent', 'selector': 'app-alert'},{'name': 'AlertHistoryComponent', 'selector': 'app-alert-history'},{'name': 'AlertsComponent', 'selector': 'app-alerts'},{'name': 'ApexChartComponent', 'selector': 'app-apex-chart'},{'name': 'App', 'selector': 'app-root'},{'name': 'AttendanceComponent', 'selector': 'app-attendance'},{'name': 'AuditLogsComponent', 'selector': 'app-audit-logs'},{'name': 'AvatarComponent', 'selector': 'app-avatar'},{'name': 'BackupRestoreComponent', 'selector': 'app-backup-restore'},{'name': 'BadgeComponent', 'selector': 'app-badge'},{'name': 'BaseComponent', 'selector': ''},{'name': 'BiometricDataComponent', 'selector': 'app-biometric-data'},{'name': 'BreadcrumbComponent', 'selector': 'app-breadcrumb'},{'name': 'CalendarComponent', 'selector': 'app-calendar'},{'name': 'CalendarDemoComponent', 'selector': 'app-calendar-demo'},{'name': 'ChartComponent', 'selector': 'app-chart'},{'name': 'CheckboxComponent', 'selector': 'app-checkbox'},{'name': 'ColorPickerComponent', 'selector': 'app-color-picker'},{'name': 'ComingSoonComponent', 'selector': 'app-coming-soon'},{'name': 'CompaniesComponent', 'selector': 'app-companies'},{'name': 'CompanyDocumentsComponent', 'selector': 'app-company-documents'},{'name': 'CompanyHolidaysComponent', 'selector': 'app-company-holidays'},{'name': 'ComponentShowcaseComponent', 'selector': 'app-component-showcase'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DataTableComponent', 'selector': 'app-data-table'},{'name': 'DateTimePickerComponent', 'selector': 'app-date-time-picker'},{'name': 'DepartmentsComponent', 'selector': 'app-departments'},{'name': 'DevicesComponent', 'selector': 'app-devices'},{'name': 'DividerComponent', 'selector': 'app-divider'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DoorsComponent', 'selector': 'app-doors'},{'name': 'DraggableCardsComponent', 'selector': 'app-draggable-cards'},{'name': 'DraggableCardsDemoComponent', 'selector': 'app-draggable-cards-demo'},{'name': 'EChartsChartComponent', 'selector': 'app-echarts-chart'},{'name': 'EChartsDemoComponent', 'selector': 'app-echarts-demo'},{'name': 'EmployeesComponent', 'selector': 'app-employees'},{'name': 'EmployeesNewComponent', 'selector': 'app-employees-new'},{'name': 'EmptyStateComponent', 'selector': 'app-empty-state'},{'name': 'Error401Component', 'selector': 'app-error-401'},{'name': 'Error404Component', 'selector': 'app-error-404'},{'name': 'Error500Component', 'selector': 'app-error-500'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'ErrorToastComponent', 'selector': 'app-error-toast'},{'name': 'EventAnalyticsComponent', 'selector': 'app-event-analytics'},{'name': 'EventCheckinHistoryComponent', 'selector': 'app-event-checkin-history'},{'name': 'EventEmailConfirmationComponent', 'selector': 'app-event-email-confirmation'},{'name': 'EventKioskConfigComponent', 'selector': 'app-event-kiosk-config'},{'name': 'EventRegistrationComponent', 'selector': 'app-event-registration'},{'name': 'EventRegistrationFieldsComponent', 'selector': 'app-event-registration-fields'},{'name': 'EventsComponent', 'selector': 'app-events'},{'name': 'FaceRecognitionComponent', 'selector': 'app-face-recognition'},{'name': 'FaceRecognitionDemoComponent', 'selector': 'app-face-recognition-demo'},{'name': 'FaceRecognitionLiveComponent', 'selector': 'app-face-recognition-live'},{'name': 'FaceRecognitionTestComponent', 'selector': 'app-face-recognition-test'},{'name': 'FaqComponent', 'selector': 'app-faq'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'FilterSectionComponent', 'selector': 'app-filter-section'},{'name': 'ForgotPasswordComponent', 'selector': 'app-forgot-password'},{'name': 'FormFieldComponent', 'selector': 'app-form-field'},{'name': 'GalleryComponent', 'selector': 'app-gallery'},{'name': 'GalleryDemoComponent', 'selector': 'app-gallery-demo'},{'name': 'GlassButtonComponent', 'selector': 'app-glass-button'},{'name': 'GlassCardComponent', 'selector': 'app-glass-card'},{'name': 'GlassInputComponent', 'selector': 'app-glass-input'},{'name': 'GroupFaceRecognitionComponent', 'selector': 'app-group-face-recognition'},{'name': 'GuestsComponent', 'selector': 'app-guests'},{'name': 'HardwareStatusDashboardComponent', 'selector': 'app-hardware-status-dashboard'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HeatmapAnalyticsComponent', 'selector': 'app-heatmap-analytics'},{'name': 'HelpCenter', 'selector': 'app-help-center'},{'name': 'HelpCenterComponent', 'selector': 'app-help-center'},{'name': 'HrDashboardComponent', 'selector': 'app-hr-dashboard'},{'name': 'IconComponent', 'selector': 'app-icon'},{'name': 'IncidentReportsComponent', 'selector': 'app-incident-reports'},{'name': 'KioskViewComponent', 'selector': 'app-kiosk-view'},{'name': 'LandingComponent', 'selector': 'app-landing'},{'name': 'LeafletMapComponent', 'selector': 'app-leaflet-map'},{'name': 'LeavesComponent', 'selector': 'app-leaves'},{'name': 'LicenseManagementComponent', 'selector': 'app-license-management'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoadingStateComponent', 'selector': 'app-loading-state'},{'name': 'LocationsComponent', 'selector': 'app-locations'},{'name': 'LockScreenComponent', 'selector': 'app-lock-screen'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MapDemoComponent', 'selector': 'app-map-demo'},{'name': 'MaterialButtonComponent', 'selector': 'app-material-button'},{'name': 'MaterialCardComponent', 'selector': 'app-material-card'},{'name': 'MaterialDialogComponent', 'selector': 'app-material-dialog'},{'name': 'MaterialInputComponent', 'selector': 'app-material-input'},{'name': 'MaterialTableComponent', 'selector': 'app-material-table'},{'name': 'MfaSetupComponent', 'selector': 'app-mfa-setup'},{'name': 'MobileCameraComponent', 'selector': 'app-mobile-camera'},{'name': 'MobileDemoComponent', 'selector': 'app-mobile-demo'},{'name': 'ModalComponent', 'selector': 'app-modal'},{'name': 'ModalFormComponent', 'selector': 'app-modal-form'},{'name': 'ModuleSubscriptionComponent', 'selector': 'app-module-subscription'},{'name': 'MonitoringComponent', 'selector': 'app-monitoring'},{'name': 'NotificationCenterComponent', 'selector': 'app-notification-center'},{'name': 'NotificationDemoComponent', 'selector': 'app-notification-demo'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'NotificationSettingsComponent', 'selector': 'app-notification-settings'},{'name': 'OffcanvasComponent', 'selector': 'app-offcanvas'},{'name': 'OffcanvasDemoComponent', 'selector': 'app-offcanvas-demo'},{'name': 'OvertimeRequestsComponent', 'selector': 'app-overtime-requests'},{'name': 'PageLayoutComponent', 'selector': 'app-page-layout'},{'name': 'PaginationComponent', 'selector': 'app-pagination'},{'name': 'ParkingBlacklistComponent', 'selector': 'app-parking-blacklist'},{'name': 'ParkingDashboardComponent', 'selector': 'app-parking-dashboard'},{'name': 'ParkingEntryComponent', 'selector': 'app-parking-entry'},{'name': 'ParkingExitComponent', 'selector': 'app-parking-exit'},{'name': 'ParkingLogsComponent', 'selector': 'app-parking-logs'},{'name': 'ParkingReservationComponent', 'selector': 'app-parking-reservation'},{'name': 'ParkingRulesComponent', 'selector': 'app-parking-rules'},{'name': 'ParkingSpotsComponent', 'selector': 'app-parking-spots'},{'name': 'ParkingStatisticsComponent', 'selector': 'app-parking-statistics'},{'name': 'PayrollExportComponent', 'selector': 'app-payroll-export'},{'name': 'PerformanceDashboardComponent', 'selector': 'app-performance-dashboard'},{'name': 'PopoverComponent', 'selector': 'app-popover'},{'name': 'PortalLayoutComponent', 'selector': 'app-portal-layout'},{'name': 'PositionsComponent', 'selector': 'app-positions'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'PublicVerificationComponent', 'selector': 'app-public-verification'},{'name': 'QRCodesComponent', 'selector': 'app-qr-codes'},{'name': 'RadioComponent', 'selector': 'app-radio'},{'name': 'RangeSliderComponent', 'selector': 'app-range-slider'},{'name': 'RatingComponent', 'selector': 'app-rating'},{'name': 'RatingDemoComponent', 'selector': 'app-rating-demo'},{'name': 'RbacComponent', 'selector': 'app-rbac'},{'name': 'RecognitionHistoryComponent', 'selector': 'app-recognition-history'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReportsComponent', 'selector': 'app-reports'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'RFIDCardsComponent', 'selector': 'app-rfid-cards'},{'name': 'RichTextComponent', 'selector': 'app-rich-text'},{'name': 'RichTextEditorComponent', 'selector': 'app-rich-text-editor'},{'name': 'RichTextEditorDemoComponent', 'selector': 'app-rich-text-editor-demo'},{'name': 'SafetyDashboardComponent', 'selector': 'app-safety-dashboard'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ShiftsComponent', 'selector': 'app-shifts'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SkeletonComponent', 'selector': 'app-skeleton'},{'name': 'StatisticsCardComponent', 'selector': 'app-statistics-card'},{'name': 'StatisticsGridComponent', 'selector': 'app-statistics-grid'},{'name': 'StepperComponent', 'selector': 'app-stepper'},{'name': 'StructureComponent', 'selector': 'app-structure'},{'name': 'SuperAdminAnnouncementsComponent', 'selector': 'app-super-admin-announcements'},{'name': 'SuperAdminDashboardComponent', 'selector': 'app-super-admin-dashboard'},{'name': 'SuperAdminLayoutComponent', 'selector': 'app-super-admin-layout'},{'name': 'SuperAdminReportsComponent', 'selector': 'app-super-admin-reports'},{'name': 'SurveillanceMapComponent', 'selector': 'app-surveillance-map'},{'name': 'SwiperGalleryComponent', 'selector': 'app-swiper-gallery'},{'name': 'SwiperGalleryDemoComponent', 'selector': 'app-swiper-gallery-demo'},{'name': 'SwitchComponent', 'selector': 'app-switch'},{'name': 'SystemSettingsComponent', 'selector': 'app-system-settings'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TemplateManagementComponent', 'selector': 'app-template-management'},{'name': 'TestApiComponent', 'selector': 'app-test-api'},{'name': 'ThemeSwitcherComponent', 'selector': 'app-theme-switcher'},{'name': 'TimelineComponent', 'selector': 'app-timeline'},{'name': 'TimelineDemoComponent', 'selector': 'app-timeline-demo'},{'name': 'TimesheetsComponent', 'selector': 'app-timesheets'},{'name': 'TimestampComponent', 'selector': 'app-timestamp'},{'name': 'TimestampDemoComponent', 'selector': 'app-timestamp-demo'},{'name': 'TooltipComponent', 'selector': 'app-tooltip'},{'name': 'UsersComponent', 'selector': 'app-users'},{'name': 'ValidationDemoComponent', 'selector': 'app-validation-demo'},{'name': 'VehiclesComponent', 'selector': 'app-vehicles'},{'name': 'VideoAnalyticsComponent', 'selector': 'app-video-analytics'},{'name': 'VideoPlaybackComponent', 'selector': 'app-video-playback'},{'name': 'VisitorBadgesComponent', 'selector': 'app-visitor-badges'},{'name': 'VisitorBlacklistComponent', 'selector': 'app-visitor-blacklist'},{'name': 'VisitorDashboardComponent', 'selector': 'app-visitor-dashboard'},{'name': 'VisitorInvitationsComponent', 'selector': 'app-visitor-invitations'},{'name': 'VisitorParcelsComponent', 'selector': 'app-visitor-parcels'},{'name': 'VisitorReportsComponent', 'selector': 'app-visitor-reports'},{'name': 'VisitorsComponent', 'selector': 'app-visitors'},{'name': 'WatchlistComponent', 'selector': 'app-watchlist'},{'name': 'ZoneConfigComponent', 'selector': 'app-zone-config'}];
+    var DIRECTIVES = [{'name': 'HasPermissionDirective', 'selector': '[appHasPermission]'},{'name': 'ImageOptimizationDirective', 'selector': '[appImageOptimization]'}];
+    var ACTUAL_COMPONENT = {'name': 'EventRegistrationFieldsComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'EventRegistrationFieldsComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -520,6 +520,7 @@ export class PortalLayoutComponent {
       label: 'Demo',
       expanded: false,
       children: [
+        { icon: '🧩', label: 'UI Kit (Components)', route: '/portal/ui-kit' },
         { icon: '🎨', label: 'Advanced UI', route: '/portal/advanced-ui-demo' },
         { icon: '📑', label: 'Accordion', route: '/portal/accordion-demo' },
         { icon: '📊', label: 'Advanced Data Table', route: '/portal/advanced-data-table-demo' },

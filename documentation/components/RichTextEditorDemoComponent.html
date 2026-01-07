@@ -1,0 +1,2514 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  RichTextEditorDemoComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/portal/demo-group/rich-text-editor-demo/rich-text-editor-demo.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-rich-text-editor-demo</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../interfaces/Module.html" target="_self" >CommonModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >FormsModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >ReactiveFormsModule</a></code>
+                                <code><a href="../components/RichTextEditorComponent.html" target="_self" >RichTextEditorComponent</a></code>
+                                <code><a href="../components/GlassCardComponent.html" target="_self" >GlassCardComponent</a></code>
+                                <code><a href="../components/GlassButtonComponent.html" target="_self" >GlassButtonComponent</a></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./rich-text-editor-demo.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./rich-text-editor-demo.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#config" >config</a>
+                            </li>
+                            <li>
+                                <a href="#disabled" >disabled</a>
+                            </li>
+                            <li>
+                                <a href="#editorForm" >editorForm</a>
+                            </li>
+                            <li>
+                                <a href="#loading" >loading</a>
+                            </li>
+                            <li>
+                                <a href="#placeholder" >placeholder</a>
+                            </li>
+                            <li>
+                                <a href="#readOnly" >readOnly</a>
+                            </li>
+                            <li>
+                                <a href="#sampleContent" >sampleContent</a>
+                            </li>
+                            <li>
+                                <a href="#selectedTheme" >selectedTheme</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#clearContent" >clearContent</a>
+                            </li>
+                            <li>
+                                <a href="#getEditorStats" >getEditorStats</a>
+                            </li>
+                            <li>
+                                <a href="#getThemeOptions" >getThemeOptions</a>
+                            </li>
+                            <li>
+                                <a href="#loadDocumentContent" >loadDocumentContent</a>
+                            </li>
+                            <li>
+                                <a href="#loadNewsContent" >loadNewsContent</a>
+                            </li>
+                            <li>
+                                <a href="#loadProductContent" >loadProductContent</a>
+                            </li>
+                            <li>
+                                <a href="#loadSampleContent" >loadSampleContent</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onContentChange" >onContentChange</a>
+                            </li>
+                            <li>
+                                <a href="#onEditorReady" >onEditorReady</a>
+                            </li>
+                            <li>
+                                <a href="#onSelectionChange" >onSelectionChange</a>
+                            </li>
+                            <li>
+                                <a href="#onSubmit" >onSubmit</a>
+                            </li>
+                            <li>
+                                <a href="#onTextChange" >onTextChange</a>
+                            </li>
+                            <li>
+                                <a href="#updateConfig" >updateConfig</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(fb: FormBuilder)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="146" class="link-to-prism">src/app/features/portal/demo-group/rich-text-editor-demo/rich-text-editor-demo.component.ts:146</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>fb</td>
+                                                  
+                                                        <td>
+                                                                    <code>FormBuilder</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="clearContent"></a>
+                    <span class="name">
+                        <span ><b>clearContent</b></span>
+                        <a href="#clearContent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>clearContent()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="187"
+                                    class="link-to-prism">src/app/features/portal/demo-group/rich-text-editor-demo/rich-text-editor-demo.component.ts:187</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Clear content</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getEditorStats"></a>
+                    <span class="name">
+                        <span ><b>getEditorStats</b></span>
+                        <a href="#getEditorStats"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getEditorStats()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="352"
+                                    class="link-to-prism">src/app/features/portal/demo-group/rich-text-editor-demo/rich-text-editor-demo.component.ts:352</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get editor statistics</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getThemeOptions"></a>
+                    <span class="name">
+                        <span ><b>getThemeOptions</b></span>
+                        <a href="#getThemeOptions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getThemeOptions()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="342"
+                                    class="link-to-prism">src/app/features/portal/demo-group/rich-text-editor-demo/rich-text-editor-demo.component.ts:342</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get theme options</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Array&lt;literal type&gt;</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadDocumentContent"></a>
+                    <span class="name">
+                        <span ><b>loadDocumentContent</b></span>
+                        <a href="#loadDocumentContent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>loadDocumentContent()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="255"
+                                    class="link-to-prism">src/app/features/portal/demo-group/rich-text-editor-demo/rich-text-editor-demo.component.ts:255</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadNewsContent"></a>
+                    <span class="name">
+                        <span ><b>loadNewsContent</b></span>
+                        <a href="#loadNewsContent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>loadNewsContent()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="198"
+                                    class="link-to-prism">src/app/features/portal/demo-group/rich-text-editor-demo/rich-text-editor-demo.component.ts:198</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Load different sample content</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadProductContent"></a>
+                    <span class="name">
+                        <span ><b>loadProductContent</b></span>
+                        <a href="#loadProductContent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>loadProductContent()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="225"
+                                    class="link-to-prism">src/app/features/portal/demo-group/rich-text-editor-demo/rich-text-editor-demo.component.ts:225</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadSampleContent"></a>
+                    <span class="name">
+                        <span ><b>loadSampleContent</b></span>
+                        <a href="#loadSampleContent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>loadSampleContent()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="176"
+                                    class="link-to-prism">src/app/features/portal/demo-group/rich-text-editor-demo/rich-text-editor-demo.component.ts:176</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Load sample content</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="156"
+                                    class="link-to-prism">src/app/features/portal/demo-group/rich-text-editor-demo/rich-text-editor-demo.component.ts:156</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onContentChange"></a>
+                    <span class="name">
+                        <span ><b>onContentChange</b></span>
+                        <a href="#onContentChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onContentChange(content: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="314"
+                                    class="link-to-prism">src/app/features/portal/demo-group/rich-text-editor-demo/rich-text-editor-demo.component.ts:314</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle content change</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>content</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onEditorReady"></a>
+                    <span class="name">
+                        <span ><b>onEditorReady</b></span>
+                        <a href="#onEditorReady"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onEditorReady(editor: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="335"
+                                    class="link-to-prism">src/app/features/portal/demo-group/rich-text-editor-demo/rich-text-editor-demo.component.ts:335</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle editor ready</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>editor</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSelectionChange"></a>
+                    <span class="name">
+                        <span ><b>onSelectionChange</b></span>
+                        <a href="#onSelectionChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSelectionChange(selection: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="321"
+                                    class="link-to-prism">src/app/features/portal/demo-group/rich-text-editor-demo/rich-text-editor-demo.component.ts:321</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle selection change</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>selection</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSubmit"></a>
+                    <span class="name">
+                        <span ><b>onSubmit</b></span>
+                        <a href="#onSubmit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSubmit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="301"
+                                    class="link-to-prism">src/app/features/portal/demo-group/rich-text-editor-demo/rich-text-editor-demo.component.ts:301</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle form submission</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onTextChange"></a>
+                    <span class="name">
+                        <span ><b>onTextChange</b></span>
+                        <a href="#onTextChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onTextChange(change: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="328"
+                                    class="link-to-prism">src/app/features/portal/demo-group/rich-text-editor-demo/rich-text-editor-demo.component.ts:328</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle text change</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>change</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateConfig"></a>
+                    <span class="name">
+                        <span ><b>updateConfig</b></span>
+                        <a href="#updateConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateConfig()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="164"
+                                    class="link-to-prism">src/app/features/portal/demo-group/rich-text-editor-demo/rich-text-editor-demo.component.ts:164</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Update configuration</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="config"></a>
+                    <span class="name">
+                        <span ><b>config</b></span>
+                        <a href="#config"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/RichTextEditorConfig.html" target="_self" >Partial&lt;RichTextEditorConfig&gt;</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    theme: &#x27;snow&#x27;,
+    placeholder: &#x27;เริ่มพิมพ์เนื้อหาของคุณ...&#x27;,
+    readOnly: false,
+    modules: {
+      toolbar: [
+        [{ &#x27;header&#x27;: [1, 2, 3, 4, 5, 6, false] }],
+        [&#x27;bold&#x27;, &#x27;italic&#x27;, &#x27;underline&#x27;, &#x27;strike&#x27;],
+        [{ &#x27;color&#x27;: [] }, { &#x27;background&#x27;: [] }],
+        [{ &#x27;script&#x27;: &#x27;sub&#x27;}, { &#x27;script&#x27;: &#x27;super&#x27; }],
+        [&#x27;blockquote&#x27;, &#x27;code-block&#x27;],
+        [{ &#x27;list&#x27;: &#x27;ordered&#x27;}, { &#x27;list&#x27;: &#x27;bullet&#x27; }],
+        [{ &#x27;indent&#x27;: &#x27;-1&#x27;}, { &#x27;indent&#x27;: &#x27;+1&#x27; }],
+        [{ &#x27;direction&#x27;: &#x27;rtl&#x27; }],
+        [{ &#x27;size&#x27;: [&#x27;small&#x27;, false, &#x27;large&#x27;, &#x27;huge&#x27;] }],
+        [{ &#x27;font&#x27;: [] }],
+        [{ &#x27;align&#x27;: [] }],
+        [&#x27;link&#x27;, &#x27;image&#x27;, &#x27;video&#x27;],
+        [&#x27;clean&#x27;]
+      ],
+      keyboard: true,
+      history: {
+        delay: 2000,
+        maxStack: 500,
+        userOnly: true
+      },
+      clipboard: {
+        matchVisual: false
+      },
+      syntax: true,
+      imageResize: {
+        displaySize: true
+      },
+      table: true,
+      magicUrl: true
+    },
+    formats: [
+      &#x27;header&#x27;, &#x27;font&#x27;, &#x27;size&#x27;,
+      &#x27;bold&#x27;, &#x27;italic&#x27;, &#x27;underline&#x27;, &#x27;strike&#x27;, &#x27;blockquote&#x27;,
+      &#x27;list&#x27;, &#x27;bullet&#x27;, &#x27;indent&#x27;,
+      &#x27;link&#x27;, &#x27;image&#x27;, &#x27;video&#x27;,
+      &#x27;color&#x27;, &#x27;background&#x27;,
+      &#x27;align&#x27;, &#x27;direction&#x27;,
+      &#x27;code-block&#x27;, &#x27;script&#x27;,
+      &#x27;table&#x27;
+    ],
+    bounds: &#x27;self&#x27;,
+    debug: false,
+    scrollingContainer: &#x27;self&#x27;,
+    strict: true
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/features/portal/demo-group/rich-text-editor-demo/rich-text-editor-demo.component.ts:39</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="disabled"></a>
+                    <span class="name">
+                        <span ><b>disabled</b></span>
+                        <a href="#disabled"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/app/features/portal/demo-group/rich-text-editor-demo/rich-text-editor-demo.component.ts:95</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="editorForm"></a>
+                    <span class="name">
+                        <span ><b>editorForm</b></span>
+                        <a href="#editorForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>FormGroup</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/features/portal/demo-group/rich-text-editor-demo/rich-text-editor-demo.component.ts:36</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loading"></a>
+                    <span class="name">
+                        <span ><b>loading</b></span>
+                        <a href="#loading"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="96" class="link-to-prism">src/app/features/portal/demo-group/rich-text-editor-demo/rich-text-editor-demo.component.ts:96</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="placeholder"></a>
+                    <span class="name">
+                        <span ><b>placeholder</b></span>
+                        <a href="#placeholder"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;เริ่มพิมพ์เนื้อหาของคุณ...&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="93" class="link-to-prism">src/app/features/portal/demo-group/rich-text-editor-demo/rich-text-editor-demo.component.ts:93</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="readOnly"></a>
+                    <span class="name">
+                        <span ><b>readOnly</b></span>
+                        <a href="#readOnly"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="94" class="link-to-prism">src/app/features/portal/demo-group/rich-text-editor-demo/rich-text-editor-demo.component.ts:94</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sampleContent"></a>
+                    <span class="name">
+                        <span ><b>sampleContent</b></span>
+                        <a href="#sampleContent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x60;
+    &lt;h1&gt;ยินดีต้อนรับสู่ Rich Text Editor&lt;/h1&gt;
+    &lt;p&gt;นี่คือตัวอย่างเนื้อหาที่แสดงความสามารถของ Rich Text Editor&lt;/p&gt;
+
+    &lt;h2&gt;ฟีเจอร์หลัก&lt;/h2&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;strong&gt;การจัดรูปแบบข้อความ&lt;/strong&gt; - ตัวหนา, ตัวเอียง, ขีดเส้นใต้&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;การจัดรูปแบบหัวข้อ&lt;/strong&gt; - H1 ถึง H6&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;การจัดรูปแบบสี&lt;/strong&gt; - สีข้อความและสีพื้นหลัง&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;การจัดรูปแบบรายการ&lt;/strong&gt; - รายการแบบมีหมายเลขและแบบจุด&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;การแทรกรูปภาพ&lt;/strong&gt; - รองรับการแทรกรูปภาพ&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;การแทรกตาราง&lt;/strong&gt; - สร้างตารางได้&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;การแทรกลิงก์&lt;/strong&gt; - เพิ่มลิงก์ได้&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;h2&gt;ตัวอย่างการใช้งาน&lt;/h2&gt;
+    &lt;blockquote&gt;
+      &lt;p&gt;Rich Text Editor นี้ใช้ Quill.js เป็นฐานในการทำงาน และได้รับการปรับแต่งให้เหมาะกับการใช้งานในระบบ&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;h3&gt;โค้ดตัวอย่าง&lt;/h3&gt;
+    &lt;pre&gt;&lt;code&gt;function hello() {
+  console.log(&quot;Hello, World!&quot;);
+}&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;h3&gt;ตารางตัวอย่าง&lt;/h3&gt;
+    &lt;table&gt;
+      &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th&gt;ชื่อ&lt;/th&gt;
+          &lt;th&gt;อายุ&lt;/th&gt;
+          &lt;th&gt;อาชีพ&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;สมชาย&lt;/td&gt;
+          &lt;td&gt;25&lt;/td&gt;
+          &lt;td&gt;โปรแกรมเมอร์&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;สมหญิง&lt;/td&gt;
+          &lt;td&gt;30&lt;/td&gt;
+          &lt;td&gt;นักออกแบบ&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &#x60;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="99" class="link-to-prism">src/app/features/portal/demo-group/rich-text-editor-demo/rich-text-editor-demo.component.ts:99</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedTheme"></a>
+                    <span class="name">
+                        <span ><b>selectedTheme</b></span>
+                        <a href="#selectedTheme"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>&quot;snow&quot; | &quot;bubble&quot;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;snow&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="92" class="link-to-prism">src/app/features/portal/demo-group/rich-text-editor-demo/rich-text-editor-demo.component.ts:92</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from &#x27;@angular/forms&#x27;;
+import { RichTextEditorComponent, RichTextEditorConfig } from &#x27;../../../../shared/components/rich-text-editor/rich-text-editor.component&#x27;;
+import { GlassCardComponent } from &#x27;../../../../shared/components/glass-card/glass-card.component&#x27;;
+import { GlassButtonComponent } from &#x27;../../../../shared/components/glass-button/glass-button.component&#x27;;
+
+@Component({
+  selector: &#x27;app-rich-text-editor-demo&#x27;,
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RichTextEditorComponent,
+    GlassCardComponent,
+    GlassButtonComponent
+  ],
+  templateUrl: &#x27;./rich-text-editor-demo.component.html&#x27;,
+  styleUrls: [&#x27;./rich-text-editor-demo.component.scss&#x27;]
+})
+export class RichTextEditorDemoComponent implements OnInit {
+  // Form
+  editorForm: FormGroup;
+
+  // Configuration
+  config: Partial&lt;RichTextEditorConfig&gt; &#x3D; {
+    theme: &#x27;snow&#x27;,
+    placeholder: &#x27;เริ่มพิมพ์เนื้อหาของคุณ...&#x27;,
+    readOnly: false,
+    modules: {
+      toolbar: [
+        [{ &#x27;header&#x27;: [1, 2, 3, 4, 5, 6, false] }],
+        [&#x27;bold&#x27;, &#x27;italic&#x27;, &#x27;underline&#x27;, &#x27;strike&#x27;],
+        [{ &#x27;color&#x27;: [] }, { &#x27;background&#x27;: [] }],
+        [{ &#x27;script&#x27;: &#x27;sub&#x27;}, { &#x27;script&#x27;: &#x27;super&#x27; }],
+        [&#x27;blockquote&#x27;, &#x27;code-block&#x27;],
+        [{ &#x27;list&#x27;: &#x27;ordered&#x27;}, { &#x27;list&#x27;: &#x27;bullet&#x27; }],
+        [{ &#x27;indent&#x27;: &#x27;-1&#x27;}, { &#x27;indent&#x27;: &#x27;+1&#x27; }],
+        [{ &#x27;direction&#x27;: &#x27;rtl&#x27; }],
+        [{ &#x27;size&#x27;: [&#x27;small&#x27;, false, &#x27;large&#x27;, &#x27;huge&#x27;] }],
+        [{ &#x27;font&#x27;: [] }],
+        [{ &#x27;align&#x27;: [] }],
+        [&#x27;link&#x27;, &#x27;image&#x27;, &#x27;video&#x27;],
+        [&#x27;clean&#x27;]
+      ],
+      keyboard: true,
+      history: {
+        delay: 2000,
+        maxStack: 500,
+        userOnly: true
+      },
+      clipboard: {
+        matchVisual: false
+      },
+      syntax: true,
+      imageResize: {
+        displaySize: true
+      },
+      table: true,
+      magicUrl: true
+    },
+    formats: [
+      &#x27;header&#x27;, &#x27;font&#x27;, &#x27;size&#x27;,
+      &#x27;bold&#x27;, &#x27;italic&#x27;, &#x27;underline&#x27;, &#x27;strike&#x27;, &#x27;blockquote&#x27;,
+      &#x27;list&#x27;, &#x27;bullet&#x27;, &#x27;indent&#x27;,
+      &#x27;link&#x27;, &#x27;image&#x27;, &#x27;video&#x27;,
+      &#x27;color&#x27;, &#x27;background&#x27;,
+      &#x27;align&#x27;, &#x27;direction&#x27;,
+      &#x27;code-block&#x27;, &#x27;script&#x27;,
+      &#x27;table&#x27;
+    ],
+    bounds: &#x27;self&#x27;,
+    debug: false,
+    scrollingContainer: &#x27;self&#x27;,
+    strict: true
+  };
+
+  // Demo settings
+  selectedTheme: &#x27;snow&#x27; | &#x27;bubble&#x27; &#x3D; &#x27;snow&#x27;;
+  placeholder: string &#x3D; &#x27;เริ่มพิมพ์เนื้อหาของคุณ...&#x27;;
+  readOnly: boolean &#x3D; false;
+  disabled: boolean &#x3D; false;
+  loading: boolean &#x3D; false;
+
+  // Sample content
+  sampleContent: string &#x3D; &#x60;
+    &lt;h1&gt;ยินดีต้อนรับสู่ Rich Text Editor&lt;/h1&gt;
+    &lt;p&gt;นี่คือตัวอย่างเนื้อหาที่แสดงความสามารถของ Rich Text Editor&lt;/p&gt;
+
+    &lt;h2&gt;ฟีเจอร์หลัก&lt;/h2&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;strong&gt;การจัดรูปแบบข้อความ&lt;/strong&gt; - ตัวหนา, ตัวเอียง, ขีดเส้นใต้&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;การจัดรูปแบบหัวข้อ&lt;/strong&gt; - H1 ถึง H6&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;การจัดรูปแบบสี&lt;/strong&gt; - สีข้อความและสีพื้นหลัง&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;การจัดรูปแบบรายการ&lt;/strong&gt; - รายการแบบมีหมายเลขและแบบจุด&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;การแทรกรูปภาพ&lt;/strong&gt; - รองรับการแทรกรูปภาพ&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;การแทรกตาราง&lt;/strong&gt; - สร้างตารางได้&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;การแทรกลิงก์&lt;/strong&gt; - เพิ่มลิงก์ได้&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;h2&gt;ตัวอย่างการใช้งาน&lt;/h2&gt;
+    &lt;blockquote&gt;
+      &lt;p&gt;Rich Text Editor นี้ใช้ Quill.js เป็นฐานในการทำงาน และได้รับการปรับแต่งให้เหมาะกับการใช้งานในระบบ&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;h3&gt;โค้ดตัวอย่าง&lt;/h3&gt;
+    &lt;pre&gt;&lt;code&gt;function hello() {
+  console.log(&quot;Hello, World!&quot;);
+}&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;h3&gt;ตารางตัวอย่าง&lt;/h3&gt;
+    &lt;table&gt;
+      &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th&gt;ชื่อ&lt;/th&gt;
+          &lt;th&gt;อายุ&lt;/th&gt;
+          &lt;th&gt;อาชีพ&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;สมชาย&lt;/td&gt;
+          &lt;td&gt;25&lt;/td&gt;
+          &lt;td&gt;โปรแกรมเมอร์&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;สมหญิง&lt;/td&gt;
+          &lt;td&gt;30&lt;/td&gt;
+          &lt;td&gt;นักออกแบบ&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &#x60;;
+
+  constructor(private fb: FormBuilder) {
+    this.editorForm &#x3D; this.fb.group({
+      title: [&#x27;&#x27;, Validators.required],
+      content: [&#x27;&#x27;],
+      description: [&#x27;&#x27;]
+    });
+  }
+
+  ngOnInit(): void {
+    this.updateConfig();
+    this.loadSampleContent();
+  }
+
+  /**
+   * Update configuration
+   */
+  updateConfig(): void {
+    this.config &#x3D; {
+      ...this.config,
+      theme: this.selectedTheme,
+      placeholder: this.placeholder,
+      readOnly: this.readOnly
+    };
+  }
+
+  /**
+   * Load sample content
+   */
+  loadSampleContent(): void {
+    this.editorForm.patchValue({
+      title: &#x27;ตัวอย่างบทความ&#x27;,
+      content: this.sampleContent,
+      description: &#x27;นี่คือคำอธิบายสั้นๆ ของบทความ&#x27;
+    });
+  }
+
+  /**
+   * Clear content
+   */
+  clearContent(): void {
+    this.editorForm.patchValue({
+      title: &#x27;&#x27;,
+      content: &#x27;&#x27;,
+      description: &#x27;&#x27;
+    });
+  }
+
+  /**
+   * Load different sample content
+   */
+  loadNewsContent(): void {
+    const newsContent &#x3D; &#x60;
+      &lt;h1&gt;ข่าวสารล่าสุด&lt;/h1&gt;
+      &lt;p&gt;&lt;strong&gt;วันที่:&lt;/strong&gt; 25 ตุลาคม 2025&lt;/p&gt;
+
+      &lt;h2&gt;หัวข้อข่าว&lt;/h2&gt;
+      &lt;p&gt;เนื้อหาข่าวสารที่สำคัญและน่าสนใจ&lt;/p&gt;
+
+      &lt;h3&gt;รายละเอียด&lt;/h3&gt;
+      &lt;ul&gt;
+        &lt;li&gt;รายละเอียดที่ 1&lt;/li&gt;
+        &lt;li&gt;รายละเอียดที่ 2&lt;/li&gt;
+        &lt;li&gt;รายละเอียดที่ 3&lt;/li&gt;
+      &lt;/ul&gt;
+
+      &lt;blockquote&gt;
+        &lt;p&gt;&quot;คำพูดสำคัญจากผู้เกี่ยวข้อง&quot;&lt;/p&gt;
+      &lt;/blockquote&gt;
+    &#x60;;
+
+    this.editorForm.patchValue({
+      title: &#x27;ข่าวสารล่าสุด&#x27;,
+      content: newsContent,
+      description: &#x27;ข่าวสารและข้อมูลล่าสุด&#x27;
+    });
+  }
+
+  loadProductContent(): void {
+    const productContent &#x3D; &#x60;
+      &lt;h1&gt;สินค้าใหม่&lt;/h1&gt;
+      &lt;p&gt;&lt;strong&gt;ราคา:&lt;/strong&gt; ฿1,999&lt;/p&gt;
+
+      &lt;h2&gt;คุณสมบัติ&lt;/h2&gt;
+      &lt;ul&gt;
+        &lt;li&gt;คุณสมบัติที่ 1&lt;/li&gt;
+        &lt;li&gt;คุณสมบัติที่ 2&lt;/li&gt;
+        &lt;li&gt;คุณสมบัติที่ 3&lt;/li&gt;
+      &lt;/ul&gt;
+
+      &lt;h2&gt;รายละเอียดสินค้า&lt;/h2&gt;
+      &lt;p&gt;รายละเอียดเพิ่มเติมเกี่ยวกับสินค้า&lt;/p&gt;
+
+      &lt;h3&gt;วิธีการใช้งาน&lt;/h3&gt;
+      &lt;ol&gt;
+        &lt;li&gt;ขั้นตอนที่ 1&lt;/li&gt;
+        &lt;li&gt;ขั้นตอนที่ 2&lt;/li&gt;
+        &lt;li&gt;ขั้นตอนที่ 3&lt;/li&gt;
+      &lt;/ol&gt;
+    &#x60;;
+
+    this.editorForm.patchValue({
+      title: &#x27;สินค้าใหม่&#x27;,
+      content: productContent,
+      description: &#x27;สินค้าและบริการใหม่&#x27;
+    });
+  }
+
+  loadDocumentContent(): void {
+    const documentContent &#x3D; &#x60;
+      &lt;h1&gt;เอกสารทางการ&lt;/h1&gt;
+      &lt;p&gt;&lt;strong&gt;หมายเลขเอกสาร:&lt;/strong&gt; DOC-2025-001&lt;/p&gt;
+      &lt;p&gt;&lt;strong&gt;วันที่ออกเอกสาร:&lt;/strong&gt; 25 ตุลาคม 2025&lt;/p&gt;
+
+      &lt;h2&gt;วัตถุประสงค์&lt;/h2&gt;
+      &lt;p&gt;วัตถุประสงค์ของเอกสารนี้&lt;/p&gt;
+
+      &lt;h2&gt;ขอบเขต&lt;/h2&gt;
+      &lt;p&gt;ขอบเขตการใช้งาน&lt;/p&gt;
+
+      &lt;h2&gt;ข้อกำหนด&lt;/h2&gt;
+      &lt;table&gt;
+        &lt;thead&gt;
+          &lt;tr&gt;
+            &lt;th&gt;ข้อกำหนด&lt;/th&gt;
+            &lt;th&gt;รายละเอียด&lt;/th&gt;
+            &lt;th&gt;สถานะ&lt;/th&gt;
+          &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+          &lt;tr&gt;
+            &lt;td&gt;ข้อกำหนด 1&lt;/td&gt;
+            &lt;td&gt;รายละเอียดข้อกำหนด 1&lt;/td&gt;
+            &lt;td&gt;เสร็จสิ้น&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td&gt;ข้อกำหนด 2&lt;/td&gt;
+            &lt;td&gt;รายละเอียดข้อกำหนด 2&lt;/td&gt;
+            &lt;td&gt;กำลังดำเนินการ&lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &#x60;;
+
+    this.editorForm.patchValue({
+      title: &#x27;เอกสารทางการ&#x27;,
+      content: documentContent,
+      description: &#x27;เอกสารและคู่มือการใช้งาน&#x27;
+    });
+  }
+
+  /**
+   * Handle form submission
+   */
+  onSubmit(): void {
+    if (this.editorForm.valid) {
+      console.log(&#x27;Form submitted:&#x27;, this.editorForm.value);
+      alert(&#x27;บันทึกข้อมูลเรียบร้อยแล้ว!&#x27;);
+    } else {
+      console.log(&#x27;Form is invalid&#x27;);
+      alert(&#x27;กรุณากรอกข้อมูลให้ครบถ้วน&#x27;);
+    }
+  }
+
+  /**
+   * Handle content change
+   */
+  onContentChange(content: string): void {
+    console.log(&#x27;Content changed:&#x27;, content);
+  }
+
+  /**
+   * Handle selection change
+   */
+  onSelectionChange(selection: any): void {
+    console.log(&#x27;Selection changed:&#x27;, selection);
+  }
+
+  /**
+   * Handle text change
+   */
+  onTextChange(change: any): void {
+    console.log(&#x27;Text changed:&#x27;, change);
+  }
+
+  /**
+   * Handle editor ready
+   */
+  onEditorReady(editor: any): void {
+    console.log(&#x27;Editor ready:&#x27;, editor);
+  }
+
+  /**
+   * Get theme options
+   */
+  getThemeOptions(): Array&lt;{value: string, label: string}&gt; {
+    return [
+      { value: &#x27;snow&#x27;, label: &#x27;Snow Theme&#x27; },
+      { value: &#x27;bubble&#x27;, label: &#x27;Bubble Theme&#x27; }
+    ];
+  }
+
+  /**
+   * Get editor statistics
+   */
+  getEditorStats(): any {
+    const content &#x3D; this.editorForm.get(&#x27;content&#x27;)?.value || &#x27;&#x27;;
+    const textContent &#x3D; content.replace(/&lt;[^&gt;]*&gt;/g, &#x27;&#x27;);
+
+    return {
+      characterCount: textContent.length,
+      wordCount: textContent.split(/\s+/).filter((word: string) &#x3D;&gt; word.length &gt; 0).length,
+      paragraphCount: (content.match(/&lt;p&gt;/g) || []).length,
+      headingCount: (content.match(/&lt;h[1-6]&gt;/g) || []).length,
+      listCount: (content.match(/&lt;[uo]l&gt;/g) || []).length,
+      imageCount: (content.match(/&lt;img/g) || []).length,
+      linkCount: (content.match(/&lt;a/g) || []).length,
+      tableCount: (content.match(/&lt;table/g) || []).length,
+      theme: this.selectedTheme,
+      readOnly: this.readOnly,
+      disabled: this.disabled
+    };
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;rich-text-editor-demo-container&quot;&gt;
+  &lt;!-- Header --&gt;
+  &lt;div class&#x3D;&quot;demo-header&quot;&gt;
+    &lt;h1 class&#x3D;&quot;demo-title&quot;&gt;
+      &lt;i class&#x3D;&quot;fas fa-edit&quot;&gt;&lt;/i&gt;
+      Rich Text Editor Demo
+    &lt;/h1&gt;
+    &lt;p class&#x3D;&quot;demo-description&quot;&gt;
+      ทดสอบ Rich Text Editor Component สำหรับการแก้ไขเนื้อหา
+    &lt;/p&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Demo Controls --&gt;
+  &lt;div class&#x3D;&quot;demo-controls&quot;&gt;
+    &lt;app-glass-card&gt;
+      &lt;div class&#x3D;&quot;controls-section&quot;&gt;
+        &lt;h3&gt;การตั้งค่า Editor&lt;/h3&gt;
+
+        &lt;div class&#x3D;&quot;control-group&quot;&gt;
+          &lt;label&gt;Theme:&lt;/label&gt;
+          &lt;select [(ngModel)]&#x3D;&quot;selectedTheme&quot; (change)&#x3D;&quot;updateConfig()&quot;&gt;
+            &lt;option *ngFor&#x3D;&quot;let option of getThemeOptions()&quot; [value]&#x3D;&quot;option.value&quot;&gt;
+              {{ option.label }}
+            &lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;control-group&quot;&gt;
+          &lt;label&gt;Placeholder:&lt;/label&gt;
+          &lt;input
+            type&#x3D;&quot;text&quot;
+            [(ngModel)]&#x3D;&quot;placeholder&quot;
+            (change)&#x3D;&quot;updateConfig()&quot;
+            class&#x3D;&quot;text-input&quot;&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;control-group&quot;&gt;
+          &lt;label&gt;
+            &lt;input type&#x3D;&quot;checkbox&quot; [(ngModel)]&#x3D;&quot;readOnly&quot; (change)&#x3D;&quot;updateConfig()&quot;&gt;
+            Read Only
+          &lt;/label&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;control-group&quot;&gt;
+          &lt;label&gt;
+            &lt;input type&#x3D;&quot;checkbox&quot; [(ngModel)]&#x3D;&quot;disabled&quot; (change)&#x3D;&quot;updateConfig()&quot;&gt;
+            Disabled
+          &lt;/label&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;control-group&quot;&gt;
+          &lt;label&gt;
+            &lt;input type&#x3D;&quot;checkbox&quot; [(ngModel)]&#x3D;&quot;loading&quot; (change)&#x3D;&quot;updateConfig()&quot;&gt;
+            Loading
+          &lt;/label&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/app-glass-card&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Demo Actions --&gt;
+  &lt;div class&#x3D;&quot;demo-actions&quot;&gt;
+    &lt;app-glass-card&gt;
+      &lt;div class&#x3D;&quot;actions-section&quot;&gt;
+        &lt;h3&gt;ตัวอย่างเนื้อหา&lt;/h3&gt;
+
+        &lt;div class&#x3D;&quot;action-buttons&quot;&gt;
+          &lt;app-glass-button
+            variant&#x3D;&quot;primary&quot;
+            (click)&#x3D;&quot;loadSampleContent()&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-file-alt&quot;&gt;&lt;/i&gt;
+            เนื้อหาตัวอย่าง
+          &lt;/app-glass-button&gt;
+
+          &lt;app-glass-button
+            variant&#x3D;&quot;secondary&quot;
+            (click)&#x3D;&quot;loadNewsContent()&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-newspaper&quot;&gt;&lt;/i&gt;
+            ข่าวสาร
+          &lt;/app-glass-button&gt;
+
+          &lt;app-glass-button
+            variant&#x3D;&quot;secondary&quot;
+            (click)&#x3D;&quot;loadProductContent()&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-box&quot;&gt;&lt;/i&gt;
+            สินค้า
+          &lt;/app-glass-button&gt;
+
+          &lt;app-glass-button
+            variant&#x3D;&quot;secondary&quot;
+            (click)&#x3D;&quot;loadDocumentContent()&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-file-text&quot;&gt;&lt;/i&gt;
+            เอกสาร
+          &lt;/app-glass-button&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;action-buttons&quot;&gt;
+          &lt;app-glass-button
+            variant&#x3D;&quot;primary&quot;
+            (click)&#x3D;&quot;onSubmit()&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-save&quot;&gt;&lt;/i&gt;
+            บันทึก
+          &lt;/app-glass-button&gt;
+
+          &lt;app-glass-button
+            variant&#x3D;&quot;secondary&quot;
+            (click)&#x3D;&quot;clearContent()&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-trash&quot;&gt;&lt;/i&gt;
+            ล้างข้อมูล
+          &lt;/app-glass-button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/app-glass-card&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Rich Text Editor Demo --&gt;
+  &lt;div class&#x3D;&quot;editor-demo&quot;&gt;
+    &lt;app-glass-card&gt;
+      &lt;div class&#x3D;&quot;editor-section&quot;&gt;
+        &lt;h3&gt;Rich Text Editor&lt;/h3&gt;
+
+        &lt;form [formGroup]&#x3D;&quot;editorForm&quot; (ngSubmit)&#x3D;&quot;onSubmit()&quot;&gt;
+          &lt;div class&#x3D;&quot;form-group&quot;&gt;
+            &lt;label for&#x3D;&quot;title&quot;&gt;หัวข้อ:&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;text&quot;
+              id&#x3D;&quot;title&quot;
+              formControlName&#x3D;&quot;title&quot;
+              class&#x3D;&quot;form-input&quot;
+              placeholder&#x3D;&quot;กรอกหัวข้อ&quot;&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;form-group&quot;&gt;
+            &lt;label for&#x3D;&quot;description&quot;&gt;คำอธิบาย:&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;text&quot;
+              id&#x3D;&quot;description&quot;
+              formControlName&#x3D;&quot;description&quot;
+              class&#x3D;&quot;form-input&quot;
+              placeholder&#x3D;&quot;กรอกคำอธิบาย&quot;&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;form-group&quot;&gt;
+            &lt;label for&#x3D;&quot;content&quot;&gt;เนื้อหา:&lt;/label&gt;
+            &lt;app-rich-text-editor
+              formControlName&#x3D;&quot;content&quot;
+              [config]&#x3D;&quot;config&quot;
+              [disabled]&#x3D;&quot;disabled&quot;
+              [loading]&#x3D;&quot;loading&quot;
+              (contentChange)&#x3D;&quot;onContentChange($event)&quot;
+              (selectionChange)&#x3D;&quot;onSelectionChange($event)&quot;
+              (textChange)&#x3D;&quot;onTextChange($event)&quot;
+              (editorReady)&#x3D;&quot;onEditorReady($event)&quot;&gt;
+            &lt;/app-rich-text-editor&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+    &lt;/app-glass-card&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Statistics --&gt;
+  &lt;div class&#x3D;&quot;demo-stats&quot;&gt;
+    &lt;app-glass-card&gt;
+      &lt;div class&#x3D;&quot;stats-section&quot;&gt;
+        &lt;h3&gt;สถิติ Editor&lt;/h3&gt;
+
+        &lt;div class&#x3D;&quot;stats-grid&quot;&gt;
+          &lt;div class&#x3D;&quot;stat-item&quot;&gt;
+            &lt;div class&#x3D;&quot;stat-value&quot;&gt;{{ getEditorStats().characterCount }}&lt;/div&gt;
+            &lt;div class&#x3D;&quot;stat-label&quot;&gt;ตัวอักษร&lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;stat-item&quot;&gt;
+            &lt;div class&#x3D;&quot;stat-value&quot;&gt;{{ getEditorStats().wordCount }}&lt;/div&gt;
+            &lt;div class&#x3D;&quot;stat-label&quot;&gt;คำ&lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;stat-item&quot;&gt;
+            &lt;div class&#x3D;&quot;stat-value&quot;&gt;{{ getEditorStats().paragraphCount }}&lt;/div&gt;
+            &lt;div class&#x3D;&quot;stat-label&quot;&gt;ย่อหน้า&lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;stat-item&quot;&gt;
+            &lt;div class&#x3D;&quot;stat-value&quot;&gt;{{ getEditorStats().headingCount }}&lt;/div&gt;
+            &lt;div class&#x3D;&quot;stat-label&quot;&gt;หัวข้อ&lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;stat-item&quot;&gt;
+            &lt;div class&#x3D;&quot;stat-value&quot;&gt;{{ getEditorStats().listCount }}&lt;/div&gt;
+            &lt;div class&#x3D;&quot;stat-label&quot;&gt;รายการ&lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;stat-item&quot;&gt;
+            &lt;div class&#x3D;&quot;stat-value&quot;&gt;{{ getEditorStats().imageCount }}&lt;/div&gt;
+            &lt;div class&#x3D;&quot;stat-label&quot;&gt;รูปภาพ&lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;stat-item&quot;&gt;
+            &lt;div class&#x3D;&quot;stat-value&quot;&gt;{{ getEditorStats().linkCount }}&lt;/div&gt;
+            &lt;div class&#x3D;&quot;stat-label&quot;&gt;ลิงก์&lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;stat-item&quot;&gt;
+            &lt;div class&#x3D;&quot;stat-value&quot;&gt;{{ getEditorStats().tableCount }}&lt;/div&gt;
+            &lt;div class&#x3D;&quot;stat-label&quot;&gt;ตาราง&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/app-glass-card&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Features Overview --&gt;
+  &lt;div class&#x3D;&quot;features-overview&quot;&gt;
+    &lt;app-glass-card&gt;
+      &lt;div class&#x3D;&quot;features-section&quot;&gt;
+        &lt;h3&gt;ฟีเจอร์ Rich Text Editor&lt;/h3&gt;
+
+        &lt;div class&#x3D;&quot;features-grid&quot;&gt;
+          &lt;div class&#x3D;&quot;feature-item&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-check-circle&quot;&gt;&lt;/i&gt;
+            &lt;h4&gt;Rich Text Formatting&lt;/h4&gt;
+            &lt;p&gt;จัดรูปแบบข้อความได้หลากหลาย&lt;/p&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;feature-item&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-check-circle&quot;&gt;&lt;/i&gt;
+            &lt;h4&gt;Image &amp; Media&lt;/h4&gt;
+            &lt;p&gt;แทรกรูปภาพและสื่อได้&lt;/p&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;feature-item&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-check-circle&quot;&gt;&lt;/i&gt;
+            &lt;h4&gt;Tables &amp; Lists&lt;/h4&gt;
+            &lt;p&gt;สร้างตารางและรายการได้&lt;/p&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;feature-item&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-check-circle&quot;&gt;&lt;/i&gt;
+            &lt;h4&gt;Undo/Redo&lt;/h4&gt;
+            &lt;p&gt;ยกเลิกและทำซ้ำได้&lt;/p&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;feature-item&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-check-circle&quot;&gt;&lt;/i&gt;
+            &lt;h4&gt;Keyboard Shortcuts&lt;/h4&gt;
+            &lt;p&gt;รองรับคีย์บอร์ดลัด&lt;/p&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;feature-item&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-check-circle&quot;&gt;&lt;/i&gt;
+            &lt;h4&gt;Form Integration&lt;/h4&gt;
+            &lt;p&gt;ทำงานร่วมกับ Angular Forms&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/app-glass-card&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./rich-text-editor-demo.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">// Rich Text Editor Demo Component Styles
+
+.rich-text-editor-demo-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.demo-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: white;
+
+  .demo-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+
+    i {
+      color: #3B82F6;
+    }
+  }
+
+  .demo-description {
+    font-size: 1.125rem;
+    opacity: 0.9;
+    margin: 0;
+  }
+}
+
+.demo-controls {
+  margin-bottom: 2rem;
+
+  .controls-section {
+    h3 {
+      color: white;
+      margin: 0 0 1.5rem 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+
+      label {
+        color: white;
+        font-weight: 500;
+        min-width: 120px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        input[type&#x3D;&quot;checkbox&quot;] {
+          margin: 0;
+        }
+      }
+
+      select {
+        padding: 0.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 0.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        font-size: 0.875rem;
+        min-width: 150px;
+
+        option {
+          background: #1f2937;
+          color: white;
+        }
+      }
+
+      .text-input {
+        padding: 0.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 0.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        font-size: 0.875rem;
+        min-width: 200px;
+
+        &amp;::placeholder {
+          color: rgba(255, 255, 255, 0.5);
+        }
+      }
+    }
+  }
+}
+
+.demo-actions {
+  margin-bottom: 2rem;
+
+  .actions-section {
+    h3 {
+      color: white;
+      margin: 0 0 1.5rem 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+
+      app-glass-button {
+        flex: 1;
+        min-width: 150px;
+      }
+    }
+  }
+}
+
+.editor-demo {
+  margin-bottom: 2rem;
+
+  .editor-section {
+    h3 {
+      color: white;
+      margin: 0 0 1.5rem 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+
+      label {
+        display: block;
+        color: white;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+      }
+
+      .form-input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 0.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        font-size: 0.875rem;
+
+        &amp;::placeholder {
+          color: rgba(255, 255, 255, 0.5);
+        }
+
+        &amp;:focus {
+          outline: none;
+          border-color: #3B82F6;
+          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+      }
+    }
+  }
+}
+
+.demo-stats {
+  margin-bottom: 2rem;
+
+  .stats-section {
+    h3 {
+      color: white;
+      margin: 0 0 1.5rem 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+
+      .stat-item {
+        text-align: center;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 0.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+
+        .stat-value {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: #3B82F6;
+          margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+          font-size: 0.875rem;
+          color: rgba(255, 255, 255, 0.8);
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
+.features-overview {
+  .features-section {
+    h3 {
+      color: white;
+      margin: 0 0 1.5rem 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+
+      .feature-item {
+        text-align: center;
+        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 0.75rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+
+        &amp;:hover {
+          transform: translateY(-2px);
+          background: rgba(255, 255, 255, 0.08);
+        }
+
+        i {
+          font-size: 2rem;
+          color: #10B981;
+          margin-bottom: 1rem;
+        }
+
+        h4 {
+          color: white;
+          font-size: 1.125rem;
+          font-weight: 600;
+          margin: 0 0 0.5rem 0;
+        }
+
+        p {
+          color: rgba(255, 255, 255, 0.8);
+          font-size: 0.875rem;
+          margin: 0;
+          line-height: 1.5;
+        }
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .rich-text-editor-demo-container {
+    padding: 1rem;
+  }
+
+  .demo-header {
+    .demo-title {
+      font-size: 2rem;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .demo-description {
+      font-size: 1rem;
+    }
+  }
+
+  .demo-controls {
+    .controls-section {
+      .control-group {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+
+        label {
+          min-width: auto;
+        }
+
+        select,
+        .text-input {
+          min-width: 100%;
+        }
+      }
+    }
+  }
+
+  .demo-actions {
+    .actions-section {
+      .action-buttons {
+        flex-direction: column;
+
+        app-glass-button {
+          min-width: auto;
+        }
+      }
+    }
+  }
+
+  .demo-stats {
+    .stats-section {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+
+        .stat-item {
+          padding: 0.75rem;
+
+          .stat-value {
+            font-size: 1.25rem;
+          }
+        }
+      }
+    }
+  }
+
+  .features-overview {
+    .features-section {
+      .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+
+        .feature-item {
+          padding: 1rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .demo-stats {
+    .stats-section {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+}
+
+// Dark theme adjustments
+@media (prefers-color-scheme: dark) {
+  .rich-text-editor-demo-container {
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .demo-controls,
+  .demo-actions,
+  .editor-demo,
+  .demo-stats,
+  .features-overview {
+    .glass-card {
+      border: 2px solid #ffffff;
+    }
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .feature-item {
+    transition: none;
+
+    &amp;:hover {
+      transform: none;
+    }
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="rich-text-editor-demo-container">  <!-- Header -->  <div class="demo-header">    <h1 class="demo-title">      <i class="fas fa-edit"></i>      Rich Text Editor Demo    </h1>    <p class="demo-description">      ทดสอบ Rich Text Editor Component สำหรับการแก้ไขเนื้อหา    </p>  </div>  <!-- Demo Controls -->  <div class="demo-controls">    <app-glass-card>      <div class="controls-section">        <h3>การตั้งค่า Editor</h3>        <div class="control-group">          <label>Theme:</label>          <select [(ngModel)]="selectedTheme" (change)="updateConfig()">            <option *ngFor="let option of getThemeOptions()" [value]="option.value">              {{ option.label }}            </option>          </select>        </div>        <div class="control-group">          <label>Placeholder:</label>          <input            type="text"            [(ngModel)]="placeholder"            (change)="updateConfig()"            class="text-input">        </div>        <div class="control-group">          <label>            <input type="checkbox" [(ngModel)]="readOnly" (change)="updateConfig()">            Read Only          </label>        </div>        <div class="control-group">          <label>            <input type="checkbox" [(ngModel)]="disabled" (change)="updateConfig()">            Disabled          </label>        </div>        <div class="control-group">          <label>            <input type="checkbox" [(ngModel)]="loading" (change)="updateConfig()">            Loading          </label>        </div>      </div>    </app-glass-card>  </div>  <!-- Demo Actions -->  <div class="demo-actions">    <app-glass-card>      <div class="actions-section">        <h3>ตัวอย่างเนื้อหา</h3>        <div class="action-buttons">          <app-glass-button            variant="primary"            (click)="loadSampleContent()">            <i class="fas fa-file-alt"></i>            เนื้อหาตัวอย่าง          </app-glass-button>          <app-glass-button            variant="secondary"            (click)="loadNewsContent()">            <i class="fas fa-newspaper"></i>            ข่าวสาร          </app-glass-button>          <app-glass-button            variant="secondary"            (click)="loadProductContent()">            <i class="fas fa-box"></i>            สินค้า          </app-glass-button>          <app-glass-button            variant="secondary"            (click)="loadDocumentContent()">            <i class="fas fa-file-text"></i>            เอกสาร          </app-glass-button>        </div>        <div class="action-buttons">          <app-glass-button            variant="primary"            (click)="onSubmit()">            <i class="fas fa-save"></i>            บันทึก          </app-glass-button>          <app-glass-button            variant="secondary"            (click)="clearContent()">            <i class="fas fa-trash"></i>            ล้างข้อมูล          </app-glass-button>        </div>      </div>    </app-glass-card>  </div>  <!-- Rich Text Editor Demo -->  <div class="editor-demo">    <app-glass-card>      <div class="editor-section">        <h3>Rich Text Editor</h3>        <form [formGroup]="editorForm" (ngSubmit)="onSubmit()">          <div class="form-group">            <label for="title">หัวข้อ:</label>            <input              type="text"              id="title"              formControlName="title"              class="form-input"              placeholder="กรอกหัวข้อ">          </div>          <div class="form-group">            <label for="description">คำอธิบาย:</label>            <input              type="text"              id="description"              formControlName="description"              class="form-input"              placeholder="กรอกคำอธิบาย">          </div>          <div class="form-group">            <label for="content">เนื้อหา:</label>            <app-rich-text-editor              formControlName="content"              [config]="config"              [disabled]="disabled"              [loading]="loading"              (contentChange)="onContentChange($event)"              (selectionChange)="onSelectionChange($event)"              (textChange)="onTextChange($event)"              (editorReady)="onEditorReady($event)">            </app-rich-text-editor>          </div>        </form>      </div>    </app-glass-card>  </div>  <!-- Statistics -->  <div class="demo-stats">    <app-glass-card>      <div class="stats-section">        <h3>สถิติ Editor</h3>        <div class="stats-grid">          <div class="stat-item">            <div class="stat-value">{{ getEditorStats().characterCount }}</div>            <div class="stat-label">ตัวอักษร</div>          </div>          <div class="stat-item">            <div class="stat-value">{{ getEditorStats().wordCount }}</div>            <div class="stat-label">คำ</div>          </div>          <div class="stat-item">            <div class="stat-value">{{ getEditorStats().paragraphCount }}</div>            <div class="stat-label">ย่อหน้า</div>          </div>          <div class="stat-item">            <div class="stat-value">{{ getEditorStats().headingCount }}</div>            <div class="stat-label">หัวข้อ</div>          </div>          <div class="stat-item">            <div class="stat-value">{{ getEditorStats().listCount }}</div>            <div class="stat-label">รายการ</div>          </div>          <div class="stat-item">            <div class="stat-value">{{ getEditorStats().imageCount }}</div>            <div class="stat-label">รูปภาพ</div>          </div>          <div class="stat-item">            <div class="stat-value">{{ getEditorStats().linkCount }}</div>            <div class="stat-label">ลิงก์</div>          </div>          <div class="stat-item">            <div class="stat-value">{{ getEditorStats().tableCount }}</div>            <div class="stat-label">ตาราง</div>          </div>        </div>      </div>    </app-glass-card>  </div>  <!-- Features Overview -->  <div class="features-overview">    <app-glass-card>      <div class="features-section">        <h3>ฟีเจอร์ Rich Text Editor</h3>        <div class="features-grid">          <div class="feature-item">            <i class="fas fa-check-circle"></i>            <h4>Rich Text Formatting</h4>            <p>จัดรูปแบบข้อความได้หลากหลาย</p>          </div>          <div class="feature-item">            <i class="fas fa-check-circle"></i>            <h4>Image & Media</h4>            <p>แทรกรูปภาพและสื่อได้</p>          </div>          <div class="feature-item">            <i class="fas fa-check-circle"></i>            <h4>Tables & Lists</h4>            <p>สร้างตารางและรายการได้</p>          </div>          <div class="feature-item">            <i class="fas fa-check-circle"></i>            <h4>Undo/Redo</h4>            <p>ยกเลิกและทำซ้ำได้</p>          </div>          <div class="feature-item">            <i class="fas fa-check-circle"></i>            <h4>Keyboard Shortcuts</h4>            <p>รองรับคีย์บอร์ดลัด</p>          </div>          <div class="feature-item">            <i class="fas fa-check-circle"></i>            <h4>Form Integration</h4>            <p>ทำงานร่วมกับ Angular Forms</p>          </div>        </div>      </div>    </app-glass-card>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AccessControlComponent', 'selector': 'app-access-control'},{'name': 'AccessGroupsComponent', 'selector': 'app-access-groups'},{'name': 'AccessibilityDashboardComponent', 'selector': 'app-accessibility-dashboard'},{'name': 'AccessLogsComponent', 'selector': 'app-access-logs'},{'name': 'AccessSchedulesComponent', 'selector': 'app-access-schedules'},{'name': 'AccordionComponent', 'selector': 'app-accordion'},{'name': 'AccordionDemoComponent', 'selector': 'app-accordion-demo'},{'name': 'AdvancedDataTableComponent', 'selector': 'app-advanced-data-table'},{'name': 'AdvancedDataTableDemoComponent', 'selector': 'app-advanced-data-table-demo'},{'name': 'AdvancedFeaturesDashboardComponent', 'selector': 'app-advanced-features-dashboard'},{'name': 'AdvancedFormsComponent', 'selector': 'app-advanced-forms'},{'name': 'AdvancedRichTextComponent', 'selector': 'app-advanced-rich-text'},{'name': 'AdvancedUiDemoComponent', 'selector': 'app-advanced-ui-demo'},{'name': 'AIModelsComponent', 'selector': 'app-ai-models'},{'name': 'AlertComponent', 'selector': 'app-alert'},{'name': 'AlertHistoryComponent', 'selector': 'app-alert-history'},{'name': 'AlertsComponent', 'selector': 'app-alerts'},{'name': 'ApexChartComponent', 'selector': 'app-apex-chart'},{'name': 'App', 'selector': 'app-root'},{'name': 'AttendanceComponent', 'selector': 'app-attendance'},{'name': 'AuditLogsComponent', 'selector': 'app-audit-logs'},{'name': 'AvatarComponent', 'selector': 'app-avatar'},{'name': 'BackupRestoreComponent', 'selector': 'app-backup-restore'},{'name': 'BadgeComponent', 'selector': 'app-badge'},{'name': 'BaseComponent', 'selector': ''},{'name': 'BiometricDataComponent', 'selector': 'app-biometric-data'},{'name': 'BreadcrumbComponent', 'selector': 'app-breadcrumb'},{'name': 'CalendarComponent', 'selector': 'app-calendar'},{'name': 'CalendarDemoComponent', 'selector': 'app-calendar-demo'},{'name': 'ChartComponent', 'selector': 'app-chart'},{'name': 'CheckboxComponent', 'selector': 'app-checkbox'},{'name': 'ColorPickerComponent', 'selector': 'app-color-picker'},{'name': 'ComingSoonComponent', 'selector': 'app-coming-soon'},{'name': 'CompaniesComponent', 'selector': 'app-companies'},{'name': 'CompanyDocumentsComponent', 'selector': 'app-company-documents'},{'name': 'CompanyHolidaysComponent', 'selector': 'app-company-holidays'},{'name': 'ComponentShowcaseComponent', 'selector': 'app-component-showcase'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DataTableComponent', 'selector': 'app-data-table'},{'name': 'DateTimePickerComponent', 'selector': 'app-date-time-picker'},{'name': 'DepartmentsComponent', 'selector': 'app-departments'},{'name': 'DevicesComponent', 'selector': 'app-devices'},{'name': 'DividerComponent', 'selector': 'app-divider'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DoorsComponent', 'selector': 'app-doors'},{'name': 'DraggableCardsComponent', 'selector': 'app-draggable-cards'},{'name': 'DraggableCardsDemoComponent', 'selector': 'app-draggable-cards-demo'},{'name': 'EChartsChartComponent', 'selector': 'app-echarts-chart'},{'name': 'EChartsDemoComponent', 'selector': 'app-echarts-demo'},{'name': 'EmployeesComponent', 'selector': 'app-employees'},{'name': 'EmployeesNewComponent', 'selector': 'app-employees-new'},{'name': 'EmptyStateComponent', 'selector': 'app-empty-state'},{'name': 'Error401Component', 'selector': 'app-error-401'},{'name': 'Error404Component', 'selector': 'app-error-404'},{'name': 'Error500Component', 'selector': 'app-error-500'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'ErrorToastComponent', 'selector': 'app-error-toast'},{'name': 'EventAnalyticsComponent', 'selector': 'app-event-analytics'},{'name': 'EventCheckinHistoryComponent', 'selector': 'app-event-checkin-history'},{'name': 'EventEmailConfirmationComponent', 'selector': 'app-event-email-confirmation'},{'name': 'EventKioskConfigComponent', 'selector': 'app-event-kiosk-config'},{'name': 'EventRegistrationComponent', 'selector': 'app-event-registration'},{'name': 'EventRegistrationFieldsComponent', 'selector': 'app-event-registration-fields'},{'name': 'EventsComponent', 'selector': 'app-events'},{'name': 'FaceRecognitionComponent', 'selector': 'app-face-recognition'},{'name': 'FaceRecognitionDemoComponent', 'selector': 'app-face-recognition-demo'},{'name': 'FaceRecognitionLiveComponent', 'selector': 'app-face-recognition-live'},{'name': 'FaceRecognitionTestComponent', 'selector': 'app-face-recognition-test'},{'name': 'FaqComponent', 'selector': 'app-faq'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'FilterSectionComponent', 'selector': 'app-filter-section'},{'name': 'ForgotPasswordComponent', 'selector': 'app-forgot-password'},{'name': 'FormFieldComponent', 'selector': 'app-form-field'},{'name': 'GalleryComponent', 'selector': 'app-gallery'},{'name': 'GalleryDemoComponent', 'selector': 'app-gallery-demo'},{'name': 'GlassButtonComponent', 'selector': 'app-glass-button'},{'name': 'GlassCardComponent', 'selector': 'app-glass-card'},{'name': 'GlassInputComponent', 'selector': 'app-glass-input'},{'name': 'GroupFaceRecognitionComponent', 'selector': 'app-group-face-recognition'},{'name': 'GuestsComponent', 'selector': 'app-guests'},{'name': 'HardwareStatusDashboardComponent', 'selector': 'app-hardware-status-dashboard'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HeatmapAnalyticsComponent', 'selector': 'app-heatmap-analytics'},{'name': 'HelpCenter', 'selector': 'app-help-center'},{'name': 'HelpCenterComponent', 'selector': 'app-help-center'},{'name': 'HrDashboardComponent', 'selector': 'app-hr-dashboard'},{'name': 'IconComponent', 'selector': 'app-icon'},{'name': 'IncidentReportsComponent', 'selector': 'app-incident-reports'},{'name': 'KioskViewComponent', 'selector': 'app-kiosk-view'},{'name': 'LandingComponent', 'selector': 'app-landing'},{'name': 'LeafletMapComponent', 'selector': 'app-leaflet-map'},{'name': 'LeavesComponent', 'selector': 'app-leaves'},{'name': 'LicenseManagementComponent', 'selector': 'app-license-management'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoadingStateComponent', 'selector': 'app-loading-state'},{'name': 'LocationsComponent', 'selector': 'app-locations'},{'name': 'LockScreenComponent', 'selector': 'app-lock-screen'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MapDemoComponent', 'selector': 'app-map-demo'},{'name': 'MaterialButtonComponent', 'selector': 'app-material-button'},{'name': 'MaterialCardComponent', 'selector': 'app-material-card'},{'name': 'MaterialDialogComponent', 'selector': 'app-material-dialog'},{'name': 'MaterialInputComponent', 'selector': 'app-material-input'},{'name': 'MaterialTableComponent', 'selector': 'app-material-table'},{'name': 'MfaSetupComponent', 'selector': 'app-mfa-setup'},{'name': 'MobileCameraComponent', 'selector': 'app-mobile-camera'},{'name': 'MobileDemoComponent', 'selector': 'app-mobile-demo'},{'name': 'ModalComponent', 'selector': 'app-modal'},{'name': 'ModalFormComponent', 'selector': 'app-modal-form'},{'name': 'ModuleSubscriptionComponent', 'selector': 'app-module-subscription'},{'name': 'MonitoringComponent', 'selector': 'app-monitoring'},{'name': 'NotificationCenterComponent', 'selector': 'app-notification-center'},{'name': 'NotificationDemoComponent', 'selector': 'app-notification-demo'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'NotificationSettingsComponent', 'selector': 'app-notification-settings'},{'name': 'OffcanvasComponent', 'selector': 'app-offcanvas'},{'name': 'OffcanvasDemoComponent', 'selector': 'app-offcanvas-demo'},{'name': 'OvertimeRequestsComponent', 'selector': 'app-overtime-requests'},{'name': 'PageLayoutComponent', 'selector': 'app-page-layout'},{'name': 'PaginationComponent', 'selector': 'app-pagination'},{'name': 'ParkingBlacklistComponent', 'selector': 'app-parking-blacklist'},{'name': 'ParkingDashboardComponent', 'selector': 'app-parking-dashboard'},{'name': 'ParkingEntryComponent', 'selector': 'app-parking-entry'},{'name': 'ParkingExitComponent', 'selector': 'app-parking-exit'},{'name': 'ParkingLogsComponent', 'selector': 'app-parking-logs'},{'name': 'ParkingReservationComponent', 'selector': 'app-parking-reservation'},{'name': 'ParkingRulesComponent', 'selector': 'app-parking-rules'},{'name': 'ParkingSpotsComponent', 'selector': 'app-parking-spots'},{'name': 'ParkingStatisticsComponent', 'selector': 'app-parking-statistics'},{'name': 'PayrollExportComponent', 'selector': 'app-payroll-export'},{'name': 'PerformanceDashboardComponent', 'selector': 'app-performance-dashboard'},{'name': 'PopoverComponent', 'selector': 'app-popover'},{'name': 'PortalLayoutComponent', 'selector': 'app-portal-layout'},{'name': 'PositionsComponent', 'selector': 'app-positions'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'PublicVerificationComponent', 'selector': 'app-public-verification'},{'name': 'QRCodesComponent', 'selector': 'app-qr-codes'},{'name': 'RadioComponent', 'selector': 'app-radio'},{'name': 'RangeSliderComponent', 'selector': 'app-range-slider'},{'name': 'RatingComponent', 'selector': 'app-rating'},{'name': 'RatingDemoComponent', 'selector': 'app-rating-demo'},{'name': 'RbacComponent', 'selector': 'app-rbac'},{'name': 'RecognitionHistoryComponent', 'selector': 'app-recognition-history'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReportsComponent', 'selector': 'app-reports'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'RFIDCardsComponent', 'selector': 'app-rfid-cards'},{'name': 'RichTextComponent', 'selector': 'app-rich-text'},{'name': 'RichTextEditorComponent', 'selector': 'app-rich-text-editor'},{'name': 'RichTextEditorDemoComponent', 'selector': 'app-rich-text-editor-demo'},{'name': 'SafetyDashboardComponent', 'selector': 'app-safety-dashboard'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ShiftsComponent', 'selector': 'app-shifts'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SkeletonComponent', 'selector': 'app-skeleton'},{'name': 'StatisticsCardComponent', 'selector': 'app-statistics-card'},{'name': 'StatisticsGridComponent', 'selector': 'app-statistics-grid'},{'name': 'StepperComponent', 'selector': 'app-stepper'},{'name': 'StructureComponent', 'selector': 'app-structure'},{'name': 'SuperAdminAnnouncementsComponent', 'selector': 'app-super-admin-announcements'},{'name': 'SuperAdminDashboardComponent', 'selector': 'app-super-admin-dashboard'},{'name': 'SuperAdminLayoutComponent', 'selector': 'app-super-admin-layout'},{'name': 'SuperAdminReportsComponent', 'selector': 'app-super-admin-reports'},{'name': 'SurveillanceMapComponent', 'selector': 'app-surveillance-map'},{'name': 'SwiperGalleryComponent', 'selector': 'app-swiper-gallery'},{'name': 'SwiperGalleryDemoComponent', 'selector': 'app-swiper-gallery-demo'},{'name': 'SwitchComponent', 'selector': 'app-switch'},{'name': 'SystemSettingsComponent', 'selector': 'app-system-settings'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TemplateManagementComponent', 'selector': 'app-template-management'},{'name': 'TestApiComponent', 'selector': 'app-test-api'},{'name': 'ThemeSwitcherComponent', 'selector': 'app-theme-switcher'},{'name': 'TimelineComponent', 'selector': 'app-timeline'},{'name': 'TimelineDemoComponent', 'selector': 'app-timeline-demo'},{'name': 'TimesheetsComponent', 'selector': 'app-timesheets'},{'name': 'TimestampComponent', 'selector': 'app-timestamp'},{'name': 'TimestampDemoComponent', 'selector': 'app-timestamp-demo'},{'name': 'TooltipComponent', 'selector': 'app-tooltip'},{'name': 'UsersComponent', 'selector': 'app-users'},{'name': 'ValidationDemoComponent', 'selector': 'app-validation-demo'},{'name': 'VehiclesComponent', 'selector': 'app-vehicles'},{'name': 'VideoAnalyticsComponent', 'selector': 'app-video-analytics'},{'name': 'VideoPlaybackComponent', 'selector': 'app-video-playback'},{'name': 'VisitorBadgesComponent', 'selector': 'app-visitor-badges'},{'name': 'VisitorBlacklistComponent', 'selector': 'app-visitor-blacklist'},{'name': 'VisitorDashboardComponent', 'selector': 'app-visitor-dashboard'},{'name': 'VisitorInvitationsComponent', 'selector': 'app-visitor-invitations'},{'name': 'VisitorParcelsComponent', 'selector': 'app-visitor-parcels'},{'name': 'VisitorReportsComponent', 'selector': 'app-visitor-reports'},{'name': 'VisitorsComponent', 'selector': 'app-visitors'},{'name': 'WatchlistComponent', 'selector': 'app-watchlist'},{'name': 'ZoneConfigComponent', 'selector': 'app-zone-config'}];
+    var DIRECTIVES = [{'name': 'HasPermissionDirective', 'selector': '[appHasPermission]'},{'name': 'ImageOptimizationDirective', 'selector': '[appImageOptimization]'}];
+    var ACTUAL_COMPONENT = {'name': 'RichTextEditorDemoComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'RichTextEditorDemoComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

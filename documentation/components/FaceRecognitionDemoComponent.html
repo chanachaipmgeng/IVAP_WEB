@@ -1,0 +1,2839 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  FaceRecognitionDemoComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-face-recognition-demo</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../interfaces/Module.html" target="_self" >CommonModule</a></code>
+                            <code>NgOptimizedImage</code>
+                                <code><a href="../interfaces/Module.html" target="_self" >FormsModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >TranslateModule</a></code>
+                                <code><a href="../components/FaceRecognitionComponent.html" target="_self" >FaceRecognitionComponent</a></code>
+                                <code><a href="../components/GroupFaceRecognitionComponent.html" target="_self" >GroupFaceRecognitionComponent</a></code>
+                                <code><a href="../components/GlassCardComponent.html" target="_self" >GlassCardComponent</a></code>
+                                <code><a href="../components/GlassButtonComponent.html" target="_self" >GlassButtonComponent</a></code>
+                                <code><a href="../directives/ImageOptimizationDirective.html" target="_self" >ImageOptimizationDirective</a></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./face-recognition-demo.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./face-recognition-demo.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#demoMode" >demoMode</a>
+                            </li>
+                            <li>
+                                <a href="#demoSettings" >demoSettings</a>
+                            </li>
+                            <li>
+                                <a href="#demoStats" >demoStats</a>
+                            </li>
+                            <li>
+                                <a href="#groupRecognitionData" >groupRecognitionData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#i18n" >i18n</a>
+                            </li>
+                            <li>
+                                <a href="#imageQualityData" >imageQualityData</a>
+                            </li>
+                            <li>
+                                <a href="#recentActivity" >recentActivity</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#addActivity" >addActivity</a>
+                            </li>
+                            <li>
+                                <a href="#exportDemoData" >exportDemoData</a>
+                            </li>
+                            <li>
+                                <a href="#formatTimestamp" >formatTimestamp</a>
+                            </li>
+                            <li>
+                                <a href="#getActivityColor" >getActivityColor</a>
+                            </li>
+                            <li>
+                                <a href="#getActivityIcon" >getActivityIcon</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#loadDemoSettings" >loadDemoSettings</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onFaceDetected" >onFaceDetected</a>
+                            </li>
+                            <li>
+                                <a href="#onFaceEnrolled" >onFaceEnrolled</a>
+                            </li>
+                            <li>
+                                <a href="#onFaceRecognized" >onFaceRecognized</a>
+                            </li>
+                            <li>
+                                <a href="#onGroupFacesRecognized" >onGroupFacesRecognized</a>
+                            </li>
+                            <li>
+                                <a href="#onQualityChanged" >onQualityChanged</a>
+                            </li>
+                            <li>
+                                <a href="#resetStats" >resetStats</a>
+                            </li>
+                            <li>
+                                <a href="#saveDemoSettings" >saveDemoSettings</a>
+                            </li>
+                            <li>
+                                <a href="#t" >t</a>
+                            </li>
+                            <li>
+                                <a href="#toggleAdvancedFeatures" >toggleAdvancedFeatures</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#updateAverageConfidence" >updateAverageConfidence</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(cdr: ChangeDetectorRef, i18n: <a href="../injectables/I18nService.html" target="_self">I18nService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">src/app/features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component.ts:78</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>cdr</td>
+                                                  
+                                                        <td>
+                                                                    <code>ChangeDetectorRef</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>i18n</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/I18nService.html" target="_self" >I18nService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addActivity"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>addActivity</b></span>
+                        <a href="#addActivity"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>addActivity(activity: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="184"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component.ts:184</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Add activity to recent activity list</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>activity</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="exportDemoData"></a>
+                    <span class="name">
+                        <span ><b>exportDemoData</b></span>
+                        <a href="#exportDemoData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>exportDemoData()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="234"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component.ts:234</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Export demo data</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="formatTimestamp"></a>
+                    <span class="name">
+                        <span ><b>formatTimestamp</b></span>
+                        <a href="#formatTimestamp"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>formatTimestamp(timestamp: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank">Date</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="355"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component.ts:355</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Format timestamp for display</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>timestamp</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" >Date</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getActivityColor"></a>
+                    <span class="name">
+                        <span ><b>getActivityColor</b></span>
+                        <a href="#getActivityColor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getActivityColor(type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="299"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component.ts:299</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get activity color class</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>type</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getActivityIcon"></a>
+                    <span class="name">
+                        <span ><b>getActivityIcon</b></span>
+                        <a href="#getActivityIcon"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getActivityIcon(type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="283"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component.ts:283</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get activity icon class</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>type</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadDemoSettings"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>loadDemoSettings</b></span>
+                        <a href="#loadDemoSettings"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>loadDemoSettings()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="254"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component.ts:254</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Load demo settings from localStorage</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="85"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component.ts:85</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onFaceDetected"></a>
+                    <span class="name">
+                        <span ><b>onFaceDetected</b></span>
+                        <a href="#onFaceDetected"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onFaceDetected(detections: FaceDetectionResult[])</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="102"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component.ts:102</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle face detection events</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>detections</td>
+                                            <td>
+                                                        <code>FaceDetectionResult[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onFaceEnrolled"></a>
+                    <span class="name">
+                        <span ><b>onFaceEnrolled</b></span>
+                        <a href="#onFaceEnrolled"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onFaceEnrolled(enrollment: <a href="../interfaces/FaceEnrollmentData.html" target="_self">FaceEnrollmentData</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="171"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component.ts:171</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle face enrollment events</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>enrollment</td>
+                                            <td>
+                                                            <code><a href="../interfaces/FaceEnrollmentData.html" target="_self" >FaceEnrollmentData</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onFaceRecognized"></a>
+                    <span class="name">
+                        <span ><b>onFaceRecognized</b></span>
+                        <a href="#onFaceRecognized"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onFaceRecognized(recognitions: <a href="../interfaces/FaceRecognitionResult.html" target="_self">FaceRecognitionResult[]</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="154"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component.ts:154</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle face recognition events</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>recognitions</td>
+                                            <td>
+                                                            <code><a href="../interfaces/FaceRecognitionResult.html" target="_self" >FaceRecognitionResult[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onGroupFacesRecognized"></a>
+                    <span class="name">
+                        <span ><b>onGroupFacesRecognized</b></span>
+                        <a href="#onGroupFacesRecognized"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onGroupFacesRecognized(faces: <a href="../interfaces/GroupRecognitionResult.html" target="_self">GroupRecognitionResult[]</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="315"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component.ts:315</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle group face recognition events</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>faces</td>
+                                            <td>
+                                                            <code><a href="../interfaces/GroupRecognitionResult.html" target="_self" >GroupRecognitionResult[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onQualityChanged"></a>
+                    <span class="name">
+                        <span ><b>onQualityChanged</b></span>
+                        <a href="#onQualityChanged"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onQualityChanged(quality: <a href="../interfaces/ImageQualityAssessment.html" target="_self">ImageQualityAssessment</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="332"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component.ts:332</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle image quality change events</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>quality</td>
+                                            <td>
+                                                            <code><a href="../interfaces/ImageQualityAssessment.html" target="_self" >ImageQualityAssessment</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resetStats"></a>
+                    <span class="name">
+                        <span ><b>resetStats</b></span>
+                        <a href="#resetStats"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>resetStats()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="220"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component.ts:220</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Reset demo statistics</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveDemoSettings"></a>
+                    <span class="name">
+                        <span ><b>saveDemoSettings</b></span>
+                        <a href="#saveDemoSettings"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>saveDemoSettings()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="268"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component.ts:268</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Save demo settings to localStorage</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="t"></a>
+                    <span class="name">
+                        <span ><b>t</b></span>
+                        <a href="#t"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>t(key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, params?: Record<string | any>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="89"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component.ts:89</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>key</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>params</td>
+                                            <td>
+                                                        <code>Record&lt;string | any&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleAdvancedFeatures"></a>
+                    <span class="name">
+                        <span ><b>toggleAdvancedFeatures</b></span>
+                        <a href="#toggleAdvancedFeatures"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleAdvancedFeatures()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="275"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component.ts:275</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Toggle advanced features</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateAverageConfidence"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>updateAverageConfidence</b></span>
+                        <a href="#updateAverageConfidence"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateAverageConfidence()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="207"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component.ts:207</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Update average confidence</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="demoMode"></a>
+                    <span class="name">
+                        <span ><b>demoMode</b></span>
+                        <a href="#demoMode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>&quot;single&quot; | &quot;group&quot;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;single&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/app/features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component.ts:65</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="demoSettings"></a>
+                    <span class="name">
+                        <span ><b>demoSettings</b></span>
+                        <a href="#demoSettings"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    showAdvancedFeatures: true,
+    enableSound: true,
+    enableVibration: false,
+    detectionThreshold: 0.6,
+    recognitionThreshold: 0.6
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/app/features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component.ts:68</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="demoStats"></a>
+                    <span class="name">
+                        <span ><b>demoStats</b></span>
+                        <a href="#demoStats"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    totalDetections: 0,
+    successfulRecognitions: 0,
+    totalEnrollments: 0,
+    averageConfidence: 0,
+    detectionTime: 0
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component.ts:46</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="groupRecognitionData"></a>
+                    <span class="name">
+                        <span ><b>groupRecognitionData</b></span>
+                        <a href="#groupRecognitionData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/GroupRecognitionResult.html" target="_self" >GroupRecognitionResult[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="77" class="link-to-prism">src/app/features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component.ts:77</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="i18n"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>i18n</b></span>
+                        <a href="#i18n"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../injectables/I18nService.html" target="_self" >I18nService</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">src/app/features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component.ts:82</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="imageQualityData"></a>
+                    <span class="name">
+                        <span ><b>imageQualityData</b></span>
+                        <a href="#imageQualityData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/ImageQualityAssessment.html" target="_self" >ImageQualityAssessment | null</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">src/app/features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component.ts:78</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="recentActivity"></a>
+                    <span class="name">
+                        <span ><b>recentActivity</b></span>
+                        <a href="#recentActivity"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Array&lt;literal type&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component.ts:55</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, ChangeDetectorRef } from &#x27;@angular/core&#x27;;
+import { CommonModule, NgOptimizedImage } from &#x27;@angular/common&#x27;;
+import { FormsModule } from &#x27;@angular/forms&#x27;;
+import { TranslateModule } from &#x27;@ngx-translate/core&#x27;;
+import { FaceRecognitionComponent } from &#x27;../../../../shared/components/face-recognition/face-recognition.component&#x27;;
+import { GroupFaceRecognitionComponent, GroupRecognitionResult } from &#x27;../../../../shared/components/group-face-recognition/group-face-recognition.component&#x27;;
+import { GlassCardComponent } from &#x27;../../../../shared/components/glass-card/glass-card.component&#x27;;
+import { GlassButtonComponent } from &#x27;../../../../shared/components/glass-button/glass-button.component&#x27;;
+import { FaceDetectionResult, FaceRecognitionResult, FaceEnrollmentData } from &#x27;../../../../core/services/face-detection.service&#x27;;
+import { ImageQualityAssessment } from &#x27;../../../../core/utils/image-quality.utils&#x27;;
+import { I18nService } from &#x27;../../../../core/services/i18n.service&#x27;;
+
+import { ImageOptimizationDirective } from &#x27;../../../../shared/directives/image-optimization.directive&#x27;;
+
+@Component({
+  selector: &#x27;app-face-recognition-demo&#x27;,
+  standalone: true,
+  imports: [
+    CommonModule,
+    NgOptimizedImage,
+    FormsModule,
+    TranslateModule,
+    FaceRecognitionComponent,
+    GroupFaceRecognitionComponent,
+    GlassCardComponent,
+    GlassButtonComponent,
+    ImageOptimizationDirective
+  ],
+  templateUrl: &#x27;./face-recognition-demo.component.html&#x27;,
+  styleUrls: [&#x27;./face-recognition-demo.component.scss&#x27;]
+})
+export class FaceRecognitionDemoComponent implements OnInit {
+  // Demo statistics
+  demoStats &#x3D; {
+    totalDetections: 0,
+    successfulRecognitions: 0,
+    totalEnrollments: 0,
+    averageConfidence: 0,
+    detectionTime: 0
+  };
+
+  // Recent activity
+  recentActivity: Array&lt;{
+    type: &#x27;detection&#x27; | &#x27;recognition&#x27; | &#x27;enrollment&#x27;;
+    message: string;
+    timestamp: Date;
+    confidence?: number;
+    details?: string;
+    snapshot?: string; // Add snapshot field
+  }&gt; &#x3D; [];
+
+  // Demo mode
+  demoMode: &#x27;single&#x27; | &#x27;group&#x27; &#x3D; &#x27;single&#x27;;
+
+  // Demo settings
+  demoSettings &#x3D; {
+    showAdvancedFeatures: true,
+    enableSound: true,
+    enableVibration: false,
+    detectionThreshold: 0.6,
+    recognitionThreshold: 0.6
+  };
+
+  // Group recognition data
+  groupRecognitionData: GroupRecognitionResult[] &#x3D; [];
+  imageQualityData: ImageQualityAssessment | null &#x3D; null;
+
+  constructor(
+    private cdr: ChangeDetectorRef,
+    public i18n: I18nService
+  ) {}
+
+  ngOnInit(): void {
+    this.loadDemoSettings();
+  }
+
+  t(key: string, params?: Record&lt;string, any&gt;): string {
+    let translation &#x3D; this.i18n.translate(key);
+    if (params) {
+      Object.keys(params).forEach(param &#x3D;&gt; {
+        translation &#x3D; translation.replace(&#x60;{${param}}&#x60;, params[param]);
+      });
+    }
+    return translation;
+  }
+
+  /**
+   * Handle face detection events
+   */
+  onFaceDetected(detections: FaceDetectionResult[]): void {
+    if (detections.length &#x3D;&#x3D;&#x3D; 0) return;
+
+    // Filter detections based on threshold
+    const qualifiedDetections &#x3D; detections.filter(d &#x3D;&gt; d.confidence &gt;&#x3D; this.demoSettings.detectionThreshold);
+
+    if (qualifiedDetections.length &#x3D;&#x3D;&#x3D; 0) return;
+
+    this.demoStats.totalDetections +&#x3D; qualifiedDetections.length;
+    this.updateAverageConfidence();
+
+    // Create details string if available
+    const d &#x3D; qualifiedDetections[0]; // Use the first qualified detection
+    let details &#x3D; &#x27;&#x27;;
+    const parts &#x3D; [];
+    if (d.gender) parts.push(d.gender &#x3D;&#x3D;&#x3D; &#x27;male&#x27; ? &#x27;ชาย&#x27; : &#x27;หญิง&#x27;);
+    if (d.age) parts.push(&#x60;${Math.round(d.age)} ปี&#x60;);
+
+    // Add expression
+    if (d.expressions) {
+      const sorted &#x3D; Object.entries(d.expressions).sort((a: any, b: any) &#x3D;&gt; b[1] - a[1]);
+      if (sorted.length &gt; 0 &amp;&amp; (sorted[0][1] as number) &gt; 0.5) {
+          const exprMap: {[key: string]: string} &#x3D; {
+            neutral: &#x27;ปกติ&#x27;,
+            happy: &#x27;มีความสุข&#x27;,
+            sad: &#x27;เศร้า&#x27;,
+            angry: &#x27;โกรธ&#x27;,
+            fearful: &#x27;กลัว&#x27;,
+            disgusted: &#x27;รังเกียจ&#x27;,
+            surprised: &#x27;ประหลาดใจ&#x27;
+          };
+          parts.push(exprMap[sorted[0][0]] || sorted[0][0]);
+      }
+    }
+
+    if (parts.length &gt; 0) details &#x3D; parts.join(&#x27;, &#x27;);
+
+    // Only add activity for significant detections (throttle slightly to avoid spam)
+    // For demo purposes, we&#x27;ll just log it. In production, you might debounce this.
+    this.addActivity({
+      type: &#x27;detection&#x27;,
+      message: &#x60;ตรวจจับใบหน้าได้ ${qualifiedDetections.length} ใบหน้า&#x60;,
+      timestamp: new Date(),
+      confidence: d.confidence,
+      details: details,
+      snapshot: d.snapshot
+    });
+  }
+
+  /**
+   * Handle face recognition events
+   */
+  onFaceRecognized(recognitions: FaceRecognitionResult[]): void {
+    const successful &#x3D; recognitions.filter(r &#x3D;&gt; r.isRecognized);
+    this.demoStats.successfulRecognitions +&#x3D; successful.length;
+
+    successful.forEach(recognition &#x3D;&gt; {
+      this.addActivity({
+        type: &#x27;recognition&#x27;,
+        message: &#x60;จดจำใบหน้า: ${recognition.name} (${Math.round(recognition.confidence * 100)}%)&#x60;,
+        timestamp: new Date(),
+        confidence: recognition.confidence
+      });
+    });
+  }
+
+  /**
+   * Handle face enrollment events
+   */
+  onFaceEnrolled(enrollment: FaceEnrollmentData): void {
+    this.demoStats.totalEnrollments++;
+
+    this.addActivity({
+      type: &#x27;enrollment&#x27;,
+      message: &#x60;ลงทะเบียนใบหน้าใหม่: ${enrollment.name}&#x60;,
+      timestamp: new Date()
+    });
+  }
+
+  /**
+   * Add activity to recent activity list
+   */
+  private addActivity(activity: {
+    type: &#x27;detection&#x27; | &#x27;recognition&#x27; | &#x27;enrollment&#x27;;
+    message: string;
+    timestamp: Date;
+    confidence?: number;
+    details?: string;
+    snapshot?: string;
+  }): void {
+    // Use setTimeout to avoid ExpressionChangedAfterItHasBeenCheckedError
+    setTimeout(() &#x3D;&gt; {
+      this.recentActivity.unshift(activity);
+
+      // Keep only last 20 activities
+      if (this.recentActivity.length &gt; 20) {
+        this.recentActivity &#x3D; this.recentActivity.slice(0, 20);
+      }
+      this.cdr.detectChanges();
+    }, 0);
+  }
+
+  /**
+   * Update average confidence
+   */
+  private updateAverageConfidence(): void {
+    // This would be calculated from actual detection data
+    // For demo purposes, we&#x27;ll simulate it
+    // Use setTimeout to avoid ExpressionChangedAfterItHasBeenCheckedError
+    setTimeout(() &#x3D;&gt; {
+      this.demoStats.averageConfidence &#x3D; Math.random() * 0.4 + 0.6; // 0.6 to 1.0
+      this.cdr.detectChanges();
+    }, 0);
+  }
+
+  /**
+   * Reset demo statistics
+   */
+  resetStats(): void {
+    this.demoStats &#x3D; {
+      totalDetections: 0,
+      successfulRecognitions: 0,
+      totalEnrollments: 0,
+      averageConfidence: 0,
+      detectionTime: 0
+    };
+    this.recentActivity &#x3D; [];
+  }
+
+  /**
+   * Export demo data
+   */
+  exportDemoData(): void {
+    const data &#x3D; {
+      stats: this.demoStats,
+      activity: this.recentActivity,
+      settings: this.demoSettings,
+      timestamp: new Date().toISOString()
+    };
+
+    const blob &#x3D; new Blob([JSON.stringify(data, null, 2)], { type: &#x27;application/json&#x27; });
+    const url &#x3D; URL.createObjectURL(blob);
+    const a &#x3D; document.createElement(&#x27;a&#x27;);
+    a.href &#x3D; url;
+    a.download &#x3D; &#x60;face-recognition-demo-${new Date().toISOString().split(&#x27;T&#x27;)[0]}.json&#x60;;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  /**
+   * Load demo settings from localStorage
+   */
+  private loadDemoSettings(): void {
+    const saved &#x3D; localStorage.getItem(&#x27;face-recognition-demo-settings&#x27;);
+    if (saved) {
+      try {
+        this.demoSettings &#x3D; { ...this.demoSettings, ...JSON.parse(saved) };
+      } catch (error) {
+        console.error(&#x27;Failed to load demo settings:&#x27;, error);
+      }
+    }
+  }
+
+  /**
+   * Save demo settings to localStorage
+   */
+  saveDemoSettings(): void {
+    localStorage.setItem(&#x27;face-recognition-demo-settings&#x27;, JSON.stringify(this.demoSettings));
+  }
+
+  /**
+   * Toggle advanced features
+   */
+  toggleAdvancedFeatures(): void {
+    this.demoSettings.showAdvancedFeatures &#x3D; !this.demoSettings.showAdvancedFeatures;
+    this.saveDemoSettings();
+  }
+
+  /**
+   * Get activity icon class
+   */
+  getActivityIcon(type: string): string {
+    switch (type) {
+      case &#x27;detection&#x27;:
+        return &#x27;fas fa-eye&#x27;;
+      case &#x27;recognition&#x27;:
+        return &#x27;fas fa-user-check&#x27;;
+      case &#x27;enrollment&#x27;:
+        return &#x27;fas fa-user-plus&#x27;;
+      default:
+        return &#x27;fas fa-info-circle&#x27;;
+    }
+  }
+
+  /**
+   * Get activity color class
+   */
+  getActivityColor(type: string): string {
+    switch (type) {
+      case &#x27;detection&#x27;:
+        return &#x27;text-blue-400&#x27;;
+      case &#x27;recognition&#x27;:
+        return &#x27;text-green-400&#x27;;
+      case &#x27;enrollment&#x27;:
+        return &#x27;text-purple-400&#x27;;
+      default:
+        return &#x27;text-gray-400&#x27;;
+    }
+  }
+
+  /**
+   * Handle group face recognition events
+   */
+  onGroupFacesRecognized(faces: GroupRecognitionResult[]): void {
+    this.groupRecognitionData &#x3D; faces;
+    this.demoStats.successfulRecognitions +&#x3D; faces.length;
+
+    faces.forEach(face &#x3D;&gt; {
+      this.addActivity({
+        type: &#x27;recognition&#x27;,
+        message: &#x60;จดจำใบหน้า: ${face.firstName} ${face.lastName} (${Math.round(face.confidence * 100)}%)&#x60;,
+        timestamp: new Date(),
+        confidence: face.confidence
+      });
+    });
+  }
+
+  /**
+   * Handle image quality change events
+   */
+  onQualityChanged(quality: ImageQualityAssessment): void {
+    this.imageQualityData &#x3D; quality;
+
+    // Translate quality level
+    const qualityKey &#x3D; quality.quality.charAt(0).toUpperCase() + quality.quality.slice(1);
+    const qualityMap: {[key: string]: string} &#x3D; {
+      Excellent: &#x27;ยอดเยี่ยม&#x27;,
+      Good: &#x27;ดี&#x27;,
+      Fair: &#x27;ปานกลาง&#x27;,
+      Poor: &#x27;ต่ำ&#x27;
+    };
+    const qualityTranslation &#x3D; qualityMap[qualityKey] || qualityKey;
+
+    this.addActivity({
+      type: &#x27;detection&#x27;,
+      message: &#x60;คุณภาพภาพ: ${qualityTranslation} (ความสว่าง: ${Math.round(quality.brightness)}, ความชัด: ${Math.round(quality.blurriness)})&#x60;,
+      timestamp: new Date()
+    });
+  }
+
+  /**
+   * Format timestamp for display
+   */
+  formatTimestamp(timestamp: Date): string {
+    const locale &#x3D; this.i18n.currentLanguage() &#x3D;&#x3D;&#x3D; &#x27;th&#x27; ? &#x27;th-TH&#x27; : &#x27;en-US&#x27;;
+    return new Date(timestamp).toLocaleTimeString(locale);
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;face-recognition-demo&quot;&gt;
+  &lt;!-- Header --&gt;
+  &lt;div class&#x3D;&quot;demo-header&quot;&gt;
+    &lt;h1 class&#x3D;&quot;demo-title&quot;&gt;Face Recognition Demo&lt;/h1&gt;
+    &lt;p class&#x3D;&quot;demo-description&quot;&gt;
+      ทดสอบระบบจดจำใบหน้าด้วย AI และ Machine Learning
+    &lt;/p&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Demo Statistics --&gt;
+  &lt;div class&#x3D;&quot;demo-stats&quot;&gt;
+    &lt;app-glass-card&gt;
+      &lt;h2&gt;สถิติการทดสอบ&lt;/h2&gt;
+      &lt;div class&#x3D;&quot;stats-grid&quot;&gt;
+        &lt;div class&#x3D;&quot;stat-card&quot;&gt;
+          &lt;div class&#x3D;&quot;stat-icon&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-eye&quot;&gt;&lt;/i&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;stat-content&quot;&gt;
+            &lt;div class&#x3D;&quot;stat-value&quot;&gt;{{ demoStats.totalDetections }}&lt;/div&gt;
+            &lt;div class&#x3D;&quot;stat-label&quot;&gt;การตรวจจับ&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;stat-card&quot;&gt;
+          &lt;div class&#x3D;&quot;stat-icon&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-user-check&quot;&gt;&lt;/i&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;stat-content&quot;&gt;
+            &lt;div class&#x3D;&quot;stat-value&quot;&gt;{{ demoStats.successfulRecognitions }}&lt;/div&gt;
+            &lt;div class&#x3D;&quot;stat-label&quot;&gt;การจดจำสำเร็จ&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;stat-card&quot;&gt;
+          &lt;div class&#x3D;&quot;stat-icon&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-user-plus&quot;&gt;&lt;/i&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;stat-content&quot;&gt;
+            &lt;div class&#x3D;&quot;stat-value&quot;&gt;{{ demoStats.totalEnrollments }}&lt;/div&gt;
+            &lt;div class&#x3D;&quot;stat-label&quot;&gt;การลงทะเบียน&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;stat-card&quot;&gt;
+          &lt;div class&#x3D;&quot;stat-icon&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-chart-line&quot;&gt;&lt;/i&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;stat-content&quot;&gt;
+            &lt;div class&#x3D;&quot;stat-value&quot;&gt;{{ (demoStats.averageConfidence * 100) | number:&#x27;1.1-1&#x27; }}%&lt;/div&gt;
+            &lt;div class&#x3D;&quot;stat-label&quot;&gt;ความแม่นยำเฉลี่ย&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;stats-actions&quot;&gt;
+        &lt;app-glass-button
+          variant&#x3D;&quot;secondary&quot;
+          (click)&#x3D;&quot;resetStats()&quot;&gt;
+          &lt;i class&#x3D;&quot;fas fa-refresh&quot;&gt;&lt;/i&gt;
+          รีเซ็ตสถิติ
+        &lt;/app-glass-button&gt;
+        &lt;app-glass-button
+          variant&#x3D;&quot;secondary&quot;
+          (click)&#x3D;&quot;exportDemoData()&quot;&gt;
+          &lt;i class&#x3D;&quot;fas fa-download&quot;&gt;&lt;/i&gt;
+          ส่งออกข้อมูล
+        &lt;/app-glass-button&gt;
+      &lt;/div&gt;
+    &lt;/app-glass-card&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Demo Settings --&gt;
+  &lt;div class&#x3D;&quot;demo-settings&quot;&gt;
+    &lt;app-glass-card&gt;
+      &lt;div class&#x3D;&quot;settings-header&quot;&gt;
+        &lt;h2&gt;การตั้งค่า&lt;/h2&gt;
+        &lt;app-glass-button
+          variant&#x3D;&quot;secondary&quot;
+          (click)&#x3D;&quot;toggleAdvancedFeatures()&quot;&gt;
+          &lt;i class&#x3D;&quot;fas&quot; [class.fa-chevron-down]&#x3D;&quot;!demoSettings.showAdvancedFeatures&quot; [class.fa-chevron-up]&#x3D;&quot;demoSettings.showAdvancedFeatures&quot;&gt;&lt;/i&gt;
+          {{ demoSettings.showAdvancedFeatures ? &#x27;ซ่อน&#x27; : &#x27;แสดง&#x27; }} การตั้งค่าขั้นสูง
+        &lt;/app-glass-button&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;settings-content&quot;&gt;
+        &lt;div class&#x3D;&quot;setting-group&quot;&gt;
+          &lt;label class&#x3D;&quot;setting-label&quot;&gt;
+            &lt;input
+              type&#x3D;&quot;checkbox&quot;
+              [(ngModel)]&#x3D;&quot;demoSettings.enableSound&quot;
+              (change)&#x3D;&quot;saveDemoSettings()&quot;&gt;
+            &lt;span class&#x3D;&quot;checkmark&quot;&gt;&lt;/span&gt;
+            เปิดเสียงแจ้งเตือน
+          &lt;/label&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;setting-group&quot;&gt;
+          &lt;label class&#x3D;&quot;setting-label&quot;&gt;
+            &lt;input
+              type&#x3D;&quot;checkbox&quot;
+              [(ngModel)]&#x3D;&quot;demoSettings.enableVibration&quot;
+              (change)&#x3D;&quot;saveDemoSettings()&quot;&gt;
+            &lt;span class&#x3D;&quot;checkmark&quot;&gt;&lt;/span&gt;
+            เปิดการสั่น
+          &lt;/label&gt;
+        &lt;/div&gt;
+
+        &lt;div *ngIf&#x3D;&quot;demoSettings.showAdvancedFeatures&quot; class&#x3D;&quot;advanced-settings&quot;&gt;
+          &lt;div class&#x3D;&quot;setting-group&quot;&gt;
+            &lt;label class&#x3D;&quot;setting-label&quot;&gt;เกณฑ์การตรวจจับ:&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;range&quot;
+              min&#x3D;&quot;0.1&quot;
+              max&#x3D;&quot;1.0&quot;
+              step&#x3D;&quot;0.1&quot;
+              [(ngModel)]&#x3D;&quot;demoSettings.detectionThreshold&quot;
+              (change)&#x3D;&quot;saveDemoSettings()&quot;
+              class&#x3D;&quot;range-input&quot;&gt;
+            &lt;span class&#x3D;&quot;range-value&quot;&gt;{{ (demoSettings.detectionThreshold * 100) | number:&#x27;1.0-0&#x27; }}%&lt;/span&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;setting-group&quot;&gt;
+            &lt;label class&#x3D;&quot;setting-label&quot;&gt;เกณฑ์การจดจำ:&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;range&quot;
+              min&#x3D;&quot;0.1&quot;
+              max&#x3D;&quot;1.0&quot;
+              step&#x3D;&quot;0.1&quot;
+              [(ngModel)]&#x3D;&quot;demoSettings.recognitionThreshold&quot;
+              (change)&#x3D;&quot;saveDemoSettings()&quot;
+              class&#x3D;&quot;range-input&quot;&gt;
+            &lt;span class&#x3D;&quot;range-value&quot;&gt;{{ (demoSettings.recognitionThreshold * 100) | number:&#x27;1.0-0&#x27; }}%&lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/app-glass-card&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Demo Mode Selection --&gt;
+  &lt;div class&#x3D;&quot;demo-mode-selection&quot;&gt;
+    &lt;app-glass-card&gt;
+      &lt;h2&gt;เลือกโหมดการทดสอบ&lt;/h2&gt;
+      &lt;div class&#x3D;&quot;mode-buttons&quot;&gt;
+        &lt;app-glass-button
+          [variant]&#x3D;&quot;demoMode &#x3D;&#x3D;&#x3D; &#x27;single&#x27; ? &#x27;primary&#x27; : &#x27;secondary&#x27;&quot;
+          (click)&#x3D;&quot;demoMode &#x3D; &#x27;single&#x27;&quot;&gt;
+          &lt;i class&#x3D;&quot;fas fa-user&quot;&gt;&lt;/i&gt;
+          จดจำใบหน้าคนเดียว
+        &lt;/app-glass-button&gt;
+        &lt;app-glass-button
+          [variant]&#x3D;&quot;demoMode &#x3D;&#x3D;&#x3D; &#x27;group&#x27; ? &#x27;primary&#x27; : &#x27;secondary&#x27;&quot;
+          (click)&#x3D;&quot;demoMode &#x3D; &#x27;group&#x27;&quot;&gt;
+          &lt;i class&#x3D;&quot;fas fa-users&quot;&gt;&lt;/i&gt;
+          จดจำใบหน้าหลายคน
+        &lt;/app-glass-button&gt;
+      &lt;/div&gt;
+    &lt;/app-glass-card&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Single Face Recognition Component --&gt;
+  &lt;div *ngIf&#x3D;&quot;demoMode &#x3D;&#x3D;&#x3D; &#x27;single&#x27;&quot; class&#x3D;&quot;face-recognition-section&quot;&gt;
+    &lt;app-face-recognition
+      [mode]&#x3D;&quot;&#x27;camera&#x27;&quot;
+      [showEnrollment]&#x3D;&quot;true&quot;
+      [showRecognition]&#x3D;&quot;true&quot;
+      [showExpressions]&#x3D;&quot;demoSettings.showAdvancedFeatures&quot;
+      [showAgeGender]&#x3D;&quot;demoSettings.showAdvancedFeatures&quot;
+      [showLandmarks]&#x3D;&quot;true&quot;
+      [autoDetect]&#x3D;&quot;true&quot;
+      [detectionInterval]&#x3D;&quot;1000&quot;
+      (faceDetected)&#x3D;&quot;onFaceDetected($event)&quot;
+      (faceRecognized)&#x3D;&quot;onFaceRecognized($event)&quot;
+      (faceEnrolled)&#x3D;&quot;onFaceEnrolled($event)&quot;&gt;
+    &lt;/app-face-recognition&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Group Face Recognition Component --&gt;
+  &lt;div *ngIf&#x3D;&quot;demoMode &#x3D;&#x3D;&#x3D; &#x27;group&#x27;&quot; class&#x3D;&quot;group-face-recognition-section&quot;&gt;
+    &lt;app-group-face-recognition
+      [autoDetect]&#x3D;&quot;true&quot;
+      [detectionInterval]&#x3D;&quot;1000&quot;
+      [enableQualityCheck]&#x3D;&quot;true&quot;
+      [maxFaces]&#x3D;&quot;10&quot;
+      (facesRecognized)&#x3D;&quot;onGroupFacesRecognized($event)&quot;
+      (qualityChanged)&#x3D;&quot;onQualityChanged($event)&quot;&gt;
+    &lt;/app-group-face-recognition&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Recent Activity --&gt;
+  &lt;div class&#x3D;&quot;recent-activity&quot;&gt;
+    &lt;app-glass-card&gt;
+      &lt;h2&gt;กิจกรรมล่าสุด&lt;/h2&gt;
+      &lt;div class&#x3D;&quot;activity-list&quot;&gt;
+        &lt;div *ngIf&#x3D;&quot;recentActivity.length &#x3D;&#x3D;&#x3D; 0&quot; class&#x3D;&quot;no-activity&quot;&gt;
+          &lt;i class&#x3D;&quot;fas fa-info-circle&quot;&gt;&lt;/i&gt;
+          &lt;p&gt;ยังไม่มีกิจกรรม&lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;div *ngFor&#x3D;&quot;let activity of recentActivity&quot; class&#x3D;&quot;activity-item&quot;&gt;
+          &lt;!-- Snapshot Image --&gt;
+          &lt;div *ngIf&#x3D;&quot;activity.snapshot&quot; class&#x3D;&quot;activity-snapshot mr-3&quot;&gt;
+            &lt;img appImageOptimization [ngSrc]&#x3D;&quot;activity.snapshot&quot; alt&#x3D;&quot;Face Snapshot&quot; class&#x3D;&quot;w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm&quot; loading&#x3D;&quot;lazy&quot;&gt;
+          &lt;/div&gt;
+          
+          &lt;div class&#x3D;&quot;activity-icon&quot; *ngIf&#x3D;&quot;!activity.snapshot&quot; [class]&#x3D;&quot;getActivityColor(activity.type)&quot;&gt;
+            &lt;i [class]&#x3D;&quot;getActivityIcon(activity.type)&quot;&gt;&lt;/i&gt;
+          &lt;/div&gt;
+          
+          &lt;div class&#x3D;&quot;activity-content&quot;&gt;
+            &lt;div class&#x3D;&quot;activity-message font-medium&quot;&gt;{{ activity.message }}&lt;/div&gt;
+            
+            &lt;!-- Details Badge --&gt;
+            &lt;div *ngIf&#x3D;&quot;activity.details&quot; class&#x3D;&quot;activity-details mt-1 flex flex-wrap gap-2&quot;&gt;
+              &lt;span class&#x3D;&quot;inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200&quot;&gt;
+                &lt;i class&#x3D;&quot;fas fa-info-circle mr-1&quot;&gt;&lt;/i&gt;
+                {{ activity.details }}
+              &lt;/span&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;flex justify-between items-center mt-1&quot;&gt;
+              &lt;div class&#x3D;&quot;activity-time text-xs text-gray-500&quot;&gt;{{ formatTimestamp(activity.timestamp) }}&lt;/div&gt;
+              &lt;div *ngIf&#x3D;&quot;activity.confidence&quot; class&#x3D;&quot;activity-confidence text-xs font-medium&quot; [class.text-green-600]&#x3D;&quot;activity.confidence &gt; 0.8&quot; [class.text-yellow-600]&#x3D;&quot;activity.confidence &lt;&#x3D; 0.8&quot;&gt;
+                ความมั่นใจ: {{ (activity.confidence * 100) | number:&#x27;1.1-1&#x27; }}%
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/app-glass-card&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Features Overview --&gt;
+  &lt;div class&#x3D;&quot;features-overview&quot;&gt;
+    &lt;app-glass-card&gt;
+      &lt;h2&gt;คุณสมบัติของระบบ&lt;/h2&gt;
+      &lt;div class&#x3D;&quot;features-grid&quot;&gt;
+        &lt;div class&#x3D;&quot;feature-item&quot;&gt;
+          &lt;div class&#x3D;&quot;feature-icon&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-camera&quot;&gt;&lt;/i&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;feature-content&quot;&gt;
+            &lt;h3&gt;การตรวจจับใบหน้าแบบเรียลไทม์&lt;/h3&gt;
+            &lt;p&gt;ใช้กล้องเว็บแคมเพื่อตรวจจับใบหน้าแบบเรียลไทม์ด้วย AI&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;feature-item&quot;&gt;
+          &lt;div class&#x3D;&quot;feature-icon&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-user-check&quot;&gt;&lt;/i&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;feature-content&quot;&gt;
+            &lt;h3&gt;การจดจำใบหน้า&lt;/h3&gt;
+            &lt;p&gt;จดจำใบหน้าที่ลงทะเบียนแล้วด้วยความแม่นยำสูง&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;feature-item&quot;&gt;
+          &lt;div class&#x3D;&quot;feature-icon&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-user-plus&quot;&gt;&lt;/i&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;feature-content&quot;&gt;
+            &lt;h3&gt;การลงทะเบียนใบหน้า&lt;/h3&gt;
+            &lt;p&gt;ลงทะเบียนใบหน้าใหม่ได้ง่ายและรวดเร็ว&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;feature-item&quot;&gt;
+          &lt;div class&#x3D;&quot;feature-icon&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-smile&quot;&gt;&lt;/i&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;feature-content&quot;&gt;
+            &lt;h3&gt;การวิเคราะห์อารมณ์&lt;/h3&gt;
+            &lt;p&gt;วิเคราะห์อารมณ์และอายุจากใบหน้า (ฟีเจอร์ขั้นสูง)&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;feature-item&quot;&gt;
+          &lt;div class&#x3D;&quot;feature-icon&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-upload&quot;&gt;&lt;/i&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;feature-content&quot;&gt;
+            &lt;h3&gt;การอัปโหลดรูปภาพ&lt;/h3&gt;
+            &lt;p&gt;อัปโหลดรูปภาพเพื่อทดสอบการตรวจจับและจดจำ&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;feature-item&quot;&gt;
+          &lt;div class&#x3D;&quot;feature-icon&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-users&quot;&gt;&lt;/i&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;feature-content&quot;&gt;
+            &lt;h3&gt;การจดจำใบหน้าหลายคน&lt;/h3&gt;
+            &lt;p&gt;จดจำใบหน้าหลายคนพร้อมกันในภาพเดียว&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;feature-item&quot;&gt;
+          &lt;div class&#x3D;&quot;feature-icon&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-chart-line&quot;&gt;&lt;/i&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;feature-content&quot;&gt;
+            &lt;h3&gt;การประเมินคุณภาพภาพ&lt;/h3&gt;
+            &lt;p&gt;ตรวจสอบความสว่างและความชัดของภาพก่อนประมวลผล&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;feature-item&quot;&gt;
+          &lt;div class&#x3D;&quot;feature-icon&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-download&quot;&gt;&lt;/i&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;feature-content&quot;&gt;
+            &lt;h3&gt;การส่งออกข้อมูล&lt;/h3&gt;
+            &lt;p&gt;ส่งออกและนำเข้าข้อมูลการลงทะเบียน&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/app-glass-card&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./face-recognition-demo.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">// Face Recognition Demo Component Styles
+
+// CSS Variables
+:root {
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --bg-secondary: #1a1a1a;
+}
+
+.face-recognition-demo {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  .demo-header {
+    text-align: center;
+    margin-bottom: 3rem;
+
+    .demo-title {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0 0 1rem 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .demo-description {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      margin: 0;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  }
+
+  .demo-stats {
+    margin-bottom: 2rem;
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+
+      .stat-card {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+
+        &amp;:hover {
+          background: rgba(255, 255, 255, 0.08);
+          transform: translateY(-2px);
+        }
+
+        .stat-icon {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.5rem;
+          color: white;
+        }
+
+        .stat-content {
+          .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+            line-height: 1;
+          }
+
+          .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0.25rem 0 0 0;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+
+    .stats-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+  }
+
+  .demo-settings {
+    margin-bottom: 2rem;
+
+    .settings-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+
+      h2 {
+        margin: 0;
+        color: var(--text-primary);
+      }
+    }
+
+    .settings-content {
+      .setting-group {
+        margin-bottom: 1.5rem;
+
+        .setting-label {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          font-weight: 500;
+          color: var(--text-primary);
+          cursor: pointer;
+
+          input[type&#x3D;&quot;checkbox&quot;] {
+            display: none;
+
+            + .checkmark {
+              width: 20px;
+              height: 20px;
+              border: 2px solid rgba(255, 255, 255, 0.3);
+              border-radius: 4px;
+              position: relative;
+              transition: all 0.3s ease;
+
+              &amp;::after {
+                content: &#x27;&#x27;;
+                position: absolute;
+                left: 6px;
+                top: 2px;
+                width: 6px;
+                height: 10px;
+                border: solid white;
+                border-width: 0 2px 2px 0;
+                transform: rotate(45deg);
+                opacity: 0;
+                transition: opacity 0.3s ease;
+              }
+            }
+
+            &amp;:checked + .checkmark {
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              border-color: transparent;
+
+              &amp;::after {
+                opacity: 1;
+              }
+            }
+          }
+
+          input[type&#x3D;&quot;range&quot;] {
+            flex: 1;
+            margin: 0 1rem;
+          }
+
+          .range-value {
+            min-width: 50px;
+            text-align: right;
+            color: var(--text-secondary);
+            font-weight: 500;
+          }
+        }
+
+        .range-input {
+          -webkit-appearance: none;
+          appearance: none;
+          height: 6px;
+          border-radius: 3px;
+          background: rgba(255, 255, 255, 0.2);
+          outline: none;
+
+          &amp;::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            transition: all 0.3s ease;
+
+            &amp;:hover {
+              transform: scale(1.1);
+            }
+          }
+
+          &amp;::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+
+            &amp;:hover {
+              transform: scale(1.1);
+            }
+          }
+        }
+      }
+
+      .advanced-settings {
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+    }
+  }
+
+  .demo-mode-selection {
+    margin-bottom: 2rem;
+
+    .mode-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+  }
+
+  .face-recognition-section,
+  .group-face-recognition-section {
+    margin-bottom: 2rem;
+  }
+
+  .recent-activity {
+    margin-bottom: 2rem;
+
+    .activity-list {
+      max-height: 400px;
+      overflow-y: auto;
+
+      .no-activity {
+        text-align: center;
+        padding: 3rem;
+        color: var(--text-muted);
+
+        i {
+          font-size: 3rem;
+          margin-bottom: 1rem;
+          opacity: 0.5;
+        }
+
+        p {
+          margin: 0;
+          font-size: 1.125rem;
+        }
+      }
+
+      .activity-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        transition: background 0.3s ease;
+
+        &amp;:hover {
+          background: rgba(255, 255, 255, 0.02);
+        }
+
+        &amp;:last-child {
+          border-bottom: none;
+        }
+
+        .activity-icon {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.1);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1rem;
+          flex-shrink: 0;
+
+          &amp;.text-blue-400 {
+            color: #60A5FA;
+            background: rgba(96, 165, 250, 0.1);
+          }
+
+          &amp;.text-green-400 {
+            color: #4ADE80;
+            background: rgba(74, 222, 128, 0.1);
+          }
+
+          &amp;.text-purple-400 {
+            color: #A78BFA;
+            background: rgba(167, 139, 250, 0.1);
+          }
+
+          &amp;.text-gray-400 {
+            color: #9CA3AF;
+            background: rgba(156, 163, 175, 0.1);
+          }
+        }
+
+        .activity-content {
+          flex: 1;
+
+          .activity-message {
+            color: var(--text-primary);
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+          }
+
+          .activity-time {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+          }
+
+          .activity-confidence {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+  }
+
+  .features-overview {
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+
+      .feature-item {
+        display: flex;
+        gap: 1.5rem;
+        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+
+        &amp;:hover {
+          background: rgba(255, 255, 255, 0.05);
+          transform: translateY(-2px);
+        }
+
+        .feature-icon {
+          width: 60px;
+          height: 60px;
+          border-radius: 1rem;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.5rem;
+          color: white;
+          flex-shrink: 0;
+        }
+
+        .feature-content {
+          h3 {
+            margin: 0 0 0.5rem 0;
+            color: var(--text-primary);
+            font-size: 1.125rem;
+            font-weight: 600;
+          }
+
+          p {
+            margin: 0;
+            color: var(--text-secondary);
+            line-height: 1.6;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .face-recognition-demo {
+    padding: 1rem;
+
+    .demo-header {
+      .demo-title {
+        font-size: 2rem;
+      }
+
+      .demo-description {
+        font-size: 1rem;
+      }
+    }
+
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .settings-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .feature-item {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="face-recognition-demo">  <!-- Header -->  <div class="demo-header">    <h1 class="demo-title">Face Recognition Demo</h1>    <p class="demo-description">      ทดสอบระบบจดจำใบหน้าด้วย AI และ Machine Learning    </p>  </div>  <!-- Demo Statistics -->  <div class="demo-stats">    <app-glass-card>      <h2>สถิติการทดสอบ</h2>      <div class="stats-grid">        <div class="stat-card">          <div class="stat-icon">            <i class="fas fa-eye"></i>          </div>          <div class="stat-content">            <div class="stat-value">{{ demoStats.totalDetections }}</div>            <div class="stat-label">การตรวจจับ</div>          </div>        </div>        <div class="stat-card">          <div class="stat-icon">            <i class="fas fa-user-check"></i>          </div>          <div class="stat-content">            <div class="stat-value">{{ demoStats.successfulRecognitions }}</div>            <div class="stat-label">การจดจำสำเร็จ</div>          </div>        </div>        <div class="stat-card">          <div class="stat-icon">            <i class="fas fa-user-plus"></i>          </div>          <div class="stat-content">            <div class="stat-value">{{ demoStats.totalEnrollments }}</div>            <div class="stat-label">การลงทะเบียน</div>          </div>        </div>        <div class="stat-card">          <div class="stat-icon">            <i class="fas fa-chart-line"></i>          </div>          <div class="stat-content">            <div class="stat-value">{{ (demoStats.averageConfidence * 100) | number:\'1.1-1\' }}%</div>            <div class="stat-label">ความแม่นยำเฉลี่ย</div>          </div>        </div>      </div>      <div class="stats-actions">        <app-glass-button          variant="secondary"          (click)="resetStats()">          <i class="fas fa-refresh"></i>          รีเซ็ตสถิติ        </app-glass-button>        <app-glass-button          variant="secondary"          (click)="exportDemoData()">          <i class="fas fa-download"></i>          ส่งออกข้อมูล        </app-glass-button>      </div>    </app-glass-card>  </div>  <!-- Demo Settings -->  <div class="demo-settings">    <app-glass-card>      <div class="settings-header">        <h2>การตั้งค่า</h2>        <app-glass-button          variant="secondary"          (click)="toggleAdvancedFeatures()">          <i class="fas" [class.fa-chevron-down]="!demoSettings.showAdvancedFeatures" [class.fa-chevron-up]="demoSettings.showAdvancedFeatures"></i>          {{ demoSettings.showAdvancedFeatures ? \'ซ่อน\' : \'แสดง\' }} การตั้งค่าขั้นสูง        </app-glass-button>      </div>      <div class="settings-content">        <div class="setting-group">          <label class="setting-label">            <input              type="checkbox"              [(ngModel)]="demoSettings.enableSound"              (change)="saveDemoSettings()">            <span class="checkmark"></span>            เปิดเสียงแจ้งเตือน          </label>        </div>        <div class="setting-group">          <label class="setting-label">            <input              type="checkbox"              [(ngModel)]="demoSettings.enableVibration"              (change)="saveDemoSettings()">            <span class="checkmark"></span>            เปิดการสั่น          </label>        </div>        <div *ngIf="demoSettings.showAdvancedFeatures" class="advanced-settings">          <div class="setting-group">            <label class="setting-label">เกณฑ์การตรวจจับ:</label>            <input              type="range"              min="0.1"              max="1.0"              step="0.1"              [(ngModel)]="demoSettings.detectionThreshold"              (change)="saveDemoSettings()"              class="range-input">            <span class="range-value">{{ (demoSettings.detectionThreshold * 100) | number:\'1.0-0\' }}%</span>          </div>          <div class="setting-group">            <label class="setting-label">เกณฑ์การจดจำ:</label>            <input              type="range"              min="0.1"              max="1.0"              step="0.1"              [(ngModel)]="demoSettings.recognitionThreshold"              (change)="saveDemoSettings()"              class="range-input">            <span class="range-value">{{ (demoSettings.recognitionThreshold * 100) | number:\'1.0-0\' }}%</span>          </div>        </div>      </div>    </app-glass-card>  </div>  <!-- Demo Mode Selection -->  <div class="demo-mode-selection">    <app-glass-card>      <h2>เลือกโหมดการทดสอบ</h2>      <div class="mode-buttons">        <app-glass-button          [variant]="demoMode === \'single\' ? \'primary\' : \'secondary\'"          (click)="demoMode = \'single\'">          <i class="fas fa-user"></i>          จดจำใบหน้าคนเดียว        </app-glass-button>        <app-glass-button          [variant]="demoMode === \'group\' ? \'primary\' : \'secondary\'"          (click)="demoMode = \'group\'">          <i class="fas fa-users"></i>          จดจำใบหน้าหลายคน        </app-glass-button>      </div>    </app-glass-card>  </div>  <!-- Single Face Recognition Component -->  <div *ngIf="demoMode === \'single\'" class="face-recognition-section">    <app-face-recognition      [mode]="\'camera\'"      [showEnrollment]="true"      [showRecognition]="true"      [showExpressions]="demoSettings.showAdvancedFeatures"      [showAgeGender]="demoSettings.showAdvancedFeatures"      [showLandmarks]="true"      [autoDetect]="true"      [detectionInterval]="1000"      (faceDetected)="onFaceDetected($event)"      (faceRecognized)="onFaceRecognized($event)"      (faceEnrolled)="onFaceEnrolled($event)">    </app-face-recognition>  </div>  <!-- Group Face Recognition Component -->  <div *ngIf="demoMode === \'group\'" class="group-face-recognition-section">    <app-group-face-recognition      [autoDetect]="true"      [detectionInterval]="1000"      [enableQualityCheck]="true"      [maxFaces]="10"      (facesRecognized)="onGroupFacesRecognized($event)"      (qualityChanged)="onQualityChanged($event)">    </app-group-face-recognition>  </div>  <!-- Recent Activity -->  <div class="recent-activity">    <app-glass-card>      <h2>กิจกรรมล่าสุด</h2>      <div class="activity-list">        <div *ngIf="recentActivity.length === 0" class="no-activity">          <i class="fas fa-info-circle"></i>          <p>ยังไม่มีกิจกรรม</p>        </div>        <div *ngFor="let activity of recentActivity" class="activity-item">          <!-- Snapshot Image -->          <div *ngIf="activity.snapshot" class="activity-snapshot mr-3">            <img appImageOptimization [ngSrc]="activity.snapshot" alt="Face Snapshot" class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm" loading="lazy">          </div>                    <div class="activity-icon" *ngIf="!activity.snapshot" [class]="getActivityColor(activity.type)">            <i [class]="getActivityIcon(activity.type)"></i>          </div>                    <div class="activity-content">            <div class="activity-message font-medium">{{ activity.message }}</div>                        <!-- Details Badge -->            <div *ngIf="activity.details" class="activity-details mt-1 flex flex-wrap gap-2">              <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">                <i class="fas fa-info-circle mr-1"></i>                {{ activity.details }}              </span>            </div>            <div class="flex justify-between items-center mt-1">              <div class="activity-time text-xs text-gray-500">{{ formatTimestamp(activity.timestamp) }}</div>              <div *ngIf="activity.confidence" class="activity-confidence text-xs font-medium" [class.text-green-600]="activity.confidence > 0.8" [class.text-yellow-600]="activity.confidence <= 0.8">                ความมั่นใจ: {{ (activity.confidence * 100) | number:\'1.1-1\' }}%              </div>            </div>          </div>        </div>      </div>    </app-glass-card>  </div>  <!-- Features Overview -->  <div class="features-overview">    <app-glass-card>      <h2>คุณสมบัติของระบบ</h2>      <div class="features-grid">        <div class="feature-item">          <div class="feature-icon">            <i class="fas fa-camera"></i>          </div>          <div class="feature-content">            <h3>การตรวจจับใบหน้าแบบเรียลไทม์</h3>            <p>ใช้กล้องเว็บแคมเพื่อตรวจจับใบหน้าแบบเรียลไทม์ด้วย AI</p>          </div>        </div>        <div class="feature-item">          <div class="feature-icon">            <i class="fas fa-user-check"></i>          </div>          <div class="feature-content">            <h3>การจดจำใบหน้า</h3>            <p>จดจำใบหน้าที่ลงทะเบียนแล้วด้วยความแม่นยำสูง</p>          </div>        </div>        <div class="feature-item">          <div class="feature-icon">            <i class="fas fa-user-plus"></i>          </div>          <div class="feature-content">            <h3>การลงทะเบียนใบหน้า</h3>            <p>ลงทะเบียนใบหน้าใหม่ได้ง่ายและรวดเร็ว</p>          </div>        </div>        <div class="feature-item">          <div class="feature-icon">            <i class="fas fa-smile"></i>          </div>          <div class="feature-content">            <h3>การวิเคราะห์อารมณ์</h3>            <p>วิเคราะห์อารมณ์และอายุจากใบหน้า (ฟีเจอร์ขั้นสูง)</p>          </div>        </div>        <div class="feature-item">          <div class="feature-icon">            <i class="fas fa-upload"></i>          </div>          <div class="feature-content">            <h3>การอัปโหลดรูปภาพ</h3>            <p>อัปโหลดรูปภาพเพื่อทดสอบการตรวจจับและจดจำ</p>          </div>        </div>        <div class="feature-item">          <div class="feature-icon">            <i class="fas fa-users"></i>          </div>          <div class="feature-content">            <h3>การจดจำใบหน้าหลายคน</h3>            <p>จดจำใบหน้าหลายคนพร้อมกันในภาพเดียว</p>          </div>        </div>        <div class="feature-item">          <div class="feature-icon">            <i class="fas fa-chart-line"></i>          </div>          <div class="feature-content">            <h3>การประเมินคุณภาพภาพ</h3>            <p>ตรวจสอบความสว่างและความชัดของภาพก่อนประมวลผล</p>          </div>        </div>        <div class="feature-item">          <div class="feature-icon">            <i class="fas fa-download"></i>          </div>          <div class="feature-content">            <h3>การส่งออกข้อมูล</h3>            <p>ส่งออกและนำเข้าข้อมูลการลงทะเบียน</p>          </div>        </div>      </div>    </app-glass-card>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AccessControlComponent', 'selector': 'app-access-control'},{'name': 'AccessGroupsComponent', 'selector': 'app-access-groups'},{'name': 'AccessibilityDashboardComponent', 'selector': 'app-accessibility-dashboard'},{'name': 'AccessLogsComponent', 'selector': 'app-access-logs'},{'name': 'AccessSchedulesComponent', 'selector': 'app-access-schedules'},{'name': 'AccordionComponent', 'selector': 'app-accordion'},{'name': 'AccordionDemoComponent', 'selector': 'app-accordion-demo'},{'name': 'AdvancedDataTableComponent', 'selector': 'app-advanced-data-table'},{'name': 'AdvancedDataTableDemoComponent', 'selector': 'app-advanced-data-table-demo'},{'name': 'AdvancedFeaturesDashboardComponent', 'selector': 'app-advanced-features-dashboard'},{'name': 'AdvancedFormsComponent', 'selector': 'app-advanced-forms'},{'name': 'AdvancedRichTextComponent', 'selector': 'app-advanced-rich-text'},{'name': 'AdvancedUiDemoComponent', 'selector': 'app-advanced-ui-demo'},{'name': 'AIModelsComponent', 'selector': 'app-ai-models'},{'name': 'AlertComponent', 'selector': 'app-alert'},{'name': 'AlertHistoryComponent', 'selector': 'app-alert-history'},{'name': 'AlertsComponent', 'selector': 'app-alerts'},{'name': 'ApexChartComponent', 'selector': 'app-apex-chart'},{'name': 'App', 'selector': 'app-root'},{'name': 'AttendanceComponent', 'selector': 'app-attendance'},{'name': 'AuditLogsComponent', 'selector': 'app-audit-logs'},{'name': 'AvatarComponent', 'selector': 'app-avatar'},{'name': 'BackupRestoreComponent', 'selector': 'app-backup-restore'},{'name': 'BadgeComponent', 'selector': 'app-badge'},{'name': 'BaseComponent', 'selector': ''},{'name': 'BiometricDataComponent', 'selector': 'app-biometric-data'},{'name': 'BreadcrumbComponent', 'selector': 'app-breadcrumb'},{'name': 'CalendarComponent', 'selector': 'app-calendar'},{'name': 'CalendarDemoComponent', 'selector': 'app-calendar-demo'},{'name': 'ChartComponent', 'selector': 'app-chart'},{'name': 'CheckboxComponent', 'selector': 'app-checkbox'},{'name': 'ColorPickerComponent', 'selector': 'app-color-picker'},{'name': 'ComingSoonComponent', 'selector': 'app-coming-soon'},{'name': 'CompaniesComponent', 'selector': 'app-companies'},{'name': 'CompanyDocumentsComponent', 'selector': 'app-company-documents'},{'name': 'CompanyHolidaysComponent', 'selector': 'app-company-holidays'},{'name': 'ComponentShowcaseComponent', 'selector': 'app-component-showcase'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DataTableComponent', 'selector': 'app-data-table'},{'name': 'DateTimePickerComponent', 'selector': 'app-date-time-picker'},{'name': 'DepartmentsComponent', 'selector': 'app-departments'},{'name': 'DevicesComponent', 'selector': 'app-devices'},{'name': 'DividerComponent', 'selector': 'app-divider'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DoorsComponent', 'selector': 'app-doors'},{'name': 'DraggableCardsComponent', 'selector': 'app-draggable-cards'},{'name': 'DraggableCardsDemoComponent', 'selector': 'app-draggable-cards-demo'},{'name': 'EChartsChartComponent', 'selector': 'app-echarts-chart'},{'name': 'EChartsDemoComponent', 'selector': 'app-echarts-demo'},{'name': 'EmployeesComponent', 'selector': 'app-employees'},{'name': 'EmployeesNewComponent', 'selector': 'app-employees-new'},{'name': 'EmptyStateComponent', 'selector': 'app-empty-state'},{'name': 'Error401Component', 'selector': 'app-error-401'},{'name': 'Error404Component', 'selector': 'app-error-404'},{'name': 'Error500Component', 'selector': 'app-error-500'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'ErrorToastComponent', 'selector': 'app-error-toast'},{'name': 'EventAnalyticsComponent', 'selector': 'app-event-analytics'},{'name': 'EventCheckinHistoryComponent', 'selector': 'app-event-checkin-history'},{'name': 'EventEmailConfirmationComponent', 'selector': 'app-event-email-confirmation'},{'name': 'EventKioskConfigComponent', 'selector': 'app-event-kiosk-config'},{'name': 'EventRegistrationComponent', 'selector': 'app-event-registration'},{'name': 'EventRegistrationFieldsComponent', 'selector': 'app-event-registration-fields'},{'name': 'EventsComponent', 'selector': 'app-events'},{'name': 'FaceRecognitionComponent', 'selector': 'app-face-recognition'},{'name': 'FaceRecognitionDemoComponent', 'selector': 'app-face-recognition-demo'},{'name': 'FaceRecognitionLiveComponent', 'selector': 'app-face-recognition-live'},{'name': 'FaceRecognitionTestComponent', 'selector': 'app-face-recognition-test'},{'name': 'FaqComponent', 'selector': 'app-faq'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'FilterSectionComponent', 'selector': 'app-filter-section'},{'name': 'ForgotPasswordComponent', 'selector': 'app-forgot-password'},{'name': 'FormFieldComponent', 'selector': 'app-form-field'},{'name': 'GalleryComponent', 'selector': 'app-gallery'},{'name': 'GalleryDemoComponent', 'selector': 'app-gallery-demo'},{'name': 'GlassButtonComponent', 'selector': 'app-glass-button'},{'name': 'GlassCardComponent', 'selector': 'app-glass-card'},{'name': 'GlassInputComponent', 'selector': 'app-glass-input'},{'name': 'GroupFaceRecognitionComponent', 'selector': 'app-group-face-recognition'},{'name': 'GuestsComponent', 'selector': 'app-guests'},{'name': 'HardwareStatusDashboardComponent', 'selector': 'app-hardware-status-dashboard'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HeatmapAnalyticsComponent', 'selector': 'app-heatmap-analytics'},{'name': 'HelpCenter', 'selector': 'app-help-center'},{'name': 'HelpCenterComponent', 'selector': 'app-help-center'},{'name': 'HrDashboardComponent', 'selector': 'app-hr-dashboard'},{'name': 'IconComponent', 'selector': 'app-icon'},{'name': 'IncidentReportsComponent', 'selector': 'app-incident-reports'},{'name': 'KioskViewComponent', 'selector': 'app-kiosk-view'},{'name': 'LandingComponent', 'selector': 'app-landing'},{'name': 'LeafletMapComponent', 'selector': 'app-leaflet-map'},{'name': 'LeavesComponent', 'selector': 'app-leaves'},{'name': 'LicenseManagementComponent', 'selector': 'app-license-management'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoadingStateComponent', 'selector': 'app-loading-state'},{'name': 'LocationsComponent', 'selector': 'app-locations'},{'name': 'LockScreenComponent', 'selector': 'app-lock-screen'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MapDemoComponent', 'selector': 'app-map-demo'},{'name': 'MaterialButtonComponent', 'selector': 'app-material-button'},{'name': 'MaterialCardComponent', 'selector': 'app-material-card'},{'name': 'MaterialDialogComponent', 'selector': 'app-material-dialog'},{'name': 'MaterialInputComponent', 'selector': 'app-material-input'},{'name': 'MaterialTableComponent', 'selector': 'app-material-table'},{'name': 'MfaSetupComponent', 'selector': 'app-mfa-setup'},{'name': 'MobileCameraComponent', 'selector': 'app-mobile-camera'},{'name': 'MobileDemoComponent', 'selector': 'app-mobile-demo'},{'name': 'ModalComponent', 'selector': 'app-modal'},{'name': 'ModalFormComponent', 'selector': 'app-modal-form'},{'name': 'ModuleSubscriptionComponent', 'selector': 'app-module-subscription'},{'name': 'MonitoringComponent', 'selector': 'app-monitoring'},{'name': 'NotificationCenterComponent', 'selector': 'app-notification-center'},{'name': 'NotificationDemoComponent', 'selector': 'app-notification-demo'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'NotificationSettingsComponent', 'selector': 'app-notification-settings'},{'name': 'OffcanvasComponent', 'selector': 'app-offcanvas'},{'name': 'OffcanvasDemoComponent', 'selector': 'app-offcanvas-demo'},{'name': 'OvertimeRequestsComponent', 'selector': 'app-overtime-requests'},{'name': 'PageLayoutComponent', 'selector': 'app-page-layout'},{'name': 'PaginationComponent', 'selector': 'app-pagination'},{'name': 'ParkingBlacklistComponent', 'selector': 'app-parking-blacklist'},{'name': 'ParkingDashboardComponent', 'selector': 'app-parking-dashboard'},{'name': 'ParkingEntryComponent', 'selector': 'app-parking-entry'},{'name': 'ParkingExitComponent', 'selector': 'app-parking-exit'},{'name': 'ParkingLogsComponent', 'selector': 'app-parking-logs'},{'name': 'ParkingReservationComponent', 'selector': 'app-parking-reservation'},{'name': 'ParkingRulesComponent', 'selector': 'app-parking-rules'},{'name': 'ParkingSpotsComponent', 'selector': 'app-parking-spots'},{'name': 'ParkingStatisticsComponent', 'selector': 'app-parking-statistics'},{'name': 'PayrollExportComponent', 'selector': 'app-payroll-export'},{'name': 'PerformanceDashboardComponent', 'selector': 'app-performance-dashboard'},{'name': 'PopoverComponent', 'selector': 'app-popover'},{'name': 'PortalLayoutComponent', 'selector': 'app-portal-layout'},{'name': 'PositionsComponent', 'selector': 'app-positions'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'PublicVerificationComponent', 'selector': 'app-public-verification'},{'name': 'QRCodesComponent', 'selector': 'app-qr-codes'},{'name': 'RadioComponent', 'selector': 'app-radio'},{'name': 'RangeSliderComponent', 'selector': 'app-range-slider'},{'name': 'RatingComponent', 'selector': 'app-rating'},{'name': 'RatingDemoComponent', 'selector': 'app-rating-demo'},{'name': 'RbacComponent', 'selector': 'app-rbac'},{'name': 'RecognitionHistoryComponent', 'selector': 'app-recognition-history'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReportsComponent', 'selector': 'app-reports'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'RFIDCardsComponent', 'selector': 'app-rfid-cards'},{'name': 'RichTextComponent', 'selector': 'app-rich-text'},{'name': 'RichTextEditorComponent', 'selector': 'app-rich-text-editor'},{'name': 'RichTextEditorDemoComponent', 'selector': 'app-rich-text-editor-demo'},{'name': 'SafetyDashboardComponent', 'selector': 'app-safety-dashboard'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ShiftsComponent', 'selector': 'app-shifts'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SkeletonComponent', 'selector': 'app-skeleton'},{'name': 'StatisticsCardComponent', 'selector': 'app-statistics-card'},{'name': 'StatisticsGridComponent', 'selector': 'app-statistics-grid'},{'name': 'StepperComponent', 'selector': 'app-stepper'},{'name': 'StructureComponent', 'selector': 'app-structure'},{'name': 'SuperAdminAnnouncementsComponent', 'selector': 'app-super-admin-announcements'},{'name': 'SuperAdminDashboardComponent', 'selector': 'app-super-admin-dashboard'},{'name': 'SuperAdminLayoutComponent', 'selector': 'app-super-admin-layout'},{'name': 'SuperAdminReportsComponent', 'selector': 'app-super-admin-reports'},{'name': 'SurveillanceMapComponent', 'selector': 'app-surveillance-map'},{'name': 'SwiperGalleryComponent', 'selector': 'app-swiper-gallery'},{'name': 'SwiperGalleryDemoComponent', 'selector': 'app-swiper-gallery-demo'},{'name': 'SwitchComponent', 'selector': 'app-switch'},{'name': 'SystemSettingsComponent', 'selector': 'app-system-settings'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TemplateManagementComponent', 'selector': 'app-template-management'},{'name': 'TestApiComponent', 'selector': 'app-test-api'},{'name': 'ThemeSwitcherComponent', 'selector': 'app-theme-switcher'},{'name': 'TimelineComponent', 'selector': 'app-timeline'},{'name': 'TimelineDemoComponent', 'selector': 'app-timeline-demo'},{'name': 'TimesheetsComponent', 'selector': 'app-timesheets'},{'name': 'TimestampComponent', 'selector': 'app-timestamp'},{'name': 'TimestampDemoComponent', 'selector': 'app-timestamp-demo'},{'name': 'TooltipComponent', 'selector': 'app-tooltip'},{'name': 'UsersComponent', 'selector': 'app-users'},{'name': 'ValidationDemoComponent', 'selector': 'app-validation-demo'},{'name': 'VehiclesComponent', 'selector': 'app-vehicles'},{'name': 'VideoAnalyticsComponent', 'selector': 'app-video-analytics'},{'name': 'VideoPlaybackComponent', 'selector': 'app-video-playback'},{'name': 'VisitorBadgesComponent', 'selector': 'app-visitor-badges'},{'name': 'VisitorBlacklistComponent', 'selector': 'app-visitor-blacklist'},{'name': 'VisitorDashboardComponent', 'selector': 'app-visitor-dashboard'},{'name': 'VisitorInvitationsComponent', 'selector': 'app-visitor-invitations'},{'name': 'VisitorParcelsComponent', 'selector': 'app-visitor-parcels'},{'name': 'VisitorReportsComponent', 'selector': 'app-visitor-reports'},{'name': 'VisitorsComponent', 'selector': 'app-visitors'},{'name': 'WatchlistComponent', 'selector': 'app-watchlist'},{'name': 'ZoneConfigComponent', 'selector': 'app-zone-config'}];
+    var DIRECTIVES = [{'name': 'HasPermissionDirective', 'selector': '[appHasPermission]'},{'name': 'ImageOptimizationDirective', 'selector': '[appImageOptimization]'}];
+    var ACTUAL_COMPONENT = {'name': 'FaceRecognitionDemoComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'FaceRecognitionDemoComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

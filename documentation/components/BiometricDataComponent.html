@@ -1,0 +1,2875 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  BiometricDataComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-biometric-data</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../interfaces/Module.html" target="_self" >CommonModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >ReactiveFormsModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >FormsModule</a></code>
+                                <code><a href="../components/PageLayoutComponent.html" target="_self" >PageLayoutComponent</a></code>
+                                <code><a href="../components/DataTableComponent.html" target="_self" >DataTableComponent</a></code>
+                                <code><a href="../components/ModalComponent.html" target="_self" >ModalComponent</a></code>
+                                <code><a href="../components/FilterSectionComponent.html" target="_self" >FilterSectionComponent</a></code>
+                                <code><a href="../components/StatisticsGridComponent.html" target="_self" >StatisticsGridComponent</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >TranslateModule</a></code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./biometric-data.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./biometric-data.component.scss</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#actions" >actions</a>
+                            </li>
+                            <li>
+                                <a href="#biometricData" >biometricData</a>
+                            </li>
+                            <li>
+                                <a href="#biometricForm" >biometricForm</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#biometricService" >biometricService</a>
+                            </li>
+                            <li>
+                                <a href="#BiometricType" >BiometricType</a>
+                            </li>
+                            <li>
+                                <a href="#BIOMETRIC_TYPE_LABELS" >BIOMETRIC_TYPE_LABELS</a>
+                            </li>
+                            <li>
+                                <a href="#biometricTypes" >biometricTypes</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                <a href="#canvasElement" >canvasElement</a>
+                            </li>
+                            <li>
+                                <a href="#capturedImage" >capturedImage</a>
+                            </li>
+                            <li>
+                                <a href="#columns" >columns</a>
+                            </li>
+                            <li>
+                                <a href="#enrollmentMode" >enrollmentMode</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#errorHandler" >errorHandler</a>
+                            </li>
+                            <li>
+                                <a href="#errorMessage" >errorMessage</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#fb" >fb</a>
+                            </li>
+                            <li>
+                                <a href="#filteredData" >filteredData</a>
+                            </li>
+                            <li>
+                                <a href="#filterFields" >filterFields</a>
+                            </li>
+                            <li>
+                                <a href="#isLoading" >isLoading</a>
+                            </li>
+                            <li>
+                                <a href="#pageActions" >pageActions</a>
+                            </li>
+                            <li>
+                                <a href="#selectedData" >selectedData</a>
+                            </li>
+                            <li>
+                                <a href="#selectedVideoDevice" >selectedVideoDevice</a>
+                            </li>
+                            <li>
+                                <a href="#showModal" >showModal</a>
+                            </li>
+                            <li>
+                                <a href="#statisticsCards" >statisticsCards</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#validationService" >validationService</a>
+                            </li>
+                            <li>
+                                <a href="#videoDevices" >videoDevices</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                <a href="#videoElement" >videoElement</a>
+                            </li>
+                            <li>
+                                <a href="#videoStream" >videoStream</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#addData" >addData</a>
+                            </li>
+                            <li>
+                                <a href="#captureImage" >captureImage</a>
+                            </li>
+                            <li>
+                                <a href="#clearImage" >clearImage</a>
+                            </li>
+                            <li>
+                                <a href="#closeModal" >closeModal</a>
+                            </li>
+                            <li>
+                                <a href="#deleteData" >deleteData</a>
+                            </li>
+                            <li>
+                                <a href="#editData" >editData</a>
+                            </li>
+                            <li>
+                                <a href="#exportData" >exportData</a>
+                            </li>
+                            <li>
+                                <a href="#getFieldError" >getFieldError</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getVideoDevices" >getVideoDevices</a>
+                            </li>
+                            <li>
+                                <a href="#loadData" >loadData</a>
+                            </li>
+                            <li>
+                                <a href="#markFormGroupTouched" >markFormGroupTouched</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onFileSelected" >onFileSelected</a>
+                            </li>
+                            <li>
+                                <a href="#onFilterChange" >onFilterChange</a>
+                            </li>
+                            <li>
+                                <a href="#saveBiometricData" >saveBiometricData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setEnrollmentMode" >setEnrollmentMode</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#startCamera" >startCamera</a>
+                            </li>
+                            <li>
+                                <a href="#stopCamera" >stopCamera</a>
+                            </li>
+                            <li>
+                                <a href="#updateStatistics" >updateStatistics</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="92" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:92</a></div>
+                            </td>
+                        </tr>
+
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addData"></a>
+                    <span class="name">
+                        <span ><b>addData</b></span>
+                        <a href="#addData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>addData()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="262"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:262</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="captureImage"></a>
+                    <span class="name">
+                        <span ><b>captureImage</b></span>
+                        <a href="#captureImage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>captureImage()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="161"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:161</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="clearImage"></a>
+                    <span class="name">
+                        <span ><b>clearImage</b></span>
+                        <a href="#clearImage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>clearImage()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="205"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:205</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="closeModal"></a>
+                    <span class="name">
+                        <span ><b>closeModal</b></span>
+                        <a href="#closeModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>closeModal()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="354"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:354</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteData"></a>
+                    <span class="name">
+                        <span ><b>deleteData</b></span>
+                        <a href="#deleteData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>deleteData(data: <a href="../interfaces/BiometricData.html" target="_self">BiometricData</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="290"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:290</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                            <code><a href="../interfaces/BiometricData.html" target="_self" >BiometricData</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="editData"></a>
+                    <span class="name">
+                        <span ><b>editData</b></span>
+                        <a href="#editData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>editData(data: <a href="../interfaces/BiometricData.html" target="_self">BiometricData</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="272"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:272</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                            <code><a href="../interfaces/BiometricData.html" target="_self" >BiometricData</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="exportData"></a>
+                    <span class="name">
+                        <span ><b>exportData</b></span>
+                        <a href="#exportData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>exportData()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="374"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:374</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getFieldError"></a>
+                    <span class="name">
+                        <span ><b>getFieldError</b></span>
+                        <a href="#getFieldError"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getFieldError(fieldName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="361"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:361</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>fieldName</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getVideoDevices"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getVideoDevices</b></span>
+                        <a href="#getVideoDevices"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getVideoDevices()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="116"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:116</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadData"></a>
+                    <span class="name">
+                        <span ><b>loadData</b></span>
+                        <a href="#loadData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>loadData()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="211"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:211</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="markFormGroupTouched"></a>
+                    <span class="name">
+                        <span ><b>markFormGroupTouched</b></span>
+                        <a href="#markFormGroupTouched"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>markFormGroupTouched(formGroup: FormGroup)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="365"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:365</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>formGroup</td>
+                                            <td>
+                                                        <code>FormGroup</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="110"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:110</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onFileSelected"></a>
+                    <span class="name">
+                        <span ><b>onFileSelected</b></span>
+                        <a href="#onFileSelected"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onFileSelected(event: <a href="../interfaces/Event.html" target="_self">Event</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="187"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:187</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Event.html" target="_self" >Event</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onFilterChange"></a>
+                    <span class="name">
+                        <span ><b>onFilterChange</b></span>
+                        <a href="#onFilterChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onFilterChange(filters: Record<string | any>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="248"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:248</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>filters</td>
+                                            <td>
+                                                        <code>Record&lt;string | any&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveBiometricData"></a>
+                    <span class="name">
+                        <span ><b>saveBiometricData</b></span>
+                        <a href="#saveBiometricData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>saveBiometricData()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="307"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:307</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setEnrollmentMode"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>setEnrollmentMode</b></span>
+                        <a href="#setEnrollmentMode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setEnrollmentMode(mode: "upload" | "camera")</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="129"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:129</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>mode</td>
+                                            <td>
+                                                        <code>&quot;upload&quot; | &quot;camera&quot;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="startCamera"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>startCamera</b></span>
+                        <a href="#startCamera"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>startCamera()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="138"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:138</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="stopCamera"></a>
+                    <span class="name">
+                        <span ><b>stopCamera</b></span>
+                        <a href="#stopCamera"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>stopCamera()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="154"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:154</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateStatistics"></a>
+                    <span class="name">
+                        <span ><b>updateStatistics</b></span>
+                        <a href="#updateStatistics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateStatistics(data: BiometricData[])</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="234"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:234</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                        <code>BiometricData[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="actions"></a>
+                    <span class="name">
+                        <span ><b>actions</b></span>
+                        <a href="#actions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>TableAction[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+    { label: &#x27;Edit&#x27;, icon: &#x27;edit&#x27;, onClick: (row) &#x3D;&gt; this.editData(row) },
+    { label: &#x27;Delete&#x27;, icon: &#x27;trash&#x27;, onClick: (row) &#x3D;&gt; this.deleteData(row) }
+  ]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="79" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:79</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="biometricData"></a>
+                    <span class="name">
+                        <span ><b>biometricData</b></span>
+                        <a href="#biometricData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;BiometricData[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:38</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="biometricForm"></a>
+                    <span class="name">
+                        <span ><b>biometricForm</b></span>
+                        <a href="#biometricForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>FormGroup</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:55</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="biometricService"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>biometricService</b></span>
+                        <a href="#biometricService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(BiometricDataService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:34</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="BiometricType"></a>
+                    <span class="name">
+                        <span ><b>BiometricType</b></span>
+                        <a href="#BiometricType"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>BiometricType</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:56</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="BIOMETRIC_TYPE_LABELS"></a>
+                    <span class="name">
+                        <span ><b>BIOMETRIC_TYPE_LABELS</b></span>
+                        <a href="#BIOMETRIC_TYPE_LABELS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>BIOMETRIC_TYPE_LABELS</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:57</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="biometricTypes"></a>
+                    <span class="name">
+                        <span ><b>biometricTypes</b></span>
+                        <a href="#biometricTypes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;BiometricType[]&gt;(Object.values(BiometricType) as BiometricType[])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:59</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="canvasElement"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                        <span ><b>canvasElement</b></span>
+                        <a href="#canvasElement"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>ElementRef&lt;HTMLCanvasElement&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;canvasElement&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:53</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="capturedImage"></a>
+                    <span class="name">
+                        <span ><b>capturedImage</b></span>
+                        <a href="#capturedImage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:50</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="columns"></a>
+                    <span class="name">
+                        <span ><b>columns</b></span>
+                        <a href="#columns"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>TableColumn[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+    { key: &#x27;previewImage&#x27;, label: &#x27;Preview&#x27;, sortable: false, template: undefined }, // Will be set via ng-template in HTML if needed, or use custom render
+    { key: &#x27;member_id&#x27;, label: &#x27;Member ID&#x27;, sortable: true },
+    { key: &#x27;biometric_type&#x27;, label: &#x27;Type&#x27;, sortable: true, 
+      render: (value) &#x3D;&gt; this.BIOMETRIC_TYPE_LABELS[value as BiometricType] || value 
+    },
+    { key: &#x27;is_primary&#x27;, label: &#x27;Primary&#x27;, sortable: true, type: &#x27;boolean&#x27; },
+    { key: &#x27;created_at&#x27;, label: &#x27;Created At&#x27;, sortable: true, type: &#x27;date&#x27; },
+    { key: &#x27;updated_at&#x27;, label: &#x27;Updated At&#x27;, sortable: true, type: &#x27;date&#x27; }
+  ]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:68</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="enrollmentMode"></a>
+                    <span class="name">
+                        <span ><b>enrollmentMode</b></span>
+                        <a href="#enrollmentMode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;&#x27;upload&#x27; | &#x27;camera&#x27;&gt;(&#x27;upload&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:44</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="errorHandler"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>errorHandler</b></span>
+                        <a href="#errorHandler"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(ErrorHandlerService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:35</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="errorMessage"></a>
+                    <span class="name">
+                        <span ><b>errorMessage</b></span>
+                        <a href="#errorMessage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;string | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:43</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fb"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>fb</b></span>
+                        <a href="#fb"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(FormBuilder)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:33</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filteredData"></a>
+                    <span class="name">
+                        <span ><b>filteredData</b></span>
+                        <a href="#filteredData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;BiometricData[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:39</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filterFields"></a>
+                    <span class="name">
+                        <span ><b>filterFields</b></span>
+                        <a href="#filterFields"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;FilterField[]&gt;([
+    { key: &#x27;member_id&#x27;, label: &#x27;Member ID&#x27;, type: &#x27;text&#x27;, placeholder: &#x27;Search by Member ID&#x27; },
+    { key: &#x27;biometric_type&#x27;, label: &#x27;Type&#x27;, type: &#x27;select&#x27;, options: Object.entries(this.BIOMETRIC_TYPE_LABELS).map(([value, label]) &#x3D;&gt; ({ label, value })) }
+  ])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="89" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:89</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isLoading"></a>
+                    <span class="name">
+                        <span ><b>isLoading</b></span>
+                        <a href="#isLoading"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:40</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pageActions"></a>
+                    <span class="name">
+                        <span ><b>pageActions</b></span>
+                        <a href="#pageActions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;PageAction[]&gt;([
+    { label: &#x27;Export&#x27;, icon: &#x27;download&#x27;, onClick: () &#x3D;&gt; this.exportData(), variant: &#x27;secondary&#x27; },
+    { label: &#x27;Add Data&#x27;, icon: &#x27;plus&#x27;, onClick: () &#x3D;&gt; this.addData(), variant: &#x27;primary&#x27; }
+  ])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="84" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:84</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedData"></a>
+                    <span class="name">
+                        <span ><b>selectedData</b></span>
+                        <a href="#selectedData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;BiometricData | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:42</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedVideoDevice"></a>
+                    <span class="name">
+                        <span ><b>selectedVideoDevice</b></span>
+                        <a href="#selectedVideoDevice"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;string&gt;(&#x27;&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:48</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showModal"></a>
+                    <span class="name">
+                        <span ><b>showModal</b></span>
+                        <a href="#showModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:41</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="statisticsCards"></a>
+                    <span class="name">
+                        <span ><b>statisticsCards</b></span>
+                        <a href="#statisticsCards"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;StatCard[]&gt;([
+    { label: &#x27;Total Records&#x27;, value: 0, icon: &#x27;bg-blue-500&#x27; },
+    { label: &#x27;Face Data&#x27;, value: 0, icon: &#x27;bg-green-500&#x27; },
+    { label: &#x27;Fingerprints&#x27;, value: 0, icon: &#x27;bg-purple-500&#x27; },
+    { label: &#x27;Other Types&#x27;, value: 0, icon: &#x27;bg-orange-500&#x27; }
+  ])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:61</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="validationService"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>validationService</b></span>
+                        <a href="#validationService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(ValidationService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:36</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="videoDevices"></a>
+                    <span class="name">
+                        <span ><b>videoDevices</b></span>
+                        <a href="#videoDevices"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;MediaDeviceInfo[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:47</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="videoElement"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                        <span ><b>videoElement</b></span>
+                        <a href="#videoElement"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>ElementRef&lt;HTMLVideoElement&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;videoElement&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:52</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="videoStream"></a>
+                    <span class="name">
+                        <span ><b>videoStream</b></span>
+                        <a href="#videoStream"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>MediaStream | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/features/portal/face-recognition/biometric-data/biometric-data.component.ts:49</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, signal, ViewChild, ElementRef, inject } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule, FormControl } from &#x27;@angular/forms&#x27;;
+import { BiometricDataService } from &#x27;../../../../core/services/biometric-data.service&#x27;;
+import { BiometricData, BiometricType, CreateBiometricDataDto, UpdateBiometricDataDto, BIOMETRIC_TYPE_LABELS } from &#x27;../../../../core/models/biometric-data.model&#x27;;
+import { PageLayoutComponent, PageAction } from &#x27;../../../../shared/components/page-layout/page-layout.component&#x27;;
+import { DataTableComponent, TableColumn, TableAction } from &#x27;../../../../shared/components/data-table/data-table.component&#x27;;
+import { ModalComponent } from &#x27;../../../../shared/components/modal/modal.component&#x27;;
+import { FilterSectionComponent, FilterField } from &#x27;../../../../shared/components/filter-section/filter-section.component&#x27;;
+import { StatisticsGridComponent, StatCard } from &#x27;../../../../shared/components/statistics-grid/statistics-grid.component&#x27;;
+import { TranslateModule } from &#x27;@ngx-translate/core&#x27;;
+import { ErrorHandlerService } from &#x27;../../../../core/services/error-handler.service&#x27;;
+import { ValidationService } from &#x27;../../../../core/services/validation.service&#x27;;
+
+@Component({
+  selector: &#x27;app-biometric-data&#x27;,
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    PageLayoutComponent,
+    DataTableComponent,
+    ModalComponent,
+    FilterSectionComponent,
+    StatisticsGridComponent,
+    TranslateModule
+  ],
+  templateUrl: &#x27;./biometric-data.component.html&#x27;,
+  styleUrl: &#x27;./biometric-data.component.scss&#x27;
+})
+export class BiometricDataComponent implements OnInit {
+  private fb &#x3D; inject(FormBuilder);
+  private biometricService &#x3D; inject(BiometricDataService);
+  private errorHandler &#x3D; inject(ErrorHandlerService);
+  private validationService &#x3D; inject(ValidationService);
+
+  biometricData &#x3D; signal&lt;BiometricData[]&gt;([]);
+  filteredData &#x3D; signal&lt;BiometricData[]&gt;([]);
+  isLoading &#x3D; signal(false);
+  showModal &#x3D; signal(false);
+  selectedData &#x3D; signal&lt;BiometricData | null&gt;(null);
+  errorMessage &#x3D; signal&lt;string | null&gt;(null);
+  enrollmentMode &#x3D; signal&lt;&#x27;upload&#x27; | &#x27;camera&#x27;&gt;(&#x27;upload&#x27;);
+  
+  // Camera signals
+  videoDevices &#x3D; signal&lt;MediaDeviceInfo[]&gt;([]);
+  selectedVideoDevice &#x3D; signal&lt;string&gt;(&#x27;&#x27;);
+  videoStream: MediaStream | null &#x3D; null;
+  capturedImage: string | null &#x3D; null; // Base64 string
+
+  @ViewChild(&#x27;videoElement&#x27;) videoElement!: ElementRef&lt;HTMLVideoElement&gt;;
+  @ViewChild(&#x27;canvasElement&#x27;) canvasElement!: ElementRef&lt;HTMLCanvasElement&gt;;
+
+  biometricForm: FormGroup;
+  BiometricType &#x3D; BiometricType;
+  BIOMETRIC_TYPE_LABELS &#x3D; BIOMETRIC_TYPE_LABELS;
+
+  biometricTypes &#x3D; signal&lt;BiometricType[]&gt;(Object.values(BiometricType) as BiometricType[]);
+
+  statisticsCards &#x3D; signal&lt;StatCard[]&gt;([
+    { label: &#x27;Total Records&#x27;, value: 0, icon: &#x27;bg-blue-500&#x27; },
+    { label: &#x27;Face Data&#x27;, value: 0, icon: &#x27;bg-green-500&#x27; },
+    { label: &#x27;Fingerprints&#x27;, value: 0, icon: &#x27;bg-purple-500&#x27; },
+    { label: &#x27;Other Types&#x27;, value: 0, icon: &#x27;bg-orange-500&#x27; }
+  ]);
+
+  columns: TableColumn[] &#x3D; [
+    { key: &#x27;previewImage&#x27;, label: &#x27;Preview&#x27;, sortable: false, template: undefined }, // Will be set via ng-template in HTML if needed, or use custom render
+    { key: &#x27;member_id&#x27;, label: &#x27;Member ID&#x27;, sortable: true },
+    { key: &#x27;biometric_type&#x27;, label: &#x27;Type&#x27;, sortable: true, 
+      render: (value) &#x3D;&gt; this.BIOMETRIC_TYPE_LABELS[value as BiometricType] || value 
+    },
+    { key: &#x27;is_primary&#x27;, label: &#x27;Primary&#x27;, sortable: true, type: &#x27;boolean&#x27; },
+    { key: &#x27;created_at&#x27;, label: &#x27;Created At&#x27;, sortable: true, type: &#x27;date&#x27; },
+    { key: &#x27;updated_at&#x27;, label: &#x27;Updated At&#x27;, sortable: true, type: &#x27;date&#x27; }
+  ];
+
+  actions: TableAction[] &#x3D; [
+    { label: &#x27;Edit&#x27;, icon: &#x27;edit&#x27;, onClick: (row) &#x3D;&gt; this.editData(row) },
+    { label: &#x27;Delete&#x27;, icon: &#x27;trash&#x27;, onClick: (row) &#x3D;&gt; this.deleteData(row) }
+  ];
+
+  pageActions &#x3D; signal&lt;PageAction[]&gt;([
+    { label: &#x27;Export&#x27;, icon: &#x27;download&#x27;, onClick: () &#x3D;&gt; this.exportData(), variant: &#x27;secondary&#x27; },
+    { label: &#x27;Add Data&#x27;, icon: &#x27;plus&#x27;, onClick: () &#x3D;&gt; this.addData(), variant: &#x27;primary&#x27; }
+  ]);
+
+  filterFields &#x3D; signal&lt;FilterField[]&gt;([
+    { key: &#x27;member_id&#x27;, label: &#x27;Member ID&#x27;, type: &#x27;text&#x27;, placeholder: &#x27;Search by Member ID&#x27; },
+    { key: &#x27;biometric_type&#x27;, label: &#x27;Type&#x27;, type: &#x27;select&#x27;, options: Object.entries(this.BIOMETRIC_TYPE_LABELS).map(([value, label]) &#x3D;&gt; ({ label, value })) }
+  ]);
+
+  constructor() {
+    this.biometricForm &#x3D; this.fb.group({
+      member_id: [&#x27;&#x27;, [Validators.required]],
+      biometric_type: [BiometricType.FACE, [Validators.required]],
+      biometric_value: [&#x27;&#x27;, [Validators.required]],
+      is_primary: [true]
+    });
+    
+    // Watch for type changes to reset validation or adjust UI
+    this.biometricForm.get(&#x27;biometric_type&#x27;)?.valueChanges.subscribe(type &#x3D;&gt; {
+      if (type &#x3D;&#x3D;&#x3D; BiometricType.FACE) {
+        this.enrollmentMode.set(&#x27;upload&#x27;); // Default to upload for face
+      }
+    });
+  }
+
+  ngOnInit() {
+    this.loadData();
+    this.getVideoDevices();
+  }
+  
+  // Camera handling methods
+  async getVideoDevices() {
+    try {
+      const devices &#x3D; await navigator.mediaDevices.enumerateDevices();
+      const videoDevices &#x3D; devices.filter(device &#x3D;&gt; device.kind &#x3D;&#x3D;&#x3D; &#x27;videoinput&#x27;);
+      this.videoDevices.set(videoDevices);
+      if (videoDevices.length &gt; 0) {
+        this.selectedVideoDevice.set(videoDevices[0].deviceId);
+      }
+    } catch (error) {
+      console.error(&#x27;Error listing devices:&#x27;, error);
+    }
+  }
+
+  async setEnrollmentMode(mode: &#x27;upload&#x27; | &#x27;camera&#x27;) {
+    this.enrollmentMode.set(mode);
+    if (mode &#x3D;&#x3D;&#x3D; &#x27;camera&#x27;) {
+      await this.startCamera();
+    } else {
+      this.stopCamera();
+    }
+  }
+
+  async startCamera() {
+    try {
+      this.stopCamera();
+      const constraints &#x3D; {
+        video: { deviceId: this.selectedVideoDevice() ? { exact: this.selectedVideoDevice() } : undefined }
+      };
+      this.videoStream &#x3D; await navigator.mediaDevices.getUserMedia(constraints);
+      if (this.videoElement?.nativeElement) {
+        this.videoElement.nativeElement.srcObject &#x3D; this.videoStream;
+      }
+    } catch (error) {
+      console.error(&#x27;Error accessing camera:&#x27;, error);
+      this.errorHandler.handleApiError(error);
+    }
+  }
+
+  stopCamera() {
+    if (this.videoStream) {
+      this.videoStream.getTracks().forEach(track &#x3D;&gt; track.stop());
+      this.videoStream &#x3D; null;
+    }
+  }
+
+  captureImage() {
+    if (this.videoElement?.nativeElement &amp;&amp; this.canvasElement?.nativeElement) {
+      const video &#x3D; this.videoElement.nativeElement;
+      const canvas &#x3D; this.canvasElement.nativeElement;
+      
+      canvas.width &#x3D; video.videoWidth;
+      canvas.height &#x3D; video.videoHeight;
+      
+      const ctx &#x3D; canvas.getContext(&#x27;2d&#x27;);
+      if (ctx) {
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        // Convert to Base64
+        const dataUrl &#x3D; canvas.toDataURL(&#x27;image/jpeg&#x27;);
+        this.capturedImage &#x3D; dataUrl;
+        
+        // Remove data:image/jpeg;base64, prefix for API
+        const base64Value &#x3D; dataUrl.split(&#x27;,&#x27;)[1];
+        this.biometricForm.patchValue({ biometric_value: base64Value });
+        
+        // Switch back to upload mode to show preview
+        this.enrollmentMode.set(&#x27;upload&#x27;);
+        this.stopCamera();
+      }
+    }
+  }
+
+  onFileSelected(event: Event) {
+    const input &#x3D; event.target as HTMLInputElement;
+    if (input.files &amp;&amp; input.files[0]) {
+      const file &#x3D; input.files[0];
+      const reader &#x3D; new FileReader();
+      
+      reader.onload &#x3D; (e) &#x3D;&gt; {
+        const result &#x3D; e.target?.result as string;
+        this.capturedImage &#x3D; result;
+        // Remove data:image/...;base64, prefix
+        const base64Value &#x3D; result.split(&#x27;,&#x27;)[1];
+        this.biometricForm.patchValue({ biometric_value: base64Value });
+      };
+      
+      reader.readAsDataURL(file);
+    }
+  }
+
+  clearImage() {
+    this.capturedImage &#x3D; null;
+    this.biometricForm.patchValue({ biometric_value: &#x27;&#x27; });
+  }
+
+  // Existing CRUD methods...
+  loadData() {
+    this.isLoading.set(true);
+    this.biometricService.getAll().subscribe({
+      next: (response) &#x3D;&gt; {
+        const data &#x3D; response.data || [];
+        // Add preview image logic if value is base64 image (simplified check)
+        const dataWithPreview &#x3D; data.map(item &#x3D;&gt; ({
+            ...item,
+            previewImage: item.biometric_type &#x3D;&#x3D;&#x3D; BiometricType.FACE ? &#x60;data:image/jpeg;base64,${item.biometric_value}&#x60; : null
+        }));
+        
+        this.biometricData.set(dataWithPreview);
+        this.filteredData.set(dataWithPreview);
+        this.updateStatistics(data);
+        this.isLoading.set(false);
+      },
+      error: (error) &#x3D;&gt; {
+        this.errorMessage.set(this.errorHandler.handleApiError(error));
+        this.isLoading.set(false);
+      }
+    });
+  }
+
+  updateStatistics(data: BiometricData[]) {
+    const total &#x3D; data.length;
+    const face &#x3D; data.filter(d &#x3D;&gt; d.biometric_type &#x3D;&#x3D;&#x3D; BiometricType.FACE).length;
+    const fingerprint &#x3D; data.filter(d &#x3D;&gt; d.biometric_type &#x3D;&#x3D;&#x3D; BiometricType.FINGERPRINT).length;
+    const other &#x3D; total - face - fingerprint;
+
+    this.statisticsCards.set([
+      { label: &#x27;Total Records&#x27;, value: total, icon: &#x27;bg-blue-500&#x27; },
+      { label: &#x27;Face Data&#x27;, value: face, icon: &#x27;bg-green-500&#x27; },
+      { label: &#x27;Fingerprints&#x27;, value: fingerprint, icon: &#x27;bg-purple-500&#x27; },
+      { label: &#x27;Other Types&#x27;, value: other, icon: &#x27;bg-orange-500&#x27; }
+    ]);
+  }
+
+  onFilterChange(filters: Record&lt;string, any&gt;) {
+    let data &#x3D; this.biometricData();
+    
+    if (filters[&#x27;member_id&#x27;]) {
+      data &#x3D; data.filter(d &#x3D;&gt; d.member_id.toLowerCase().includes(filters[&#x27;member_id&#x27;].toLowerCase()));
+    }
+    
+    if (filters[&#x27;biometric_type&#x27;]) {
+      data &#x3D; data.filter(d &#x3D;&gt; d.biometric_type &#x3D;&#x3D;&#x3D; filters[&#x27;biometric_type&#x27;]);
+    }
+
+    this.filteredData.set(data);
+  }
+
+  addData() {
+    this.selectedData.set(null);
+    this.biometricForm.reset({
+      biometric_type: BiometricType.FACE,
+      is_primary: true
+    });
+    this.capturedImage &#x3D; null;
+    this.showModal.set(true);
+  }
+
+  editData(data: BiometricData) {
+    this.selectedData.set(data);
+    this.biometricForm.patchValue({
+      member_id: data.member_id,
+      biometric_type: data.biometric_type,
+      biometric_value: data.biometric_value,
+      is_primary: data.is_primary
+    });
+    
+    if (data.biometric_type &#x3D;&#x3D;&#x3D; BiometricType.FACE) {
+        this.capturedImage &#x3D; &#x60;data:image/jpeg;base64,${data.biometric_value}&#x60;;
+    } else {
+        this.capturedImage &#x3D; null;
+    }
+    
+    this.showModal.set(true);
+  }
+
+  deleteData(data: BiometricData) {
+    if (confirm(&#x27;Are you sure you want to delete this biometric data?&#x27;)) {
+      this.isLoading.set(true);
+      // Use &#x27;id&#x27; instead of &#x27;biometric_id&#x27;
+      this.biometricService.delete(data.id).subscribe({
+        next: () &#x3D;&gt; {
+          this.loadData();
+          this.isLoading.set(false);
+        },
+        error: (error) &#x3D;&gt; {
+          this.errorMessage.set(this.errorHandler.handleApiError(error));
+          this.isLoading.set(false);
+        }
+      });
+    }
+  }
+
+  saveBiometricData() {
+    if (this.biometricForm.invalid) {
+      this.markFormGroupTouched(this.biometricForm);
+      return;
+    }
+
+    this.isLoading.set(true);
+    const formValue &#x3D; this.biometricForm.value;
+
+    if (this.selectedData()) {
+      const updateData: UpdateBiometricDataDto &#x3D; {
+        biometric_value: formValue.biometric_value,
+        is_primary: formValue.is_primary
+      };
+
+      // Use &#x27;id&#x27; instead of &#x27;biometric_id&#x27;
+      this.biometricService.update(this.selectedData()!.id, updateData).subscribe({
+        next: () &#x3D;&gt; {
+          this.closeModal();
+          this.loadData();
+        },
+        error: (error) &#x3D;&gt; {
+          this.errorMessage.set(this.errorHandler.handleApiError(error));
+          this.isLoading.set(false);
+        }
+      });
+    } else {
+      const createData: CreateBiometricDataDto &#x3D; {
+        member_id: formValue.member_id,
+        biometric_type: formValue.biometric_type,
+        biometric_value: formValue.biometric_value,
+        is_primary: formValue.is_primary
+      };
+
+      this.biometricService.create(createData).subscribe({
+        next: () &#x3D;&gt; {
+          this.closeModal();
+          this.loadData();
+        },
+        error: (error) &#x3D;&gt; {
+          this.errorMessage.set(this.errorHandler.handleApiError(error));
+          this.isLoading.set(false);
+        }
+      });
+    }
+  }
+
+  closeModal() {
+    this.showModal.set(false);
+    this.selectedData.set(null);
+    this.errorMessage.set(null);
+    this.stopCamera();
+  }
+
+  getFieldError(fieldName: string): string {
+    return this.validationService.getErrorMessage(this.biometricForm.get(fieldName) as FormControl, fieldName);
+  }
+
+  markFormGroupTouched(formGroup: FormGroup) {
+    Object.values(formGroup.controls).forEach(control &#x3D;&gt; {
+      control.markAsTouched();
+      if (control instanceof FormGroup) {
+        this.markFormGroupTouched(control);
+      }
+    });
+  }
+
+  exportData() {
+    console.log(&#x27;Exporting data...&#x27;);
+    // Implement export functionality
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;app-page-layout
+  title&#x3D;&quot;Biometric Data Management&quot;
+  description&#x3D;&quot;Manage biometric data such as face recognition, fingerprints, and iris scans.&quot;
+  icon&#x3D;&quot;👤&quot;
+  [actions]&#x3D;&quot;pageActions()&quot;&gt;
+  
+  &lt;!-- Statistics Cards --&gt;
+  &lt;app-statistics-grid [stats]&#x3D;&quot;statisticsCards()&quot; [columns]&#x3D;&quot;4&quot; /&gt;
+
+  &lt;!-- Error Message --&gt;
+  @if (errorMessage()) {
+    &lt;div class&#x3D;&quot;p-4 bg-red-50 border border-red-200 rounded-lg mb-6&quot;&gt;
+      &lt;p class&#x3D;&quot;text-red-800 text-sm&quot;&gt;{{ errorMessage() }}&lt;/p&gt;
+    &lt;/div&gt;
+  }
+
+  &lt;!-- Filters --&gt;
+  &lt;app-filter-section
+    [fields]&#x3D;&quot;filterFields()&quot;
+    [columns]&#x3D;&quot;3&quot;
+    (filterChange)&#x3D;&quot;onFilterChange($event)&quot;
+  /&gt;
+
+  &lt;!-- Biometric Data Table --&gt;
+  &lt;app-data-table
+    [columns]&#x3D;&quot;columns&quot;
+    [data]&#x3D;&quot;filteredData()&quot;
+    [actions]&#x3D;&quot;actions&quot;
+    [searchable]&#x3D;&quot;false&quot;
+  /&gt;
+
+  &lt;!-- Add/Edit Modal --&gt;
+  &lt;app-modal
+    [isOpen]&#x3D;&quot;showModal()&quot;
+    [title]&#x3D;&quot;(selectedData() ? &#x27;Edit Biometric Data&#x27; : &#x27;Add Biometric Data&#x27;) | translate&quot;
+    [loading]&#x3D;&quot;isLoading()&quot;
+    (closed)&#x3D;&quot;closeModal()&quot;
+    (confirmed)&#x3D;&quot;saveBiometricData()&quot;
+  &gt;
+    &lt;form [formGroup]&#x3D;&quot;biometricForm&quot; class&#x3D;&quot;space-y-6&quot;&gt;
+        
+        &lt;!-- Member ID --&gt;
+        &lt;div&gt;
+            &lt;label class&#x3D;&quot;block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1&quot;&gt;
+                Member ID &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;
+            &lt;/label&gt;
+            &lt;input type&#x3D;&quot;text&quot; formControlName&#x3D;&quot;member_id&quot;
+                class&#x3D;&quot;w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 transition-all&quot;
+                placeholder&#x3D;&quot;Enter member UUID&quot;
+                [class.border-red-500]&#x3D;&quot;getFieldError(&#x27;member_id&#x27;)&quot;&gt;
+            &lt;p *ngIf&#x3D;&quot;getFieldError(&#x27;member_id&#x27;)&quot; class&#x3D;&quot;mt-1 text-xs text-red-500&quot;&gt;{{ getFieldError(&#x27;member_id&#x27;) }}&lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Biometric Type --&gt;
+        &lt;div&gt;
+            &lt;label class&#x3D;&quot;block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1&quot;&gt;
+                Type &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;
+            &lt;/label&gt;
+            &lt;select formControlName&#x3D;&quot;biometric_type&quot;
+                class&#x3D;&quot;w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 transition-all&quot;&gt;
+                &lt;option *ngFor&#x3D;&quot;let type of biometricTypes()&quot; [value]&#x3D;&quot;type&quot;&gt;
+                    {{ BIOMETRIC_TYPE_LABELS[type] }}
+                &lt;/option&gt;
+            &lt;/select&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Enrollment Section (Only for Face) --&gt;
+        &lt;div *ngIf&#x3D;&quot;biometricForm.get(&#x27;biometric_type&#x27;)?.value &#x3D;&#x3D;&#x3D; BiometricType.FACE&quot; class&#x3D;&quot;space-y-4&quot;&gt;
+            &lt;label class&#x3D;&quot;block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1&quot;&gt;
+                Face Enrollment &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;
+            &lt;/label&gt;
+
+            &lt;!-- Mode Switcher --&gt;
+            &lt;div class&#x3D;&quot;flex space-x-2 mb-2&quot;&gt;
+                &lt;button type&#x3D;&quot;button&quot; (click)&#x3D;&quot;setEnrollmentMode(&#x27;upload&#x27;)&quot; 
+                    class&#x3D;&quot;px-3 py-1 rounded text-sm transition-all border&quot;
+                    [class.bg-primary-500]&#x3D;&quot;enrollmentMode() &#x3D;&#x3D;&#x3D; &#x27;upload&#x27;&quot;
+                    [class.text-white]&#x3D;&quot;enrollmentMode() &#x3D;&#x3D;&#x3D; &#x27;upload&#x27;&quot;
+                    [class.border-primary-500]&#x3D;&quot;enrollmentMode() &#x3D;&#x3D;&#x3D; &#x27;upload&#x27;&quot;&gt;
+                    📁 Upload
+                &lt;/button&gt;
+                &lt;button type&#x3D;&quot;button&quot; (click)&#x3D;&quot;setEnrollmentMode(&#x27;camera&#x27;)&quot; 
+                    class&#x3D;&quot;px-3 py-1 rounded text-sm transition-all border&quot;
+                    [class.bg-primary-500]&#x3D;&quot;enrollmentMode() &#x3D;&#x3D;&#x3D; &#x27;camera&#x27;&quot;
+                    [class.text-white]&#x3D;&quot;enrollmentMode() &#x3D;&#x3D;&#x3D; &#x27;camera&#x27;&quot;
+                    [class.border-primary-500]&#x3D;&quot;enrollmentMode() &#x3D;&#x3D;&#x3D; &#x27;camera&#x27;&quot;&gt;
+                    📷 Camera
+                &lt;/button&gt;
+            &lt;/div&gt;
+
+            &lt;!-- Upload UI --&gt;
+            &lt;div *ngIf&#x3D;&quot;enrollmentMode() &#x3D;&#x3D;&#x3D; &#x27;upload&#x27; &amp;&amp; !capturedImage&quot; class&#x3D;&quot;border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors&quot; (click)&#x3D;&quot;fileInput.click()&quot;&gt;
+                &lt;div class&#x3D;&quot;text-4xl mb-2&quot;&gt;📁&lt;/div&gt;
+                &lt;p class&#x3D;&quot;text-sm text-slate-500&quot;&gt;Click to upload face image&lt;/p&gt;
+                &lt;input type&#x3D;&quot;file&quot; #fileInput (change)&#x3D;&quot;onFileSelected($event)&quot; accept&#x3D;&quot;image/*&quot; class&#x3D;&quot;hidden&quot;&gt;
+            &lt;/div&gt;
+
+            &lt;!-- Camera UI --&gt;
+            &lt;div *ngIf&#x3D;&quot;enrollmentMode() &#x3D;&#x3D;&#x3D; &#x27;camera&#x27;&quot; class&#x3D;&quot;relative w-full aspect-video bg-black rounded-lg overflow-hidden&quot;&gt;
+                &lt;video #videoElement autoplay playsinline class&#x3D;&quot;w-full h-full object-cover&quot;&gt;&lt;/video&gt;
+                &lt;canvas #canvasElement class&#x3D;&quot;hidden&quot;&gt;&lt;/canvas&gt;
+                
+                &lt;!-- Overlay --&gt;
+                &lt;div class&#x3D;&quot;absolute inset-0 border-2 border-primary-500/50 rounded-lg pointer-events-none&quot;&gt;
+                    &lt;div class&#x3D;&quot;absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 border-2 border-white/50 rounded-lg&quot;&gt;&lt;/div&gt;
+                &lt;/div&gt;
+
+                &lt;div class&#x3D;&quot;absolute bottom-4 left-0 right-0 flex justify-center&quot;&gt;
+                    &lt;button type&#x3D;&quot;button&quot; (click)&#x3D;&quot;captureImage()&quot; class&#x3D;&quot;bg-white rounded-full p-4 shadow-lg hover:scale-105 transition-transform&quot;&gt;
+                        &lt;div class&#x3D;&quot;w-4 h-4 bg-red-500 rounded-full&quot;&gt;&lt;/div&gt;
+                    &lt;/button&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;!-- Preview --&gt;
+            &lt;div *ngIf&#x3D;&quot;capturedImage &amp;&amp; enrollmentMode() &#x3D;&#x3D;&#x3D; &#x27;upload&#x27;&quot; class&#x3D;&quot;relative inline-block&quot;&gt;
+                &lt;img [src]&#x3D;&quot;capturedImage&quot; class&#x3D;&quot;h-48 rounded-lg shadow-md border border-slate-200 dark:border-slate-700 object-cover&quot;&gt;
+                &lt;button type&#x3D;&quot;button&quot; (click)&#x3D;&quot;clearImage()&quot; class&#x3D;&quot;absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 shadow-md hover:bg-red-600&quot;&gt;
+                    &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                        &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot; /&gt;
+                    &lt;/svg&gt;
+                &lt;/button&gt;
+            &lt;/div&gt;
+
+            &lt;input type&#x3D;&quot;hidden&quot; formControlName&#x3D;&quot;biometric_value&quot;&gt;
+            &lt;p *ngIf&#x3D;&quot;getFieldError(&#x27;biometric_value&#x27;)&quot; class&#x3D;&quot;mt-1 text-xs text-red-500&quot;&gt;{{ getFieldError(&#x27;biometric_value&#x27;) }}&lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Raw Value Input (For other types) --&gt;
+        &lt;div *ngIf&#x3D;&quot;biometricForm.get(&#x27;biometric_type&#x27;)?.value !&#x3D;&#x3D; BiometricType.FACE&quot;&gt;
+            &lt;label class&#x3D;&quot;block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1&quot;&gt;
+                Biometric Value (Base64) &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;
+            &lt;/label&gt;
+            &lt;textarea formControlName&#x3D;&quot;biometric_value&quot; rows&#x3D;&quot;3&quot;
+                class&#x3D;&quot;w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 transition-all font-mono text-xs&quot;&gt;&lt;/textarea&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Is Primary --&gt;
+        &lt;div class&#x3D;&quot;flex items-center&quot;&gt;
+            &lt;input type&#x3D;&quot;checkbox&quot; formControlName&#x3D;&quot;is_primary&quot; id&#x3D;&quot;is_primary&quot;
+                class&#x3D;&quot;w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500&quot;&gt;
+            &lt;label for&#x3D;&quot;is_primary&quot; class&#x3D;&quot;ml-2 block text-sm text-slate-700 dark:text-slate-300&quot;&gt;
+                Set as Primary Biometric
+            &lt;/label&gt;
+        &lt;/div&gt;
+
+    &lt;/form&gt;
+  &lt;/app-modal&gt;
+&lt;/app-page-layout&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><app-page-layout  title="Biometric Data Management"  description="Manage biometric data such as face recognition, fingerprints, and iris scans."  icon="👤"  [actions]="pageActions()">    <!-- Statistics Cards -->  <app-statistics-grid [stats]="statisticsCards()" [columns]="4" />  <!-- Error Message -->  @if (errorMessage()) {    <div class="p-4 bg-red-50 border border-red-200 rounded-lg mb-6">      <p class="text-red-800 text-sm">{{ errorMessage() }}</p>    </div>  }  <!-- Filters -->  <app-filter-section    [fields]="filterFields()"    [columns]="3"    (filterChange)="onFilterChange($event)"  />  <!-- Biometric Data Table -->  <app-data-table    [columns]="columns"    [data]="filteredData()"    [actions]="actions"    [searchable]="false"  />  <!-- Add/Edit Modal -->  <app-modal    [isOpen]="showModal()"    [title]="(selectedData() ? \'Edit Biometric Data\' : \'Add Biometric Data\') | translate"    [loading]="isLoading()"    (closed)="closeModal()"    (confirmed)="saveBiometricData()"  >    <form [formGroup]="biometricForm" class="space-y-6">                <!-- Member ID -->        <div>            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">                Member ID <span class="text-red-500">*</span>            </label>            <input type="text" formControlName="member_id"                class="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 transition-all"                placeholder="Enter member UUID"                [class.border-red-500]="getFieldError(\'member_id\')">            <p *ngIf="getFieldError(\'member_id\')" class="mt-1 text-xs text-red-500">{{ getFieldError(\'member_id\') }}</p>        </div>        <!-- Biometric Type -->        <div>            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">                Type <span class="text-red-500">*</span>            </label>            <select formControlName="biometric_type"                class="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 transition-all">                <option *ngFor="let type of biometricTypes()" [value]="type">                    {{ BIOMETRIC_TYPE_LABELS[type] }}                </option>            </select>        </div>        <!-- Enrollment Section (Only for Face) -->        <div *ngIf="biometricForm.get(\'biometric_type\')?.value === BiometricType.FACE" class="space-y-4">            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">                Face Enrollment <span class="text-red-500">*</span>            </label>            <!-- Mode Switcher -->            <div class="flex space-x-2 mb-2">                <button type="button" (click)="setEnrollmentMode(\'upload\')"                     class="px-3 py-1 rounded text-sm transition-all border"                    [class.bg-primary-500]="enrollmentMode() === \'upload\'"                    [class.text-white]="enrollmentMode() === \'upload\'"                    [class.border-primary-500]="enrollmentMode() === \'upload\'">                    📁 Upload                </button>                <button type="button" (click)="setEnrollmentMode(\'camera\')"                     class="px-3 py-1 rounded text-sm transition-all border"                    [class.bg-primary-500]="enrollmentMode() === \'camera\'"                    [class.text-white]="enrollmentMode() === \'camera\'"                    [class.border-primary-500]="enrollmentMode() === \'camera\'">                    📷 Camera                </button>            </div>            <!-- Upload UI -->            <div *ngIf="enrollmentMode() === \'upload\' && !capturedImage" class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" (click)="fileInput.click()">                <div class="text-4xl mb-2">📁</div>                <p class="text-sm text-slate-500">Click to upload face image</p>                <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" class="hidden">            </div>            <!-- Camera UI -->            <div *ngIf="enrollmentMode() === \'camera\'" class="relative w-full aspect-video bg-black rounded-lg overflow-hidden">                <video #videoElement autoplay playsinline class="w-full h-full object-cover"></video>                <canvas #canvasElement class="hidden"></canvas>                                <!-- Overlay -->                <div class="absolute inset-0 border-2 border-primary-500/50 rounded-lg pointer-events-none">                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 border-2 border-white/50 rounded-lg"></div>                </div>                <div class="absolute bottom-4 left-0 right-0 flex justify-center">                    <button type="button" (click)="captureImage()" class="bg-white rounded-full p-4 shadow-lg hover:scale-105 transition-transform">                        <div class="w-4 h-4 bg-red-500 rounded-full"></div>                    </button>                </div>            </div>            <!-- Preview -->            <div *ngIf="capturedImage && enrollmentMode() === \'upload\'" class="relative inline-block">                <img [src]="capturedImage" class="h-48 rounded-lg shadow-md border border-slate-200 dark:border-slate-700 object-cover">                <button type="button" (click)="clearImage()" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 shadow-md hover:bg-red-600">                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />                    </svg>                </button>            </div>            <input type="hidden" formControlName="biometric_value">            <p *ngIf="getFieldError(\'biometric_value\')" class="mt-1 text-xs text-red-500">{{ getFieldError(\'biometric_value\') }}</p>        </div>        <!-- Raw Value Input (For other types) -->        <div *ngIf="biometricForm.get(\'biometric_type\')?.value !== BiometricType.FACE">            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">                Biometric Value (Base64) <span class="text-red-500">*</span>            </label>            <textarea formControlName="biometric_value" rows="3"                class="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 transition-all font-mono text-xs"></textarea>        </div>        <!-- Is Primary -->        <div class="flex items-center">            <input type="checkbox" formControlName="is_primary" id="is_primary"                class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">            <label for="is_primary" class="ml-2 block text-sm text-slate-700 dark:text-slate-300">                Set as Primary Biometric            </label>        </div>    </form>  </app-modal></app-page-layout></div>'
+    var COMPONENTS = [{'name': 'AccessControlComponent', 'selector': 'app-access-control'},{'name': 'AccessGroupsComponent', 'selector': 'app-access-groups'},{'name': 'AccessibilityDashboardComponent', 'selector': 'app-accessibility-dashboard'},{'name': 'AccessLogsComponent', 'selector': 'app-access-logs'},{'name': 'AccessSchedulesComponent', 'selector': 'app-access-schedules'},{'name': 'AccordionComponent', 'selector': 'app-accordion'},{'name': 'AccordionDemoComponent', 'selector': 'app-accordion-demo'},{'name': 'AdvancedDataTableComponent', 'selector': 'app-advanced-data-table'},{'name': 'AdvancedDataTableDemoComponent', 'selector': 'app-advanced-data-table-demo'},{'name': 'AdvancedFeaturesDashboardComponent', 'selector': 'app-advanced-features-dashboard'},{'name': 'AdvancedFormsComponent', 'selector': 'app-advanced-forms'},{'name': 'AdvancedRichTextComponent', 'selector': 'app-advanced-rich-text'},{'name': 'AdvancedUiDemoComponent', 'selector': 'app-advanced-ui-demo'},{'name': 'AIModelsComponent', 'selector': 'app-ai-models'},{'name': 'AlertComponent', 'selector': 'app-alert'},{'name': 'AlertHistoryComponent', 'selector': 'app-alert-history'},{'name': 'AlertsComponent', 'selector': 'app-alerts'},{'name': 'ApexChartComponent', 'selector': 'app-apex-chart'},{'name': 'App', 'selector': 'app-root'},{'name': 'AttendanceComponent', 'selector': 'app-attendance'},{'name': 'AuditLogsComponent', 'selector': 'app-audit-logs'},{'name': 'AvatarComponent', 'selector': 'app-avatar'},{'name': 'BackupRestoreComponent', 'selector': 'app-backup-restore'},{'name': 'BadgeComponent', 'selector': 'app-badge'},{'name': 'BaseComponent', 'selector': ''},{'name': 'BiometricDataComponent', 'selector': 'app-biometric-data'},{'name': 'BreadcrumbComponent', 'selector': 'app-breadcrumb'},{'name': 'CalendarComponent', 'selector': 'app-calendar'},{'name': 'CalendarDemoComponent', 'selector': 'app-calendar-demo'},{'name': 'ChartComponent', 'selector': 'app-chart'},{'name': 'CheckboxComponent', 'selector': 'app-checkbox'},{'name': 'ColorPickerComponent', 'selector': 'app-color-picker'},{'name': 'ComingSoonComponent', 'selector': 'app-coming-soon'},{'name': 'CompaniesComponent', 'selector': 'app-companies'},{'name': 'CompanyDocumentsComponent', 'selector': 'app-company-documents'},{'name': 'CompanyHolidaysComponent', 'selector': 'app-company-holidays'},{'name': 'ComponentShowcaseComponent', 'selector': 'app-component-showcase'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DataTableComponent', 'selector': 'app-data-table'},{'name': 'DateTimePickerComponent', 'selector': 'app-date-time-picker'},{'name': 'DepartmentsComponent', 'selector': 'app-departments'},{'name': 'DevicesComponent', 'selector': 'app-devices'},{'name': 'DividerComponent', 'selector': 'app-divider'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DoorsComponent', 'selector': 'app-doors'},{'name': 'DraggableCardsComponent', 'selector': 'app-draggable-cards'},{'name': 'DraggableCardsDemoComponent', 'selector': 'app-draggable-cards-demo'},{'name': 'EChartsChartComponent', 'selector': 'app-echarts-chart'},{'name': 'EChartsDemoComponent', 'selector': 'app-echarts-demo'},{'name': 'EmployeesComponent', 'selector': 'app-employees'},{'name': 'EmployeesNewComponent', 'selector': 'app-employees-new'},{'name': 'EmptyStateComponent', 'selector': 'app-empty-state'},{'name': 'Error401Component', 'selector': 'app-error-401'},{'name': 'Error404Component', 'selector': 'app-error-404'},{'name': 'Error500Component', 'selector': 'app-error-500'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'ErrorToastComponent', 'selector': 'app-error-toast'},{'name': 'EventAnalyticsComponent', 'selector': 'app-event-analytics'},{'name': 'EventCheckinHistoryComponent', 'selector': 'app-event-checkin-history'},{'name': 'EventEmailConfirmationComponent', 'selector': 'app-event-email-confirmation'},{'name': 'EventKioskConfigComponent', 'selector': 'app-event-kiosk-config'},{'name': 'EventRegistrationComponent', 'selector': 'app-event-registration'},{'name': 'EventRegistrationFieldsComponent', 'selector': 'app-event-registration-fields'},{'name': 'EventsComponent', 'selector': 'app-events'},{'name': 'FaceRecognitionComponent', 'selector': 'app-face-recognition'},{'name': 'FaceRecognitionDemoComponent', 'selector': 'app-face-recognition-demo'},{'name': 'FaceRecognitionLiveComponent', 'selector': 'app-face-recognition-live'},{'name': 'FaceRecognitionTestComponent', 'selector': 'app-face-recognition-test'},{'name': 'FaqComponent', 'selector': 'app-faq'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'FilterSectionComponent', 'selector': 'app-filter-section'},{'name': 'ForgotPasswordComponent', 'selector': 'app-forgot-password'},{'name': 'FormFieldComponent', 'selector': 'app-form-field'},{'name': 'GalleryComponent', 'selector': 'app-gallery'},{'name': 'GalleryDemoComponent', 'selector': 'app-gallery-demo'},{'name': 'GlassButtonComponent', 'selector': 'app-glass-button'},{'name': 'GlassCardComponent', 'selector': 'app-glass-card'},{'name': 'GlassInputComponent', 'selector': 'app-glass-input'},{'name': 'GroupFaceRecognitionComponent', 'selector': 'app-group-face-recognition'},{'name': 'GuestsComponent', 'selector': 'app-guests'},{'name': 'HardwareStatusDashboardComponent', 'selector': 'app-hardware-status-dashboard'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HeatmapAnalyticsComponent', 'selector': 'app-heatmap-analytics'},{'name': 'HelpCenter', 'selector': 'app-help-center'},{'name': 'HelpCenterComponent', 'selector': 'app-help-center'},{'name': 'HrDashboardComponent', 'selector': 'app-hr-dashboard'},{'name': 'IconComponent', 'selector': 'app-icon'},{'name': 'IncidentReportsComponent', 'selector': 'app-incident-reports'},{'name': 'KioskViewComponent', 'selector': 'app-kiosk-view'},{'name': 'LandingComponent', 'selector': 'app-landing'},{'name': 'LeafletMapComponent', 'selector': 'app-leaflet-map'},{'name': 'LeavesComponent', 'selector': 'app-leaves'},{'name': 'LicenseManagementComponent', 'selector': 'app-license-management'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoadingStateComponent', 'selector': 'app-loading-state'},{'name': 'LocationsComponent', 'selector': 'app-locations'},{'name': 'LockScreenComponent', 'selector': 'app-lock-screen'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MapDemoComponent', 'selector': 'app-map-demo'},{'name': 'MaterialButtonComponent', 'selector': 'app-material-button'},{'name': 'MaterialCardComponent', 'selector': 'app-material-card'},{'name': 'MaterialDialogComponent', 'selector': 'app-material-dialog'},{'name': 'MaterialInputComponent', 'selector': 'app-material-input'},{'name': 'MaterialTableComponent', 'selector': 'app-material-table'},{'name': 'MfaSetupComponent', 'selector': 'app-mfa-setup'},{'name': 'MobileCameraComponent', 'selector': 'app-mobile-camera'},{'name': 'MobileDemoComponent', 'selector': 'app-mobile-demo'},{'name': 'ModalComponent', 'selector': 'app-modal'},{'name': 'ModalFormComponent', 'selector': 'app-modal-form'},{'name': 'ModuleSubscriptionComponent', 'selector': 'app-module-subscription'},{'name': 'MonitoringComponent', 'selector': 'app-monitoring'},{'name': 'NotificationCenterComponent', 'selector': 'app-notification-center'},{'name': 'NotificationDemoComponent', 'selector': 'app-notification-demo'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'NotificationSettingsComponent', 'selector': 'app-notification-settings'},{'name': 'OffcanvasComponent', 'selector': 'app-offcanvas'},{'name': 'OffcanvasDemoComponent', 'selector': 'app-offcanvas-demo'},{'name': 'OvertimeRequestsComponent', 'selector': 'app-overtime-requests'},{'name': 'PageLayoutComponent', 'selector': 'app-page-layout'},{'name': 'PaginationComponent', 'selector': 'app-pagination'},{'name': 'ParkingBlacklistComponent', 'selector': 'app-parking-blacklist'},{'name': 'ParkingDashboardComponent', 'selector': 'app-parking-dashboard'},{'name': 'ParkingEntryComponent', 'selector': 'app-parking-entry'},{'name': 'ParkingExitComponent', 'selector': 'app-parking-exit'},{'name': 'ParkingLogsComponent', 'selector': 'app-parking-logs'},{'name': 'ParkingReservationComponent', 'selector': 'app-parking-reservation'},{'name': 'ParkingRulesComponent', 'selector': 'app-parking-rules'},{'name': 'ParkingSpotsComponent', 'selector': 'app-parking-spots'},{'name': 'ParkingStatisticsComponent', 'selector': 'app-parking-statistics'},{'name': 'PayrollExportComponent', 'selector': 'app-payroll-export'},{'name': 'PerformanceDashboardComponent', 'selector': 'app-performance-dashboard'},{'name': 'PopoverComponent', 'selector': 'app-popover'},{'name': 'PortalLayoutComponent', 'selector': 'app-portal-layout'},{'name': 'PositionsComponent', 'selector': 'app-positions'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'PublicVerificationComponent', 'selector': 'app-public-verification'},{'name': 'QRCodesComponent', 'selector': 'app-qr-codes'},{'name': 'RadioComponent', 'selector': 'app-radio'},{'name': 'RangeSliderComponent', 'selector': 'app-range-slider'},{'name': 'RatingComponent', 'selector': 'app-rating'},{'name': 'RatingDemoComponent', 'selector': 'app-rating-demo'},{'name': 'RbacComponent', 'selector': 'app-rbac'},{'name': 'RecognitionHistoryComponent', 'selector': 'app-recognition-history'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReportsComponent', 'selector': 'app-reports'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'RFIDCardsComponent', 'selector': 'app-rfid-cards'},{'name': 'RichTextComponent', 'selector': 'app-rich-text'},{'name': 'RichTextEditorComponent', 'selector': 'app-rich-text-editor'},{'name': 'RichTextEditorDemoComponent', 'selector': 'app-rich-text-editor-demo'},{'name': 'SafetyDashboardComponent', 'selector': 'app-safety-dashboard'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ShiftsComponent', 'selector': 'app-shifts'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SkeletonComponent', 'selector': 'app-skeleton'},{'name': 'StatisticsCardComponent', 'selector': 'app-statistics-card'},{'name': 'StatisticsGridComponent', 'selector': 'app-statistics-grid'},{'name': 'StepperComponent', 'selector': 'app-stepper'},{'name': 'StructureComponent', 'selector': 'app-structure'},{'name': 'SuperAdminAnnouncementsComponent', 'selector': 'app-super-admin-announcements'},{'name': 'SuperAdminDashboardComponent', 'selector': 'app-super-admin-dashboard'},{'name': 'SuperAdminLayoutComponent', 'selector': 'app-super-admin-layout'},{'name': 'SuperAdminReportsComponent', 'selector': 'app-super-admin-reports'},{'name': 'SurveillanceMapComponent', 'selector': 'app-surveillance-map'},{'name': 'SwiperGalleryComponent', 'selector': 'app-swiper-gallery'},{'name': 'SwiperGalleryDemoComponent', 'selector': 'app-swiper-gallery-demo'},{'name': 'SwitchComponent', 'selector': 'app-switch'},{'name': 'SystemSettingsComponent', 'selector': 'app-system-settings'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TemplateManagementComponent', 'selector': 'app-template-management'},{'name': 'TestApiComponent', 'selector': 'app-test-api'},{'name': 'ThemeSwitcherComponent', 'selector': 'app-theme-switcher'},{'name': 'TimelineComponent', 'selector': 'app-timeline'},{'name': 'TimelineDemoComponent', 'selector': 'app-timeline-demo'},{'name': 'TimesheetsComponent', 'selector': 'app-timesheets'},{'name': 'TimestampComponent', 'selector': 'app-timestamp'},{'name': 'TimestampDemoComponent', 'selector': 'app-timestamp-demo'},{'name': 'TooltipComponent', 'selector': 'app-tooltip'},{'name': 'UsersComponent', 'selector': 'app-users'},{'name': 'ValidationDemoComponent', 'selector': 'app-validation-demo'},{'name': 'VehiclesComponent', 'selector': 'app-vehicles'},{'name': 'VideoAnalyticsComponent', 'selector': 'app-video-analytics'},{'name': 'VideoPlaybackComponent', 'selector': 'app-video-playback'},{'name': 'VisitorBadgesComponent', 'selector': 'app-visitor-badges'},{'name': 'VisitorBlacklistComponent', 'selector': 'app-visitor-blacklist'},{'name': 'VisitorDashboardComponent', 'selector': 'app-visitor-dashboard'},{'name': 'VisitorInvitationsComponent', 'selector': 'app-visitor-invitations'},{'name': 'VisitorParcelsComponent', 'selector': 'app-visitor-parcels'},{'name': 'VisitorReportsComponent', 'selector': 'app-visitor-reports'},{'name': 'VisitorsComponent', 'selector': 'app-visitors'},{'name': 'WatchlistComponent', 'selector': 'app-watchlist'},{'name': 'ZoneConfigComponent', 'selector': 'app-zone-config'}];
+    var DIRECTIVES = [{'name': 'HasPermissionDirective', 'selector': '[appHasPermission]'},{'name': 'ImageOptimizationDirective', 'selector': '[appImageOptimization]'}];
+    var ACTUAL_COMPONENT = {'name': 'BiometricDataComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'BiometricDataComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

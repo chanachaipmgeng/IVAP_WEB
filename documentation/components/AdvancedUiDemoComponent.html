@@ -1,0 +1,2565 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  AdvancedUiDemoComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-advanced-ui-demo</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../interfaces/Module.html" target="_self" >CommonModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >FormsModule</a></code>
+                                <code><a href="../components/ProgressBarComponent.html" target="_self" >ProgressBarComponent</a></code>
+                                <code><a href="../components/TooltipComponent.html" target="_self" >TooltipComponent</a></code>
+                                <code><a href="../components/ModalComponent.html" target="_self" >ModalComponent</a></code>
+                                <code><a href="../components/GlassCardComponent.html" target="_self" >GlassCardComponent</a></code>
+                                <code><a href="../components/GlassButtonComponent.html" target="_self" >GlassButtonComponent</a></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./advanced-ui-demo.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./advanced-ui-demo.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#autoProgress" >autoProgress</a>
+                            </li>
+                            <li>
+                                <a href="#isModalOpen" >isModalOpen</a>
+                            </li>
+                            <li>
+                                <a href="#modalConfig" >modalConfig</a>
+                            </li>
+                            <li>
+                                <a href="#modalExamples" >modalExamples</a>
+                            </li>
+                            <li>
+                                <a href="#modalTitle" >modalTitle</a>
+                            </li>
+                            <li>
+                                <a href="#progressConfig" >progressConfig</a>
+                            </li>
+                            <li>
+                                <a href="#progressExamples" >progressExamples</a>
+                            </li>
+                            <li>
+                                <a href="#progressInterval" >progressInterval</a>
+                            </li>
+                            <li>
+                                <a href="#progressLabel" >progressLabel</a>
+                            </li>
+                            <li>
+                                <a href="#progressMax" >progressMax</a>
+                            </li>
+                            <li>
+                                <a href="#progressValue" >progressValue</a>
+                            </li>
+                            <li>
+                                <a href="#selectedDemo" >selectedDemo</a>
+                            </li>
+                            <li>
+                                <a href="#tooltipConfig" >tooltipConfig</a>
+                            </li>
+                            <li>
+                                <a href="#tooltipContent" >tooltipContent</a>
+                            </li>
+                            <li>
+                                <a href="#tooltipExamples" >tooltipExamples</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#closeModal" >closeModal</a>
+                            </li>
+                            <li>
+                                <a href="#getDemoStats" >getDemoStats</a>
+                            </li>
+                            <li>
+                                <a href="#getProgressColor" >getProgressColor</a>
+                            </li>
+                            <li>
+                                <a href="#getProgressStatus" >getProgressStatus</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onBackdropClick" >onBackdropClick</a>
+                            </li>
+                            <li>
+                                <a href="#onModalClosed" >onModalClosed</a>
+                            </li>
+                            <li>
+                                <a href="#onModalOpened" >onModalOpened</a>
+                            </li>
+                            <li>
+                                <a href="#openModal" >openModal</a>
+                            </li>
+                            <li>
+                                <a href="#resetProgress" >resetProgress</a>
+                            </li>
+                            <li>
+                                <a href="#setProgressValue" >setProgressValue</a>
+                            </li>
+                            <li>
+                                <a href="#startAutoProgress" >startAutoProgress</a>
+                            </li>
+                            <li>
+                                <a href="#stopAutoProgress" >stopAutoProgress</a>
+                            </li>
+                            <li>
+                                <a href="#toggleAutoProgress" >toggleAutoProgress</a>
+                            </li>
+                            <li>
+                                <a href="#updateModalConfig" >updateModalConfig</a>
+                            </li>
+                            <li>
+                                <a href="#updateProgressConfig" >updateProgressConfig</a>
+                            </li>
+                            <li>
+                                <a href="#updateTooltipConfig" >updateTooltipConfig</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="109" class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:109</a></div>
+                            </td>
+                        </tr>
+
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="closeModal"></a>
+                    <span class="name">
+                        <span ><b>closeModal</b></span>
+                        <a href="#closeModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>closeModal()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="198"
+                                    class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:198</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Close modal</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDemoStats"></a>
+                    <span class="name">
+                        <span ><b>getDemoStats</b></span>
+                        <a href="#getDemoStats"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getDemoStats()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="249"
+                                    class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:249</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get demo statistics</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getProgressColor"></a>
+                    <span class="name">
+                        <span ><b>getProgressColor</b></span>
+                        <a href="#getProgressColor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getProgressColor()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="238"
+                                    class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:238</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get progress color based on value</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getProgressStatus"></a>
+                    <span class="name">
+                        <span ><b>getProgressStatus</b></span>
+                        <a href="#getProgressStatus"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getProgressStatus()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="226"
+                                    class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:226</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get progress status</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="113"
+                                    class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:113</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onBackdropClick"></a>
+                    <span class="name">
+                        <span ><b>onBackdropClick</b></span>
+                        <a href="#onBackdropClick"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onBackdropClick()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="219"
+                                    class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:219</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle backdrop click</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onModalClosed"></a>
+                    <span class="name">
+                        <span ><b>onModalClosed</b></span>
+                        <a href="#onModalClosed"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onModalClosed()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="212"
+                                    class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:212</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle modal closed</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onModalOpened"></a>
+                    <span class="name">
+                        <span ><b>onModalOpened</b></span>
+                        <a href="#onModalOpened"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onModalOpened()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="205"
+                                    class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:205</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle modal opened</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openModal"></a>
+                    <span class="name">
+                        <span ><b>openModal</b></span>
+                        <a href="#openModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>openModal()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="191"
+                                    class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:191</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Open modal</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resetProgress"></a>
+                    <span class="name">
+                        <span ><b>resetProgress</b></span>
+                        <a href="#resetProgress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>resetProgress()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="156"
+                                    class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:156</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Reset progress</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setProgressValue"></a>
+                    <span class="name">
+                        <span ><b>setProgressValue</b></span>
+                        <a href="#setProgressValue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>setProgressValue(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="163"
+                                    class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:163</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Set progress value</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>value</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="startAutoProgress"></a>
+                    <span class="name">
+                        <span ><b>startAutoProgress</b></span>
+                        <a href="#startAutoProgress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>startAutoProgress()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="120"
+                                    class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:120</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Start auto progress</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="stopAutoProgress"></a>
+                    <span class="name">
+                        <span ><b>stopAutoProgress</b></span>
+                        <a href="#stopAutoProgress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>stopAutoProgress()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="134"
+                                    class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:134</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Stop auto progress</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleAutoProgress"></a>
+                    <span class="name">
+                        <span ><b>toggleAutoProgress</b></span>
+                        <a href="#toggleAutoProgress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleAutoProgress()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="144"
+                                    class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:144</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Toggle auto progress</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateModalConfig"></a>
+                    <span class="name">
+                        <span ><b>updateModalConfig</b></span>
+                        <a href="#updateModalConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateModalConfig(config: <a href="../interfaces/ModalConfig.html" target="_self">Partial&lt;ModalConfig&gt;</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="184"
+                                    class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:184</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Update modal config</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>config</td>
+                                            <td>
+                                                            <code><a href="../interfaces/ModalConfig.html" target="_self" >Partial&lt;ModalConfig&gt;</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateProgressConfig"></a>
+                    <span class="name">
+                        <span ><b>updateProgressConfig</b></span>
+                        <a href="#updateProgressConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateProgressConfig(config: <a href="../interfaces/ProgressBarConfig.html" target="_self">Partial&lt;ProgressBarConfig&gt;</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="170"
+                                    class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:170</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Update progress config</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>config</td>
+                                            <td>
+                                                            <code><a href="../interfaces/ProgressBarConfig.html" target="_self" >Partial&lt;ProgressBarConfig&gt;</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateTooltipConfig"></a>
+                    <span class="name">
+                        <span ><b>updateTooltipConfig</b></span>
+                        <a href="#updateTooltipConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateTooltipConfig(config: <a href="../interfaces/TooltipConfig.html" target="_self">Partial&lt;TooltipConfig&gt;</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="177"
+                                    class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:177</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Update tooltip config</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>config</td>
+                                            <td>
+                                                            <code><a href="../interfaces/TooltipConfig.html" target="_self" >Partial&lt;TooltipConfig&gt;</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="autoProgress"></a>
+                    <span class="name">
+                        <span ><b>autoProgress</b></span>
+                        <a href="#autoProgress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:82</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isModalOpen"></a>
+                    <span class="name">
+                        <span ><b>isModalOpen</b></span>
+                        <a href="#isModalOpen"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:67</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="modalConfig"></a>
+                    <span class="name">
+                        <span ><b>modalConfig</b></span>
+                        <a href="#modalConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/ModalConfig.html" target="_self" >Partial&lt;ModalConfig&gt;</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    size: &#x27;md&#x27;,
+    backdrop: true,
+    keyboard: true,
+    focus: true,
+    animation: true,
+    scrollable: false,
+    centered: true,
+    closeOnEscape: true,
+    closeOnBackdrop: true
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:69</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="modalExamples"></a>
+                    <span class="name">
+                        <span ><b>modalExamples</b></span>
+                        <a href="#modalExamples"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+    { size: &#x27;sm&#x27; as const, title: &#x27;Modal ขนาดเล็ก&#x27; },
+    { size: &#x27;md&#x27; as const, title: &#x27;Modal ขนาดกลาง&#x27; },
+    { size: &#x27;lg&#x27; as const, title: &#x27;Modal ขนาดใหญ่&#x27; },
+    { size: &#x27;xl&#x27; as const, title: &#x27;Modal ขนาดใหญ่มาก&#x27; },
+    { size: &#x27;full&#x27; as const, title: &#x27;Modal เต็มหน้าจอ&#x27; }
+  ]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="103" class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:103</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="modalTitle"></a>
+                    <span class="name">
+                        <span ><b>modalTitle</b></span>
+                        <a href="#modalTitle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;Modal Demo&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:68</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="progressConfig"></a>
+                    <span class="name">
+                        <span ><b>progressConfig</b></span>
+                        <a href="#progressConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/ProgressBarConfig.html" target="_self" >Partial&lt;ProgressBarConfig&gt;</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    showPercentage: true,
+    showLabel: true,
+    animated: false,
+    striped: false,
+    size: &#x27;md&#x27;,
+    color: &#x27;primary&#x27;,
+    height: &#x27;20px&#x27;
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:42</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="progressExamples"></a>
+                    <span class="name">
+                        <span ><b>progressExamples</b></span>
+                        <a href="#progressExamples"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+    { value: 0, label: &#x27;เริ่มต้น&#x27;, color: &#x27;primary&#x27; as const },
+    { value: 25, label: &#x27;25%&#x27;, color: &#x27;info&#x27; as const },
+    { value: 50, label: &#x27;ครึ่งทาง&#x27;, color: &#x27;warning&#x27; as const },
+    { value: 75, label: &#x27;เกือบเสร็จ&#x27;, color: &#x27;warning&#x27; as const },
+    { value: 100, label: &#x27;เสร็จสมบูรณ์&#x27;, color: &#x27;success&#x27; as const }
+  ]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="87" class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:87</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="progressInterval"></a>
+                    <span class="name">
+                        <span ><b>progressInterval</b></span>
+                        <a href="#progressInterval"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="83" class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:83</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="progressLabel"></a>
+                    <span class="name">
+                        <span ><b>progressLabel</b></span>
+                        <a href="#progressLabel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;Progress Demo&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:41</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="progressMax"></a>
+                    <span class="name">
+                        <span ><b>progressMax</b></span>
+                        <a href="#progressMax"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>100</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:40</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="progressValue"></a>
+                    <span class="name">
+                        <span ><b>progressValue</b></span>
+                        <a href="#progressValue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>0</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:39</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedDemo"></a>
+                    <span class="name">
+                        <span ><b>selectedDemo</b></span>
+                        <a href="#selectedDemo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>&quot;progress&quot; | &quot;tooltip&quot; | &quot;modal&quot;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;progress&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="84" class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:84</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tooltipConfig"></a>
+                    <span class="name">
+                        <span ><b>tooltipConfig</b></span>
+                        <a href="#tooltipConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/TooltipConfig.html" target="_self" >Partial&lt;TooltipConfig&gt;</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    position: &#x27;top&#x27;,
+    theme: &#x27;dark&#x27;,
+    size: &#x27;md&#x27;,
+    showArrow: true,
+    showDelay: 500,
+    hideDelay: 200,
+    maxWidth: &#x27;300px&#x27;,
+    animation: true,
+    interactive: false
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:54</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tooltipContent"></a>
+                    <span class="name">
+                        <span ><b>tooltipContent</b></span>
+                        <a href="#tooltipContent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;นี่คือ Tooltip Demo&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:53</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tooltipExamples"></a>
+                    <span class="name">
+                        <span ><b>tooltipExamples</b></span>
+                        <a href="#tooltipExamples"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+    { content: &#x27;Tooltip ด้านบน&#x27;, position: &#x27;top&#x27; as const, theme: &#x27;primary&#x27; as const },
+    { content: &#x27;Tooltip ด้านล่าง&#x27;, position: &#x27;bottom&#x27; as const, theme: &#x27;success&#x27; as const },
+    { content: &#x27;Tooltip ด้านซ้าย&#x27;, position: &#x27;left&#x27; as const, theme: &#x27;warning&#x27; as const },
+    { content: &#x27;Tooltip ด้านขวา&#x27;, position: &#x27;right&#x27; as const, theme: &#x27;danger&#x27; as const },
+    { content: &#x27;Tooltip แบบโต้ตอบ&#x27;, position: &#x27;top&#x27; as const, theme: &#x27;info&#x27; as const, interactive: true }
+  ]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/app/features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component.ts:95</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormsModule } from &#x27;@angular/forms&#x27;;
+import { ProgressBarComponent, ProgressBarConfig } from &#x27;../../../../shared/components/progress-bar/progress-bar.component&#x27;;
+import { TooltipComponent, TooltipConfig } from &#x27;../../../../shared/components/tooltip/tooltip.component&#x27;;
+import { ModalComponent, ModalConfig } from &#x27;../../../../shared/components/modal/modal.component&#x27;;
+import { GlassCardComponent } from &#x27;../../../../shared/components/glass-card/glass-card.component&#x27;;
+import { GlassButtonComponent } from &#x27;../../../../shared/components/glass-button/glass-button.component&#x27;;
+
+@Component({
+  selector: &#x27;app-advanced-ui-demo&#x27;,
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ProgressBarComponent,
+    TooltipComponent,
+    ModalComponent,
+    GlassCardComponent,
+    GlassButtonComponent
+  ],
+  templateUrl: &#x27;./advanced-ui-demo.component.html&#x27;,
+  styleUrls: [&#x27;./advanced-ui-demo.component.scss&#x27;]
+})
+export class AdvancedUiDemoComponent implements OnInit {
+  // Progress Bar Demo
+  progressValue: number &#x3D; 0;
+  progressMax: number &#x3D; 100;
+  progressLabel: string &#x3D; &#x27;Progress Demo&#x27;;
+  progressConfig: Partial&lt;ProgressBarConfig&gt; &#x3D; {
+    showPercentage: true,
+    showLabel: true,
+    animated: false,
+    striped: false,
+    size: &#x27;md&#x27;,
+    color: &#x27;primary&#x27;,
+    height: &#x27;20px&#x27;
+  };
+
+  // Tooltip Demo
+  tooltipContent: string &#x3D; &#x27;นี่คือ Tooltip Demo&#x27;;
+  tooltipConfig: Partial&lt;TooltipConfig&gt; &#x3D; {
+    position: &#x27;top&#x27;,
+    theme: &#x27;dark&#x27;,
+    size: &#x27;md&#x27;,
+    showArrow: true,
+    showDelay: 500,
+    hideDelay: 200,
+    maxWidth: &#x27;300px&#x27;,
+    animation: true,
+    interactive: false
+  };
+
+  // Modal Demo
+  isModalOpen: boolean &#x3D; false;
+  modalTitle: string &#x3D; &#x27;Modal Demo&#x27;;
+  modalConfig: Partial&lt;ModalConfig&gt; &#x3D; {
+    size: &#x27;md&#x27;,
+    backdrop: true,
+    keyboard: true,
+    focus: true,
+    animation: true,
+    scrollable: false,
+    centered: true,
+    closeOnEscape: true,
+    closeOnBackdrop: true
+  };
+
+  // Demo settings
+  autoProgress: boolean &#x3D; false;
+  progressInterval: any;
+  selectedDemo: &#x27;progress&#x27; | &#x27;tooltip&#x27; | &#x27;modal&#x27; &#x3D; &#x27;progress&#x27;;
+
+  // Sample data
+  progressExamples &#x3D; [
+    { value: 0, label: &#x27;เริ่มต้น&#x27;, color: &#x27;primary&#x27; as const },
+    { value: 25, label: &#x27;25%&#x27;, color: &#x27;info&#x27; as const },
+    { value: 50, label: &#x27;ครึ่งทาง&#x27;, color: &#x27;warning&#x27; as const },
+    { value: 75, label: &#x27;เกือบเสร็จ&#x27;, color: &#x27;warning&#x27; as const },
+    { value: 100, label: &#x27;เสร็จสมบูรณ์&#x27;, color: &#x27;success&#x27; as const }
+  ];
+
+  tooltipExamples &#x3D; [
+    { content: &#x27;Tooltip ด้านบน&#x27;, position: &#x27;top&#x27; as const, theme: &#x27;primary&#x27; as const },
+    { content: &#x27;Tooltip ด้านล่าง&#x27;, position: &#x27;bottom&#x27; as const, theme: &#x27;success&#x27; as const },
+    { content: &#x27;Tooltip ด้านซ้าย&#x27;, position: &#x27;left&#x27; as const, theme: &#x27;warning&#x27; as const },
+    { content: &#x27;Tooltip ด้านขวา&#x27;, position: &#x27;right&#x27; as const, theme: &#x27;danger&#x27; as const },
+    { content: &#x27;Tooltip แบบโต้ตอบ&#x27;, position: &#x27;top&#x27; as const, theme: &#x27;info&#x27; as const, interactive: true }
+  ];
+
+  modalExamples &#x3D; [
+    { size: &#x27;sm&#x27; as const, title: &#x27;Modal ขนาดเล็ก&#x27; },
+    { size: &#x27;md&#x27; as const, title: &#x27;Modal ขนาดกลาง&#x27; },
+    { size: &#x27;lg&#x27; as const, title: &#x27;Modal ขนาดใหญ่&#x27; },
+    { size: &#x27;xl&#x27; as const, title: &#x27;Modal ขนาดใหญ่มาก&#x27; },
+    { size: &#x27;full&#x27; as const, title: &#x27;Modal เต็มหน้าจอ&#x27; }
+  ];
+
+  constructor() {}
+
+  ngOnInit(): void {
+    this.startAutoProgress();
+  }
+
+  /**
+   * Start auto progress
+   */
+  startAutoProgress(): void {
+    if (this.autoProgress) {
+      this.progressInterval &#x3D; setInterval(() &#x3D;&gt; {
+        this.progressValue +&#x3D; 1;
+        if (this.progressValue &gt;&#x3D; this.progressMax) {
+          this.progressValue &#x3D; 0;
+        }
+      }, 100);
+    }
+  }
+
+  /**
+   * Stop auto progress
+   */
+  stopAutoProgress(): void {
+    if (this.progressInterval) {
+      clearInterval(this.progressInterval);
+      this.progressInterval &#x3D; null;
+    }
+  }
+
+  /**
+   * Toggle auto progress
+   */
+  toggleAutoProgress(): void {
+    this.autoProgress &#x3D; !this.autoProgress;
+    if (this.autoProgress) {
+      this.startAutoProgress();
+    } else {
+      this.stopAutoProgress();
+    }
+  }
+
+  /**
+   * Reset progress
+   */
+  resetProgress(): void {
+    this.progressValue &#x3D; 0;
+  }
+
+  /**
+   * Set progress value
+   */
+  setProgressValue(value: number): void {
+    this.progressValue &#x3D; Math.min(Math.max(value, 0), this.progressMax);
+  }
+
+  /**
+   * Update progress config
+   */
+  updateProgressConfig(config: Partial&lt;ProgressBarConfig&gt;): void {
+    this.progressConfig &#x3D; { ...this.progressConfig, ...config };
+  }
+
+  /**
+   * Update tooltip config
+   */
+  updateTooltipConfig(config: Partial&lt;TooltipConfig&gt;): void {
+    this.tooltipConfig &#x3D; { ...this.tooltipConfig, ...config };
+  }
+
+  /**
+   * Update modal config
+   */
+  updateModalConfig(config: Partial&lt;ModalConfig&gt;): void {
+    this.modalConfig &#x3D; { ...this.modalConfig, ...config };
+  }
+
+  /**
+   * Open modal
+   */
+  openModal(): void {
+    this.isModalOpen &#x3D; true;
+  }
+
+  /**
+   * Close modal
+   */
+  closeModal(): void {
+    this.isModalOpen &#x3D; false;
+  }
+
+  /**
+   * Handle modal opened
+   */
+  onModalOpened(): void {
+    console.log(&#x27;Modal opened&#x27;);
+  }
+
+  /**
+   * Handle modal closed
+   */
+  onModalClosed(): void {
+    console.log(&#x27;Modal closed&#x27;);
+  }
+
+  /**
+   * Handle backdrop click
+   */
+  onBackdropClick(): void {
+    console.log(&#x27;Backdrop clicked&#x27;);
+  }
+
+  /**
+   * Get progress status
+   */
+  getProgressStatus(): string {
+    if (this.progressValue &#x3D;&#x3D;&#x3D; 0) return &#x27;เริ่มต้น&#x27;;
+    if (this.progressValue &lt; 25) return &#x27;เริ่มต้น&#x27;;
+    if (this.progressValue &lt; 50) return &#x27;กำลังดำเนินการ&#x27;;
+    if (this.progressValue &lt; 75) return &#x27;เกือบเสร็จ&#x27;;
+    if (this.progressValue &lt; 100) return &#x27;ใกล้เสร็จ&#x27;;
+    return &#x27;เสร็จสมบูรณ์&#x27;;
+  }
+
+  /**
+   * Get progress color based on value
+   */
+  getProgressColor(): string {
+    if (this.progressValue &lt; 25) return &#x27;primary&#x27;;
+    if (this.progressValue &lt; 50) return &#x27;info&#x27;;
+    if (this.progressValue &lt; 75) return &#x27;warning&#x27;;
+    if (this.progressValue &lt; 100) return &#x27;warning&#x27;;
+    return &#x27;success&#x27;;
+  }
+
+  /**
+   * Get demo statistics
+   */
+  getDemoStats(): any {
+    return {
+      progressValue: this.progressValue,
+      progressPercentage: Math.round((this.progressValue / this.progressMax) * 100),
+      tooltipPosition: this.tooltipConfig.position,
+      tooltipTheme: this.tooltipConfig.theme,
+      modalSize: this.modalConfig.size,
+      isModalOpen: this.isModalOpen,
+      autoProgress: this.autoProgress
+    };
+  }
+}
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;advanced-ui-demo p-8 max-w-[1400px] mx-auto&quot;&gt;
+  &lt;!-- Header --&gt;
+  &lt;div class&#x3D;&quot;demo-header text-center mb-12&quot;&gt;
+    &lt;h1 class&#x3D;&quot;demo-title text-5xl font-bold text-white m-0 mb-4 bg-gradient-to-r from-primary-500 to-purple-600 bg-clip-text text-transparent&quot;&gt;Advanced UI Components Demo&lt;/h1&gt;
+    &lt;p class&#x3D;&quot;demo-description text-xl text-gray-400 m-0 max-w-[600px] mx-auto&quot;&gt;
+      ทดสอบ Advanced UI Components: Progress Bar, Tooltip, Modal
+    &lt;/p&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Demo Statistics --&gt;
+  &lt;div class&#x3D;&quot;demo-stats mb-8&quot;&gt;
+    &lt;app-glass-card&gt;
+      &lt;h2 class&#x3D;&quot;m-0 mb-4 text-white text-lg&quot;&gt;สถิติ Demo&lt;/h2&gt;
+      &lt;div class&#x3D;&quot;stats-grid grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-6 mb-8&quot;&gt;
+        &lt;div class&#x3D;&quot;stat-card flex items-center gap-4 p-6 bg-white/5 rounded-2xl border border-white/10 transition-all hover:bg-white/10 hover:-translate-y-0.5&quot;&gt;
+          &lt;div class&#x3D;&quot;stat-icon w-15 h-15 rounded-full bg-gradient-to-r from-primary-500 to-purple-600 flex items-center justify-center text-2xl text-white&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-chart-line&quot;&gt;&lt;/i&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;stat-content flex-1&quot;&gt;
+            &lt;div class&#x3D;&quot;stat-value text-3xl font-bold text-white m-0 leading-none&quot;&gt;{{ getDemoStats().progressPercentage }}%&lt;/div&gt;
+            &lt;div class&#x3D;&quot;stat-label text-gray-400 text-sm mt-1 font-medium&quot;&gt;Progress Value&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;stat-card flex items-center gap-4 p-6 bg-white/5 rounded-2xl border border-white/10 transition-all hover:bg-white/10 hover:-translate-y-0.5&quot;&gt;
+          &lt;div class&#x3D;&quot;stat-icon w-15 h-15 rounded-full bg-gradient-to-r from-primary-500 to-purple-600 flex items-center justify-center text-2xl text-white&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-info-circle&quot;&gt;&lt;/i&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;stat-content flex-1&quot;&gt;
+            &lt;div class&#x3D;&quot;stat-value text-3xl font-bold text-white m-0 leading-none&quot;&gt;{{ getDemoStats().tooltipPosition }}&lt;/div&gt;
+            &lt;div class&#x3D;&quot;stat-label text-gray-400 text-sm mt-1 font-medium&quot;&gt;Tooltip Position&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;stat-card flex items-center gap-4 p-6 bg-white/5 rounded-2xl border border-white/10 transition-all hover:bg-white/10 hover:-translate-y-0.5&quot;&gt;
+          &lt;div class&#x3D;&quot;stat-icon w-15 h-15 rounded-full bg-gradient-to-r from-primary-500 to-purple-600 flex items-center justify-center text-2xl text-white&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-window-maximize&quot;&gt;&lt;/i&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;stat-content flex-1&quot;&gt;
+            &lt;div class&#x3D;&quot;stat-value text-3xl font-bold text-white m-0 leading-none&quot;&gt;{{ getDemoStats().modalSize }}&lt;/div&gt;
+            &lt;div class&#x3D;&quot;stat-label text-gray-400 text-sm mt-1 font-medium&quot;&gt;Modal Size&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;stat-card flex items-center gap-4 p-6 bg-white/5 rounded-2xl border border-white/10 transition-all hover:bg-white/10 hover:-translate-y-0.5&quot;&gt;
+          &lt;div class&#x3D;&quot;stat-icon w-15 h-15 rounded-full bg-gradient-to-r from-primary-500 to-purple-600 flex items-center justify-center text-2xl text-white&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-play&quot;&gt;&lt;/i&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;stat-content flex-1&quot;&gt;
+            &lt;div class&#x3D;&quot;stat-value text-3xl font-bold text-white m-0 leading-none&quot;&gt;{{ getDemoStats().autoProgress ? &#x27;ON&#x27; : &#x27;OFF&#x27; }}&lt;/div&gt;
+            &lt;div class&#x3D;&quot;stat-label text-gray-400 text-sm mt-1 font-medium&quot;&gt;Auto Progress&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/app-glass-card&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Demo Navigation --&gt;
+  &lt;div class&#x3D;&quot;demo-navigation mb-8&quot;&gt;
+    &lt;app-glass-card&gt;
+      &lt;h2 class&#x3D;&quot;m-0 mb-4 text-white text-lg&quot;&gt;เลือก Demo&lt;/h2&gt;
+      &lt;div class&#x3D;&quot;nav-buttons flex gap-4 flex-wrap&quot;&gt;
+        &lt;app-glass-button
+          [variant]&#x3D;&quot;selectedDemo &#x3D;&#x3D;&#x3D; &#x27;progress&#x27; ? &#x27;primary&#x27; : &#x27;secondary&#x27;&quot;
+          (click)&#x3D;&quot;selectedDemo &#x3D; &#x27;progress&#x27;&quot;&gt;
+          &lt;i class&#x3D;&quot;fas fa-chart-line&quot;&gt;&lt;/i&gt;
+          Progress Bar
+        &lt;/app-glass-button&gt;
+        &lt;app-glass-button
+          [variant]&#x3D;&quot;selectedDemo &#x3D;&#x3D;&#x3D; &#x27;tooltip&#x27; ? &#x27;primary&#x27; : &#x27;secondary&#x27;&quot;
+          (click)&#x3D;&quot;selectedDemo &#x3D; &#x27;tooltip&#x27;&quot;&gt;
+          &lt;i class&#x3D;&quot;fas fa-info-circle&quot;&gt;&lt;/i&gt;
+          Tooltip
+        &lt;/app-glass-button&gt;
+        &lt;app-glass-button
+          [variant]&#x3D;&quot;selectedDemo &#x3D;&#x3D;&#x3D; &#x27;modal&#x27; ? &#x27;primary&#x27; : &#x27;secondary&#x27;&quot;
+          (click)&#x3D;&quot;selectedDemo &#x3D; &#x27;modal&#x27;&quot;&gt;
+          &lt;i class&#x3D;&quot;fas fa-window-maximize&quot;&gt;&lt;/i&gt;
+          Modal
+        &lt;/app-glass-button&gt;
+      &lt;/div&gt;
+    &lt;/app-glass-card&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Progress Bar Demo --&gt;
+  &lt;div *ngIf&#x3D;&quot;selectedDemo &#x3D;&#x3D;&#x3D; &#x27;progress&#x27;&quot; class&#x3D;&quot;demo-section&quot;&gt;
+    &lt;app-glass-card&gt;
+      &lt;h2&gt;Progress Bar Demo&lt;/h2&gt;
+
+      &lt;!-- Progress Bar Controls --&gt;
+      &lt;div class&#x3D;&quot;progress-controls&quot;&gt;
+        &lt;div class&#x3D;&quot;control-group&quot;&gt;
+          &lt;label&gt;Progress Value: {{ progressValue }}%&lt;/label&gt;
+          &lt;input
+            type&#x3D;&quot;range&quot;
+            [(ngModel)]&#x3D;&quot;progressValue&quot;
+            [max]&#x3D;&quot;progressMax&quot;
+            min&#x3D;&quot;0&quot;
+            class&#x3D;&quot;progress-slider&quot;&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;control-group&quot;&gt;
+          &lt;label&gt;Progress Label:&lt;/label&gt;
+          &lt;input
+            type&#x3D;&quot;text&quot;
+            [(ngModel)]&#x3D;&quot;progressLabel&quot;
+            placeholder&#x3D;&quot;Enter progress label&quot;
+            class&#x3D;&quot;progress-input&quot;&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;control-group&quot;&gt;
+          &lt;label&gt;Progress Color:&lt;/label&gt;
+          &lt;select [(ngModel)]&#x3D;&quot;progressConfig.color&quot; class&#x3D;&quot;progress-select&quot;&gt;
+            &lt;option value&#x3D;&quot;primary&quot;&gt;Primary&lt;/option&gt;
+            &lt;option value&#x3D;&quot;secondary&quot;&gt;Secondary&lt;/option&gt;
+            &lt;option value&#x3D;&quot;success&quot;&gt;Success&lt;/option&gt;
+            &lt;option value&#x3D;&quot;warning&quot;&gt;Warning&lt;/option&gt;
+            &lt;option value&#x3D;&quot;danger&quot;&gt;Danger&lt;/option&gt;
+            &lt;option value&#x3D;&quot;info&quot;&gt;Info&lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;control-group&quot;&gt;
+          &lt;label&gt;Progress Size:&lt;/label&gt;
+          &lt;select [(ngModel)]&#x3D;&quot;progressConfig.size&quot; class&#x3D;&quot;progress-select&quot;&gt;
+            &lt;option value&#x3D;&quot;sm&quot;&gt;Small&lt;/option&gt;
+            &lt;option value&#x3D;&quot;md&quot;&gt;Medium&lt;/option&gt;
+            &lt;option value&#x3D;&quot;lg&quot;&gt;Large&lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;control-group&quot;&gt;
+          &lt;label&gt;
+            &lt;input
+              type&#x3D;&quot;checkbox&quot;
+              [(ngModel)]&#x3D;&quot;progressConfig.animated&quot;
+              class&#x3D;&quot;progress-checkbox&quot;&gt;
+            Animated
+          &lt;/label&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;control-group&quot;&gt;
+          &lt;label&gt;
+            &lt;input
+              type&#x3D;&quot;checkbox&quot;
+              [(ngModel)]&#x3D;&quot;progressConfig.striped&quot;
+              class&#x3D;&quot;progress-checkbox&quot;&gt;
+            Striped
+          &lt;/label&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;control-group&quot;&gt;
+          &lt;label&gt;
+            &lt;input
+              type&#x3D;&quot;checkbox&quot;
+              [(ngModel)]&#x3D;&quot;autoProgress&quot;
+              (change)&#x3D;&quot;toggleAutoProgress()&quot;
+              class&#x3D;&quot;progress-checkbox&quot;&gt;
+            Auto Progress
+          &lt;/label&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Progress Bar Display --&gt;
+      &lt;div class&#x3D;&quot;progress-display&quot;&gt;
+        &lt;h3&gt;Progress Bar Preview&lt;/h3&gt;
+        &lt;app-progress-bar
+          [value]&#x3D;&quot;progressValue&quot;
+          [max]&#x3D;&quot;progressMax&quot;
+          [label]&#x3D;&quot;progressLabel&quot;
+          [config]&#x3D;&quot;progressConfig&quot;&gt;
+        &lt;/app-progress-bar&gt;
+
+        &lt;div class&#x3D;&quot;progress-status&quot;&gt;
+          &lt;p&gt;Status: {{ getProgressStatus() }}&lt;/p&gt;
+          &lt;p&gt;Color: {{ getProgressColor() }}&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Progress Bar Examples --&gt;
+      &lt;div class&#x3D;&quot;progress-examples&quot;&gt;
+        &lt;h3&gt;Progress Bar Examples&lt;/h3&gt;
+        &lt;div class&#x3D;&quot;examples-grid&quot;&gt;
+          &lt;div *ngFor&#x3D;&quot;let example of progressExamples&quot; class&#x3D;&quot;example-item&quot;&gt;
+            &lt;h4&gt;{{ example.label }}&lt;/h4&gt;
+            &lt;app-progress-bar
+              [value]&#x3D;&quot;example.value&quot;
+              [max]&#x3D;&quot;100&quot;
+              [label]&#x3D;&quot;example.label&quot;
+              [config]&#x3D;&quot;{ color: example.color, size: &#x27;md&#x27; }&quot;&gt;
+            &lt;/app-progress-bar&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/app-glass-card&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Tooltip Demo --&gt;
+  &lt;div *ngIf&#x3D;&quot;selectedDemo &#x3D;&#x3D;&#x3D; &#x27;tooltip&#x27;&quot; class&#x3D;&quot;demo-section&quot;&gt;
+    &lt;app-glass-card&gt;
+      &lt;h2&gt;Tooltip Demo&lt;/h2&gt;
+
+      &lt;!-- Tooltip Controls --&gt;
+      &lt;div class&#x3D;&quot;tooltip-controls&quot;&gt;
+        &lt;div class&#x3D;&quot;control-group&quot;&gt;
+          &lt;label&gt;Tooltip Content:&lt;/label&gt;
+          &lt;input
+            type&#x3D;&quot;text&quot;
+            [(ngModel)]&#x3D;&quot;tooltipContent&quot;
+            placeholder&#x3D;&quot;Enter tooltip content&quot;
+            class&#x3D;&quot;tooltip-input&quot;&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;control-group&quot;&gt;
+          &lt;label&gt;Position:&lt;/label&gt;
+          &lt;select [(ngModel)]&#x3D;&quot;tooltipConfig.position&quot; class&#x3D;&quot;tooltip-select&quot;&gt;
+            &lt;option value&#x3D;&quot;top&quot;&gt;Top&lt;/option&gt;
+            &lt;option value&#x3D;&quot;bottom&quot;&gt;Bottom&lt;/option&gt;
+            &lt;option value&#x3D;&quot;left&quot;&gt;Left&lt;/option&gt;
+            &lt;option value&#x3D;&quot;right&quot;&gt;Right&lt;/option&gt;
+            &lt;option value&#x3D;&quot;auto&quot;&gt;Auto&lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;control-group&quot;&gt;
+          &lt;label&gt;Theme:&lt;/label&gt;
+          &lt;select [(ngModel)]&#x3D;&quot;tooltipConfig.theme&quot; class&#x3D;&quot;tooltip-select&quot;&gt;
+            &lt;option value&#x3D;&quot;light&quot;&gt;Light&lt;/option&gt;
+            &lt;option value&#x3D;&quot;dark&quot;&gt;Dark&lt;/option&gt;
+            &lt;option value&#x3D;&quot;primary&quot;&gt;Primary&lt;/option&gt;
+            &lt;option value&#x3D;&quot;success&quot;&gt;Success&lt;/option&gt;
+            &lt;option value&#x3D;&quot;warning&quot;&gt;Warning&lt;/option&gt;
+            &lt;option value&#x3D;&quot;danger&quot;&gt;Danger&lt;/option&gt;
+            &lt;option value&#x3D;&quot;info&quot;&gt;Info&lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;control-group&quot;&gt;
+          &lt;label&gt;Size:&lt;/label&gt;
+          &lt;select [(ngModel)]&#x3D;&quot;tooltipConfig.size&quot; class&#x3D;&quot;tooltip-select&quot;&gt;
+            &lt;option value&#x3D;&quot;sm&quot;&gt;Small&lt;/option&gt;
+            &lt;option value&#x3D;&quot;md&quot;&gt;Medium&lt;/option&gt;
+            &lt;option value&#x3D;&quot;lg&quot;&gt;Large&lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;control-group&quot;&gt;
+          &lt;label&gt;
+            &lt;input
+              type&#x3D;&quot;checkbox&quot;
+              [(ngModel)]&#x3D;&quot;tooltipConfig.showArrow&quot;
+              class&#x3D;&quot;tooltip-checkbox&quot;&gt;
+            Show Arrow
+          &lt;/label&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;control-group&quot;&gt;
+          &lt;label&gt;
+            &lt;input
+              type&#x3D;&quot;checkbox&quot;
+              [(ngModel)]&#x3D;&quot;tooltipConfig.animation&quot;
+              class&#x3D;&quot;tooltip-checkbox&quot;&gt;
+            Animation
+          &lt;/label&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;control-group&quot;&gt;
+          &lt;label&gt;
+            &lt;input
+              type&#x3D;&quot;checkbox&quot;
+              [(ngModel)]&#x3D;&quot;tooltipConfig.interactive&quot;
+              class&#x3D;&quot;tooltip-checkbox&quot;&gt;
+            Interactive
+          &lt;/label&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Tooltip Display --&gt;
+      &lt;div class&#x3D;&quot;tooltip-display&quot;&gt;
+        &lt;h3&gt;Tooltip Preview&lt;/h3&gt;
+        &lt;div class&#x3D;&quot;tooltip-preview&quot;&gt;
+          &lt;app-tooltip
+            [content]&#x3D;&quot;tooltipContent&quot;
+            [config]&#x3D;&quot;tooltipConfig&quot;&gt;
+            &lt;app-glass-button variant&#x3D;&quot;primary&quot;&gt;
+              Hover me for tooltip
+            &lt;/app-glass-button&gt;
+          &lt;/app-tooltip&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Tooltip Examples --&gt;
+      &lt;div class&#x3D;&quot;tooltip-examples&quot;&gt;
+        &lt;h3&gt;Tooltip Examples&lt;/h3&gt;
+        &lt;div class&#x3D;&quot;examples-grid&quot;&gt;
+          &lt;div *ngFor&#x3D;&quot;let example of tooltipExamples&quot; class&#x3D;&quot;example-item&quot;&gt;
+            &lt;app-tooltip
+              [content]&#x3D;&quot;example.content&quot;
+              [config]&#x3D;&quot;{
+                position: example.position,
+                theme: example.theme,
+                size: &#x27;md&#x27;,
+                showArrow: true,
+                animation: true,
+                interactive: example.interactive || false
+              }&quot;&gt;
+              &lt;app-glass-button variant&#x3D;&quot;secondary&quot;&gt;
+                {{ example.content }}
+              &lt;/app-glass-button&gt;
+            &lt;/app-tooltip&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/app-glass-card&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Modal Demo --&gt;
+  &lt;div *ngIf&#x3D;&quot;selectedDemo &#x3D;&#x3D;&#x3D; &#x27;modal&#x27;&quot; class&#x3D;&quot;demo-section&quot;&gt;
+    &lt;app-glass-card&gt;
+      &lt;h2&gt;Modal Demo&lt;/h2&gt;
+
+      &lt;!-- Modal Controls --&gt;
+      &lt;div class&#x3D;&quot;modal-controls&quot;&gt;
+        &lt;div class&#x3D;&quot;control-group&quot;&gt;
+          &lt;label&gt;Modal Title:&lt;/label&gt;
+          &lt;input
+            type&#x3D;&quot;text&quot;
+            [(ngModel)]&#x3D;&quot;modalTitle&quot;
+            placeholder&#x3D;&quot;Enter modal title&quot;
+            class&#x3D;&quot;modal-input&quot;&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;control-group&quot;&gt;
+          &lt;label&gt;Modal Size:&lt;/label&gt;
+          &lt;select [(ngModel)]&#x3D;&quot;modalConfig.size&quot; class&#x3D;&quot;modal-select&quot;&gt;
+            &lt;option value&#x3D;&quot;sm&quot;&gt;Small&lt;/option&gt;
+            &lt;option value&#x3D;&quot;md&quot;&gt;Medium&lt;/option&gt;
+            &lt;option value&#x3D;&quot;lg&quot;&gt;Large&lt;/option&gt;
+            &lt;option value&#x3D;&quot;xl&quot;&gt;Extra Large&lt;/option&gt;
+            &lt;option value&#x3D;&quot;full&quot;&gt;Full Screen&lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;control-group&quot;&gt;
+          &lt;label&gt;
+            &lt;input
+              type&#x3D;&quot;checkbox&quot;
+              [(ngModel)]&#x3D;&quot;modalConfig.centered&quot;
+              class&#x3D;&quot;modal-checkbox&quot;&gt;
+            Centered
+          &lt;/label&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;control-group&quot;&gt;
+          &lt;label&gt;
+            &lt;input
+              type&#x3D;&quot;checkbox&quot;
+              [(ngModel)]&#x3D;&quot;modalConfig.scrollable&quot;
+              class&#x3D;&quot;modal-checkbox&quot;&gt;
+            Scrollable
+          &lt;/label&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;control-group&quot;&gt;
+          &lt;label&gt;
+            &lt;input
+              type&#x3D;&quot;checkbox&quot;
+              [(ngModel)]&#x3D;&quot;modalConfig.animation&quot;
+              class&#x3D;&quot;modal-checkbox&quot;&gt;
+            Animation
+          &lt;/label&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;control-group&quot;&gt;
+          &lt;label&gt;
+            &lt;input
+              type&#x3D;&quot;checkbox&quot;
+              [(ngModel)]&#x3D;&quot;modalConfig.closeOnEscape&quot;
+              class&#x3D;&quot;modal-checkbox&quot;&gt;
+            Close on Escape
+          &lt;/label&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;control-group&quot;&gt;
+          &lt;label&gt;
+            &lt;input
+              type&#x3D;&quot;checkbox&quot;
+              [(ngModel)]&#x3D;&quot;modalConfig.closeOnBackdrop&quot;
+              class&#x3D;&quot;modal-checkbox&quot;&gt;
+            Close on Backdrop
+          &lt;/label&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Modal Display --&gt;
+      &lt;div class&#x3D;&quot;modal-display&quot;&gt;
+        &lt;h3&gt;Modal Preview&lt;/h3&gt;
+        &lt;div class&#x3D;&quot;modal-preview&quot;&gt;
+          &lt;app-glass-button
+            variant&#x3D;&quot;primary&quot;
+            (click)&#x3D;&quot;openModal()&quot;&gt;
+            Open Modal
+          &lt;/app-glass-button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Modal Examples --&gt;
+      &lt;div class&#x3D;&quot;modal-examples&quot;&gt;
+        &lt;h3&gt;Modal Examples&lt;/h3&gt;
+        &lt;div class&#x3D;&quot;examples-grid&quot;&gt;
+          &lt;div *ngFor&#x3D;&quot;let example of modalExamples&quot; class&#x3D;&quot;example-item&quot;&gt;
+            &lt;h4&gt;{{ example.title }}&lt;/h4&gt;
+            &lt;app-glass-button
+              variant&#x3D;&quot;secondary&quot;
+              (click)&#x3D;&quot;modalTitle &#x3D; example.title; modalConfig.size &#x3D; example.size; openModal()&quot;&gt;
+              Open {{ example.title }}
+            &lt;/app-glass-button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/app-glass-card&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Modal Component --&gt;
+  &lt;app-modal
+    [isOpen]&#x3D;&quot;isModalOpen&quot;
+    [title]&#x3D;&quot;modalTitle&quot;
+    [config]&#x3D;&quot;modalConfig&quot;
+    [closable]&#x3D;&quot;true&quot;
+    (opened)&#x3D;&quot;onModalOpened()&quot;
+    (closed)&#x3D;&quot;onModalClosed()&quot;
+    (backdropClick)&#x3D;&quot;onBackdropClick()&quot;&gt;
+
+    &lt;div class&#x3D;&quot;modal-content-demo&quot;&gt;
+      &lt;h3&gt;Modal Content Demo&lt;/h3&gt;
+      &lt;p&gt;นี่คือเนื้อหาของ Modal Demo&lt;/p&gt;
+      &lt;p&gt;คุณสามารถปรับแต่งขนาด, การแสดงผล, และพฤติกรรมต่างๆ ได้&lt;/p&gt;
+
+      &lt;div class&#x3D;&quot;modal-features&quot;&gt;
+        &lt;h4&gt;Features:&lt;/h4&gt;
+        &lt;ul&gt;
+          &lt;li&gt;Responsive Design&lt;/li&gt;
+          &lt;li&gt;Keyboard Navigation&lt;/li&gt;
+          &lt;li&gt;Focus Management&lt;/li&gt;
+          &lt;li&gt;Animation Support&lt;/li&gt;
+          &lt;li&gt;Backdrop Control&lt;/li&gt;
+          &lt;li&gt;Size Variants&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div slot&#x3D;&quot;footer&quot; class&#x3D;&quot;modal-footer-demo&quot;&gt;
+      &lt;app-glass-button
+        variant&#x3D;&quot;secondary&quot;
+        (click)&#x3D;&quot;closeModal()&quot;&gt;
+        Cancel
+      &lt;/app-glass-button&gt;
+      &lt;app-glass-button
+        variant&#x3D;&quot;primary&quot;
+        (click)&#x3D;&quot;closeModal()&quot;&gt;
+        OK
+      &lt;/app-glass-button&gt;
+    &lt;/div&gt;
+  &lt;/app-modal&gt;
+&lt;/div&gt;
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./advanced-ui-demo.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">// Advanced UI Demo Component Styles
+// Most styles migrated to Tailwind classes in HTML template
+// Keeping only complex styles that require SCSS (gradients, animations, complex selectors)
+
+.advanced-ui-demo {
+  // Styles migrated to Tailwind classes in HTML template
+}
+
+// Demo title gradient - using design tokens
+.demo-title {
+  background: linear-gradient(135deg, var(--color-primary-500, #667eea) 0%, var(--color-secondary-500, #764ba2) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// Stat icon gradient - using design tokens
+.stat-icon {
+  background: linear-gradient(135deg, var(--color-primary-500, #667eea) 0%, var(--color-secondary-500, #764ba2) 100%);
+}
+
+// Form inputs - keeping theme-specific styles if needed
+.progress-slider,
+.progress-input,
+.progress-select,
+.tooltip-input,
+.tooltip-select,
+.modal-input,
+.modal-select {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all var(--transition-normal, 300ms);
+
+  &amp;:focus {
+    outline: none;
+    border-color: var(--color-primary-500, #3B82F6);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  }
+}
+
+// Responsive styles migrated to Tailwind responsive classes in HTML template
+// Using md: breakpoint for mobile-first responsive design
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="advanced-ui-demo p-8 max-w-[1400px] mx-auto">  <!-- Header -->  <div class="demo-header text-center mb-12">    <h1 class="demo-title text-5xl font-bold text-white m-0 mb-4 bg-gradient-to-r from-primary-500 to-purple-600 bg-clip-text text-transparent">Advanced UI Components Demo</h1>    <p class="demo-description text-xl text-gray-400 m-0 max-w-[600px] mx-auto">      ทดสอบ Advanced UI Components: Progress Bar, Tooltip, Modal    </p>  </div>  <!-- Demo Statistics -->  <div class="demo-stats mb-8">    <app-glass-card>      <h2 class="m-0 mb-4 text-white text-lg">สถิติ Demo</h2>      <div class="stats-grid grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-6 mb-8">        <div class="stat-card flex items-center gap-4 p-6 bg-white/5 rounded-2xl border border-white/10 transition-all hover:bg-white/10 hover:-translate-y-0.5">          <div class="stat-icon w-15 h-15 rounded-full bg-gradient-to-r from-primary-500 to-purple-600 flex items-center justify-center text-2xl text-white">            <i class="fas fa-chart-line"></i>          </div>          <div class="stat-content flex-1">            <div class="stat-value text-3xl font-bold text-white m-0 leading-none">{{ getDemoStats().progressPercentage }}%</div>            <div class="stat-label text-gray-400 text-sm mt-1 font-medium">Progress Value</div>          </div>        </div>        <div class="stat-card flex items-center gap-4 p-6 bg-white/5 rounded-2xl border border-white/10 transition-all hover:bg-white/10 hover:-translate-y-0.5">          <div class="stat-icon w-15 h-15 rounded-full bg-gradient-to-r from-primary-500 to-purple-600 flex items-center justify-center text-2xl text-white">            <i class="fas fa-info-circle"></i>          </div>          <div class="stat-content flex-1">            <div class="stat-value text-3xl font-bold text-white m-0 leading-none">{{ getDemoStats().tooltipPosition }}</div>            <div class="stat-label text-gray-400 text-sm mt-1 font-medium">Tooltip Position</div>          </div>        </div>        <div class="stat-card flex items-center gap-4 p-6 bg-white/5 rounded-2xl border border-white/10 transition-all hover:bg-white/10 hover:-translate-y-0.5">          <div class="stat-icon w-15 h-15 rounded-full bg-gradient-to-r from-primary-500 to-purple-600 flex items-center justify-center text-2xl text-white">            <i class="fas fa-window-maximize"></i>          </div>          <div class="stat-content flex-1">            <div class="stat-value text-3xl font-bold text-white m-0 leading-none">{{ getDemoStats().modalSize }}</div>            <div class="stat-label text-gray-400 text-sm mt-1 font-medium">Modal Size</div>          </div>        </div>        <div class="stat-card flex items-center gap-4 p-6 bg-white/5 rounded-2xl border border-white/10 transition-all hover:bg-white/10 hover:-translate-y-0.5">          <div class="stat-icon w-15 h-15 rounded-full bg-gradient-to-r from-primary-500 to-purple-600 flex items-center justify-center text-2xl text-white">            <i class="fas fa-play"></i>          </div>          <div class="stat-content flex-1">            <div class="stat-value text-3xl font-bold text-white m-0 leading-none">{{ getDemoStats().autoProgress ? \'ON\' : \'OFF\' }}</div>            <div class="stat-label text-gray-400 text-sm mt-1 font-medium">Auto Progress</div>          </div>        </div>      </div>    </app-glass-card>  </div>  <!-- Demo Navigation -->  <div class="demo-navigation mb-8">    <app-glass-card>      <h2 class="m-0 mb-4 text-white text-lg">เลือก Demo</h2>      <div class="nav-buttons flex gap-4 flex-wrap">        <app-glass-button          [variant]="selectedDemo === \'progress\' ? \'primary\' : \'secondary\'"          (click)="selectedDemo = \'progress\'">          <i class="fas fa-chart-line"></i>          Progress Bar        </app-glass-button>        <app-glass-button          [variant]="selectedDemo === \'tooltip\' ? \'primary\' : \'secondary\'"          (click)="selectedDemo = \'tooltip\'">          <i class="fas fa-info-circle"></i>          Tooltip        </app-glass-button>        <app-glass-button          [variant]="selectedDemo === \'modal\' ? \'primary\' : \'secondary\'"          (click)="selectedDemo = \'modal\'">          <i class="fas fa-window-maximize"></i>          Modal        </app-glass-button>      </div>    </app-glass-card>  </div>  <!-- Progress Bar Demo -->  <div *ngIf="selectedDemo === \'progress\'" class="demo-section">    <app-glass-card>      <h2>Progress Bar Demo</h2>      <!-- Progress Bar Controls -->      <div class="progress-controls">        <div class="control-group">          <label>Progress Value: {{ progressValue }}%</label>          <input            type="range"            [(ngModel)]="progressValue"            [max]="progressMax"            min="0"            class="progress-slider">        </div>        <div class="control-group">          <label>Progress Label:</label>          <input            type="text"            [(ngModel)]="progressLabel"            placeholder="Enter progress label"            class="progress-input">        </div>        <div class="control-group">          <label>Progress Color:</label>          <select [(ngModel)]="progressConfig.color" class="progress-select">            <option value="primary">Primary</option>            <option value="secondary">Secondary</option>            <option value="success">Success</option>            <option value="warning">Warning</option>            <option value="danger">Danger</option>            <option value="info">Info</option>          </select>        </div>        <div class="control-group">          <label>Progress Size:</label>          <select [(ngModel)]="progressConfig.size" class="progress-select">            <option value="sm">Small</option>            <option value="md">Medium</option>            <option value="lg">Large</option>          </select>        </div>        <div class="control-group">          <label>            <input              type="checkbox"              [(ngModel)]="progressConfig.animated"              class="progress-checkbox">            Animated          </label>        </div>        <div class="control-group">          <label>            <input              type="checkbox"              [(ngModel)]="progressConfig.striped"              class="progress-checkbox">            Striped          </label>        </div>        <div class="control-group">          <label>            <input              type="checkbox"              [(ngModel)]="autoProgress"              (change)="toggleAutoProgress()"              class="progress-checkbox">            Auto Progress          </label>        </div>      </div>      <!-- Progress Bar Display -->      <div class="progress-display">        <h3>Progress Bar Preview</h3>        <app-progress-bar          [value]="progressValue"          [max]="progressMax"          [label]="progressLabel"          [config]="progressConfig">        </app-progress-bar>        <div class="progress-status">          <p>Status: {{ getProgressStatus() }}</p>          <p>Color: {{ getProgressColor() }}</p>        </div>      </div>      <!-- Progress Bar Examples -->      <div class="progress-examples">        <h3>Progress Bar Examples</h3>        <div class="examples-grid">          <div *ngFor="let example of progressExamples" class="example-item">            <h4>{{ example.label }}</h4>            <app-progress-bar              [value]="example.value"              [max]="100"              [label]="example.label"              [config]="{ color: example.color, size: \'md\' }">            </app-progress-bar>          </div>        </div>      </div>    </app-glass-card>  </div>  <!-- Tooltip Demo -->  <div *ngIf="selectedDemo === \'tooltip\'" class="demo-section">    <app-glass-card>      <h2>Tooltip Demo</h2>      <!-- Tooltip Controls -->      <div class="tooltip-controls">        <div class="control-group">          <label>Tooltip Content:</label>          <input            type="text"            [(ngModel)]="tooltipContent"            placeholder="Enter tooltip content"            class="tooltip-input">        </div>        <div class="control-group">          <label>Position:</label>          <select [(ngModel)]="tooltipConfig.position" class="tooltip-select">            <option value="top">Top</option>            <option value="bottom">Bottom</option>            <option value="left">Left</option>            <option value="right">Right</option>            <option value="auto">Auto</option>          </select>        </div>        <div class="control-group">          <label>Theme:</label>          <select [(ngModel)]="tooltipConfig.theme" class="tooltip-select">            <option value="light">Light</option>            <option value="dark">Dark</option>            <option value="primary">Primary</option>            <option value="success">Success</option>            <option value="warning">Warning</option>            <option value="danger">Danger</option>            <option value="info">Info</option>          </select>        </div>        <div class="control-group">          <label>Size:</label>          <select [(ngModel)]="tooltipConfig.size" class="tooltip-select">            <option value="sm">Small</option>            <option value="md">Medium</option>            <option value="lg">Large</option>          </select>        </div>        <div class="control-group">          <label>            <input              type="checkbox"              [(ngModel)]="tooltipConfig.showArrow"              class="tooltip-checkbox">            Show Arrow          </label>        </div>        <div class="control-group">          <label>            <input              type="checkbox"              [(ngModel)]="tooltipConfig.animation"              class="tooltip-checkbox">            Animation          </label>        </div>        <div class="control-group">          <label>            <input              type="checkbox"              [(ngModel)]="tooltipConfig.interactive"              class="tooltip-checkbox">            Interactive          </label>        </div>      </div>      <!-- Tooltip Display -->      <div class="tooltip-display">        <h3>Tooltip Preview</h3>        <div class="tooltip-preview">          <app-tooltip            [content]="tooltipContent"            [config]="tooltipConfig">            <app-glass-button variant="primary">              Hover me for tooltip            </app-glass-button>          </app-tooltip>        </div>      </div>      <!-- Tooltip Examples -->      <div class="tooltip-examples">        <h3>Tooltip Examples</h3>        <div class="examples-grid">          <div *ngFor="let example of tooltipExamples" class="example-item">            <app-tooltip              [content]="example.content"              [config]="{                position: example.position,                theme: example.theme,                size: \'md\',                showArrow: true,                animation: true,                interactive: example.interactive || false              }">              <app-glass-button variant="secondary">                {{ example.content }}              </app-glass-button>            </app-tooltip>          </div>        </div>      </div>    </app-glass-card>  </div>  <!-- Modal Demo -->  <div *ngIf="selectedDemo === \'modal\'" class="demo-section">    <app-glass-card>      <h2>Modal Demo</h2>      <!-- Modal Controls -->      <div class="modal-controls">        <div class="control-group">          <label>Modal Title:</label>          <input            type="text"            [(ngModel)]="modalTitle"            placeholder="Enter modal title"            class="modal-input">        </div>        <div class="control-group">          <label>Modal Size:</label>          <select [(ngModel)]="modalConfig.size" class="modal-select">            <option value="sm">Small</option>            <option value="md">Medium</option>            <option value="lg">Large</option>            <option value="xl">Extra Large</option>            <option value="full">Full Screen</option>          </select>        </div>        <div class="control-group">          <label>            <input              type="checkbox"              [(ngModel)]="modalConfig.centered"              class="modal-checkbox">            Centered          </label>        </div>        <div class="control-group">          <label>            <input              type="checkbox"              [(ngModel)]="modalConfig.scrollable"              class="modal-checkbox">            Scrollable          </label>        </div>        <div class="control-group">          <label>            <input              type="checkbox"              [(ngModel)]="modalConfig.animation"              class="modal-checkbox">            Animation          </label>        </div>        <div class="control-group">          <label>            <input              type="checkbox"              [(ngModel)]="modalConfig.closeOnEscape"              class="modal-checkbox">            Close on Escape          </label>        </div>        <div class="control-group">          <label>            <input              type="checkbox"              [(ngModel)]="modalConfig.closeOnBackdrop"              class="modal-checkbox">            Close on Backdrop          </label>        </div>      </div>      <!-- Modal Display -->      <div class="modal-display">        <h3>Modal Preview</h3>        <div class="modal-preview">          <app-glass-button            variant="primary"            (click)="openModal()">            Open Modal          </app-glass-button>        </div>      </div>      <!-- Modal Examples -->      <div class="modal-examples">        <h3>Modal Examples</h3>        <div class="examples-grid">          <div *ngFor="let example of modalExamples" class="example-item">            <h4>{{ example.title }}</h4>            <app-glass-button              variant="secondary"              (click)="modalTitle = example.title; modalConfig.size = example.size; openModal()">              Open {{ example.title }}            </app-glass-button>          </div>        </div>      </div>    </app-glass-card>  </div>  <!-- Modal Component -->  <app-modal    [isOpen]="isModalOpen"    [title]="modalTitle"    [config]="modalConfig"    [closable]="true"    (opened)="onModalOpened()"    (closed)="onModalClosed()"    (backdropClick)="onBackdropClick()">    <div class="modal-content-demo">      <h3>Modal Content Demo</h3>      <p>นี่คือเนื้อหาของ Modal Demo</p>      <p>คุณสามารถปรับแต่งขนาด, การแสดงผล, และพฤติกรรมต่างๆ ได้</p>      <div class="modal-features">        <h4>Features:</h4>        <ul>          <li>Responsive Design</li>          <li>Keyboard Navigation</li>          <li>Focus Management</li>          <li>Animation Support</li>          <li>Backdrop Control</li>          <li>Size Variants</li>        </ul>      </div>    </div>    <div slot="footer" class="modal-footer-demo">      <app-glass-button        variant="secondary"        (click)="closeModal()">        Cancel      </app-glass-button>      <app-glass-button        variant="primary"        (click)="closeModal()">        OK      </app-glass-button>    </div>  </app-modal></div></div>'
+    var COMPONENTS = [{'name': 'AccessControlComponent', 'selector': 'app-access-control'},{'name': 'AccessGroupsComponent', 'selector': 'app-access-groups'},{'name': 'AccessibilityDashboardComponent', 'selector': 'app-accessibility-dashboard'},{'name': 'AccessLogsComponent', 'selector': 'app-access-logs'},{'name': 'AccessSchedulesComponent', 'selector': 'app-access-schedules'},{'name': 'AccordionComponent', 'selector': 'app-accordion'},{'name': 'AccordionDemoComponent', 'selector': 'app-accordion-demo'},{'name': 'AdvancedDataTableComponent', 'selector': 'app-advanced-data-table'},{'name': 'AdvancedDataTableDemoComponent', 'selector': 'app-advanced-data-table-demo'},{'name': 'AdvancedFeaturesDashboardComponent', 'selector': 'app-advanced-features-dashboard'},{'name': 'AdvancedFormsComponent', 'selector': 'app-advanced-forms'},{'name': 'AdvancedRichTextComponent', 'selector': 'app-advanced-rich-text'},{'name': 'AdvancedUiDemoComponent', 'selector': 'app-advanced-ui-demo'},{'name': 'AIModelsComponent', 'selector': 'app-ai-models'},{'name': 'AlertComponent', 'selector': 'app-alert'},{'name': 'AlertHistoryComponent', 'selector': 'app-alert-history'},{'name': 'AlertsComponent', 'selector': 'app-alerts'},{'name': 'ApexChartComponent', 'selector': 'app-apex-chart'},{'name': 'App', 'selector': 'app-root'},{'name': 'AttendanceComponent', 'selector': 'app-attendance'},{'name': 'AuditLogsComponent', 'selector': 'app-audit-logs'},{'name': 'AvatarComponent', 'selector': 'app-avatar'},{'name': 'BackupRestoreComponent', 'selector': 'app-backup-restore'},{'name': 'BadgeComponent', 'selector': 'app-badge'},{'name': 'BaseComponent', 'selector': ''},{'name': 'BiometricDataComponent', 'selector': 'app-biometric-data'},{'name': 'BreadcrumbComponent', 'selector': 'app-breadcrumb'},{'name': 'CalendarComponent', 'selector': 'app-calendar'},{'name': 'CalendarDemoComponent', 'selector': 'app-calendar-demo'},{'name': 'ChartComponent', 'selector': 'app-chart'},{'name': 'CheckboxComponent', 'selector': 'app-checkbox'},{'name': 'ColorPickerComponent', 'selector': 'app-color-picker'},{'name': 'ComingSoonComponent', 'selector': 'app-coming-soon'},{'name': 'CompaniesComponent', 'selector': 'app-companies'},{'name': 'CompanyDocumentsComponent', 'selector': 'app-company-documents'},{'name': 'CompanyHolidaysComponent', 'selector': 'app-company-holidays'},{'name': 'ComponentShowcaseComponent', 'selector': 'app-component-showcase'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DataTableComponent', 'selector': 'app-data-table'},{'name': 'DateTimePickerComponent', 'selector': 'app-date-time-picker'},{'name': 'DepartmentsComponent', 'selector': 'app-departments'},{'name': 'DevicesComponent', 'selector': 'app-devices'},{'name': 'DividerComponent', 'selector': 'app-divider'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DoorsComponent', 'selector': 'app-doors'},{'name': 'DraggableCardsComponent', 'selector': 'app-draggable-cards'},{'name': 'DraggableCardsDemoComponent', 'selector': 'app-draggable-cards-demo'},{'name': 'EChartsChartComponent', 'selector': 'app-echarts-chart'},{'name': 'EChartsDemoComponent', 'selector': 'app-echarts-demo'},{'name': 'EmployeesComponent', 'selector': 'app-employees'},{'name': 'EmployeesNewComponent', 'selector': 'app-employees-new'},{'name': 'EmptyStateComponent', 'selector': 'app-empty-state'},{'name': 'Error401Component', 'selector': 'app-error-401'},{'name': 'Error404Component', 'selector': 'app-error-404'},{'name': 'Error500Component', 'selector': 'app-error-500'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'ErrorToastComponent', 'selector': 'app-error-toast'},{'name': 'EventAnalyticsComponent', 'selector': 'app-event-analytics'},{'name': 'EventCheckinHistoryComponent', 'selector': 'app-event-checkin-history'},{'name': 'EventEmailConfirmationComponent', 'selector': 'app-event-email-confirmation'},{'name': 'EventKioskConfigComponent', 'selector': 'app-event-kiosk-config'},{'name': 'EventRegistrationComponent', 'selector': 'app-event-registration'},{'name': 'EventRegistrationFieldsComponent', 'selector': 'app-event-registration-fields'},{'name': 'EventsComponent', 'selector': 'app-events'},{'name': 'FaceRecognitionComponent', 'selector': 'app-face-recognition'},{'name': 'FaceRecognitionDemoComponent', 'selector': 'app-face-recognition-demo'},{'name': 'FaceRecognitionLiveComponent', 'selector': 'app-face-recognition-live'},{'name': 'FaceRecognitionTestComponent', 'selector': 'app-face-recognition-test'},{'name': 'FaqComponent', 'selector': 'app-faq'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'FilterSectionComponent', 'selector': 'app-filter-section'},{'name': 'ForgotPasswordComponent', 'selector': 'app-forgot-password'},{'name': 'FormFieldComponent', 'selector': 'app-form-field'},{'name': 'GalleryComponent', 'selector': 'app-gallery'},{'name': 'GalleryDemoComponent', 'selector': 'app-gallery-demo'},{'name': 'GlassButtonComponent', 'selector': 'app-glass-button'},{'name': 'GlassCardComponent', 'selector': 'app-glass-card'},{'name': 'GlassInputComponent', 'selector': 'app-glass-input'},{'name': 'GroupFaceRecognitionComponent', 'selector': 'app-group-face-recognition'},{'name': 'GuestsComponent', 'selector': 'app-guests'},{'name': 'HardwareStatusDashboardComponent', 'selector': 'app-hardware-status-dashboard'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HeatmapAnalyticsComponent', 'selector': 'app-heatmap-analytics'},{'name': 'HelpCenter', 'selector': 'app-help-center'},{'name': 'HelpCenterComponent', 'selector': 'app-help-center'},{'name': 'HrDashboardComponent', 'selector': 'app-hr-dashboard'},{'name': 'IconComponent', 'selector': 'app-icon'},{'name': 'IncidentReportsComponent', 'selector': 'app-incident-reports'},{'name': 'KioskViewComponent', 'selector': 'app-kiosk-view'},{'name': 'LandingComponent', 'selector': 'app-landing'},{'name': 'LeafletMapComponent', 'selector': 'app-leaflet-map'},{'name': 'LeavesComponent', 'selector': 'app-leaves'},{'name': 'LicenseManagementComponent', 'selector': 'app-license-management'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoadingStateComponent', 'selector': 'app-loading-state'},{'name': 'LocationsComponent', 'selector': 'app-locations'},{'name': 'LockScreenComponent', 'selector': 'app-lock-screen'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MapDemoComponent', 'selector': 'app-map-demo'},{'name': 'MaterialButtonComponent', 'selector': 'app-material-button'},{'name': 'MaterialCardComponent', 'selector': 'app-material-card'},{'name': 'MaterialDialogComponent', 'selector': 'app-material-dialog'},{'name': 'MaterialInputComponent', 'selector': 'app-material-input'},{'name': 'MaterialTableComponent', 'selector': 'app-material-table'},{'name': 'MfaSetupComponent', 'selector': 'app-mfa-setup'},{'name': 'MobileCameraComponent', 'selector': 'app-mobile-camera'},{'name': 'MobileDemoComponent', 'selector': 'app-mobile-demo'},{'name': 'ModalComponent', 'selector': 'app-modal'},{'name': 'ModalFormComponent', 'selector': 'app-modal-form'},{'name': 'ModuleSubscriptionComponent', 'selector': 'app-module-subscription'},{'name': 'MonitoringComponent', 'selector': 'app-monitoring'},{'name': 'NotificationCenterComponent', 'selector': 'app-notification-center'},{'name': 'NotificationDemoComponent', 'selector': 'app-notification-demo'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'NotificationSettingsComponent', 'selector': 'app-notification-settings'},{'name': 'OffcanvasComponent', 'selector': 'app-offcanvas'},{'name': 'OffcanvasDemoComponent', 'selector': 'app-offcanvas-demo'},{'name': 'OvertimeRequestsComponent', 'selector': 'app-overtime-requests'},{'name': 'PageLayoutComponent', 'selector': 'app-page-layout'},{'name': 'PaginationComponent', 'selector': 'app-pagination'},{'name': 'ParkingBlacklistComponent', 'selector': 'app-parking-blacklist'},{'name': 'ParkingDashboardComponent', 'selector': 'app-parking-dashboard'},{'name': 'ParkingEntryComponent', 'selector': 'app-parking-entry'},{'name': 'ParkingExitComponent', 'selector': 'app-parking-exit'},{'name': 'ParkingLogsComponent', 'selector': 'app-parking-logs'},{'name': 'ParkingReservationComponent', 'selector': 'app-parking-reservation'},{'name': 'ParkingRulesComponent', 'selector': 'app-parking-rules'},{'name': 'ParkingSpotsComponent', 'selector': 'app-parking-spots'},{'name': 'ParkingStatisticsComponent', 'selector': 'app-parking-statistics'},{'name': 'PayrollExportComponent', 'selector': 'app-payroll-export'},{'name': 'PerformanceDashboardComponent', 'selector': 'app-performance-dashboard'},{'name': 'PopoverComponent', 'selector': 'app-popover'},{'name': 'PortalLayoutComponent', 'selector': 'app-portal-layout'},{'name': 'PositionsComponent', 'selector': 'app-positions'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'PublicVerificationComponent', 'selector': 'app-public-verification'},{'name': 'QRCodesComponent', 'selector': 'app-qr-codes'},{'name': 'RadioComponent', 'selector': 'app-radio'},{'name': 'RangeSliderComponent', 'selector': 'app-range-slider'},{'name': 'RatingComponent', 'selector': 'app-rating'},{'name': 'RatingDemoComponent', 'selector': 'app-rating-demo'},{'name': 'RbacComponent', 'selector': 'app-rbac'},{'name': 'RecognitionHistoryComponent', 'selector': 'app-recognition-history'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReportsComponent', 'selector': 'app-reports'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'RFIDCardsComponent', 'selector': 'app-rfid-cards'},{'name': 'RichTextComponent', 'selector': 'app-rich-text'},{'name': 'RichTextEditorComponent', 'selector': 'app-rich-text-editor'},{'name': 'RichTextEditorDemoComponent', 'selector': 'app-rich-text-editor-demo'},{'name': 'SafetyDashboardComponent', 'selector': 'app-safety-dashboard'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ShiftsComponent', 'selector': 'app-shifts'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SkeletonComponent', 'selector': 'app-skeleton'},{'name': 'StatisticsCardComponent', 'selector': 'app-statistics-card'},{'name': 'StatisticsGridComponent', 'selector': 'app-statistics-grid'},{'name': 'StepperComponent', 'selector': 'app-stepper'},{'name': 'StructureComponent', 'selector': 'app-structure'},{'name': 'SuperAdminAnnouncementsComponent', 'selector': 'app-super-admin-announcements'},{'name': 'SuperAdminDashboardComponent', 'selector': 'app-super-admin-dashboard'},{'name': 'SuperAdminLayoutComponent', 'selector': 'app-super-admin-layout'},{'name': 'SuperAdminReportsComponent', 'selector': 'app-super-admin-reports'},{'name': 'SurveillanceMapComponent', 'selector': 'app-surveillance-map'},{'name': 'SwiperGalleryComponent', 'selector': 'app-swiper-gallery'},{'name': 'SwiperGalleryDemoComponent', 'selector': 'app-swiper-gallery-demo'},{'name': 'SwitchComponent', 'selector': 'app-switch'},{'name': 'SystemSettingsComponent', 'selector': 'app-system-settings'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TemplateManagementComponent', 'selector': 'app-template-management'},{'name': 'TestApiComponent', 'selector': 'app-test-api'},{'name': 'ThemeSwitcherComponent', 'selector': 'app-theme-switcher'},{'name': 'TimelineComponent', 'selector': 'app-timeline'},{'name': 'TimelineDemoComponent', 'selector': 'app-timeline-demo'},{'name': 'TimesheetsComponent', 'selector': 'app-timesheets'},{'name': 'TimestampComponent', 'selector': 'app-timestamp'},{'name': 'TimestampDemoComponent', 'selector': 'app-timestamp-demo'},{'name': 'TooltipComponent', 'selector': 'app-tooltip'},{'name': 'UsersComponent', 'selector': 'app-users'},{'name': 'ValidationDemoComponent', 'selector': 'app-validation-demo'},{'name': 'VehiclesComponent', 'selector': 'app-vehicles'},{'name': 'VideoAnalyticsComponent', 'selector': 'app-video-analytics'},{'name': 'VideoPlaybackComponent', 'selector': 'app-video-playback'},{'name': 'VisitorBadgesComponent', 'selector': 'app-visitor-badges'},{'name': 'VisitorBlacklistComponent', 'selector': 'app-visitor-blacklist'},{'name': 'VisitorDashboardComponent', 'selector': 'app-visitor-dashboard'},{'name': 'VisitorInvitationsComponent', 'selector': 'app-visitor-invitations'},{'name': 'VisitorParcelsComponent', 'selector': 'app-visitor-parcels'},{'name': 'VisitorReportsComponent', 'selector': 'app-visitor-reports'},{'name': 'VisitorsComponent', 'selector': 'app-visitors'},{'name': 'WatchlistComponent', 'selector': 'app-watchlist'},{'name': 'ZoneConfigComponent', 'selector': 'app-zone-config'}];
+    var DIRECTIVES = [{'name': 'HasPermissionDirective', 'selector': '[appHasPermission]'},{'name': 'ImageOptimizationDirective', 'selector': '[appImageOptimization]'}];
+    var ACTUAL_COMPONENT = {'name': 'AdvancedUiDemoComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'AdvancedUiDemoComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

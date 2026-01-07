@@ -1,0 +1,480 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+	   <link rel="stylesheet" href="./styles/style.css">
+        <link rel="stylesheet" href="./styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="./" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content readme">
+                   <div class="content-data">
+
+
+<h1>Intelligent Video Analytics Platform (IVAP)</h1>
+<p>โปรเจค Angular สำหรับระบบวิเคราะห์วิดีโอด้วย AI พร้อมระบบจดจำใบหน้า</p>
+<h2>🎨 Features</h2>
+<ul>
+<li>✨ <strong>Glass Morphism Design System</strong> - ระบบออกแบบแบบ Glass Morphism ที่ทันสมัยและสวยงาม<ul>
+<li>Glass Card, Glass Button, Glass Input components</li>
+<li>Glass Dropdown และ Glass Modal สำหรับ UI elements</li>
+<li>รองรับ Dark Mode และ Light Mode</li>
+<li>Responsive design สำหรับทุกอุปกรณ์</li>
+</ul>
+</li>
+<li>🌍 <strong>Multi-language Support</strong> - รองรับภาษาไทยและภาษาอังกฤษ (i18n)</li>
+<li>🎭 <strong>Theme Switching</strong> - เปลี่ยน theme ได้ (Light, Dark, Auto)</li>
+<li>📱 <strong>Responsive Design</strong> - รองรับทุกขนาดหน้าจอ (mobile-first approach)</li>
+<li>🔐 <strong>Role-based Access Control</strong> - แยกสิทธิ์การใช้งานตาม role</li>
+<li>🚀 <strong>Modern Angular</strong> - ใช้ Standalone Components และ Signals</li>
+<li>🎯 <strong>Component Standardization</strong> - ทุก component แยก HTML, SCSS, TS files ตามมาตรฐาน</li>
+<li>🌈 <strong>Consistent UI/UX</strong> - ทุกหน้าจอใช้ Glass Morphism Design System</li>
+</ul>
+<h2>📂 โครงสร้างโปรเจค</h2>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-none">src/
+├── app/
+│   ├── core/                     # Core modules
+│   │   ├── services/            # Services (Auth, API, Theme, i18n)
+│   │   ├── guards/              # Route guards
+│   │   ├── interceptors/        # HTTP interceptors
+│   │   ├── models/              # TypeScript interfaces
+│   │   └── constants/           # Constants
+│   ├── shared/                   # Shared modules
+│   │   ├── components/          # Reusable components
+│   │   │   ├── glass-card/     # Frosted glass card
+│   │   │   ├── glass-button/   # Frosted glass button
+│   │   │   ├── glass-input/    # Frosted glass input
+│   │   │   ├── header/         # Header component
+│   │   │   ├── sidebar/        # Sidebar navigation
+│   │   │   ├── modal/          # Modal dialog
+│   │   │   ├── loading/        # Loading spinner
+│   │   │   └── data-table/     # Data table with pagination
+│   │   ├── directives/         # Custom directives
+│   │   └── pipes/              # Custom pipes
+│   └── features/                 # Feature modules
+│       ├── public/              # Public views
+│       │   └── event-registration/
+│       ├── kiosk/               # Kiosk portal
+│       │   └── kiosk-view/
+│       ├── portal/              # Company admin portal
+│       │   ├── login/
+│       │   ├── portal-layout/
+│       │   ├── dashboard/
+│       │   └── employees/
+│       └── super-admin/         # Super admin portal
+│           ├── super-admin-layout/
+│           └── companies/</code></pre></div><h2>🚀 การติดตั้งและใช้งาน</h2>
+<h3>Prerequisites</h3>
+<ul>
+<li>Node.js 18+ </li>
+<li>npm หรือ yarn</li>
+</ul>
+<h3>ติดตั้ง</h3>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">cd frontend
+npm install</code></pre></div><h3>รัน Development Server</h3>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm start</code></pre></div><p>เปิดเว็บเบราว์เซอร์ไปที่ <code>http://localhost:4200/</code></p>
+<h3>Build สำหรับ Production</h3>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm run build</code></pre></div><p>ไฟล์ที่ build แล้วจะอยู่ในโฟลเดอร์ <code>dist/</code></p>
+<h2>🎯 Routes</h2>
+<h3>Public Routes</h3>
+<ul>
+<li><code>/events/register/:publicUrl</code> - ลงทะเบียนอีเวนต์</li>
+</ul>
+<h3>Kiosk Routes</h3>
+<ul>
+<li><code>/kiosk/:deviceId</code> - หน้าจอ kiosk สำหรับ check-in</li>
+</ul>
+<h3>Company Admin Portal (<code>/portal</code>)</h3>
+<p><strong>Authentication:</strong></p>
+<ul>
+<li><code>/portal/login</code> - Login page ✅ Glass Morphism</li>
+<li><code>/portal/forgot-password</code> - ลืมรหัสผ่าน ✅ Glass Morphism</li>
+<li><code>/portal/reset-password/:token</code> - Reset password ✅ Glass Morphism</li>
+</ul>
+<p><strong>Navigation:</strong></p>
+<ul>
+<li>✅ Parent menu items สามารถคลิกเพื่อ navigate ได้ (อัพเดท: 19 ธ.ค. 2024)</li>
+<li>✅ Sidebar component รองรับ parent menu navigation</li>
+<li>✅ Expand/collapse children menu ทำงานถูกต้อง</li>
+<li><code>/portal/mfa-setup</code> - ตั้งค่า MFA ✅ Glass Morphism</li>
+</ul>
+<p><strong>Dashboards:</strong></p>
+<ul>
+<li><code>/portal/dashboard</code> - Main dashboard ✅ Glass Morphism</li>
+<li><code>/portal/hr-dashboard</code> - HR Dashboard ✅ Glass Morphism</li>
+<li><code>/portal/safety-dashboard</code> - Safety Dashboard ✅ Glass Morphism</li>
+<li><code>/portal/performance-dashboard</code> - Performance Dashboard ✅ Glass Morphism</li>
+<li><code>/portal/hardware-status-dashboard</code> - Hardware Status Dashboard ✅ Glass Morphism</li>
+</ul>
+<p><strong>People Management:</strong></p>
+<ul>
+<li><code>/portal/profile</code> - ข้อมูลส่วนตัว ✅ Glass Morphism</li>
+<li><code>/portal/employees</code> - จัดการพนักงาน ✅ Glass Morphism</li>
+<li><code>/portal/visitors</code> - จัดการผู้เยี่ยมชม ✅ Glass Morphism</li>
+<li><code>/portal/guests</code> - จัดการแขก ✅ Glass Morphism</li>
+<li><code>/portal/structure</code> - โครงสร้างองค์กร ✅ Glass Morphism</li>
+</ul>
+<p><strong>Workforce Management:</strong></p>
+<ul>
+<li><code>/portal/attendance</code> - การลงเวลา ✅ Glass Morphism</li>
+<li><code>/portal/leaves</code> - จัดการวันลา ✅ Glass Morphism</li>
+<li><code>/portal/config/shifts</code> - จัดการกะการทำงาน ✅ Glass Morphism</li>
+</ul>
+<p><strong>Access Control:</strong></p>
+<ul>
+<li><code>/portal/access-control/doors</code> - จัดการประตู ✅ Glass Morphism</li>
+<li><code>/portal/qr-codes</code> - จัดการ QR Codes ✅ Glass Morphism</li>
+<li><code>/portal/rfid-cards</code> - จัดการ RFID Cards ✅ Glass Morphism</li>
+<li><code>/portal/biometric-data</code> - จัดการข้อมูล Biometric ✅ Glass Morphism</li>
+<li><code>/portal/vehicles</code> - จัดการยานพาหนะ ✅ Glass Morphism</li>
+<li><code>/portal/parking-spots</code> - จัดการที่จอดรถ ✅ Glass Morphism</li>
+</ul>
+<p><strong>Core Operations:</strong></p>
+<ul>
+<li><code>/portal/events</code> - จัดการอีเวนต์ ✅ Glass Morphism (Enhanced with Status, Type, Search, Filter, Pagination)</li>
+<li><code>/portal/alerts</code> - การแจ้งเตือน ✅ Glass Morphism</li>
+<li><code>/portal/notifications</code> - การแจ้งเตือน ✅ Glass Morphism</li>
+<li><code>/portal/monitoring</code> - ตรวจสอบแบบ Real-time ✅ Glass Morphism</li>
+<li><code>/portal/video-analytics</code> - วิเคราะห์วิดีโอ ✅ Glass Morphism</li>
+<li><code>/portal/ai-models</code> - จัดการ AI Models ✅ Glass Morphism</li>
+<li><code>/portal/reports</code> - รายงาน ✅ Glass Morphism</li>
+</ul>
+<p><strong>Hardware &amp; Locations:</strong></p>
+<ul>
+<li><code>/portal/devices</code> - จัดการอุปกรณ์ ✅ Glass Morphism</li>
+<li><code>/portal/locations</code> - จัดการสถานที่ ✅ Glass Morphism</li>
+</ul>
+<p><strong>System:</strong></p>
+<ul>
+<li><code>/portal/help-center</code> - ศูนย์ช่วยเหลือ ✅ Glass Morphism</li>
+<li><code>/portal/template-management</code> - จัดการ Templates ✅ Glass Morphism</li>
+</ul>
+<h3>Super Admin Portal (<code>/super</code>)</h3>
+<ul>
+<li><code>/super/login</code> - Super admin login</li>
+<li><code>/super/companies</code> - จัดการบริษัท</li>
+<li><code>/super/users</code> - จัดการผู้ใช้</li>
+<li><code>/super/rbac</code> - จัดการ Role-Based Access Control</li>
+<li><code>/super/settings</code> - ตั้งค่าระบบ</li>
+<li><code>/super/audit-logs</code> - Audit logs</li>
+<li><code>/super/backup-restore</code> - Backup &amp; Restore</li>
+<li><code>/super/license</code> - จัดการ License</li>
+<li><code>/super/maintenance</code> - บำรุงรักษาระบบ</li>
+<li><code>/super/module-subscription</code> - จัดการ Module Subscription</li>
+</ul>
+<h2>🎨 Customization</h2>
+<h3>Theme</h3>
+<p>แก้ไขไฟล์ <code>tailwind.config.js</code> เพื่อปรับแต่ง theme colors:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-javascript">theme: {
+  extend: {
+    colors: {
+      primary: {
+        // Your custom colors
+      },
+    },
+  },
+}</code></pre></div><h3>Translations</h3>
+<p>แก้ไขไฟล์ <code>src/app/core/services/i18n.service.ts</code> เพื่อเพิ่มหรือแก้ไขคำแปล:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">this.translations.th = {
+  common: {
+    // Thai translations
+  }
+};
+
+this.translations.en = {
+  common: {
+    // English translations
+  }
+};</code></pre></div><h2>🔌 API Integration</h2>
+<p>แก้ไข API URL ในไฟล์ <code>src/environments/environment.ts</code>:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">export const environment = {
+  production: false,
+  apiUrl: &#39;http://localhost:8000/api/v1&#39;,
+  baseUrl: &#39;http://localhost:8000&#39;,
+  googleMapsApiKey: &#39;YOUR_GOOGLE_MAPS_API_KEY_HERE&#39;
+};</code></pre></div><p>สำหรับ Production ให้แก้ไขไฟล์ <code>src/environments/environment.prod.ts</code></p>
+<h2>🎯 Event Management System</h2>
+<p>Event Management System ได้รับการปรับปรุงให้สมบูรณ์แล้ว (พฤศจิกายน 2025):</p>
+<h3>Features</h3>
+<ul>
+<li><strong>Event Status Management</strong>: draft, published, cancelled, completed</li>
+<li><strong>Event Type Classification</strong>: meeting, training, conference, social, workshop, seminar, webinar, other</li>
+<li><strong>Search &amp; Filter</strong>: ค้นหาและกรอง events ตามชื่อ, status, type, location</li>
+<li><strong>Pagination</strong>: ระบบ pagination แบบ page-based</li>
+<li><strong>Max Attendees Control</strong>: ควบคุมจำนวนผู้เข้าร่วม</li>
+<li><strong>Enhanced UI</strong>: ปรับปรุง UI ให้ใช้งานง่ายขึ้น</li>
+</ul>
+<h3>Event Routes</h3>
+<ul>
+<li><code>/portal/events</code> - จัดการอีเวนต์ (Enhanced)</li>
+</ul>
+<p>ดูรายละเอียดเพิ่มเติม:</p>
+<ul>
+<li><a href="../EVENT_SYSTEM_IMPROVEMENTS_COMPLETED.md">Event System Improvements</a></li>
+<li><a href="../QUICK_START_GUIDE.md">Event System Quick Start</a></li>
+<li><a href="../docs/api/EVENT_API.md">Event API Documentation</a></li>
+</ul>
+<h2>🛠️ Technologies</h2>
+<ul>
+<li><strong>Angular 17+</strong> - Framework (Standalone Components)</li>
+<li><strong>TypeScript</strong> - Language (Strict Mode)</li>
+<li><strong>Tailwind CSS</strong> - Utility-first CSS framework</li>
+<li><strong>SCSS</strong> - CSS Preprocessor</li>
+<li><strong>RxJS</strong> - Reactive programming</li>
+<li><strong>Angular Signals</strong> - State management</li>
+<li><strong>Chart.js</strong> - Data visualization</li>
+<li><strong>Glass Morphism Design</strong> - Modern UI design system</li>
+</ul>
+<h2>🎨 Design System</h2>
+<h3>Gemini 2.0 Flash Style</h3>
+<p>โปรเจคใช้ <strong>Gemini 2.0 Flash Style</strong> ที่มีลักษณะ:</p>
+<ul>
+<li>Modern, Clean, Secure, Intelligent aesthetic</li>
+<li>Glassmorphism UI style</li>
+<li>Vertical gradient backgrounds</li>
+<li>Subtle animations</li>
+<li>Full dark/light mode support</li>
+</ul>
+<p><strong>เอกสาร:</strong></p>
+<ul>
+<li>📘 <a href="../docs/DESIGN_SYSTEM.md">Design System Guide</a> - รายละเอียดครบถ้วน</li>
+<li>📘 <a href="../docs/DEVELOPMENT_STANDARDS.md">Development Standards</a> - มาตรฐานการพัฒนา</li>
+</ul>
+<h3>Glass Morphism Components</h3>
+<ul>
+<li><strong>GlassCardComponent</strong> - Card component with glass effect</li>
+<li><strong>GlassButtonComponent</strong> - Button component with variants (primary, secondary, danger)</li>
+<li><strong>Glass Input</strong> - Input fields with glass styling</li>
+<li><strong>Glass Dropdown</strong> - Dropdown menus with glass effect</li>
+<li><strong>Glass Modal</strong> - Modal dialogs with glass morphism</li>
+<li><strong>LoadingComponent</strong> - Loading states and skeleton screens</li>
+</ul>
+<h3>Theme Support</h3>
+<ul>
+<li><strong>Light Mode</strong> - Light theme with glass effects</li>
+<li><strong>Dark Mode</strong> - Dark theme with glass effects</li>
+<li><strong>Auto Mode</strong> - Automatic theme switching based on system preferences</li>
+</ul>
+<h3>Responsive Design</h3>
+<ul>
+<li><strong>Mobile First</strong> - Designed for mobile devices first</li>
+<li><strong>Tablet Support</strong> - Optimized for tablet screens</li>
+<li><strong>Desktop Support</strong> - Full features for desktop</li>
+<li><strong>Breakpoints</strong> - Standard Tailwind CSS breakpoints</li>
+</ul>
+<h2>✅ Component Status</h2>
+<h3>✅ Completed (Glass Morphism Design)</h3>
+<ul>
+<li>✅ Login, Forgot Password, Reset Password</li>
+<li>✅ Dashboard, HR Dashboard, Safety Dashboard, Performance Dashboard</li>
+<li>✅ Profile, Help Center</li>
+<li>✅ Employees, Visitors, Guests, Structure</li>
+<li>✅ Attendance, Leaves, Shifts</li>
+<li>✅ Events, Alerts, Notifications, Reports</li>
+<li>✅ QR Codes, RFID Cards, Biometric Data</li>
+<li>✅ Devices, Locations, Hardware Status Dashboard</li>
+<li>✅ AI Models, Video Analytics, Monitoring</li>
+<li>✅ Access Control, Doors, Vehicles, Parking Spots</li>
+<li>✅ Template Management</li>
+</ul>
+<h3>📋 Standards</h3>
+<ul>
+<li>✅ All components use separate HTML, SCSS, TS files</li>
+<li>✅ All components use Glass Morphism Design System</li>
+<li>✅ All components support Dark Mode</li>
+<li>✅ All components are responsive (mobile, tablet, desktop)</li>
+<li>✅ All components use Angular Signals for state management</li>
+</ul>
+<h2>📝 License</h2>
+<p>MIT License</p>
+<h2>👥 Contributors</h2>
+<ul>
+<li>Your Team</li>
+</ul>
+<h2>🙏 Acknowledgments</h2>
+<ul>
+<li>Angular Team</li>
+<li>Tailwind CSS Team
+&quot;# IVAP_WEB&quot;</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 0;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'readme';
+            var COMPODOC_CURRENT_PAGE_URL = 'index.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="./js/libs/custom-elements.min.js"></script>
+       <script src="./js/libs/lit-html.js"></script>
+
+       <script src="./js/menu-wc.js" defer></script>
+       <script nomodule src="./js/menu-wc_es5.js" defer></script>
+
+       <script src="./js/libs/bootstrap-native.js"></script>
+
+       <script src="./js/libs/es6-shim.min.js"></script>
+       <script src="./js/libs/EventDispatcher.js"></script>
+       <script src="./js/libs/promise.min.js"></script>
+
+       <script src="./js/compodoc.js"></script>
+
+       <script src="./js/tabs.js"></script>
+       <script src="./js/menu.js"></script>
+       <script src="./js/libs/clipboard.min.js"></script>
+       <script src="./js/libs/prism.js"></script>
+       <script src="./js/sourceCode.js"></script>
+          <script src="./js/search/search.js"></script>
+          <script src="./js/search/lunr.min.js"></script>
+          <script src="./js/search/search-lunr.js"></script>
+          <script src="./js/search/search_index.js"></script>
+       <script src="./js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

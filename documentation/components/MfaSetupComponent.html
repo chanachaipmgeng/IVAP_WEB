@@ -1,0 +1,1460 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  MfaSetupComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/portal/mfa-setup/mfa-setup.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-mfa-setup</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../interfaces/Module.html" target="_self" >CommonModule</a></code>
+                            <code>NgOptimizedImage</code>
+                                <code><a href="../interfaces/Module.html" target="_self" >ReactiveFormsModule</a></code>
+                                <code><a href="../components/GlassCardComponent.html" target="_self" >GlassCardComponent</a></code>
+                                <code><a href="../components/GlassButtonComponent.html" target="_self" >GlassButtonComponent</a></code>
+                                <code><a href="../components/GlassInputComponent.html" target="_self" >GlassInputComponent</a></code>
+                                <code><a href="../components/LoadingComponent.html" target="_self" >LoadingComponent</a></code>
+                                <code><a href="../directives/ImageOptimizationDirective.html" target="_self" >ImageOptimizationDirective</a></code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./mfa-setup.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./mfa-setup.component.scss</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#errorMessage" >errorMessage</a>
+                            </li>
+                            <li>
+                                <a href="#loading" >loading</a>
+                            </li>
+                            <li>
+                                <a href="#mfaSetup" >mfaSetup</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#router" >router</a>
+                            </li>
+                            <li>
+                                <a href="#step" >step</a>
+                            </li>
+                            <li>
+                                <a href="#verificationForm" >verificationForm</a>
+                            </li>
+                            <li>
+                                <a href="#verifying" >verifying</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#downloadBackupCodes" >downloadBackupCodes</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#generateBackupCodes" >generateBackupCodes</a>
+                            </li>
+                            <li>
+                                <a href="#isBase64Image" >isBase64Image</a>
+                            </li>
+                            <li>
+                                <a href="#loadMFASetup" >loadMFASetup</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#skipMFA" >skipMFA</a>
+                            </li>
+                            <li>
+                                <a href="#t" >t</a>
+                            </li>
+                            <li>
+                                <a href="#verifyCode" >verifyCode</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(fb: FormBuilder, mfaService: <a href="../injectables/MultiFactorVerificationService.html" target="_self">MultiFactorVerificationService</a>, auth: <a href="../injectables/AuthService.html" target="_self">AuthService</a>, router: Router, i18n: <a href="../injectables/I18nService.html" target="_self">I18nService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/app/features/portal/mfa-setup/mfa-setup.component.ts:58</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>fb</td>
+                                                  
+                                                        <td>
+                                                                    <code>FormBuilder</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>mfaService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/MultiFactorVerificationService.html" target="_self" >MultiFactorVerificationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>auth</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AuthService.html" target="_self" >AuthService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                    <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>i18n</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/I18nService.html" target="_self" >I18nService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="downloadBackupCodes"></a>
+                    <span class="name">
+                        <span ><b>downloadBackupCodes</b></span>
+                        <a href="#downloadBackupCodes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>downloadBackupCodes()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="152"
+                                    class="link-to-prism">src/app/features/portal/mfa-setup/mfa-setup.component.ts:152</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateBackupCodes"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>generateBackupCodes</b></span>
+                        <a href="#generateBackupCodes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generateBackupCodes()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="164"
+                                    class="link-to-prism">src/app/features/portal/mfa-setup/mfa-setup.component.ts:164</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>string[]</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isBase64Image"></a>
+                    <span class="name">
+                        <span ><b>isBase64Image</b></span>
+                        <a href="#isBase64Image"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isBase64Image(url: string | null | undefined)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="147"
+                                    class="link-to-prism">src/app/features/portal/mfa-setup/mfa-setup.component.ts:147</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Check if image URL is Base64 encoded</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>url</td>
+                                            <td>
+                                                        <code>string | null | undefined</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadMFASetup"></a>
+                    <span class="name">
+                        <span ><b>loadMFASetup</b></span>
+                        <a href="#loadMFASetup"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>loadMFASetup()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="76"
+                                    class="link-to-prism">src/app/features/portal/mfa-setup/mfa-setup.component.ts:76</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="72"
+                                    class="link-to-prism">src/app/features/portal/mfa-setup/mfa-setup.component.ts:72</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="skipMFA"></a>
+                    <span class="name">
+                        <span ><b>skipMFA</b></span>
+                        <a href="#skipMFA"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>skipMFA()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="140"
+                                    class="link-to-prism">src/app/features/portal/mfa-setup/mfa-setup.component.ts:140</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="t"></a>
+                    <span class="name">
+                        <span ><b>t</b></span>
+                        <a href="#t"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>t(key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="174"
+                                    class="link-to-prism">src/app/features/portal/mfa-setup/mfa-setup.component.ts:174</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>key</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="verifyCode"></a>
+                    <span class="name">
+                        <span ><b>verifyCode</b></span>
+                        <a href="#verifyCode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>verifyCode()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="97"
+                                    class="link-to-prism">src/app/features/portal/mfa-setup/mfa-setup.component.ts:97</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="errorMessage"></a>
+                    <span class="name">
+                        <span ><b>errorMessage</b></span>
+                        <a href="#errorMessage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(&#x27;&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/app/features/portal/mfa-setup/mfa-setup.component.ts:58</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loading"></a>
+                    <span class="name">
+                        <span ><b>loading</b></span>
+                        <a href="#loading"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/features/portal/mfa-setup/mfa-setup.component.ts:55</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mfaSetup"></a>
+                    <span class="name">
+                        <span ><b>mfaSetup</b></span>
+                        <a href="#mfaSetup"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;MFASetup | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/app/features/portal/mfa-setup/mfa-setup.component.ts:53</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Router</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">src/app/features/portal/mfa-setup/mfa-setup.component.ts:64</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="step"></a>
+                    <span class="name">
+                        <span ><b>step</b></span>
+                        <a href="#step"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;&#x27;setup&#x27; | &#x27;verify&#x27; | &#x27;complete&#x27;&gt;(&#x27;setup&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/features/portal/mfa-setup/mfa-setup.component.ts:57</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="verificationForm"></a>
+                    <span class="name">
+                        <span ><b>verificationForm</b></span>
+                        <a href="#verificationForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>FormGroup</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">src/app/features/portal/mfa-setup/mfa-setup.component.ts:54</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="verifying"></a>
+                    <span class="name">
+                        <span ><b>verifying</b></span>
+                        <a href="#verifying"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/features/portal/mfa-setup/mfa-setup.component.ts:56</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, signal } from &#x27;@angular/core&#x27;;
+import { CommonModule, NgOptimizedImage } from &#x27;@angular/common&#x27;;
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from &#x27;@angular/forms&#x27;;
+import { Router } from &#x27;@angular/router&#x27;;
+import { GlassCardComponent } from &#x27;../../../shared/components/glass-card/glass-card.component&#x27;;
+import { GlassButtonComponent } from &#x27;../../../shared/components/glass-button/glass-button.component&#x27;;
+import { GlassInputComponent } from &#x27;../../../shared/components/glass-input/glass-input.component&#x27;;
+import { LoadingComponent } from &#x27;../../../shared/components/loading/loading.component&#x27;;
+import { MultiFactorVerificationService } from &#x27;../../../core/services/multi-factor-verification.service&#x27;;
+import { AuthService } from &#x27;../../../core/services/auth.service&#x27;;
+import { I18nService } from &#x27;../../../core/services/i18n.service&#x27;;
+
+import { ImageOptimizationDirective } from &#x27;../../../shared/directives/image-optimization.directive&#x27;;
+
+/**
+ * MFA setup interface
+ */
+interface MFASetup {
+  qrCode: string;
+  secretKey: string;
+  backupCodes: string[];
+}
+
+@Component({
+  selector: &#x27;app-mfa-setup&#x27;,
+  standalone: true,
+  imports: [
+    CommonModule,
+    NgOptimizedImage,
+    ReactiveFormsModule,
+    GlassCardComponent,
+    GlassButtonComponent,
+    GlassInputComponent,
+    LoadingComponent,
+    ImageOptimizationDirective
+  ],
+  templateUrl: &#x27;./mfa-setup.component.html&#x27;,
+  styleUrl: &#x27;./mfa-setup.component.scss&#x27;
+})
+export class MfaSetupComponent implements OnInit {
+  mfaSetup &#x3D; signal&lt;MFASetup | null&gt;(null);
+  verificationForm: FormGroup;
+  loading &#x3D; signal(false);
+  verifying &#x3D; signal(false);
+  step &#x3D; signal&lt;&#x27;setup&#x27; | &#x27;verify&#x27; | &#x27;complete&#x27;&gt;(&#x27;setup&#x27;);
+  errorMessage &#x3D; signal(&#x27;&#x27;);
+
+  constructor(
+    private fb: FormBuilder,
+    private mfaService: MultiFactorVerificationService,
+    private auth: AuthService,
+    public router: Router,
+    private i18n: I18nService
+  ) {
+    this.verificationForm &#x3D; this.fb.group({
+      code: [&#x27;&#x27;, [Validators.required, Validators.pattern(/^\d{6}$/)]]
+    });
+  }
+
+  ngOnInit(): void {
+    this.loadMFASetup();
+  }
+
+  loadMFASetup(): void {
+    this.loading.set(true);
+    this.mfaService.generateTOTPSecret().subscribe({
+      next: (response) &#x3D;&gt; {
+        // Generate backup codes
+        const backupCodes &#x3D; this.generateBackupCodes();
+        this.mfaSetup.set({
+          qrCode: response.qrCode,
+          secretKey: response.secret,
+          backupCodes: backupCodes
+        });
+        this.loading.set(false);
+      },
+      error: (error) &#x3D;&gt; {
+        console.error(&#x27;Error loading MFA setup:&#x27;, error);
+        this.errorMessage.set(&#x27;Failed to load MFA setup. Please try again.&#x27;);
+        this.loading.set(false);
+      }
+    });
+  }
+
+  verifyCode(): void {
+    if (this.verificationForm.invalid) return;
+
+    this.verifying.set(true);
+    this.errorMessage.set(&#x27;&#x27;);
+
+    const code &#x3D; this.verificationForm.get(&#x27;code&#x27;)?.value;
+    const currentUser &#x3D; this.auth.getCurrentUser();
+
+    if (!currentUser || !currentUser.id || !currentUser.companyId) {
+      this.errorMessage.set(&#x27;User information not found. Please log in again.&#x27;);
+      this.verifying.set(false);
+      return;
+    }
+
+    const verificationRequest &#x3D; {
+      member_id: currentUser.id,
+      company_id: currentUser.companyId,
+      method: &#x27;totp&#x27;,
+      code: code
+    };
+
+    this.mfaService.verifyTOTPCode(verificationRequest).subscribe({
+      next: (isValid) &#x3D;&gt; {
+        if (isValid) {
+          this.step.set(&#x27;complete&#x27;);
+          this.verifying.set(false);
+          // Redirect to dashboard after successful setup
+          setTimeout(() &#x3D;&gt; {
+            this.router.navigate([&#x27;/portal/dashboard&#x27;]);
+          }, 2000);
+        } else {
+          this.errorMessage.set(&#x27;Invalid verification code. Please try again.&#x27;);
+          this.verifying.set(false);
+        }
+      },
+      error: (error) &#x3D;&gt; {
+        this.errorMessage.set(error.message || &#x27;Invalid verification code. Please try again.&#x27;);
+        this.verifying.set(false);
+      }
+    });
+  }
+
+  skipMFA(): void {
+    this.router.navigate([&#x27;/portal/dashboard&#x27;]);
+  }
+
+  /**
+   * Check if image URL is Base64 encoded
+   */
+  isBase64Image(url: string | null | undefined): boolean {
+    if (!url) return false;
+    return url.startsWith(&#x27;data:image/&#x27;) || url.startsWith(&#x27;data:image/svg+xml&#x27;);
+  }
+
+  downloadBackupCodes(): void {
+    const codes &#x3D; this.mfaSetup()?.backupCodes || [];
+    const content &#x3D; codes.join(&#x27;\n&#x27;);
+    const blob &#x3D; new Blob([content], { type: &#x27;text/plain&#x27; });
+    const url &#x3D; window.URL.createObjectURL(blob);
+    const a &#x3D; document.createElement(&#x27;a&#x27;);
+    a.href &#x3D; url;
+    a.download &#x3D; &#x27;mfa-backup-codes.txt&#x27;;
+    a.click();
+    window.URL.revokeObjectURL(url);
+  }
+
+  private generateBackupCodes(): string[] {
+    const codes: string[] &#x3D; [];
+    for (let i &#x3D; 0; i &lt; 10; i++) {
+      // Generate 8-character backup code
+      const code &#x3D; Math.random().toString(36).substring(2, 10).toUpperCase();
+      codes.push(code);
+    }
+    return codes;
+  }
+
+  t(key: string): string {
+    return this.i18n.translate(key);
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-purple-900 dark:to-blue-900 flex items-center justify-center p-4&quot;&gt;
+  &lt;div class&#x3D;&quot;w-full max-w-2xl&quot;&gt;
+    &lt;!-- Header --&gt;
+    &lt;div class&#x3D;&quot;text-center mb-8&quot;&gt;
+      &lt;h1 class&#x3D;&quot;text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4&quot;&gt;
+        🔐 Multi-Factor Authentication Setup
+      &lt;/h1&gt;
+      &lt;p class&#x3D;&quot;text-gray-600 dark:text-gray-400&quot;&gt;
+        Secure your account with an additional layer of protection
+      &lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Loading State --&gt;
+    &lt;div *ngIf&#x3D;&quot;loading()&quot; class&#x3D;&quot;text-center&quot;&gt;
+      &lt;app-loading&gt;&lt;/app-loading&gt;
+      &lt;p class&#x3D;&quot;text-gray-600 dark:text-gray-400 mt-4&quot;&gt;Setting up MFA...&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Setup Step --&gt;
+    &lt;div *ngIf&#x3D;&quot;!loading() &amp;&amp; step() &#x3D;&#x3D;&#x3D; &#x27;setup&#x27;&quot;&gt;
+      &lt;app-glass-card&gt;
+        &lt;div class&#x3D;&quot;space-y-6&quot;&gt;
+          &lt;div class&#x3D;&quot;text-center&quot;&gt;
+            &lt;div class&#x3D;&quot;text-6xl mb-4&quot;&gt;📱&lt;/div&gt;
+            &lt;h2 class&#x3D;&quot;text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4&quot;&gt;
+              Step 1: Install Authenticator App
+            &lt;/h2&gt;
+            &lt;p class&#x3D;&quot;text-gray-600 dark:text-gray-400 mb-6&quot;&gt;
+              Download and install an authenticator app on your mobile device. We recommend:
+            &lt;/p&gt;
+            &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-2 gap-4 mb-6&quot;&gt;
+              &lt;div class&#x3D;&quot;p-4 glass rounded-lg text-center&quot;&gt;
+                &lt;div class&#x3D;&quot;text-2xl mb-2&quot;&gt;🔐&lt;/div&gt;
+                &lt;h3 class&#x3D;&quot;font-semibold&quot;&gt;Google Authenticator&lt;/h3&gt;
+                &lt;p class&#x3D;&quot;text-sm text-gray-600 dark:text-gray-400&quot;&gt;iOS &amp; Android&lt;/p&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;p-4 glass rounded-lg text-center&quot;&gt;
+                &lt;div class&#x3D;&quot;text-2xl mb-2&quot;&gt;🔑&lt;/div&gt;
+                &lt;h3 class&#x3D;&quot;font-semibold&quot;&gt;Microsoft Authenticator&lt;/h3&gt;
+                &lt;p class&#x3D;&quot;text-sm text-gray-600 dark:text-gray-400&quot;&gt;iOS &amp; Android&lt;/p&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;text-center&quot;&gt;
+            &lt;h3 class&#x3D;&quot;text-xl font-bold text-gray-900 dark:text-gray-100 mb-4&quot;&gt;
+              Step 2: Scan QR Code
+            &lt;/h3&gt;
+            &lt;p class&#x3D;&quot;text-gray-600 dark:text-gray-400 mb-4&quot;&gt;
+              Open your authenticator app and scan this QR code:
+            &lt;/p&gt;
+            &lt;div class&#x3D;&quot;flex justify-center mb-4&quot;&gt;
+              &lt;div class&#x3D;&quot;p-4 glass rounded-lg&quot;&gt;
+                &lt;img *ngIf&#x3D;&quot;mfaSetup()?.qrCode &amp;&amp; !isBase64Image(mfaSetup()!.qrCode)&quot;
+                     appImageOptimization [ngSrc]&#x3D;&quot;mfaSetup()!.qrCode&quot; alt&#x3D;&quot;MFA QR Code&quot; class&#x3D;&quot;w-48 h-48&quot; loading&#x3D;&quot;lazy&quot;&gt;
+                &lt;img *ngIf&#x3D;&quot;mfaSetup()?.qrCode &amp;&amp; isBase64Image(mfaSetup()!.qrCode)&quot;
+                     [src]&#x3D;&quot;mfaSetup()!.qrCode&quot; alt&#x3D;&quot;MFA QR Code&quot; class&#x3D;&quot;w-48 h-48&quot; loading&#x3D;&quot;lazy&quot;&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;p class&#x3D;&quot;text-sm text-gray-500 dark:text-gray-400 mb-6&quot;&gt;
+              Or manually enter this key: &lt;code class&#x3D;&quot;bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded&quot;&gt;{{ mfaSetup()?.secretKey }}&lt;/code&gt;
+            &lt;/p&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;text-center&quot;&gt;
+            &lt;h3 class&#x3D;&quot;text-xl font-bold text-gray-900 dark:text-gray-100 mb-4&quot;&gt;
+              Step 3: Backup Codes
+            &lt;/h3&gt;
+            &lt;p class&#x3D;&quot;text-gray-600 dark:text-gray-400 mb-4&quot;&gt;
+              Save these backup codes in a safe place. You can use them if you lose access to your authenticator app:
+            &lt;/p&gt;
+            &lt;div class&#x3D;&quot;bg-gray-100 dark:bg-gray-800 p-4 rounded-lg mb-4&quot;&gt;
+              &lt;div class&#x3D;&quot;grid grid-cols-2 gap-2 text-sm font-mono&quot;&gt;
+                &lt;div *ngFor&#x3D;&quot;let code of mfaSetup()?.backupCodes&quot; class&#x3D;&quot;text-center py-1&quot;&gt;
+                  {{ code }}
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;app-glass-button (clicked)&#x3D;&quot;downloadBackupCodes()&quot;&gt;
+              💾 Download Backup Codes
+            &lt;/app-glass-button&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;flex space-x-4&quot;&gt;
+            &lt;app-glass-button
+              variant&#x3D;&quot;primary&quot;
+              (clicked)&#x3D;&quot;step.set(&#x27;verify&#x27;)&quot;
+              class&#x3D;&quot;flex-1&quot;
+            &gt;
+              ✅ I&#x27;ve Set Up My Authenticator App
+            &lt;/app-glass-button&gt;
+            &lt;app-glass-button (clicked)&#x3D;&quot;skipMFA()&quot;&gt;
+              ⏭️ Skip for Now
+            &lt;/app-glass-button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/app-glass-card&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Verification Step --&gt;
+    &lt;div *ngIf&#x3D;&quot;step() &#x3D;&#x3D;&#x3D; &#x27;verify&#x27;&quot;&gt;
+      &lt;app-glass-card&gt;
+        &lt;div class&#x3D;&quot;space-y-6&quot;&gt;
+          &lt;div class&#x3D;&quot;text-center&quot;&gt;
+            &lt;div class&#x3D;&quot;text-6xl mb-4&quot;&gt;🔍&lt;/div&gt;
+            &lt;h2 class&#x3D;&quot;text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4&quot;&gt;
+              Verify Your Setup
+            &lt;/h2&gt;
+            &lt;p class&#x3D;&quot;text-gray-600 dark:text-gray-400&quot;&gt;
+              Enter the 6-digit code from your authenticator app to complete the setup
+            &lt;/p&gt;
+          &lt;/div&gt;
+
+          &lt;form [formGroup]&#x3D;&quot;verificationForm&quot; (ngSubmit)&#x3D;&quot;verifyCode()&quot; class&#x3D;&quot;space-y-6&quot;&gt;
+            &lt;div&gt;
+              &lt;label class&#x3D;&quot;block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2&quot;&gt;
+                Verification Code
+              &lt;/label&gt;
+              &lt;app-glass-input
+                formControlName&#x3D;&quot;code&quot;
+                type&#x3D;&quot;text&quot;
+                placeholder&#x3D;&quot;Enter 6-digit code&quot;
+                maxlength&#x3D;&quot;6&quot;
+                class&#x3D;&quot;text-center text-2xl tracking-widest&quot;
+              /&gt;
+              &lt;div *ngIf&#x3D;&quot;verificationForm.get(&#x27;code&#x27;)?.invalid &amp;&amp; verificationForm.get(&#x27;code&#x27;)?.touched&quot;
+                   class&#x3D;&quot;text-red-500 text-sm mt-1&quot;&gt;
+                Please enter a valid 6-digit code
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div *ngIf&#x3D;&quot;errorMessage()&quot; class&#x3D;&quot;p-4 bg-red-100 dark:bg-red-900/20 border border-red-300 dark:border-red-700 rounded-lg&quot;&gt;
+              &lt;p class&#x3D;&quot;text-red-800 dark:text-red-200 text-sm&quot;&gt;{{ errorMessage() }}&lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;flex space-x-4&quot;&gt;
+              &lt;app-glass-button
+                type&#x3D;&quot;submit&quot;
+                variant&#x3D;&quot;primary&quot;
+                [disabled]&#x3D;&quot;verificationForm.invalid || verifying()&quot;
+                class&#x3D;&quot;flex-1&quot;
+              &gt;
+                &lt;span *ngIf&#x3D;&quot;!verifying()&quot;&gt;🔐 Verify &amp; Complete Setup&lt;/span&gt;
+                &lt;span *ngIf&#x3D;&quot;verifying()&quot;&gt;⏳ Verifying...&lt;/span&gt;
+              &lt;/app-glass-button&gt;
+              &lt;app-glass-button
+                type&#x3D;&quot;button&quot;
+                (clicked)&#x3D;&quot;step.set(&#x27;setup&#x27;)&quot;
+                [disabled]&#x3D;&quot;verifying()&quot;
+              &gt;
+                ← Back
+              &lt;/app-glass-button&gt;
+            &lt;/div&gt;
+          &lt;/form&gt;
+        &lt;/div&gt;
+      &lt;/app-glass-card&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Complete Step --&gt;
+    &lt;div *ngIf&#x3D;&quot;step() &#x3D;&#x3D;&#x3D; &#x27;complete&#x27;&quot;&gt;
+      &lt;app-glass-card&gt;
+        &lt;div class&#x3D;&quot;text-center space-y-6&quot;&gt;
+          &lt;div class&#x3D;&quot;text-6xl mb-4&quot;&gt;🎉&lt;/div&gt;
+          &lt;h2 class&#x3D;&quot;text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4&quot;&gt;
+            MFA Setup Complete!
+          &lt;/h2&gt;
+          &lt;p class&#x3D;&quot;text-gray-600 dark:text-gray-400&quot;&gt;
+            Your account is now protected with multi-factor authentication. You&#x27;ll be redirected to the dashboard shortly.
+          &lt;/p&gt;
+          &lt;div class&#x3D;&quot;flex justify-center&quot;&gt;
+            &lt;app-glass-button variant&#x3D;&quot;primary&quot; (clicked)&#x3D;&quot;router.navigate([&#x27;/portal/dashboard&#x27;])&quot;&gt;
+              🏠 Go to Dashboard
+            &lt;/app-glass-button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/app-glass-card&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Security Notice --&gt;
+    &lt;div class&#x3D;&quot;mt-6 text-center&quot;&gt;
+      &lt;p class&#x3D;&quot;text-sm text-gray-500 dark:text-gray-400&quot;&gt;
+        🔒 MFA adds an extra layer of security to protect your account from unauthorized access.
+      &lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-purple-900 dark:to-blue-900 flex items-center justify-center p-4">  <div class="w-full max-w-2xl">    <!-- Header -->    <div class="text-center mb-8">      <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">        🔐 Multi-Factor Authentication Setup      </h1>      <p class="text-gray-600 dark:text-gray-400">        Secure your account with an additional layer of protection      </p>    </div>    <!-- Loading State -->    <div *ngIf="loading()" class="text-center">      <app-loading></app-loading>      <p class="text-gray-600 dark:text-gray-400 mt-4">Setting up MFA...</p>    </div>    <!-- Setup Step -->    <div *ngIf="!loading() && step() === \'setup\'">      <app-glass-card>        <div class="space-y-6">          <div class="text-center">            <div class="text-6xl mb-4">📱</div>            <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">              Step 1: Install Authenticator App            </h2>            <p class="text-gray-600 dark:text-gray-400 mb-6">              Download and install an authenticator app on your mobile device. We recommend:            </p>            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">              <div class="p-4 glass rounded-lg text-center">                <div class="text-2xl mb-2">🔐</div>                <h3 class="font-semibold">Google Authenticator</h3>                <p class="text-sm text-gray-600 dark:text-gray-400">iOS & Android</p>              </div>              <div class="p-4 glass rounded-lg text-center">                <div class="text-2xl mb-2">🔑</div>                <h3 class="font-semibold">Microsoft Authenticator</h3>                <p class="text-sm text-gray-600 dark:text-gray-400">iOS & Android</p>              </div>            </div>          </div>          <div class="text-center">            <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">              Step 2: Scan QR Code            </h3>            <p class="text-gray-600 dark:text-gray-400 mb-4">              Open your authenticator app and scan this QR code:            </p>            <div class="flex justify-center mb-4">              <div class="p-4 glass rounded-lg">                <img *ngIf="mfaSetup()?.qrCode && !isBase64Image(mfaSetup()!.qrCode)"                     appImageOptimization [ngSrc]="mfaSetup()!.qrCode" alt="MFA QR Code" class="w-48 h-48" loading="lazy">                <img *ngIf="mfaSetup()?.qrCode && isBase64Image(mfaSetup()!.qrCode)"                     [src]="mfaSetup()!.qrCode" alt="MFA QR Code" class="w-48 h-48" loading="lazy">              </div>            </div>            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">              Or manually enter this key: <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">{{ mfaSetup()?.secretKey }}</code>            </p>          </div>          <div class="text-center">            <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">              Step 3: Backup Codes            </h3>            <p class="text-gray-600 dark:text-gray-400 mb-4">              Save these backup codes in a safe place. You can use them if you lose access to your authenticator app:            </p>            <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg mb-4">              <div class="grid grid-cols-2 gap-2 text-sm font-mono">                <div *ngFor="let code of mfaSetup()?.backupCodes" class="text-center py-1">                  {{ code }}                </div>              </div>            </div>            <app-glass-button (clicked)="downloadBackupCodes()">              💾 Download Backup Codes            </app-glass-button>          </div>          <div class="flex space-x-4">            <app-glass-button              variant="primary"              (clicked)="step.set(\'verify\')"              class="flex-1"            >              ✅ I\'ve Set Up My Authenticator App            </app-glass-button>            <app-glass-button (clicked)="skipMFA()">              ⏭️ Skip for Now            </app-glass-button>          </div>        </div>      </app-glass-card>    </div>    <!-- Verification Step -->    <div *ngIf="step() === \'verify\'">      <app-glass-card>        <div class="space-y-6">          <div class="text-center">            <div class="text-6xl mb-4">🔍</div>            <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">              Verify Your Setup            </h2>            <p class="text-gray-600 dark:text-gray-400">              Enter the 6-digit code from your authenticator app to complete the setup            </p>          </div>          <form [formGroup]="verificationForm" (ngSubmit)="verifyCode()" class="space-y-6">            <div>              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">                Verification Code              </label>              <app-glass-input                formControlName="code"                type="text"                placeholder="Enter 6-digit code"                maxlength="6"                class="text-center text-2xl tracking-widest"              />              <div *ngIf="verificationForm.get(\'code\')?.invalid && verificationForm.get(\'code\')?.touched"                   class="text-red-500 text-sm mt-1">                Please enter a valid 6-digit code              </div>            </div>            <div *ngIf="errorMessage()" class="p-4 bg-red-100 dark:bg-red-900/20 border border-red-300 dark:border-red-700 rounded-lg">              <p class="text-red-800 dark:text-red-200 text-sm">{{ errorMessage() }}</p>            </div>            <div class="flex space-x-4">              <app-glass-button                type="submit"                variant="primary"                [disabled]="verificationForm.invalid || verifying()"                class="flex-1"              >                <span *ngIf="!verifying()">🔐 Verify & Complete Setup</span>                <span *ngIf="verifying()">⏳ Verifying...</span>              </app-glass-button>              <app-glass-button                type="button"                (clicked)="step.set(\'setup\')"                [disabled]="verifying()"              >                ← Back              </app-glass-button>            </div>          </form>        </div>      </app-glass-card>    </div>    <!-- Complete Step -->    <div *ngIf="step() === \'complete\'">      <app-glass-card>        <div class="text-center space-y-6">          <div class="text-6xl mb-4">🎉</div>          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">            MFA Setup Complete!          </h2>          <p class="text-gray-600 dark:text-gray-400">            Your account is now protected with multi-factor authentication. You\'ll be redirected to the dashboard shortly.          </p>          <div class="flex justify-center">            <app-glass-button variant="primary" (clicked)="router.navigate([\'/portal/dashboard\'])">              🏠 Go to Dashboard            </app-glass-button>          </div>        </div>      </app-glass-card>    </div>    <!-- Security Notice -->    <div class="mt-6 text-center">      <p class="text-sm text-gray-500 dark:text-gray-400">        🔒 MFA adds an extra layer of security to protect your account from unauthorized access.      </p>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AccessControlComponent', 'selector': 'app-access-control'},{'name': 'AccessGroupsComponent', 'selector': 'app-access-groups'},{'name': 'AccessibilityDashboardComponent', 'selector': 'app-accessibility-dashboard'},{'name': 'AccessLogsComponent', 'selector': 'app-access-logs'},{'name': 'AccessSchedulesComponent', 'selector': 'app-access-schedules'},{'name': 'AccordionComponent', 'selector': 'app-accordion'},{'name': 'AccordionDemoComponent', 'selector': 'app-accordion-demo'},{'name': 'AdvancedDataTableComponent', 'selector': 'app-advanced-data-table'},{'name': 'AdvancedDataTableDemoComponent', 'selector': 'app-advanced-data-table-demo'},{'name': 'AdvancedFeaturesDashboardComponent', 'selector': 'app-advanced-features-dashboard'},{'name': 'AdvancedFormsComponent', 'selector': 'app-advanced-forms'},{'name': 'AdvancedRichTextComponent', 'selector': 'app-advanced-rich-text'},{'name': 'AdvancedUiDemoComponent', 'selector': 'app-advanced-ui-demo'},{'name': 'AIModelsComponent', 'selector': 'app-ai-models'},{'name': 'AlertComponent', 'selector': 'app-alert'},{'name': 'AlertHistoryComponent', 'selector': 'app-alert-history'},{'name': 'AlertsComponent', 'selector': 'app-alerts'},{'name': 'ApexChartComponent', 'selector': 'app-apex-chart'},{'name': 'App', 'selector': 'app-root'},{'name': 'AttendanceComponent', 'selector': 'app-attendance'},{'name': 'AuditLogsComponent', 'selector': 'app-audit-logs'},{'name': 'AvatarComponent', 'selector': 'app-avatar'},{'name': 'BackupRestoreComponent', 'selector': 'app-backup-restore'},{'name': 'BadgeComponent', 'selector': 'app-badge'},{'name': 'BaseComponent', 'selector': ''},{'name': 'BiometricDataComponent', 'selector': 'app-biometric-data'},{'name': 'BreadcrumbComponent', 'selector': 'app-breadcrumb'},{'name': 'CalendarComponent', 'selector': 'app-calendar'},{'name': 'CalendarDemoComponent', 'selector': 'app-calendar-demo'},{'name': 'ChartComponent', 'selector': 'app-chart'},{'name': 'CheckboxComponent', 'selector': 'app-checkbox'},{'name': 'ColorPickerComponent', 'selector': 'app-color-picker'},{'name': 'ComingSoonComponent', 'selector': 'app-coming-soon'},{'name': 'CompaniesComponent', 'selector': 'app-companies'},{'name': 'CompanyDocumentsComponent', 'selector': 'app-company-documents'},{'name': 'CompanyHolidaysComponent', 'selector': 'app-company-holidays'},{'name': 'ComponentShowcaseComponent', 'selector': 'app-component-showcase'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DataTableComponent', 'selector': 'app-data-table'},{'name': 'DateTimePickerComponent', 'selector': 'app-date-time-picker'},{'name': 'DepartmentsComponent', 'selector': 'app-departments'},{'name': 'DevicesComponent', 'selector': 'app-devices'},{'name': 'DividerComponent', 'selector': 'app-divider'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DoorsComponent', 'selector': 'app-doors'},{'name': 'DraggableCardsComponent', 'selector': 'app-draggable-cards'},{'name': 'DraggableCardsDemoComponent', 'selector': 'app-draggable-cards-demo'},{'name': 'EChartsChartComponent', 'selector': 'app-echarts-chart'},{'name': 'EChartsDemoComponent', 'selector': 'app-echarts-demo'},{'name': 'EmployeesComponent', 'selector': 'app-employees'},{'name': 'EmployeesNewComponent', 'selector': 'app-employees-new'},{'name': 'EmptyStateComponent', 'selector': 'app-empty-state'},{'name': 'Error401Component', 'selector': 'app-error-401'},{'name': 'Error404Component', 'selector': 'app-error-404'},{'name': 'Error500Component', 'selector': 'app-error-500'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'ErrorToastComponent', 'selector': 'app-error-toast'},{'name': 'EventAnalyticsComponent', 'selector': 'app-event-analytics'},{'name': 'EventCheckinHistoryComponent', 'selector': 'app-event-checkin-history'},{'name': 'EventEmailConfirmationComponent', 'selector': 'app-event-email-confirmation'},{'name': 'EventKioskConfigComponent', 'selector': 'app-event-kiosk-config'},{'name': 'EventRegistrationComponent', 'selector': 'app-event-registration'},{'name': 'EventRegistrationFieldsComponent', 'selector': 'app-event-registration-fields'},{'name': 'EventsComponent', 'selector': 'app-events'},{'name': 'FaceRecognitionComponent', 'selector': 'app-face-recognition'},{'name': 'FaceRecognitionDemoComponent', 'selector': 'app-face-recognition-demo'},{'name': 'FaceRecognitionLiveComponent', 'selector': 'app-face-recognition-live'},{'name': 'FaceRecognitionTestComponent', 'selector': 'app-face-recognition-test'},{'name': 'FaqComponent', 'selector': 'app-faq'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'FilterSectionComponent', 'selector': 'app-filter-section'},{'name': 'ForgotPasswordComponent', 'selector': 'app-forgot-password'},{'name': 'FormFieldComponent', 'selector': 'app-form-field'},{'name': 'GalleryComponent', 'selector': 'app-gallery'},{'name': 'GalleryDemoComponent', 'selector': 'app-gallery-demo'},{'name': 'GlassButtonComponent', 'selector': 'app-glass-button'},{'name': 'GlassCardComponent', 'selector': 'app-glass-card'},{'name': 'GlassInputComponent', 'selector': 'app-glass-input'},{'name': 'GroupFaceRecognitionComponent', 'selector': 'app-group-face-recognition'},{'name': 'GuestsComponent', 'selector': 'app-guests'},{'name': 'HardwareStatusDashboardComponent', 'selector': 'app-hardware-status-dashboard'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HeatmapAnalyticsComponent', 'selector': 'app-heatmap-analytics'},{'name': 'HelpCenter', 'selector': 'app-help-center'},{'name': 'HelpCenterComponent', 'selector': 'app-help-center'},{'name': 'HrDashboardComponent', 'selector': 'app-hr-dashboard'},{'name': 'IconComponent', 'selector': 'app-icon'},{'name': 'IncidentReportsComponent', 'selector': 'app-incident-reports'},{'name': 'KioskViewComponent', 'selector': 'app-kiosk-view'},{'name': 'LandingComponent', 'selector': 'app-landing'},{'name': 'LeafletMapComponent', 'selector': 'app-leaflet-map'},{'name': 'LeavesComponent', 'selector': 'app-leaves'},{'name': 'LicenseManagementComponent', 'selector': 'app-license-management'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoadingStateComponent', 'selector': 'app-loading-state'},{'name': 'LocationsComponent', 'selector': 'app-locations'},{'name': 'LockScreenComponent', 'selector': 'app-lock-screen'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MapDemoComponent', 'selector': 'app-map-demo'},{'name': 'MaterialButtonComponent', 'selector': 'app-material-button'},{'name': 'MaterialCardComponent', 'selector': 'app-material-card'},{'name': 'MaterialDialogComponent', 'selector': 'app-material-dialog'},{'name': 'MaterialInputComponent', 'selector': 'app-material-input'},{'name': 'MaterialTableComponent', 'selector': 'app-material-table'},{'name': 'MfaSetupComponent', 'selector': 'app-mfa-setup'},{'name': 'MobileCameraComponent', 'selector': 'app-mobile-camera'},{'name': 'MobileDemoComponent', 'selector': 'app-mobile-demo'},{'name': 'ModalComponent', 'selector': 'app-modal'},{'name': 'ModalFormComponent', 'selector': 'app-modal-form'},{'name': 'ModuleSubscriptionComponent', 'selector': 'app-module-subscription'},{'name': 'MonitoringComponent', 'selector': 'app-monitoring'},{'name': 'NotificationCenterComponent', 'selector': 'app-notification-center'},{'name': 'NotificationDemoComponent', 'selector': 'app-notification-demo'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'NotificationSettingsComponent', 'selector': 'app-notification-settings'},{'name': 'OffcanvasComponent', 'selector': 'app-offcanvas'},{'name': 'OffcanvasDemoComponent', 'selector': 'app-offcanvas-demo'},{'name': 'OvertimeRequestsComponent', 'selector': 'app-overtime-requests'},{'name': 'PageLayoutComponent', 'selector': 'app-page-layout'},{'name': 'PaginationComponent', 'selector': 'app-pagination'},{'name': 'ParkingBlacklistComponent', 'selector': 'app-parking-blacklist'},{'name': 'ParkingDashboardComponent', 'selector': 'app-parking-dashboard'},{'name': 'ParkingEntryComponent', 'selector': 'app-parking-entry'},{'name': 'ParkingExitComponent', 'selector': 'app-parking-exit'},{'name': 'ParkingLogsComponent', 'selector': 'app-parking-logs'},{'name': 'ParkingReservationComponent', 'selector': 'app-parking-reservation'},{'name': 'ParkingRulesComponent', 'selector': 'app-parking-rules'},{'name': 'ParkingSpotsComponent', 'selector': 'app-parking-spots'},{'name': 'ParkingStatisticsComponent', 'selector': 'app-parking-statistics'},{'name': 'PayrollExportComponent', 'selector': 'app-payroll-export'},{'name': 'PerformanceDashboardComponent', 'selector': 'app-performance-dashboard'},{'name': 'PopoverComponent', 'selector': 'app-popover'},{'name': 'PortalLayoutComponent', 'selector': 'app-portal-layout'},{'name': 'PositionsComponent', 'selector': 'app-positions'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'PublicVerificationComponent', 'selector': 'app-public-verification'},{'name': 'QRCodesComponent', 'selector': 'app-qr-codes'},{'name': 'RadioComponent', 'selector': 'app-radio'},{'name': 'RangeSliderComponent', 'selector': 'app-range-slider'},{'name': 'RatingComponent', 'selector': 'app-rating'},{'name': 'RatingDemoComponent', 'selector': 'app-rating-demo'},{'name': 'RbacComponent', 'selector': 'app-rbac'},{'name': 'RecognitionHistoryComponent', 'selector': 'app-recognition-history'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReportsComponent', 'selector': 'app-reports'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'RFIDCardsComponent', 'selector': 'app-rfid-cards'},{'name': 'RichTextComponent', 'selector': 'app-rich-text'},{'name': 'RichTextEditorComponent', 'selector': 'app-rich-text-editor'},{'name': 'RichTextEditorDemoComponent', 'selector': 'app-rich-text-editor-demo'},{'name': 'SafetyDashboardComponent', 'selector': 'app-safety-dashboard'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ShiftsComponent', 'selector': 'app-shifts'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SkeletonComponent', 'selector': 'app-skeleton'},{'name': 'StatisticsCardComponent', 'selector': 'app-statistics-card'},{'name': 'StatisticsGridComponent', 'selector': 'app-statistics-grid'},{'name': 'StepperComponent', 'selector': 'app-stepper'},{'name': 'StructureComponent', 'selector': 'app-structure'},{'name': 'SuperAdminAnnouncementsComponent', 'selector': 'app-super-admin-announcements'},{'name': 'SuperAdminDashboardComponent', 'selector': 'app-super-admin-dashboard'},{'name': 'SuperAdminLayoutComponent', 'selector': 'app-super-admin-layout'},{'name': 'SuperAdminReportsComponent', 'selector': 'app-super-admin-reports'},{'name': 'SurveillanceMapComponent', 'selector': 'app-surveillance-map'},{'name': 'SwiperGalleryComponent', 'selector': 'app-swiper-gallery'},{'name': 'SwiperGalleryDemoComponent', 'selector': 'app-swiper-gallery-demo'},{'name': 'SwitchComponent', 'selector': 'app-switch'},{'name': 'SystemSettingsComponent', 'selector': 'app-system-settings'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TemplateManagementComponent', 'selector': 'app-template-management'},{'name': 'TestApiComponent', 'selector': 'app-test-api'},{'name': 'ThemeSwitcherComponent', 'selector': 'app-theme-switcher'},{'name': 'TimelineComponent', 'selector': 'app-timeline'},{'name': 'TimelineDemoComponent', 'selector': 'app-timeline-demo'},{'name': 'TimesheetsComponent', 'selector': 'app-timesheets'},{'name': 'TimestampComponent', 'selector': 'app-timestamp'},{'name': 'TimestampDemoComponent', 'selector': 'app-timestamp-demo'},{'name': 'TooltipComponent', 'selector': 'app-tooltip'},{'name': 'UsersComponent', 'selector': 'app-users'},{'name': 'ValidationDemoComponent', 'selector': 'app-validation-demo'},{'name': 'VehiclesComponent', 'selector': 'app-vehicles'},{'name': 'VideoAnalyticsComponent', 'selector': 'app-video-analytics'},{'name': 'VideoPlaybackComponent', 'selector': 'app-video-playback'},{'name': 'VisitorBadgesComponent', 'selector': 'app-visitor-badges'},{'name': 'VisitorBlacklistComponent', 'selector': 'app-visitor-blacklist'},{'name': 'VisitorDashboardComponent', 'selector': 'app-visitor-dashboard'},{'name': 'VisitorInvitationsComponent', 'selector': 'app-visitor-invitations'},{'name': 'VisitorParcelsComponent', 'selector': 'app-visitor-parcels'},{'name': 'VisitorReportsComponent', 'selector': 'app-visitor-reports'},{'name': 'VisitorsComponent', 'selector': 'app-visitors'},{'name': 'WatchlistComponent', 'selector': 'app-watchlist'},{'name': 'ZoneConfigComponent', 'selector': 'app-zone-config'}];
+    var DIRECTIVES = [{'name': 'HasPermissionDirective', 'selector': '[appHasPermission]'},{'name': 'ImageOptimizationDirective', 'selector': '[appImageOptimization]'}];
+    var ACTUAL_COMPONENT = {'name': 'MfaSetupComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'MfaSetupComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

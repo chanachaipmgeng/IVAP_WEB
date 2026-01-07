@@ -1,0 +1,1523 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  ModelDeployment</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/core/services/ai-model-management.service.ts</code>
+        </p>
+
+
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#deployedAt" 
+>
+                                            deployedAt
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#endpoint" 
+>
+                                            endpoint
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#environment" 
+>
+                                            environment
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#health" 
+>
+                                            health
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#id" 
+>
+                                            id
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#metrics" 
+>
+                                            metrics
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#modelId" 
+>
+                                            modelId
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#replicas" 
+>
+                                            replicas
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#resources" 
+>
+                                            resources
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#status" 
+>
+                                            status
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#version" 
+>
+                                            version
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="deployedAt"></a>
+                                        <span class="name "><b>deployedAt</b>
+                                            <a href="#deployedAt">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>deployedAt:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" >Date</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" >Date</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="endpoint"></a>
+                                        <span class="name "><b>endpoint</b>
+                                            <a href="#endpoint">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>endpoint:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="environment"></a>
+                                        <span class="name "><b>environment</b>
+                                            <a href="#environment">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>environment:     <code>&quot;development&quot; | &quot;staging&quot; | &quot;production&quot;</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>&quot;development&quot; | &quot;staging&quot; | &quot;production&quot;</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="health"></a>
+                                        <span class="name "><b>health</b>
+                                            <a href="#health">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>health:     <code>literal type</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>literal type</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="id"></a>
+                                        <span class="name "><b>id</b>
+                                            <a href="#id">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>id:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="metrics"></a>
+                                        <span class="name "><b>metrics</b>
+                                            <a href="#metrics">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>metrics:     <code>literal type</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>literal type</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="modelId"></a>
+                                        <span class="name "><b>modelId</b>
+                                            <a href="#modelId">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>modelId:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="replicas"></a>
+                                        <span class="name "><b>replicas</b>
+                                            <a href="#replicas">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>replicas:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="resources"></a>
+                                        <span class="name "><b>resources</b>
+                                            <a href="#resources">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>resources:     <code>literal type</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>literal type</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="status"></a>
+                                        <span class="name "><b>status</b>
+                                            <a href="#status">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>status:     <code>&quot;deploying&quot; | &quot;active&quot; | &quot;inactive&quot; | &quot;failed&quot; | &quot;rolling_back&quot;</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>&quot;deploying&quot; | &quot;active&quot; | &quot;inactive&quot; | &quot;failed&quot; | &quot;rolling_back&quot;</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="version"></a>
+                                        <span class="name "><b>version</b>
+                                            <a href="#version">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>version:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, signal, computed } from &#x27;@angular/core&#x27;;
+import { Observable } from &#x27;rxjs&#x27;;
+
+export interface AIModel {
+  id: string;
+  name: string;
+  type: &#x27;yolo&#x27; | &#x27;tensorflow&#x27; | &#x27;pytorch&#x27; | &#x27;onnx&#x27; | &#x27;custom&#x27;;
+  version: string;
+  framework: &#x27;yolov8&#x27; | &#x27;yolov5&#x27; | &#x27;tensorflow&#x27; | &#x27;pytorch&#x27; | &#x27;onnx&#x27; | &#x27;custom&#x27;;
+  purpose: &#x27;object_detection&#x27; | &#x27;face_recognition&#x27; | &#x27;safety_detection&#x27; | &#x27;anomaly_detection&#x27; | &#x27;classification&#x27; | &#x27;segmentation&#x27;;
+  status: &#x27;active&#x27; | &#x27;inactive&#x27; | &#x27;training&#x27; | &#x27;deploying&#x27; | &#x27;error&#x27; | &#x27;maintenance&#x27;;
+  accuracy: number; // percentage
+  confidence: number; // 0-1
+  size: number; // in MB
+  lastTrained: Date;
+  lastDeployed: Date;
+  performance: {
+    inferenceTime: number; // in milliseconds
+    memoryUsage: number; // in MB
+    cpuUsage: number; // percentage
+    gpuUsage: number; // percentage
+    throughput: number; // predictions per second
+  };
+  metadata: {
+    classes: string[];
+    inputSize: { width: number; height: number; channels: number };
+    outputFormat: string;
+    preprocessing: string[];
+    postprocessing: string[];
+    requirements: string[];
+  };
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ModelTrainingJob {
+  id: string;
+  modelId: string;
+  name: string;
+  status: &#x27;queued&#x27; | &#x27;running&#x27; | &#x27;completed&#x27; | &#x27;failed&#x27; | &#x27;cancelled&#x27;;
+  progress: number; // 0-100
+  startTime: Date;
+  endTime?: Date;
+  duration?: number; // in minutes
+  dataset: {
+    name: string;
+    size: number;
+    classes: string[];
+    split: {
+      train: number;
+      validation: number;
+      test: number;
+    };
+  };
+  hyperparameters: {
+    epochs: number;
+    batchSize: number;
+    learningRate: number;
+    optimizer: string;
+    lossFunction: string;
+  };
+  metrics: {
+    accuracy: number;
+    precision: number;
+    recall: number;
+    f1Score: number;
+    loss: number;
+  };
+  logs: string[];
+  error?: string;
+  createdBy: string;
+}
+
+export interface ModelDeployment {
+  id: string;
+  modelId: string;
+  environment: &#x27;development&#x27; | &#x27;staging&#x27; | &#x27;production&#x27;;
+  status: &#x27;deploying&#x27; | &#x27;active&#x27; | &#x27;inactive&#x27; | &#x27;failed&#x27; | &#x27;rolling_back&#x27;;
+  deployedAt: Date;
+  version: string;
+  endpoint: string;
+  replicas: number;
+  resources: {
+    cpu: string;
+    memory: string;
+    gpu?: string;
+  };
+  health: {
+    isHealthy: boolean;
+    lastCheck: Date;
+    responseTime: number;
+    errorRate: number;
+    uptime: number;
+  };
+  metrics: {
+    requestsPerSecond: number;
+    averageResponseTime: number;
+    errorRate: number;
+    memoryUsage: number;
+    cpuUsage: number;
+  };
+}
+
+export interface ModelMetrics {
+  totalModels: number;
+  activeModels: number;
+  modelsByType: { [key: string]: number };
+  modelsByPurpose: { [key: string]: number };
+  modelsByStatus: { [key: string]: number };
+  averageAccuracy: number;
+  averageInferenceTime: number;
+  totalTrainingJobs: number;
+  activeTrainingJobs: number;
+  totalDeployments: number;
+  activeDeployments: number;
+  averagePerformance: number;
+  trend: &#x27;improving&#x27; | &#x27;stable&#x27; | &#x27;declining&#x27;;
+}
+
+export interface ModelConfiguration {
+  id: string;
+  name: string;
+  modelId: string;
+  environment: string;
+  settings: {
+    confidenceThreshold: number;
+    nmsThreshold: number;
+    maxDetections: number;
+    inputSize: { width: number; height: number };
+    batchSize: number;
+    preprocessing: any;
+    postprocessing: any;
+  };
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+@Injectable({
+  providedIn: &#x27;root&#x27;
+})
+export class AIModelManagementService {
+  // ✅ Signals for reactive state
+  private _models &#x3D; signal&lt;AIModel[]&gt;([]);
+  private _trainingJobs &#x3D; signal&lt;ModelTrainingJob[]&gt;([]);
+  private _deployments &#x3D; signal&lt;ModelDeployment[]&gt;([]);
+  private _configurations &#x3D; signal&lt;ModelConfiguration[]&gt;([]);
+  private _metrics &#x3D; signal&lt;ModelMetrics&gt;(this.getDefaultMetrics());
+
+  // ✅ Readonly signals for public access
+  public readonly models &#x3D; this._models.asReadonly();
+  public readonly trainingJobs &#x3D; this._trainingJobs.asReadonly();
+  public readonly deployments &#x3D; this._deployments.asReadonly();
+  public readonly configurations &#x3D; this._configurations.asReadonly();
+  public readonly metrics &#x3D; this._metrics.asReadonly();
+
+  // ✅ Computed signals for derived state
+  public readonly modelsCount &#x3D; computed(() &#x3D;&gt; this._models().length);
+  public readonly activeModelsCount &#x3D; computed(() &#x3D;&gt;
+    this._models().filter(m &#x3D;&gt; m.status &#x3D;&#x3D;&#x3D; &#x27;active&#x27;).length
+  );
+  public readonly trainingJobsCount &#x3D; computed(() &#x3D;&gt; this._trainingJobs().length);
+  public readonly runningTrainingJobsCount &#x3D; computed(() &#x3D;&gt;
+    this._trainingJobs().filter(j &#x3D;&gt; j.status &#x3D;&#x3D;&#x3D; &#x27;running&#x27;).length
+  );
+  public readonly deploymentsCount &#x3D; computed(() &#x3D;&gt; this._deployments().length);
+  public readonly activeDeploymentsCount &#x3D; computed(() &#x3D;&gt;
+    this._deployments().filter(d &#x3D;&gt; d.status &#x3D;&#x3D;&#x3D; &#x27;active&#x27;).length
+  );
+  public readonly configurationsCount &#x3D; computed(() &#x3D;&gt; this._configurations().length);
+
+  // ✅ Observable compatibility layer (for backward compatibility)
+  public models$ &#x3D; new Observable&lt;AIModel[]&gt;(observer &#x3D;&gt; {
+    observer.next(this._models());
+    // Note: This is a compatibility layer - prefer using signals directly
+  });
+  public trainingJobs$ &#x3D; new Observable&lt;ModelTrainingJob[]&gt;(observer &#x3D;&gt; {
+    observer.next(this._trainingJobs());
+    // Note: This is a compatibility layer - prefer using signals directly
+  });
+  public deployments$ &#x3D; new Observable&lt;ModelDeployment[]&gt;(observer &#x3D;&gt; {
+    observer.next(this._deployments());
+    // Note: This is a compatibility layer - prefer using signals directly
+  });
+  public configurations$ &#x3D; new Observable&lt;ModelConfiguration[]&gt;(observer &#x3D;&gt; {
+    observer.next(this._configurations());
+    // Note: This is a compatibility layer - prefer using signals directly
+  });
+  public metrics$ &#x3D; new Observable&lt;ModelMetrics&gt;(observer &#x3D;&gt; {
+    observer.next(this._metrics());
+    // Note: This is a compatibility layer - prefer using signals directly
+  });
+
+  constructor() {
+    this.initializeDemoData();
+  }
+
+  /**
+   * Get all models
+   */
+  getModels(): AIModel[] {
+    return this._models();
+  }
+
+  /**
+   * Get model by ID
+   */
+  getModel(modelId: string): AIModel | undefined {
+    return this._models().find(m &#x3D;&gt; m.id &#x3D;&#x3D;&#x3D; modelId);
+  }
+
+  /**
+   * Create new model
+   */
+  createModel(model: Omit&lt;AIModel, &#x27;id&#x27; | &#x27;createdAt&#x27; | &#x27;updatedAt&#x27;&gt;): AIModel {
+    const newModel: AIModel &#x3D; {
+      ...model,
+      id: this.generateId(),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
+    const models &#x3D; this._models();
+    this._models.set([...models, newModel]);
+    this.updateMetrics();
+
+    return newModel;
+  }
+
+  /**
+   * Update model
+   */
+  updateModel(modelId: string, updates: Partial&lt;AIModel&gt;): void {
+    const models &#x3D; this._models();
+    const index &#x3D; models.findIndex(m &#x3D;&gt; m.id &#x3D;&#x3D;&#x3D; modelId);
+
+    if (index !&#x3D;&#x3D; -1) {
+      models[index] &#x3D; {
+        ...models[index],
+        ...updates,
+        updatedAt: new Date()
+      };
+      this._models.set([...models]);
+      this.updateMetrics();
+    }
+  }
+
+  /**
+   * Delete model
+   */
+  deleteModel(modelId: string): void {
+    const models &#x3D; this._models();
+    this._models.set(models.filter(m &#x3D;&gt; m.id !&#x3D;&#x3D; modelId));
+    this.updateMetrics();
+  }
+
+  /**
+   * Start model training
+   */
+  startTraining(trainingJob: Omit&lt;ModelTrainingJob, &#x27;id&#x27; | &#x27;startTime&#x27; | &#x27;status&#x27; | &#x27;progress&#x27; | &#x27;logs&#x27;&gt;): ModelTrainingJob {
+    const newJob: ModelTrainingJob &#x3D; {
+      ...trainingJob,
+      id: this.generateId(),
+      startTime: new Date(),
+      status: &#x27;running&#x27;,
+      progress: 0,
+      logs: [&#x27;Training job started&#x27;, &#x27;Initializing dataset...&#x27;, &#x27;Loading model architecture...&#x27;]
+    };
+
+    const jobs &#x3D; this._trainingJobs();
+    this._trainingJobs.set([...jobs, newJob]);
+
+    // Simulate training progress
+    this.simulateTrainingProgress(newJob.id);
+
+    return newJob;
+  }
+
+  /**
+   * Stop training job
+   */
+  stopTraining(jobId: string): void {
+    const jobs &#x3D; this._trainingJobs();
+    const job &#x3D; jobs.find((j: ModelTrainingJob) &#x3D;&gt; j.id &#x3D;&#x3D;&#x3D; jobId);
+
+    if (job &amp;&amp; job.status &#x3D;&#x3D;&#x3D; &#x27;running&#x27;) {
+      job.status &#x3D; &#x27;cancelled&#x27;;
+      job.endTime &#x3D; new Date();
+      job.duration &#x3D; this.calculateDuration(job.startTime, job.endTime);
+      this._trainingJobs.set([...jobs]);
+    }
+  }
+
+  /**
+   * Get training jobs
+   */
+  getTrainingJobs(): ModelTrainingJob[] {
+    return this._trainingJobs();
+  }
+
+  /**
+   * Deploy model
+   */
+  deployModel(deployment: Omit&lt;ModelDeployment, &#x27;id&#x27; | &#x27;deployedAt&#x27; | &#x27;status&#x27; | &#x27;health&#x27; | &#x27;metrics&#x27;&gt;): ModelDeployment {
+    const newDeployment: ModelDeployment &#x3D; {
+      ...deployment,
+      id: this.generateId(),
+      deployedAt: new Date(),
+      status: &#x27;deploying&#x27;,
+      health: {
+        isHealthy: true,
+        lastCheck: new Date(),
+        responseTime: 0,
+        errorRate: 0,
+        uptime: 100
+      },
+      metrics: {
+        requestsPerSecond: 0,
+        averageResponseTime: 0,
+        errorRate: 0,
+        memoryUsage: 0,
+        cpuUsage: 0
+      }
+    };
+
+    const deployments &#x3D; this._deployments();
+    this._deployments.set([...deployments, newDeployment]);
+
+    // Simulate deployment
+    setTimeout(() &#x3D;&gt; {
+      this.completeDeployment(newDeployment.id);
+    }, 5000);
+
+    return newDeployment;
+  }
+
+  /**
+   * Get deployments
+   */
+  getDeployments(): ModelDeployment[] {
+    return this._deployments();
+  }
+
+  /**
+   * Update deployment
+   */
+  updateDeployment(deploymentId: string, updates: Partial&lt;ModelDeployment&gt;): void {
+    const deployments &#x3D; this._deployments();
+    const index &#x3D; deployments.findIndex(d &#x3D;&gt; d.id &#x3D;&#x3D;&#x3D; deploymentId);
+
+    if (index !&#x3D;&#x3D; -1) {
+      deployments[index] &#x3D; { ...deployments[index], ...updates };
+      this._deployments.set([...deployments]);
+    }
+  }
+
+  /**
+   * Get model configurations
+   */
+  getConfigurations(): ModelConfiguration[] {
+    return this._configurations();
+  }
+
+  /**
+   * Create configuration
+   */
+  createConfiguration(config: Omit&lt;ModelConfiguration, &#x27;id&#x27; | &#x27;createdAt&#x27; | &#x27;updatedAt&#x27;&gt;): ModelConfiguration {
+    const newConfig: ModelConfiguration &#x3D; {
+      ...config,
+      id: this.generateId(),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
+    const configs &#x3D; this._configurations();
+    this._configurations.set([...configs, newConfig]);
+
+    return newConfig;
+  }
+
+  /**
+   * Update configuration
+   */
+  updateConfiguration(configId: string, updates: Partial&lt;ModelConfiguration&gt;): void {
+    const configs &#x3D; this._configurations();
+    const index &#x3D; configs.findIndex(c &#x3D;&gt; c.id &#x3D;&#x3D;&#x3D; configId);
+
+    if (index !&#x3D;&#x3D; -1) {
+      configs[index] &#x3D; {
+        ...configs[index],
+        ...updates,
+        updatedAt: new Date()
+      };
+      this._configurations.set([...configs]);
+    }
+  }
+
+  /**
+   * Get metrics
+   */
+  getMetrics(): ModelMetrics {
+    return this._metrics();
+  }
+
+  /**
+   * Generate model report
+   */
+  generateModelReport(options: {
+    dateFrom: Date;
+    dateTo: Date;
+    modelIds?: string[];
+    includeTraining?: boolean;
+    includeDeployments?: boolean;
+  }): any {
+    const models &#x3D; this.getModels();
+    const trainingJobs &#x3D; options.includeTraining ? this.getTrainingJobs() : [];
+    const deployments &#x3D; options.includeDeployments ? this.getDeployments() : [];
+
+    const report &#x3D; {
+      period: {
+        from: options.dateFrom,
+        to: options.dateTo
+      },
+      summary: {
+        totalModels: models.length,
+        activeModels: models.filter(m &#x3D;&gt; m.status &#x3D;&#x3D;&#x3D; &#x27;active&#x27;).length,
+        modelsByType: this.groupBy(models, &#x27;type&#x27;),
+        modelsByPurpose: this.groupBy(models, &#x27;purpose&#x27;),
+        averageAccuracy: this.calculateAverageAccuracy(models),
+        averageInferenceTime: this.calculateAverageInferenceTime(models),
+        totalTrainingJobs: trainingJobs.length,
+        activeTrainingJobs: trainingJobs.filter(j &#x3D;&gt; j.status &#x3D;&#x3D;&#x3D; &#x27;running&#x27;).length,
+        totalDeployments: deployments.length,
+        activeDeployments: deployments.filter(d &#x3D;&gt; d.status &#x3D;&#x3D;&#x3D; &#x27;active&#x27;).length
+      },
+      models: models,
+      trainingJobs: trainingJobs,
+      deployments: deployments,
+      generatedAt: new Date()
+    };
+
+    return report;
+  }
+
+  /**
+   * Simulate training progress
+   */
+  private simulateTrainingProgress(jobId: string): void {
+    const jobs &#x3D; this._trainingJobs();
+    const job &#x3D; jobs.find((j: ModelTrainingJob) &#x3D;&gt; j.id &#x3D;&#x3D;&#x3D; jobId);
+
+    if (!job) return;
+
+    const progressInterval &#x3D; setInterval(() &#x3D;&gt; {
+      const currentJob &#x3D; this._trainingJobs().find(j &#x3D;&gt; j.id &#x3D;&#x3D;&#x3D; jobId);
+      if (!currentJob || currentJob.status !&#x3D;&#x3D; &#x27;running&#x27;) {
+        clearInterval(progressInterval);
+        return;
+      }
+
+      currentJob.progress +&#x3D; Math.random() * 10;
+      if (currentJob.progress &gt;&#x3D; 100) {
+        currentJob.progress &#x3D; 100;
+        currentJob.status &#x3D; &#x27;completed&#x27;;
+        currentJob.endTime &#x3D; new Date();
+        currentJob.duration &#x3D; this.calculateDuration(currentJob.startTime, currentJob.endTime);
+        currentJob.metrics &#x3D; this.generateTrainingMetrics();
+        currentJob.logs.push(&#x27;Training completed successfully&#x27;);
+        clearInterval(progressInterval);
+      } else {
+        currentJob.logs.push(&#x60;Epoch ${Math.floor(currentJob.progress / 10)}: Loss &#x3D; ${(Math.random() * 0.5 + 0.1).toFixed(4)}&#x60;);
+      }
+
+      this._trainingJobs.set([...this._trainingJobs()]);
+    }, 2000);
+  }
+
+  /**
+   * Complete deployment
+   */
+  private completeDeployment(deploymentId: string): void {
+    const deployments &#x3D; this._deployments();
+    const deployment &#x3D; deployments.find(d &#x3D;&gt; d.id &#x3D;&#x3D;&#x3D; deploymentId);
+
+    if (deployment) {
+      deployment.status &#x3D; &#x27;active&#x27;;
+      deployment.health &#x3D; {
+        isHealthy: true,
+        lastCheck: new Date(),
+        responseTime: Math.random() * 50 + 10,
+        errorRate: Math.random() * 0.01,
+        uptime: 99.9
+      };
+      deployment.metrics &#x3D; {
+        requestsPerSecond: Math.random() * 100 + 50,
+        averageResponseTime: Math.random() * 100 + 50,
+        errorRate: Math.random() * 0.02,
+        memoryUsage: Math.random() * 500 + 200,
+        cpuUsage: Math.random() * 30 + 10
+      };
+      this._deployments.set([...deployments]);
+    }
+  }
+
+  /**
+   * Calculate duration
+   */
+  private calculateDuration(startTime: Date, endTime: Date): number {
+    return Math.round((endTime.getTime() - startTime.getTime()) / (1000 * 60));
+  }
+
+  /**
+   * Generate training metrics
+   */
+  private generateTrainingMetrics(): any {
+    return {
+      accuracy: Math.random() * 0.2 + 0.8, // 80-100%
+      precision: Math.random() * 0.2 + 0.8,
+      recall: Math.random() * 0.2 + 0.8,
+      f1Score: Math.random() * 0.2 + 0.8,
+      loss: Math.random() * 0.1 + 0.01
+    };
+  }
+
+  /**
+   * Calculate average accuracy
+   */
+  private calculateAverageAccuracy(models: AIModel[]): number {
+    if (models.length &#x3D;&#x3D;&#x3D; 0) return 0;
+    const totalAccuracy &#x3D; models.reduce((sum, m) &#x3D;&gt; sum + m.accuracy, 0);
+    return totalAccuracy / models.length;
+  }
+
+  /**
+   * Calculate average inference time
+   */
+  private calculateAverageInferenceTime(models: AIModel[]): number {
+    if (models.length &#x3D;&#x3D;&#x3D; 0) return 0;
+    const totalTime &#x3D; models.reduce((sum, m) &#x3D;&gt; sum + m.performance.inferenceTime, 0);
+    return totalTime / models.length;
+  }
+
+  /**
+   * Update metrics
+   */
+  private updateMetrics(): void {
+    const models &#x3D; this._models();
+    const trainingJobs &#x3D; this._trainingJobs();
+    const deployments &#x3D; this._deployments();
+    const metrics &#x3D; this.calculateMetrics(models, trainingJobs, deployments);
+    this._metrics.set(metrics);
+  }
+
+  /**
+   * Calculate metrics
+   */
+  private calculateMetrics(models: AIModel[], trainingJobs: ModelTrainingJob[], deployments: ModelDeployment[]): ModelMetrics {
+    const totalModels &#x3D; models.length;
+    const activeModels &#x3D; models.filter(m &#x3D;&gt; m.status &#x3D;&#x3D;&#x3D; &#x27;active&#x27;).length;
+    const modelsByType &#x3D; this.groupBy(models, &#x27;type&#x27;);
+    const modelsByPurpose &#x3D; this.groupBy(models, &#x27;purpose&#x27;);
+    const modelsByStatus &#x3D; this.groupBy(models, &#x27;status&#x27;);
+
+    const averageAccuracy &#x3D; this.calculateAverageAccuracy(models);
+    const averageInferenceTime &#x3D; this.calculateAverageInferenceTime(models);
+    const totalTrainingJobs &#x3D; trainingJobs.length;
+    const activeTrainingJobs &#x3D; trainingJobs.filter(j &#x3D;&gt; j.status &#x3D;&#x3D;&#x3D; &#x27;running&#x27;).length;
+    const totalDeployments &#x3D; deployments.length;
+    const activeDeployments &#x3D; deployments.filter(d &#x3D;&gt; d.status &#x3D;&#x3D;&#x3D; &#x27;active&#x27;).length;
+    const averagePerformance &#x3D; this.calculateAveragePerformance(models);
+    const trend &#x3D; this.calculateTrend(models);
+
+    return {
+      totalModels,
+      activeModels,
+      modelsByType,
+      modelsByPurpose,
+      modelsByStatus,
+      averageAccuracy,
+      averageInferenceTime,
+      totalTrainingJobs,
+      activeTrainingJobs,
+      totalDeployments,
+      activeDeployments,
+      averagePerformance,
+      trend
+    };
+  }
+
+  /**
+   * Calculate average performance
+   */
+  private calculateAveragePerformance(models: AIModel[]): number {
+    if (models.length &#x3D;&#x3D;&#x3D; 0) return 0;
+    const totalPerformance &#x3D; models.reduce((sum, m) &#x3D;&gt; {
+      return sum + (m.performance.throughput * m.accuracy / 100);
+    }, 0);
+    return totalPerformance / models.length;
+  }
+
+  /**
+   * Calculate trend
+   */
+  private calculateTrend(models: AIModel[]): &#x27;improving&#x27; | &#x27;stable&#x27; | &#x27;declining&#x27; {
+    const avgAccuracy &#x3D; this.calculateAverageAccuracy(models);
+
+    if (avgAccuracy &gt;&#x3D; 90) return &#x27;improving&#x27;;
+    if (avgAccuracy &gt;&#x3D; 80) return &#x27;stable&#x27;;
+    return &#x27;declining&#x27;;
+  }
+
+  /**
+   * Group array by property
+   */
+  private groupBy&lt;T&gt;(array: T[], property: keyof T): { [key: string]: number } {
+    return array.reduce((groups, item) &#x3D;&gt; {
+      const key &#x3D; String(item[property]);
+      groups[key] &#x3D; (groups[key] || 0) + 1;
+      return groups;
+    }, {} as { [key: string]: number });
+  }
+
+  /**
+   * Get default metrics
+   */
+  private getDefaultMetrics(): ModelMetrics {
+    return {
+      totalModels: 0,
+      activeModels: 0,
+      modelsByType: {},
+      modelsByPurpose: {},
+      modelsByStatus: {},
+      averageAccuracy: 0,
+      averageInferenceTime: 0,
+      totalTrainingJobs: 0,
+      activeTrainingJobs: 0,
+      totalDeployments: 0,
+      activeDeployments: 0,
+      averagePerformance: 0,
+      trend: &#x27;stable&#x27;
+    };
+  }
+
+  /**
+   * Initialize demo data
+   */
+  private initializeDemoData(): void {
+    // Create demo models
+    const demoModels: AIModel[] &#x3D; [
+      {
+        id: &#x27;model-1&#x27;,
+        name: &#x27;YOLOv8 Safety Detection&#x27;,
+        type: &#x27;yolo&#x27;,
+        version: &#x27;8.0.0&#x27;,
+        framework: &#x27;yolov8&#x27;,
+        purpose: &#x27;safety_detection&#x27;,
+        status: &#x27;active&#x27;,
+        accuracy: 94.5,
+        confidence: 0.85,
+        size: 25.6,
+        lastTrained: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+        lastDeployed: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+        performance: {
+          inferenceTime: 45.2,
+          memoryUsage: 512,
+          cpuUsage: 65,
+          gpuUsage: 85,
+          throughput: 22.1
+        },
+        metadata: {
+          classes: [&#x27;helmet&#x27;, &#x27;safety_vest&#x27;, &#x27;person&#x27;, &#x27;smoking&#x27;, &#x27;phone&#x27;],
+          inputSize: { width: 640, height: 640, channels: 3 },
+          outputFormat: &#x27;bounding_boxes&#x27;,
+          preprocessing: [&#x27;resize&#x27;, &#x27;normalize&#x27;],
+          postprocessing: [&#x27;nms&#x27;, &#x27;confidence_filter&#x27;],
+          requirements: [&#x27;opencv&#x27;, &#x27;numpy&#x27;, &#x27;torch&#x27;]
+        },
+        isActive: true,
+        createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+        updatedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000)
+      },
+      {
+        id: &#x27;model-2&#x27;,
+        name: &#x27;Face Recognition v2.1&#x27;,
+        type: &#x27;tensorflow&#x27;,
+        version: &#x27;2.1.0&#x27;,
+        framework: &#x27;tensorflow&#x27;,
+        purpose: &#x27;face_recognition&#x27;,
+        status: &#x27;active&#x27;,
+        accuracy: 98.2,
+        confidence: 0.92,
+        size: 15.8,
+        lastTrained: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000),
+        lastDeployed: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
+        performance: {
+          inferenceTime: 28.7,
+          memoryUsage: 256,
+          cpuUsage: 45,
+          gpuUsage: 60,
+          throughput: 34.8
+        },
+        metadata: {
+          classes: [&#x27;face&#x27;],
+          inputSize: { width: 224, height: 224, channels: 3 },
+          outputFormat: &#x27;embeddings&#x27;,
+          preprocessing: [&#x27;resize&#x27;, &#x27;normalize&#x27;, &#x27;face_detection&#x27;],
+          postprocessing: [&#x27;l2_normalize&#x27;],
+          requirements: [&#x27;tensorflow&#x27;, &#x27;opencv&#x27;, &#x27;face_recognition&#x27;]
+        },
+        isActive: true,
+        createdAt: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000),
+        updatedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000)
+      }
+    ];
+
+    this._models.set(demoModels);
+
+    // Create demo training jobs
+    const demoTrainingJobs: ModelTrainingJob[] &#x3D; [
+      {
+        id: &#x27;training-1&#x27;,
+        modelId: &#x27;model-1&#x27;,
+        name: &#x27;YOLOv8 Safety Detection Training&#x27;,
+        status: &#x27;completed&#x27;,
+        progress: 100,
+        startTime: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+        endTime: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000),
+        duration: 1440, // 24 hours
+        dataset: {
+          name: &#x27;Safety Detection Dataset v3.0&#x27;,
+          size: 50000,
+          classes: [&#x27;helmet&#x27;, &#x27;safety_vest&#x27;, &#x27;person&#x27;, &#x27;smoking&#x27;, &#x27;phone&#x27;],
+          split: { train: 70, validation: 20, test: 10 }
+        },
+        hyperparameters: {
+          epochs: 100,
+          batchSize: 16,
+          learningRate: 0.001,
+          optimizer: &#x27;AdamW&#x27;,
+          lossFunction: &#x27;YOLOv8Loss&#x27;
+        },
+        metrics: {
+          accuracy: 94.5,
+          precision: 92.8,
+          recall: 96.2,
+          f1Score: 94.4,
+          loss: 0.0234
+        },
+        logs: [
+          &#x27;Training job started&#x27;,
+          &#x27;Dataset loaded: 50,000 images&#x27;,
+          &#x27;Model architecture initialized&#x27;,
+          &#x27;Training completed successfully&#x27;
+        ],
+        createdBy: &#x27;data-scientist-1&#x27;
+      }
+    ];
+
+    this._trainingJobs.set(demoTrainingJobs);
+
+    // Create demo deployments
+    const demoDeployments: ModelDeployment[] &#x3D; [
+      {
+        id: &#x27;deployment-1&#x27;,
+        modelId: &#x27;model-1&#x27;,
+        environment: &#x27;production&#x27;,
+        status: &#x27;active&#x27;,
+        deployedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+        version: &#x27;1.0.0&#x27;,
+        endpoint: &#x27;https://api.company.com/v1/safety-detection&#x27;,
+        replicas: 3,
+        resources: {
+          cpu: &#x27;2&#x27;,
+          memory: &#x27;4Gi&#x27;,
+          gpu: &#x27;1&#x27;
+        },
+        health: {
+          isHealthy: true,
+          lastCheck: new Date(),
+          responseTime: 45.2,
+          errorRate: 0.001,
+          uptime: 99.9
+        },
+        metrics: {
+          requestsPerSecond: 150,
+          averageResponseTime: 45.2,
+          errorRate: 0.001,
+          memoryUsage: 512,
+          cpuUsage: 65
+        }
+      }
+    ];
+
+    this._deployments.set(demoDeployments);
+
+    // Create demo configurations
+    const demoConfigurations: ModelConfiguration[] &#x3D; [
+      {
+        id: &#x27;config-1&#x27;,
+        name: &#x27;Production Safety Detection Config&#x27;,
+        modelId: &#x27;model-1&#x27;,
+        environment: &#x27;production&#x27;,
+        settings: {
+          confidenceThreshold: 0.85,
+          nmsThreshold: 0.5,
+          maxDetections: 100,
+          inputSize: { width: 640, height: 640 },
+          batchSize: 1,
+          preprocessing: {
+            resize: true,
+            normalize: true
+          },
+          postprocessing: {
+            nms: true,
+            confidenceFilter: true
+          }
+        },
+        isActive: true,
+        createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+        updatedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000)
+      }
+    ];
+
+    this._configurations.set(demoConfigurations);
+    this.updateMetrics();
+  }
+
+  /**
+   * Generate unique ID
+   */
+  private generateId(): string {
+    return &#x27;ai-&#x27; + Date.now() + &#x27;-&#x27; + Math.random().toString(36).substr(2, 9);
+  }
+}
+
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'ModelDeployment.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

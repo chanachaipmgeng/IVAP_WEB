@@ -1,0 +1,1007 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  RecognitionHistoryComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/portal/face-recognition/recognition-history/recognition-history.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-recognition-history</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../interfaces/Module.html" target="_self" >CommonModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >FormsModule</a></code>
+                                <code><a href="../components/GlassButtonComponent.html" target="_self" >GlassButtonComponent</a></code>
+                                <code><a href="../components/GlassCardComponent.html" target="_self" >GlassCardComponent</a></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./recognition-history.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./recognition-history.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#filterType" >filterType</a>
+                            </li>
+                            <li>
+                                <a href="#logs" >logs</a>
+                            </li>
+                            <li>
+                                <a href="#searchQuery" >searchQuery</a>
+                            </li>
+                            <li>
+                                <a href="#selectedDate" >selectedDate</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#getConfidenceColor" >getConfidenceColor</a>
+                            </li>
+                            <li>
+                                <a href="#getStatusBadge" >getStatusBadge</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#filteredLogs" >filteredLogs</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/features/portal/face-recognition/recognition-history/recognition-history.component.ts:32</a></div>
+                            </td>
+                        </tr>
+
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getConfidenceColor"></a>
+                    <span class="name">
+                        <span ><b>getConfidenceColor</b></span>
+                        <a href="#getConfidenceColor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getConfidenceColor(score: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="86"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/recognition-history/recognition-history.component.ts:86</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>score</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getStatusBadge"></a>
+                    <span class="name">
+                        <span ><b>getStatusBadge</b></span>
+                        <a href="#getStatusBadge"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getStatusBadge(status: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="92"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/recognition-history/recognition-history.component.ts:92</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>status</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="36"
+                                    class="link-to-prism">src/app/features/portal/face-recognition/recognition-history/recognition-history.component.ts:36</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filterType"></a>
+                    <span class="name">
+                        <span ><b>filterType</b></span>
+                        <a href="#filterType"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;string&gt;(&#x27;All&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/features/portal/face-recognition/recognition-history/recognition-history.component.ts:30</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logs"></a>
+                    <span class="name">
+                        <span ><b>logs</b></span>
+                        <a href="#logs"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;RecognitionLog[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/features/portal/face-recognition/recognition-history/recognition-history.component.ts:29</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="searchQuery"></a>
+                    <span class="name">
+                        <span ><b>searchQuery</b></span>
+                        <a href="#searchQuery"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;string&gt;(&#x27;&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/features/portal/face-recognition/recognition-history/recognition-history.component.ts:31</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedDate"></a>
+                    <span class="name">
+                        <span ><b>selectedDate</b></span>
+                        <a href="#selectedDate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;string&gt;(new Date().toISOString().split(&#x27;T&#x27;)[0])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/features/portal/face-recognition/recognition-history/recognition-history.component.ts:32</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="filteredLogs"></a>
+                        <span class="name"><b>filteredLogs</b><a href="#filteredLogs"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>filteredLogs()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="77" class="link-to-prism">src/app/features/portal/face-recognition/recognition-history/recognition-history.component.ts:77</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, signal } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormsModule } from &#x27;@angular/forms&#x27;;
+
+interface RecognitionLog {
+  id: string;
+  timestamp: Date;
+  personName: string;
+  personId?: string;
+  type: &#x27;Employee&#x27; | &#x27;Visitor&#x27; | &#x27;VIP&#x27; | &#x27;Unknown&#x27;;
+  confidence: number;
+  cameraName: string;
+  location: string;
+  snapshotUrl: string;
+  status: &#x27;Verified&#x27; | &#x27;Flagged&#x27; | &#x27;Uncertain&#x27;;
+}
+
+import { GlassButtonComponent } from &#x27;../../../../shared/components/glass-button/glass-button.component&#x27;;
+import { GlassCardComponent } from &#x27;../../../../shared/components/glass-card/glass-card.component&#x27;;
+
+@Component({
+  selector: &#x27;app-recognition-history&#x27;,
+  standalone: true,
+  imports: [CommonModule, FormsModule, GlassButtonComponent, GlassCardComponent],
+  templateUrl: &#x27;./recognition-history.component.html&#x27;,
+  styleUrls: [&#x27;./recognition-history.component.scss&#x27;]
+})
+export class RecognitionHistoryComponent implements OnInit {
+  logs &#x3D; signal&lt;RecognitionLog[]&gt;([]);
+  filterType &#x3D; signal&lt;string&gt;(&#x27;All&#x27;);
+  searchQuery &#x3D; signal&lt;string&gt;(&#x27;&#x27;);
+  selectedDate &#x3D; signal&lt;string&gt;(new Date().toISOString().split(&#x27;T&#x27;)[0]);
+
+  constructor() {}
+
+  ngOnInit() {
+    // Mock data
+    this.logs.set([
+      {
+        id: &#x27;1&#x27;,
+        timestamp: new Date(),
+        personName: &#x27;John Doe&#x27;,
+        personId: &#x27;EMP001&#x27;,
+        type: &#x27;Employee&#x27;,
+        confidence: 0.98,
+        cameraName: &#x27;Main Entrance Cam 1&#x27;,
+        location: &#x27;Lobby&#x27;,
+        snapshotUrl: &#x27;assets/images/placeholder-face.jpg&#x27;,
+        status: &#x27;Verified&#x27;
+      },
+      {
+        id: &#x27;2&#x27;,
+        timestamp: new Date(Date.now() - 1000 * 60 * 5), // 5 mins ago
+        personName: &#x27;Unknown Person&#x27;,
+        type: &#x27;Unknown&#x27;,
+        confidence: 0.45,
+        cameraName: &#x27;Parking Cam 2&#x27;,
+        location: &#x27;Basement Parking&#x27;,
+        snapshotUrl: &#x27;assets/images/placeholder-face.jpg&#x27;,
+        status: &#x27;Uncertain&#x27;
+      },
+      {
+        id: &#x27;3&#x27;,
+        timestamp: new Date(Date.now() - 1000 * 60 * 15), // 15 mins ago
+        personName: &#x27;Jane Smith&#x27;,
+        personId: &#x27;VIP005&#x27;,
+        type: &#x27;VIP&#x27;,
+        confidence: 0.99,
+        cameraName: &#x27;Executive Elevator&#x27;,
+        location: &#x27;Lobby&#x27;,
+        snapshotUrl: &#x27;assets/images/placeholder-face.jpg&#x27;,
+        status: &#x27;Flagged&#x27;
+      }
+    ]);
+  }
+
+  get filteredLogs() {
+    return this.logs().filter(log &#x3D;&gt; {
+      const matchesType &#x3D; this.filterType() &#x3D;&#x3D;&#x3D; &#x27;All&#x27; || log.type &#x3D;&#x3D;&#x3D; this.filterType();
+      const matchesSearch &#x3D; log.personName.toLowerCase().includes(this.searchQuery().toLowerCase()) ||
+                            log.location.toLowerCase().includes(this.searchQuery().toLowerCase());
+      return matchesType &amp;&amp; matchesSearch;
+    });
+  }
+
+  getConfidenceColor(score: number): string {
+    if (score &gt;&#x3D; 0.9) return &#x27;text-green-600&#x27;;
+    if (score &gt;&#x3D; 0.7) return &#x27;text-yellow-600&#x27;;
+    return &#x27;text-red-600&#x27;;
+  }
+
+  getStatusBadge(status: string): string {
+    switch (status) {
+      case &#x27;Verified&#x27;: return &#x27;bg-green-100 text-green-800&#x27;;
+      case &#x27;Flagged&#x27;: return &#x27;bg-red-100 text-red-800&#x27;;
+      case &#x27;Uncertain&#x27;: return &#x27;bg-yellow-100 text-yellow-800&#x27;;
+      default: return &#x27;bg-gray-100 text-gray-800&#x27;;
+    }
+  }
+}
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;recognition-history-container h-full flex flex-col p-6 space-y-6&quot;&gt;
+  &lt;!-- Header --&gt;
+  &lt;div class&#x3D;&quot;flex justify-between items-center&quot;&gt;
+    &lt;div&gt;
+      &lt;h1 class&#x3D;&quot;text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-secondary-600 dark:from-primary-400 dark:to-secondary-400&quot;&gt;
+        Recognition History
+      &lt;/h1&gt;
+      &lt;p class&#x3D;&quot;text-gray-500 dark:text-gray-400 mt-1&quot;&gt;View logs of all face recognition events across cameras&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;flex gap-2&quot;&gt;
+      &lt;app-glass-button variant&#x3D;&quot;secondary&quot; icon&#x3D;&quot;download&quot;&gt;
+        Export CSV
+      &lt;/app-glass-button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Content --&gt;
+  &lt;app-glass-card class&#x3D;&quot;flex-1 overflow-hidden flex flex-col&quot;&gt;
+    &lt;!-- Filters --&gt;
+    &lt;div class&#x3D;&quot;p-4 border-b border-gray-200/50 dark:border-gray-700/50 flex flex-wrap gap-4 items-center bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm&quot;&gt;
+      &lt;div class&#x3D;&quot;relative flex-1 min-w-[200px]&quot;&gt;
+          &lt;input type&#x3D;&quot;text&quot; [ngModel]&#x3D;&quot;searchQuery()&quot; (ngModelChange)&#x3D;&quot;searchQuery.set($event)&quot; 
+                 placeholder&#x3D;&quot;Search person, camera, or location...&quot; 
+                 class&#x3D;&quot;w-full pl-10 pr-4 py-2.5 bg-white/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none text-sm transition-all hover:bg-white/80 dark:hover:bg-gray-900/80 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500&quot;&gt;
+          &lt;i class&#x3D;&quot;fas fa-search absolute left-3 top-3 text-gray-400 dark:text-gray-500&quot;&gt;&lt;/i&gt;
+      &lt;/div&gt;
+      
+      &lt;div&gt;
+          &lt;label class&#x3D;&quot;sr-only&quot;&gt;Date&lt;/label&gt;
+          &lt;input type&#x3D;&quot;date&quot; [ngModel]&#x3D;&quot;selectedDate()&quot; (ngModelChange)&#x3D;&quot;selectedDate.set($event)&quot;
+                 class&#x3D;&quot;px-3 py-2.5 bg-white/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none text-sm transition-all hover:bg-white/80 dark:hover:bg-gray-900/80 cursor-pointer text-gray-900 dark:text-gray-100&quot;&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;relative min-w-[150px]&quot;&gt;
+          &lt;select [ngModel]&#x3D;&quot;filterType()&quot; (ngModelChange)&#x3D;&quot;filterType.set($event)&quot;
+                  class&#x3D;&quot;w-full pl-3 pr-10 py-2.5 bg-white/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none text-sm appearance-none cursor-pointer transition-all hover:bg-white/80 dark:hover:bg-gray-900/80 text-gray-900 dark:text-gray-100&quot;&gt;
+              &lt;option value&#x3D;&quot;All&quot;&gt;All Types&lt;/option&gt;
+              &lt;option value&#x3D;&quot;Employee&quot;&gt;Employee&lt;/option&gt;
+              &lt;option value&#x3D;&quot;Visitor&quot;&gt;Visitor&lt;/option&gt;
+              &lt;option value&#x3D;&quot;VIP&quot;&gt;VIP&lt;/option&gt;
+              &lt;option value&#x3D;&quot;Unknown&quot;&gt;Unknown&lt;/option&gt;
+          &lt;/select&gt;
+          &lt;div class&#x3D;&quot;absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500 dark:text-gray-400&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-chevron-down text-xs&quot;&gt;&lt;/i&gt;
+          &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Table --&gt;
+    &lt;div class&#x3D;&quot;overflow-auto flex-1 custom-scrollbar&quot;&gt;
+      &lt;table class&#x3D;&quot;min-w-full divide-y divide-gray-200/50 dark:divide-gray-700/50&quot;&gt;
+        &lt;thead class&#x3D;&quot;bg-gray-50/50 dark:bg-gray-800/50 sticky top-0 backdrop-blur-sm z-10&quot;&gt;
+          &lt;tr&gt;
+            &lt;th scope&#x3D;&quot;col&quot; class&#x3D;&quot;px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider&quot;&gt;Snapshot&lt;/th&gt;
+            &lt;th scope&#x3D;&quot;col&quot; class&#x3D;&quot;px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider&quot;&gt;Time&lt;/th&gt;
+            &lt;th scope&#x3D;&quot;col&quot; class&#x3D;&quot;px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider&quot;&gt;Person Info&lt;/th&gt;
+            &lt;th scope&#x3D;&quot;col&quot; class&#x3D;&quot;px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider&quot;&gt;Match Score&lt;/th&gt;
+            &lt;th scope&#x3D;&quot;col&quot; class&#x3D;&quot;px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider&quot;&gt;Location&lt;/th&gt;
+            &lt;th scope&#x3D;&quot;col&quot; class&#x3D;&quot;px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider&quot;&gt;Status&lt;/th&gt;
+          &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody class&#x3D;&quot;bg-white/30 dark:bg-gray-800/30 divide-y divide-gray-200/50 dark:divide-gray-700/50&quot;&gt;
+          &lt;tr *ngFor&#x3D;&quot;let log of filteredLogs&quot; class&#x3D;&quot;hover:bg-white/60 dark:hover:bg-gray-700/60 transition-all duration-200 group&quot;&gt;
+            &lt;td class&#x3D;&quot;px-6 py-4 whitespace-nowrap&quot;&gt;
+              &lt;div class&#x3D;&quot;h-12 w-12 rounded-xl bg-gray-100 dark:bg-gray-700 overflow-hidden border border-gray-200 dark:border-gray-600 shadow-sm ring-2 ring-white dark:ring-gray-800 cursor-pointer group-hover:scale-110 transition-transform duration-200&quot;&gt;
+                &lt;img [src]&#x3D;&quot;log.snapshotUrl&quot; alt&#x3D;&quot;Snapshot&quot; class&#x3D;&quot;h-full w-full object-cover&quot;&gt;
+              &lt;/div&gt;
+            &lt;/td&gt;
+            &lt;td class&#x3D;&quot;px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100&quot;&gt;
+              &lt;div class&#x3D;&quot;font-semibold text-primary-900 dark:text-primary-300&quot;&gt;{{ log.timestamp | date:&#x27;HH:mm:ss&#x27; }}&lt;/div&gt;
+              &lt;div class&#x3D;&quot;text-xs text-gray-500 dark:text-gray-400&quot;&gt;{{ log.timestamp | date:&#x27;MMM d, y&#x27; }}&lt;/div&gt;
+            &lt;/td&gt;
+            &lt;td class&#x3D;&quot;px-6 py-4 whitespace-nowrap&quot;&gt;
+              &lt;div class&#x3D;&quot;flex flex-col&quot;&gt;
+                &lt;span class&#x3D;&quot;text-sm font-semibold text-gray-900 dark:text-gray-100&quot;&gt;{{ log.personName }}&lt;/span&gt;
+                &lt;span class&#x3D;&quot;text-xs text-gray-500 dark:text-gray-400 inline-flex items-center gap-1&quot;&gt;
+                  {{ log.type }} 
+                  &lt;span *ngIf&#x3D;&quot;log.personId&quot; class&#x3D;&quot;px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 font-mono text-[10px]&quot;&gt;{{ log.personId }}&lt;/span&gt;
+                &lt;/span&gt;
+              &lt;/div&gt;
+            &lt;/td&gt;
+            &lt;td class&#x3D;&quot;px-6 py-4 whitespace-nowrap&quot;&gt;
+              &lt;div class&#x3D;&quot;flex items-center&quot;&gt;
+                &lt;div class&#x3D;&quot;w-16 bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 mr-2 overflow-hidden&quot;&gt;
+                  &lt;div class&#x3D;&quot;h-1.5 rounded-full transition-all duration-500&quot; 
+                       [class.bg-green-500]&#x3D;&quot;log.confidence &gt;&#x3D; 0.9&quot;
+                       [class.bg-yellow-500]&#x3D;&quot;log.confidence &gt;&#x3D; 0.7 &amp;&amp; log.confidence &lt; 0.9&quot;
+                       [class.bg-red-500]&#x3D;&quot;log.confidence &lt; 0.7&quot;
+                       [style.width.%]&#x3D;&quot;log.confidence * 100&quot;&gt;&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;span class&#x3D;&quot;text-sm font-medium&quot; [ngClass]&#x3D;&quot;getConfidenceColor(log.confidence)&quot;&gt;{{ (log.confidence * 100).toFixed(1) }}%&lt;/span&gt;
+              &lt;/div&gt;
+            &lt;/td&gt;
+            &lt;td class&#x3D;&quot;px-6 py-4 whitespace-nowrap&quot;&gt;
+              &lt;div class&#x3D;&quot;text-sm text-gray-900 dark:text-gray-100 font-medium&quot;&gt;{{ log.location }}&lt;/div&gt;
+              &lt;div class&#x3D;&quot;text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1&quot;&gt;
+                &lt;i class&#x3D;&quot;fas fa-video&quot;&gt;&lt;/i&gt;
+                {{ log.cameraName }}
+              &lt;/div&gt;
+            &lt;/td&gt;
+            &lt;td class&#x3D;&quot;px-6 py-4 whitespace-nowrap&quot;&gt;
+              &lt;span [class]&#x3D;&quot;&#x27;px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full border shadow-sm backdrop-blur-sm &#x27; + getStatusBadge(log.status)&quot;&gt;
+                {{ log.status }}
+              &lt;/span&gt;
+            &lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr *ngIf&#x3D;&quot;filteredLogs.length &#x3D;&#x3D;&#x3D; 0&quot;&gt;
+            &lt;td colspan&#x3D;&quot;6&quot; class&#x3D;&quot;px-6 py-16 text-center&quot;&gt;
+              &lt;div class&#x3D;&quot;flex flex-col items-center justify-center&quot;&gt;
+                &lt;div class&#x3D;&quot;h-16 w-16 bg-gray-50 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4&quot;&gt;
+                  &lt;i class&#x3D;&quot;fas fa-search text-2xl text-gray-300 dark:text-gray-600&quot;&gt;&lt;/i&gt;
+                &lt;/div&gt;
+                &lt;h3 class&#x3D;&quot;text-sm font-medium text-gray-900 dark:text-gray-100&quot;&gt;No records found&lt;/h3&gt;
+                &lt;p class&#x3D;&quot;text-sm text-gray-500 dark:text-gray-400 mt-1&quot;&gt;Try adjusting your search or filters.&lt;/p&gt;
+              &lt;/div&gt;
+            &lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+  &lt;/app-glass-card&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./recognition-history.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">:host {
+    display: block;
+    height: 100%;
+}
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="recognition-history-container h-full flex flex-col p-6 space-y-6">  <!-- Header -->  <div class="flex justify-between items-center">    <div>      <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-secondary-600 dark:from-primary-400 dark:to-secondary-400">        Recognition History      </h1>      <p class="text-gray-500 dark:text-gray-400 mt-1">View logs of all face recognition events across cameras</p>    </div>    <div class="flex gap-2">      <app-glass-button variant="secondary" icon="download">        Export CSV      </app-glass-button>    </div>  </div>  <!-- Content -->  <app-glass-card class="flex-1 overflow-hidden flex flex-col">    <!-- Filters -->    <div class="p-4 border-b border-gray-200/50 dark:border-gray-700/50 flex flex-wrap gap-4 items-center bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm">      <div class="relative flex-1 min-w-[200px]">          <input type="text" [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)"                  placeholder="Search person, camera, or location..."                  class="w-full pl-10 pr-4 py-2.5 bg-white/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none text-sm transition-all hover:bg-white/80 dark:hover:bg-gray-900/80 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500">          <i class="fas fa-search absolute left-3 top-3 text-gray-400 dark:text-gray-500"></i>      </div>            <div>          <label class="sr-only">Date</label>          <input type="date" [ngModel]="selectedDate()" (ngModelChange)="selectedDate.set($event)"                 class="px-3 py-2.5 bg-white/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none text-sm transition-all hover:bg-white/80 dark:hover:bg-gray-900/80 cursor-pointer text-gray-900 dark:text-gray-100">      </div>      <div class="relative min-w-[150px]">          <select [ngModel]="filterType()" (ngModelChange)="filterType.set($event)"                  class="w-full pl-3 pr-10 py-2.5 bg-white/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none text-sm appearance-none cursor-pointer transition-all hover:bg-white/80 dark:hover:bg-gray-900/80 text-gray-900 dark:text-gray-100">              <option value="All">All Types</option>              <option value="Employee">Employee</option>              <option value="Visitor">Visitor</option>              <option value="VIP">VIP</option>              <option value="Unknown">Unknown</option>          </select>          <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500 dark:text-gray-400">            <i class="fas fa-chevron-down text-xs"></i>          </div>      </div>    </div>    <!-- Table -->    <div class="overflow-auto flex-1 custom-scrollbar">      <table class="min-w-full divide-y divide-gray-200/50 dark:divide-gray-700/50">        <thead class="bg-gray-50/50 dark:bg-gray-800/50 sticky top-0 backdrop-blur-sm z-10">          <tr>            <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Snapshot</th>            <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Time</th>            <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Person Info</th>            <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Match Score</th>            <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Location</th>            <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>          </tr>        </thead>        <tbody class="bg-white/30 dark:bg-gray-800/30 divide-y divide-gray-200/50 dark:divide-gray-700/50">          <tr *ngFor="let log of filteredLogs" class="hover:bg-white/60 dark:hover:bg-gray-700/60 transition-all duration-200 group">            <td class="px-6 py-4 whitespace-nowrap">              <div class="h-12 w-12 rounded-xl bg-gray-100 dark:bg-gray-700 overflow-hidden border border-gray-200 dark:border-gray-600 shadow-sm ring-2 ring-white dark:ring-gray-800 cursor-pointer group-hover:scale-110 transition-transform duration-200">                <img [src]="log.snapshotUrl" alt="Snapshot" class="h-full w-full object-cover">              </div>            </td>            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">              <div class="font-semibold text-primary-900 dark:text-primary-300">{{ log.timestamp | date:\'HH:mm:ss\' }}</div>              <div class="text-xs text-gray-500 dark:text-gray-400">{{ log.timestamp | date:\'MMM d, y\' }}</div>            </td>            <td class="px-6 py-4 whitespace-nowrap">              <div class="flex flex-col">                <span class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ log.personName }}</span>                <span class="text-xs text-gray-500 dark:text-gray-400 inline-flex items-center gap-1">                  {{ log.type }}                   <span *ngIf="log.personId" class="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 font-mono text-[10px]">{{ log.personId }}</span>                </span>              </div>            </td>            <td class="px-6 py-4 whitespace-nowrap">              <div class="flex items-center">                <div class="w-16 bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 mr-2 overflow-hidden">                  <div class="h-1.5 rounded-full transition-all duration-500"                        [class.bg-green-500]="log.confidence >= 0.9"                       [class.bg-yellow-500]="log.confidence >= 0.7 && log.confidence < 0.9"                       [class.bg-red-500]="log.confidence < 0.7"                       [style.width.%]="log.confidence * 100"></div>                </div>                <span class="text-sm font-medium" [ngClass]="getConfidenceColor(log.confidence)">{{ (log.confidence * 100).toFixed(1) }}%</span>              </div>            </td>            <td class="px-6 py-4 whitespace-nowrap">              <div class="text-sm text-gray-900 dark:text-gray-100 font-medium">{{ log.location }}</div>              <div class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">                <i class="fas fa-video"></i>                {{ log.cameraName }}              </div>            </td>            <td class="px-6 py-4 whitespace-nowrap">              <span [class]="\'px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full border shadow-sm backdrop-blur-sm \' + getStatusBadge(log.status)">                {{ log.status }}              </span>            </td>          </tr>          <tr *ngIf="filteredLogs.length === 0">            <td colspan="6" class="px-6 py-16 text-center">              <div class="flex flex-col items-center justify-center">                <div class="h-16 w-16 bg-gray-50 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">                  <i class="fas fa-search text-2xl text-gray-300 dark:text-gray-600"></i>                </div>                <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100">No records found</h3>                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Try adjusting your search or filters.</p>              </div>            </td>          </tr>        </tbody>      </table>    </div>  </app-glass-card></div></div>'
+    var COMPONENTS = [{'name': 'AccessControlComponent', 'selector': 'app-access-control'},{'name': 'AccessGroupsComponent', 'selector': 'app-access-groups'},{'name': 'AccessibilityDashboardComponent', 'selector': 'app-accessibility-dashboard'},{'name': 'AccessLogsComponent', 'selector': 'app-access-logs'},{'name': 'AccessSchedulesComponent', 'selector': 'app-access-schedules'},{'name': 'AccordionComponent', 'selector': 'app-accordion'},{'name': 'AccordionDemoComponent', 'selector': 'app-accordion-demo'},{'name': 'AdvancedDataTableComponent', 'selector': 'app-advanced-data-table'},{'name': 'AdvancedDataTableDemoComponent', 'selector': 'app-advanced-data-table-demo'},{'name': 'AdvancedFeaturesDashboardComponent', 'selector': 'app-advanced-features-dashboard'},{'name': 'AdvancedFormsComponent', 'selector': 'app-advanced-forms'},{'name': 'AdvancedRichTextComponent', 'selector': 'app-advanced-rich-text'},{'name': 'AdvancedUiDemoComponent', 'selector': 'app-advanced-ui-demo'},{'name': 'AIModelsComponent', 'selector': 'app-ai-models'},{'name': 'AlertComponent', 'selector': 'app-alert'},{'name': 'AlertHistoryComponent', 'selector': 'app-alert-history'},{'name': 'AlertsComponent', 'selector': 'app-alerts'},{'name': 'ApexChartComponent', 'selector': 'app-apex-chart'},{'name': 'App', 'selector': 'app-root'},{'name': 'AttendanceComponent', 'selector': 'app-attendance'},{'name': 'AuditLogsComponent', 'selector': 'app-audit-logs'},{'name': 'AvatarComponent', 'selector': 'app-avatar'},{'name': 'BackupRestoreComponent', 'selector': 'app-backup-restore'},{'name': 'BadgeComponent', 'selector': 'app-badge'},{'name': 'BaseComponent', 'selector': ''},{'name': 'BiometricDataComponent', 'selector': 'app-biometric-data'},{'name': 'BreadcrumbComponent', 'selector': 'app-breadcrumb'},{'name': 'CalendarComponent', 'selector': 'app-calendar'},{'name': 'CalendarDemoComponent', 'selector': 'app-calendar-demo'},{'name': 'ChartComponent', 'selector': 'app-chart'},{'name': 'CheckboxComponent', 'selector': 'app-checkbox'},{'name': 'ColorPickerComponent', 'selector': 'app-color-picker'},{'name': 'ComingSoonComponent', 'selector': 'app-coming-soon'},{'name': 'CompaniesComponent', 'selector': 'app-companies'},{'name': 'CompanyDocumentsComponent', 'selector': 'app-company-documents'},{'name': 'CompanyHolidaysComponent', 'selector': 'app-company-holidays'},{'name': 'ComponentShowcaseComponent', 'selector': 'app-component-showcase'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DataTableComponent', 'selector': 'app-data-table'},{'name': 'DateTimePickerComponent', 'selector': 'app-date-time-picker'},{'name': 'DepartmentsComponent', 'selector': 'app-departments'},{'name': 'DevicesComponent', 'selector': 'app-devices'},{'name': 'DividerComponent', 'selector': 'app-divider'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DoorsComponent', 'selector': 'app-doors'},{'name': 'DraggableCardsComponent', 'selector': 'app-draggable-cards'},{'name': 'DraggableCardsDemoComponent', 'selector': 'app-draggable-cards-demo'},{'name': 'EChartsChartComponent', 'selector': 'app-echarts-chart'},{'name': 'EChartsDemoComponent', 'selector': 'app-echarts-demo'},{'name': 'EmployeesComponent', 'selector': 'app-employees'},{'name': 'EmployeesNewComponent', 'selector': 'app-employees-new'},{'name': 'EmptyStateComponent', 'selector': 'app-empty-state'},{'name': 'Error401Component', 'selector': 'app-error-401'},{'name': 'Error404Component', 'selector': 'app-error-404'},{'name': 'Error500Component', 'selector': 'app-error-500'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'ErrorToastComponent', 'selector': 'app-error-toast'},{'name': 'EventAnalyticsComponent', 'selector': 'app-event-analytics'},{'name': 'EventCheckinHistoryComponent', 'selector': 'app-event-checkin-history'},{'name': 'EventEmailConfirmationComponent', 'selector': 'app-event-email-confirmation'},{'name': 'EventKioskConfigComponent', 'selector': 'app-event-kiosk-config'},{'name': 'EventRegistrationComponent', 'selector': 'app-event-registration'},{'name': 'EventRegistrationFieldsComponent', 'selector': 'app-event-registration-fields'},{'name': 'EventsComponent', 'selector': 'app-events'},{'name': 'FaceRecognitionComponent', 'selector': 'app-face-recognition'},{'name': 'FaceRecognitionDemoComponent', 'selector': 'app-face-recognition-demo'},{'name': 'FaceRecognitionLiveComponent', 'selector': 'app-face-recognition-live'},{'name': 'FaceRecognitionTestComponent', 'selector': 'app-face-recognition-test'},{'name': 'FaqComponent', 'selector': 'app-faq'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'FilterSectionComponent', 'selector': 'app-filter-section'},{'name': 'ForgotPasswordComponent', 'selector': 'app-forgot-password'},{'name': 'FormFieldComponent', 'selector': 'app-form-field'},{'name': 'GalleryComponent', 'selector': 'app-gallery'},{'name': 'GalleryDemoComponent', 'selector': 'app-gallery-demo'},{'name': 'GlassButtonComponent', 'selector': 'app-glass-button'},{'name': 'GlassCardComponent', 'selector': 'app-glass-card'},{'name': 'GlassInputComponent', 'selector': 'app-glass-input'},{'name': 'GroupFaceRecognitionComponent', 'selector': 'app-group-face-recognition'},{'name': 'GuestsComponent', 'selector': 'app-guests'},{'name': 'HardwareStatusDashboardComponent', 'selector': 'app-hardware-status-dashboard'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HeatmapAnalyticsComponent', 'selector': 'app-heatmap-analytics'},{'name': 'HelpCenter', 'selector': 'app-help-center'},{'name': 'HelpCenterComponent', 'selector': 'app-help-center'},{'name': 'HrDashboardComponent', 'selector': 'app-hr-dashboard'},{'name': 'IconComponent', 'selector': 'app-icon'},{'name': 'IncidentReportsComponent', 'selector': 'app-incident-reports'},{'name': 'KioskViewComponent', 'selector': 'app-kiosk-view'},{'name': 'LandingComponent', 'selector': 'app-landing'},{'name': 'LeafletMapComponent', 'selector': 'app-leaflet-map'},{'name': 'LeavesComponent', 'selector': 'app-leaves'},{'name': 'LicenseManagementComponent', 'selector': 'app-license-management'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoadingStateComponent', 'selector': 'app-loading-state'},{'name': 'LocationsComponent', 'selector': 'app-locations'},{'name': 'LockScreenComponent', 'selector': 'app-lock-screen'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MapDemoComponent', 'selector': 'app-map-demo'},{'name': 'MaterialButtonComponent', 'selector': 'app-material-button'},{'name': 'MaterialCardComponent', 'selector': 'app-material-card'},{'name': 'MaterialDialogComponent', 'selector': 'app-material-dialog'},{'name': 'MaterialInputComponent', 'selector': 'app-material-input'},{'name': 'MaterialTableComponent', 'selector': 'app-material-table'},{'name': 'MfaSetupComponent', 'selector': 'app-mfa-setup'},{'name': 'MobileCameraComponent', 'selector': 'app-mobile-camera'},{'name': 'MobileDemoComponent', 'selector': 'app-mobile-demo'},{'name': 'ModalComponent', 'selector': 'app-modal'},{'name': 'ModalFormComponent', 'selector': 'app-modal-form'},{'name': 'ModuleSubscriptionComponent', 'selector': 'app-module-subscription'},{'name': 'MonitoringComponent', 'selector': 'app-monitoring'},{'name': 'NotificationCenterComponent', 'selector': 'app-notification-center'},{'name': 'NotificationDemoComponent', 'selector': 'app-notification-demo'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'NotificationSettingsComponent', 'selector': 'app-notification-settings'},{'name': 'OffcanvasComponent', 'selector': 'app-offcanvas'},{'name': 'OffcanvasDemoComponent', 'selector': 'app-offcanvas-demo'},{'name': 'OvertimeRequestsComponent', 'selector': 'app-overtime-requests'},{'name': 'PageLayoutComponent', 'selector': 'app-page-layout'},{'name': 'PaginationComponent', 'selector': 'app-pagination'},{'name': 'ParkingBlacklistComponent', 'selector': 'app-parking-blacklist'},{'name': 'ParkingDashboardComponent', 'selector': 'app-parking-dashboard'},{'name': 'ParkingEntryComponent', 'selector': 'app-parking-entry'},{'name': 'ParkingExitComponent', 'selector': 'app-parking-exit'},{'name': 'ParkingLogsComponent', 'selector': 'app-parking-logs'},{'name': 'ParkingReservationComponent', 'selector': 'app-parking-reservation'},{'name': 'ParkingRulesComponent', 'selector': 'app-parking-rules'},{'name': 'ParkingSpotsComponent', 'selector': 'app-parking-spots'},{'name': 'ParkingStatisticsComponent', 'selector': 'app-parking-statistics'},{'name': 'PayrollExportComponent', 'selector': 'app-payroll-export'},{'name': 'PerformanceDashboardComponent', 'selector': 'app-performance-dashboard'},{'name': 'PopoverComponent', 'selector': 'app-popover'},{'name': 'PortalLayoutComponent', 'selector': 'app-portal-layout'},{'name': 'PositionsComponent', 'selector': 'app-positions'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'PublicVerificationComponent', 'selector': 'app-public-verification'},{'name': 'QRCodesComponent', 'selector': 'app-qr-codes'},{'name': 'RadioComponent', 'selector': 'app-radio'},{'name': 'RangeSliderComponent', 'selector': 'app-range-slider'},{'name': 'RatingComponent', 'selector': 'app-rating'},{'name': 'RatingDemoComponent', 'selector': 'app-rating-demo'},{'name': 'RbacComponent', 'selector': 'app-rbac'},{'name': 'RecognitionHistoryComponent', 'selector': 'app-recognition-history'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReportsComponent', 'selector': 'app-reports'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'RFIDCardsComponent', 'selector': 'app-rfid-cards'},{'name': 'RichTextComponent', 'selector': 'app-rich-text'},{'name': 'RichTextEditorComponent', 'selector': 'app-rich-text-editor'},{'name': 'RichTextEditorDemoComponent', 'selector': 'app-rich-text-editor-demo'},{'name': 'SafetyDashboardComponent', 'selector': 'app-safety-dashboard'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ShiftsComponent', 'selector': 'app-shifts'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SkeletonComponent', 'selector': 'app-skeleton'},{'name': 'StatisticsCardComponent', 'selector': 'app-statistics-card'},{'name': 'StatisticsGridComponent', 'selector': 'app-statistics-grid'},{'name': 'StepperComponent', 'selector': 'app-stepper'},{'name': 'StructureComponent', 'selector': 'app-structure'},{'name': 'SuperAdminAnnouncementsComponent', 'selector': 'app-super-admin-announcements'},{'name': 'SuperAdminDashboardComponent', 'selector': 'app-super-admin-dashboard'},{'name': 'SuperAdminLayoutComponent', 'selector': 'app-super-admin-layout'},{'name': 'SuperAdminReportsComponent', 'selector': 'app-super-admin-reports'},{'name': 'SurveillanceMapComponent', 'selector': 'app-surveillance-map'},{'name': 'SwiperGalleryComponent', 'selector': 'app-swiper-gallery'},{'name': 'SwiperGalleryDemoComponent', 'selector': 'app-swiper-gallery-demo'},{'name': 'SwitchComponent', 'selector': 'app-switch'},{'name': 'SystemSettingsComponent', 'selector': 'app-system-settings'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TemplateManagementComponent', 'selector': 'app-template-management'},{'name': 'TestApiComponent', 'selector': 'app-test-api'},{'name': 'ThemeSwitcherComponent', 'selector': 'app-theme-switcher'},{'name': 'TimelineComponent', 'selector': 'app-timeline'},{'name': 'TimelineDemoComponent', 'selector': 'app-timeline-demo'},{'name': 'TimesheetsComponent', 'selector': 'app-timesheets'},{'name': 'TimestampComponent', 'selector': 'app-timestamp'},{'name': 'TimestampDemoComponent', 'selector': 'app-timestamp-demo'},{'name': 'TooltipComponent', 'selector': 'app-tooltip'},{'name': 'UsersComponent', 'selector': 'app-users'},{'name': 'ValidationDemoComponent', 'selector': 'app-validation-demo'},{'name': 'VehiclesComponent', 'selector': 'app-vehicles'},{'name': 'VideoAnalyticsComponent', 'selector': 'app-video-analytics'},{'name': 'VideoPlaybackComponent', 'selector': 'app-video-playback'},{'name': 'VisitorBadgesComponent', 'selector': 'app-visitor-badges'},{'name': 'VisitorBlacklistComponent', 'selector': 'app-visitor-blacklist'},{'name': 'VisitorDashboardComponent', 'selector': 'app-visitor-dashboard'},{'name': 'VisitorInvitationsComponent', 'selector': 'app-visitor-invitations'},{'name': 'VisitorParcelsComponent', 'selector': 'app-visitor-parcels'},{'name': 'VisitorReportsComponent', 'selector': 'app-visitor-reports'},{'name': 'VisitorsComponent', 'selector': 'app-visitors'},{'name': 'WatchlistComponent', 'selector': 'app-watchlist'},{'name': 'ZoneConfigComponent', 'selector': 'app-zone-config'}];
+    var DIRECTIVES = [{'name': 'HasPermissionDirective', 'selector': '[appHasPermission]'},{'name': 'ImageOptimizationDirective', 'selector': '[appImageOptimization]'}];
+    var ACTUAL_COMPONENT = {'name': 'RecognitionHistoryComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'RecognitionHistoryComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

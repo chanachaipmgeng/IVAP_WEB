@@ -1,0 +1,2985 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  MaterialTableComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/shared/components/material-table/material-table.component.ts</code>
+</p>
+
+
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-material-table</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../interfaces/Module.html" target="_self" >CommonModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >FormsModule</a></code>
+                            <code>MatTableModule</code>
+                                <code><a href="../interfaces/Module.html" target="_self" >MatPaginatorModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >MatSortModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >MatIconModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >MatButtonModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >MatCheckboxModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >MatMenuModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >MatTooltipModule</a></code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">styles</td>
+                <td class="col-md-9"><code>
+    .material-table-container {
+      background: rgba(26, 26, 46, 0.8);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+    }
+
+    .table-title {
+      color: #ffffff;
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .table-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .search-field {
+      width: 250px;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    .material-table {
+      width: 100%;
+      background: transparent;
+    }
+
+    .material-table th {
+      color: #ffffff;
+      font-weight: 600;
+      background: rgba(59, 130, 246, 0.1);
+    }
+
+    .material-table td {
+      color: #a0a0a0;
+      border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+    }
+
+    .material-table tr:hover {
+      background: rgba(59, 130, 246, 0.05);
+    }
+
+    .material-table tr.selected {
+      background: rgba(59, 130, 246, 0.1);
+    }
+
+    .table-paginator {
+      background: rgba(26, 26, 46, 0.8);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(59, 130, 246, 0.2);
+    }
+
+    .no-data {
+      text-align: center;
+      padding: 3rem;
+      color: #a0a0a0;
+    }
+
+    .no-data mat-icon {
+      font-size: 3rem;
+      width: 3rem;
+      height: 3rem;
+      margin-bottom: 1rem;
+    }
+  </code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">template</td>
+                <td class="col-md-9"><pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;material-table-container&quot; [class]&#x3D;&quot;customClass || &#x27;&#x27;&quot; role&#x3D;&quot;region&quot; [attr.aria-label]&#x3D;&quot;ariaLabel || title || &#x27;Data table&#x27;&quot;&gt;
+  &lt;!-- Table Header --&gt;
+  &lt;div class&#x3D;&quot;table-header&quot; *ngIf&#x3D;&quot;title || searchable || hasActions&quot; role&#x3D;&quot;toolbar&quot; [attr.aria-label]&#x3D;&quot;&#x27;Table controls&#x27;&quot;&gt;
+    &lt;h2 *ngIf&#x3D;&quot;title&quot; class&#x3D;&quot;table-title&quot; [id]&#x3D;&quot;titleId&quot;&gt;{{ title }}&lt;/h2&gt;
+    &lt;div class&#x3D;&quot;table-controls&quot;&gt;
+    &lt;div *ngIf&#x3D;&quot;searchable&quot; class&#x3D;&quot;search-field&quot;&gt;
+      &lt;input
+        [(ngModel)]&#x3D;&quot;searchTerm&quot;
+        (ngModelChange)&#x3D;&quot;onSearchChange()&quot;
+        placeholder&#x3D;&quot;Search...&quot;
+        class&#x3D;&quot;w-full px-3 py-2 rounded-lg bg-gray-800 text-white border border-gray-600 focus:border-blue-500 focus:outline-none&quot;
+        [attr.aria-label]&#x3D;&quot;&#x27;Search table&#x27;&quot;
+        [attr.aria-describedby]&#x3D;&quot;title ? titleId : null&quot;&gt;
+    &lt;/div&gt;
+      &lt;button mat-icon-button [matMenuTriggerFor]&#x3D;&quot;actionsMenu&quot; *ngIf&#x3D;&quot;hasActions&quot; [attr.aria-label]&#x3D;&quot;&#x27;Table actions menu&#x27;&quot;&gt;
+        &lt;mat-icon [attr.aria-hidden]&#x3D;&quot;&#x27;true&#x27;&quot;&gt;more_vert&lt;/mat-icon&gt;
+      &lt;/button&gt;
+      &lt;mat-menu #actionsMenu&#x3D;&quot;matMenu&quot;&gt;
+        &lt;button mat-menu-item (click)&#x3D;&quot;onActionClick(&#x27;refresh&#x27;)&quot; [attr.aria-label]&#x3D;&quot;&#x27;Refresh table&#x27;&quot;&gt;
+          &lt;mat-icon [attr.aria-hidden]&#x3D;&quot;&#x27;true&#x27;&quot;&gt;refresh&lt;/mat-icon&gt;
+          &lt;span&gt;Refresh&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;button mat-menu-item (click)&#x3D;&quot;onActionClick(&#x27;export&#x27;)&quot; [attr.aria-label]&#x3D;&quot;&#x27;Export table&#x27;&quot;&gt;
+          &lt;mat-icon [attr.aria-hidden]&#x3D;&quot;&#x27;true&#x27;&quot;&gt;download&lt;/mat-icon&gt;
+          &lt;span&gt;Export&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/mat-menu&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Table --&gt;
+  &lt;div class&#x3D;&quot;table-wrapper&quot;&gt;
+    &lt;table mat-table [dataSource]&#x3D;&quot;paginatedData&quot; class&#x3D;&quot;material-table&quot; role&#x3D;&quot;table&quot; [attr.aria-label]&#x3D;&quot;ariaLabel || title || &#x27;Data table&#x27;&quot; [attr.aria-describedby]&#x3D;&quot;title ? titleId : null&quot;&gt;
+      &lt;!-- Selection Column --&gt;
+      &lt;ng-container matColumnDef&#x3D;&quot;select&quot; *ngIf&#x3D;&quot;selectable&quot;&gt;
+        &lt;th mat-header-cell *matHeaderCellDef [attr.aria-label]&#x3D;&quot;&#x27;Select all&#x27;&quot;&gt;
+          &lt;mat-checkbox
+            (change)&#x3D;&quot;onMasterToggle()&quot;
+            [checked]&#x3D;&quot;masterCheckboxChecked&quot;
+            [indeterminate]&#x3D;&quot;masterCheckboxIndeterminate&quot;
+            [attr.aria-label]&#x3D;&quot;&#x27;Select all rows&#x27;&quot;&gt;
+          &lt;/mat-checkbox&gt;
+        &lt;/th&gt;
+        &lt;td mat-cell *matCellDef&#x3D;&quot;let row&quot; [attr.aria-label]&#x3D;&quot;&#x27;Select row&#x27;&quot;&gt;
+          &lt;mat-checkbox
+            (change)&#x3D;&quot;onRowToggle(row)&quot;
+            [checked]&#x3D;&quot;isSelected(row)&quot;
+            [attr.aria-label]&#x3D;&quot;&#x27;Select row&#x27;&quot;&gt;
+          &lt;/mat-checkbox&gt;
+        &lt;/td&gt;
+      &lt;/ng-container&gt;
+
+      &lt;!-- Data Columns --&gt;
+      &lt;ng-container *ngFor&#x3D;&quot;let column of columns; trackBy: trackByColumn&quot; [matColumnDef]&#x3D;&quot;column.key&quot;&gt;
+        &lt;th mat-header-cell
+            *matHeaderCellDef
+            [class.text-left]&#x3D;&quot;column.align &#x3D;&#x3D;&#x3D; &#x27;left&#x27; || !column.align&quot;
+            [class.text-center]&#x3D;&quot;column.align &#x3D;&#x3D;&#x3D; &#x27;center&#x27;&quot;
+            [class.text-right]&#x3D;&quot;column.align &#x3D;&#x3D;&#x3D; &#x27;right&#x27;&quot;
+            [style.width]&#x3D;&quot;column.width&quot;
+            [attr.aria-sort]&#x3D;&quot;getSortDirection(column.key)&quot;&gt;
+          {{ column.label }}
+        &lt;/th&gt;
+        &lt;td mat-cell
+            *matCellDef&#x3D;&quot;let row; let i &#x3D; index&quot;
+            [class.text-left]&#x3D;&quot;column.align &#x3D;&#x3D;&#x3D; &#x27;left&#x27; || !column.align&quot;
+            [class.text-center]&#x3D;&quot;column.align &#x3D;&#x3D;&#x3D; &#x27;center&#x27;&quot;
+            [class.text-right]&#x3D;&quot;column.align &#x3D;&#x3D;&#x3D; &#x27;right&#x27;&quot;
+            [attr.aria-selected]&#x3D;&quot;selectable &amp;&amp; isSelected(row) ? &#x27;true&#x27; : null&quot;&gt;
+          &lt;ng-container [ngSwitch]&#x3D;&quot;column.type&quot;&gt;
+            &lt;span *ngSwitchCase&#x3D;&quot;&#x27;text&#x27;&quot;&gt;{{ getCellValue(row, column.key) }}&lt;/span&gt;
+            &lt;span *ngSwitchCase&#x3D;&quot;&#x27;number&#x27;&quot;&gt;{{ getCellValue(row, column.key) | number }}&lt;/span&gt;
+            &lt;span *ngSwitchCase&#x3D;&quot;&#x27;date&#x27;&quot;&gt;{{ getCellValue(row, column.key) | date:&#x27;short&#x27; }}&lt;/span&gt;
+            &lt;mat-icon *ngSwitchCase&#x3D;&quot;&#x27;boolean&#x27;&quot; [attr.aria-label]&#x3D;&quot;getCellValue(row, column.key) ? &#x27;Yes&#x27; : &#x27;No&#x27;&quot; [attr.aria-hidden]&#x3D;&quot;&#x27;true&#x27;&quot;&gt;
+              {{ getCellValue(row, column.key) ? &#x27;check_circle&#x27; : &#x27;cancel&#x27; }}
+            &lt;/mat-icon&gt;
+            &lt;mat-icon *ngSwitchCase&#x3D;&quot;&#x27;icon&#x27;&quot; [attr.aria-hidden]&#x3D;&quot;&#x27;true&#x27;&quot;&gt;{{ getCellValue(row, column.key) }}&lt;/mat-icon&gt;
+            &lt;span *ngSwitchDefault&gt;{{ getCellValue(row, column.key) }}&lt;/span&gt;
+          &lt;/ng-container&gt;
+        &lt;/td&gt;
+      &lt;/ng-container&gt;
+
+      &lt;!-- Actions Column --&gt;
+      &lt;ng-container matColumnDef&#x3D;&quot;actions&quot; *ngIf&#x3D;&quot;rowActions.length &gt; 0&quot;&gt;
+        &lt;th mat-header-cell *matHeaderCellDef [attr.aria-label]&#x3D;&quot;&#x27;Actions&#x27;&quot;&gt;Actions&lt;/th&gt;
+        &lt;td mat-cell *matCellDef&#x3D;&quot;let row&quot; [attr.aria-label]&#x3D;&quot;&#x27;Row actions&#x27;&quot;&gt;
+          &lt;button mat-icon-button [matMenuTriggerFor]&#x3D;&quot;rowMenu&quot; [attr.aria-label]&#x3D;&quot;&#x27;Open actions menu for row&#x27;&quot;&gt;
+            &lt;mat-icon [attr.aria-hidden]&#x3D;&quot;&#x27;true&#x27;&quot;&gt;more_vert&lt;/mat-icon&gt;
+          &lt;/button&gt;
+          &lt;mat-menu #rowMenu&#x3D;&quot;matMenu&quot;&gt;
+            &lt;button mat-menu-item
+                    *ngFor&#x3D;&quot;let action of rowActions; trackBy: trackByAction&quot;
+                    [disabled]&#x3D;&quot;action.disabled?.(row)&quot;
+                    (click)&#x3D;&quot;onRowActionClick(action, row)&quot;
+                    [attr.aria-label]&#x3D;&quot;action.label&quot;&gt;
+              &lt;mat-icon [attr.aria-hidden]&#x3D;&quot;&#x27;true&#x27;&quot;&gt;{{ action.icon }}&lt;/mat-icon&gt;
+              &lt;span&gt;{{ action.label }}&lt;/span&gt;
+            &lt;/button&gt;
+          &lt;/mat-menu&gt;
+        &lt;/td&gt;
+      &lt;/ng-container&gt;
+
+      &lt;tr mat-header-row *matHeaderRowDef&#x3D;&quot;displayedColumns&quot;&gt;&lt;/tr&gt;
+      &lt;tr mat-row
+          *matRowDef&#x3D;&quot;let row; columns: displayedColumns;&quot;
+          [class.selected]&#x3D;&quot;isSelected(row)&quot;
+          (click)&#x3D;&quot;onRowClick(row)&quot;&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Pagination --&gt;
+  &lt;mat-paginator
+    *ngIf&#x3D;&quot;paginated&quot;
+    [length]&#x3D;&quot;totalItems&quot;
+    [pageSize]&#x3D;&quot;pageSize&quot;
+    [pageSizeOptions]&#x3D;&quot;pageSizeOptions&quot;
+    [showFirstLastButtons]&#x3D;&quot;true&quot;
+    (page)&#x3D;&quot;onPageChange($event)&quot;
+    class&#x3D;&quot;table-paginator&quot;&gt;
+  &lt;/mat-paginator&gt;
+
+  &lt;!-- No Data --&gt;
+  &lt;div *ngIf&#x3D;&quot;filteredData.length &#x3D;&#x3D;&#x3D; 0&quot; class&#x3D;&quot;no-data&quot; role&#x3D;&quot;status&quot; [attr.aria-live]&#x3D;&quot;&#x27;polite&#x27;&quot;&gt;
+    &lt;mat-icon [attr.aria-hidden]&#x3D;&quot;&#x27;true&#x27;&quot;&gt;inbox&lt;/mat-icon&gt;
+    &lt;p&gt;No data available&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></td>
+            </tr>
+
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#currentPage" >currentPage</a>
+                            </li>
+                            <li>
+                                <a href="#searchTerm" >searchTerm</a>
+                            </li>
+                            <li>
+                                <a href="#selectedRows" >selectedRows</a>
+                            </li>
+                            <li>
+                                <a href="#sort" >sort</a>
+                            </li>
+                            <li>
+                                <a href="#titleId" >titleId</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#getCellValue" >getCellValue</a>
+                            </li>
+                            <li>
+                                <a href="#getSortDirection" >getSortDirection</a>
+                            </li>
+                            <li>
+                                <a href="#isSelected" >isSelected</a>
+                            </li>
+                            <li>
+                                <a href="#onActionClick" >onActionClick</a>
+                            </li>
+                            <li>
+                                <a href="#onMasterToggle" >onMasterToggle</a>
+                            </li>
+                            <li>
+                                <a href="#onPageChange" >onPageChange</a>
+                            </li>
+                            <li>
+                                <a href="#onRowActionClick" >onRowActionClick</a>
+                            </li>
+                            <li>
+                                <a href="#onRowClick" >onRowClick</a>
+                            </li>
+                            <li>
+                                <a href="#onRowToggle" >onRowToggle</a>
+                            </li>
+                            <li>
+                                <a href="#onSearchChange" >onSearchChange</a>
+                            </li>
+                            <li>
+                                <a href="#trackByAction" >trackByAction</a>
+                            </li>
+                            <li>
+                                <a href="#trackByColumn" >trackByColumn</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#ariaLabel" >ariaLabel</a>
+                            </li>
+                            <li>
+                                <a href="#columns" >columns</a>
+                            </li>
+                            <li>
+                                <a href="#customClass" >customClass</a>
+                            </li>
+                            <li>
+                                <a href="#data" >data</a>
+                            </li>
+                            <li>
+                                <a href="#pageSize" >pageSize</a>
+                            </li>
+                            <li>
+                                <a href="#pageSizeOptions" >pageSizeOptions</a>
+                            </li>
+                            <li>
+                                <a href="#paginated" >paginated</a>
+                            </li>
+                            <li>
+                                <a href="#rowActions" >rowActions</a>
+                            </li>
+                            <li>
+                                <a href="#searchable" >searchable</a>
+                            </li>
+                            <li>
+                                <a href="#selectable" >selectable</a>
+                            </li>
+                            <li>
+                                <a href="#title" >title</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#pageChange" >pageChange</a>
+                            </li>
+                            <li>
+                                <a href="#rowAction" >rowAction</a>
+                            </li>
+                            <li>
+                                <a href="#rowClick" >rowClick</a>
+                            </li>
+                            <li>
+                                <a href="#searchChange" >searchChange</a>
+                            </li>
+                            <li>
+                                <a href="#selectionChange" >selectionChange</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#displayedColumns" >displayedColumns</a>
+                                </li>
+                                <li>
+                                    <a href="#filteredData" >filteredData</a>
+                                </li>
+                                <li>
+                                    <a href="#paginatedData" >paginatedData</a>
+                                </li>
+                                <li>
+                                    <a href="#totalItems" >totalItems</a>
+                                </li>
+                                <li>
+                                    <a href="#masterCheckboxChecked" >masterCheckboxChecked</a>
+                                </li>
+                                <li>
+                                    <a href="#masterCheckboxIndeterminate" >masterCheckboxIndeterminate</a>
+                                </li>
+                                <li>
+                                    <a href="#hasActions" >hasActions</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+
+    <section data-compodoc="block-inputs">
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="ariaLabel"></a>
+                        <b>ariaLabel</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="335" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:335</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>ARIA label for the table</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="columns"></a>
+                        <b>columns</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>TableColumn[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="290" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:290</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Table columns</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="customClass"></a>
+                        <b>customClass</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="330" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:330</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Custom CSS classes</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="data"></a>
+                        <b>data</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>any[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="285" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:285</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Table data</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="pageSize"></a>
+                        <b>pageSize</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>10</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="320" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:320</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Page size</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="pageSizeOptions"></a>
+                        <b>pageSizeOptions</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>number[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[5, 10, 25, 50]</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="325" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:325</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Page size options</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="paginated"></a>
+                        <b>paginated</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>true</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="315" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:315</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Enable pagination</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="rowActions"></a>
+                        <b>rowActions</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>TableAction[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="295" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:295</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Row actions</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="searchable"></a>
+                        <b>searchable</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>true</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="305" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:305</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Enable search</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectable"></a>
+                        <b>selectable</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="310" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:310</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Enable row selection</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="title"></a>
+                        <b>title</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="300" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:300</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Table title</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+    <section data-compodoc="block-outputs">
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="pageChange"></a>
+                        <b>pageChange</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="355" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:355</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Page change event</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="rowAction"></a>
+                        <b>rowAction</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="345" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:345</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Row action event</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="rowClick"></a>
+                        <b>rowClick</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="340" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:340</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Row click event</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="searchChange"></a>
+                        <b>searchChange</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="360" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:360</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Search change event</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectionChange"></a>
+                        <b>selectionChange</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="350" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:350</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Selection change event</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getCellValue"></a>
+                    <span class="name">
+                        <span ><b>getCellValue</b></span>
+                        <a href="#getCellValue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getCellValue(row: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="444"
+                                    class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:444</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get cell value from row</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>row</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>key</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getSortDirection"></a>
+                    <span class="name">
+                        <span ><b>getSortDirection</b></span>
+                        <a href="#getSortDirection"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getSortDirection(key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="451"
+                                    class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:451</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get sort direction for column</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>key</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>string | null</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isSelected"></a>
+                    <span class="name">
+                        <span ><b>isSelected</b></span>
+                        <a href="#isSelected"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isSelected(row: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="507"
+                                    class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:507</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Check if row is selected</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>row</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onActionClick"></a>
+                    <span class="name">
+                        <span ><b>onActionClick</b></span>
+                        <a href="#onActionClick"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onActionClick(action: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="523"
+                                    class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:523</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle table-level action click</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>action</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onMasterToggle"></a>
+                    <span class="name">
+                        <span ><b>onMasterToggle</b></span>
+                        <a href="#onMasterToggle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onMasterToggle()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="483"
+                                    class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:483</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle master checkbox toggle</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onPageChange"></a>
+                    <span class="name">
+                        <span ><b>onPageChange</b></span>
+                        <a href="#onPageChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onPageChange(event: PageEvent)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="514"
+                                    class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:514</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle page change</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                        <code>PageEvent</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onRowActionClick"></a>
+                    <span class="name">
+                        <span ><b>onRowActionClick</b></span>
+                        <a href="#onRowActionClick"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onRowActionClick(action: <a href="../interfaces/TableAction.html" target="_self">TableAction</a>, row: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="476"
+                                    class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:476</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle row action click</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>action</td>
+                                            <td>
+                                                            <code><a href="../interfaces/TableAction.html" target="_self" >TableAction</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>row</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onRowClick"></a>
+                    <span class="name">
+                        <span ><b>onRowClick</b></span>
+                        <a href="#onRowClick"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onRowClick(row: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="469"
+                                    class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:469</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle row click</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>row</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onRowToggle"></a>
+                    <span class="name">
+                        <span ><b>onRowToggle</b></span>
+                        <a href="#onRowToggle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onRowToggle(row: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="495"
+                                    class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:495</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle row checkbox toggle</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>row</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSearchChange"></a>
+                    <span class="name">
+                        <span ><b>onSearchChange</b></span>
+                        <a href="#onSearchChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSearchChange()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="461"
+                                    class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:461</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle search change</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="trackByAction"></a>
+                    <span class="name">
+                        <span ><b>trackByAction</b></span>
+                        <a href="#trackByAction"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>trackByAction(index: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, action: <a href="../interfaces/TableAction.html" target="_self">TableAction</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="437"
+                                    class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:437</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Track by function for actions</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>index</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>action</td>
+                                            <td>
+                                                            <code><a href="../interfaces/TableAction.html" target="_self" >TableAction</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="trackByColumn"></a>
+                    <span class="name">
+                        <span ><b>trackByColumn</b></span>
+                        <a href="#trackByColumn"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>trackByColumn(index: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, column: <a href="../interfaces/TableColumn.html" target="_self">TableColumn</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="430"
+                                    class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:430</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Track by function for columns</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>index</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>column</td>
+                                            <td>
+                                                            <code><a href="../interfaces/TableColumn.html" target="_self" >TableColumn</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currentPage"></a>
+                    <span class="name">
+                        <span ><b>currentPage</b></span>
+                        <a href="#currentPage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>0</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="375" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:375</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Current page index</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="searchTerm"></a>
+                    <span class="name">
+                        <span ><b>searchTerm</b></span>
+                        <a href="#searchTerm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="365" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:365</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Search term</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedRows"></a>
+                    <span class="name">
+                        <span ><b>selectedRows</b></span>
+                        <a href="#selectedRows"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Set&lt;any&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Set()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="370" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:370</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Selected rows</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sort"></a>
+                    <span class="name">
+                        <span ><b>sort</b></span>
+                        <a href="#sort"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="380" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:380</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Current sort</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="titleId"></a>
+                    <span class="name">
+                        <span ><b>titleId</b></span>
+                        <a href="#titleId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x60;table-title-${Math.random().toString(36).substr(2, 9)}&#x60;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="385" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:385</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Unique title ID</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="displayedColumns"></a>
+                        <span class="name"><b>displayedColumns</b><a href="#displayedColumns"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>displayedColumns()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="387" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:387</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="filteredData"></a>
+                        <span class="name"><b>filteredData</b><a href="#filteredData"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>filteredData()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="395" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:395</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="paginatedData"></a>
+                        <span class="name"><b>paginatedData</b><a href="#paginatedData"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>paginatedData()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="405" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:405</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="totalItems"></a>
+                        <span class="name"><b>totalItems</b><a href="#totalItems"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>totalItems()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="411" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:411</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="masterCheckboxChecked"></a>
+                        <span class="name"><b>masterCheckboxChecked</b><a href="#masterCheckboxChecked"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>masterCheckboxChecked()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="415" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:415</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="masterCheckboxIndeterminate"></a>
+                        <span class="name"><b>masterCheckboxIndeterminate</b><a href="#masterCheckboxIndeterminate"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>masterCheckboxIndeterminate()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="419" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:419</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="hasActions"></a>
+                        <span class="name"><b>hasActions</b><a href="#hasActions"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>hasActions()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="423" class="link-to-prism">src/app/shared/components/material-table/material-table.component.ts:423</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, Input, Output, EventEmitter, computed } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { MatTableModule } from &#x27;@angular/material/table&#x27;;
+import { MatPaginatorModule, PageEvent } from &#x27;@angular/material/paginator&#x27;;
+import { MatSortModule, Sort } from &#x27;@angular/material/sort&#x27;;
+import { MatIconModule } from &#x27;@angular/material/icon&#x27;;
+import { MatButtonModule } from &#x27;@angular/material/button&#x27;;
+import { MatCheckboxModule } from &#x27;@angular/material/checkbox&#x27;;
+import { MatMenuModule } from &#x27;@angular/material/menu&#x27;;
+import { MatTooltipModule } from &#x27;@angular/material/tooltip&#x27;;
+import { FormsModule } from &#x27;@angular/forms&#x27;;
+
+export interface TableColumn {
+  key: string;
+  label: string;
+  type?: &#x27;text&#x27; | &#x27;number&#x27; | &#x27;date&#x27; | &#x27;boolean&#x27; | &#x27;icon&#x27; | &#x27;action&#x27;;
+  sortable?: boolean;
+  width?: string;
+  align?: &#x27;left&#x27; | &#x27;center&#x27; | &#x27;right&#x27;;
+}
+
+export interface TableAction {
+  key: string;
+  label: string;
+  icon: string;
+  color?: &#x27;primary&#x27; | &#x27;accent&#x27; | &#x27;warn&#x27;;
+  disabled?: (row: any) &#x3D;&gt; boolean;
+}
+
+@Component({
+  selector: &#x27;app-material-table&#x27;,
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatIconModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatMenuModule,
+    MatTooltipModule
+  ],
+  template: &#x60;
+    &lt;div class&#x3D;&quot;material-table-container&quot; [class]&#x3D;&quot;customClass || &#x27;&#x27;&quot; role&#x3D;&quot;region&quot; [attr.aria-label]&#x3D;&quot;ariaLabel || title || &#x27;Data table&#x27;&quot;&gt;
+      &lt;!-- Table Header --&gt;
+      &lt;div class&#x3D;&quot;table-header&quot; *ngIf&#x3D;&quot;title || searchable || hasActions&quot; role&#x3D;&quot;toolbar&quot; [attr.aria-label]&#x3D;&quot;&#x27;Table controls&#x27;&quot;&gt;
+        &lt;h2 *ngIf&#x3D;&quot;title&quot; class&#x3D;&quot;table-title&quot; [id]&#x3D;&quot;titleId&quot;&gt;{{ title }}&lt;/h2&gt;
+        &lt;div class&#x3D;&quot;table-controls&quot;&gt;
+        &lt;div *ngIf&#x3D;&quot;searchable&quot; class&#x3D;&quot;search-field&quot;&gt;
+          &lt;input
+            [(ngModel)]&#x3D;&quot;searchTerm&quot;
+            (ngModelChange)&#x3D;&quot;onSearchChange()&quot;
+            placeholder&#x3D;&quot;Search...&quot;
+            class&#x3D;&quot;w-full px-3 py-2 rounded-lg bg-gray-800 text-white border border-gray-600 focus:border-blue-500 focus:outline-none&quot;
+            [attr.aria-label]&#x3D;&quot;&#x27;Search table&#x27;&quot;
+            [attr.aria-describedby]&#x3D;&quot;title ? titleId : null&quot;&gt;
+        &lt;/div&gt;
+          &lt;button mat-icon-button [matMenuTriggerFor]&#x3D;&quot;actionsMenu&quot; *ngIf&#x3D;&quot;hasActions&quot; [attr.aria-label]&#x3D;&quot;&#x27;Table actions menu&#x27;&quot;&gt;
+            &lt;mat-icon [attr.aria-hidden]&#x3D;&quot;&#x27;true&#x27;&quot;&gt;more_vert&lt;/mat-icon&gt;
+          &lt;/button&gt;
+          &lt;mat-menu #actionsMenu&#x3D;&quot;matMenu&quot;&gt;
+            &lt;button mat-menu-item (click)&#x3D;&quot;onActionClick(&#x27;refresh&#x27;)&quot; [attr.aria-label]&#x3D;&quot;&#x27;Refresh table&#x27;&quot;&gt;
+              &lt;mat-icon [attr.aria-hidden]&#x3D;&quot;&#x27;true&#x27;&quot;&gt;refresh&lt;/mat-icon&gt;
+              &lt;span&gt;Refresh&lt;/span&gt;
+            &lt;/button&gt;
+            &lt;button mat-menu-item (click)&#x3D;&quot;onActionClick(&#x27;export&#x27;)&quot; [attr.aria-label]&#x3D;&quot;&#x27;Export table&#x27;&quot;&gt;
+              &lt;mat-icon [attr.aria-hidden]&#x3D;&quot;&#x27;true&#x27;&quot;&gt;download&lt;/mat-icon&gt;
+              &lt;span&gt;Export&lt;/span&gt;
+            &lt;/button&gt;
+          &lt;/mat-menu&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Table --&gt;
+      &lt;div class&#x3D;&quot;table-wrapper&quot;&gt;
+        &lt;table mat-table [dataSource]&#x3D;&quot;paginatedData&quot; class&#x3D;&quot;material-table&quot; role&#x3D;&quot;table&quot; [attr.aria-label]&#x3D;&quot;ariaLabel || title || &#x27;Data table&#x27;&quot; [attr.aria-describedby]&#x3D;&quot;title ? titleId : null&quot;&gt;
+          &lt;!-- Selection Column --&gt;
+          &lt;ng-container matColumnDef&#x3D;&quot;select&quot; *ngIf&#x3D;&quot;selectable&quot;&gt;
+            &lt;th mat-header-cell *matHeaderCellDef [attr.aria-label]&#x3D;&quot;&#x27;Select all&#x27;&quot;&gt;
+              &lt;mat-checkbox
+                (change)&#x3D;&quot;onMasterToggle()&quot;
+                [checked]&#x3D;&quot;masterCheckboxChecked&quot;
+                [indeterminate]&#x3D;&quot;masterCheckboxIndeterminate&quot;
+                [attr.aria-label]&#x3D;&quot;&#x27;Select all rows&#x27;&quot;&gt;
+              &lt;/mat-checkbox&gt;
+            &lt;/th&gt;
+            &lt;td mat-cell *matCellDef&#x3D;&quot;let row&quot; [attr.aria-label]&#x3D;&quot;&#x27;Select row&#x27;&quot;&gt;
+              &lt;mat-checkbox
+                (change)&#x3D;&quot;onRowToggle(row)&quot;
+                [checked]&#x3D;&quot;isSelected(row)&quot;
+                [attr.aria-label]&#x3D;&quot;&#x27;Select row&#x27;&quot;&gt;
+              &lt;/mat-checkbox&gt;
+            &lt;/td&gt;
+          &lt;/ng-container&gt;
+
+          &lt;!-- Data Columns --&gt;
+          &lt;ng-container *ngFor&#x3D;&quot;let column of columns; trackBy: trackByColumn&quot; [matColumnDef]&#x3D;&quot;column.key&quot;&gt;
+            &lt;th mat-header-cell
+                *matHeaderCellDef
+                [class.text-left]&#x3D;&quot;column.align &#x3D;&#x3D;&#x3D; &#x27;left&#x27; || !column.align&quot;
+                [class.text-center]&#x3D;&quot;column.align &#x3D;&#x3D;&#x3D; &#x27;center&#x27;&quot;
+                [class.text-right]&#x3D;&quot;column.align &#x3D;&#x3D;&#x3D; &#x27;right&#x27;&quot;
+                [style.width]&#x3D;&quot;column.width&quot;
+                [attr.aria-sort]&#x3D;&quot;getSortDirection(column.key)&quot;&gt;
+              {{ column.label }}
+            &lt;/th&gt;
+            &lt;td mat-cell
+                *matCellDef&#x3D;&quot;let row; let i &#x3D; index&quot;
+                [class.text-left]&#x3D;&quot;column.align &#x3D;&#x3D;&#x3D; &#x27;left&#x27; || !column.align&quot;
+                [class.text-center]&#x3D;&quot;column.align &#x3D;&#x3D;&#x3D; &#x27;center&#x27;&quot;
+                [class.text-right]&#x3D;&quot;column.align &#x3D;&#x3D;&#x3D; &#x27;right&#x27;&quot;
+                [attr.aria-selected]&#x3D;&quot;selectable &amp;&amp; isSelected(row) ? &#x27;true&#x27; : null&quot;&gt;
+              &lt;ng-container [ngSwitch]&#x3D;&quot;column.type&quot;&gt;
+                &lt;span *ngSwitchCase&#x3D;&quot;&#x27;text&#x27;&quot;&gt;{{ getCellValue(row, column.key) }}&lt;/span&gt;
+                &lt;span *ngSwitchCase&#x3D;&quot;&#x27;number&#x27;&quot;&gt;{{ getCellValue(row, column.key) | number }}&lt;/span&gt;
+                &lt;span *ngSwitchCase&#x3D;&quot;&#x27;date&#x27;&quot;&gt;{{ getCellValue(row, column.key) | date:&#x27;short&#x27; }}&lt;/span&gt;
+                &lt;mat-icon *ngSwitchCase&#x3D;&quot;&#x27;boolean&#x27;&quot; [attr.aria-label]&#x3D;&quot;getCellValue(row, column.key) ? &#x27;Yes&#x27; : &#x27;No&#x27;&quot; [attr.aria-hidden]&#x3D;&quot;&#x27;true&#x27;&quot;&gt;
+                  {{ getCellValue(row, column.key) ? &#x27;check_circle&#x27; : &#x27;cancel&#x27; }}
+                &lt;/mat-icon&gt;
+                &lt;mat-icon *ngSwitchCase&#x3D;&quot;&#x27;icon&#x27;&quot; [attr.aria-hidden]&#x3D;&quot;&#x27;true&#x27;&quot;&gt;{{ getCellValue(row, column.key) }}&lt;/mat-icon&gt;
+                &lt;span *ngSwitchDefault&gt;{{ getCellValue(row, column.key) }}&lt;/span&gt;
+              &lt;/ng-container&gt;
+            &lt;/td&gt;
+          &lt;/ng-container&gt;
+
+          &lt;!-- Actions Column --&gt;
+          &lt;ng-container matColumnDef&#x3D;&quot;actions&quot; *ngIf&#x3D;&quot;rowActions.length &gt; 0&quot;&gt;
+            &lt;th mat-header-cell *matHeaderCellDef [attr.aria-label]&#x3D;&quot;&#x27;Actions&#x27;&quot;&gt;Actions&lt;/th&gt;
+            &lt;td mat-cell *matCellDef&#x3D;&quot;let row&quot; [attr.aria-label]&#x3D;&quot;&#x27;Row actions&#x27;&quot;&gt;
+              &lt;button mat-icon-button [matMenuTriggerFor]&#x3D;&quot;rowMenu&quot; [attr.aria-label]&#x3D;&quot;&#x27;Open actions menu for row&#x27;&quot;&gt;
+                &lt;mat-icon [attr.aria-hidden]&#x3D;&quot;&#x27;true&#x27;&quot;&gt;more_vert&lt;/mat-icon&gt;
+              &lt;/button&gt;
+              &lt;mat-menu #rowMenu&#x3D;&quot;matMenu&quot;&gt;
+                &lt;button mat-menu-item
+                        *ngFor&#x3D;&quot;let action of rowActions; trackBy: trackByAction&quot;
+                        [disabled]&#x3D;&quot;action.disabled?.(row)&quot;
+                        (click)&#x3D;&quot;onRowActionClick(action, row)&quot;
+                        [attr.aria-label]&#x3D;&quot;action.label&quot;&gt;
+                  &lt;mat-icon [attr.aria-hidden]&#x3D;&quot;&#x27;true&#x27;&quot;&gt;{{ action.icon }}&lt;/mat-icon&gt;
+                  &lt;span&gt;{{ action.label }}&lt;/span&gt;
+                &lt;/button&gt;
+              &lt;/mat-menu&gt;
+            &lt;/td&gt;
+          &lt;/ng-container&gt;
+
+          &lt;tr mat-header-row *matHeaderRowDef&#x3D;&quot;displayedColumns&quot;&gt;&lt;/tr&gt;
+          &lt;tr mat-row
+              *matRowDef&#x3D;&quot;let row; columns: displayedColumns;&quot;
+              [class.selected]&#x3D;&quot;isSelected(row)&quot;
+              (click)&#x3D;&quot;onRowClick(row)&quot;&gt;
+          &lt;/tr&gt;
+        &lt;/table&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Pagination --&gt;
+      &lt;mat-paginator
+        *ngIf&#x3D;&quot;paginated&quot;
+        [length]&#x3D;&quot;totalItems&quot;
+        [pageSize]&#x3D;&quot;pageSize&quot;
+        [pageSizeOptions]&#x3D;&quot;pageSizeOptions&quot;
+        [showFirstLastButtons]&#x3D;&quot;true&quot;
+        (page)&#x3D;&quot;onPageChange($event)&quot;
+        class&#x3D;&quot;table-paginator&quot;&gt;
+      &lt;/mat-paginator&gt;
+
+      &lt;!-- No Data --&gt;
+      &lt;div *ngIf&#x3D;&quot;filteredData.length &#x3D;&#x3D;&#x3D; 0&quot; class&#x3D;&quot;no-data&quot; role&#x3D;&quot;status&quot; [attr.aria-live]&#x3D;&quot;&#x27;polite&#x27;&quot;&gt;
+        &lt;mat-icon [attr.aria-hidden]&#x3D;&quot;&#x27;true&#x27;&quot;&gt;inbox&lt;/mat-icon&gt;
+        &lt;p&gt;No data available&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &#x60;,
+  styles: [&#x60;
+    .material-table-container {
+      background: rgba(26, 26, 46, 0.8);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+    }
+
+    .table-title {
+      color: #ffffff;
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .table-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .search-field {
+      width: 250px;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    .material-table {
+      width: 100%;
+      background: transparent;
+    }
+
+    .material-table th {
+      color: #ffffff;
+      font-weight: 600;
+      background: rgba(59, 130, 246, 0.1);
+    }
+
+    .material-table td {
+      color: #a0a0a0;
+      border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+    }
+
+    .material-table tr:hover {
+      background: rgba(59, 130, 246, 0.05);
+    }
+
+    .material-table tr.selected {
+      background: rgba(59, 130, 246, 0.1);
+    }
+
+    .table-paginator {
+      background: rgba(26, 26, 46, 0.8);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(59, 130, 246, 0.2);
+    }
+
+    .no-data {
+      text-align: center;
+      padding: 3rem;
+      color: #a0a0a0;
+    }
+
+    .no-data mat-icon {
+      font-size: 3rem;
+      width: 3rem;
+      height: 3rem;
+      margin-bottom: 1rem;
+    }
+  &#x60;]
+})
+export class MaterialTableComponent {
+  /**
+   * Table data
+   */
+  @Input() data: any[] &#x3D; [];
+
+  /**
+   * Table columns
+   */
+  @Input() columns: TableColumn[] &#x3D; [];
+
+  /**
+   * Row actions
+   */
+  @Input() rowActions: TableAction[] &#x3D; [];
+
+  /**
+   * Table title
+   */
+  @Input() title: string &#x3D; &#x27;&#x27;;
+
+  /**
+   * Enable search
+   */
+  @Input() searchable: boolean &#x3D; true;
+
+  /**
+   * Enable row selection
+   */
+  @Input() selectable: boolean &#x3D; false;
+
+  /**
+   * Enable pagination
+   */
+  @Input() paginated: boolean &#x3D; true;
+
+  /**
+   * Page size
+   */
+  @Input() pageSize: number &#x3D; 10;
+
+  /**
+   * Page size options
+   */
+  @Input() pageSizeOptions: number[] &#x3D; [5, 10, 25, 50];
+
+  /**
+   * Custom CSS classes
+   */
+  @Input() customClass: string &#x3D; &#x27;&#x27;;
+
+  /**
+   * ARIA label for the table
+   */
+  @Input() ariaLabel?: string;
+
+  /**
+   * Row click event
+   */
+  @Output() rowClick &#x3D; new EventEmitter&lt;any&gt;();
+
+  /**
+   * Row action event
+   */
+  @Output() rowAction &#x3D; new EventEmitter&lt;{action: TableAction, row: any}&gt;();
+
+  /**
+   * Selection change event
+   */
+  @Output() selectionChange &#x3D; new EventEmitter&lt;any[]&gt;();
+
+  /**
+   * Page change event
+   */
+  @Output() pageChange &#x3D; new EventEmitter&lt;PageEvent&gt;();
+
+  /**
+   * Search change event
+   */
+  @Output() searchChange &#x3D; new EventEmitter&lt;string&gt;();
+
+  /**
+   * Search term
+   */
+  searchTerm: string &#x3D; &#x27;&#x27;;
+
+  /**
+   * Selected rows
+   */
+  selectedRows: Set&lt;any&gt; &#x3D; new Set();
+
+  /**
+   * Current page index
+   */
+  currentPage: number &#x3D; 0;
+
+  /**
+   * Current sort
+   */
+  sort: any &#x3D; null;
+
+  /**
+   * Unique title ID
+   */
+  titleId: string &#x3D; &#x60;table-title-${Math.random().toString(36).substr(2, 9)}&#x60;;
+
+  get displayedColumns(): string[] {
+    const cols &#x3D; [];
+    if (this.selectable) cols.push(&#x27;select&#x27;);
+    cols.push(...this.columns.map(c &#x3D;&gt; c.key));
+    if (this.rowActions.length &gt; 0) cols.push(&#x27;actions&#x27;);
+    return cols;
+  }
+
+  get filteredData(): any[] {
+    if (!this.searchTerm) return this.data;
+    return this.data.filter(row &#x3D;&gt;
+      this.columns.some(col &#x3D;&gt;
+        String(this.getCellValue(row, col.key)).toLowerCase()
+          .includes(this.searchTerm.toLowerCase())
+      )
+    );
+  }
+
+  get paginatedData(): any[] {
+    if (!this.paginated) return this.filteredData;
+    const start &#x3D; this.currentPage * this.pageSize;
+    return this.filteredData.slice(start, start + this.pageSize);
+  }
+
+  get totalItems(): number {
+    return this.filteredData.length;
+  }
+
+  get masterCheckboxChecked(): boolean {
+    return this.selectedRows.size &gt; 0 &amp;&amp; this.selectedRows.size &#x3D;&#x3D;&#x3D; this.paginatedData.length;
+  }
+
+  get masterCheckboxIndeterminate(): boolean {
+    return this.selectedRows.size &gt; 0 &amp;&amp; this.selectedRows.size &lt; this.paginatedData.length;
+  }
+
+  get hasActions(): boolean {
+    return this.rowActions.length &gt; 0;
+  }
+
+  /**
+   * Track by function for columns
+   */
+  trackByColumn(index: number, column: TableColumn): string {
+    return column.key;
+  }
+
+  /**
+   * Track by function for actions
+   */
+  trackByAction(index: number, action: TableAction): string {
+    return action.key;
+  }
+
+  /**
+   * Get cell value from row
+   */
+  getCellValue(row: any, key: string): any {
+    return key.split(&#x27;.&#x27;).reduce((obj, k) &#x3D;&gt; obj?.[k], row);
+  }
+
+  /**
+   * Get sort direction for column
+   */
+  getSortDirection(key: string): string | null {
+    if (!this.sort || this.sort.active !&#x3D;&#x3D; key) {
+      return null;
+    }
+    return this.sort.direction &#x3D;&#x3D;&#x3D; &#x27;asc&#x27; ? &#x27;ascending&#x27; : &#x27;descending&#x27;;
+  }
+
+  /**
+   * Handle search change
+   */
+  onSearchChange(): void {
+    this.currentPage &#x3D; 0;
+    this.searchChange.emit(this.searchTerm);
+  }
+
+  /**
+   * Handle row click
+   */
+  onRowClick(row: any): void {
+    this.rowClick.emit(row);
+  }
+
+  /**
+   * Handle row action click
+   */
+  onRowActionClick(action: TableAction, row: any): void {
+    this.rowAction.emit({ action, row });
+  }
+
+  /**
+   * Handle master checkbox toggle
+   */
+  onMasterToggle(): void {
+    if (this.masterCheckboxChecked) {
+      this.selectedRows.clear();
+    } else {
+      this.paginatedData.forEach(row &#x3D;&gt; this.selectedRows.add(row));
+    }
+    this.selectionChange.emit(Array.from(this.selectedRows));
+  }
+
+  /**
+   * Handle row checkbox toggle
+   */
+  onRowToggle(row: any): void {
+    if (this.isSelected(row)) {
+      this.selectedRows.delete(row);
+    } else {
+      this.selectedRows.add(row);
+    }
+    this.selectionChange.emit(Array.from(this.selectedRows));
+  }
+
+  /**
+   * Check if row is selected
+   */
+  isSelected(row: any): boolean {
+    return this.selectedRows.has(row);
+  }
+
+  /**
+   * Handle page change
+   */
+  onPageChange(event: PageEvent): void {
+    this.currentPage &#x3D; event.pageIndex;
+    this.pageSize &#x3D; event.pageSize;
+    this.pageChange.emit(event);
+  }
+
+  /**
+   * Handle table-level action click
+   */
+  onActionClick(action: string): void {
+    // Handle table-level actions
+  }
+}
+
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="styleData">
+            <pre class="line-numbers"><code class="language-scss">
+    .material-table-container {
+      background: rgba(26, 26, 46, 0.8);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+    }
+
+    .table-title {
+      color: #ffffff;
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .table-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .search-field {
+      width: 250px;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    .material-table {
+      width: 100%;
+      background: transparent;
+    }
+
+    .material-table th {
+      color: #ffffff;
+      font-weight: 600;
+      background: rgba(59, 130, 246, 0.1);
+    }
+
+    .material-table td {
+      color: #a0a0a0;
+      border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+    }
+
+    .material-table tr:hover {
+      background: rgba(59, 130, 246, 0.05);
+    }
+
+    .material-table tr.selected {
+      background: rgba(59, 130, 246, 0.1);
+    }
+
+    .table-paginator {
+      background: rgba(26, 26, 46, 0.8);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(59, 130, 246, 0.2);
+    }
+
+    .no-data {
+      text-align: center;
+      padding: 3rem;
+      color: #a0a0a0;
+    }
+
+    .no-data mat-icon {
+      font-size: 3rem;
+      width: 3rem;
+      height: 3rem;
+      margin-bottom: 1rem;
+    }
+  
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="material-table-container" [class]="customClass || \'\'" role="region" [attr.aria-label]="ariaLabel || title || \'Data table\'">  <!-- Table Header -->  <div class="table-header" *ngIf="title || searchable || hasActions" role="toolbar" [attr.aria-label]="\'Table controls\'">    <h2 *ngIf="title" class="table-title" [id]="titleId">{{ title }}</h2>    <div class="table-controls">    <div *ngIf="searchable" class="search-field">      <input        [(ngModel)]="searchTerm"        (ngModelChange)="onSearchChange()"        placeholder="Search..."        class="w-full px-3 py-2 rounded-lg bg-gray-800 text-white border border-gray-600 focus:border-blue-500 focus:outline-none"        [attr.aria-label]="\'Search table\'"        [attr.aria-describedby]="title ? titleId : null">    </div>      <button mat-icon-button [matMenuTriggerFor]="actionsMenu" *ngIf="hasActions" [attr.aria-label]="\'Table actions menu\'">        <mat-icon [attr.aria-hidden]="\'true\'">more_vert</mat-icon>      </button>      <mat-menu #actionsMenu="matMenu">        <button mat-menu-item (click)="onActionClick(\'refresh\')" [attr.aria-label]="\'Refresh table\'">          <mat-icon [attr.aria-hidden]="\'true\'">refresh</mat-icon>          <span>Refresh</span>        </button>        <button mat-menu-item (click)="onActionClick(\'export\')" [attr.aria-label]="\'Export table\'">          <mat-icon [attr.aria-hidden]="\'true\'">download</mat-icon>          <span>Export</span>        </button>      </mat-menu>    </div>  </div>  <!-- Table -->  <div class="table-wrapper">    <table mat-table [dataSource]="paginatedData" class="material-table" role="table" [attr.aria-label]="ariaLabel || title || \'Data table\'" [attr.aria-describedby]="title ? titleId : null">      <!-- Selection Column -->      <ng-container matColumnDef="select" *ngIf="selectable">        <th mat-header-cell *matHeaderCellDef [attr.aria-label]="\'Select all\'">          <mat-checkbox            (change)="onMasterToggle()"            [checked]="masterCheckboxChecked"            [indeterminate]="masterCheckboxIndeterminate"            [attr.aria-label]="\'Select all rows\'">          </mat-checkbox>        </th>        <td mat-cell *matCellDef="let row" [attr.aria-label]="\'Select row\'">          <mat-checkbox            (change)="onRowToggle(row)"            [checked]="isSelected(row)"            [attr.aria-label]="\'Select row\'">          </mat-checkbox>        </td>      </ng-container>      <!-- Data Columns -->      <ng-container *ngFor="let column of columns; trackBy: trackByColumn" [matColumnDef]="column.key">        <th mat-header-cell            *matHeaderCellDef            [class.text-left]="column.align === \'left\' || !column.align"            [class.text-center]="column.align === \'center\'"            [class.text-right]="column.align === \'right\'"            [style.width]="column.width"            [attr.aria-sort]="getSortDirection(column.key)">          {{ column.label }}        </th>        <td mat-cell            *matCellDef="let row; let i = index"            [class.text-left]="column.align === \'left\' || !column.align"            [class.text-center]="column.align === \'center\'"            [class.text-right]="column.align === \'right\'"            [attr.aria-selected]="selectable && isSelected(row) ? \'true\' : null">          <ng-container [ngSwitch]="column.type">            <span *ngSwitchCase="\'text\'">{{ getCellValue(row, column.key) }}</span>            <span *ngSwitchCase="\'number\'">{{ getCellValue(row, column.key) | number }}</span>            <span *ngSwitchCase="\'date\'">{{ getCellValue(row, column.key) | date:\'short\' }}</span>            <mat-icon *ngSwitchCase="\'boolean\'" [attr.aria-label]="getCellValue(row, column.key) ? \'Yes\' : \'No\'" [attr.aria-hidden]="\'true\'">              {{ getCellValue(row, column.key) ? \'check_circle\' : \'cancel\' }}            </mat-icon>            <mat-icon *ngSwitchCase="\'icon\'" [attr.aria-hidden]="\'true\'">{{ getCellValue(row, column.key) }}</mat-icon>            <span *ngSwitchDefault>{{ getCellValue(row, column.key) }}</span>          </ng-container>        </td>      </ng-container>      <!-- Actions Column -->      <ng-container matColumnDef="actions" *ngIf="rowActions.length > 0">        <th mat-header-cell *matHeaderCellDef [attr.aria-label]="\'Actions\'">Actions</th>        <td mat-cell *matCellDef="let row" [attr.aria-label]="\'Row actions\'">          <button mat-icon-button [matMenuTriggerFor]="rowMenu" [attr.aria-label]="\'Open actions menu for row\'">            <mat-icon [attr.aria-hidden]="\'true\'">more_vert</mat-icon>          </button>          <mat-menu #rowMenu="matMenu">            <button mat-menu-item                    *ngFor="let action of rowActions; trackBy: trackByAction"                    [disabled]="action.disabled?.(row)"                    (click)="onRowActionClick(action, row)"                    [attr.aria-label]="action.label">              <mat-icon [attr.aria-hidden]="\'true\'">{{ action.icon }}</mat-icon>              <span>{{ action.label }}</span>            </button>          </mat-menu>        </td>      </ng-container>      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>      <tr mat-row          *matRowDef="let row; columns: displayedColumns;"          [class.selected]="isSelected(row)"          (click)="onRowClick(row)">      </tr>    </table>  </div>  <!-- Pagination -->  <mat-paginator    *ngIf="paginated"    [length]="totalItems"    [pageSize]="pageSize"    [pageSizeOptions]="pageSizeOptions"    [showFirstLastButtons]="true"    (page)="onPageChange($event)"    class="table-paginator">  </mat-paginator>  <!-- No Data -->  <div *ngIf="filteredData.length === 0" class="no-data" role="status" [attr.aria-live]="\'polite\'">    <mat-icon [attr.aria-hidden]="\'true\'">inbox</mat-icon>    <p>No data available</p>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AccessControlComponent', 'selector': 'app-access-control'},{'name': 'AccessGroupsComponent', 'selector': 'app-access-groups'},{'name': 'AccessibilityDashboardComponent', 'selector': 'app-accessibility-dashboard'},{'name': 'AccessLogsComponent', 'selector': 'app-access-logs'},{'name': 'AccessSchedulesComponent', 'selector': 'app-access-schedules'},{'name': 'AccordionComponent', 'selector': 'app-accordion'},{'name': 'AccordionDemoComponent', 'selector': 'app-accordion-demo'},{'name': 'AdvancedDataTableComponent', 'selector': 'app-advanced-data-table'},{'name': 'AdvancedDataTableDemoComponent', 'selector': 'app-advanced-data-table-demo'},{'name': 'AdvancedFeaturesDashboardComponent', 'selector': 'app-advanced-features-dashboard'},{'name': 'AdvancedFormsComponent', 'selector': 'app-advanced-forms'},{'name': 'AdvancedRichTextComponent', 'selector': 'app-advanced-rich-text'},{'name': 'AdvancedUiDemoComponent', 'selector': 'app-advanced-ui-demo'},{'name': 'AIModelsComponent', 'selector': 'app-ai-models'},{'name': 'AlertComponent', 'selector': 'app-alert'},{'name': 'AlertHistoryComponent', 'selector': 'app-alert-history'},{'name': 'AlertsComponent', 'selector': 'app-alerts'},{'name': 'ApexChartComponent', 'selector': 'app-apex-chart'},{'name': 'App', 'selector': 'app-root'},{'name': 'AttendanceComponent', 'selector': 'app-attendance'},{'name': 'AuditLogsComponent', 'selector': 'app-audit-logs'},{'name': 'AvatarComponent', 'selector': 'app-avatar'},{'name': 'BackupRestoreComponent', 'selector': 'app-backup-restore'},{'name': 'BadgeComponent', 'selector': 'app-badge'},{'name': 'BaseComponent', 'selector': ''},{'name': 'BiometricDataComponent', 'selector': 'app-biometric-data'},{'name': 'BreadcrumbComponent', 'selector': 'app-breadcrumb'},{'name': 'CalendarComponent', 'selector': 'app-calendar'},{'name': 'CalendarDemoComponent', 'selector': 'app-calendar-demo'},{'name': 'ChartComponent', 'selector': 'app-chart'},{'name': 'CheckboxComponent', 'selector': 'app-checkbox'},{'name': 'ColorPickerComponent', 'selector': 'app-color-picker'},{'name': 'ComingSoonComponent', 'selector': 'app-coming-soon'},{'name': 'CompaniesComponent', 'selector': 'app-companies'},{'name': 'CompanyDocumentsComponent', 'selector': 'app-company-documents'},{'name': 'CompanyHolidaysComponent', 'selector': 'app-company-holidays'},{'name': 'ComponentShowcaseComponent', 'selector': 'app-component-showcase'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DataTableComponent', 'selector': 'app-data-table'},{'name': 'DateTimePickerComponent', 'selector': 'app-date-time-picker'},{'name': 'DepartmentsComponent', 'selector': 'app-departments'},{'name': 'DevicesComponent', 'selector': 'app-devices'},{'name': 'DividerComponent', 'selector': 'app-divider'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DoorsComponent', 'selector': 'app-doors'},{'name': 'DraggableCardsComponent', 'selector': 'app-draggable-cards'},{'name': 'DraggableCardsDemoComponent', 'selector': 'app-draggable-cards-demo'},{'name': 'EChartsChartComponent', 'selector': 'app-echarts-chart'},{'name': 'EChartsDemoComponent', 'selector': 'app-echarts-demo'},{'name': 'EmployeesComponent', 'selector': 'app-employees'},{'name': 'EmployeesNewComponent', 'selector': 'app-employees-new'},{'name': 'EmptyStateComponent', 'selector': 'app-empty-state'},{'name': 'Error401Component', 'selector': 'app-error-401'},{'name': 'Error404Component', 'selector': 'app-error-404'},{'name': 'Error500Component', 'selector': 'app-error-500'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'ErrorToastComponent', 'selector': 'app-error-toast'},{'name': 'EventAnalyticsComponent', 'selector': 'app-event-analytics'},{'name': 'EventCheckinHistoryComponent', 'selector': 'app-event-checkin-history'},{'name': 'EventEmailConfirmationComponent', 'selector': 'app-event-email-confirmation'},{'name': 'EventKioskConfigComponent', 'selector': 'app-event-kiosk-config'},{'name': 'EventRegistrationComponent', 'selector': 'app-event-registration'},{'name': 'EventRegistrationFieldsComponent', 'selector': 'app-event-registration-fields'},{'name': 'EventsComponent', 'selector': 'app-events'},{'name': 'FaceRecognitionComponent', 'selector': 'app-face-recognition'},{'name': 'FaceRecognitionDemoComponent', 'selector': 'app-face-recognition-demo'},{'name': 'FaceRecognitionLiveComponent', 'selector': 'app-face-recognition-live'},{'name': 'FaceRecognitionTestComponent', 'selector': 'app-face-recognition-test'},{'name': 'FaqComponent', 'selector': 'app-faq'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'FilterSectionComponent', 'selector': 'app-filter-section'},{'name': 'ForgotPasswordComponent', 'selector': 'app-forgot-password'},{'name': 'FormFieldComponent', 'selector': 'app-form-field'},{'name': 'GalleryComponent', 'selector': 'app-gallery'},{'name': 'GalleryDemoComponent', 'selector': 'app-gallery-demo'},{'name': 'GlassButtonComponent', 'selector': 'app-glass-button'},{'name': 'GlassCardComponent', 'selector': 'app-glass-card'},{'name': 'GlassInputComponent', 'selector': 'app-glass-input'},{'name': 'GroupFaceRecognitionComponent', 'selector': 'app-group-face-recognition'},{'name': 'GuestsComponent', 'selector': 'app-guests'},{'name': 'HardwareStatusDashboardComponent', 'selector': 'app-hardware-status-dashboard'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HeatmapAnalyticsComponent', 'selector': 'app-heatmap-analytics'},{'name': 'HelpCenter', 'selector': 'app-help-center'},{'name': 'HelpCenterComponent', 'selector': 'app-help-center'},{'name': 'HrDashboardComponent', 'selector': 'app-hr-dashboard'},{'name': 'IconComponent', 'selector': 'app-icon'},{'name': 'IncidentReportsComponent', 'selector': 'app-incident-reports'},{'name': 'KioskViewComponent', 'selector': 'app-kiosk-view'},{'name': 'LandingComponent', 'selector': 'app-landing'},{'name': 'LeafletMapComponent', 'selector': 'app-leaflet-map'},{'name': 'LeavesComponent', 'selector': 'app-leaves'},{'name': 'LicenseManagementComponent', 'selector': 'app-license-management'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoadingStateComponent', 'selector': 'app-loading-state'},{'name': 'LocationsComponent', 'selector': 'app-locations'},{'name': 'LockScreenComponent', 'selector': 'app-lock-screen'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MapDemoComponent', 'selector': 'app-map-demo'},{'name': 'MaterialButtonComponent', 'selector': 'app-material-button'},{'name': 'MaterialCardComponent', 'selector': 'app-material-card'},{'name': 'MaterialDialogComponent', 'selector': 'app-material-dialog'},{'name': 'MaterialInputComponent', 'selector': 'app-material-input'},{'name': 'MaterialTableComponent', 'selector': 'app-material-table'},{'name': 'MfaSetupComponent', 'selector': 'app-mfa-setup'},{'name': 'MobileCameraComponent', 'selector': 'app-mobile-camera'},{'name': 'MobileDemoComponent', 'selector': 'app-mobile-demo'},{'name': 'ModalComponent', 'selector': 'app-modal'},{'name': 'ModalFormComponent', 'selector': 'app-modal-form'},{'name': 'ModuleSubscriptionComponent', 'selector': 'app-module-subscription'},{'name': 'MonitoringComponent', 'selector': 'app-monitoring'},{'name': 'NotificationCenterComponent', 'selector': 'app-notification-center'},{'name': 'NotificationDemoComponent', 'selector': 'app-notification-demo'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'NotificationSettingsComponent', 'selector': 'app-notification-settings'},{'name': 'OffcanvasComponent', 'selector': 'app-offcanvas'},{'name': 'OffcanvasDemoComponent', 'selector': 'app-offcanvas-demo'},{'name': 'OvertimeRequestsComponent', 'selector': 'app-overtime-requests'},{'name': 'PageLayoutComponent', 'selector': 'app-page-layout'},{'name': 'PaginationComponent', 'selector': 'app-pagination'},{'name': 'ParkingBlacklistComponent', 'selector': 'app-parking-blacklist'},{'name': 'ParkingDashboardComponent', 'selector': 'app-parking-dashboard'},{'name': 'ParkingEntryComponent', 'selector': 'app-parking-entry'},{'name': 'ParkingExitComponent', 'selector': 'app-parking-exit'},{'name': 'ParkingLogsComponent', 'selector': 'app-parking-logs'},{'name': 'ParkingReservationComponent', 'selector': 'app-parking-reservation'},{'name': 'ParkingRulesComponent', 'selector': 'app-parking-rules'},{'name': 'ParkingSpotsComponent', 'selector': 'app-parking-spots'},{'name': 'ParkingStatisticsComponent', 'selector': 'app-parking-statistics'},{'name': 'PayrollExportComponent', 'selector': 'app-payroll-export'},{'name': 'PerformanceDashboardComponent', 'selector': 'app-performance-dashboard'},{'name': 'PopoverComponent', 'selector': 'app-popover'},{'name': 'PortalLayoutComponent', 'selector': 'app-portal-layout'},{'name': 'PositionsComponent', 'selector': 'app-positions'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'PublicVerificationComponent', 'selector': 'app-public-verification'},{'name': 'QRCodesComponent', 'selector': 'app-qr-codes'},{'name': 'RadioComponent', 'selector': 'app-radio'},{'name': 'RangeSliderComponent', 'selector': 'app-range-slider'},{'name': 'RatingComponent', 'selector': 'app-rating'},{'name': 'RatingDemoComponent', 'selector': 'app-rating-demo'},{'name': 'RbacComponent', 'selector': 'app-rbac'},{'name': 'RecognitionHistoryComponent', 'selector': 'app-recognition-history'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReportsComponent', 'selector': 'app-reports'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'RFIDCardsComponent', 'selector': 'app-rfid-cards'},{'name': 'RichTextComponent', 'selector': 'app-rich-text'},{'name': 'RichTextEditorComponent', 'selector': 'app-rich-text-editor'},{'name': 'RichTextEditorDemoComponent', 'selector': 'app-rich-text-editor-demo'},{'name': 'SafetyDashboardComponent', 'selector': 'app-safety-dashboard'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ShiftsComponent', 'selector': 'app-shifts'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SkeletonComponent', 'selector': 'app-skeleton'},{'name': 'StatisticsCardComponent', 'selector': 'app-statistics-card'},{'name': 'StatisticsGridComponent', 'selector': 'app-statistics-grid'},{'name': 'StepperComponent', 'selector': 'app-stepper'},{'name': 'StructureComponent', 'selector': 'app-structure'},{'name': 'SuperAdminAnnouncementsComponent', 'selector': 'app-super-admin-announcements'},{'name': 'SuperAdminDashboardComponent', 'selector': 'app-super-admin-dashboard'},{'name': 'SuperAdminLayoutComponent', 'selector': 'app-super-admin-layout'},{'name': 'SuperAdminReportsComponent', 'selector': 'app-super-admin-reports'},{'name': 'SurveillanceMapComponent', 'selector': 'app-surveillance-map'},{'name': 'SwiperGalleryComponent', 'selector': 'app-swiper-gallery'},{'name': 'SwiperGalleryDemoComponent', 'selector': 'app-swiper-gallery-demo'},{'name': 'SwitchComponent', 'selector': 'app-switch'},{'name': 'SystemSettingsComponent', 'selector': 'app-system-settings'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TemplateManagementComponent', 'selector': 'app-template-management'},{'name': 'TestApiComponent', 'selector': 'app-test-api'},{'name': 'ThemeSwitcherComponent', 'selector': 'app-theme-switcher'},{'name': 'TimelineComponent', 'selector': 'app-timeline'},{'name': 'TimelineDemoComponent', 'selector': 'app-timeline-demo'},{'name': 'TimesheetsComponent', 'selector': 'app-timesheets'},{'name': 'TimestampComponent', 'selector': 'app-timestamp'},{'name': 'TimestampDemoComponent', 'selector': 'app-timestamp-demo'},{'name': 'TooltipComponent', 'selector': 'app-tooltip'},{'name': 'UsersComponent', 'selector': 'app-users'},{'name': 'ValidationDemoComponent', 'selector': 'app-validation-demo'},{'name': 'VehiclesComponent', 'selector': 'app-vehicles'},{'name': 'VideoAnalyticsComponent', 'selector': 'app-video-analytics'},{'name': 'VideoPlaybackComponent', 'selector': 'app-video-playback'},{'name': 'VisitorBadgesComponent', 'selector': 'app-visitor-badges'},{'name': 'VisitorBlacklistComponent', 'selector': 'app-visitor-blacklist'},{'name': 'VisitorDashboardComponent', 'selector': 'app-visitor-dashboard'},{'name': 'VisitorInvitationsComponent', 'selector': 'app-visitor-invitations'},{'name': 'VisitorParcelsComponent', 'selector': 'app-visitor-parcels'},{'name': 'VisitorReportsComponent', 'selector': 'app-visitor-reports'},{'name': 'VisitorsComponent', 'selector': 'app-visitors'},{'name': 'WatchlistComponent', 'selector': 'app-watchlist'},{'name': 'ZoneConfigComponent', 'selector': 'app-zone-config'}];
+    var DIRECTIVES = [{'name': 'HasPermissionDirective', 'selector': '[appHasPermission]'},{'name': 'ImageOptimizationDirective', 'selector': '[appImageOptimization]'}];
+    var ACTUAL_COMPONENT = {'name': 'MaterialTableComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'MaterialTableComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

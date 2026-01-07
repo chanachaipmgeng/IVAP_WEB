@@ -1,0 +1,1834 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  AccessMetrics</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/core/services/access-control.service.ts</code>
+        </p>
+
+
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#accessByMethod" 
+>
+                                            accessByMethod
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#accessByTime" 
+>
+                                            accessByTime
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#activeAccessPoints" 
+>
+                                            activeAccessPoints
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#activePermissions" 
+>
+                                            activePermissions
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#anomalyEvents" 
+>
+                                            anomalyEvents
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#averageResponseTime" 
+>
+                                            averageResponseTime
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#failedEvents" 
+>
+                                            failedEvents
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#riskDistribution" 
+>
+                                            riskDistribution
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#securityIncidents" 
+>
+                                            securityIncidents
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#successfulEvents" 
+>
+                                            successfulEvents
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#topAccessPoints" 
+>
+                                            topAccessPoints
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#topUsers" 
+>
+                                            topUsers
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#totalAccessPoints" 
+>
+                                            totalAccessPoints
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#totalEvents" 
+>
+                                            totalEvents
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#totalPermissions" 
+>
+                                            totalPermissions
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="accessByMethod"></a>
+                                        <span class="name "><b>accessByMethod</b>
+                                            <a href="#accessByMethod">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>accessByMethod:     <code>literal type</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>literal type</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="accessByTime"></a>
+                                        <span class="name "><b>accessByTime</b>
+                                            <a href="#accessByTime">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>accessByTime:     <code>literal type</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>literal type</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="activeAccessPoints"></a>
+                                        <span class="name "><b>activeAccessPoints</b>
+                                            <a href="#activeAccessPoints">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>activeAccessPoints:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="activePermissions"></a>
+                                        <span class="name "><b>activePermissions</b>
+                                            <a href="#activePermissions">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>activePermissions:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="anomalyEvents"></a>
+                                        <span class="name "><b>anomalyEvents</b>
+                                            <a href="#anomalyEvents">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>anomalyEvents:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="averageResponseTime"></a>
+                                        <span class="name "><b>averageResponseTime</b>
+                                            <a href="#averageResponseTime">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>averageResponseTime:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="failedEvents"></a>
+                                        <span class="name "><b>failedEvents</b>
+                                            <a href="#failedEvents">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>failedEvents:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="riskDistribution"></a>
+                                        <span class="name "><b>riskDistribution</b>
+                                            <a href="#riskDistribution">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>riskDistribution:     <code>literal type</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>literal type</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="securityIncidents"></a>
+                                        <span class="name "><b>securityIncidents</b>
+                                            <a href="#securityIncidents">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>securityIncidents:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="successfulEvents"></a>
+                                        <span class="name "><b>successfulEvents</b>
+                                            <a href="#successfulEvents">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>successfulEvents:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="topAccessPoints"></a>
+                                        <span class="name "><b>topAccessPoints</b>
+                                            <a href="#topAccessPoints">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>topAccessPoints:     <code>literal type</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>literal type</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="topUsers"></a>
+                                        <span class="name "><b>topUsers</b>
+                                            <a href="#topUsers">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>topUsers:     <code>literal type</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>literal type</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="totalAccessPoints"></a>
+                                        <span class="name "><b>totalAccessPoints</b>
+                                            <a href="#totalAccessPoints">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>totalAccessPoints:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="totalEvents"></a>
+                                        <span class="name "><b>totalEvents</b>
+                                            <a href="#totalEvents">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>totalEvents:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="totalPermissions"></a>
+                                        <span class="name "><b>totalPermissions</b>
+                                            <a href="#totalPermissions">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>totalPermissions:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, signal, computed } from &#x27;@angular/core&#x27;;
+import { Observable } from &#x27;rxjs&#x27;;
+
+export interface AccessPoint {
+  id: string;
+  name: string;
+  type: &#x27;door&#x27; | &#x27;gate&#x27; | &#x27;elevator&#x27; | &#x27;turnstile&#x27; | &#x27;parking&#x27; | &#x27;room&#x27; | &#x27;building&#x27;;
+  location: string;
+  zone: string;
+  status: &#x27;active&#x27; | &#x27;inactive&#x27; | &#x27;maintenance&#x27; | &#x27;offline&#x27;;
+  isEnabled: boolean;
+  accessMethods: AccessMethod[];
+  permissions: AccessPermission[];
+  schedule: AccessSchedule;
+  hardware: {
+    controllerId: string;
+    deviceType: string;
+    firmware: string;
+    lastSeen: Date;
+    batteryLevel?: number;
+    signalStrength?: number;
+  };
+  settings: {
+    autoLock: boolean;
+    lockTimeout: number; // in seconds
+    maxAttempts: number;
+    cooldownPeriod: number; // in seconds
+    requireConfirmation: boolean;
+  };
+  createdAt: Date;
+  updatedAt: Date;
+  createdBy: string;
+}
+
+export interface AccessMethod {
+  id: string;
+  type: &#x27;qr_code&#x27; | &#x27;rfid&#x27; | &#x27;fingerprint&#x27; | &#x27;face_recognition&#x27; | &#x27;pin&#x27; | &#x27;otp&#x27; | &#x27;proximity&#x27; | &#x27;keycard&#x27;;
+  isEnabled: boolean;
+  priority: number;
+  settings: {
+    timeout?: number;
+    retryAttempts?: number;
+    requireBackup?: boolean;
+    backupMethod?: string;
+  };
+  hardware: {
+    deviceId?: string;
+    readerType?: string;
+    position?: string;
+  };
+}
+
+export interface AccessPermission {
+  id: string;
+  userId: string;
+  userName: string;
+  accessPointId: string;
+  accessMethods: string[];
+  schedule: {
+    days: number[]; // 0-6 (Sunday-Saturday)
+    startTime: string; // HH:MM
+    endTime: string; // HH:MM
+    timezone: string;
+  };
+  validFrom: Date;
+  validTo?: Date;
+  isActive: boolean;
+  grantedBy: string;
+  grantedAt: Date;
+  reason: string;
+  metadata: {
+    department?: string;
+    role?: string;
+    clearanceLevel?: number;
+    notes?: string;
+  };
+}
+
+export interface AccessEvent {
+  id: string;
+  userId: string;
+  userName: string;
+  accessPointId: string;
+  accessPointName: string;
+  method: string;
+  action: &#x27;grant&#x27; | &#x27;deny&#x27; | &#x27;timeout&#x27; | &#x27;error&#x27;;
+  timestamp: Date;
+  result: &#x27;success&#x27; | &#x27;failure&#x27; | &#x27;partial&#x27;;
+  details: {
+    reason?: string;
+    errorCode?: string;
+    duration?: number; // in milliseconds
+    location?: string;
+    deviceInfo?: any;
+  };
+  ipAddress: string;
+  userAgent: string;
+  sessionId: string;
+  severity: &#x27;low&#x27; | &#x27;medium&#x27; | &#x27;high&#x27; | &#x27;critical&#x27;;
+  isAnomaly: boolean;
+  riskScore: number; // 0-100
+}
+
+export interface AccessSchedule {
+  id: string;
+  name: string;
+  description: string;
+  isActive: boolean;
+  rules: AccessRule[];
+  exceptions: AccessException[];
+  createdAt: Date;
+  updatedAt: Date;
+  createdBy: string;
+}
+
+export interface AccessRule {
+  id: string;
+  name: string;
+  condition: string;
+  action: &#x27;allow&#x27; | &#x27;deny&#x27; | &#x27;require_approval&#x27; | &#x27;log_only&#x27;;
+  priority: number;
+  isEnabled: boolean;
+  description: string;
+  metadata: {
+    timeRange?: { start: string; end: string };
+    daysOfWeek?: number[];
+    userGroups?: string[];
+    accessMethods?: string[];
+    clearanceLevel?: number;
+  };
+}
+
+export interface AccessException {
+  id: string;
+  name: string;
+  description: string;
+  validFrom: Date;
+  validTo: Date;
+  userIds: string[];
+  accessPointIds: string[];
+  reason: string;
+  approvedBy: string;
+  approvedAt: Date;
+  isActive: boolean;
+}
+
+export interface AccessMetrics {
+  totalAccessPoints: number;
+  activeAccessPoints: number;
+  totalPermissions: number;
+  activePermissions: number;
+  totalEvents: number;
+  successfulEvents: number;
+  failedEvents: number;
+  averageResponseTime: number;
+  securityIncidents: number;
+  anomalyEvents: number;
+  accessByMethod: { [key: string]: number };
+  accessByTime: { [key: string]: number };
+  topUsers: { [key: string]: number };
+  topAccessPoints: { [key: string]: number };
+  riskDistribution: { [key: string]: number };
+}
+
+@Injectable({
+  providedIn: &#x27;root&#x27;
+})
+export class AccessControlService {
+  // ✅ Signals for reactive state
+  private _accessPoints &#x3D; signal&lt;AccessPoint[]&gt;([]);
+  private _permissions &#x3D; signal&lt;AccessPermission[]&gt;([]);
+  private _events &#x3D; signal&lt;AccessEvent[]&gt;([]);
+  private _schedules &#x3D; signal&lt;AccessSchedule[]&gt;([]);
+  private _metrics &#x3D; signal&lt;AccessMetrics&gt;(this.getDefaultMetrics());
+
+  // ✅ Readonly signals for public access
+  public readonly accessPoints &#x3D; this._accessPoints.asReadonly();
+  public readonly permissions &#x3D; this._permissions.asReadonly();
+  public readonly events &#x3D; this._events.asReadonly();
+  public readonly schedules &#x3D; this._schedules.asReadonly();
+  public readonly metrics &#x3D; this._metrics.asReadonly();
+
+  // ✅ Computed signals for derived state
+  public readonly accessPointsCount &#x3D; computed(() &#x3D;&gt; this._accessPoints().length);
+  public readonly permissionsCount &#x3D; computed(() &#x3D;&gt; this._permissions().length);
+  public readonly eventsCount &#x3D; computed(() &#x3D;&gt; this._events().length);
+  public readonly activeAccessPointsCount &#x3D; computed(() &#x3D;&gt; this._accessPoints().filter(ap &#x3D;&gt; ap.status &#x3D;&#x3D;&#x3D; &#x27;active&#x27;).length);
+
+  constructor() {
+    this.initializeDemoData();
+  }
+
+  /**
+   * Get all access points
+   */
+  getAccessPoints(): AccessPoint[] {
+    return this._accessPoints();
+  }
+
+  /**
+   * Get access point by ID
+   */
+  getAccessPoint(accessPointId: string): AccessPoint | undefined {
+    return this._accessPoints().find(ap &#x3D;&gt; ap.id &#x3D;&#x3D;&#x3D; accessPointId);
+  }
+
+  /**
+   * Create access point
+   */
+  createAccessPoint(accessPoint: Omit&lt;AccessPoint, &#x27;id&#x27; | &#x27;createdAt&#x27; | &#x27;updatedAt&#x27;&gt;): AccessPoint {
+    const newAccessPoint: AccessPoint &#x3D; {
+      ...accessPoint,
+      id: this.generateId(),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
+    this._accessPoints.update(accessPoints &#x3D;&gt; [...accessPoints, newAccessPoint]);
+
+    this.updateMetrics();
+    return newAccessPoint;
+  }
+
+  /**
+   * Update access point
+   */
+  updateAccessPoint(accessPointId: string, updates: Partial&lt;AccessPoint&gt;): boolean {
+    this._accessPoints.update(accessPoints &#x3D;&gt; {
+      const accessPoint &#x3D; accessPoints.find(ap &#x3D;&gt; ap.id &#x3D;&#x3D;&#x3D; accessPointId);
+      if (!accessPoint) return accessPoints;
+
+      Object.assign(accessPoint, updates);
+      accessPoint.updatedAt &#x3D; new Date();
+      return [...accessPoints];
+    });
+    this.updateMetrics();
+    return true;
+  }
+
+  /**
+   * Grant access permission
+   */
+  grantAccessPermission(permission: Omit&lt;AccessPermission, &#x27;id&#x27; | &#x27;grantedAt&#x27;&gt;): AccessPermission {
+    const newPermission: AccessPermission &#x3D; {
+      ...permission,
+      id: this.generateId(),
+      grantedAt: new Date()
+    };
+
+    this._permissions.update(permissions &#x3D;&gt; [...permissions, newPermission]);
+
+    // Log access event
+    this.logAccessEvent({
+      userId: permission.userId,
+      userName: permission.userName,
+      accessPointId: permission.accessPointId,
+      accessPointName: this.getAccessPoint(permission.accessPointId)?.name || &#x27;Unknown&#x27;,
+      method: &#x27;admin_grant&#x27;,
+      action: &#x27;grant&#x27;,
+      timestamp: new Date(),
+      result: &#x27;success&#x27;,
+      details: {
+        reason: &#x27;Permission granted by administrator&#x27;,
+        duration: 0
+      },
+      ipAddress: &#x27;127.0.0.1&#x27;,
+      userAgent: &#x27;System&#x27;,
+      sessionId: &#x27;system&#x27;,
+      severity: &#x27;medium&#x27;,
+      isAnomaly: false,
+      riskScore: 0
+    });
+
+    this.updateMetrics();
+    return newPermission;
+  }
+
+  /**
+   * Revoke access permission
+   */
+  revokeAccessPermission(permissionId: string, revokedBy: string): boolean {
+    const permissions &#x3D; this._permissions();
+    const permission &#x3D; permissions.find(p &#x3D;&gt; p.id &#x3D;&#x3D;&#x3D; permissionId);
+
+    if (!permission) return false;
+
+    this._permissions.update(permissions &#x3D;&gt; {
+      const permission &#x3D; permissions.find(p &#x3D;&gt; p.id &#x3D;&#x3D;&#x3D; permissionId);
+      if (permission) {
+        permission.isActive &#x3D; false;
+      }
+      return [...permissions];
+    });
+
+    // Log access event
+    this.logAccessEvent({
+      userId: permission.userId,
+      userName: permission.userName,
+      accessPointId: permission.accessPointId,
+      accessPointName: this.getAccessPoint(permission.accessPointId)?.name || &#x27;Unknown&#x27;,
+      method: &#x27;admin_revoke&#x27;,
+      action: &#x27;deny&#x27;,
+      timestamp: new Date(),
+      result: &#x27;success&#x27;,
+      details: {
+        reason: &#x27;Permission revoked by administrator&#x27;,
+        duration: 0
+      },
+      ipAddress: &#x27;127.0.0.1&#x27;,
+      userAgent: &#x27;System&#x27;,
+      sessionId: &#x27;system&#x27;,
+      severity: &#x27;medium&#x27;,
+      isAnomaly: false,
+      riskScore: 0
+    });
+
+    this.updateMetrics();
+    return true;
+  }
+
+  /**
+   * Attempt access
+   */
+  async attemptAccess(
+    userId: string,
+    accessPointId: string,
+    method: string,
+    credentials: any,
+    ipAddress: string &#x3D; &#x27;127.0.0.1&#x27;,
+    userAgent: string &#x3D; &#x27;Unknown&#x27;
+  ): Promise&lt;{ success: boolean; reason?: string; eventId: string }&gt; {
+    const startTime &#x3D; Date.now();
+    const accessPoint &#x3D; this.getAccessPoint(accessPointId);
+
+    if (!accessPoint || !accessPoint.isEnabled) {
+      const eventId &#x3D; this.logAccessEvent({
+        userId,
+        userName: &#x27;Unknown&#x27;,
+        accessPointId,
+        accessPointName: accessPoint?.name || &#x27;Unknown&#x27;,
+        method,
+        action: &#x27;deny&#x27;,
+        timestamp: new Date(),
+        result: &#x27;failure&#x27;,
+        details: {
+          reason: &#x27;Access point not available&#x27;,
+          duration: Date.now() - startTime
+        },
+        ipAddress,
+        userAgent,
+        sessionId: &#x27;unknown&#x27;,
+        severity: &#x27;medium&#x27;,
+        isAnomaly: false,
+        riskScore: 50
+      });
+
+      return { success: false, reason: &#x27;Access point not available&#x27;, eventId };
+    }
+
+    // Check permissions
+    const permission &#x3D; this.getUserPermission(userId, accessPointId);
+    if (!permission || !permission.isActive) {
+      const eventId &#x3D; this.logAccessEvent({
+        userId,
+        userName: permission?.userName || &#x27;Unknown&#x27;,
+        accessPointId,
+        accessPointName: accessPoint.name,
+        method,
+        action: &#x27;deny&#x27;,
+        timestamp: new Date(),
+        result: &#x27;failure&#x27;,
+        details: {
+          reason: &#x27;No permission for this access point&#x27;,
+          duration: Date.now() - startTime
+        },
+        ipAddress,
+        userAgent,
+        sessionId: &#x27;unknown&#x27;,
+        severity: &#x27;high&#x27;,
+        isAnomaly: true,
+        riskScore: 80
+      });
+
+      return { success: false, reason: &#x27;No permission&#x27;, eventId };
+    }
+
+    // Check schedule
+    if (!this.isAccessAllowed(permission)) {
+      const eventId &#x3D; this.logAccessEvent({
+        userId,
+        userName: permission.userName,
+        accessPointId,
+        accessPointName: accessPoint.name,
+        method,
+        action: &#x27;deny&#x27;,
+        timestamp: new Date(),
+        result: &#x27;failure&#x27;,
+        details: {
+          reason: &#x27;Access not allowed at this time&#x27;,
+          duration: Date.now() - startTime
+        },
+        ipAddress,
+        userAgent,
+        sessionId: &#x27;unknown&#x27;,
+        severity: &#x27;medium&#x27;,
+        isAnomaly: false,
+        riskScore: 30
+      });
+
+      return { success: false, reason: &#x27;Access not allowed at this time&#x27;, eventId };
+    }
+
+    // Validate credentials based on method
+    const validationResult &#x3D; await this.validateCredentials(method, credentials, permission);
+    if (!validationResult.success) {
+      const eventId &#x3D; this.logAccessEvent({
+        userId,
+        userName: permission.userName,
+        accessPointId,
+        accessPointName: accessPoint.name,
+        method,
+        action: &#x27;deny&#x27;,
+        timestamp: new Date(),
+        result: &#x27;failure&#x27;,
+        details: {
+          reason: validationResult.reason || &#x27;Invalid credentials&#x27;,
+          duration: Date.now() - startTime
+        },
+        ipAddress,
+        userAgent,
+        sessionId: &#x27;unknown&#x27;,
+        severity: &#x27;high&#x27;,
+        isAnomaly: true,
+        riskScore: 90
+      });
+
+      return { success: false, reason: validationResult.reason, eventId };
+    }
+
+    // Grant access
+    const eventId &#x3D; this.logAccessEvent({
+      userId,
+      userName: permission.userName,
+      accessPointId,
+      accessPointName: accessPoint.name,
+      method,
+      action: &#x27;grant&#x27;,
+      timestamp: new Date(),
+      result: &#x27;success&#x27;,
+      details: {
+        reason: &#x27;Access granted&#x27;,
+        duration: Date.now() - startTime
+      },
+      ipAddress,
+      userAgent,
+      sessionId: &#x27;unknown&#x27;,
+      severity: &#x27;low&#x27;,
+      isAnomaly: false,
+      riskScore: 10
+    });
+
+    this.updateMetrics();
+    return { success: true, eventId };
+  }
+
+  /**
+   * Get all permissions
+   */
+  getPermissions(): AccessPermission[] {
+    return this._permissions();
+  }
+
+  /**
+   * Get all events
+   */
+  getEvents(): AccessEvent[] {
+    return this._events();
+  }
+
+  /**
+   * Get all schedules
+   */
+  getSchedules(): AccessSchedule[] {
+    return this._schedules();
+  }
+
+  /**
+   * Delete access point
+   */
+  deleteAccessPoint(accessPointId: string): boolean {
+    this._accessPoints.update(accessPoints &#x3D;&gt; {
+      return accessPoints.filter(ap &#x3D;&gt; ap.id !&#x3D;&#x3D; accessPointId);
+    });
+
+    const beforeLength &#x3D; this._accessPoints().length;
+    this._accessPoints.update(accessPoints &#x3D;&gt; accessPoints.filter(ap &#x3D;&gt; ap.id !&#x3D;&#x3D; accessPointId));
+    const afterLength &#x3D; this._accessPoints().length;
+
+    if (beforeLength &#x3D;&#x3D;&#x3D; afterLength) return false;
+    this.updateMetrics();
+    return true;
+  }
+
+  /**
+   * Update access permission
+   */
+  updateAccessPermission(permissionId: string, updates: Partial&lt;AccessPermission&gt;): boolean {
+    const permissions &#x3D; this._permissions();
+    const permission &#x3D; permissions.find(p &#x3D;&gt; p.id &#x3D;&#x3D;&#x3D; permissionId);
+
+    if (!permission) return false;
+
+    this._permissions.update(permissions &#x3D;&gt; {
+      const permission &#x3D; permissions.find(p &#x3D;&gt; p.id &#x3D;&#x3D;&#x3D; permissionId);
+      if (!permission) return permissions;
+
+      Object.assign(permission, updates);
+      return [...permissions];
+    });
+    this.updateMetrics();
+    return true;
+  }
+
+  /**
+   * Get user permission for access point
+   */
+  getUserPermission(userId: string, accessPointId: string): AccessPermission | undefined {
+    return this._permissions().find(p &#x3D;&gt;
+      p.userId &#x3D;&#x3D;&#x3D; userId &amp;&amp;
+      p.accessPointId &#x3D;&#x3D;&#x3D; accessPointId &amp;&amp;
+      p.isActive &amp;&amp;
+      (!p.validTo || p.validTo &gt; new Date())
+    );
+  }
+
+  /**
+   * Check if access is allowed based on schedule
+   */
+  isAccessAllowed(permission: AccessPermission): boolean {
+    const now &#x3D; new Date();
+    const currentDay &#x3D; now.getDay();
+    const currentTime &#x3D; now.toTimeString().substring(0, 5);
+
+    // Check if current day is allowed
+    if (!permission.schedule.days.includes(currentDay)) {
+      return false;
+    }
+
+    // Check if current time is within allowed range
+    if (currentTime &lt; permission.schedule.startTime || currentTime &gt; permission.schedule.endTime) {
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
+   * Validate credentials based on method
+   */
+  private async validateCredentials(method: string, credentials: any, permission: AccessPermission): Promise&lt;{ success: boolean; reason?: string }&gt; {
+    // Check if method is allowed for this permission
+    if (!permission.accessMethods.includes(method)) {
+      return { success: false, reason: &#x27;Access method not allowed&#x27; };
+    }
+
+    // Simulate credential validation based on method
+    switch (method) {
+      case &#x27;qr_code&#x27;:
+        return this.validateQRCode(credentials);
+      case &#x27;rfid&#x27;:
+        return this.validateRFID(credentials);
+      case &#x27;fingerprint&#x27;:
+        return this.validateFingerprint(credentials);
+      case &#x27;face_recognition&#x27;:
+        return this.validateFaceRecognition(credentials);
+      case &#x27;pin&#x27;:
+        return this.validatePIN(credentials);
+      case &#x27;otp&#x27;:
+        return this.validateOTP(credentials);
+      default:
+        return { success: false, reason: &#x27;Unknown access method&#x27; };
+    }
+  }
+
+  /**
+   * Validate QR code
+   */
+  private async validateQRCode(credentials: any): Promise&lt;{ success: boolean; reason?: string }&gt; {
+    // Simulate QR code validation
+    if (!credentials.qrData || credentials.qrData.length &lt; 10) {
+      return { success: false, reason: &#x27;Invalid QR code&#x27; };
+    }
+    return { success: true };
+  }
+
+  /**
+   * Validate RFID
+   */
+  private async validateRFID(credentials: any): Promise&lt;{ success: boolean; reason?: string }&gt; {
+    // Simulate RFID validation
+    if (!credentials.cardId || credentials.cardId.length &lt; 8) {
+      return { success: false, reason: &#x27;Invalid RFID card&#x27; };
+    }
+    return { success: true };
+  }
+
+  /**
+   * Validate fingerprint
+   */
+  private async validateFingerprint(credentials: any): Promise&lt;{ success: boolean; reason?: string }&gt; {
+    // Simulate fingerprint validation
+    if (!credentials.template || credentials.template.length &lt; 100) {
+      return { success: false, reason: &#x27;Invalid fingerprint template&#x27; };
+    }
+    return { success: true };
+  }
+
+  /**
+   * Validate face recognition
+   */
+  private async validateFaceRecognition(credentials: any): Promise&lt;{ success: boolean; reason?: string }&gt; {
+    // Simulate face recognition validation
+    if (!credentials.faceData || credentials.faceData.length &lt; 200) {
+      return { success: false, reason: &#x27;Invalid face data&#x27; };
+    }
+    return { success: true };
+  }
+
+  /**
+   * Validate PIN
+   */
+  private async validatePIN(credentials: any): Promise&lt;{ success: boolean; reason?: string }&gt; {
+    // Simulate PIN validation
+    if (!credentials.pin || credentials.pin.length !&#x3D;&#x3D; 4) {
+      return { success: false, reason: &#x27;Invalid PIN format&#x27; };
+    }
+    return { success: true };
+  }
+
+  /**
+   * Validate OTP
+   */
+  private async validateOTP(credentials: any): Promise&lt;{ success: boolean; reason?: string }&gt; {
+    // Simulate OTP validation
+    if (!credentials.otp || credentials.otp.length !&#x3D;&#x3D; 6) {
+      return { success: false, reason: &#x27;Invalid OTP format&#x27; };
+    }
+    return { success: true };
+  }
+
+  /**
+   * Log access event
+   */
+  private logAccessEvent(event: Omit&lt;AccessEvent, &#x27;id&#x27;&gt;): string {
+    const accessEvent: AccessEvent &#x3D; {
+      ...event,
+      id: this.generateId()
+    };
+
+    this._events.update(events &#x3D;&gt; [accessEvent, ...events.slice(0, 9999)]); // Keep last 10000 events
+
+    return accessEvent.id;
+  }
+
+  /**
+   * Get access events
+   */
+  getAccessEvents(): AccessEvent[] {
+    return this._events();
+  }
+
+  /**
+   * Get access events by user
+   */
+  getAccessEventsByUser(userId: string): AccessEvent[] {
+    return this._events().filter(e &#x3D;&gt; e.userId &#x3D;&#x3D;&#x3D; userId);
+  }
+
+  /**
+   * Get access events by access point
+   */
+  getAccessEventsByAccessPoint(accessPointId: string): AccessEvent[] {
+    return this._events().filter(e &#x3D;&gt; e.accessPointId &#x3D;&#x3D;&#x3D; accessPointId);
+  }
+
+  /**
+   * Get access schedules
+   */
+  getAccessSchedules(): AccessSchedule[] {
+    return this._schedules();
+  }
+
+  /**
+   * Create access schedule
+   */
+  createAccessSchedule(schedule: Omit&lt;AccessSchedule, &#x27;id&#x27; | &#x27;createdAt&#x27; | &#x27;updatedAt&#x27;&gt;): AccessSchedule {
+    const newSchedule: AccessSchedule &#x3D; {
+      ...schedule,
+      id: this.generateId(),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
+    this._schedules.update(schedules &#x3D;&gt; [...schedules, newSchedule]);
+
+    return newSchedule;
+  }
+
+  /**
+   * Get metrics
+   */
+  getMetrics(): AccessMetrics {
+    return this._metrics();
+  }
+
+  /**
+   * Generate access report
+   */
+  generateAccessReport(options: {
+    dateFrom: Date;
+    dateTo: Date;
+    userId?: string;
+    accessPointId?: string;
+    includeDetails?: boolean;
+  }): any {
+    let events &#x3D; this._events().filter(e &#x3D;&gt;
+      e.timestamp &gt;&#x3D; options.dateFrom &amp;&amp; e.timestamp &lt;&#x3D; options.dateTo
+    );
+
+    if (options.userId) {
+      events &#x3D; events.filter(e &#x3D;&gt; e.userId &#x3D;&#x3D;&#x3D; options.userId);
+    }
+    if (options.accessPointId) {
+      events &#x3D; events.filter(e &#x3D;&gt; e.accessPointId &#x3D;&#x3D;&#x3D; options.accessPointId);
+    }
+
+    const report &#x3D; {
+      period: {
+        from: options.dateFrom,
+        to: options.dateTo
+      },
+      summary: {
+        totalEvents: events.length,
+        successfulEvents: events.filter(e &#x3D;&gt; e.result &#x3D;&#x3D;&#x3D; &#x27;success&#x27;).length,
+        failedEvents: events.filter(e &#x3D;&gt; e.result &#x3D;&#x3D;&#x3D; &#x27;failure&#x27;).length,
+        securityIncidents: events.filter(e &#x3D;&gt; e.severity &#x3D;&#x3D;&#x3D; &#x27;critical&#x27;).length,
+        anomalyEvents: events.filter(e &#x3D;&gt; e.isAnomaly).length
+      },
+      events: options.includeDetails ? events : events.map(e &#x3D;&gt; ({
+        id: e.id,
+        userId: e.userId,
+        userName: e.userName,
+        accessPointName: e.accessPointName,
+        method: e.method,
+        action: e.action,
+        timestamp: e.timestamp,
+        result: e.result,
+        severity: e.severity
+      })),
+      generatedAt: new Date()
+    };
+
+    return report;
+  }
+
+  /**
+   * Update metrics
+   */
+  private updateMetrics(): void {
+    const accessPoints &#x3D; this._accessPoints();
+    const permissions &#x3D; this._permissions();
+    const events &#x3D; this._events();
+    const metrics &#x3D; this.calculateMetrics(accessPoints, permissions, events);
+    this._metrics.set(metrics);
+  }
+
+  /**
+   * Calculate metrics
+   */
+  private calculateMetrics(accessPoints: AccessPoint[], permissions: AccessPermission[], events: AccessEvent[]): AccessMetrics {
+    const totalAccessPoints &#x3D; accessPoints.length;
+    const activeAccessPoints &#x3D; accessPoints.filter(ap &#x3D;&gt; ap.isEnabled).length;
+    const totalPermissions &#x3D; permissions.length;
+    const activePermissions &#x3D; permissions.filter(p &#x3D;&gt; p.isActive).length;
+    const totalEvents &#x3D; events.length;
+    const successfulEvents &#x3D; events.filter(e &#x3D;&gt; e.result &#x3D;&#x3D;&#x3D; &#x27;success&#x27;).length;
+    const failedEvents &#x3D; events.filter(e &#x3D;&gt; e.result &#x3D;&#x3D;&#x3D; &#x27;failure&#x27;).length;
+
+    const averageResponseTime &#x3D; events.reduce((sum, e) &#x3D;&gt; sum + (e.details.duration || 0), 0) / Math.max(events.length, 1);
+    const securityIncidents &#x3D; events.filter(e &#x3D;&gt; e.severity &#x3D;&#x3D;&#x3D; &#x27;critical&#x27;).length;
+    const anomalyEvents &#x3D; events.filter(e &#x3D;&gt; e.isAnomaly).length;
+
+    const accessByMethod &#x3D; this.groupBy(events, &#x27;method&#x27;);
+    const accessByTime &#x3D; this.groupBy(events, &#x27;timestamp&#x27;, (date: Date) &#x3D;&gt; date.getHours().toString());
+    const topUsers &#x3D; this.groupBy(events, &#x27;userId&#x27;);
+    const topAccessPoints &#x3D; this.groupBy(events, &#x27;accessPointId&#x27;);
+    const riskDistribution &#x3D; this.groupBy(events, &#x27;riskScore&#x27;, (score: number) &#x3D;&gt;
+      score &lt; 30 ? &#x27;low&#x27; : score &lt; 70 ? &#x27;medium&#x27; : &#x27;high&#x27;
+    );
+
+    return {
+      totalAccessPoints,
+      activeAccessPoints,
+      totalPermissions,
+      activePermissions,
+      totalEvents,
+      successfulEvents,
+      failedEvents,
+      averageResponseTime,
+      securityIncidents,
+      anomalyEvents,
+      accessByMethod,
+      accessByTime,
+      topUsers,
+      topAccessPoints,
+      riskDistribution
+    };
+  }
+
+  /**
+   * Group array by property
+   */
+  private groupBy&lt;T&gt;(array: T[], property: keyof T, transform?: (value: any) &#x3D;&gt; string): { [key: string]: number } {
+    return array.reduce((groups, item) &#x3D;&gt; {
+      let key &#x3D; String(item[property]);
+      if (transform) {
+        key &#x3D; transform(item[property]);
+      }
+      groups[key] &#x3D; (groups[key] || 0) + 1;
+      return groups;
+    }, {} as { [key: string]: number });
+  }
+
+  /**
+   * Get default metrics
+   */
+  private getDefaultMetrics(): AccessMetrics {
+    return {
+      totalAccessPoints: 0,
+      activeAccessPoints: 0,
+      totalPermissions: 0,
+      activePermissions: 0,
+      totalEvents: 0,
+      successfulEvents: 0,
+      failedEvents: 0,
+      averageResponseTime: 0,
+      securityIncidents: 0,
+      anomalyEvents: 0,
+      accessByMethod: {},
+      accessByTime: {},
+      topUsers: {},
+      topAccessPoints: {},
+      riskDistribution: {}
+    };
+  }
+
+  /**
+   * Initialize demo data
+   */
+  private initializeDemoData(): void {
+    // Create demo access points
+    const demoAccessPoints: AccessPoint[] &#x3D; [
+      {
+        id: &#x27;ap-1&#x27;,
+        name: &#x27;Main Entrance&#x27;,
+        type: &#x27;door&#x27;,
+        location: &#x27;Building A, Ground Floor&#x27;,
+        zone: &#x27;public&#x27;,
+        status: &#x27;active&#x27;,
+        isEnabled: true,
+        accessMethods: [
+          {
+            id: &#x27;method-1&#x27;,
+            type: &#x27;qr_code&#x27;,
+            isEnabled: true,
+            priority: 1,
+            settings: { timeout: 30, retryAttempts: 3 },
+            hardware: { deviceId: &#x27;qr-reader-1&#x27;, readerType: &#x27;scanner&#x27; }
+          },
+          {
+            id: &#x27;method-2&#x27;,
+            type: &#x27;rfid&#x27;,
+            isEnabled: true,
+            priority: 2,
+            settings: { timeout: 10, retryAttempts: 2 },
+            hardware: { deviceId: &#x27;rfid-reader-1&#x27;, readerType: &#x27;proximity&#x27; }
+          }
+        ],
+        permissions: [],
+        schedule: {
+          id: &#x27;schedule-1&#x27;,
+          name: &#x27;Main Entrance Schedule&#x27;,
+          description: &#x27;Main entrance access schedule&#x27;,
+          isActive: true,
+          rules: [],
+          exceptions: [],
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          createdBy: &#x27;admin&#x27;
+        },
+        hardware: {
+          controllerId: &#x27;controller-1&#x27;,
+          deviceType: &#x27;access_controller&#x27;,
+          firmware: &#x27;1.2.3&#x27;,
+          lastSeen: new Date(),
+          batteryLevel: 85,
+          signalStrength: 95
+        },
+        settings: {
+          autoLock: true,
+          lockTimeout: 30,
+          maxAttempts: 3,
+          cooldownPeriod: 60,
+          requireConfirmation: false
+        },
+        createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+        updatedAt: new Date(),
+        createdBy: &#x27;admin&#x27;
+      }
+    ];
+
+    this._accessPoints.set(demoAccessPoints);
+
+    // Create demo permissions
+    const demoPermissions: AccessPermission[] &#x3D; [
+      {
+        id: &#x27;perm-1&#x27;,
+        userId: &#x27;user-1&#x27;,
+        userName: &#x27;John Doe&#x27;,
+        accessPointId: &#x27;ap-1&#x27;,
+        accessMethods: [&#x27;qr_code&#x27;, &#x27;rfid&#x27;],
+        schedule: {
+          days: [1, 2, 3, 4, 5], // Monday to Friday
+          startTime: &#x27;08:00&#x27;,
+          endTime: &#x27;18:00&#x27;,
+          timezone: &#x27;UTC&#x27;
+        },
+        validFrom: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+        validTo: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
+        isActive: true,
+        grantedBy: &#x27;admin&#x27;,
+        grantedAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+        reason: &#x27;Employee access&#x27;,
+        metadata: {
+          department: &#x27;Engineering&#x27;,
+          role: &#x27;Developer&#x27;,
+          clearanceLevel: 1,
+          notes: &#x27;Regular employee access&#x27;
+        }
+      }
+    ];
+
+    this._permissions.set(demoPermissions);
+
+    // Create demo events
+    const demoEvents: AccessEvent[] &#x3D; [
+      {
+        id: &#x27;event-1&#x27;,
+        userId: &#x27;user-1&#x27;,
+        userName: &#x27;John Doe&#x27;,
+        accessPointId: &#x27;ap-1&#x27;,
+        accessPointName: &#x27;Main Entrance&#x27;,
+        method: &#x27;qr_code&#x27;,
+        action: &#x27;grant&#x27;,
+        timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
+        result: &#x27;success&#x27;,
+        details: {
+          reason: &#x27;Valid QR code&#x27;,
+          duration: 150
+        },
+        ipAddress: &#x27;192.168.1.100&#x27;,
+        userAgent: &#x27;Mobile App&#x27;,
+        sessionId: &#x27;session-123&#x27;,
+        severity: &#x27;low&#x27;,
+        isAnomaly: false,
+        riskScore: 10
+      }
+    ];
+
+    this._events.set(demoEvents);
+    this.updateMetrics();
+  }
+
+  /**
+   * Generate unique ID
+   */
+  private generateId(): string {
+    return &#x27;access-&#x27; + Date.now() + &#x27;-&#x27; + Math.random().toString(36).substr(2, 9);
+  }
+}
+
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'AccessMetrics.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

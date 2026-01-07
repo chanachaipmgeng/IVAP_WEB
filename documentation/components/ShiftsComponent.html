@@ -1,0 +1,4107 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  ShiftsComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/portal/attendance-group/shifts/shifts.component.ts</code>
+</p>
+
+
+
+    <p class="comment">
+        <h3>Extends</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+    </p>
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-shifts</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../interfaces/Module.html" target="_self" >CommonModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >FormsModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >TranslateModule</a></code>
+                                <code><a href="../components/GlassButtonComponent.html" target="_self" >GlassButtonComponent</a></code>
+                                <code><a href="../components/DataTableComponent.html" target="_self" >DataTableComponent</a></code>
+                                <code><a href="../components/ModalComponent.html" target="_self" >ModalComponent</a></code>
+                                <code><a href="../components/PageLayoutComponent.html" target="_self" >PageLayoutComponent</a></code>
+                                <code><a href="../components/ModalFormComponent.html" target="_self" >ModalFormComponent</a></code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./shifts.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./shifts.component.scss</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#actions" >actions</a>
+                            </li>
+                            <li>
+                                <a href="#availableEmployees" >availableEmployees</a>
+                            </li>
+                            <li>
+                                <a href="#columns" >columns</a>
+                            </li>
+                            <li>
+                                <a href="#editingShift" >editingShift</a>
+                            </li>
+                            <li>
+                                <a href="#employees" >employees</a>
+                            </li>
+                            <li>
+                                <a href="#formData" >formData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_loading" >_loading</a>
+                            </li>
+                            <li>
+                                <a href="#loading" >loading</a>
+                            </li>
+                            <li>
+                                <a href="#loadingAssignments" >loadingAssignments</a>
+                            </li>
+                            <li>
+                                <a href="#pageActions" >pageActions</a>
+                            </li>
+                            <li>
+                                <a href="#saving" >saving</a>
+                            </li>
+                            <li>
+                                <a href="#selectedEmployees" >selectedEmployees</a>
+                            </li>
+                            <li>
+                                <a href="#selectedShiftForAssignment" >selectedShiftForAssignment</a>
+                            </li>
+                            <li>
+                                <a href="#shiftAssignments" >shiftAssignments</a>
+                            </li>
+                            <li>
+                                <a href="#shiftFormFields" >shiftFormFields</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_shifts" >_shifts</a>
+                            </li>
+                            <li>
+                                <a href="#shifts" >shifts</a>
+                            </li>
+                            <li>
+                                <a href="#showAssignmentModal" >showAssignmentModal</a>
+                            </li>
+                            <li>
+                                <a href="#showModal" >showModal</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#destroy$" >destroy$</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#subscriptions" >subscriptions</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#assignEmployees" >assignEmployees</a>
+                            </li>
+                            <li>
+                                <a href="#assignShift" >assignShift</a>
+                            </li>
+                            <li>
+                                <a href="#closeAssignmentModal" >closeAssignmentModal</a>
+                            </li>
+                            <li>
+                                <a href="#closeModal" >closeModal</a>
+                            </li>
+                            <li>
+                                <a href="#deleteShift" >deleteShift</a>
+                            </li>
+                            <li>
+                                <a href="#editShift" >editShift</a>
+                            </li>
+                            <li>
+                                <a href="#formatTime" >formatTime</a>
+                            </li>
+                            <li>
+                                <a href="#getEmployeeDetails" >getEmployeeDetails</a>
+                            </li>
+                            <li>
+                                <a href="#getEmployeeName" >getEmployeeName</a>
+                            </li>
+                            <li>
+                                <a href="#loadEmployees" >loadEmployees</a>
+                            </li>
+                            <li>
+                                <a href="#loadShiftAssignments" >loadShiftAssignments</a>
+                            </li>
+                            <li>
+                                <a href="#loadShifts" >loadShifts</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onShiftFormSubmitted" >onShiftFormSubmitted</a>
+                            </li>
+                            <li>
+                                <a href="#openAddModal" >openAddModal</a>
+                            </li>
+                            <li>
+                                <a href="#saveShift" >saveShift</a>
+                            </li>
+                            <li>
+                                <a href="#t" >t</a>
+                            </li>
+                            <li>
+                                <a href="#toggleEmployeeSelection" >toggleEmployeeSelection</a>
+                            </li>
+                            <li>
+                                <a href="#unassignShift" >unassignShift</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#debounce" >debounce</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#isActive" >isActive</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#safeAsync" >safeAsync</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#safeUpdate" >safeUpdate</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#subscribe" >subscribe</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#subscribeUntil" >subscribeUntil</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#throttle" >throttle</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#trackSubscription" >trackSubscription</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#unsubscribe" >unsubscribe</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#unsubscribeAll" >unsubscribeAll</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(api: <a href="../injectables/ApiService.html" target="_self">ApiService</a>, shiftService: <a href="../injectables/ShiftService.html" target="_self">ShiftService</a>, auth: <a href="../injectables/AuthService.html" target="_self">AuthService</a>, i18n: <a href="../injectables/I18nService.html" target="_self">I18nService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="167" class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:167</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>api</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ApiService.html" target="_self" >ApiService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>shiftService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ShiftService.html" target="_self" >ShiftService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>auth</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AuthService.html" target="_self" >AuthService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>i18n</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/I18nService.html" target="_self" >I18nService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="assignEmployees"></a>
+                    <span class="name">
+                        <span ><b>assignEmployees</b></span>
+                        <a href="#assignEmployees"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>assignEmployees(shift: <a href="../interfaces/Shift.html" target="_self">Shift</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="309"
+                                    class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:309</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Assign employees to shift</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>shift</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Shift.html" target="_self" >Shift</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="assignShift"></a>
+                    <span class="name">
+                        <span ><b>assignShift</b></span>
+                        <a href="#assignShift"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>assignShift()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="354"
+                                    class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:354</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Assign shift to selected employees</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="closeAssignmentModal"></a>
+                    <span class="name">
+                        <span ><b>closeAssignmentModal</b></span>
+                        <a href="#closeAssignmentModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>closeAssignmentModal()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="336"
+                                    class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:336</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Close assignment modal</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="closeModal"></a>
+                    <span class="name">
+                        <span ><b>closeModal</b></span>
+                        <a href="#closeModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>closeModal()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="229"
+                                    class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:229</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteShift"></a>
+                    <span class="name">
+                        <span ><b>deleteShift</b></span>
+                        <a href="#deleteShift"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>deleteShift(shift: <a href="../interfaces/Shift.html" target="_self">Shift</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="274"
+                                    class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:274</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>shift</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Shift.html" target="_self" >Shift</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="editShift"></a>
+                    <span class="name">
+                        <span ><b>editShift</b></span>
+                        <a href="#editShift"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>editShift(shift: <a href="../interfaces/Shift.html" target="_self">Shift</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="219"
+                                    class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:219</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Edit shift</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>shift</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Shift.html" target="_self" >Shift</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="formatTime"></a>
+                    <span class="name">
+                        <span ><b>formatTime</b></span>
+                        <a href="#formatTime"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>formatTime(time: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="421"
+                                    class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:421</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Format time string for display</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>time</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getEmployeeDetails"></a>
+                    <span class="name">
+                        <span ><b>getEmployeeDetails</b></span>
+                        <a href="#getEmployeeDetails"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getEmployeeDetails(employeeId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="413"
+                                    class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:413</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get employee details (department and position)</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>employeeId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getEmployeeName"></a>
+                    <span class="name">
+                        <span ><b>getEmployeeName</b></span>
+                        <a href="#getEmployeeName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getEmployeeName(employeeId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="405"
+                                    class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:405</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>employeeId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadEmployees"></a>
+                    <span class="name">
+                        <span ><b>loadEmployees</b></span>
+                        <a href="#loadEmployees"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>loadEmployees()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="292"
+                                    class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:292</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Load employees for assignment management</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadShiftAssignments"></a>
+                    <span class="name">
+                        <span ><b>loadShiftAssignments</b></span>
+                        <a href="#loadShiftAssignments"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>loadShiftAssignments(shiftId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="315"
+                                    class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:315</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>shiftId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadShifts"></a>
+                    <span class="name">
+                        <span ><b>loadShifts</b></span>
+                        <a href="#loadShifts"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>loadShifts()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="186"
+                                    class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:186</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Load shifts for current company</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="178"
+                                    class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:178</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onShiftFormSubmitted"></a>
+                    <span class="name">
+                        <span ><b>onShiftFormSubmitted</b></span>
+                        <a href="#onShiftFormSubmitted"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onShiftFormSubmitted(formData: Record<string | unknown>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="237"
+                                    class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:237</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle form submission from ModalFormComponent</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>formData</td>
+                                            <td>
+                                                        <code>Record&lt;string | unknown&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openAddModal"></a>
+                    <span class="name">
+                        <span ><b>openAddModal</b></span>
+                        <a href="#openAddModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>openAddModal()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="206"
+                                    class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:206</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveShift"></a>
+                    <span class="name">
+                        <span ><b>saveShift</b></span>
+                        <a href="#saveShift"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>saveShift()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="246"
+                                    class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:246</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="t"></a>
+                    <span class="name">
+                        <span ><b>t</b></span>
+                        <a href="#t"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>t(key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="434"
+                                    class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:434</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Translate key using i18n service</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>key</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleEmployeeSelection"></a>
+                    <span class="name">
+                        <span ><b>toggleEmployeeSelection</b></span>
+                        <a href="#toggleEmployeeSelection"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleEmployeeSelection(employeeId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="342"
+                                    class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:342</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>employeeId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unassignShift"></a>
+                    <span class="name">
+                        <span ><b>unassignShift</b></span>
+                        <a href="#unassignShift"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>unassignShift(assignment: <a href="../interfaces/UserShift.html" target="_self">UserShift</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="385"
+                                    class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:385</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Unassign employee from shift</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>assignment</td>
+                                            <td>
+                                                            <code><a href="../interfaces/UserShift.html" target="_self" >UserShift</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="debounce"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>debounce</b></span>
+                        <a href="#debounce"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>debounce(fn: T, delay: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:231</a></code>
+</div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Type parameters :</b>
+                            <ul class="type-parameters">
+                                    <li>T</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Helper method to debounce function calls</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const debouncedSearch = this.debounce((query: string) =&gt; {
+  this.search(query);
+}, 300);
+
+
+onInputChange(query: string): void {
+  debouncedSearch(query);
+}</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>fn</td>
+                                            <td>
+                                                        <code>T</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                            <td>
+                                                    <ul>
+<li>Function to debounce</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>delay</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>300</code>
+                                            </td>
+
+                                            <td>
+                                                    <ul>
+<li>Delay in milliseconds</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Debounced function</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isActive"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>isActive</b></span>
+                        <a href="#isActive"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isActive()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:290</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Helper method to check if component is still active
+Useful for async operations that might complete after component is destroyed</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>true if component is still active</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:63</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Component lifecycle hook
+Automatically called when component is destroyed</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="safeAsync"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>safeAsync</b></span>
+                        <a href="#safeAsync"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>safeAsync(fn: () => void, onError?: (error?: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>) => void)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:200</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Helper method to safely execute async operations</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">this.safeAsync(async () =&gt; {
+  const data = await this.service.loadData();
+  this.data = data;
+});</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>fn</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Async function to execute</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>onError</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Optional error handler</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="safeUpdate"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>safeUpdate</b></span>
+                        <a href="#safeUpdate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>safeUpdate(updateFn: () => void)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:308</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Helper method to safely update component state
+Only updates if component is still active</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">this.safeUpdate(() =&gt; {
+  this.data = newData;
+  this.loading = false;
+});</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>updateFn</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Function that updates component state</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="subscribe"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>subscribe</b></span>
+                        <a href="#subscribe"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>subscribe(observable: Observable<T>, next?: (value?: T) => void, error?: (error?: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>) => void, complete?: () => void)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:94</a></code>
+</div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Type parameters :</b>
+                            <ul class="type-parameters">
+                                    <li>T</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Subscribe to an Observable with automatic unsubscribe</p>
+<p>Uses takeUntil pattern for automatic cleanup</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">ngOnInit(): void {
+  this.subscribe(
+    this.service.data$,
+    data =&gt; this.data = data,
+    error =&gt; console.error(error)
+  );
+}</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>observable</td>
+                                            <td>
+                                                        <code>Observable&lt;T&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The Observable to subscribe to</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>next</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Callback function for next values</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>error</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Optional error callback</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>complete</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Optional complete callback</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Subscription.html" target="_self" >Subscription</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Subscription (for manual control if needed)</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="subscribeUntil"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>subscribeUntil</b></span>
+                        <a href="#subscribeUntil"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>subscribeUntil(observable: Observable<T>, next?: (value?: T) => void, error?: (error?: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>) => void, complete?: () => void)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:135</a></code>
+</div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Type parameters :</b>
+                            <ul class="type-parameters">
+                                    <li>T</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Subscribe to an Observable using takeUntil pattern (backward compatibility)</p>
+<p>Use this if you need manual control or are on Angular &lt; 16</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">ngOnInit(): void {
+  this.subscribeUntil(
+    this.service.data$,
+    data =&gt; this.data = data
+  );
+}</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>observable</td>
+                                            <td>
+                                                        <code>Observable&lt;T&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The Observable to subscribe to</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>next</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Callback function for next values</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>error</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Optional error callback</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>complete</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Optional complete callback</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Subscription.html" target="_self" >Subscription</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Subscription</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="throttle"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>throttle</b></span>
+                        <a href="#throttle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>throttle(fn: T, limit: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:267</a></code>
+</div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Type parameters :</b>
+                            <ul class="type-parameters">
+                                    <li>T</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Helper method to throttle function calls</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const throttledScroll = this.throttle(() =&gt; {
+  this.handleScroll();
+}, 100);
+
+
+onScroll(): void {
+  throttledScroll();
+}</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>fn</td>
+                                            <td>
+                                                        <code>T</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                            <td>
+                                                    <ul>
+<li>Function to throttle</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>limit</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>100</code>
+                                            </td>
+
+                                            <td>
+                                                    <ul>
+<li>Time limit in milliseconds</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Throttled function</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="trackSubscription"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>trackSubscription</b></span>
+                        <a href="#trackSubscription"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>trackSubscription(subscription: <a href="../interfaces/Subscription.html" target="_self">Subscription</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:182</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Track a subscription for automatic cleanup</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>subscription</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Subscription.html" target="_self" >Subscription</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The subscription to track</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unsubscribe"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>unsubscribe</b></span>
+                        <a href="#unsubscribe"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>unsubscribe(subscription: <a href="../interfaces/Subscription.html" target="_self">Subscription</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:158</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Manually unsubscribe from a specific subscription</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>subscription</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Subscription.html" target="_self" >Subscription</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The subscription to unsubscribe</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unsubscribeAll"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>unsubscribeAll</b></span>
+                        <a href="#unsubscribeAll"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>unsubscribeAll()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:168</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Unsubscribe from all tracked subscriptions</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="actions"></a>
+                    <span class="name">
+                        <span ><b>actions</b></span>
+                        <a href="#actions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>TableAction[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+    {
+      icon: &#x27;👥&#x27;,
+      label: &#x27;Assign Employees&#x27;,
+      onClick: (row) &#x3D;&gt; this.assignEmployees(row)
+    },
+    {
+      icon: &#x27;✏️&#x27;,
+      label: &#x27;Edit&#x27;,
+      onClick: (row) &#x3D;&gt; this.editShift(row)
+    },
+    {
+      icon: &#x27;🗑️&#x27;,
+      label: &#x27;Delete&#x27;,
+      variant: &#x27;danger&#x27;,
+      onClick: (row) &#x3D;&gt; this.deleteShift(row)
+    }
+  ]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="150" class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:150</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="availableEmployees"></a>
+                    <span class="name">
+                        <span ><b>availableEmployees</b></span>
+                        <a href="#availableEmployees"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; {
+    const currentAssignments &#x3D; this.shiftAssignments();
+    const assignedEmployeeIds &#x3D; currentAssignments.map(a &#x3D;&gt; a.company_employee_id);
+    return this.employees().filter(emp &#x3D;&gt; !assignedEmployeeIds.includes(emp.id));
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="89" class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:89</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="columns"></a>
+                    <span class="name">
+                        <span ><b>columns</b></span>
+                        <a href="#columns"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>TableColumn[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+    { key: &#x27;shift_name&#x27;, label: &#x27;Shift Name&#x27;, sortable: true },
+    {
+      key: &#x27;start_time&#x27;,
+      label: &#x27;Start Time&#x27;,
+      sortable: true,
+      render: (value) &#x3D;&gt; this.formatTime(value)
+    },
+    {
+      key: &#x27;end_time&#x27;,
+      label: &#x27;End Time&#x27;,
+      sortable: true,
+      render: (value) &#x3D;&gt; this.formatTime(value)
+    }
+  ]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="134" class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:134</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="editingShift"></a>
+                    <span class="name">
+                        <span ><b>editingShift</b></span>
+                        <a href="#editingShift"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;Shift | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:62</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="employees"></a>
+                    <span class="name">
+                        <span ><b>employees</b></span>
+                        <a href="#employees"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;Employee[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:66</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="formData"></a>
+                    <span class="name">
+                        <span ><b>formData</b></span>
+                        <a href="#formData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Partial&lt;ShiftCreate&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    shift_name: &#x27;&#x27;,
+    start_time: &#x27;&#x27;,
+    end_time: &#x27;&#x27;
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:95</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_loading"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_loading</b></span>
+                        <a href="#_loading"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:73</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loading"></a>
+                    <span class="name">
+                        <span ><b>loading</b></span>
+                        <a href="#loading"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this._loading.asReadonly()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="77" class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:77</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadingAssignments"></a>
+                    <span class="name">
+                        <span ><b>loadingAssignments</b></span>
+                        <a href="#loadingAssignments"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:69</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pageActions"></a>
+                    <span class="name">
+                        <span ><b>pageActions</b></span>
+                        <a href="#pageActions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed&lt;PageAction[]&gt;(() &#x3D;&gt; [
+    {
+      label: &#x27;➕ Add Shift&#x27;,
+      variant: &#x27;primary&#x27;,
+      onClick: () &#x3D;&gt; this.openAddModal()
+    }
+  ])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="80" class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:80</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saving"></a>
+                    <span class="name">
+                        <span ><b>saving</b></span>
+                        <a href="#saving"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:61</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedEmployees"></a>
+                    <span class="name">
+                        <span ><b>selectedEmployees</b></span>
+                        <a href="#selectedEmployees"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;string[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:68</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedShiftForAssignment"></a>
+                    <span class="name">
+                        <span ><b>selectedShiftForAssignment</b></span>
+                        <a href="#selectedShiftForAssignment"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;Shift | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:63</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="shiftAssignments"></a>
+                    <span class="name">
+                        <span ><b>shiftAssignments</b></span>
+                        <a href="#shiftAssignments"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;UserShift[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:67</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="shiftFormFields"></a>
+                    <span class="name">
+                        <span ><b>shiftFormFields</b></span>
+                        <a href="#shiftFormFields"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed&lt;FormFieldConfig[]&gt;(() &#x3D;&gt; {
+    const shift &#x3D; this.editingShift();
+    return [
+      {
+        key: &#x27;shift_name&#x27;,
+        label: &#x27;Shift Name&#x27;,
+        type: &#x27;text&#x27;,
+        placeholder: &#x27;Morning Shift&#x27;,
+        required: true,
+        value: shift?.shift_name || this.formData.shift_name || &#x27;&#x27;
+      },
+      {
+        key: &#x27;start_time&#x27;,
+        label: &#x27;Start Time&#x27;,
+        type: &#x27;text&#x27;,
+        placeholder: &#x27;09:00:00&#x27;,
+        required: true,
+        value: shift?.start_time || this.formData.start_time || &#x27;&#x27;,
+        hint: &#x27;Format: HH:MM:SS (24-hour format)&#x27;
+      },
+      {
+        key: &#x27;end_time&#x27;,
+        label: &#x27;End Time&#x27;,
+        type: &#x27;text&#x27;,
+        placeholder: &#x27;17:00:00&#x27;,
+        required: true,
+        value: shift?.end_time || this.formData.end_time || &#x27;&#x27;,
+        hint: &#x27;Format: HH:MM:SS (24-hour format)&#x27;
+      }
+    ];
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="102" class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:102</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_shifts"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_shifts</b></span>
+                        <a href="#_shifts"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;Shift[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:72</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="shifts"></a>
+                    <span class="name">
+                        <span ><b>shifts</b></span>
+                        <a href="#shifts"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this._shifts.asReadonly()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="76" class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:76</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showAssignmentModal"></a>
+                    <span class="name">
+                        <span ><b>showAssignmentModal</b></span>
+                        <a href="#showAssignmentModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:60</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showModal"></a>
+                    <span class="name">
+                        <span ><b>showModal</b></span>
+                        <a href="#showModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/app/features/portal/attendance-group/shifts/shifts.component.ts:59</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="destroy$"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>destroy$</b></span>
+                        <a href="#destroy$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Subject&lt;void&gt;()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:52</a></code>
+</div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Subject for subscription management
+Automatically completed in ngOnDestroy</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="subscriptions"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>subscriptions</b></span>
+                        <a href="#subscriptions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Subscription.html" target="_self" >Subscription[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:57</a></code>
+</div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Track all subscriptions for manual cleanup if needed</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, signal, computed } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormsModule } from &#x27;@angular/forms&#x27;;
+import { TranslateModule } from &#x27;@ngx-translate/core&#x27;;
+import { GlassButtonComponent } from &#x27;../../../../shared/components/glass-button/glass-button.component&#x27;;
+import { DataTableComponent, TableColumn, TableAction } from &#x27;../../../../shared/components/data-table/data-table.component&#x27;;
+import { ModalComponent } from &#x27;../../../../shared/components/modal/modal.component&#x27;;
+import { PageLayoutComponent, PageAction } from &#x27;../../../../shared/components/page-layout/page-layout.component&#x27;;
+import { ModalFormComponent } from &#x27;../../../../shared/components/modal-form/modal-form.component&#x27;;
+import { FormFieldConfig } from &#x27;../../../../shared/components/form-field/form-field.component&#x27;;
+import { ApiService } from &#x27;../../../../core/services/api.service&#x27;;
+import { ShiftService } from &#x27;../../../../core/services/shift.service&#x27;;
+import { AuthService } from &#x27;../../../../core/services/auth.service&#x27;;
+import { I18nService } from &#x27;../../../../core/services/i18n.service&#x27;;
+import { Shift, ShiftCreate, UserShift } from &#x27;../../../../core/models/shift.model&#x27;;
+import { BaseComponent } from &#x27;../../../../core/base/base.component&#x27;;
+
+/**
+ * Employee interface for shift assignments
+ */
+interface Employee {
+  id: string;
+  first_name: string;
+  last_name: string;
+  department?: string;
+  position?: string;
+}
+
+
+@Component({
+  selector: &#x27;app-shifts&#x27;,
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    TranslateModule,
+    GlassButtonComponent,
+    DataTableComponent,
+    ModalComponent,
+    PageLayoutComponent,
+    ModalFormComponent
+  ],
+  templateUrl: &#x27;./shifts.component.html&#x27;,
+  styleUrl: &#x27;./shifts.component.scss&#x27;
+})
+export class ShiftsComponent extends BaseComponent implements OnInit {
+  showModal &#x3D; signal(false);
+  showAssignmentModal &#x3D; signal(false);
+  saving &#x3D; signal(false);
+  editingShift &#x3D; signal&lt;Shift | null&gt;(null);
+  selectedShiftForAssignment &#x3D; signal&lt;Shift | null&gt;(null);
+
+  // Assignment management
+  employees &#x3D; signal&lt;Employee[]&gt;([]);
+  shiftAssignments &#x3D; signal&lt;UserShift[]&gt;([]);
+  selectedEmployees &#x3D; signal&lt;string[]&gt;([]);
+  loadingAssignments &#x3D; signal(false);
+
+  // Local signals for shifts data
+  private _shifts &#x3D; signal&lt;Shift[]&gt;([]);
+  private _loading &#x3D; signal(false);
+  
+  // Public readonly signals
+  shifts &#x3D; this._shifts.asReadonly();
+  loading &#x3D; this._loading.asReadonly();
+
+  // Page actions
+  pageActions &#x3D; computed&lt;PageAction[]&gt;(() &#x3D;&gt; [
+    {
+      label: &#x27;➕ Add Shift&#x27;,
+      variant: &#x27;primary&#x27;,
+      onClick: () &#x3D;&gt; this.openAddModal()
+    }
+  ]);
+
+  // Available employees (not already assigned to this shift)
+  availableEmployees &#x3D; computed(() &#x3D;&gt; {
+    const currentAssignments &#x3D; this.shiftAssignments();
+    const assignedEmployeeIds &#x3D; currentAssignments.map(a &#x3D;&gt; a.company_employee_id);
+    return this.employees().filter(emp &#x3D;&gt; !assignedEmployeeIds.includes(emp.id));
+  });
+
+  formData: Partial&lt;ShiftCreate&gt; &#x3D; {
+    shift_name: &#x27;&#x27;,
+    start_time: &#x27;&#x27;,
+    end_time: &#x27;&#x27;
+  };
+
+  // Form fields configuration for ModalFormComponent
+  shiftFormFields &#x3D; computed&lt;FormFieldConfig[]&gt;(() &#x3D;&gt; {
+    const shift &#x3D; this.editingShift();
+    return [
+      {
+        key: &#x27;shift_name&#x27;,
+        label: &#x27;Shift Name&#x27;,
+        type: &#x27;text&#x27;,
+        placeholder: &#x27;Morning Shift&#x27;,
+        required: true,
+        value: shift?.shift_name || this.formData.shift_name || &#x27;&#x27;
+      },
+      {
+        key: &#x27;start_time&#x27;,
+        label: &#x27;Start Time&#x27;,
+        type: &#x27;text&#x27;,
+        placeholder: &#x27;09:00:00&#x27;,
+        required: true,
+        value: shift?.start_time || this.formData.start_time || &#x27;&#x27;,
+        hint: &#x27;Format: HH:MM:SS (24-hour format)&#x27;
+      },
+      {
+        key: &#x27;end_time&#x27;,
+        label: &#x27;End Time&#x27;,
+        type: &#x27;text&#x27;,
+        placeholder: &#x27;17:00:00&#x27;,
+        required: true,
+        value: shift?.end_time || this.formData.end_time || &#x27;&#x27;,
+        hint: &#x27;Format: HH:MM:SS (24-hour format)&#x27;
+      }
+    ];
+  });
+
+  columns: TableColumn[] &#x3D; [
+    { key: &#x27;shift_name&#x27;, label: &#x27;Shift Name&#x27;, sortable: true },
+    {
+      key: &#x27;start_time&#x27;,
+      label: &#x27;Start Time&#x27;,
+      sortable: true,
+      render: (value) &#x3D;&gt; this.formatTime(value)
+    },
+    {
+      key: &#x27;end_time&#x27;,
+      label: &#x27;End Time&#x27;,
+      sortable: true,
+      render: (value) &#x3D;&gt; this.formatTime(value)
+    }
+  ];
+
+  actions: TableAction[] &#x3D; [
+    {
+      icon: &#x27;👥&#x27;,
+      label: &#x27;Assign Employees&#x27;,
+      onClick: (row) &#x3D;&gt; this.assignEmployees(row)
+    },
+    {
+      icon: &#x27;✏️&#x27;,
+      label: &#x27;Edit&#x27;,
+      onClick: (row) &#x3D;&gt; this.editShift(row)
+    },
+    {
+      icon: &#x27;🗑️&#x27;,
+      label: &#x27;Delete&#x27;,
+      variant: &#x27;danger&#x27;,
+      onClick: (row) &#x3D;&gt; this.deleteShift(row)
+    }
+  ];
+
+  constructor(
+    private api: ApiService,
+    private shiftService: ShiftService,
+    private auth: AuthService,
+    private i18n: I18nService
+  ) {
+    super();
+  }
+
+  ngOnInit(): void {
+    this.loadShifts();
+    this.loadEmployees();
+  }
+
+  /**
+   * Load shifts for current company
+   */
+  loadShifts(): void {
+    const companyId &#x3D; this.auth.getCurrentUser()?.companyId || this.auth.getCurrentUser()?.company_id;
+    if (!companyId) return;
+
+    this._loading.set(true);
+    // ✅ Auto-unsubscribe on component destroy
+    this.subscribe(
+      this.shiftService.getByCompanyId(String(companyId)),
+      (response) &#x3D;&gt; {
+        // Backend returns List[ShiftResponse] directly, not paginated
+        this._shifts.set(Array.isArray(response) ? response : []);
+        this._loading.set(false);
+      },
+      (error) &#x3D;&gt; {
+        console.error(&#x27;Error loading shifts:&#x27;, error);
+        this._loading.set(false);
+      }
+    );
+  }
+
+  openAddModal(): void {
+    this.editingShift.set(null);
+    this.formData &#x3D; {
+      shift_name: &#x27;&#x27;,
+      start_time: &#x27;&#x27;,
+      end_time: &#x27;&#x27;
+    };
+    this.showModal.set(true);
+  }
+
+  /**
+   * Edit shift
+   */
+  editShift(shift: Shift): void {
+    this.editingShift.set(shift);
+    this.formData &#x3D; {
+      shift_name: shift.shift_name,
+      start_time: shift.start_time,
+      end_time: shift.end_time
+    };
+    this.showModal.set(true);
+  }
+
+  closeModal(): void {
+    this.showModal.set(false);
+    this.editingShift.set(null);
+  }
+
+  /**
+   * Handle form submission from ModalFormComponent
+   */
+  onShiftFormSubmitted(formData: Record&lt;string, unknown&gt;): void {
+    this.formData &#x3D; {
+      shift_name: String(formData[&#x27;shift_name&#x27;] || formData[&#x27;shiftName&#x27;] || &#x27;&#x27;),
+      start_time: String(formData[&#x27;start_time&#x27;] || formData[&#x27;startTime&#x27;] || &#x27;&#x27;),
+      end_time: String(formData[&#x27;end_time&#x27;] || formData[&#x27;endTime&#x27;] || &#x27;&#x27;)
+    };
+    this.saveShift();
+  }
+
+  saveShift(): void {
+    this.saving.set(true);
+
+    const shiftData: ShiftCreate &#x3D; {
+      shift_name: String(this.formData.shift_name || &#x27;&#x27;),
+      start_time: String(this.formData.start_time || &#x27;&#x27;),
+      end_time: String(this.formData.end_time || &#x27;&#x27;)
+    };
+
+    const request &#x3D; this.editingShift()
+      ? this.shiftService.update(this.editingShift()!.shift_id, shiftData)
+      : this.shiftService.create(shiftData);
+
+    // ✅ Auto-unsubscribe on component destroy
+    this.subscribe(
+      request,
+      () &#x3D;&gt; {
+        this.saving.set(false);
+        this.closeModal();
+        this.loadShifts();
+      },
+      (error: unknown) &#x3D;&gt; {
+        console.error(&#x27;Error saving shift:&#x27;, error);
+        this.saving.set(false);
+      }
+    );
+  }
+
+  deleteShift(shift: Shift): void {
+    if (!confirm(&#x60;Delete shift ${shift.shift_name}?&#x60;)) return;
+
+    // ✅ Auto-unsubscribe on component destroy
+    this.subscribe(
+      this.shiftService.delete(shift.shift_id),
+      () &#x3D;&gt; {
+        this.loadShifts();
+      },
+      (error: unknown) &#x3D;&gt; {
+        console.error(&#x27;Error deleting shift:&#x27;, error);
+      }
+    );
+  }
+
+  /**
+   * Load employees for assignment management
+   */
+  loadEmployees(): void {
+    const companyId &#x3D; this.auth.getCurrentUser()?.companyId;
+    if (!companyId) return;
+
+    this.api.get(&#x60;/api/v1/employees?company_id&#x3D;${companyId}&#x60;).subscribe({
+      next: (response: any) &#x3D;&gt; {
+        this.employees.set(response.data || response.items || []);
+      },
+      error: (error) &#x3D;&gt; {
+        console.error(&#x27;Error loading employees:&#x27;, error);
+      }
+    });
+  }
+
+  /**
+   * Assign employees to shift
+   */
+  assignEmployees(shift: Shift): void {
+    this.selectedShiftForAssignment.set(shift);
+    this.loadShiftAssignments(shift.shift_id);
+    this.showAssignmentModal.set(true);
+  }
+
+  loadShiftAssignments(shiftId: string): void {
+    this.loadingAssignments.set(true);
+
+    // ✅ Auto-unsubscribe on component destroy
+    this.subscribe(
+      this.shiftService.getEmployeeShifts(shiftId),
+      (assignments) &#x3D;&gt; {
+        this.shiftAssignments.set(assignments);
+        this.loadingAssignments.set(false);
+      },
+      (error) &#x3D;&gt; {
+        console.error(&#x27;Error loading shift assignments:&#x27;, error);
+        this.loadingAssignments.set(false);
+        this.shiftAssignments.set([]);
+      }
+    );
+  }
+
+  /**
+   * Close assignment modal
+   */
+  closeAssignmentModal(): void {
+    this.showAssignmentModal.set(false);
+    this.selectedShiftForAssignment.set(null);
+    this.selectedEmployees.set([]);
+  }
+
+  toggleEmployeeSelection(employeeId: string): void {
+    const current &#x3D; this.selectedEmployees();
+    if (current.includes(employeeId)) {
+      this.selectedEmployees.set(current.filter(id &#x3D;&gt; id !&#x3D;&#x3D; employeeId));
+    } else {
+      this.selectedEmployees.set([...current, employeeId]);
+    }
+  }
+
+  /**
+   * Assign shift to selected employees
+   */
+  assignShift(): void {
+    const shift &#x3D; this.selectedShiftForAssignment();
+    if (!shift || this.selectedEmployees().length &#x3D;&#x3D;&#x3D; 0) return;
+
+    this.saving.set(true);
+
+    const requests &#x3D; this.selectedEmployees().map(employeeId &#x3D;&gt;
+      this.shiftService.assignShift({
+        shift_id: shift.shift_id,
+        company_employee_id: employeeId
+      })
+    );
+
+    // Execute all requests
+    Promise.all(requests.map(req &#x3D;&gt; req.toPromise()))
+      .then(() &#x3D;&gt; {
+        this.saving.set(false);
+        this.selectedEmployees.set([]);
+        this.loadShiftAssignments(shift.shift_id);  // snake_case: shift_id
+        alert(&#x27;Shift assigned successfully!&#x27;);
+      })
+      .catch(error &#x3D;&gt; {
+        console.error(&#x27;Error assigning shift:&#x27;, error);
+        this.saving.set(false);
+        alert(&#x27;Error assigning shift. Please try again.&#x27;);
+      });
+  }
+
+  /**
+   * Unassign employee from shift
+   */
+  unassignShift(assignment: UserShift): void {
+    if (!confirm(&#x27;Remove this employee from the shift?&#x27;)) return;
+
+    // ✅ Auto-unsubscribe on component destroy
+    this.subscribe(
+      this.shiftService.removeShiftAssignment(assignment.user_shift_id),
+      () &#x3D;&gt; {
+        const shift &#x3D; this.selectedShiftForAssignment();
+        if (shift) {
+          this.loadShiftAssignments(shift.shift_id);
+        }
+        alert(&#x27;Employee removed from shift successfully!&#x27;);
+      },
+      (error) &#x3D;&gt; {
+        console.error(&#x27;Error removing assignment:&#x27;, error);
+        alert(&#x27;Error removing assignment. Please try again.&#x27;);
+      }
+    );
+  }
+
+  getEmployeeName(employeeId: string): string {
+    const employee &#x3D; this.employees().find(e &#x3D;&gt; e.id &#x3D;&#x3D;&#x3D; employeeId);
+    return employee ? &#x60;${employee.first_name} ${employee.last_name}&#x60; : &#x27;Unknown&#x27;;
+  }
+
+  /**
+   * Get employee details (department and position)
+   */
+  getEmployeeDetails(employeeId: string): string {
+    const employee &#x3D; this.employees().find(e &#x3D;&gt; e.id &#x3D;&#x3D;&#x3D; employeeId);
+    return employee ? &#x60;${employee.department || &#x27;&#x27;} - ${employee.position || &#x27;&#x27;}&#x60; : &#x27;&#x27;;
+  }
+
+  /**
+   * Format time string for display
+   */
+  formatTime(time: string): string {
+    if (!time) return &#x27;N/A&#x27;;
+    // Handle both &quot;HH:MM:SS&quot; and &quot;HH:MM&quot; formats
+    const parts &#x3D; time.split(&#x27;:&#x27;);
+    if (parts.length &gt;&#x3D; 2) {
+      return &#x60;${parts[0]}:${parts[1]}&#x60;;
+    }
+    return time;
+  }
+
+  /**
+   * Translate key using i18n service
+   */
+  t(key: string): string {
+    return this.i18n.translate(key);
+  }
+}
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;app-page-layout
+  [title]&#x3D;&quot;&#x27;pages.shifts.title&#x27; | translate&quot;
+  [description]&#x3D;&quot;&#x27;pages.shifts.description&#x27; | translate&quot;
+  icon&#x3D;&quot;⏰&quot;
+  [actions]&#x3D;&quot;pageActions()&quot;&gt;
+
+  &lt;!-- Shifts Table --&gt;
+  &lt;app-data-table
+    [columns]&#x3D;&quot;columns&quot;
+    [data]&#x3D;&quot;shifts()&quot;
+    [actions]&#x3D;&quot;actions&quot;
+    [searchable]&#x3D;&quot;true&quot;
+  &gt;
+    &lt;div actions&gt;
+      &lt;app-glass-button (clicked)&#x3D;&quot;loadShifts()&quot;&gt;
+        🔄 {{ &#x27;common.refresh&#x27; | translate }}
+      &lt;/app-glass-button&gt;
+    &lt;/div&gt;
+  &lt;/app-data-table&gt;
+
+  &lt;!-- Add/Edit Shift Modal Form --&gt;
+  &lt;app-modal-form
+    [isOpen]&#x3D;&quot;showModal()&quot;
+    [title]&#x3D;&quot;editingShift() ? (&#x27;pages.shifts.editShift&#x27; | translate) : (&#x27;pages.shifts.addShift&#x27; | translate)&quot;
+    [fields]&#x3D;&quot;shiftFormFields()&quot;
+    [loading]&#x3D;&quot;saving()&quot;
+    [submitLabel]&#x3D;&quot;&#x27;common.save&#x27; | translate&quot;
+    [cancelLabel]&#x3D;&quot;&#x27;common.cancel&#x27; | translate&quot;
+    (closed)&#x3D;&quot;closeModal()&quot;
+    (submitted)&#x3D;&quot;onShiftFormSubmitted($event)&quot;
+  /&gt;
+
+  &lt;!-- Assignment Modal --&gt;
+  &lt;app-modal
+    [isOpen]&#x3D;&quot;showAssignmentModal()&quot;
+    [title]&#x3D;&quot;(&#x27;pages.shifts.assignEmployees&#x27; | translate) + &#x27; - &#x27; + (selectedShiftForAssignment()?.shift_name || &#x27;&#x27;)&quot;
+    [loading]&#x3D;&quot;saving()&quot;
+    (closed)&#x3D;&quot;closeAssignmentModal()&quot;
+  &gt;
+    &lt;div class&#x3D;&quot;space-y-6&quot;&gt;
+      @if (loadingAssignments()) {
+        &lt;div class&#x3D;&quot;text-center py-8&quot;&gt;
+          &lt;div class&#x3D;&quot;animate-spin rounded-full h-12 w-12 border-b-2 border-sky-500 mx-auto&quot;&gt;&lt;/div&gt;
+          &lt;p class&#x3D;&quot;mt-2 text-gray-600 dark:text-gray-400&quot;&gt;{{ &#x27;pages.shifts.loadingAssignments&#x27; | translate }}&lt;/p&gt;
+        &lt;/div&gt;
+      } @else {
+        &lt;!-- Shift Info --&gt;
+        &lt;div class&#x3D;&quot;bg-sky-50 dark:bg-sky-900/20 p-4 rounded-lg&quot;&gt;
+          &lt;div class&#x3D;&quot;flex items-center justify-between&quot;&gt;
+            &lt;div&gt;
+              &lt;p class&#x3D;&quot;font-medium text-gray-900 dark:text-gray-100&quot;&gt;
+                {{ selectedShiftForAssignment()?.shift_name }}
+              &lt;/p&gt;
+              &lt;p class&#x3D;&quot;text-sm text-gray-600 dark:text-gray-400&quot;&gt;
+                ⏰ {{ selectedShiftForAssignment()?.start_time }} - {{ selectedShiftForAssignment()?.end_time }}
+              &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;text-right&quot;&gt;
+              &lt;p class&#x3D;&quot;text-2xl font-bold text-sky-600 dark:text-sky-400&quot;&gt;
+                {{ shiftAssignments().length }}
+              &lt;/p&gt;
+              &lt;p class&#x3D;&quot;text-xs text-gray-600 dark:text-gray-400&quot;&gt;Employees&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Current Assignments --&gt;
+        &lt;div&gt;
+            &lt;h3 class&#x3D;&quot;text-lg font-semibold mb-3 text-gray-900 dark:text-gray-100&quot;&gt;
+            👥 {{ &#x27;pages.shifts.assignedEmployees&#x27; | translate }} ({{ shiftAssignments().length }})
+          &lt;/h3&gt;
+          @if (shiftAssignments().length &#x3D;&#x3D;&#x3D; 0) {
+            &lt;div class&#x3D;&quot;text-center py-6 bg-gray-50 dark:bg-gray-800 rounded-lg&quot;&gt;
+              &lt;p class&#x3D;&quot;text-gray-500 dark:text-gray-400&quot;&gt;{{ &#x27;pages.shifts.noEmployeesAssigned&#x27; | translate }}&lt;/p&gt;
+            &lt;/div&gt;
+          } @else {
+            &lt;div class&#x3D;&quot;space-y-2 max-h-60 overflow-y-auto&quot;&gt;
+              @for (assignment of shiftAssignments(); track assignment.user_shift_id) {
+                &lt;div class&#x3D;&quot;flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700&quot;&gt;
+                  &lt;div class&#x3D;&quot;flex items-center space-x-3&quot;&gt;
+                    &lt;span class&#x3D;&quot;text-2xl&quot;&gt;👤&lt;/span&gt;
+                    &lt;div&gt;
+                      &lt;p class&#x3D;&quot;font-medium text-gray-900 dark:text-gray-100&quot;&gt;
+                        {{ getEmployeeName(assignment.company_employee_id) }}
+                      &lt;/p&gt;
+                      &lt;p class&#x3D;&quot;text-sm text-gray-500 dark:text-gray-400&quot;&gt;
+                        {{ getEmployeeDetails(assignment.company_employee_id) }}
+                      &lt;/p&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                  &lt;button
+                    (click)&#x3D;&quot;unassignShift(assignment)&quot;
+                    class&#x3D;&quot;px-3 py-1 text-sm text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 font-medium transition-colors&quot;
+                  &gt;
+                    🗑️ {{ &#x27;pages.shifts.remove&#x27; | translate }}
+                  &lt;/button&gt;
+                &lt;/div&gt;
+              }
+            &lt;/div&gt;
+          }
+        &lt;/div&gt;
+
+        &lt;!-- Assign New Employees --&gt;
+        &lt;div class&#x3D;&quot;border-t border-gray-200 dark:border-gray-700 pt-4&quot;&gt;
+          &lt;h3 class&#x3D;&quot;text-lg font-semibold mb-3 text-gray-900 dark:text-gray-100&quot;&gt;
+            ➕ {{ &#x27;pages.shifts.assignMoreEmployees&#x27; | translate }}
+          &lt;/h3&gt;
+          @if (availableEmployees().length &#x3D;&#x3D;&#x3D; 0) {
+            &lt;div class&#x3D;&quot;text-center py-6 bg-gray-50 dark:bg-gray-800 rounded-lg&quot;&gt;
+              &lt;p class&#x3D;&quot;text-gray-500 dark:text-gray-400&quot;&gt;{{ &#x27;pages.shifts.allEmployeesAssigned&#x27; | translate }}&lt;/p&gt;
+            &lt;/div&gt;
+          } @else {
+            &lt;div class&#x3D;&quot;space-y-2 max-h-60 overflow-y-auto mb-4&quot;&gt;
+              @for (employee of availableEmployees(); track employee.id) {
+                &lt;label class&#x3D;&quot;flex items-center p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-sky-50 dark:hover:bg-sky-900/20 cursor-pointer transition-colors&quot;&gt;
+                  &lt;input
+                    type&#x3D;&quot;checkbox&quot;
+                    [checked]&#x3D;&quot;selectedEmployees().includes(employee.id)&quot;
+                    (change)&#x3D;&quot;toggleEmployeeSelection(employee.id)&quot;
+                    class&#x3D;&quot;w-4 h-4 text-sky-600 bg-gray-100 border-gray-300 rounded focus:ring-sky-500 dark:focus:ring-sky-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600&quot;
+                  /&gt;
+                  &lt;div class&#x3D;&quot;ml-3&quot;&gt;
+                    &lt;p class&#x3D;&quot;font-medium text-gray-900 dark:text-gray-100&quot;&gt;
+                      {{ employee.first_name }} {{ employee.last_name }}
+                    &lt;/p&gt;
+                    &lt;p class&#x3D;&quot;text-sm text-gray-500 dark:text-gray-400&quot;&gt;
+                      {{ employee.department }} - {{ employee.position }}
+                    &lt;/p&gt;
+                  &lt;/div&gt;
+                &lt;/label&gt;
+              }
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;flex items-center justify-between pt-2&quot;&gt;
+              &lt;p class&#x3D;&quot;text-sm text-gray-600 dark:text-gray-400&quot;&gt;
+                {{ selectedEmployees().length }} {{ &#x27;pages.shifts.employeesSelected&#x27; | translate }}
+              &lt;/p&gt;
+              &lt;app-glass-button
+                variant&#x3D;&quot;primary&quot;
+                [disabled]&#x3D;&quot;selectedEmployees().length &#x3D;&#x3D;&#x3D; 0 || saving()&quot;
+                (clicked)&#x3D;&quot;assignShift()&quot;
+              &gt;
+                {{ saving() ? (&#x27;⏳ &#x27; + (&#x27;pages.shifts.assigning&#x27; | translate)) : (&#x27;✅ &#x27; + (&#x27;pages.shifts.assignShift&#x27; | translate)) }}
+              &lt;/app-glass-button&gt;
+            &lt;/div&gt;
+          }
+        &lt;/div&gt;
+      }
+    &lt;/div&gt;
+  &lt;/app-modal&gt;
+&lt;/app-page-layout&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><app-page-layout  [title]="\'pages.shifts.title\' | translate"  [description]="\'pages.shifts.description\' | translate"  icon="⏰"  [actions]="pageActions()">  <!-- Shifts Table -->  <app-data-table    [columns]="columns"    [data]="shifts()"    [actions]="actions"    [searchable]="true"  >    <div actions>      <app-glass-button (clicked)="loadShifts()">        🔄 {{ \'common.refresh\' | translate }}      </app-glass-button>    </div>  </app-data-table>  <!-- Add/Edit Shift Modal Form -->  <app-modal-form    [isOpen]="showModal()"    [title]="editingShift() ? (\'pages.shifts.editShift\' | translate) : (\'pages.shifts.addShift\' | translate)"    [fields]="shiftFormFields()"    [loading]="saving()"    [submitLabel]="\'common.save\' | translate"    [cancelLabel]="\'common.cancel\' | translate"    (closed)="closeModal()"    (submitted)="onShiftFormSubmitted($event)"  />  <!-- Assignment Modal -->  <app-modal    [isOpen]="showAssignmentModal()"    [title]="(\'pages.shifts.assignEmployees\' | translate) + \' - \' + (selectedShiftForAssignment()?.shift_name || \'\')"    [loading]="saving()"    (closed)="closeAssignmentModal()"  >    <div class="space-y-6">      @if (loadingAssignments()) {        <div class="text-center py-8">          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-sky-500 mx-auto"></div>          <p class="mt-2 text-gray-600 dark:text-gray-400">{{ \'pages.shifts.loadingAssignments\' | translate }}</p>        </div>      } @else {        <!-- Shift Info -->        <div class="bg-sky-50 dark:bg-sky-900/20 p-4 rounded-lg">          <div class="flex items-center justify-between">            <div>              <p class="font-medium text-gray-900 dark:text-gray-100">                {{ selectedShiftForAssignment()?.shift_name }}              </p>              <p class="text-sm text-gray-600 dark:text-gray-400">                ⏰ {{ selectedShiftForAssignment()?.start_time }} - {{ selectedShiftForAssignment()?.end_time }}              </p>            </div>            <div class="text-right">              <p class="text-2xl font-bold text-sky-600 dark:text-sky-400">                {{ shiftAssignments().length }}              </p>              <p class="text-xs text-gray-600 dark:text-gray-400">Employees</p>            </div>          </div>        </div>        <!-- Current Assignments -->        <div>            <h3 class="text-lg font-semibold mb-3 text-gray-900 dark:text-gray-100">            👥 {{ \'pages.shifts.assignedEmployees\' | translate }} ({{ shiftAssignments().length }})          </h3>          @if (shiftAssignments().length === 0) {            <div class="text-center py-6 bg-gray-50 dark:bg-gray-800 rounded-lg">              <p class="text-gray-500 dark:text-gray-400">{{ \'pages.shifts.noEmployeesAssigned\' | translate }}</p>            </div>          } @else {            <div class="space-y-2 max-h-60 overflow-y-auto">              @for (assignment of shiftAssignments(); track assignment.user_shift_id) {                <div class="flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">                  <div class="flex items-center space-x-3">                    <span class="text-2xl">👤</span>                    <div>                      <p class="font-medium text-gray-900 dark:text-gray-100">                        {{ getEmployeeName(assignment.company_employee_id) }}                      </p>                      <p class="text-sm text-gray-500 dark:text-gray-400">                        {{ getEmployeeDetails(assignment.company_employee_id) }}                      </p>                    </div>                  </div>                  <button                    (click)="unassignShift(assignment)"                    class="px-3 py-1 text-sm text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 font-medium transition-colors"                  >                    🗑️ {{ \'pages.shifts.remove\' | translate }}                  </button>                </div>              }            </div>          }        </div>        <!-- Assign New Employees -->        <div class="border-t border-gray-200 dark:border-gray-700 pt-4">          <h3 class="text-lg font-semibold mb-3 text-gray-900 dark:text-gray-100">            ➕ {{ \'pages.shifts.assignMoreEmployees\' | translate }}          </h3>          @if (availableEmployees().length === 0) {            <div class="text-center py-6 bg-gray-50 dark:bg-gray-800 rounded-lg">              <p class="text-gray-500 dark:text-gray-400">{{ \'pages.shifts.allEmployeesAssigned\' | translate }}</p>            </div>          } @else {            <div class="space-y-2 max-h-60 overflow-y-auto mb-4">              @for (employee of availableEmployees(); track employee.id) {                <label class="flex items-center p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-sky-50 dark:hover:bg-sky-900/20 cursor-pointer transition-colors">                  <input                    type="checkbox"                    [checked]="selectedEmployees().includes(employee.id)"                    (change)="toggleEmployeeSelection(employee.id)"                    class="w-4 h-4 text-sky-600 bg-gray-100 border-gray-300 rounded focus:ring-sky-500 dark:focus:ring-sky-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"                  />                  <div class="ml-3">                    <p class="font-medium text-gray-900 dark:text-gray-100">                      {{ employee.first_name }} {{ employee.last_name }}                    </p>                    <p class="text-sm text-gray-500 dark:text-gray-400">                      {{ employee.department }} - {{ employee.position }}                    </p>                  </div>                </label>              }            </div>            <div class="flex items-center justify-between pt-2">              <p class="text-sm text-gray-600 dark:text-gray-400">                {{ selectedEmployees().length }} {{ \'pages.shifts.employeesSelected\' | translate }}              </p>              <app-glass-button                variant="primary"                [disabled]="selectedEmployees().length === 0 || saving()"                (clicked)="assignShift()"              >                {{ saving() ? (\'⏳ \' + (\'pages.shifts.assigning\' | translate)) : (\'✅ \' + (\'pages.shifts.assignShift\' | translate)) }}              </app-glass-button>            </div>          }        </div>      }    </div>  </app-modal></app-page-layout></div>'
+    var COMPONENTS = [{'name': 'AccessControlComponent', 'selector': 'app-access-control'},{'name': 'AccessGroupsComponent', 'selector': 'app-access-groups'},{'name': 'AccessibilityDashboardComponent', 'selector': 'app-accessibility-dashboard'},{'name': 'AccessLogsComponent', 'selector': 'app-access-logs'},{'name': 'AccessSchedulesComponent', 'selector': 'app-access-schedules'},{'name': 'AccordionComponent', 'selector': 'app-accordion'},{'name': 'AccordionDemoComponent', 'selector': 'app-accordion-demo'},{'name': 'AdvancedDataTableComponent', 'selector': 'app-advanced-data-table'},{'name': 'AdvancedDataTableDemoComponent', 'selector': 'app-advanced-data-table-demo'},{'name': 'AdvancedFeaturesDashboardComponent', 'selector': 'app-advanced-features-dashboard'},{'name': 'AdvancedFormsComponent', 'selector': 'app-advanced-forms'},{'name': 'AdvancedRichTextComponent', 'selector': 'app-advanced-rich-text'},{'name': 'AdvancedUiDemoComponent', 'selector': 'app-advanced-ui-demo'},{'name': 'AIModelsComponent', 'selector': 'app-ai-models'},{'name': 'AlertComponent', 'selector': 'app-alert'},{'name': 'AlertHistoryComponent', 'selector': 'app-alert-history'},{'name': 'AlertsComponent', 'selector': 'app-alerts'},{'name': 'ApexChartComponent', 'selector': 'app-apex-chart'},{'name': 'App', 'selector': 'app-root'},{'name': 'AttendanceComponent', 'selector': 'app-attendance'},{'name': 'AuditLogsComponent', 'selector': 'app-audit-logs'},{'name': 'AvatarComponent', 'selector': 'app-avatar'},{'name': 'BackupRestoreComponent', 'selector': 'app-backup-restore'},{'name': 'BadgeComponent', 'selector': 'app-badge'},{'name': 'BaseComponent', 'selector': ''},{'name': 'BiometricDataComponent', 'selector': 'app-biometric-data'},{'name': 'BreadcrumbComponent', 'selector': 'app-breadcrumb'},{'name': 'CalendarComponent', 'selector': 'app-calendar'},{'name': 'CalendarDemoComponent', 'selector': 'app-calendar-demo'},{'name': 'ChartComponent', 'selector': 'app-chart'},{'name': 'CheckboxComponent', 'selector': 'app-checkbox'},{'name': 'ColorPickerComponent', 'selector': 'app-color-picker'},{'name': 'ComingSoonComponent', 'selector': 'app-coming-soon'},{'name': 'CompaniesComponent', 'selector': 'app-companies'},{'name': 'CompanyDocumentsComponent', 'selector': 'app-company-documents'},{'name': 'CompanyHolidaysComponent', 'selector': 'app-company-holidays'},{'name': 'ComponentShowcaseComponent', 'selector': 'app-component-showcase'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DataTableComponent', 'selector': 'app-data-table'},{'name': 'DateTimePickerComponent', 'selector': 'app-date-time-picker'},{'name': 'DepartmentsComponent', 'selector': 'app-departments'},{'name': 'DevicesComponent', 'selector': 'app-devices'},{'name': 'DividerComponent', 'selector': 'app-divider'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DoorsComponent', 'selector': 'app-doors'},{'name': 'DraggableCardsComponent', 'selector': 'app-draggable-cards'},{'name': 'DraggableCardsDemoComponent', 'selector': 'app-draggable-cards-demo'},{'name': 'EChartsChartComponent', 'selector': 'app-echarts-chart'},{'name': 'EChartsDemoComponent', 'selector': 'app-echarts-demo'},{'name': 'EmployeesComponent', 'selector': 'app-employees'},{'name': 'EmployeesNewComponent', 'selector': 'app-employees-new'},{'name': 'EmptyStateComponent', 'selector': 'app-empty-state'},{'name': 'Error401Component', 'selector': 'app-error-401'},{'name': 'Error404Component', 'selector': 'app-error-404'},{'name': 'Error500Component', 'selector': 'app-error-500'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'ErrorToastComponent', 'selector': 'app-error-toast'},{'name': 'EventAnalyticsComponent', 'selector': 'app-event-analytics'},{'name': 'EventCheckinHistoryComponent', 'selector': 'app-event-checkin-history'},{'name': 'EventEmailConfirmationComponent', 'selector': 'app-event-email-confirmation'},{'name': 'EventKioskConfigComponent', 'selector': 'app-event-kiosk-config'},{'name': 'EventRegistrationComponent', 'selector': 'app-event-registration'},{'name': 'EventRegistrationFieldsComponent', 'selector': 'app-event-registration-fields'},{'name': 'EventsComponent', 'selector': 'app-events'},{'name': 'FaceRecognitionComponent', 'selector': 'app-face-recognition'},{'name': 'FaceRecognitionDemoComponent', 'selector': 'app-face-recognition-demo'},{'name': 'FaceRecognitionLiveComponent', 'selector': 'app-face-recognition-live'},{'name': 'FaceRecognitionTestComponent', 'selector': 'app-face-recognition-test'},{'name': 'FaqComponent', 'selector': 'app-faq'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'FilterSectionComponent', 'selector': 'app-filter-section'},{'name': 'ForgotPasswordComponent', 'selector': 'app-forgot-password'},{'name': 'FormFieldComponent', 'selector': 'app-form-field'},{'name': 'GalleryComponent', 'selector': 'app-gallery'},{'name': 'GalleryDemoComponent', 'selector': 'app-gallery-demo'},{'name': 'GlassButtonComponent', 'selector': 'app-glass-button'},{'name': 'GlassCardComponent', 'selector': 'app-glass-card'},{'name': 'GlassInputComponent', 'selector': 'app-glass-input'},{'name': 'GroupFaceRecognitionComponent', 'selector': 'app-group-face-recognition'},{'name': 'GuestsComponent', 'selector': 'app-guests'},{'name': 'HardwareStatusDashboardComponent', 'selector': 'app-hardware-status-dashboard'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HeatmapAnalyticsComponent', 'selector': 'app-heatmap-analytics'},{'name': 'HelpCenter', 'selector': 'app-help-center'},{'name': 'HelpCenterComponent', 'selector': 'app-help-center'},{'name': 'HrDashboardComponent', 'selector': 'app-hr-dashboard'},{'name': 'IconComponent', 'selector': 'app-icon'},{'name': 'IncidentReportsComponent', 'selector': 'app-incident-reports'},{'name': 'KioskViewComponent', 'selector': 'app-kiosk-view'},{'name': 'LandingComponent', 'selector': 'app-landing'},{'name': 'LeafletMapComponent', 'selector': 'app-leaflet-map'},{'name': 'LeavesComponent', 'selector': 'app-leaves'},{'name': 'LicenseManagementComponent', 'selector': 'app-license-management'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoadingStateComponent', 'selector': 'app-loading-state'},{'name': 'LocationsComponent', 'selector': 'app-locations'},{'name': 'LockScreenComponent', 'selector': 'app-lock-screen'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MapDemoComponent', 'selector': 'app-map-demo'},{'name': 'MaterialButtonComponent', 'selector': 'app-material-button'},{'name': 'MaterialCardComponent', 'selector': 'app-material-card'},{'name': 'MaterialDialogComponent', 'selector': 'app-material-dialog'},{'name': 'MaterialInputComponent', 'selector': 'app-material-input'},{'name': 'MaterialTableComponent', 'selector': 'app-material-table'},{'name': 'MfaSetupComponent', 'selector': 'app-mfa-setup'},{'name': 'MobileCameraComponent', 'selector': 'app-mobile-camera'},{'name': 'MobileDemoComponent', 'selector': 'app-mobile-demo'},{'name': 'ModalComponent', 'selector': 'app-modal'},{'name': 'ModalFormComponent', 'selector': 'app-modal-form'},{'name': 'ModuleSubscriptionComponent', 'selector': 'app-module-subscription'},{'name': 'MonitoringComponent', 'selector': 'app-monitoring'},{'name': 'NotificationCenterComponent', 'selector': 'app-notification-center'},{'name': 'NotificationDemoComponent', 'selector': 'app-notification-demo'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'NotificationSettingsComponent', 'selector': 'app-notification-settings'},{'name': 'OffcanvasComponent', 'selector': 'app-offcanvas'},{'name': 'OffcanvasDemoComponent', 'selector': 'app-offcanvas-demo'},{'name': 'OvertimeRequestsComponent', 'selector': 'app-overtime-requests'},{'name': 'PageLayoutComponent', 'selector': 'app-page-layout'},{'name': 'PaginationComponent', 'selector': 'app-pagination'},{'name': 'ParkingBlacklistComponent', 'selector': 'app-parking-blacklist'},{'name': 'ParkingDashboardComponent', 'selector': 'app-parking-dashboard'},{'name': 'ParkingEntryComponent', 'selector': 'app-parking-entry'},{'name': 'ParkingExitComponent', 'selector': 'app-parking-exit'},{'name': 'ParkingLogsComponent', 'selector': 'app-parking-logs'},{'name': 'ParkingReservationComponent', 'selector': 'app-parking-reservation'},{'name': 'ParkingRulesComponent', 'selector': 'app-parking-rules'},{'name': 'ParkingSpotsComponent', 'selector': 'app-parking-spots'},{'name': 'ParkingStatisticsComponent', 'selector': 'app-parking-statistics'},{'name': 'PayrollExportComponent', 'selector': 'app-payroll-export'},{'name': 'PerformanceDashboardComponent', 'selector': 'app-performance-dashboard'},{'name': 'PopoverComponent', 'selector': 'app-popover'},{'name': 'PortalLayoutComponent', 'selector': 'app-portal-layout'},{'name': 'PositionsComponent', 'selector': 'app-positions'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'PublicVerificationComponent', 'selector': 'app-public-verification'},{'name': 'QRCodesComponent', 'selector': 'app-qr-codes'},{'name': 'RadioComponent', 'selector': 'app-radio'},{'name': 'RangeSliderComponent', 'selector': 'app-range-slider'},{'name': 'RatingComponent', 'selector': 'app-rating'},{'name': 'RatingDemoComponent', 'selector': 'app-rating-demo'},{'name': 'RbacComponent', 'selector': 'app-rbac'},{'name': 'RecognitionHistoryComponent', 'selector': 'app-recognition-history'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReportsComponent', 'selector': 'app-reports'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'RFIDCardsComponent', 'selector': 'app-rfid-cards'},{'name': 'RichTextComponent', 'selector': 'app-rich-text'},{'name': 'RichTextEditorComponent', 'selector': 'app-rich-text-editor'},{'name': 'RichTextEditorDemoComponent', 'selector': 'app-rich-text-editor-demo'},{'name': 'SafetyDashboardComponent', 'selector': 'app-safety-dashboard'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ShiftsComponent', 'selector': 'app-shifts'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SkeletonComponent', 'selector': 'app-skeleton'},{'name': 'StatisticsCardComponent', 'selector': 'app-statistics-card'},{'name': 'StatisticsGridComponent', 'selector': 'app-statistics-grid'},{'name': 'StepperComponent', 'selector': 'app-stepper'},{'name': 'StructureComponent', 'selector': 'app-structure'},{'name': 'SuperAdminAnnouncementsComponent', 'selector': 'app-super-admin-announcements'},{'name': 'SuperAdminDashboardComponent', 'selector': 'app-super-admin-dashboard'},{'name': 'SuperAdminLayoutComponent', 'selector': 'app-super-admin-layout'},{'name': 'SuperAdminReportsComponent', 'selector': 'app-super-admin-reports'},{'name': 'SurveillanceMapComponent', 'selector': 'app-surveillance-map'},{'name': 'SwiperGalleryComponent', 'selector': 'app-swiper-gallery'},{'name': 'SwiperGalleryDemoComponent', 'selector': 'app-swiper-gallery-demo'},{'name': 'SwitchComponent', 'selector': 'app-switch'},{'name': 'SystemSettingsComponent', 'selector': 'app-system-settings'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TemplateManagementComponent', 'selector': 'app-template-management'},{'name': 'TestApiComponent', 'selector': 'app-test-api'},{'name': 'ThemeSwitcherComponent', 'selector': 'app-theme-switcher'},{'name': 'TimelineComponent', 'selector': 'app-timeline'},{'name': 'TimelineDemoComponent', 'selector': 'app-timeline-demo'},{'name': 'TimesheetsComponent', 'selector': 'app-timesheets'},{'name': 'TimestampComponent', 'selector': 'app-timestamp'},{'name': 'TimestampDemoComponent', 'selector': 'app-timestamp-demo'},{'name': 'TooltipComponent', 'selector': 'app-tooltip'},{'name': 'UsersComponent', 'selector': 'app-users'},{'name': 'ValidationDemoComponent', 'selector': 'app-validation-demo'},{'name': 'VehiclesComponent', 'selector': 'app-vehicles'},{'name': 'VideoAnalyticsComponent', 'selector': 'app-video-analytics'},{'name': 'VideoPlaybackComponent', 'selector': 'app-video-playback'},{'name': 'VisitorBadgesComponent', 'selector': 'app-visitor-badges'},{'name': 'VisitorBlacklistComponent', 'selector': 'app-visitor-blacklist'},{'name': 'VisitorDashboardComponent', 'selector': 'app-visitor-dashboard'},{'name': 'VisitorInvitationsComponent', 'selector': 'app-visitor-invitations'},{'name': 'VisitorParcelsComponent', 'selector': 'app-visitor-parcels'},{'name': 'VisitorReportsComponent', 'selector': 'app-visitor-reports'},{'name': 'VisitorsComponent', 'selector': 'app-visitors'},{'name': 'WatchlistComponent', 'selector': 'app-watchlist'},{'name': 'ZoneConfigComponent', 'selector': 'app-zone-config'}];
+    var DIRECTIVES = [{'name': 'HasPermissionDirective', 'selector': '[appHasPermission]'},{'name': 'ImageOptimizationDirective', 'selector': '[appImageOptimization]'}];
+    var ACTUAL_COMPONENT = {'name': 'ShiftsComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'ShiftsComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

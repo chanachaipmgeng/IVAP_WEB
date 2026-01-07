@@ -1,0 +1,976 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  Error401Component</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/shared/components/error-pages/error-401/error-401.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-error-401</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../interfaces/Module.html" target="_self" >CommonModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >RouterModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >FormsModule</a></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./error-401.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./error-401.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#i18n" >i18n</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#goBack" >goBack</a>
+                            </li>
+                            <li>
+                                <a href="#goToLogin" >goToLogin</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#reportIssue" >reportIssue</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#ariaLabel" >ariaLabel</a>
+                            </li>
+                            <li>
+                                <a href="#customClass" >customClass</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(router: Router, i18n: <a href="../injectables/I18nService.html" target="_self">I18nService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/shared/components/error-pages/error-401/error-401.component.ts:38</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                    <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>i18n</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/I18nService.html" target="_self" >I18nService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section data-compodoc="block-inputs">
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="ariaLabel"></a>
+                        <b>ariaLabel</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/shared/components/error-pages/error-401/error-401.component.ts:38</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>ARIA label for the component</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="customClass"></a>
+                        <b>customClass</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/shared/components/error-pages/error-401/error-401.component.ts:33</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Custom CSS classes</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="goBack"></a>
+                    <span class="name">
+                        <span ><b>goBack</b></span>
+                        <a href="#goBack"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>goBack()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="63"
+                                    class="link-to-prism">src/app/shared/components/error-pages/error-401/error-401.component.ts:63</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Navigate back</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="goToLogin"></a>
+                    <span class="name">
+                        <span ><b>goToLogin</b></span>
+                        <a href="#goToLogin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>goToLogin()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="56"
+                                    class="link-to-prism">src/app/shared/components/error-pages/error-401/error-401.component.ts:56</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Navigate to login page</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="48"
+                                    class="link-to-prism">src/app/shared/components/error-pages/error-401/error-401.component.ts:48</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Initialize component</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="reportIssue"></a>
+                    <span class="name">
+                        <span ><b>reportIssue</b></span>
+                        <a href="#reportIssue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>reportIssue()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="70"
+                                    class="link-to-prism">src/app/shared/components/error-pages/error-401/error-401.component.ts:70</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Report issue</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="i18n"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>i18n</b></span>
+                        <a href="#i18n"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../injectables/I18nService.html" target="_self" >I18nService</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/app/shared/components/error-pages/error-401/error-401.component.ts:42</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, Input } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { Router, RouterModule } from &#x27;@angular/router&#x27;;
+import { FormsModule } from &#x27;@angular/forms&#x27;;
+import { I18nService } from &#x27;../../../../core/services/i18n.service&#x27;;
+
+@Component({
+  selector: &#x27;app-error-401&#x27;,
+  standalone: true,
+  imports: [CommonModule, RouterModule, FormsModule],
+  templateUrl: &#x27;./error-401.component.html&#x27;,
+  styleUrls: [&#x27;./error-401.component.scss&#x27;]
+})
+export class Error401Component implements OnInit {
+  /**
+   * Custom CSS classes
+   */
+  @Input() customClass?: string;
+
+  /**
+   * ARIA label for the component
+   */
+  @Input() ariaLabel?: string;
+
+  constructor(
+    private router: Router,
+    public i18n: I18nService
+  ) {}
+
+  /**
+   * Initialize component
+   */
+  ngOnInit(): void {
+    // Log unauthorized access attempt
+    console.warn(&#x27;401 Unauthorized - User attempted to access protected resource&#x27;);
+  }
+
+  /**
+   * Navigate to login page
+   */
+  goToLogin(): void {
+    this.router.navigate([&#x27;/portal/login&#x27;]);
+  }
+
+  /**
+   * Navigate back
+   */
+  goBack(): void {
+    window.history.back();
+  }
+
+  /**
+   * Report issue
+   */
+  reportIssue(): void {
+    this.router.navigate([&#x27;/support/contact&#x27;], {
+      queryParams: {
+        error: &#x27;401&#x27;,
+        errorType: &#x27;unauthorized&#x27;
+      }
+    });
+  }
+}
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;error-401-container min-h-screen flex items-center justify-center p-8 relative overflow-hidden&quot; [class]&#x3D;&quot;customClass || &#x27;&#x27;&quot; role&#x3D;&quot;main&quot; [attr.aria-label]&#x3D;&quot;ariaLabel || &#x27;Unauthorized access&#x27;&quot;&gt;
+  &lt;div class&#x3D;&quot;error-401-content bg-white/95 backdrop-blur-sm rounded-3xl p-12 max-w-4xl w-full text-center shadow-2xl relative z-10 md:p-8&quot;&gt;
+      &lt;!-- Error Illustration --&gt;
+      &lt;div class&#x3D;&quot;error-illustration mb-8 relative&quot; [attr.aria-hidden]&#x3D;&quot;&#x27;true&#x27;&quot;&gt;
+        &lt;div class&#x3D;&quot;error-number text-9xl font-black bg-gradient-to-br from-pink-400 to-red-500 bg-clip-text text-transparent leading-none mb-4 drop-shadow-md md:text-6xl&quot;&gt;401&lt;/div&gt;
+        &lt;div class&#x3D;&quot;error-icon text-error-500 opacity-80 animate-shake&quot;&gt;
+          &lt;svg width&#x3D;&quot;200&quot; height&#x3D;&quot;200&quot; viewBox&#x3D;&quot;0 0 200 200&quot; fill&#x3D;&quot;none&quot; xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; [attr.aria-hidden]&#x3D;&quot;&#x27;true&#x27;&quot;&gt;
+          &lt;circle cx&#x3D;&quot;100&quot; cy&#x3D;&quot;100&quot; r&#x3D;&quot;80&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; fill&#x3D;&quot;none&quot; opacity&#x3D;&quot;0.1&quot;/&gt;
+          &lt;rect x&#x3D;&quot;80&quot; y&#x3D;&quot;60&quot; width&#x3D;&quot;40&quot; height&#x3D;&quot;60&quot; rx&#x3D;&quot;4&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;3&quot; fill&#x3D;&quot;none&quot;/&gt;
+          &lt;circle cx&#x3D;&quot;95&quot; cy&#x3D;&quot;85&quot; r&#x3D;&quot;5&quot; fill&#x3D;&quot;currentColor&quot;/&gt;
+          &lt;circle cx&#x3D;&quot;105&quot; cy&#x3D;&quot;85&quot; r&#x3D;&quot;5&quot; fill&#x3D;&quot;currentColor&quot;/&gt;
+          &lt;path d&#x3D;&quot;M90 105 Q100 110 110 105&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; fill&#x3D;&quot;none&quot;/&gt;
+          &lt;rect x&#x3D;&quot;85&quot; y&#x3D;&quot;145&quot; width&#x3D;&quot;30&quot; height&#x3D;&quot;8&quot; rx&#x3D;&quot;2&quot; fill&#x3D;&quot;currentColor&quot;/&gt;
+          &lt;path d&#x3D;&quot;M130 140 L150 120 M170 140 L150 120&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;3&quot; stroke-linecap&#x3D;&quot;round&quot;/&gt;
+        &lt;/svg&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Error Message --&gt;
+    &lt;div class&#x3D;&quot;error-message&quot; role&#x3D;&quot;alert&quot;&gt;
+      &lt;h1 class&#x3D;&quot;error-title&quot;&gt;{{ i18n.t(&#x27;pages.errorPages.unauthorized.title&#x27;) }}&lt;/h1&gt;
+      &lt;p class&#x3D;&quot;error-description&quot;&gt;
+        {{ i18n.t(&#x27;pages.errorPages.unauthorized.message&#x27;) }}
+      &lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Information Box --&gt;
+    &lt;div class&#x3D;&quot;info-box&quot;&gt;
+      &lt;div class&#x3D;&quot;info-icon&quot;&gt;
+        &lt;svg width&#x3D;&quot;24&quot; height&#x3D;&quot;24&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;&gt;
+          &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot;&gt;&lt;/circle&gt;
+          &lt;line x1&#x3D;&quot;12&quot; y1&#x3D;&quot;8&quot; x2&#x3D;&quot;12&quot; y2&#x3D;&quot;12&quot;&gt;&lt;/line&gt;
+          &lt;line x1&#x3D;&quot;12&quot; y1&#x3D;&quot;16&quot; x2&#x3D;&quot;12.01&quot; y2&#x3D;&quot;16&quot;&gt;&lt;/line&gt;
+        &lt;/svg&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;info-content&quot;&gt;
+        &lt;h3&gt;{{ i18n.t(&#x27;pages.errorPages.unauthorized.whySeeingThis&#x27;) }}&lt;/h3&gt;
+        &lt;p&gt;{{ i18n.t(&#x27;pages.errorPages.unauthorized.whyMessage&#x27;) }}&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Quick Links --&gt;
+    &lt;div class&#x3D;&quot;quick-links mb-10&quot;&gt;
+      &lt;h3 class&#x3D;&quot;quick-links-title text-xl font-semibold text-gray-800 mb-6&quot;&gt;{{ i18n.t(&#x27;pages.errorPages.unauthorized.whatCanIDo&#x27;) }}&lt;/h3&gt;
+      &lt;div class&#x3D;&quot;quick-links-grid grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4 max-w-2xl mx-auto md:grid-cols-1&quot;&gt;
+        &lt;button (click)&#x3D;&quot;goToLogin()&quot; class&#x3D;&quot;quick-link flex items-center p-4 bg-gray-50 border-2 border-error-500 rounded-2xl no-underline text-gray-700 transition-all cursor-pointer hover:bg-red-50 hover:border-error-500 hover:-translate-y-0.5 hover:shadow-md&quot;&gt;
+          &lt;div class&#x3D;&quot;quick-link-icon mr-4 text-error-500&quot;&gt;
+            &lt;svg width&#x3D;&quot;24&quot; height&#x3D;&quot;24&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;&gt;
+              &lt;path d&#x3D;&quot;M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4&quot;&gt;&lt;/path&gt;
+              &lt;polyline points&#x3D;&quot;10 17 15 12 10 7&quot;&gt;&lt;/polyline&gt;
+              &lt;line x1&#x3D;&quot;15&quot; y1&#x3D;&quot;12&quot; x2&#x3D;&quot;3&quot; y2&#x3D;&quot;12&quot;&gt;&lt;/line&gt;
+            &lt;/svg&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;quick-link-content text-left&quot;&gt;
+            &lt;h4 class&#x3D;&quot;text-base font-semibold m-0 mb-1 text-gray-800&quot;&gt;{{ i18n.t(&#x27;pages.errorPages.unauthorized.signIn&#x27;) }}&lt;/h4&gt;
+            &lt;p class&#x3D;&quot;text-sm text-gray-500 m-0&quot;&gt;{{ i18n.t(&#x27;pages.errorPages.unauthorized.loginWithAccount&#x27;) }}&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/button&gt;
+
+        &lt;a routerLink&#x3D;&quot;/home&quot; class&#x3D;&quot;quick-link flex items-center p-4 bg-gray-50 border-2 border-error-500 rounded-2xl no-underline text-gray-700 transition-all hover:bg-red-50 hover:border-error-500 hover:-translate-y-0.5 hover:shadow-md&quot;&gt;
+          &lt;div class&#x3D;&quot;quick-link-icon mr-4 text-error-500&quot;&gt;
+            &lt;svg width&#x3D;&quot;24&quot; height&#x3D;&quot;24&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;&gt;
+              &lt;path d&#x3D;&quot;M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z&quot;&gt;&lt;/path&gt;
+              &lt;polyline points&#x3D;&quot;9,22 9,12 15,12 15,22&quot;&gt;&lt;/polyline&gt;
+            &lt;/svg&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;quick-link-content text-left&quot;&gt;
+            &lt;h4 class&#x3D;&quot;text-base font-semibold m-0 mb-1 text-gray-800&quot;&gt;{{ i18n.t(&#x27;pages.errorPages.unauthorized.goHome&#x27;) }}&lt;/h4&gt;
+            &lt;p class&#x3D;&quot;text-sm text-gray-500 m-0&quot;&gt;{{ i18n.t(&#x27;pages.errorPages.unauthorized.returnHomepage&#x27;) }}&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/a&gt;
+
+        &lt;a routerLink&#x3D;&quot;/help&quot; class&#x3D;&quot;quick-link flex items-center p-4 bg-gray-50 border-2 border-error-500 rounded-2xl no-underline text-gray-700 transition-all hover:bg-red-50 hover:border-error-500 hover:-translate-y-0.5 hover:shadow-md&quot;&gt;
+          &lt;div class&#x3D;&quot;quick-link-icon mr-4 text-error-500&quot;&gt;
+            &lt;svg width&#x3D;&quot;24&quot; height&#x3D;&quot;24&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;&gt;
+              &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot;&gt;&lt;/circle&gt;
+              &lt;path d&#x3D;&quot;M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3&quot;&gt;&lt;/path&gt;
+              &lt;line x1&#x3D;&quot;12&quot; y1&#x3D;&quot;17&quot; x2&#x3D;&quot;12.01&quot; y2&#x3D;&quot;17&quot;&gt;&lt;/line&gt;
+            &lt;/svg&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;quick-link-content text-left&quot;&gt;
+            &lt;h4 class&#x3D;&quot;text-base font-semibold m-0 mb-1 text-gray-800&quot;&gt;{{ i18n.t(&#x27;pages.errorPages.notFound.helpCenter&#x27;) }}&lt;/h4&gt;
+            &lt;p class&#x3D;&quot;text-sm text-gray-500 m-0&quot;&gt;{{ i18n.t(&#x27;pages.errorPages.notFound.getHelp&#x27;) }}&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/a&gt;
+
+        &lt;button (click)&#x3D;&quot;reportIssue()&quot; class&#x3D;&quot;quick-link flex items-center p-4 bg-gray-50 border-2 border-error-500 rounded-2xl no-underline text-gray-700 transition-all cursor-pointer hover:bg-red-50 hover:border-error-500 hover:-translate-y-0.5 hover:shadow-md&quot;&gt;
+          &lt;div class&#x3D;&quot;quick-link-icon mr-4 text-error-500&quot;&gt;
+            &lt;svg width&#x3D;&quot;24&quot; height&#x3D;&quot;24&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;&gt;
+              &lt;path d&#x3D;&quot;M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z&quot;&gt;&lt;/path&gt;
+              &lt;polyline points&#x3D;&quot;14,2 14,8 20,8&quot;&gt;&lt;/polyline&gt;
+              &lt;line x1&#x3D;&quot;16&quot; y1&#x3D;&quot;13&quot; x2&#x3D;&quot;8&quot; y2&#x3D;&quot;13&quot;&gt;&lt;/line&gt;
+              &lt;line x1&#x3D;&quot;16&quot; y1&#x3D;&quot;17&quot; x2&#x3D;&quot;8&quot; y2&#x3D;&quot;17&quot;&gt;&lt;/line&gt;
+            &lt;/svg&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;quick-link-content text-left&quot;&gt;
+            &lt;h4 class&#x3D;&quot;text-base font-semibold m-0 mb-1 text-gray-800&quot;&gt;{{ i18n.t(&#x27;pages.errorPages.unauthorized.reportIssue&#x27;) }}&lt;/h4&gt;
+            &lt;p class&#x3D;&quot;text-sm text-gray-500 m-0&quot;&gt;{{ i18n.t(&#x27;pages.errorPages.unauthorized.contactSupportText&#x27;) }}&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Action Buttons --&gt;
+    &lt;div class&#x3D;&quot;action-buttons flex gap-4 justify-center flex-wrap mb-8 md:flex-col md:items-center&quot;&gt;
+      &lt;button (click)&#x3D;&quot;goBack()&quot; class&#x3D;&quot;btn btn-outline inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold no-underline border-none cursor-pointer transition-all text-base bg-transparent text-error-500 border-2 border-error-500 hover:bg-error-500 hover:text-white hover:-translate-y-0.5 md:w-full md:max-w-xs md:justify-center&quot;&gt;
+        &lt;svg width&#x3D;&quot;16&quot; height&#x3D;&quot;16&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;&gt;
+          &lt;path d&#x3D;&quot;M19 12H5M12 19l-7-7 7-7&quot;&gt;&lt;/path&gt;
+        &lt;/svg&gt;
+        {{ i18n.t(&#x27;pages.errorPages.notFound.goBack&#x27;) }}
+      &lt;/button&gt;
+      &lt;button (click)&#x3D;&quot;goToLogin()&quot; class&#x3D;&quot;btn btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold no-underline border-none cursor-pointer transition-all text-base bg-error-500 text-white hover:bg-error-600 hover:-translate-y-0.5 hover:shadow-lg md:w-full md:max-w-xs md:justify-center&quot;&gt;
+        &lt;svg width&#x3D;&quot;16&quot; height&#x3D;&quot;16&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;&gt;
+          &lt;path d&#x3D;&quot;M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4&quot;&gt;&lt;/path&gt;
+          &lt;polyline points&#x3D;&quot;10 17 15 12 10 7&quot;&gt;&lt;/polyline&gt;
+          &lt;line x1&#x3D;&quot;15&quot; y1&#x3D;&quot;12&quot; x2&#x3D;&quot;3&quot; y2&#x3D;&quot;12&quot;&gt;&lt;/line&gt;
+        &lt;/svg&gt;
+        {{ i18n.t(&#x27;pages.errorPages.unauthorized.login&#x27;) }}
+      &lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Additional Help --&gt;
+    &lt;div class&#x3D;&quot;additional-help&quot;&gt;
+      &lt;p class&#x3D;&quot;help-text text-gray-500 text-sm leading-relaxed&quot;&gt;
+        {{ i18n.t(&#x27;pages.errorPages.unauthorized.needAccount&#x27;) }}
+        &lt;a routerLink&#x3D;&quot;/register&quot; class&#x3D;&quot;help-link text-error-500 no-underline font-semibold hover:underline&quot;&gt;{{ i18n.t(&#x27;pages.errorPages.unauthorized.createOne&#x27;) }}&lt;/a&gt;
+        {{ i18n.t(&#x27;pages.errorPages.unauthorized.forAssistance&#x27;) }}
+        &lt;a (click)&#x3D;&quot;reportIssue()&quot; class&#x3D;&quot;help-link text-error-500 no-underline font-semibold hover:underline cursor-pointer&quot;&gt;{{ i18n.t(&#x27;pages.errorPages.unauthorized.contactSupport&#x27;) }}&lt;/a&gt;
+      &lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./error-401.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">// Error 401 Component Styles
+// Most styles migrated to Tailwind classes in HTML template
+// Keeping only complex styles that require SCSS (pseudo-elements, animations)
+
+.error-401-container {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+
+  &amp;::before {
+    content: &#x27;&#x27;;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url(&#x27;data:image/svg+xml,&lt;svg xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 100 100&quot;&gt;&lt;defs&gt;&lt;pattern id&#x3D;&quot;grain&quot; width&#x3D;&quot;100&quot; height&#x3D;&quot;100&quot; patternUnits&#x3D;&quot;userSpaceOnUse&quot;&gt;&lt;circle cx&#x3D;&quot;25&quot; cy&#x3D;&quot;25&quot; r&#x3D;&quot;1&quot; fill&#x3D;&quot;white&quot; opacity&#x3D;&quot;0.1&quot;/&gt;&lt;circle cx&#x3D;&quot;75&quot; cy&#x3D;&quot;75&quot; r&#x3D;&quot;1&quot; fill&#x3D;&quot;white&quot; opacity&#x3D;&quot;0.1&quot;/&gt;&lt;circle cx&#x3D;&quot;50&quot; cy&#x3D;&quot;10&quot; r&#x3D;&quot;0.5&quot; fill&#x3D;&quot;white&quot; opacity&#x3D;&quot;0.1&quot;/&gt;&lt;circle cx&#x3D;&quot;10&quot; cy&#x3D;&quot;60&quot; r&#x3D;&quot;0.5&quot; fill&#x3D;&quot;white&quot; opacity&#x3D;&quot;0.1&quot;/&gt;&lt;circle cx&#x3D;&quot;90&quot; cy&#x3D;&quot;40&quot; r&#x3D;&quot;0.5&quot; fill&#x3D;&quot;white&quot; opacity&#x3D;&quot;0.1&quot;/&gt;&lt;/pattern&gt;&lt;/defs&gt;&lt;rect width&#x3D;&quot;100&quot; height&#x3D;&quot;100&quot; fill&#x3D;&quot;url(%23grain)&quot;/&gt;&lt;/svg&gt;&#x27;);
+    opacity: 0.3;
+  }
+}
+
+// Error illustration styles - keeping animation in SCSS
+.error-illustration {
+  .error-icon {
+    animation: shake 2s ease-in-out infinite;
+  }
+}
+
+// Animation keyframes
+@keyframes shake {
+  0%, 100% { transform: translateX(0px); }
+  25% { transform: translateX(-10px) rotate(-5deg); }
+  75% { transform: translateX(10px) rotate(5deg); }
+}
+
+// Animation class for Tailwind
+.animate-shake {
+  animation: shake 2s ease-in-out infinite;
+}
+
+// Most styles migrated to Tailwind classes in HTML template
+// Keeping only complex styles that require SCSS
+
+// Responsive styles migrated to Tailwind responsive classes in HTML template
+// Using md: breakpoint for mobile-first responsive design
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="error-401-container min-h-screen flex items-center justify-center p-8 relative overflow-hidden" [class]="customClass || \'\'" role="main" [attr.aria-label]="ariaLabel || \'Unauthorized access\'">  <div class="error-401-content bg-white/95 backdrop-blur-sm rounded-3xl p-12 max-w-4xl w-full text-center shadow-2xl relative z-10 md:p-8">      <!-- Error Illustration -->      <div class="error-illustration mb-8 relative" [attr.aria-hidden]="\'true\'">        <div class="error-number text-9xl font-black bg-gradient-to-br from-pink-400 to-red-500 bg-clip-text text-transparent leading-none mb-4 drop-shadow-md md:text-6xl">401</div>        <div class="error-icon text-error-500 opacity-80 animate-shake">          <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" [attr.aria-hidden]="\'true\'">          <circle cx="100" cy="100" r="80" stroke="currentColor" stroke-width="2" fill="none" opacity="0.1"/>          <rect x="80" y="60" width="40" height="60" rx="4" stroke="currentColor" stroke-width="3" fill="none"/>          <circle cx="95" cy="85" r="5" fill="currentColor"/>          <circle cx="105" cy="85" r="5" fill="currentColor"/>          <path d="M90 105 Q100 110 110 105" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>          <rect x="85" y="145" width="30" height="8" rx="2" fill="currentColor"/>          <path d="M130 140 L150 120 M170 140 L150 120" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>        </svg>      </div>    </div>    <!-- Error Message -->    <div class="error-message" role="alert">      <h1 class="error-title">{{ i18n.t(\'pages.errorPages.unauthorized.title\') }}</h1>      <p class="error-description">        {{ i18n.t(\'pages.errorPages.unauthorized.message\') }}      </p>    </div>    <!-- Information Box -->    <div class="info-box">      <div class="info-icon">        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">          <circle cx="12" cy="12" r="10"></circle>          <line x1="12" y1="8" x2="12" y2="12"></line>          <line x1="12" y1="16" x2="12.01" y2="16"></line>        </svg>      </div>      <div class="info-content">        <h3>{{ i18n.t(\'pages.errorPages.unauthorized.whySeeingThis\') }}</h3>        <p>{{ i18n.t(\'pages.errorPages.unauthorized.whyMessage\') }}</p>      </div>    </div>    <!-- Quick Links -->    <div class="quick-links mb-10">      <h3 class="quick-links-title text-xl font-semibold text-gray-800 mb-6">{{ i18n.t(\'pages.errorPages.unauthorized.whatCanIDo\') }}</h3>      <div class="quick-links-grid grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4 max-w-2xl mx-auto md:grid-cols-1">        <button (click)="goToLogin()" class="quick-link flex items-center p-4 bg-gray-50 border-2 border-error-500 rounded-2xl no-underline text-gray-700 transition-all cursor-pointer hover:bg-red-50 hover:border-error-500 hover:-translate-y-0.5 hover:shadow-md">          <div class="quick-link-icon mr-4 text-error-500">            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>              <polyline points="10 17 15 12 10 7"></polyline>              <line x1="15" y1="12" x2="3" y2="12"></line>            </svg>          </div>          <div class="quick-link-content text-left">            <h4 class="text-base font-semibold m-0 mb-1 text-gray-800">{{ i18n.t(\'pages.errorPages.unauthorized.signIn\') }}</h4>            <p class="text-sm text-gray-500 m-0">{{ i18n.t(\'pages.errorPages.unauthorized.loginWithAccount\') }}</p>          </div>        </button>        <a routerLink="/home" class="quick-link flex items-center p-4 bg-gray-50 border-2 border-error-500 rounded-2xl no-underline text-gray-700 transition-all hover:bg-red-50 hover:border-error-500 hover:-translate-y-0.5 hover:shadow-md">          <div class="quick-link-icon mr-4 text-error-500">            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>              <polyline points="9,22 9,12 15,12 15,22"></polyline>            </svg>          </div>          <div class="quick-link-content text-left">            <h4 class="text-base font-semibold m-0 mb-1 text-gray-800">{{ i18n.t(\'pages.errorPages.unauthorized.goHome\') }}</h4>            <p class="text-sm text-gray-500 m-0">{{ i18n.t(\'pages.errorPages.unauthorized.returnHomepage\') }}</p>          </div>        </a>        <a routerLink="/help" class="quick-link flex items-center p-4 bg-gray-50 border-2 border-error-500 rounded-2xl no-underline text-gray-700 transition-all hover:bg-red-50 hover:border-error-500 hover:-translate-y-0.5 hover:shadow-md">          <div class="quick-link-icon mr-4 text-error-500">            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">              <circle cx="12" cy="12" r="10"></circle>              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>              <line x1="12" y1="17" x2="12.01" y2="17"></line>            </svg>          </div>          <div class="quick-link-content text-left">            <h4 class="text-base font-semibold m-0 mb-1 text-gray-800">{{ i18n.t(\'pages.errorPages.notFound.helpCenter\') }}</h4>            <p class="text-sm text-gray-500 m-0">{{ i18n.t(\'pages.errorPages.notFound.getHelp\') }}</p>          </div>        </a>        <button (click)="reportIssue()" class="quick-link flex items-center p-4 bg-gray-50 border-2 border-error-500 rounded-2xl no-underline text-gray-700 transition-all cursor-pointer hover:bg-red-50 hover:border-error-500 hover:-translate-y-0.5 hover:shadow-md">          <div class="quick-link-icon mr-4 text-error-500">            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>              <polyline points="14,2 14,8 20,8"></polyline>              <line x1="16" y1="13" x2="8" y2="13"></line>              <line x1="16" y1="17" x2="8" y2="17"></line>            </svg>          </div>          <div class="quick-link-content text-left">            <h4 class="text-base font-semibold m-0 mb-1 text-gray-800">{{ i18n.t(\'pages.errorPages.unauthorized.reportIssue\') }}</h4>            <p class="text-sm text-gray-500 m-0">{{ i18n.t(\'pages.errorPages.unauthorized.contactSupportText\') }}</p>          </div>        </button>      </div>    </div>    <!-- Action Buttons -->    <div class="action-buttons flex gap-4 justify-center flex-wrap mb-8 md:flex-col md:items-center">      <button (click)="goBack()" class="btn btn-outline inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold no-underline border-none cursor-pointer transition-all text-base bg-transparent text-error-500 border-2 border-error-500 hover:bg-error-500 hover:text-white hover:-translate-y-0.5 md:w-full md:max-w-xs md:justify-center">        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">          <path d="M19 12H5M12 19l-7-7 7-7"></path>        </svg>        {{ i18n.t(\'pages.errorPages.notFound.goBack\') }}      </button>      <button (click)="goToLogin()" class="btn btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold no-underline border-none cursor-pointer transition-all text-base bg-error-500 text-white hover:bg-error-600 hover:-translate-y-0.5 hover:shadow-lg md:w-full md:max-w-xs md:justify-center">        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>          <polyline points="10 17 15 12 10 7"></polyline>          <line x1="15" y1="12" x2="3" y2="12"></line>        </svg>        {{ i18n.t(\'pages.errorPages.unauthorized.login\') }}      </button>    </div>    <!-- Additional Help -->    <div class="additional-help">      <p class="help-text text-gray-500 text-sm leading-relaxed">        {{ i18n.t(\'pages.errorPages.unauthorized.needAccount\') }}        <a routerLink="/register" class="help-link text-error-500 no-underline font-semibold hover:underline">{{ i18n.t(\'pages.errorPages.unauthorized.createOne\') }}</a>        {{ i18n.t(\'pages.errorPages.unauthorized.forAssistance\') }}        <a (click)="reportIssue()" class="help-link text-error-500 no-underline font-semibold hover:underline cursor-pointer">{{ i18n.t(\'pages.errorPages.unauthorized.contactSupport\') }}</a>      </p>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AccessControlComponent', 'selector': 'app-access-control'},{'name': 'AccessGroupsComponent', 'selector': 'app-access-groups'},{'name': 'AccessibilityDashboardComponent', 'selector': 'app-accessibility-dashboard'},{'name': 'AccessLogsComponent', 'selector': 'app-access-logs'},{'name': 'AccessSchedulesComponent', 'selector': 'app-access-schedules'},{'name': 'AccordionComponent', 'selector': 'app-accordion'},{'name': 'AccordionDemoComponent', 'selector': 'app-accordion-demo'},{'name': 'AdvancedDataTableComponent', 'selector': 'app-advanced-data-table'},{'name': 'AdvancedDataTableDemoComponent', 'selector': 'app-advanced-data-table-demo'},{'name': 'AdvancedFeaturesDashboardComponent', 'selector': 'app-advanced-features-dashboard'},{'name': 'AdvancedFormsComponent', 'selector': 'app-advanced-forms'},{'name': 'AdvancedRichTextComponent', 'selector': 'app-advanced-rich-text'},{'name': 'AdvancedUiDemoComponent', 'selector': 'app-advanced-ui-demo'},{'name': 'AIModelsComponent', 'selector': 'app-ai-models'},{'name': 'AlertComponent', 'selector': 'app-alert'},{'name': 'AlertHistoryComponent', 'selector': 'app-alert-history'},{'name': 'AlertsComponent', 'selector': 'app-alerts'},{'name': 'ApexChartComponent', 'selector': 'app-apex-chart'},{'name': 'App', 'selector': 'app-root'},{'name': 'AttendanceComponent', 'selector': 'app-attendance'},{'name': 'AuditLogsComponent', 'selector': 'app-audit-logs'},{'name': 'AvatarComponent', 'selector': 'app-avatar'},{'name': 'BackupRestoreComponent', 'selector': 'app-backup-restore'},{'name': 'BadgeComponent', 'selector': 'app-badge'},{'name': 'BaseComponent', 'selector': ''},{'name': 'BiometricDataComponent', 'selector': 'app-biometric-data'},{'name': 'BreadcrumbComponent', 'selector': 'app-breadcrumb'},{'name': 'CalendarComponent', 'selector': 'app-calendar'},{'name': 'CalendarDemoComponent', 'selector': 'app-calendar-demo'},{'name': 'ChartComponent', 'selector': 'app-chart'},{'name': 'CheckboxComponent', 'selector': 'app-checkbox'},{'name': 'ColorPickerComponent', 'selector': 'app-color-picker'},{'name': 'ComingSoonComponent', 'selector': 'app-coming-soon'},{'name': 'CompaniesComponent', 'selector': 'app-companies'},{'name': 'CompanyDocumentsComponent', 'selector': 'app-company-documents'},{'name': 'CompanyHolidaysComponent', 'selector': 'app-company-holidays'},{'name': 'ComponentShowcaseComponent', 'selector': 'app-component-showcase'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DataTableComponent', 'selector': 'app-data-table'},{'name': 'DateTimePickerComponent', 'selector': 'app-date-time-picker'},{'name': 'DepartmentsComponent', 'selector': 'app-departments'},{'name': 'DevicesComponent', 'selector': 'app-devices'},{'name': 'DividerComponent', 'selector': 'app-divider'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DoorsComponent', 'selector': 'app-doors'},{'name': 'DraggableCardsComponent', 'selector': 'app-draggable-cards'},{'name': 'DraggableCardsDemoComponent', 'selector': 'app-draggable-cards-demo'},{'name': 'EChartsChartComponent', 'selector': 'app-echarts-chart'},{'name': 'EChartsDemoComponent', 'selector': 'app-echarts-demo'},{'name': 'EmployeesComponent', 'selector': 'app-employees'},{'name': 'EmployeesNewComponent', 'selector': 'app-employees-new'},{'name': 'EmptyStateComponent', 'selector': 'app-empty-state'},{'name': 'Error401Component', 'selector': 'app-error-401'},{'name': 'Error404Component', 'selector': 'app-error-404'},{'name': 'Error500Component', 'selector': 'app-error-500'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'ErrorToastComponent', 'selector': 'app-error-toast'},{'name': 'EventAnalyticsComponent', 'selector': 'app-event-analytics'},{'name': 'EventCheckinHistoryComponent', 'selector': 'app-event-checkin-history'},{'name': 'EventEmailConfirmationComponent', 'selector': 'app-event-email-confirmation'},{'name': 'EventKioskConfigComponent', 'selector': 'app-event-kiosk-config'},{'name': 'EventRegistrationComponent', 'selector': 'app-event-registration'},{'name': 'EventRegistrationFieldsComponent', 'selector': 'app-event-registration-fields'},{'name': 'EventsComponent', 'selector': 'app-events'},{'name': 'FaceRecognitionComponent', 'selector': 'app-face-recognition'},{'name': 'FaceRecognitionDemoComponent', 'selector': 'app-face-recognition-demo'},{'name': 'FaceRecognitionLiveComponent', 'selector': 'app-face-recognition-live'},{'name': 'FaceRecognitionTestComponent', 'selector': 'app-face-recognition-test'},{'name': 'FaqComponent', 'selector': 'app-faq'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'FilterSectionComponent', 'selector': 'app-filter-section'},{'name': 'ForgotPasswordComponent', 'selector': 'app-forgot-password'},{'name': 'FormFieldComponent', 'selector': 'app-form-field'},{'name': 'GalleryComponent', 'selector': 'app-gallery'},{'name': 'GalleryDemoComponent', 'selector': 'app-gallery-demo'},{'name': 'GlassButtonComponent', 'selector': 'app-glass-button'},{'name': 'GlassCardComponent', 'selector': 'app-glass-card'},{'name': 'GlassInputComponent', 'selector': 'app-glass-input'},{'name': 'GroupFaceRecognitionComponent', 'selector': 'app-group-face-recognition'},{'name': 'GuestsComponent', 'selector': 'app-guests'},{'name': 'HardwareStatusDashboardComponent', 'selector': 'app-hardware-status-dashboard'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HeatmapAnalyticsComponent', 'selector': 'app-heatmap-analytics'},{'name': 'HelpCenter', 'selector': 'app-help-center'},{'name': 'HelpCenterComponent', 'selector': 'app-help-center'},{'name': 'HrDashboardComponent', 'selector': 'app-hr-dashboard'},{'name': 'IconComponent', 'selector': 'app-icon'},{'name': 'IncidentReportsComponent', 'selector': 'app-incident-reports'},{'name': 'KioskViewComponent', 'selector': 'app-kiosk-view'},{'name': 'LandingComponent', 'selector': 'app-landing'},{'name': 'LeafletMapComponent', 'selector': 'app-leaflet-map'},{'name': 'LeavesComponent', 'selector': 'app-leaves'},{'name': 'LicenseManagementComponent', 'selector': 'app-license-management'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoadingStateComponent', 'selector': 'app-loading-state'},{'name': 'LocationsComponent', 'selector': 'app-locations'},{'name': 'LockScreenComponent', 'selector': 'app-lock-screen'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MapDemoComponent', 'selector': 'app-map-demo'},{'name': 'MaterialButtonComponent', 'selector': 'app-material-button'},{'name': 'MaterialCardComponent', 'selector': 'app-material-card'},{'name': 'MaterialDialogComponent', 'selector': 'app-material-dialog'},{'name': 'MaterialInputComponent', 'selector': 'app-material-input'},{'name': 'MaterialTableComponent', 'selector': 'app-material-table'},{'name': 'MfaSetupComponent', 'selector': 'app-mfa-setup'},{'name': 'MobileCameraComponent', 'selector': 'app-mobile-camera'},{'name': 'MobileDemoComponent', 'selector': 'app-mobile-demo'},{'name': 'ModalComponent', 'selector': 'app-modal'},{'name': 'ModalFormComponent', 'selector': 'app-modal-form'},{'name': 'ModuleSubscriptionComponent', 'selector': 'app-module-subscription'},{'name': 'MonitoringComponent', 'selector': 'app-monitoring'},{'name': 'NotificationCenterComponent', 'selector': 'app-notification-center'},{'name': 'NotificationDemoComponent', 'selector': 'app-notification-demo'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'NotificationSettingsComponent', 'selector': 'app-notification-settings'},{'name': 'OffcanvasComponent', 'selector': 'app-offcanvas'},{'name': 'OffcanvasDemoComponent', 'selector': 'app-offcanvas-demo'},{'name': 'OvertimeRequestsComponent', 'selector': 'app-overtime-requests'},{'name': 'PageLayoutComponent', 'selector': 'app-page-layout'},{'name': 'PaginationComponent', 'selector': 'app-pagination'},{'name': 'ParkingBlacklistComponent', 'selector': 'app-parking-blacklist'},{'name': 'ParkingDashboardComponent', 'selector': 'app-parking-dashboard'},{'name': 'ParkingEntryComponent', 'selector': 'app-parking-entry'},{'name': 'ParkingExitComponent', 'selector': 'app-parking-exit'},{'name': 'ParkingLogsComponent', 'selector': 'app-parking-logs'},{'name': 'ParkingReservationComponent', 'selector': 'app-parking-reservation'},{'name': 'ParkingRulesComponent', 'selector': 'app-parking-rules'},{'name': 'ParkingSpotsComponent', 'selector': 'app-parking-spots'},{'name': 'ParkingStatisticsComponent', 'selector': 'app-parking-statistics'},{'name': 'PayrollExportComponent', 'selector': 'app-payroll-export'},{'name': 'PerformanceDashboardComponent', 'selector': 'app-performance-dashboard'},{'name': 'PopoverComponent', 'selector': 'app-popover'},{'name': 'PortalLayoutComponent', 'selector': 'app-portal-layout'},{'name': 'PositionsComponent', 'selector': 'app-positions'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'PublicVerificationComponent', 'selector': 'app-public-verification'},{'name': 'QRCodesComponent', 'selector': 'app-qr-codes'},{'name': 'RadioComponent', 'selector': 'app-radio'},{'name': 'RangeSliderComponent', 'selector': 'app-range-slider'},{'name': 'RatingComponent', 'selector': 'app-rating'},{'name': 'RatingDemoComponent', 'selector': 'app-rating-demo'},{'name': 'RbacComponent', 'selector': 'app-rbac'},{'name': 'RecognitionHistoryComponent', 'selector': 'app-recognition-history'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReportsComponent', 'selector': 'app-reports'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'RFIDCardsComponent', 'selector': 'app-rfid-cards'},{'name': 'RichTextComponent', 'selector': 'app-rich-text'},{'name': 'RichTextEditorComponent', 'selector': 'app-rich-text-editor'},{'name': 'RichTextEditorDemoComponent', 'selector': 'app-rich-text-editor-demo'},{'name': 'SafetyDashboardComponent', 'selector': 'app-safety-dashboard'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ShiftsComponent', 'selector': 'app-shifts'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SkeletonComponent', 'selector': 'app-skeleton'},{'name': 'StatisticsCardComponent', 'selector': 'app-statistics-card'},{'name': 'StatisticsGridComponent', 'selector': 'app-statistics-grid'},{'name': 'StepperComponent', 'selector': 'app-stepper'},{'name': 'StructureComponent', 'selector': 'app-structure'},{'name': 'SuperAdminAnnouncementsComponent', 'selector': 'app-super-admin-announcements'},{'name': 'SuperAdminDashboardComponent', 'selector': 'app-super-admin-dashboard'},{'name': 'SuperAdminLayoutComponent', 'selector': 'app-super-admin-layout'},{'name': 'SuperAdminReportsComponent', 'selector': 'app-super-admin-reports'},{'name': 'SurveillanceMapComponent', 'selector': 'app-surveillance-map'},{'name': 'SwiperGalleryComponent', 'selector': 'app-swiper-gallery'},{'name': 'SwiperGalleryDemoComponent', 'selector': 'app-swiper-gallery-demo'},{'name': 'SwitchComponent', 'selector': 'app-switch'},{'name': 'SystemSettingsComponent', 'selector': 'app-system-settings'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TemplateManagementComponent', 'selector': 'app-template-management'},{'name': 'TestApiComponent', 'selector': 'app-test-api'},{'name': 'ThemeSwitcherComponent', 'selector': 'app-theme-switcher'},{'name': 'TimelineComponent', 'selector': 'app-timeline'},{'name': 'TimelineDemoComponent', 'selector': 'app-timeline-demo'},{'name': 'TimesheetsComponent', 'selector': 'app-timesheets'},{'name': 'TimestampComponent', 'selector': 'app-timestamp'},{'name': 'TimestampDemoComponent', 'selector': 'app-timestamp-demo'},{'name': 'TooltipComponent', 'selector': 'app-tooltip'},{'name': 'UsersComponent', 'selector': 'app-users'},{'name': 'ValidationDemoComponent', 'selector': 'app-validation-demo'},{'name': 'VehiclesComponent', 'selector': 'app-vehicles'},{'name': 'VideoAnalyticsComponent', 'selector': 'app-video-analytics'},{'name': 'VideoPlaybackComponent', 'selector': 'app-video-playback'},{'name': 'VisitorBadgesComponent', 'selector': 'app-visitor-badges'},{'name': 'VisitorBlacklistComponent', 'selector': 'app-visitor-blacklist'},{'name': 'VisitorDashboardComponent', 'selector': 'app-visitor-dashboard'},{'name': 'VisitorInvitationsComponent', 'selector': 'app-visitor-invitations'},{'name': 'VisitorParcelsComponent', 'selector': 'app-visitor-parcels'},{'name': 'VisitorReportsComponent', 'selector': 'app-visitor-reports'},{'name': 'VisitorsComponent', 'selector': 'app-visitors'},{'name': 'WatchlistComponent', 'selector': 'app-watchlist'},{'name': 'ZoneConfigComponent', 'selector': 'app-zone-config'}];
+    var DIRECTIVES = [{'name': 'HasPermissionDirective', 'selector': '[appHasPermission]'},{'name': 'ImageOptimizationDirective', 'selector': '[appImageOptimization]'}];
+    var ACTUAL_COMPONENT = {'name': 'Error401Component'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'Error401Component.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

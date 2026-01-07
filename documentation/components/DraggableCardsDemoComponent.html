@@ -1,0 +1,2137 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  DraggableCardsDemoComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-draggable-cards-demo</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../interfaces/Module.html" target="_self" >CommonModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >FormsModule</a></code>
+                                <code><a href="../components/DraggableCardsComponent.html" target="_self" >DraggableCardsComponent</a></code>
+                                <code><a href="../components/GlassCardComponent.html" target="_self" >GlassCardComponent</a></code>
+                                <code><a href="../components/GlassButtonComponent.html" target="_self" >GlassButtonComponent</a></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./draggable-cards-demo.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./draggable-cards-demo.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#allowOverlap" >allowOverlap</a>
+                            </li>
+                            <li>
+                                <a href="#animation" >animation</a>
+                            </li>
+                            <li>
+                                <a href="#autoSave" >autoSave</a>
+                            </li>
+                            <li>
+                                <a href="#cards" >cards</a>
+                            </li>
+                            <li>
+                                <a href="#config" >config</a>
+                            </li>
+                            <li>
+                                <a href="#gridSize" >gridSize</a>
+                            </li>
+                            <li>
+                                <a href="#selectedCard" >selectedCard</a>
+                            </li>
+                            <li>
+                                <a href="#snapToGrid" >snapToGrid</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#addSampleCard" >addSampleCard</a>
+                            </li>
+                            <li>
+                                <a href="#clearAllCards" >clearAllCards</a>
+                            </li>
+                            <li>
+                                <a href="#exportCardsData" >exportCardsData</a>
+                            </li>
+                            <li>
+                                <a href="#getCardsStats" >getCardsStats</a>
+                            </li>
+                            <li>
+                                <a href="#importCardsData" >importCardsData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#initializeSampleCards" >initializeSampleCards</a>
+                            </li>
+                            <li>
+                                <a href="#lockAllCards" >lockAllCards</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onCardDeselect" >onCardDeselect</a>
+                            </li>
+                            <li>
+                                <a href="#onCardMove" >onCardMove</a>
+                            </li>
+                            <li>
+                                <a href="#onCardResize" >onCardResize</a>
+                            </li>
+                            <li>
+                                <a href="#onCardsChange" >onCardsChange</a>
+                            </li>
+                            <li>
+                                <a href="#onCardSelect" >onCardSelect</a>
+                            </li>
+                            <li>
+                                <a href="#resetToSampleCards" >resetToSampleCards</a>
+                            </li>
+                            <li>
+                                <a href="#unlockAllCards" >unlockAllCards</a>
+                            </li>
+                            <li>
+                                <a href="#updateConfig" >updateConfig</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component.ts:61</a></div>
+                            </td>
+                        </tr>
+
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addSampleCard"></a>
+                    <span class="name">
+                        <span ><b>addSampleCard</b></span>
+                        <a href="#addSampleCard"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>addSampleCard()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="239"
+                                    class="link-to-prism">src/app/features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component.ts:239</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Add sample card</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="clearAllCards"></a>
+                    <span class="name">
+                        <span ><b>clearAllCards</b></span>
+                        <a href="#clearAllCards"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>clearAllCards()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="282"
+                                    class="link-to-prism">src/app/features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component.ts:282</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Clear all cards</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="exportCardsData"></a>
+                    <span class="name">
+                        <span ><b>exportCardsData</b></span>
+                        <a href="#exportCardsData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>exportCardsData()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="332"
+                                    class="link-to-prism">src/app/features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component.ts:332</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Export cards data</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getCardsStats"></a>
+                    <span class="name">
+                        <span ><b>getCardsStats</b></span>
+                        <a href="#getCardsStats"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getCardsStats()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="316"
+                                    class="link-to-prism">src/app/features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component.ts:316</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get cards statistics</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="importCardsData"></a>
+                    <span class="name">
+                        <span ><b>importCardsData</b></span>
+                        <a href="#importCardsData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>importCardsData(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="351"
+                                    class="link-to-prism">src/app/features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component.ts:351</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Import cards data</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="initializeSampleCards"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>initializeSampleCards</b></span>
+                        <a href="#initializeSampleCards"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>initializeSampleCards()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="73"
+                                    class="link-to-prism">src/app/features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component.ts:73</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Initialize sample cards</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="lockAllCards"></a>
+                    <span class="name">
+                        <span ><b>lockAllCards</b></span>
+                        <a href="#lockAllCards"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>lockAllCards()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="298"
+                                    class="link-to-prism">src/app/features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component.ts:298</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Lock all cards</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="65"
+                                    class="link-to-prism">src/app/features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component.ts:65</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onCardDeselect"></a>
+                    <span class="name">
+                        <span ><b>onCardDeselect</b></span>
+                        <a href="#onCardDeselect"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onCardDeselect(card: <a href="../interfaces/DraggableCard.html" target="_self">DraggableCard</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="223"
+                                    class="link-to-prism">src/app/features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component.ts:223</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle card deselect</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>card</td>
+                                            <td>
+                                                            <code><a href="../interfaces/DraggableCard.html" target="_self" >DraggableCard</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onCardMove"></a>
+                    <span class="name">
+                        <span ><b>onCardMove</b></span>
+                        <a href="#onCardMove"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onCardMove(card: <a href="../interfaces/DraggableCard.html" target="_self">DraggableCard</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="201"
+                                    class="link-to-prism">src/app/features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component.ts:201</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle card move</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>card</td>
+                                            <td>
+                                                            <code><a href="../interfaces/DraggableCard.html" target="_self" >DraggableCard</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onCardResize"></a>
+                    <span class="name">
+                        <span ><b>onCardResize</b></span>
+                        <a href="#onCardResize"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onCardResize(card: <a href="../interfaces/DraggableCard.html" target="_self">DraggableCard</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="208"
+                                    class="link-to-prism">src/app/features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component.ts:208</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle card resize</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>card</td>
+                                            <td>
+                                                            <code><a href="../interfaces/DraggableCard.html" target="_self" >DraggableCard</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onCardsChange"></a>
+                    <span class="name">
+                        <span ><b>onCardsChange</b></span>
+                        <a href="#onCardsChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onCardsChange(cards: <a href="../interfaces/DraggableCard.html" target="_self">DraggableCard[]</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="231"
+                                    class="link-to-prism">src/app/features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component.ts:231</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle cards change</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>cards</td>
+                                            <td>
+                                                            <code><a href="../interfaces/DraggableCard.html" target="_self" >DraggableCard[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onCardSelect"></a>
+                    <span class="name">
+                        <span ><b>onCardSelect</b></span>
+                        <a href="#onCardSelect"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onCardSelect(card: <a href="../interfaces/DraggableCard.html" target="_self">DraggableCard</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="215"
+                                    class="link-to-prism">src/app/features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component.ts:215</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle card select</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>card</td>
+                                            <td>
+                                                            <code><a href="../interfaces/DraggableCard.html" target="_self" >DraggableCard</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resetToSampleCards"></a>
+                    <span class="name">
+                        <span ><b>resetToSampleCards</b></span>
+                        <a href="#resetToSampleCards"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>resetToSampleCards()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="290"
+                                    class="link-to-prism">src/app/features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component.ts:290</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Reset to sample cards</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unlockAllCards"></a>
+                    <span class="name">
+                        <span ><b>unlockAllCards</b></span>
+                        <a href="#unlockAllCards"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>unlockAllCards()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="307"
+                                    class="link-to-prism">src/app/features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component.ts:307</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Unlock all cards</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateConfig"></a>
+                    <span class="name">
+                        <span ><b>updateConfig</b></span>
+                        <a href="#updateConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateConfig()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="181"
+                                    class="link-to-prism">src/app/features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component.ts:181</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Update configuration</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="allowOverlap"></a>
+                    <span class="name">
+                        <span ><b>allowOverlap</b></span>
+                        <a href="#allowOverlap"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component.ts:56</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="animation"></a>
+                    <span class="name">
+                        <span ><b>animation</b></span>
+                        <a href="#animation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>true</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component.ts:57</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="autoSave"></a>
+                    <span class="name">
+                        <span ><b>autoSave</b></span>
+                        <a href="#autoSave"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>true</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/app/features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component.ts:58</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cards"></a>
+                    <span class="name">
+                        <span ><b>cards</b></span>
+                        <a href="#cards"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/DraggableCard.html" target="_self" >DraggableCard[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/app/features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component.ts:35</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="config"></a>
+                    <span class="name">
+                        <span ><b>config</b></span>
+                        <a href="#config"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Partial&lt;DraggableCardsConfig&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    gridSize: 20,
+    snapToGrid: true,
+    allowOverlap: false,
+    maxZIndex: 1000,
+    minWidth: 200,
+    minHeight: 150,
+    maxWidth: 600,
+    maxHeight: 400,
+    animation: true,
+    animationDuration: 300,
+    autoSave: true,
+    autoSaveDelay: 1000
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component.ts:38</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="gridSize"></a>
+                    <span class="name">
+                        <span ><b>gridSize</b></span>
+                        <a href="#gridSize"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>20</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">src/app/features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component.ts:54</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedCard"></a>
+                    <span class="name">
+                        <span ><b>selectedCard</b></span>
+                        <a href="#selectedCard"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/DraggableCard.html" target="_self" >DraggableCard | null</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component.ts:61</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="snapToGrid"></a>
+                    <span class="name">
+                        <span ><b>snapToGrid</b></span>
+                        <a href="#snapToGrid"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>true</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component.ts:55</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormsModule } from &#x27;@angular/forms&#x27;;
+import { DraggableCardsComponent, DraggableCard, DraggableCardsConfig } from &#x27;../../../../shared/components/draggable-cards/draggable-cards.component&#x27;;
+import { GlassCardComponent } from &#x27;../../../../shared/components/glass-card/glass-card.component&#x27;;
+import { GlassButtonComponent } from &#x27;../../../../shared/components/glass-button/glass-button.component&#x27;;
+
+@Component({
+  selector: &#x27;app-draggable-cards-demo&#x27;,
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    DraggableCardsComponent,
+    GlassCardComponent,
+    GlassButtonComponent
+  ],
+  templateUrl: &#x27;./draggable-cards-demo.component.html&#x27;,
+  styleUrls: [&#x27;./draggable-cards-demo.component.scss&#x27;]
+})
+export class DraggableCardsDemoComponent implements OnInit {
+  // Draggable cards
+  cards: DraggableCard[] &#x3D; [];
+
+  // Configuration
+  config: Partial&lt;DraggableCardsConfig&gt; &#x3D; {
+    gridSize: 20,
+    snapToGrid: true,
+    allowOverlap: false,
+    maxZIndex: 1000,
+    minWidth: 200,
+    minHeight: 150,
+    maxWidth: 600,
+    maxHeight: 400,
+    animation: true,
+    animationDuration: 300,
+    autoSave: true,
+    autoSaveDelay: 1000
+  };
+
+  // Demo settings
+  gridSize: number &#x3D; 20;
+  snapToGrid: boolean &#x3D; true;
+  allowOverlap: boolean &#x3D; false;
+  animation: boolean &#x3D; true;
+  autoSave: boolean &#x3D; true;
+
+  // Statistics
+  selectedCard: DraggableCard | null &#x3D; null;
+
+  constructor() {}
+
+  ngOnInit(): void {
+    this.initializeSampleCards();
+    this.updateConfig();
+  }
+
+  /**
+   * Initialize sample cards
+   */
+  private initializeSampleCards(): void {
+    this.cards &#x3D; [
+      {
+        id: &#x27;card-1&#x27;,
+        title: &#x27;Dashboard Overview&#x27;,
+        content: &#x60;
+          &lt;h4&gt;ระบบจัดการข้อมูล&lt;/h4&gt;
+          &lt;p&gt;แสดงข้อมูลสถิติการใช้งานระบบ&lt;/p&gt;
+          &lt;ul&gt;
+            &lt;li&gt;จำนวนผู้ใช้งาน&lt;/li&gt;
+            &lt;li&gt;สถิติการเข้าถึง&lt;/li&gt;
+            &lt;li&gt;รายงานประจำวัน&lt;/li&gt;
+          &lt;/ul&gt;
+        &#x60;,
+        x: 20,
+        y: 20,
+        width: 300,
+        height: 250,
+        zIndex: 1,
+        locked: false,
+        resizable: true,
+        draggable: true,
+        color: &#x27;#3B82F6&#x27;,
+        icon: &#x27;fas fa-chart-pie&#x27;,
+        badge: &#x27;สำคัญ&#x27;,
+        badgeColor: &#x27;primary&#x27;
+      },
+      {
+        id: &#x27;card-2&#x27;,
+        title: &#x27;Face Recognition&#x27;,
+        content: &#x60;
+          &lt;h4&gt;ระบบจดจำใบหน้า&lt;/h4&gt;
+          &lt;p&gt;ระบบ AI สำหรับการจดจำใบหน้า&lt;/p&gt;
+          &lt;ul&gt;
+            &lt;li&gt;การลงทะเบียนใบหน้า&lt;/li&gt;
+            &lt;li&gt;การจดจำแบบเรียลไทม์&lt;/li&gt;
+            &lt;li&gt;การประเมินคุณภาพภาพ&lt;/li&gt;
+          &lt;/ul&gt;
+        &#x60;,
+        x: 350,
+        y: 20,
+        width: 280,
+        height: 220,
+        zIndex: 2,
+        locked: false,
+        resizable: true,
+        draggable: true,
+        color: &#x27;#10B981&#x27;,
+        icon: &#x27;fas fa-user-check&#x27;,
+        badge: &#x27;AI&#x27;,
+        badgeColor: &#x27;success&#x27;
+      },
+      {
+        id: &#x27;card-3&#x27;,
+        title: &#x27;Analytics Report&#x27;,
+        content: &#x60;
+          &lt;h4&gt;รายงานการวิเคราะห์&lt;/h4&gt;
+          &lt;p&gt;ข้อมูลสถิติและรายงานต่างๆ&lt;/p&gt;
+          &lt;ul&gt;
+            &lt;li&gt;กราฟแสดงผล&lt;/li&gt;
+            &lt;li&gt;ข้อมูลสถิติ&lt;/li&gt;
+            &lt;li&gt;การส่งออกรายงาน&lt;/li&gt;
+          &lt;/ul&gt;
+        &#x60;,
+        x: 20,
+        y: 300,
+        width: 250,
+        height: 200,
+        zIndex: 3,
+        locked: false,
+        resizable: true,
+        draggable: true,
+        color: &#x27;#F59E0B&#x27;,
+        icon: &#x27;fas fa-chart-bar&#x27;,
+        badge: &#x27;รายงาน&#x27;,
+        badgeColor: &#x27;warning&#x27;
+      },
+      {
+        id: &#x27;card-4&#x27;,
+        title: &#x27;System Settings&#x27;,
+        content: &#x60;
+          &lt;h4&gt;การตั้งค่าระบบ&lt;/h4&gt;
+          &lt;p&gt;การกำหนดค่าต่างๆ ของระบบ&lt;/p&gt;
+          &lt;ul&gt;
+            &lt;li&gt;การตั้งค่าผู้ใช้&lt;/li&gt;
+            &lt;li&gt;การกำหนดสิทธิ์&lt;/li&gt;
+            &lt;li&gt;การตั้งค่าการแจ้งเตือน&lt;/li&gt;
+          &lt;/ul&gt;
+        &#x60;,
+        x: 300,
+        y: 300,
+        width: 280,
+        height: 180,
+        zIndex: 4,
+        locked: false,
+        resizable: true,
+        draggable: true,
+        color: &#x27;#8B5CF6&#x27;,
+        icon: &#x27;fas fa-cog&#x27;,
+        badge: &#x27;ตั้งค่า&#x27;,
+        badgeColor: &#x27;info&#x27;
+      }
+    ];
+  }
+
+  /**
+   * Update configuration
+   */
+  updateConfig(): void {
+    this.config &#x3D; {
+      gridSize: this.gridSize,
+      snapToGrid: this.snapToGrid,
+      allowOverlap: this.allowOverlap,
+      maxZIndex: 1000,
+      minWidth: 200,
+      minHeight: 150,
+      maxWidth: 600,
+      maxHeight: 400,
+      animation: this.animation,
+      animationDuration: 300,
+      autoSave: this.autoSave,
+      autoSaveDelay: 1000
+    };
+  }
+
+  /**
+   * Handle card move
+   */
+  onCardMove(card: DraggableCard): void {
+    console.log(&#x27;Card moved:&#x27;, card);
+  }
+
+  /**
+   * Handle card resize
+   */
+  onCardResize(card: DraggableCard): void {
+    console.log(&#x27;Card resized:&#x27;, card);
+  }
+
+  /**
+   * Handle card select
+   */
+  onCardSelect(card: DraggableCard): void {
+    this.selectedCard &#x3D; card;
+    console.log(&#x27;Card selected:&#x27;, card);
+  }
+
+  /**
+   * Handle card deselect
+   */
+  onCardDeselect(card: DraggableCard): void {
+    this.selectedCard &#x3D; null;
+    console.log(&#x27;Card deselected:&#x27;, card);
+  }
+
+  /**
+   * Handle cards change
+   */
+  onCardsChange(cards: DraggableCard[]): void {
+    this.cards &#x3D; [...cards];
+    console.log(&#x27;Cards changed:&#x27;, cards);
+  }
+
+  /**
+   * Add sample card
+   */
+  addSampleCard(): void {
+    const colors &#x3D; [&#x27;#3B82F6&#x27;, &#x27;#10B981&#x27;, &#x27;#F59E0B&#x27;, &#x27;#EF4444&#x27;, &#x27;#8B5CF6&#x27;, &#x27;#06B6D4&#x27;];
+    const icons &#x3D; [&#x27;fas fa-star&#x27;, &#x27;fas fa-heart&#x27;, &#x27;fas fa-bookmark&#x27;, &#x27;fas fa-flag&#x27;, &#x27;fas fa-tag&#x27;];
+    const badges &#x3D; [&#x27;ใหม่&#x27;, &#x27;อัปเดต&#x27;, &#x27;สำคัญ&#x27;, &#x27;ทดสอบ&#x27;, &#x27;ตัวอย่าง&#x27;];
+    const badgeColors &#x3D; [&#x27;primary&#x27;, &#x27;success&#x27;, &#x27;warning&#x27;, &#x27;danger&#x27;, &#x27;info&#x27;];
+
+    const randomColor &#x3D; colors[Math.floor(Math.random() * colors.length)];
+    const randomIcon &#x3D; icons[Math.floor(Math.random() * icons.length)];
+    const randomBadge &#x3D; badges[Math.floor(Math.random() * badges.length)];
+    const randomBadgeColor &#x3D; badgeColors[Math.floor(Math.random() * badgeColors.length)];
+
+    const newCard: DraggableCard &#x3D; {
+      id: &#x60;card-${Date.now()}&#x60;,
+      title: &#x60;Card ${this.cards.length + 1}&#x60;,
+      content: &#x60;
+        &lt;h4&gt;เนื้อหา Card ใหม่&lt;/h4&gt;
+        &lt;p&gt;นี่คือเนื้อหาของ Card ที่เพิ่มเข้ามาใหม่&lt;/p&gt;
+        &lt;ul&gt;
+          &lt;li&gt;รายการที่ 1&lt;/li&gt;
+          &lt;li&gt;รายการที่ 2&lt;/li&gt;
+          &lt;li&gt;รายการที่ 3&lt;/li&gt;
+        &lt;/ul&gt;
+      &#x60;,
+      x: Math.random() * 400 + 50,
+      y: Math.random() * 300 + 50,
+      width: 250 + Math.random() * 100,
+      height: 200 + Math.random() * 100,
+      zIndex: this.cards.length + 1,
+      locked: false,
+      resizable: true,
+      draggable: true,
+      color: randomColor,
+      icon: randomIcon,
+      badge: randomBadge,
+      badgeColor: randomBadgeColor
+    };
+
+    this.cards.push(newCard);
+  }
+
+  /**
+   * Clear all cards
+   */
+  clearAllCards(): void {
+    this.cards &#x3D; [];
+    this.selectedCard &#x3D; null;
+  }
+
+  /**
+   * Reset to sample cards
+   */
+  resetToSampleCards(): void {
+    this.initializeSampleCards();
+    this.selectedCard &#x3D; null;
+  }
+
+  /**
+   * Lock all cards
+   */
+  lockAllCards(): void {
+    this.cards.forEach(card &#x3D;&gt; {
+      card.locked &#x3D; true;
+    });
+  }
+
+  /**
+   * Unlock all cards
+   */
+  unlockAllCards(): void {
+    this.cards.forEach(card &#x3D;&gt; {
+      card.locked &#x3D; false;
+    });
+  }
+
+  /**
+   * Get cards statistics
+   */
+  getCardsStats(): any {
+    return {
+      totalCards: this.cards.length,
+      lockedCards: this.cards.filter(card &#x3D;&gt; card.locked).length,
+      unlockedCards: this.cards.filter(card &#x3D;&gt; !card.locked).length,
+      resizableCards: this.cards.filter(card &#x3D;&gt; card.resizable).length,
+      draggableCards: this.cards.filter(card &#x3D;&gt; card.draggable).length,
+      cardsWithIcons: this.cards.filter(card &#x3D;&gt; card.icon).length,
+      cardsWithBadges: this.cards.filter(card &#x3D;&gt; card.badge).length,
+      selectedCard: this.selectedCard ? this.selectedCard.title : &#x27;ไม่มี&#x27;
+    };
+  }
+
+  /**
+   * Export cards data
+   */
+  exportCardsData(): void {
+    const data &#x3D; {
+      cards: this.cards,
+      config: this.config,
+      timestamp: new Date().toISOString()
+    };
+
+    const blob &#x3D; new Blob([JSON.stringify(data, null, 2)], { type: &#x27;application/json&#x27; });
+    const url &#x3D; URL.createObjectURL(blob);
+    const link &#x3D; document.createElement(&#x27;a&#x27;);
+    link.href &#x3D; url;
+    link.download &#x3D; &#x60;draggable-cards-${Date.now()}.json&#x60;;
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+  /**
+   * Import cards data
+   */
+  importCardsData(event: any): void {
+    const file &#x3D; event.target.files[0];
+    if (!file) return;
+
+    const reader &#x3D; new FileReader();
+    reader.onload &#x3D; (e) &#x3D;&gt; {
+      try {
+        const data &#x3D; JSON.parse(e.target?.result as string);
+        if (data.cards) {
+          this.cards &#x3D; data.cards;
+          this.selectedCard &#x3D; null;
+        }
+        if (data.config) {
+          this.config &#x3D; { ...this.config, ...data.config };
+        }
+      } catch (error) {
+        console.error(&#x27;Error importing data:&#x27;, error);
+        alert(&#x27;เกิดข้อผิดพลาดในการนำเข้าข้อมูล&#x27;);
+      }
+    };
+    reader.readAsText(file);
+  }
+}
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;min-h-screen p-4 md:p-8 bg-gradient-to-br from-blue-500/10 to-purple-500/10&quot;&gt;
+  &lt;!-- Header --&gt;
+  &lt;div class&#x3D;&quot;text-center mb-10&quot;&gt;
+    &lt;h1
+      class&#x3D;&quot;text-3xl md:text-4xl font-bold mb-4 flex items-center justify-center gap-4 text-gray-900 dark:text-gray-100&quot;&gt;
+      &lt;i class&#x3D;&quot;fas fa-th-large text-blue-500&quot;&gt;&lt;/i&gt;
+      Draggable Cards Demo
+    &lt;/h1&gt;
+    &lt;p class&#x3D;&quot;text-lg text-gray-600 dark:text-gray-400&quot;&gt;
+      ทดสอบ Draggable Cards Component ที่สามารถลากและปรับขนาดได้
+    &lt;/p&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Demo Controls --&gt;
+  &lt;div class&#x3D;&quot;mb-8&quot;&gt;
+    &lt;app-glass-card&gt;
+      &lt;div class&#x3D;&quot;p-6&quot;&gt;
+        &lt;h3 class&#x3D;&quot;text-xl font-semibold mb-6 text-gray-900 dark:text-gray-100&quot;&gt;การตั้งค่า Cards&lt;/h3&gt;
+
+        &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6&quot;&gt;
+          &lt;div class&#x3D;&quot;space-y-2&quot;&gt;
+            &lt;label class&#x3D;&quot;block text-sm font-medium text-gray-700 dark:text-gray-300&quot;&gt;ขนาด Grid: &lt;span
+                class&#x3D;&quot;text-blue-500 font-bold ml-2&quot;&gt;{{ gridSize }}px&lt;/span&gt;&lt;/label&gt;
+            &lt;input type&#x3D;&quot;range&quot; min&#x3D;&quot;10&quot; max&#x3D;&quot;50&quot; [(ngModel)]&#x3D;&quot;gridSize&quot; (change)&#x3D;&quot;updateConfig()&quot;
+              class&#x3D;&quot;w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700&quot;&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;flex items-center space-x-3&quot;&gt;
+            &lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;snapToGrid&quot; [(ngModel)]&#x3D;&quot;snapToGrid&quot; (change)&#x3D;&quot;updateConfig()&quot;
+              class&#x3D;&quot;accent-blue-500 w-5 h-5&quot;&gt;
+            &lt;label for&#x3D;&quot;snapToGrid&quot; class&#x3D;&quot;text-gray-700 dark:text-gray-300&quot;&gt;Snap to Grid&lt;/label&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;flex items-center space-x-3&quot;&gt;
+            &lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;allowOverlap&quot; [(ngModel)]&#x3D;&quot;allowOverlap&quot; (change)&#x3D;&quot;updateConfig()&quot;
+              class&#x3D;&quot;accent-blue-500 w-5 h-5&quot;&gt;
+            &lt;label for&#x3D;&quot;allowOverlap&quot; class&#x3D;&quot;text-gray-700 dark:text-gray-300&quot;&gt;อนุญาตให้ทับซ้อน&lt;/label&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;flex items-center space-x-3&quot;&gt;
+            &lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;animation&quot; [(ngModel)]&#x3D;&quot;animation&quot; (change)&#x3D;&quot;updateConfig()&quot;
+              class&#x3D;&quot;accent-blue-500 w-5 h-5&quot;&gt;
+            &lt;label for&#x3D;&quot;animation&quot; class&#x3D;&quot;text-gray-700 dark:text-gray-300&quot;&gt;เปิดใช้แอนิเมชัน&lt;/label&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;flex items-center space-x-3&quot;&gt;
+            &lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;autoSave&quot; [(ngModel)]&#x3D;&quot;autoSave&quot; (change)&#x3D;&quot;updateConfig()&quot;
+              class&#x3D;&quot;accent-blue-500 w-5 h-5&quot;&gt;
+            &lt;label for&#x3D;&quot;autoSave&quot; class&#x3D;&quot;text-gray-700 dark:text-gray-300&quot;&gt;บันทึกอัตโนมัติ&lt;/label&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/app-glass-card&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Demo Actions --&gt;
+  &lt;div class&#x3D;&quot;mb-8&quot;&gt;
+    &lt;app-glass-card&gt;
+      &lt;div class&#x3D;&quot;p-6&quot;&gt;
+        &lt;h3 class&#x3D;&quot;text-xl font-semibold mb-6 text-gray-900 dark:text-gray-100&quot;&gt;การจัดการ Cards&lt;/h3&gt;
+
+        &lt;div class&#x3D;&quot;space-y-6&quot;&gt;
+          &lt;!-- Add/Reset/Delete --&gt;
+          &lt;div class&#x3D;&quot;flex flex-wrap gap-4&quot;&gt;
+            &lt;app-glass-button variant&#x3D;&quot;primary&quot; (click)&#x3D;&quot;addSampleCard()&quot; class&#x3D;&quot;flex-1 min-w-[150px]&quot;&gt;
+              &lt;i class&#x3D;&quot;fas fa-plus mr-2&quot;&gt;&lt;/i&gt; เพิ่ม Card
+            &lt;/app-glass-button&gt;
+            &lt;app-glass-button variant&#x3D;&quot;secondary&quot; (click)&#x3D;&quot;resetToSampleCards()&quot; class&#x3D;&quot;flex-1 min-w-[150px]&quot;&gt;
+              &lt;i class&#x3D;&quot;fas fa-undo mr-2&quot;&gt;&lt;/i&gt; รีเซ็ต
+            &lt;/app-glass-button&gt;
+            &lt;app-glass-button variant&#x3D;&quot;danger&quot; (click)&#x3D;&quot;clearAllCards()&quot; class&#x3D;&quot;flex-1 min-w-[150px]&quot;&gt;
+              &lt;i class&#x3D;&quot;fas fa-trash mr-2&quot;&gt;&lt;/i&gt; ลบทั้งหมด
+            &lt;/app-glass-button&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Lock/Unlock --&gt;
+          &lt;div class&#x3D;&quot;flex flex-wrap gap-4&quot;&gt;
+            &lt;app-glass-button variant&#x3D;&quot;primary&quot; (click)&#x3D;&quot;lockAllCards()&quot; class&#x3D;&quot;flex-1 min-w-[150px]&quot;&gt;
+              &lt;i class&#x3D;&quot;fas fa-lock mr-2&quot;&gt;&lt;/i&gt; ล็อคทั้งหมด
+            &lt;/app-glass-button&gt;
+            &lt;app-glass-button variant&#x3D;&quot;secondary&quot; (click)&#x3D;&quot;unlockAllCards()&quot; class&#x3D;&quot;flex-1 min-w-[150px]&quot;&gt;
+              &lt;i class&#x3D;&quot;fas fa-unlock mr-2&quot;&gt;&lt;/i&gt; ปลดล็อคทั้งหมด
+            &lt;/app-glass-button&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Import/Export --&gt;
+          &lt;div class&#x3D;&quot;flex flex-wrap gap-4&quot;&gt;
+            &lt;app-glass-button variant&#x3D;&quot;primary&quot; (click)&#x3D;&quot;exportCardsData()&quot; class&#x3D;&quot;flex-1 min-w-[150px]&quot;&gt;
+              &lt;i class&#x3D;&quot;fas fa-download mr-2&quot;&gt;&lt;/i&gt; ส่งออกข้อมูล
+            &lt;/app-glass-button&gt;
+
+            &lt;label class&#x3D;&quot;flex-1 min-w-[150px] cursor-pointer&quot;&gt;
+              &lt;input type&#x3D;&quot;file&quot; accept&#x3D;&quot;.json&quot; (change)&#x3D;&quot;importCardsData($event)&quot; class&#x3D;&quot;hidden&quot;&gt;
+              &lt;app-glass-button variant&#x3D;&quot;secondary&quot; class&#x3D;&quot;w-full&quot;&gt;
+                &lt;i class&#x3D;&quot;fas fa-upload mr-2&quot;&gt;&lt;/i&gt; นำเข้าข้อมูล
+              &lt;/app-glass-button&gt;
+            &lt;/label&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/app-glass-card&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Draggable Cards Demo --&gt;
+  &lt;div class&#x3D;&quot;mb-8&quot;&gt;
+    &lt;app-glass-card&gt;
+      &lt;div class&#x3D;&quot;p-6&quot;&gt;
+        &lt;h3 class&#x3D;&quot;text-xl font-semibold mb-6 text-gray-900 dark:text-gray-100&quot;&gt;Draggable Cards&lt;/h3&gt;
+
+        &lt;div class&#x3D;&quot;h-[500px] border border-white/10 rounded-xl overflow-hidden bg-black/20&quot;&gt;
+          &lt;app-draggable-cards [cards]&#x3D;&quot;cards&quot; [config]&#x3D;&quot;config&quot; (cardMove)&#x3D;&quot;onCardMove($event)&quot;
+            (cardResize)&#x3D;&quot;onCardResize($event)&quot; (cardSelect)&#x3D;&quot;onCardSelect($event)&quot;
+            (cardDeselect)&#x3D;&quot;onCardDeselect($event)&quot; (cardsChange)&#x3D;&quot;onCardsChange($event)&quot;&gt;
+          &lt;/app-draggable-cards&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/app-glass-card&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Statistics --&gt;
+  &lt;div class&#x3D;&quot;mb-8&quot;&gt;
+    &lt;app-glass-card&gt;
+      &lt;div class&#x3D;&quot;p-6&quot;&gt;
+        &lt;h3 class&#x3D;&quot;text-xl font-semibold mb-6 text-gray-900 dark:text-gray-100&quot;&gt;สถิติ Cards&lt;/h3&gt;
+
+        &lt;div class&#x3D;&quot;grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4&quot;&gt;
+          &lt;div class&#x3D;&quot;p-4 bg-white/5 rounded-xl border border-white/10 text-center&quot;&gt;
+            &lt;div class&#x3D;&quot;text-2xl font-bold text-blue-500 mb-1&quot;&gt;{{ getCardsStats().totalCards }}&lt;/div&gt;
+            &lt;div class&#x3D;&quot;text-sm text-gray-500 dark:text-gray-400&quot;&gt;Cards ทั้งหมด&lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;p-4 bg-white/5 rounded-xl border border-white/10 text-center&quot;&gt;
+            &lt;div class&#x3D;&quot;text-2xl font-bold text-green-500 mb-1&quot;&gt;{{ getCardsStats().lockedCards }}&lt;/div&gt;
+            &lt;div class&#x3D;&quot;text-sm text-gray-500 dark:text-gray-400&quot;&gt;Cards ที่ล็อค&lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;p-4 bg-white/5 rounded-xl border border-white/10 text-center&quot;&gt;
+            &lt;div class&#x3D;&quot;text-2xl font-bold text-gray-500 mb-1&quot;&gt;{{ getCardsStats().unlockedCards }}&lt;/div&gt;
+            &lt;div class&#x3D;&quot;text-sm text-gray-500 dark:text-gray-400&quot;&gt;Cards ที่ปลดล็อค&lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;p-4 bg-white/5 rounded-xl border border-white/10 text-center&quot;&gt;
+            &lt;div class&#x3D;&quot;text-2xl font-bold text-yellow-500 mb-1&quot;&gt;{{ getCardsStats().cardsWithIcons }}&lt;/div&gt;
+            &lt;div class&#x3D;&quot;text-sm text-gray-500 dark:text-gray-400&quot;&gt;มีไอคอน&lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;p-4 bg-white/5 rounded-xl border border-white/10 text-center&quot;&gt;
+            &lt;div class&#x3D;&quot;text-2xl font-bold text-purple-500 mb-1&quot;&gt;{{ getCardsStats().cardsWithBadges }}&lt;/div&gt;
+            &lt;div class&#x3D;&quot;text-sm text-gray-500 dark:text-gray-400&quot;&gt;มี Badge&lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;p-4 bg-white/5 rounded-xl border border-white/10 text-center&quot;&gt;
+            &lt;div class&#x3D;&quot;text-2xl font-bold text-red-500 mb-1&quot;&gt;{{ getCardsStats().selectedCard }}&lt;/div&gt;
+            &lt;div class&#x3D;&quot;text-sm text-gray-500 dark:text-gray-400&quot;&gt;Card ที่เลือก&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/app-glass-card&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Features Overview --&gt;
+  &lt;div class&#x3D;&quot;mb-8&quot;&gt;
+    &lt;app-glass-card&gt;
+      &lt;div class&#x3D;&quot;p-6&quot;&gt;
+        &lt;h3 class&#x3D;&quot;text-xl font-semibold mb-6 text-gray-900 dark:text-gray-100&quot;&gt;ฟีเจอร์ Draggable Cards&lt;/h3&gt;
+
+        &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6&quot;&gt;
+          &lt;div
+            class&#x3D;&quot;p-6 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all text-center group&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-check-circle text-3xl text-green-500 mb-4 group-hover:scale-110 transition-transform&quot;&gt;&lt;/i&gt;
+            &lt;h4 class&#x3D;&quot;text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100&quot;&gt;Drag &amp; Drop&lt;/h4&gt;
+            &lt;p class&#x3D;&quot;text-gray-600 dark:text-gray-400 text-sm&quot;&gt;ลาก Cards ได้อย่างอิสระ&lt;/p&gt;
+          &lt;/div&gt;
+
+          &lt;div
+            class&#x3D;&quot;p-6 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all text-center group&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-check-circle text-3xl text-green-500 mb-4 group-hover:scale-110 transition-transform&quot;&gt;&lt;/i&gt;
+            &lt;h4 class&#x3D;&quot;text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100&quot;&gt;Resize&lt;/h4&gt;
+            &lt;p class&#x3D;&quot;text-gray-600 dark:text-gray-400 text-sm&quot;&gt;ปรับขนาด Cards ได้&lt;/p&gt;
+          &lt;/div&gt;
+
+          &lt;div
+            class&#x3D;&quot;p-6 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all text-center group&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-check-circle text-3xl text-green-500 mb-4 group-hover:scale-110 transition-transform&quot;&gt;&lt;/i&gt;
+            &lt;h4 class&#x3D;&quot;text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100&quot;&gt;Grid Snap&lt;/h4&gt;
+            &lt;p class&#x3D;&quot;text-gray-600 dark:text-gray-400 text-sm&quot;&gt;จัดเรียงตาม Grid&lt;/p&gt;
+          &lt;/div&gt;
+
+          &lt;div
+            class&#x3D;&quot;p-6 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all text-center group&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-check-circle text-3xl text-green-500 mb-4 group-hover:scale-110 transition-transform&quot;&gt;&lt;/i&gt;
+            &lt;h4 class&#x3D;&quot;text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100&quot;&gt;Lock/Unlock&lt;/h4&gt;
+            &lt;p class&#x3D;&quot;text-gray-600 dark:text-gray-400 text-sm&quot;&gt;ล็อค Cards ได้&lt;/p&gt;
+          &lt;/div&gt;
+
+          &lt;div
+            class&#x3D;&quot;p-6 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all text-center group&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-check-circle text-3xl text-green-500 mb-4 group-hover:scale-110 transition-transform&quot;&gt;&lt;/i&gt;
+            &lt;h4 class&#x3D;&quot;text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100&quot;&gt;Icons &amp; Badges&lt;/h4&gt;
+            &lt;p class&#x3D;&quot;text-gray-600 dark:text-gray-400 text-sm&quot;&gt;รองรับไอคอนและ Badge&lt;/p&gt;
+          &lt;/div&gt;
+
+          &lt;div
+            class&#x3D;&quot;p-6 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all text-center group&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-check-circle text-3xl text-green-500 mb-4 group-hover:scale-110 transition-transform&quot;&gt;&lt;/i&gt;
+            &lt;h4 class&#x3D;&quot;text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100&quot;&gt;Auto Save&lt;/h4&gt;
+            &lt;p class&#x3D;&quot;text-gray-600 dark:text-gray-400 text-sm&quot;&gt;บันทึกอัตโนมัติ&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/app-glass-card&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./draggable-cards-demo.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">// Draggable Cards Demo Component Styles
+// Usage of Tailwind CSS + Global Styles verified.
+// Previous content was unused/dead code.</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="min-h-screen p-4 md:p-8 bg-gradient-to-br from-blue-500/10 to-purple-500/10">  <!-- Header -->  <div class="text-center mb-10">    <h1      class="text-3xl md:text-4xl font-bold mb-4 flex items-center justify-center gap-4 text-gray-900 dark:text-gray-100">      <i class="fas fa-th-large text-blue-500"></i>      Draggable Cards Demo    </h1>    <p class="text-lg text-gray-600 dark:text-gray-400">      ทดสอบ Draggable Cards Component ที่สามารถลากและปรับขนาดได้    </p>  </div>  <!-- Demo Controls -->  <div class="mb-8">    <app-glass-card>      <div class="p-6">        <h3 class="text-xl font-semibold mb-6 text-gray-900 dark:text-gray-100">การตั้งค่า Cards</h3>        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">          <div class="space-y-2">            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">ขนาด Grid: <span                class="text-blue-500 font-bold ml-2">{{ gridSize }}px</span></label>            <input type="range" min="10" max="50" [(ngModel)]="gridSize" (change)="updateConfig()"              class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">          </div>          <div class="flex items-center space-x-3">            <input type="checkbox" id="snapToGrid" [(ngModel)]="snapToGrid" (change)="updateConfig()"              class="accent-blue-500 w-5 h-5">            <label for="snapToGrid" class="text-gray-700 dark:text-gray-300">Snap to Grid</label>          </div>          <div class="flex items-center space-x-3">            <input type="checkbox" id="allowOverlap" [(ngModel)]="allowOverlap" (change)="updateConfig()"              class="accent-blue-500 w-5 h-5">            <label for="allowOverlap" class="text-gray-700 dark:text-gray-300">อนุญาตให้ทับซ้อน</label>          </div>          <div class="flex items-center space-x-3">            <input type="checkbox" id="animation" [(ngModel)]="animation" (change)="updateConfig()"              class="accent-blue-500 w-5 h-5">            <label for="animation" class="text-gray-700 dark:text-gray-300">เปิดใช้แอนิเมชัน</label>          </div>          <div class="flex items-center space-x-3">            <input type="checkbox" id="autoSave" [(ngModel)]="autoSave" (change)="updateConfig()"              class="accent-blue-500 w-5 h-5">            <label for="autoSave" class="text-gray-700 dark:text-gray-300">บันทึกอัตโนมัติ</label>          </div>        </div>      </div>    </app-glass-card>  </div>  <!-- Demo Actions -->  <div class="mb-8">    <app-glass-card>      <div class="p-6">        <h3 class="text-xl font-semibold mb-6 text-gray-900 dark:text-gray-100">การจัดการ Cards</h3>        <div class="space-y-6">          <!-- Add/Reset/Delete -->          <div class="flex flex-wrap gap-4">            <app-glass-button variant="primary" (click)="addSampleCard()" class="flex-1 min-w-[150px]">              <i class="fas fa-plus mr-2"></i> เพิ่ม Card            </app-glass-button>            <app-glass-button variant="secondary" (click)="resetToSampleCards()" class="flex-1 min-w-[150px]">              <i class="fas fa-undo mr-2"></i> รีเซ็ต            </app-glass-button>            <app-glass-button variant="danger" (click)="clearAllCards()" class="flex-1 min-w-[150px]">              <i class="fas fa-trash mr-2"></i> ลบทั้งหมด            </app-glass-button>          </div>          <!-- Lock/Unlock -->          <div class="flex flex-wrap gap-4">            <app-glass-button variant="primary" (click)="lockAllCards()" class="flex-1 min-w-[150px]">              <i class="fas fa-lock mr-2"></i> ล็อคทั้งหมด            </app-glass-button>            <app-glass-button variant="secondary" (click)="unlockAllCards()" class="flex-1 min-w-[150px]">              <i class="fas fa-unlock mr-2"></i> ปลดล็อคทั้งหมด            </app-glass-button>          </div>          <!-- Import/Export -->          <div class="flex flex-wrap gap-4">            <app-glass-button variant="primary" (click)="exportCardsData()" class="flex-1 min-w-[150px]">              <i class="fas fa-download mr-2"></i> ส่งออกข้อมูล            </app-glass-button>            <label class="flex-1 min-w-[150px] cursor-pointer">              <input type="file" accept=".json" (change)="importCardsData($event)" class="hidden">              <app-glass-button variant="secondary" class="w-full">                <i class="fas fa-upload mr-2"></i> นำเข้าข้อมูล              </app-glass-button>            </label>          </div>        </div>      </div>    </app-glass-card>  </div>  <!-- Draggable Cards Demo -->  <div class="mb-8">    <app-glass-card>      <div class="p-6">        <h3 class="text-xl font-semibold mb-6 text-gray-900 dark:text-gray-100">Draggable Cards</h3>        <div class="h-[500px] border border-white/10 rounded-xl overflow-hidden bg-black/20">          <app-draggable-cards [cards]="cards" [config]="config" (cardMove)="onCardMove($event)"            (cardResize)="onCardResize($event)" (cardSelect)="onCardSelect($event)"            (cardDeselect)="onCardDeselect($event)" (cardsChange)="onCardsChange($event)">          </app-draggable-cards>        </div>      </div>    </app-glass-card>  </div>  <!-- Statistics -->  <div class="mb-8">    <app-glass-card>      <div class="p-6">        <h3 class="text-xl font-semibold mb-6 text-gray-900 dark:text-gray-100">สถิติ Cards</h3>        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">          <div class="p-4 bg-white/5 rounded-xl border border-white/10 text-center">            <div class="text-2xl font-bold text-blue-500 mb-1">{{ getCardsStats().totalCards }}</div>            <div class="text-sm text-gray-500 dark:text-gray-400">Cards ทั้งหมด</div>          </div>          <div class="p-4 bg-white/5 rounded-xl border border-white/10 text-center">            <div class="text-2xl font-bold text-green-500 mb-1">{{ getCardsStats().lockedCards }}</div>            <div class="text-sm text-gray-500 dark:text-gray-400">Cards ที่ล็อค</div>          </div>          <div class="p-4 bg-white/5 rounded-xl border border-white/10 text-center">            <div class="text-2xl font-bold text-gray-500 mb-1">{{ getCardsStats().unlockedCards }}</div>            <div class="text-sm text-gray-500 dark:text-gray-400">Cards ที่ปลดล็อค</div>          </div>          <div class="p-4 bg-white/5 rounded-xl border border-white/10 text-center">            <div class="text-2xl font-bold text-yellow-500 mb-1">{{ getCardsStats().cardsWithIcons }}</div>            <div class="text-sm text-gray-500 dark:text-gray-400">มีไอคอน</div>          </div>          <div class="p-4 bg-white/5 rounded-xl border border-white/10 text-center">            <div class="text-2xl font-bold text-purple-500 mb-1">{{ getCardsStats().cardsWithBadges }}</div>            <div class="text-sm text-gray-500 dark:text-gray-400">มี Badge</div>          </div>          <div class="p-4 bg-white/5 rounded-xl border border-white/10 text-center">            <div class="text-2xl font-bold text-red-500 mb-1">{{ getCardsStats().selectedCard }}</div>            <div class="text-sm text-gray-500 dark:text-gray-400">Card ที่เลือก</div>          </div>        </div>      </div>    </app-glass-card>  </div>  <!-- Features Overview -->  <div class="mb-8">    <app-glass-card>      <div class="p-6">        <h3 class="text-xl font-semibold mb-6 text-gray-900 dark:text-gray-100">ฟีเจอร์ Draggable Cards</h3>        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">          <div            class="p-6 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all text-center group">            <i class="fas fa-check-circle text-3xl text-green-500 mb-4 group-hover:scale-110 transition-transform"></i>            <h4 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Drag & Drop</h4>            <p class="text-gray-600 dark:text-gray-400 text-sm">ลาก Cards ได้อย่างอิสระ</p>          </div>          <div            class="p-6 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all text-center group">            <i class="fas fa-check-circle text-3xl text-green-500 mb-4 group-hover:scale-110 transition-transform"></i>            <h4 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Resize</h4>            <p class="text-gray-600 dark:text-gray-400 text-sm">ปรับขนาด Cards ได้</p>          </div>          <div            class="p-6 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all text-center group">            <i class="fas fa-check-circle text-3xl text-green-500 mb-4 group-hover:scale-110 transition-transform"></i>            <h4 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Grid Snap</h4>            <p class="text-gray-600 dark:text-gray-400 text-sm">จัดเรียงตาม Grid</p>          </div>          <div            class="p-6 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all text-center group">            <i class="fas fa-check-circle text-3xl text-green-500 mb-4 group-hover:scale-110 transition-transform"></i>            <h4 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Lock/Unlock</h4>            <p class="text-gray-600 dark:text-gray-400 text-sm">ล็อค Cards ได้</p>          </div>          <div            class="p-6 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all text-center group">            <i class="fas fa-check-circle text-3xl text-green-500 mb-4 group-hover:scale-110 transition-transform"></i>            <h4 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Icons & Badges</h4>            <p class="text-gray-600 dark:text-gray-400 text-sm">รองรับไอคอนและ Badge</p>          </div>          <div            class="p-6 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all text-center group">            <i class="fas fa-check-circle text-3xl text-green-500 mb-4 group-hover:scale-110 transition-transform"></i>            <h4 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Auto Save</h4>            <p class="text-gray-600 dark:text-gray-400 text-sm">บันทึกอัตโนมัติ</p>          </div>        </div>      </div>    </app-glass-card>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AccessControlComponent', 'selector': 'app-access-control'},{'name': 'AccessGroupsComponent', 'selector': 'app-access-groups'},{'name': 'AccessibilityDashboardComponent', 'selector': 'app-accessibility-dashboard'},{'name': 'AccessLogsComponent', 'selector': 'app-access-logs'},{'name': 'AccessSchedulesComponent', 'selector': 'app-access-schedules'},{'name': 'AccordionComponent', 'selector': 'app-accordion'},{'name': 'AccordionDemoComponent', 'selector': 'app-accordion-demo'},{'name': 'AdvancedDataTableComponent', 'selector': 'app-advanced-data-table'},{'name': 'AdvancedDataTableDemoComponent', 'selector': 'app-advanced-data-table-demo'},{'name': 'AdvancedFeaturesDashboardComponent', 'selector': 'app-advanced-features-dashboard'},{'name': 'AdvancedFormsComponent', 'selector': 'app-advanced-forms'},{'name': 'AdvancedRichTextComponent', 'selector': 'app-advanced-rich-text'},{'name': 'AdvancedUiDemoComponent', 'selector': 'app-advanced-ui-demo'},{'name': 'AIModelsComponent', 'selector': 'app-ai-models'},{'name': 'AlertComponent', 'selector': 'app-alert'},{'name': 'AlertHistoryComponent', 'selector': 'app-alert-history'},{'name': 'AlertsComponent', 'selector': 'app-alerts'},{'name': 'ApexChartComponent', 'selector': 'app-apex-chart'},{'name': 'App', 'selector': 'app-root'},{'name': 'AttendanceComponent', 'selector': 'app-attendance'},{'name': 'AuditLogsComponent', 'selector': 'app-audit-logs'},{'name': 'AvatarComponent', 'selector': 'app-avatar'},{'name': 'BackupRestoreComponent', 'selector': 'app-backup-restore'},{'name': 'BadgeComponent', 'selector': 'app-badge'},{'name': 'BaseComponent', 'selector': ''},{'name': 'BiometricDataComponent', 'selector': 'app-biometric-data'},{'name': 'BreadcrumbComponent', 'selector': 'app-breadcrumb'},{'name': 'CalendarComponent', 'selector': 'app-calendar'},{'name': 'CalendarDemoComponent', 'selector': 'app-calendar-demo'},{'name': 'ChartComponent', 'selector': 'app-chart'},{'name': 'CheckboxComponent', 'selector': 'app-checkbox'},{'name': 'ColorPickerComponent', 'selector': 'app-color-picker'},{'name': 'ComingSoonComponent', 'selector': 'app-coming-soon'},{'name': 'CompaniesComponent', 'selector': 'app-companies'},{'name': 'CompanyDocumentsComponent', 'selector': 'app-company-documents'},{'name': 'CompanyHolidaysComponent', 'selector': 'app-company-holidays'},{'name': 'ComponentShowcaseComponent', 'selector': 'app-component-showcase'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DataTableComponent', 'selector': 'app-data-table'},{'name': 'DateTimePickerComponent', 'selector': 'app-date-time-picker'},{'name': 'DepartmentsComponent', 'selector': 'app-departments'},{'name': 'DevicesComponent', 'selector': 'app-devices'},{'name': 'DividerComponent', 'selector': 'app-divider'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DoorsComponent', 'selector': 'app-doors'},{'name': 'DraggableCardsComponent', 'selector': 'app-draggable-cards'},{'name': 'DraggableCardsDemoComponent', 'selector': 'app-draggable-cards-demo'},{'name': 'EChartsChartComponent', 'selector': 'app-echarts-chart'},{'name': 'EChartsDemoComponent', 'selector': 'app-echarts-demo'},{'name': 'EmployeesComponent', 'selector': 'app-employees'},{'name': 'EmployeesNewComponent', 'selector': 'app-employees-new'},{'name': 'EmptyStateComponent', 'selector': 'app-empty-state'},{'name': 'Error401Component', 'selector': 'app-error-401'},{'name': 'Error404Component', 'selector': 'app-error-404'},{'name': 'Error500Component', 'selector': 'app-error-500'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'ErrorToastComponent', 'selector': 'app-error-toast'},{'name': 'EventAnalyticsComponent', 'selector': 'app-event-analytics'},{'name': 'EventCheckinHistoryComponent', 'selector': 'app-event-checkin-history'},{'name': 'EventEmailConfirmationComponent', 'selector': 'app-event-email-confirmation'},{'name': 'EventKioskConfigComponent', 'selector': 'app-event-kiosk-config'},{'name': 'EventRegistrationComponent', 'selector': 'app-event-registration'},{'name': 'EventRegistrationFieldsComponent', 'selector': 'app-event-registration-fields'},{'name': 'EventsComponent', 'selector': 'app-events'},{'name': 'FaceRecognitionComponent', 'selector': 'app-face-recognition'},{'name': 'FaceRecognitionDemoComponent', 'selector': 'app-face-recognition-demo'},{'name': 'FaceRecognitionLiveComponent', 'selector': 'app-face-recognition-live'},{'name': 'FaceRecognitionTestComponent', 'selector': 'app-face-recognition-test'},{'name': 'FaqComponent', 'selector': 'app-faq'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'FilterSectionComponent', 'selector': 'app-filter-section'},{'name': 'ForgotPasswordComponent', 'selector': 'app-forgot-password'},{'name': 'FormFieldComponent', 'selector': 'app-form-field'},{'name': 'GalleryComponent', 'selector': 'app-gallery'},{'name': 'GalleryDemoComponent', 'selector': 'app-gallery-demo'},{'name': 'GlassButtonComponent', 'selector': 'app-glass-button'},{'name': 'GlassCardComponent', 'selector': 'app-glass-card'},{'name': 'GlassInputComponent', 'selector': 'app-glass-input'},{'name': 'GroupFaceRecognitionComponent', 'selector': 'app-group-face-recognition'},{'name': 'GuestsComponent', 'selector': 'app-guests'},{'name': 'HardwareStatusDashboardComponent', 'selector': 'app-hardware-status-dashboard'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HeatmapAnalyticsComponent', 'selector': 'app-heatmap-analytics'},{'name': 'HelpCenter', 'selector': 'app-help-center'},{'name': 'HelpCenterComponent', 'selector': 'app-help-center'},{'name': 'HrDashboardComponent', 'selector': 'app-hr-dashboard'},{'name': 'IconComponent', 'selector': 'app-icon'},{'name': 'IncidentReportsComponent', 'selector': 'app-incident-reports'},{'name': 'KioskViewComponent', 'selector': 'app-kiosk-view'},{'name': 'LandingComponent', 'selector': 'app-landing'},{'name': 'LeafletMapComponent', 'selector': 'app-leaflet-map'},{'name': 'LeavesComponent', 'selector': 'app-leaves'},{'name': 'LicenseManagementComponent', 'selector': 'app-license-management'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoadingStateComponent', 'selector': 'app-loading-state'},{'name': 'LocationsComponent', 'selector': 'app-locations'},{'name': 'LockScreenComponent', 'selector': 'app-lock-screen'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MapDemoComponent', 'selector': 'app-map-demo'},{'name': 'MaterialButtonComponent', 'selector': 'app-material-button'},{'name': 'MaterialCardComponent', 'selector': 'app-material-card'},{'name': 'MaterialDialogComponent', 'selector': 'app-material-dialog'},{'name': 'MaterialInputComponent', 'selector': 'app-material-input'},{'name': 'MaterialTableComponent', 'selector': 'app-material-table'},{'name': 'MfaSetupComponent', 'selector': 'app-mfa-setup'},{'name': 'MobileCameraComponent', 'selector': 'app-mobile-camera'},{'name': 'MobileDemoComponent', 'selector': 'app-mobile-demo'},{'name': 'ModalComponent', 'selector': 'app-modal'},{'name': 'ModalFormComponent', 'selector': 'app-modal-form'},{'name': 'ModuleSubscriptionComponent', 'selector': 'app-module-subscription'},{'name': 'MonitoringComponent', 'selector': 'app-monitoring'},{'name': 'NotificationCenterComponent', 'selector': 'app-notification-center'},{'name': 'NotificationDemoComponent', 'selector': 'app-notification-demo'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'NotificationSettingsComponent', 'selector': 'app-notification-settings'},{'name': 'OffcanvasComponent', 'selector': 'app-offcanvas'},{'name': 'OffcanvasDemoComponent', 'selector': 'app-offcanvas-demo'},{'name': 'OvertimeRequestsComponent', 'selector': 'app-overtime-requests'},{'name': 'PageLayoutComponent', 'selector': 'app-page-layout'},{'name': 'PaginationComponent', 'selector': 'app-pagination'},{'name': 'ParkingBlacklistComponent', 'selector': 'app-parking-blacklist'},{'name': 'ParkingDashboardComponent', 'selector': 'app-parking-dashboard'},{'name': 'ParkingEntryComponent', 'selector': 'app-parking-entry'},{'name': 'ParkingExitComponent', 'selector': 'app-parking-exit'},{'name': 'ParkingLogsComponent', 'selector': 'app-parking-logs'},{'name': 'ParkingReservationComponent', 'selector': 'app-parking-reservation'},{'name': 'ParkingRulesComponent', 'selector': 'app-parking-rules'},{'name': 'ParkingSpotsComponent', 'selector': 'app-parking-spots'},{'name': 'ParkingStatisticsComponent', 'selector': 'app-parking-statistics'},{'name': 'PayrollExportComponent', 'selector': 'app-payroll-export'},{'name': 'PerformanceDashboardComponent', 'selector': 'app-performance-dashboard'},{'name': 'PopoverComponent', 'selector': 'app-popover'},{'name': 'PortalLayoutComponent', 'selector': 'app-portal-layout'},{'name': 'PositionsComponent', 'selector': 'app-positions'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'PublicVerificationComponent', 'selector': 'app-public-verification'},{'name': 'QRCodesComponent', 'selector': 'app-qr-codes'},{'name': 'RadioComponent', 'selector': 'app-radio'},{'name': 'RangeSliderComponent', 'selector': 'app-range-slider'},{'name': 'RatingComponent', 'selector': 'app-rating'},{'name': 'RatingDemoComponent', 'selector': 'app-rating-demo'},{'name': 'RbacComponent', 'selector': 'app-rbac'},{'name': 'RecognitionHistoryComponent', 'selector': 'app-recognition-history'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReportsComponent', 'selector': 'app-reports'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'RFIDCardsComponent', 'selector': 'app-rfid-cards'},{'name': 'RichTextComponent', 'selector': 'app-rich-text'},{'name': 'RichTextEditorComponent', 'selector': 'app-rich-text-editor'},{'name': 'RichTextEditorDemoComponent', 'selector': 'app-rich-text-editor-demo'},{'name': 'SafetyDashboardComponent', 'selector': 'app-safety-dashboard'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ShiftsComponent', 'selector': 'app-shifts'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SkeletonComponent', 'selector': 'app-skeleton'},{'name': 'StatisticsCardComponent', 'selector': 'app-statistics-card'},{'name': 'StatisticsGridComponent', 'selector': 'app-statistics-grid'},{'name': 'StepperComponent', 'selector': 'app-stepper'},{'name': 'StructureComponent', 'selector': 'app-structure'},{'name': 'SuperAdminAnnouncementsComponent', 'selector': 'app-super-admin-announcements'},{'name': 'SuperAdminDashboardComponent', 'selector': 'app-super-admin-dashboard'},{'name': 'SuperAdminLayoutComponent', 'selector': 'app-super-admin-layout'},{'name': 'SuperAdminReportsComponent', 'selector': 'app-super-admin-reports'},{'name': 'SurveillanceMapComponent', 'selector': 'app-surveillance-map'},{'name': 'SwiperGalleryComponent', 'selector': 'app-swiper-gallery'},{'name': 'SwiperGalleryDemoComponent', 'selector': 'app-swiper-gallery-demo'},{'name': 'SwitchComponent', 'selector': 'app-switch'},{'name': 'SystemSettingsComponent', 'selector': 'app-system-settings'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TemplateManagementComponent', 'selector': 'app-template-management'},{'name': 'TestApiComponent', 'selector': 'app-test-api'},{'name': 'ThemeSwitcherComponent', 'selector': 'app-theme-switcher'},{'name': 'TimelineComponent', 'selector': 'app-timeline'},{'name': 'TimelineDemoComponent', 'selector': 'app-timeline-demo'},{'name': 'TimesheetsComponent', 'selector': 'app-timesheets'},{'name': 'TimestampComponent', 'selector': 'app-timestamp'},{'name': 'TimestampDemoComponent', 'selector': 'app-timestamp-demo'},{'name': 'TooltipComponent', 'selector': 'app-tooltip'},{'name': 'UsersComponent', 'selector': 'app-users'},{'name': 'ValidationDemoComponent', 'selector': 'app-validation-demo'},{'name': 'VehiclesComponent', 'selector': 'app-vehicles'},{'name': 'VideoAnalyticsComponent', 'selector': 'app-video-analytics'},{'name': 'VideoPlaybackComponent', 'selector': 'app-video-playback'},{'name': 'VisitorBadgesComponent', 'selector': 'app-visitor-badges'},{'name': 'VisitorBlacklistComponent', 'selector': 'app-visitor-blacklist'},{'name': 'VisitorDashboardComponent', 'selector': 'app-visitor-dashboard'},{'name': 'VisitorInvitationsComponent', 'selector': 'app-visitor-invitations'},{'name': 'VisitorParcelsComponent', 'selector': 'app-visitor-parcels'},{'name': 'VisitorReportsComponent', 'selector': 'app-visitor-reports'},{'name': 'VisitorsComponent', 'selector': 'app-visitors'},{'name': 'WatchlistComponent', 'selector': 'app-watchlist'},{'name': 'ZoneConfigComponent', 'selector': 'app-zone-config'}];
+    var DIRECTIVES = [{'name': 'HasPermissionDirective', 'selector': '[appHasPermission]'},{'name': 'ImageOptimizationDirective', 'selector': '[appImageOptimization]'}];
+    var ACTUAL_COMPONENT = {'name': 'DraggableCardsDemoComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'DraggableCardsDemoComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

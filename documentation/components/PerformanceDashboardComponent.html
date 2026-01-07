@@ -1,0 +1,3758 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  PerformanceDashboardComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts</code>
+</p>
+
+
+
+    <p class="comment">
+        <h3>Extends</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+    </p>
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-performance-dashboard</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../interfaces/Module.html" target="_self" >CommonModule</a></code>
+                                <code><a href="../components/GlassCardComponent.html" target="_self" >GlassCardComponent</a></code>
+                                <code><a href="../components/GlassButtonComponent.html" target="_self" >GlassButtonComponent</a></code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./performance-dashboard.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./performance-dashboard.component.scss</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#activeTab" >activeTab</a>
+                            </li>
+                            <li>
+                                <a href="#budgetPassed" >budgetPassed</a>
+                            </li>
+                            <li>
+                                <a href="#budgetViolations" >budgetViolations</a>
+                            </li>
+                            <li>
+                                <a href="#config" >config</a>
+                            </li>
+                            <li>
+                                <a href="#isOptimizing" >isOptimizing</a>
+                            </li>
+                            <li>
+                                <a href="#metrics" >metrics</a>
+                            </li>
+                            <li>
+                                <a href="#performanceScore" >performanceScore</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Optional</span>
+                                <a href="#performanceUpdateInterval" >performanceUpdateInterval</a>
+                            </li>
+                            <li>
+                                <a href="#recommendations" >recommendations</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#destroy$" >destroy$</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#subscriptions" >subscriptions</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#checkBudget" >checkBudget</a>
+                            </li>
+                            <li>
+                                <a href="#enableCDN" >enableCDN</a>
+                            </li>
+                            <li>
+                                <a href="#formatBytes" >formatBytes</a>
+                            </li>
+                            <li>
+                                <a href="#formatTime" >formatTime</a>
+                            </li>
+                            <li>
+                                <a href="#getCurrentTime" >getCurrentTime</a>
+                            </li>
+                            <li>
+                                <a href="#getMetricStatus" >getMetricStatus</a>
+                            </li>
+                            <li>
+                                <a href="#getScoreColor" >getScoreColor</a>
+                            </li>
+                            <li>
+                                <a href="#getScoreLabel" >getScoreLabel</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#loadConfig" >loadConfig</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#loadMetrics" >loadMetrics</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#optimizeBundleSize" >optimizeBundleSize</a>
+                            </li>
+                            <li>
+                                <a href="#optimizeCaching" >optimizeCaching</a>
+                            </li>
+                            <li>
+                                <a href="#optimizeImages" >optimizeImages</a>
+                            </li>
+                            <li>
+                                <a href="#optimizeLazyLoading" >optimizeLazyLoading</a>
+                            </li>
+                            <li>
+                                <a href="#resetMetrics" >resetMetrics</a>
+                            </li>
+                            <li>
+                                <a href="#runFullOptimization" >runFullOptimization</a>
+                            </li>
+                            <li>
+                                <a href="#selectTab" >selectTab</a>
+                            </li>
+                            <li>
+                                <a href="#t" >t</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#updatePerformanceData" >updatePerformanceData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#updatePerformanceScore" >updatePerformanceScore</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#updateRecommendations" >updateRecommendations</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#debounce" >debounce</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#isActive" >isActive</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#safeAsync" >safeAsync</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#safeUpdate" >safeUpdate</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#subscribe" >subscribe</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#subscribeUntil" >subscribeUntil</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#throttle" >throttle</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#trackSubscription" >trackSubscription</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#unsubscribe" >unsubscribe</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#unsubscribeAll" >unsubscribeAll</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(performanceService: <a href="../injectables/PerformanceService.html" target="_self">PerformanceService</a>, i18n: <a href="../injectables/I18nService.html" target="_self">I18nService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:66</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>performanceService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/PerformanceService.html" target="_self" >PerformanceService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>i18n</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/I18nService.html" target="_self" >I18nService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="checkBudget"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>checkBudget</b></span>
+                        <a href="#checkBudget"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>checkBudget()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="128"
+                                    class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:128</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="enableCDN"></a>
+                    <span class="name">
+                        <span ><b>enableCDN</b></span>
+                        <a href="#enableCDN"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>enableCDN()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="181"
+                                    class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:181</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="formatBytes"></a>
+                    <span class="name">
+                        <span ><b>formatBytes</b></span>
+                        <a href="#formatBytes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>formatBytes(bytes: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="212"
+                                    class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:212</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>bytes</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="formatTime"></a>
+                    <span class="name">
+                        <span ><b>formatTime</b></span>
+                        <a href="#formatTime"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>formatTime(ms: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="220"
+                                    class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:220</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>ms</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getCurrentTime"></a>
+                    <span class="name">
+                        <span ><b>getCurrentTime</b></span>
+                        <a href="#getCurrentTime"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getCurrentTime()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="248"
+                                    class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:248</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getMetricStatus"></a>
+                    <span class="name">
+                        <span ><b>getMetricStatus</b></span>
+                        <a href="#getMetricStatus"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getMetricStatus(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, threshold: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, isLowerBetter: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="238"
+                                    class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:238</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>value</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>threshold</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>isLowerBetter</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>true</code>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>literal type</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getScoreColor"></a>
+                    <span class="name">
+                        <span ><b>getScoreColor</b></span>
+                        <a href="#getScoreColor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getScoreColor(score: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="225"
+                                    class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:225</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>score</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getScoreLabel"></a>
+                    <span class="name">
+                        <span ><b>getScoreLabel</b></span>
+                        <a href="#getScoreLabel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getScoreLabel(score: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="231"
+                                    class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:231</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>score</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadConfig"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>loadConfig</b></span>
+                        <a href="#loadConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>loadConfig()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="100"
+                                    class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:100</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadMetrics"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>loadMetrics</b></span>
+                        <a href="#loadMetrics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>loadMetrics()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="89"
+                                    class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:89</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:81</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="75"
+                                    class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:75</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="optimizeBundleSize"></a>
+                    <span class="name">
+                        <span ><b>optimizeBundleSize</b></span>
+                        <a href="#optimizeBundleSize"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>optimizeBundleSize()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="141"
+                                    class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:141</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="optimizeCaching"></a>
+                    <span class="name">
+                        <span ><b>optimizeCaching</b></span>
+                        <a href="#optimizeCaching"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>optimizeCaching()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="161"
+                                    class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:161</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="optimizeImages"></a>
+                    <span class="name">
+                        <span ><b>optimizeImages</b></span>
+                        <a href="#optimizeImages"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>optimizeImages()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="171"
+                                    class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:171</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="optimizeLazyLoading"></a>
+                    <span class="name">
+                        <span ><b>optimizeLazyLoading</b></span>
+                        <a href="#optimizeLazyLoading"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>optimizeLazyLoading()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="151"
+                                    class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:151</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resetMetrics"></a>
+                    <span class="name">
+                        <span ><b>resetMetrics</b></span>
+                        <a href="#resetMetrics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>resetMetrics()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="207"
+                                    class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:207</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="runFullOptimization"></a>
+                    <span class="name">
+                        <span ><b>runFullOptimization</b></span>
+                        <a href="#runFullOptimization"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>runFullOptimization()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="191"
+                                    class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:191</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectTab"></a>
+                    <span class="name">
+                        <span ><b>selectTab</b></span>
+                        <a href="#selectTab"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>selectTab(tab: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="134"
+                                    class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:134</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>tab</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="t"></a>
+                    <span class="name">
+                        <span ><b>t</b></span>
+                        <a href="#t"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>t(key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="252"
+                                    class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:252</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>key</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updatePerformanceData"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>updatePerformanceData</b></span>
+                        <a href="#updatePerformanceData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updatePerformanceData()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="104"
+                                    class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:104</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updatePerformanceScore"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>updatePerformanceScore</b></span>
+                        <a href="#updatePerformanceScore"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updatePerformanceScore()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="118"
+                                    class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:118</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateRecommendations"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>updateRecommendations</b></span>
+                        <a href="#updateRecommendations"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateRecommendations()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="123"
+                                    class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:123</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="debounce"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>debounce</b></span>
+                        <a href="#debounce"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>debounce(fn: T, delay: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:231</a></code>
+</div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Type parameters :</b>
+                            <ul class="type-parameters">
+                                    <li>T</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Helper method to debounce function calls</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const debouncedSearch = this.debounce((query: string) =&gt; {
+  this.search(query);
+}, 300);
+
+
+onInputChange(query: string): void {
+  debouncedSearch(query);
+}</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>fn</td>
+                                            <td>
+                                                        <code>T</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                            <td>
+                                                    <ul>
+<li>Function to debounce</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>delay</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>300</code>
+                                            </td>
+
+                                            <td>
+                                                    <ul>
+<li>Delay in milliseconds</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Debounced function</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isActive"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>isActive</b></span>
+                        <a href="#isActive"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isActive()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:290</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Helper method to check if component is still active
+Useful for async operations that might complete after component is destroyed</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>true if component is still active</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="safeAsync"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>safeAsync</b></span>
+                        <a href="#safeAsync"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>safeAsync(fn: () => void, onError?: (error?: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>) => void)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:200</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Helper method to safely execute async operations</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">this.safeAsync(async () =&gt; {
+  const data = await this.service.loadData();
+  this.data = data;
+});</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>fn</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Async function to execute</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>onError</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Optional error handler</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="safeUpdate"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>safeUpdate</b></span>
+                        <a href="#safeUpdate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>safeUpdate(updateFn: () => void)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:308</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Helper method to safely update component state
+Only updates if component is still active</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">this.safeUpdate(() =&gt; {
+  this.data = newData;
+  this.loading = false;
+});</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>updateFn</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Function that updates component state</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="subscribe"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>subscribe</b></span>
+                        <a href="#subscribe"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>subscribe(observable: Observable<T>, next?: (value?: T) => void, error?: (error?: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>) => void, complete?: () => void)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:94</a></code>
+</div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Type parameters :</b>
+                            <ul class="type-parameters">
+                                    <li>T</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Subscribe to an Observable with automatic unsubscribe</p>
+<p>Uses takeUntil pattern for automatic cleanup</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">ngOnInit(): void {
+  this.subscribe(
+    this.service.data$,
+    data =&gt; this.data = data,
+    error =&gt; console.error(error)
+  );
+}</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>observable</td>
+                                            <td>
+                                                        <code>Observable&lt;T&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The Observable to subscribe to</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>next</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Callback function for next values</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>error</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Optional error callback</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>complete</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Optional complete callback</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Subscription.html" target="_self" >Subscription</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Subscription (for manual control if needed)</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="subscribeUntil"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>subscribeUntil</b></span>
+                        <a href="#subscribeUntil"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>subscribeUntil(observable: Observable<T>, next?: (value?: T) => void, error?: (error?: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>) => void, complete?: () => void)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:135</a></code>
+</div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Type parameters :</b>
+                            <ul class="type-parameters">
+                                    <li>T</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Subscribe to an Observable using takeUntil pattern (backward compatibility)</p>
+<p>Use this if you need manual control or are on Angular &lt; 16</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">ngOnInit(): void {
+  this.subscribeUntil(
+    this.service.data$,
+    data =&gt; this.data = data
+  );
+}</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>observable</td>
+                                            <td>
+                                                        <code>Observable&lt;T&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The Observable to subscribe to</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>next</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Callback function for next values</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>error</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Optional error callback</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>complete</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Optional complete callback</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Subscription.html" target="_self" >Subscription</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Subscription</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="throttle"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>throttle</b></span>
+                        <a href="#throttle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>throttle(fn: T, limit: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:267</a></code>
+</div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Type parameters :</b>
+                            <ul class="type-parameters">
+                                    <li>T</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Helper method to throttle function calls</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const throttledScroll = this.throttle(() =&gt; {
+  this.handleScroll();
+}, 100);
+
+
+onScroll(): void {
+  throttledScroll();
+}</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>fn</td>
+                                            <td>
+                                                        <code>T</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                            <td>
+                                                    <ul>
+<li>Function to throttle</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>limit</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>100</code>
+                                            </td>
+
+                                            <td>
+                                                    <ul>
+<li>Time limit in milliseconds</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Throttled function</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="trackSubscription"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>trackSubscription</b></span>
+                        <a href="#trackSubscription"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>trackSubscription(subscription: <a href="../interfaces/Subscription.html" target="_self">Subscription</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:182</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Track a subscription for automatic cleanup</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>subscription</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Subscription.html" target="_self" >Subscription</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The subscription to track</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unsubscribe"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>unsubscribe</b></span>
+                        <a href="#unsubscribe"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>unsubscribe(subscription: <a href="../interfaces/Subscription.html" target="_self">Subscription</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:158</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Manually unsubscribe from a specific subscription</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>subscription</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Subscription.html" target="_self" >Subscription</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The subscription to unsubscribe</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unsubscribeAll"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>unsubscribeAll</b></span>
+                        <a href="#unsubscribeAll"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>unsubscribeAll()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:168</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Unsubscribe from all tracked subscriptions</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="activeTab"></a>
+                    <span class="name">
+                        <span ><b>activeTab</b></span>
+                        <a href="#activeTab"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;&#x27;overview&#x27; | &#x27;metrics&#x27; | &#x27;optimization&#x27; | &#x27;recommendations&#x27;&gt;(&#x27;overview&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:62</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="budgetPassed"></a>
+                    <span class="name">
+                        <span ><b>budgetPassed</b></span>
+                        <a href="#budgetPassed"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;boolean&gt;(true)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:59</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="budgetViolations"></a>
+                    <span class="name">
+                        <span ><b>budgetViolations</b></span>
+                        <a href="#budgetViolations"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;string[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:58</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="config"></a>
+                    <span class="name">
+                        <span ><b>config</b></span>
+                        <a href="#config"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;OptimizationConfig&gt;({
+    enableLazyLoading: true,
+    enablePreloading: true,
+    enableCompression: true,
+    enableCaching: true,
+    enableTreeShaking: true,
+    enableMinification: true,
+    enableCodeSplitting: true,
+    enableImageOptimization: true,
+    enableServiceWorker: false,
+    enableCDN: false
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:43</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isOptimizing"></a>
+                    <span class="name">
+                        <span ><b>isOptimizing</b></span>
+                        <a href="#isOptimizing"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;boolean&gt;(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:63</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="metrics"></a>
+                    <span class="name">
+                        <span ><b>metrics</b></span>
+                        <a href="#metrics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;PerformanceMetrics&gt;({
+    bundleSize: 0,
+    loadTime: 0,
+    renderTime: 0,
+    memoryUsage: 0,
+    networkRequests: 0,
+    cacheHitRate: 0,
+    firstContentfulPaint: 0,
+    largestContentfulPaint: 0,
+    cumulativeLayoutShift: 0,
+    firstInputDelay: 0
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:30</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="performanceScore"></a>
+                    <span class="name">
+                        <span ><b>performanceScore</b></span>
+                        <a href="#performanceScore"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;number&gt;(0)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:56</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="performanceUpdateInterval"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Optional</span>
+                        <span ><b>performanceUpdateInterval</b></span>
+                        <a href="#performanceUpdateInterval"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>ReturnType&lt;unknown&gt;</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:66</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="recommendations"></a>
+                    <span class="name">
+                        <span ><b>recommendations</b></span>
+                        <a href="#recommendations"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;string[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/features/portal/demo-group/performance-dashboard/performance-dashboard.component.ts:57</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="destroy$"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>destroy$</b></span>
+                        <a href="#destroy$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Subject&lt;void&gt;()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:52</a></code>
+</div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Subject for subscription management
+Automatically completed in ngOnDestroy</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="subscriptions"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>subscriptions</b></span>
+                        <a href="#subscriptions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Subscription.html" target="_self" >Subscription[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../components/BaseComponent.html" target="_self" >BaseComponent</a></code>
+</div>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../components/BaseComponent.html#source" target="_self" >BaseComponent:57</a></code>
+</div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Track all subscriptions for manual cleanup if needed</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, signal, effect } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { GlassCardComponent } from &#x27;../../../../shared/components/glass-card/glass-card.component&#x27;;
+import { GlassButtonComponent } from &#x27;../../../../shared/components/glass-button/glass-button.component&#x27;;
+import { PerformanceService, PerformanceMetrics, OptimizationConfig } from &#x27;../../../../core/services/performance.service&#x27;;
+import { I18nService } from &#x27;../../../../core/services/i18n.service&#x27;;
+import { BaseComponent } from &#x27;../../../../core/base/base.component&#x27;;
+
+@Component({
+  selector: &#x27;app-performance-dashboard&#x27;,
+  standalone: true,
+  imports: [CommonModule, GlassCardComponent, GlassButtonComponent],
+  templateUrl: &#x27;./performance-dashboard.component.html&#x27;,
+  styleUrl: &#x27;./performance-dashboard.component.scss&#x27;
+})
+export class PerformanceDashboardComponent extends BaseComponent implements OnInit {
+  // Data
+  metrics &#x3D; signal&lt;PerformanceMetrics&gt;({
+    bundleSize: 0,
+    loadTime: 0,
+    renderTime: 0,
+    memoryUsage: 0,
+    networkRequests: 0,
+    cacheHitRate: 0,
+    firstContentfulPaint: 0,
+    largestContentfulPaint: 0,
+    cumulativeLayoutShift: 0,
+    firstInputDelay: 0
+  });
+
+  config &#x3D; signal&lt;OptimizationConfig&gt;({
+    enableLazyLoading: true,
+    enablePreloading: true,
+    enableCompression: true,
+    enableCaching: true,
+    enableTreeShaking: true,
+    enableMinification: true,
+    enableCodeSplitting: true,
+    enableImageOptimization: true,
+    enableServiceWorker: false,
+    enableCDN: false
+  });
+
+  performanceScore &#x3D; signal&lt;number&gt;(0);
+  recommendations &#x3D; signal&lt;string[]&gt;([]);
+  budgetViolations &#x3D; signal&lt;string[]&gt;([]);
+  budgetPassed &#x3D; signal&lt;boolean&gt;(true);
+
+  // UI State
+  activeTab &#x3D; signal&lt;&#x27;overview&#x27; | &#x27;metrics&#x27; | &#x27;optimization&#x27; | &#x27;recommendations&#x27;&gt;(&#x27;overview&#x27;);
+  isOptimizing &#x3D; signal&lt;boolean&gt;(false);
+
+  // Interval tracking
+  private performanceUpdateInterval?: ReturnType&lt;typeof setInterval&gt;;
+
+  constructor(
+    private performanceService: PerformanceService,
+    private i18n: I18nService
+  ) {
+    super();
+  }
+
+  ngOnInit(): void {
+    this.loadMetrics();
+    this.loadConfig();
+    this.updatePerformanceData();
+  }
+
+  override ngOnDestroy(): void {
+    // Clear interval if exists
+    if (this.performanceUpdateInterval) {
+      clearInterval(this.performanceUpdateInterval);
+    }
+    super.ngOnDestroy();
+  }
+
+  private loadMetrics(): void {
+    // ✅ Using signals (no subscription needed)
+    effect(() &#x3D;&gt; {
+      const metrics &#x3D; this.performanceService.metrics();
+      this.metrics.set(metrics);
+      this.updatePerformanceScore();
+      this.updateRecommendations();
+      this.checkBudget();
+    });
+  }
+
+  private loadConfig(): void {
+    this.config.set(this.performanceService.getConfig());
+  }
+
+  private updatePerformanceData(): void {
+    // Simulate real-time updates
+    // ✅ Track interval for cleanup
+    this.performanceUpdateInterval &#x3D; setInterval(() &#x3D;&gt; {
+      if (this.isActive()) {
+        const currentMetrics &#x3D; this.performanceService.getCurrentMetrics();
+        this.metrics.set(currentMetrics);
+        this.updatePerformanceScore();
+        this.updateRecommendations();
+        this.checkBudget();
+      }
+    }, 5000);
+  }
+
+  private updatePerformanceScore(): void {
+    const score &#x3D; this.performanceService.getPerformanceScore();
+    this.performanceScore.set(score);
+  }
+
+  private updateRecommendations(): void {
+    const recommendations &#x3D; this.performanceService.getPerformanceRecommendations();
+    this.recommendations.set(recommendations);
+  }
+
+  private checkBudget(): void {
+    const budget &#x3D; this.performanceService.checkPerformanceBudget();
+    this.budgetPassed.set(budget.passed);
+    this.budgetViolations.set(budget.violations);
+  }
+
+  selectTab(tab: string): void {
+    if (tab &#x3D;&#x3D;&#x3D; &#x27;overview&#x27; || tab &#x3D;&#x3D;&#x3D; &#x27;metrics&#x27; || tab &#x3D;&#x3D;&#x3D; &#x27;optimization&#x27; || tab &#x3D;&#x3D;&#x3D; &#x27;recommendations&#x27;) {
+      this.activeTab.set(tab as any);
+    }
+  }
+
+  // Optimization Actions
+  optimizeBundleSize(): void {
+    this.isOptimizing.set(true);
+    this.performanceService.optimizeBundleSize();
+
+    setTimeout(() &#x3D;&gt; {
+      this.loadConfig();
+      this.isOptimizing.set(false);
+    }, 2000);
+  }
+
+  optimizeLazyLoading(): void {
+    this.isOptimizing.set(true);
+    this.performanceService.optimizeLazyLoading();
+
+    setTimeout(() &#x3D;&gt; {
+      this.loadConfig();
+      this.isOptimizing.set(false);
+    }, 1500);
+  }
+
+  optimizeCaching(): void {
+    this.isOptimizing.set(true);
+    this.performanceService.optimizeCaching();
+
+    setTimeout(() &#x3D;&gt; {
+      this.loadConfig();
+      this.isOptimizing.set(false);
+    }, 2000);
+  }
+
+  optimizeImages(): void {
+    this.isOptimizing.set(true);
+    this.performanceService.optimizeImages();
+
+    setTimeout(() &#x3D;&gt; {
+      this.loadConfig();
+      this.isOptimizing.set(false);
+    }, 1000);
+  }
+
+  enableCDN(): void {
+    this.isOptimizing.set(true);
+    this.performanceService.enableCDN();
+
+    setTimeout(() &#x3D;&gt; {
+      this.loadConfig();
+      this.isOptimizing.set(false);
+    }, 1500);
+  }
+
+  runFullOptimization(): void {
+    this.isOptimizing.set(true);
+
+    // Run all optimizations
+    this.performanceService.optimizeBundleSize();
+    this.performanceService.optimizeLazyLoading();
+    this.performanceService.optimizeCaching();
+    this.performanceService.optimizeImages();
+    this.performanceService.enableCDN();
+
+    setTimeout(() &#x3D;&gt; {
+      this.loadConfig();
+      this.isOptimizing.set(false);
+    }, 5000);
+  }
+
+  resetMetrics(): void {
+    this.performanceService.resetMetrics();
+  }
+
+  // Utility Methods
+  formatBytes(bytes: number): string {
+    if (bytes &#x3D;&#x3D;&#x3D; 0) return &#x27;0 Bytes&#x27;;
+    const k &#x3D; 1024;
+    const sizes &#x3D; [&#x27;Bytes&#x27;, &#x27;KB&#x27;, &#x27;MB&#x27;, &#x27;GB&#x27;];
+    const i &#x3D; Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + &#x27; &#x27; + sizes[i];
+  }
+
+  formatTime(ms: number): string {
+    if (ms &lt; 1000) return &#x60;${Math.round(ms)}ms&#x60;;
+    return &#x60;${(ms / 1000).toFixed(2)}s&#x60;;
+  }
+
+  getScoreColor(score: number): string {
+    if (score &gt;&#x3D; 90) return &#x27;text-green-400&#x27;;
+    if (score &gt;&#x3D; 70) return &#x27;text-yellow-400&#x27;;
+    return &#x27;text-red-400&#x27;;
+  }
+
+  getScoreLabel(score: number): string {
+    if (score &gt;&#x3D; 90) return &#x27;Excellent&#x27;;
+    if (score &gt;&#x3D; 70) return &#x27;Good&#x27;;
+    if (score &gt;&#x3D; 50) return &#x27;Needs Improvement&#x27;;
+    return &#x27;Poor&#x27;;
+  }
+
+  getMetricStatus(value: number, threshold: number, isLowerBetter: boolean &#x3D; true): { status: string; color: string } {
+    const isGood &#x3D; isLowerBetter ? value &lt;&#x3D; threshold : value &gt;&#x3D; threshold;
+
+    if (isGood) {
+      return { status: &#x27;Good&#x27;, color: &#x27;text-green-400&#x27; };
+    } else {
+      return { status: &#x27;Needs Improvement&#x27;, color: &#x27;text-red-400&#x27; };
+    }
+  }
+
+  getCurrentTime(): string {
+    return new Date().toLocaleTimeString();
+  }
+
+  t(key: string): string {
+    return this.i18n.translate(key);
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;space-y-6&quot;&gt;
+  &lt;!-- Header --&gt;
+  &lt;div class&#x3D;&quot;flex items-center justify-between&quot;&gt;
+    &lt;h1 class&#x3D;&quot;text-3xl font-bold text-gray-900 dark:text-gray-100&quot;&gt;
+      Performance Dashboard
+    &lt;/h1&gt;
+    &lt;div class&#x3D;&quot;flex space-x-2&quot;&gt;
+      &lt;app-glass-button (clicked)&#x3D;&quot;runFullOptimization()&quot; variant&#x3D;&quot;primary&quot; [disabled]&#x3D;&quot;isOptimizing()&quot;&gt;
+        &lt;i class&#x3D;&quot;fas fa-magic mr-2&quot; [class.fa-spin]&#x3D;&quot;isOptimizing()&quot;&gt;&lt;/i&gt;
+        {{ isOptimizing() ? &#x27;Optimizing...&#x27; : &#x27;Run Full Optimization&#x27; }}
+      &lt;/app-glass-button&gt;
+      &lt;app-glass-button (clicked)&#x3D;&quot;resetMetrics()&quot; variant&#x3D;&quot;secondary&quot;&gt;
+        &lt;i class&#x3D;&quot;fas fa-refresh mr-2&quot;&gt;&lt;/i&gt; Reset Metrics
+      &lt;/app-glass-button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Performance Score --&gt;
+  &lt;app-glass-card class&#x3D;&quot;p-6&quot;&gt;
+    &lt;div class&#x3D;&quot;flex items-center justify-between mb-4&quot;&gt;
+      &lt;h3 class&#x3D;&quot;text-xl font-semibold text-white&quot;&gt;Performance Score&lt;/h3&gt;
+      &lt;div class&#x3D;&quot;flex items-center space-x-2&quot;&gt;
+        &lt;span class&#x3D;&quot;text-sm text-gray-400&quot;&gt;Last updated: {{ getCurrentTime() }}&lt;/span&gt;
+        &lt;div class&#x3D;&quot;w-3 h-3 bg-green-400 rounded-full animate-pulse&quot;&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;flex items-center space-x-6&quot;&gt;
+      &lt;div class&#x3D;&quot;text-center&quot;&gt;
+        &lt;div class&#x3D;&quot;text-6xl font-bold&quot; [class]&#x3D;&quot;getScoreColor(performanceScore())&quot;&gt;
+          {{ performanceScore() }}
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;text-sm text-gray-400&quot;&gt;{{ getScoreLabel(performanceScore()) }}&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;flex-1&quot;&gt;
+        &lt;div class&#x3D;&quot;w-full bg-gray-700 rounded-full h-4&quot;&gt;
+          &lt;div
+            class&#x3D;&quot;h-4 rounded-full transition-all duration-1000&quot;
+            [class]&#x3D;&quot;performanceScore() &gt;&#x3D; 90 ? &#x27;bg-green-400&#x27; : performanceScore() &gt;&#x3D; 70 ? &#x27;bg-yellow-400&#x27; : &#x27;bg-red-400&#x27;&quot;
+            [style.width.%]&#x3D;&quot;performanceScore()&quot;&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;flex justify-between text-xs text-gray-400 mt-2&quot;&gt;
+          &lt;span&gt;0&lt;/span&gt;
+          &lt;span&gt;50&lt;/span&gt;
+          &lt;span&gt;70&lt;/span&gt;
+          &lt;span&gt;90&lt;/span&gt;
+          &lt;span&gt;100&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/app-glass-card&gt;
+
+  &lt;!-- Budget Status --&gt;
+  &lt;app-glass-card class&#x3D;&quot;p-6&quot;&gt;
+    &lt;h3 class&#x3D;&quot;text-xl font-semibold text-white mb-4&quot;&gt;Performance Budget&lt;/h3&gt;
+    &lt;div class&#x3D;&quot;flex items-center space-x-4&quot;&gt;
+      &lt;div class&#x3D;&quot;flex items-center space-x-2&quot;&gt;
+        &lt;i [class]&#x3D;&quot;budgetPassed() ? &#x27;fas fa-check-circle text-green-400&#x27; : &#x27;fas fa-exclamation-triangle text-red-400&#x27;&quot;&gt;&lt;/i&gt;
+        &lt;span [class]&#x3D;&quot;budgetPassed() ? &#x27;text-green-400&#x27; : &#x27;text-red-400&#x27;&quot;&gt;
+          {{ budgetPassed() ? &#x27;Budget Passed&#x27; : &#x27;Budget Violated&#x27; }}
+        &lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div *ngIf&#x3D;&quot;!budgetPassed()&quot; class&#x3D;&quot;text-sm text-gray-400&quot;&gt;
+        {{ budgetViolations().length }} violation(s) found
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div *ngIf&#x3D;&quot;!budgetPassed()&quot; class&#x3D;&quot;mt-4 space-y-2&quot;&gt;
+      &lt;div *ngFor&#x3D;&quot;let violation of budgetViolations()&quot; class&#x3D;&quot;text-sm text-red-400 bg-red-500/10 p-2 rounded&quot;&gt;
+        &lt;i class&#x3D;&quot;fas fa-times mr-2&quot;&gt;&lt;/i&gt;{{ violation }}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/app-glass-card&gt;
+
+  &lt;!-- Tabs --&gt;
+  &lt;app-glass-card class&#x3D;&quot;p-6&quot;&gt;
+    &lt;div class&#x3D;&quot;flex space-x-1 mb-6&quot;&gt;
+      &lt;button
+        *ngFor&#x3D;&quot;let tab of [&#x27;overview&#x27;, &#x27;metrics&#x27;, &#x27;optimization&#x27;, &#x27;recommendations&#x27;]&quot;
+        (click)&#x3D;&quot;selectTab(tab)&quot;
+        [class]&#x3D;&quot;&#x27;px-4 py-2 rounded-lg font-medium transition-all &#x27; + (activeTab() &#x3D;&#x3D;&#x3D; tab ? &#x27;bg-blue-600 text-white&#x27; : &#x27;text-gray-400 hover:text-white hover:bg-gray-700&#x27;)&quot;
+      &gt;
+        &lt;i [class]&#x3D;&quot;&#x27;mr-2 &#x27; + (tab &#x3D;&#x3D;&#x3D; &#x27;overview&#x27; ? &#x27;fas fa-chart-pie&#x27; : tab &#x3D;&#x3D;&#x3D; &#x27;metrics&#x27; ? &#x27;fas fa-tachometer-alt&#x27; : tab &#x3D;&#x3D;&#x3D; &#x27;optimization&#x27; ? &#x27;fas fa-cogs&#x27; : &#x27;fas fa-lightbulb&#x27;)&quot;&gt;&lt;/i&gt;
+        {{ tab | titlecase }}
+      &lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Overview Tab --&gt;
+    &lt;div *ngIf&#x3D;&quot;activeTab() &#x3D;&#x3D;&#x3D; &#x27;overview&#x27;&quot; class&#x3D;&quot;space-y-6&quot;&gt;
+      &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4&quot;&gt;
+        &lt;div class&#x3D;&quot;text-center p-4 bg-gray-800 rounded-lg&quot;&gt;
+          &lt;div class&#x3D;&quot;text-2xl font-bold text-white&quot;&gt;{{ formatBytes(metrics().bundleSize) }}&lt;/div&gt;
+          &lt;div class&#x3D;&quot;text-sm text-gray-400&quot;&gt;Bundle Size&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;text-center p-4 bg-gray-800 rounded-lg&quot;&gt;
+          &lt;div class&#x3D;&quot;text-2xl font-bold text-white&quot;&gt;{{ formatTime(metrics().loadTime) }}&lt;/div&gt;
+          &lt;div class&#x3D;&quot;text-sm text-gray-400&quot;&gt;Load Time&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;text-center p-4 bg-gray-800 rounded-lg&quot;&gt;
+          &lt;div class&#x3D;&quot;text-2xl font-bold text-white&quot;&gt;{{ formatTime(metrics().firstContentfulPaint) }}&lt;/div&gt;
+          &lt;div class&#x3D;&quot;text-sm text-gray-400&quot;&gt;First Contentful Paint&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;text-center p-4 bg-gray-800 rounded-lg&quot;&gt;
+          &lt;div class&#x3D;&quot;text-2xl font-bold text-white&quot;&gt;{{ formatBytes(metrics().memoryUsage * 1024 * 1024) }}&lt;/div&gt;
+          &lt;div class&#x3D;&quot;text-sm text-gray-400&quot;&gt;Memory Usage&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Metrics Tab --&gt;
+    &lt;div *ngIf&#x3D;&quot;activeTab() &#x3D;&#x3D;&#x3D; &#x27;metrics&#x27;&quot; class&#x3D;&quot;space-y-6&quot;&gt;
+      &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-2 gap-6&quot;&gt;
+        &lt;!-- Core Web Vitals --&gt;
+        &lt;div&gt;
+          &lt;h4 class&#x3D;&quot;text-lg font-semibold text-white mb-4&quot;&gt;Core Web Vitals&lt;/h4&gt;
+          &lt;div class&#x3D;&quot;space-y-3&quot;&gt;
+            &lt;div class&#x3D;&quot;flex justify-between items-center p-3 bg-gray-800 rounded-lg&quot;&gt;
+              &lt;span class&#x3D;&quot;text-gray-300&quot;&gt;First Contentful Paint&lt;/span&gt;
+              &lt;div class&#x3D;&quot;text-right&quot;&gt;
+                &lt;div class&#x3D;&quot;text-white font-medium&quot;&gt;{{ formatTime(metrics().firstContentfulPaint) }}&lt;/div&gt;
+                &lt;div class&#x3D;&quot;text-xs&quot; [class]&#x3D;&quot;getMetricStatus(metrics().firstContentfulPaint, 1800).color&quot;&gt;
+                  {{ getMetricStatus(metrics().firstContentfulPaint, 1800).status }}
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;flex justify-between items-center p-3 bg-gray-800 rounded-lg&quot;&gt;
+              &lt;span class&#x3D;&quot;text-gray-300&quot;&gt;Largest Contentful Paint&lt;/span&gt;
+              &lt;div class&#x3D;&quot;text-right&quot;&gt;
+                &lt;div class&#x3D;&quot;text-white font-medium&quot;&gt;{{ formatTime(metrics().largestContentfulPaint) }}&lt;/div&gt;
+                &lt;div class&#x3D;&quot;text-xs&quot; [class]&#x3D;&quot;getMetricStatus(metrics().largestContentfulPaint, 2500).color&quot;&gt;
+                  {{ getMetricStatus(metrics().largestContentfulPaint, 2500).status }}
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;flex justify-between items-center p-3 bg-gray-800 rounded-lg&quot;&gt;
+              &lt;span class&#x3D;&quot;text-gray-300&quot;&gt;Cumulative Layout Shift&lt;/span&gt;
+              &lt;div class&#x3D;&quot;text-right&quot;&gt;
+                &lt;div class&#x3D;&quot;text-white font-medium&quot;&gt;{{ metrics().cumulativeLayoutShift.toFixed(3) }}&lt;/div&gt;
+                &lt;div class&#x3D;&quot;text-xs&quot; [class]&#x3D;&quot;getMetricStatus(metrics().cumulativeLayoutShift, 0.1).color&quot;&gt;
+                  {{ getMetricStatus(metrics().cumulativeLayoutShift, 0.1).status }}
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;flex justify-between items-center p-3 bg-gray-800 rounded-lg&quot;&gt;
+              &lt;span class&#x3D;&quot;text-gray-300&quot;&gt;First Input Delay&lt;/span&gt;
+              &lt;div class&#x3D;&quot;text-right&quot;&gt;
+                &lt;div class&#x3D;&quot;text-white font-medium&quot;&gt;{{ formatTime(metrics().firstInputDelay) }}&lt;/div&gt;
+                &lt;div class&#x3D;&quot;text-xs&quot; [class]&#x3D;&quot;getMetricStatus(metrics().firstInputDelay, 100).color&quot;&gt;
+                  {{ getMetricStatus(metrics().firstInputDelay, 100).status }}
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Performance Metrics --&gt;
+        &lt;div&gt;
+          &lt;h4 class&#x3D;&quot;text-lg font-semibold text-white mb-4&quot;&gt;Performance Metrics&lt;/h4&gt;
+          &lt;div class&#x3D;&quot;space-y-3&quot;&gt;
+            &lt;div class&#x3D;&quot;flex justify-between items-center p-3 bg-gray-800 rounded-lg&quot;&gt;
+              &lt;span class&#x3D;&quot;text-gray-300&quot;&gt;Bundle Size&lt;/span&gt;
+              &lt;div class&#x3D;&quot;text-right&quot;&gt;
+                &lt;div class&#x3D;&quot;text-white font-medium&quot;&gt;{{ formatBytes(metrics().bundleSize) }}&lt;/div&gt;
+                &lt;div class&#x3D;&quot;text-xs&quot; [class]&#x3D;&quot;getMetricStatus(metrics().bundleSize, 500000).color&quot;&gt;
+                  {{ getMetricStatus(metrics().bundleSize, 500000).status }}
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;flex justify-between items-center p-3 bg-gray-800 rounded-lg&quot;&gt;
+              &lt;span class&#x3D;&quot;text-gray-300&quot;&gt;Load Time&lt;/span&gt;
+              &lt;div class&#x3D;&quot;text-right&quot;&gt;
+                &lt;div class&#x3D;&quot;text-white font-medium&quot;&gt;{{ formatTime(metrics().loadTime) }}&lt;/div&gt;
+                &lt;div class&#x3D;&quot;text-xs&quot; [class]&#x3D;&quot;getMetricStatus(metrics().loadTime, 3000).color&quot;&gt;
+                  {{ getMetricStatus(metrics().loadTime, 3000).status }}
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;flex justify-between items-center p-3 bg-gray-800 rounded-lg&quot;&gt;
+              &lt;span class&#x3D;&quot;text-gray-300&quot;&gt;Render Time&lt;/span&gt;
+              &lt;div class&#x3D;&quot;text-right&quot;&gt;
+                &lt;div class&#x3D;&quot;text-white font-medium&quot;&gt;{{ formatTime(metrics().renderTime) }}&lt;/div&gt;
+                &lt;div class&#x3D;&quot;text-xs&quot; [class]&#x3D;&quot;getMetricStatus(metrics().renderTime, 1000).color&quot;&gt;
+                  {{ getMetricStatus(metrics().renderTime, 1000).status }}
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;flex justify-between items-center p-3 bg-gray-800 rounded-lg&quot;&gt;
+              &lt;span class&#x3D;&quot;text-gray-300&quot;&gt;Memory Usage&lt;/span&gt;
+              &lt;div class&#x3D;&quot;text-right&quot;&gt;
+                &lt;div class&#x3D;&quot;text-white font-medium&quot;&gt;{{ formatBytes(metrics().memoryUsage * 1024 * 1024) }}&lt;/div&gt;
+                &lt;div class&#x3D;&quot;text-xs&quot; [class]&#x3D;&quot;getMetricStatus(metrics().memoryUsage, 50).color&quot;&gt;
+                  {{ getMetricStatus(metrics().memoryUsage, 50).status }}
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;flex justify-between items-center p-3 bg-gray-800 rounded-lg&quot;&gt;
+              &lt;span class&#x3D;&quot;text-gray-300&quot;&gt;Network Requests&lt;/span&gt;
+              &lt;div class&#x3D;&quot;text-right&quot;&gt;
+                &lt;div class&#x3D;&quot;text-white font-medium&quot;&gt;{{ metrics().networkRequests }}&lt;/div&gt;
+                &lt;div class&#x3D;&quot;text-xs&quot; [class]&#x3D;&quot;getMetricStatus(metrics().networkRequests, 20).color&quot;&gt;
+                  {{ getMetricStatus(metrics().networkRequests, 20).status }}
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Optimization Tab --&gt;
+    &lt;div *ngIf&#x3D;&quot;activeTab() &#x3D;&#x3D;&#x3D; &#x27;optimization&#x27;&quot; class&#x3D;&quot;space-y-6&quot;&gt;
+      &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-2 gap-6&quot;&gt;
+        &lt;!-- Bundle Optimization --&gt;
+        &lt;div&gt;
+          &lt;h4 class&#x3D;&quot;text-lg font-semibold text-white mb-4&quot;&gt;Bundle Optimization&lt;/h4&gt;
+          &lt;div class&#x3D;&quot;space-y-3&quot;&gt;
+            &lt;div class&#x3D;&quot;flex items-center justify-between p-3 bg-gray-800 rounded-lg&quot;&gt;
+              &lt;div&gt;
+                &lt;div class&#x3D;&quot;text-white font-medium&quot;&gt;Tree Shaking&lt;/div&gt;
+                &lt;div class&#x3D;&quot;text-sm text-gray-400&quot;&gt;Remove unused code&lt;/div&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;flex items-center space-x-2&quot;&gt;
+                &lt;span [class]&#x3D;&quot;config().enableTreeShaking ? &#x27;text-green-400&#x27; : &#x27;text-red-400&#x27;&quot;&gt;
+                  {{ config().enableTreeShaking ? &#x27;Enabled&#x27; : &#x27;Disabled&#x27; }}
+                &lt;/span&gt;
+                &lt;i [class]&#x3D;&quot;config().enableTreeShaking ? &#x27;fas fa-check-circle text-green-400&#x27; : &#x27;fas fa-times-circle text-red-400&#x27;&quot;&gt;&lt;/i&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;flex items-center justify-between p-3 bg-gray-800 rounded-lg&quot;&gt;
+              &lt;div&gt;
+                &lt;div class&#x3D;&quot;text-white font-medium&quot;&gt;Code Splitting&lt;/div&gt;
+                &lt;div class&#x3D;&quot;text-sm text-gray-400&quot;&gt;Split code into chunks&lt;/div&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;flex items-center space-x-2&quot;&gt;
+                &lt;span [class]&#x3D;&quot;config().enableCodeSplitting ? &#x27;text-green-400&#x27; : &#x27;text-red-400&#x27;&quot;&gt;
+                  {{ config().enableCodeSplitting ? &#x27;Enabled&#x27; : &#x27;Disabled&#x27; }}
+                &lt;/span&gt;
+                &lt;i [class]&#x3D;&quot;config().enableCodeSplitting ? &#x27;fas fa-check-circle text-green-400&#x27; : &#x27;fas fa-times-circle text-red-400&#x27;&quot;&gt;&lt;/i&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;flex items-center justify-between p-3 bg-gray-800 rounded-lg&quot;&gt;
+              &lt;div&gt;
+                &lt;div class&#x3D;&quot;text-white font-medium&quot;&gt;Minification&lt;/div&gt;
+                &lt;div class&#x3D;&quot;text-sm text-gray-400&quot;&gt;Minify JavaScript and CSS&lt;/div&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;flex items-center space-x-2&quot;&gt;
+                &lt;span [class]&#x3D;&quot;config().enableMinification ? &#x27;text-green-400&#x27; : &#x27;text-red-400&#x27;&quot;&gt;
+                  {{ config().enableMinification ? &#x27;Enabled&#x27; : &#x27;Disabled&#x27; }}
+                &lt;/span&gt;
+                &lt;i [class]&#x3D;&quot;config().enableMinification ? &#x27;fas fa-check-circle text-green-400&#x27; : &#x27;fas fa-times-circle text-red-400&#x27;&quot;&gt;&lt;/i&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;app-glass-button (clicked)&#x3D;&quot;optimizeBundleSize()&quot; variant&#x3D;&quot;primary&quot; customClass&#x3D;&quot;w-full&quot; [disabled]&#x3D;&quot;isOptimizing()&quot;&gt;
+              &lt;i class&#x3D;&quot;fas fa-compress mr-2&quot;&gt;&lt;/i&gt; Optimize Bundle
+            &lt;/app-glass-button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Loading Optimization --&gt;
+        &lt;div&gt;
+          &lt;h4 class&#x3D;&quot;text-lg font-semibold text-white mb-4&quot;&gt;Loading Optimization&lt;/h4&gt;
+          &lt;div class&#x3D;&quot;space-y-3&quot;&gt;
+            &lt;div class&#x3D;&quot;flex items-center justify-between p-3 bg-gray-800 rounded-lg&quot;&gt;
+              &lt;div&gt;
+                &lt;div class&#x3D;&quot;text-white font-medium&quot;&gt;Lazy Loading&lt;/div&gt;
+                &lt;div class&#x3D;&quot;text-sm text-gray-400&quot;&gt;Load components on demand&lt;/div&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;flex items-center space-x-2&quot;&gt;
+                &lt;span [class]&#x3D;&quot;config().enableLazyLoading ? &#x27;text-green-400&#x27; : &#x27;text-red-400&#x27;&quot;&gt;
+                  {{ config().enableLazyLoading ? &#x27;Enabled&#x27; : &#x27;Disabled&#x27; }}
+                &lt;/span&gt;
+                &lt;i [class]&#x3D;&quot;config().enableLazyLoading ? &#x27;fas fa-check-circle text-green-400&#x27; : &#x27;fas fa-times-circle text-red-400&#x27;&quot;&gt;&lt;/i&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;flex items-center justify-between p-3 bg-gray-800 rounded-lg&quot;&gt;
+              &lt;div&gt;
+                &lt;div class&#x3D;&quot;text-white font-medium&quot;&gt;Preloading&lt;/div&gt;
+                &lt;div class&#x3D;&quot;text-sm text-gray-400&quot;&gt;Preload critical resources&lt;/div&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;flex items-center space-x-2&quot;&gt;
+                &lt;span [class]&#x3D;&quot;config().enablePreloading ? &#x27;text-green-400&#x27; : &#x27;text-red-400&#x27;&quot;&gt;
+                  {{ config().enablePreloading ? &#x27;Enabled&#x27; : &#x27;Disabled&#x27; }}
+                &lt;/span&gt;
+                &lt;i [class]&#x3D;&quot;config().enablePreloading ? &#x27;fas fa-check-circle text-green-400&#x27; : &#x27;fas fa-times-circle text-red-400&#x27;&quot;&gt;&lt;/i&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;flex items-center justify-between p-3 bg-gray-800 rounded-lg&quot;&gt;
+              &lt;div&gt;
+                &lt;div class&#x3D;&quot;text-white font-medium&quot;&gt;Image Optimization&lt;/div&gt;
+                &lt;div class&#x3D;&quot;text-sm text-gray-400&quot;&gt;Optimize images for web&lt;/div&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;flex items-center space-x-2&quot;&gt;
+                &lt;span [class]&#x3D;&quot;config().enableImageOptimization ? &#x27;text-green-400&#x27; : &#x27;text-red-400&#x27;&quot;&gt;
+                  {{ config().enableImageOptimization ? &#x27;Enabled&#x27; : &#x27;Disabled&#x27; }}
+                &lt;/span&gt;
+                &lt;i [class]&#x3D;&quot;config().enableImageOptimization ? &#x27;fas fa-check-circle text-green-400&#x27; : &#x27;fas fa-times-circle text-red-400&#x27;&quot;&gt;&lt;/i&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;app-glass-button (clicked)&#x3D;&quot;optimizeLazyLoading()&quot; variant&#x3D;&quot;primary&quot; customClass&#x3D;&quot;w-full&quot; [disabled]&#x3D;&quot;isOptimizing()&quot;&gt;
+              &lt;i class&#x3D;&quot;fas fa-rocket mr-2&quot;&gt;&lt;/i&gt; Optimize Loading
+            &lt;/app-glass-button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Caching Optimization --&gt;
+        &lt;div&gt;
+          &lt;h4 class&#x3D;&quot;text-lg font-semibold text-white mb-4&quot;&gt;Caching Optimization&lt;/h4&gt;
+          &lt;div class&#x3D;&quot;space-y-3&quot;&gt;
+            &lt;div class&#x3D;&quot;flex items-center justify-between p-3 bg-gray-800 rounded-lg&quot;&gt;
+              &lt;div&gt;
+                &lt;div class&#x3D;&quot;text-white font-medium&quot;&gt;Browser Caching&lt;/div&gt;
+                &lt;div class&#x3D;&quot;text-sm text-gray-400&quot;&gt;Cache static assets&lt;/div&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;flex items-center space-x-2&quot;&gt;
+                &lt;span [class]&#x3D;&quot;config().enableCaching ? &#x27;text-green-400&#x27; : &#x27;text-red-400&#x27;&quot;&gt;
+                  {{ config().enableCaching ? &#x27;Enabled&#x27; : &#x27;Disabled&#x27; }}
+                &lt;/span&gt;
+                &lt;i [class]&#x3D;&quot;config().enableCaching ? &#x27;fas fa-check-circle text-green-400&#x27; : &#x27;fas fa-times-circle text-red-400&#x27;&quot;&gt;&lt;/i&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;flex items-center justify-between p-3 bg-gray-800 rounded-lg&quot;&gt;
+              &lt;div&gt;
+                &lt;div class&#x3D;&quot;text-white font-medium&quot;&gt;Service Worker&lt;/div&gt;
+                &lt;div class&#x3D;&quot;text-sm text-gray-400&quot;&gt;Offline caching&lt;/div&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;flex items-center space-x-2&quot;&gt;
+                &lt;span [class]&#x3D;&quot;config().enableServiceWorker ? &#x27;text-green-400&#x27; : &#x27;text-red-400&#x27;&quot;&gt;
+                  {{ config().enableServiceWorker ? &#x27;Enabled&#x27; : &#x27;Disabled&#x27; }}
+                &lt;/span&gt;
+                &lt;i [class]&#x3D;&quot;config().enableServiceWorker ? &#x27;fas fa-check-circle text-green-400&#x27; : &#x27;fas fa-times-circle text-red-400&#x27;&quot;&gt;&lt;/i&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;flex items-center justify-between p-3 bg-gray-800 rounded-lg&quot;&gt;
+              &lt;div&gt;
+                &lt;div class&#x3D;&quot;text-white font-medium&quot;&gt;CDN&lt;/div&gt;
+                &lt;div class&#x3D;&quot;text-sm text-gray-400&quot;&gt;Content delivery network&lt;/div&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;flex items-center space-x-2&quot;&gt;
+                &lt;span [class]&#x3D;&quot;config().enableCDN ? &#x27;text-green-400&#x27; : &#x27;text-red-400&#x27;&quot;&gt;
+                  {{ config().enableCDN ? &#x27;Enabled&#x27; : &#x27;Disabled&#x27; }}
+                &lt;/span&gt;
+                &lt;i [class]&#x3D;&quot;config().enableCDN ? &#x27;fas fa-check-circle text-green-400&#x27; : &#x27;fas fa-times-circle text-red-400&#x27;&quot;&gt;&lt;/i&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;app-glass-button (clicked)&#x3D;&quot;optimizeCaching()&quot; variant&#x3D;&quot;primary&quot; customClass&#x3D;&quot;w-full&quot; [disabled]&#x3D;&quot;isOptimizing()&quot;&gt;
+              &lt;i class&#x3D;&quot;fas fa-database mr-2&quot;&gt;&lt;/i&gt; Optimize Caching
+            &lt;/app-glass-button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Additional Optimizations --&gt;
+        &lt;div&gt;
+          &lt;h4 class&#x3D;&quot;text-lg font-semibold text-white mb-4&quot;&gt;Additional Optimizations&lt;/h4&gt;
+          &lt;div class&#x3D;&quot;space-y-3&quot;&gt;
+            &lt;app-glass-button (clicked)&#x3D;&quot;optimizeImages()&quot; variant&#x3D;&quot;primary&quot; customClass&#x3D;&quot;w-full&quot; [disabled]&#x3D;&quot;isOptimizing()&quot;&gt;
+              &lt;i class&#x3D;&quot;fas fa-image mr-2&quot;&gt;&lt;/i&gt; Optimize Images
+            &lt;/app-glass-button&gt;
+            &lt;app-glass-button (clicked)&#x3D;&quot;enableCDN()&quot; variant&#x3D;&quot;primary&quot; customClass&#x3D;&quot;w-full&quot; [disabled]&#x3D;&quot;isOptimizing()&quot;&gt;
+              &lt;i class&#x3D;&quot;fas fa-globe mr-2&quot;&gt;&lt;/i&gt; Enable CDN
+            &lt;/app-glass-button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Recommendations Tab --&gt;
+    &lt;div *ngIf&#x3D;&quot;activeTab() &#x3D;&#x3D;&#x3D; &#x27;recommendations&#x27;&quot; class&#x3D;&quot;space-y-6&quot;&gt;
+      &lt;div *ngIf&#x3D;&quot;recommendations().length &#x3D;&#x3D;&#x3D; 0&quot; class&#x3D;&quot;text-center py-8 text-gray-400&quot;&gt;
+        &lt;i class&#x3D;&quot;fas fa-check-circle text-4xl mb-4 text-green-400&quot;&gt;&lt;/i&gt;
+        &lt;p&gt;No performance recommendations at this time.&lt;/p&gt;
+        &lt;p class&#x3D;&quot;text-sm&quot;&gt;Your application is performing well!&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div *ngIf&#x3D;&quot;recommendations().length &gt; 0&quot; class&#x3D;&quot;space-y-4&quot;&gt;
+        &lt;div *ngFor&#x3D;&quot;let recommendation of recommendations()&quot; class&#x3D;&quot;p-4 bg-gray-800 rounded-lg border-l-4 border-yellow-400&quot;&gt;
+          &lt;div class&#x3D;&quot;flex items-start space-x-3&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-lightbulb text-yellow-400 mt-1&quot;&gt;&lt;/i&gt;
+            &lt;div&gt;
+              &lt;p class&#x3D;&quot;text-white&quot;&gt;{{ recommendation }}&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/app-glass-card&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="space-y-6">  <!-- Header -->  <div class="flex items-center justify-between">    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">      Performance Dashboard    </h1>    <div class="flex space-x-2">      <app-glass-button (clicked)="runFullOptimization()" variant="primary" [disabled]="isOptimizing()">        <i class="fas fa-magic mr-2" [class.fa-spin]="isOptimizing()"></i>        {{ isOptimizing() ? \'Optimizing...\' : \'Run Full Optimization\' }}      </app-glass-button>      <app-glass-button (clicked)="resetMetrics()" variant="secondary">        <i class="fas fa-refresh mr-2"></i> Reset Metrics      </app-glass-button>    </div>  </div>  <!-- Performance Score -->  <app-glass-card class="p-6">    <div class="flex items-center justify-between mb-4">      <h3 class="text-xl font-semibold text-white">Performance Score</h3>      <div class="flex items-center space-x-2">        <span class="text-sm text-gray-400">Last updated: {{ getCurrentTime() }}</span>        <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>      </div>    </div>    <div class="flex items-center space-x-6">      <div class="text-center">        <div class="text-6xl font-bold" [class]="getScoreColor(performanceScore())">          {{ performanceScore() }}        </div>        <div class="text-sm text-gray-400">{{ getScoreLabel(performanceScore()) }}</div>      </div>      <div class="flex-1">        <div class="w-full bg-gray-700 rounded-full h-4">          <div            class="h-4 rounded-full transition-all duration-1000"            [class]="performanceScore() >= 90 ? \'bg-green-400\' : performanceScore() >= 70 ? \'bg-yellow-400\' : \'bg-red-400\'"            [style.width.%]="performanceScore()">          </div>        </div>        <div class="flex justify-between text-xs text-gray-400 mt-2">          <span>0</span>          <span>50</span>          <span>70</span>          <span>90</span>          <span>100</span>        </div>      </div>    </div>  </app-glass-card>  <!-- Budget Status -->  <app-glass-card class="p-6">    <h3 class="text-xl font-semibold text-white mb-4">Performance Budget</h3>    <div class="flex items-center space-x-4">      <div class="flex items-center space-x-2">        <i [class]="budgetPassed() ? \'fas fa-check-circle text-green-400\' : \'fas fa-exclamation-triangle text-red-400\'"></i>        <span [class]="budgetPassed() ? \'text-green-400\' : \'text-red-400\'">          {{ budgetPassed() ? \'Budget Passed\' : \'Budget Violated\' }}        </span>      </div>      <div *ngIf="!budgetPassed()" class="text-sm text-gray-400">        {{ budgetViolations().length }} violation(s) found      </div>    </div>    <div *ngIf="!budgetPassed()" class="mt-4 space-y-2">      <div *ngFor="let violation of budgetViolations()" class="text-sm text-red-400 bg-red-500/10 p-2 rounded">        <i class="fas fa-times mr-2"></i>{{ violation }}      </div>    </div>  </app-glass-card>  <!-- Tabs -->  <app-glass-card class="p-6">    <div class="flex space-x-1 mb-6">      <button        *ngFor="let tab of [\'overview\', \'metrics\', \'optimization\', \'recommendations\']"        (click)="selectTab(tab)"        [class]="\'px-4 py-2 rounded-lg font-medium transition-all \' + (activeTab() === tab ? \'bg-blue-600 text-white\' : \'text-gray-400 hover:text-white hover:bg-gray-700\')"      >        <i [class]="\'mr-2 \' + (tab === \'overview\' ? \'fas fa-chart-pie\' : tab === \'metrics\' ? \'fas fa-tachometer-alt\' : tab === \'optimization\' ? \'fas fa-cogs\' : \'fas fa-lightbulb\')"></i>        {{ tab | titlecase }}      </button>    </div>    <!-- Overview Tab -->    <div *ngIf="activeTab() === \'overview\'" class="space-y-6">      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">        <div class="text-center p-4 bg-gray-800 rounded-lg">          <div class="text-2xl font-bold text-white">{{ formatBytes(metrics().bundleSize) }}</div>          <div class="text-sm text-gray-400">Bundle Size</div>        </div>        <div class="text-center p-4 bg-gray-800 rounded-lg">          <div class="text-2xl font-bold text-white">{{ formatTime(metrics().loadTime) }}</div>          <div class="text-sm text-gray-400">Load Time</div>        </div>        <div class="text-center p-4 bg-gray-800 rounded-lg">          <div class="text-2xl font-bold text-white">{{ formatTime(metrics().firstContentfulPaint) }}</div>          <div class="text-sm text-gray-400">First Contentful Paint</div>        </div>        <div class="text-center p-4 bg-gray-800 rounded-lg">          <div class="text-2xl font-bold text-white">{{ formatBytes(metrics().memoryUsage * 1024 * 1024) }}</div>          <div class="text-sm text-gray-400">Memory Usage</div>        </div>      </div>    </div>    <!-- Metrics Tab -->    <div *ngIf="activeTab() === \'metrics\'" class="space-y-6">      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">        <!-- Core Web Vitals -->        <div>          <h4 class="text-lg font-semibold text-white mb-4">Core Web Vitals</h4>          <div class="space-y-3">            <div class="flex justify-between items-center p-3 bg-gray-800 rounded-lg">              <span class="text-gray-300">First Contentful Paint</span>              <div class="text-right">                <div class="text-white font-medium">{{ formatTime(metrics().firstContentfulPaint) }}</div>                <div class="text-xs" [class]="getMetricStatus(metrics().firstContentfulPaint, 1800).color">                  {{ getMetricStatus(metrics().firstContentfulPaint, 1800).status }}                </div>              </div>            </div>            <div class="flex justify-between items-center p-3 bg-gray-800 rounded-lg">              <span class="text-gray-300">Largest Contentful Paint</span>              <div class="text-right">                <div class="text-white font-medium">{{ formatTime(metrics().largestContentfulPaint) }}</div>                <div class="text-xs" [class]="getMetricStatus(metrics().largestContentfulPaint, 2500).color">                  {{ getMetricStatus(metrics().largestContentfulPaint, 2500).status }}                </div>              </div>            </div>            <div class="flex justify-between items-center p-3 bg-gray-800 rounded-lg">              <span class="text-gray-300">Cumulative Layout Shift</span>              <div class="text-right">                <div class="text-white font-medium">{{ metrics().cumulativeLayoutShift.toFixed(3) }}</div>                <div class="text-xs" [class]="getMetricStatus(metrics().cumulativeLayoutShift, 0.1).color">                  {{ getMetricStatus(metrics().cumulativeLayoutShift, 0.1).status }}                </div>              </div>            </div>            <div class="flex justify-between items-center p-3 bg-gray-800 rounded-lg">              <span class="text-gray-300">First Input Delay</span>              <div class="text-right">                <div class="text-white font-medium">{{ formatTime(metrics().firstInputDelay) }}</div>                <div class="text-xs" [class]="getMetricStatus(metrics().firstInputDelay, 100).color">                  {{ getMetricStatus(metrics().firstInputDelay, 100).status }}                </div>              </div>            </div>          </div>        </div>        <!-- Performance Metrics -->        <div>          <h4 class="text-lg font-semibold text-white mb-4">Performance Metrics</h4>          <div class="space-y-3">            <div class="flex justify-between items-center p-3 bg-gray-800 rounded-lg">              <span class="text-gray-300">Bundle Size</span>              <div class="text-right">                <div class="text-white font-medium">{{ formatBytes(metrics().bundleSize) }}</div>                <div class="text-xs" [class]="getMetricStatus(metrics().bundleSize, 500000).color">                  {{ getMetricStatus(metrics().bundleSize, 500000).status }}                </div>              </div>            </div>            <div class="flex justify-between items-center p-3 bg-gray-800 rounded-lg">              <span class="text-gray-300">Load Time</span>              <div class="text-right">                <div class="text-white font-medium">{{ formatTime(metrics().loadTime) }}</div>                <div class="text-xs" [class]="getMetricStatus(metrics().loadTime, 3000).color">                  {{ getMetricStatus(metrics().loadTime, 3000).status }}                </div>              </div>            </div>            <div class="flex justify-between items-center p-3 bg-gray-800 rounded-lg">              <span class="text-gray-300">Render Time</span>              <div class="text-right">                <div class="text-white font-medium">{{ formatTime(metrics().renderTime) }}</div>                <div class="text-xs" [class]="getMetricStatus(metrics().renderTime, 1000).color">                  {{ getMetricStatus(metrics().renderTime, 1000).status }}                </div>              </div>            </div>            <div class="flex justify-between items-center p-3 bg-gray-800 rounded-lg">              <span class="text-gray-300">Memory Usage</span>              <div class="text-right">                <div class="text-white font-medium">{{ formatBytes(metrics().memoryUsage * 1024 * 1024) }}</div>                <div class="text-xs" [class]="getMetricStatus(metrics().memoryUsage, 50).color">                  {{ getMetricStatus(metrics().memoryUsage, 50).status }}                </div>              </div>            </div>            <div class="flex justify-between items-center p-3 bg-gray-800 rounded-lg">              <span class="text-gray-300">Network Requests</span>              <div class="text-right">                <div class="text-white font-medium">{{ metrics().networkRequests }}</div>                <div class="text-xs" [class]="getMetricStatus(metrics().networkRequests, 20).color">                  {{ getMetricStatus(metrics().networkRequests, 20).status }}                </div>              </div>            </div>          </div>        </div>      </div>    </div>    <!-- Optimization Tab -->    <div *ngIf="activeTab() === \'optimization\'" class="space-y-6">      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">        <!-- Bundle Optimization -->        <div>          <h4 class="text-lg font-semibold text-white mb-4">Bundle Optimization</h4>          <div class="space-y-3">            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">              <div>                <div class="text-white font-medium">Tree Shaking</div>                <div class="text-sm text-gray-400">Remove unused code</div>              </div>              <div class="flex items-center space-x-2">                <span [class]="config().enableTreeShaking ? \'text-green-400\' : \'text-red-400\'">                  {{ config().enableTreeShaking ? \'Enabled\' : \'Disabled\' }}                </span>                <i [class]="config().enableTreeShaking ? \'fas fa-check-circle text-green-400\' : \'fas fa-times-circle text-red-400\'"></i>              </div>            </div>            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">              <div>                <div class="text-white font-medium">Code Splitting</div>                <div class="text-sm text-gray-400">Split code into chunks</div>              </div>              <div class="flex items-center space-x-2">                <span [class]="config().enableCodeSplitting ? \'text-green-400\' : \'text-red-400\'">                  {{ config().enableCodeSplitting ? \'Enabled\' : \'Disabled\' }}                </span>                <i [class]="config().enableCodeSplitting ? \'fas fa-check-circle text-green-400\' : \'fas fa-times-circle text-red-400\'"></i>              </div>            </div>            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">              <div>                <div class="text-white font-medium">Minification</div>                <div class="text-sm text-gray-400">Minify JavaScript and CSS</div>              </div>              <div class="flex items-center space-x-2">                <span [class]="config().enableMinification ? \'text-green-400\' : \'text-red-400\'">                  {{ config().enableMinification ? \'Enabled\' : \'Disabled\' }}                </span>                <i [class]="config().enableMinification ? \'fas fa-check-circle text-green-400\' : \'fas fa-times-circle text-red-400\'"></i>              </div>            </div>            <app-glass-button (clicked)="optimizeBundleSize()" variant="primary" customClass="w-full" [disabled]="isOptimizing()">              <i class="fas fa-compress mr-2"></i> Optimize Bundle            </app-glass-button>          </div>        </div>        <!-- Loading Optimization -->        <div>          <h4 class="text-lg font-semibold text-white mb-4">Loading Optimization</h4>          <div class="space-y-3">            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">              <div>                <div class="text-white font-medium">Lazy Loading</div>                <div class="text-sm text-gray-400">Load components on demand</div>              </div>              <div class="flex items-center space-x-2">                <span [class]="config().enableLazyLoading ? \'text-green-400\' : \'text-red-400\'">                  {{ config().enableLazyLoading ? \'Enabled\' : \'Disabled\' }}                </span>                <i [class]="config().enableLazyLoading ? \'fas fa-check-circle text-green-400\' : \'fas fa-times-circle text-red-400\'"></i>              </div>            </div>            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">              <div>                <div class="text-white font-medium">Preloading</div>                <div class="text-sm text-gray-400">Preload critical resources</div>              </div>              <div class="flex items-center space-x-2">                <span [class]="config().enablePreloading ? \'text-green-400\' : \'text-red-400\'">                  {{ config().enablePreloading ? \'Enabled\' : \'Disabled\' }}                </span>                <i [class]="config().enablePreloading ? \'fas fa-check-circle text-green-400\' : \'fas fa-times-circle text-red-400\'"></i>              </div>            </div>            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">              <div>                <div class="text-white font-medium">Image Optimization</div>                <div class="text-sm text-gray-400">Optimize images for web</div>              </div>              <div class="flex items-center space-x-2">                <span [class]="config().enableImageOptimization ? \'text-green-400\' : \'text-red-400\'">                  {{ config().enableImageOptimization ? \'Enabled\' : \'Disabled\' }}                </span>                <i [class]="config().enableImageOptimization ? \'fas fa-check-circle text-green-400\' : \'fas fa-times-circle text-red-400\'"></i>              </div>            </div>            <app-glass-button (clicked)="optimizeLazyLoading()" variant="primary" customClass="w-full" [disabled]="isOptimizing()">              <i class="fas fa-rocket mr-2"></i> Optimize Loading            </app-glass-button>          </div>        </div>        <!-- Caching Optimization -->        <div>          <h4 class="text-lg font-semibold text-white mb-4">Caching Optimization</h4>          <div class="space-y-3">            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">              <div>                <div class="text-white font-medium">Browser Caching</div>                <div class="text-sm text-gray-400">Cache static assets</div>              </div>              <div class="flex items-center space-x-2">                <span [class]="config().enableCaching ? \'text-green-400\' : \'text-red-400\'">                  {{ config().enableCaching ? \'Enabled\' : \'Disabled\' }}                </span>                <i [class]="config().enableCaching ? \'fas fa-check-circle text-green-400\' : \'fas fa-times-circle text-red-400\'"></i>              </div>            </div>            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">              <div>                <div class="text-white font-medium">Service Worker</div>                <div class="text-sm text-gray-400">Offline caching</div>              </div>              <div class="flex items-center space-x-2">                <span [class]="config().enableServiceWorker ? \'text-green-400\' : \'text-red-400\'">                  {{ config().enableServiceWorker ? \'Enabled\' : \'Disabled\' }}                </span>                <i [class]="config().enableServiceWorker ? \'fas fa-check-circle text-green-400\' : \'fas fa-times-circle text-red-400\'"></i>              </div>            </div>            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">              <div>                <div class="text-white font-medium">CDN</div>                <div class="text-sm text-gray-400">Content delivery network</div>              </div>              <div class="flex items-center space-x-2">                <span [class]="config().enableCDN ? \'text-green-400\' : \'text-red-400\'">                  {{ config().enableCDN ? \'Enabled\' : \'Disabled\' }}                </span>                <i [class]="config().enableCDN ? \'fas fa-check-circle text-green-400\' : \'fas fa-times-circle text-red-400\'"></i>              </div>            </div>            <app-glass-button (clicked)="optimizeCaching()" variant="primary" customClass="w-full" [disabled]="isOptimizing()">              <i class="fas fa-database mr-2"></i> Optimize Caching            </app-glass-button>          </div>        </div>        <!-- Additional Optimizations -->        <div>          <h4 class="text-lg font-semibold text-white mb-4">Additional Optimizations</h4>          <div class="space-y-3">            <app-glass-button (clicked)="optimizeImages()" variant="primary" customClass="w-full" [disabled]="isOptimizing()">              <i class="fas fa-image mr-2"></i> Optimize Images            </app-glass-button>            <app-glass-button (clicked)="enableCDN()" variant="primary" customClass="w-full" [disabled]="isOptimizing()">              <i class="fas fa-globe mr-2"></i> Enable CDN            </app-glass-button>          </div>        </div>      </div>    </div>    <!-- Recommendations Tab -->    <div *ngIf="activeTab() === \'recommendations\'" class="space-y-6">      <div *ngIf="recommendations().length === 0" class="text-center py-8 text-gray-400">        <i class="fas fa-check-circle text-4xl mb-4 text-green-400"></i>        <p>No performance recommendations at this time.</p>        <p class="text-sm">Your application is performing well!</p>      </div>      <div *ngIf="recommendations().length > 0" class="space-y-4">        <div *ngFor="let recommendation of recommendations()" class="p-4 bg-gray-800 rounded-lg border-l-4 border-yellow-400">          <div class="flex items-start space-x-3">            <i class="fas fa-lightbulb text-yellow-400 mt-1"></i>            <div>              <p class="text-white">{{ recommendation }}</p>            </div>          </div>        </div>      </div>    </div>  </app-glass-card></div></div>'
+    var COMPONENTS = [{'name': 'AccessControlComponent', 'selector': 'app-access-control'},{'name': 'AccessGroupsComponent', 'selector': 'app-access-groups'},{'name': 'AccessibilityDashboardComponent', 'selector': 'app-accessibility-dashboard'},{'name': 'AccessLogsComponent', 'selector': 'app-access-logs'},{'name': 'AccessSchedulesComponent', 'selector': 'app-access-schedules'},{'name': 'AccordionComponent', 'selector': 'app-accordion'},{'name': 'AccordionDemoComponent', 'selector': 'app-accordion-demo'},{'name': 'AdvancedDataTableComponent', 'selector': 'app-advanced-data-table'},{'name': 'AdvancedDataTableDemoComponent', 'selector': 'app-advanced-data-table-demo'},{'name': 'AdvancedFeaturesDashboardComponent', 'selector': 'app-advanced-features-dashboard'},{'name': 'AdvancedFormsComponent', 'selector': 'app-advanced-forms'},{'name': 'AdvancedRichTextComponent', 'selector': 'app-advanced-rich-text'},{'name': 'AdvancedUiDemoComponent', 'selector': 'app-advanced-ui-demo'},{'name': 'AIModelsComponent', 'selector': 'app-ai-models'},{'name': 'AlertComponent', 'selector': 'app-alert'},{'name': 'AlertHistoryComponent', 'selector': 'app-alert-history'},{'name': 'AlertsComponent', 'selector': 'app-alerts'},{'name': 'ApexChartComponent', 'selector': 'app-apex-chart'},{'name': 'App', 'selector': 'app-root'},{'name': 'AttendanceComponent', 'selector': 'app-attendance'},{'name': 'AuditLogsComponent', 'selector': 'app-audit-logs'},{'name': 'AvatarComponent', 'selector': 'app-avatar'},{'name': 'BackupRestoreComponent', 'selector': 'app-backup-restore'},{'name': 'BadgeComponent', 'selector': 'app-badge'},{'name': 'BaseComponent', 'selector': ''},{'name': 'BiometricDataComponent', 'selector': 'app-biometric-data'},{'name': 'BreadcrumbComponent', 'selector': 'app-breadcrumb'},{'name': 'CalendarComponent', 'selector': 'app-calendar'},{'name': 'CalendarDemoComponent', 'selector': 'app-calendar-demo'},{'name': 'ChartComponent', 'selector': 'app-chart'},{'name': 'CheckboxComponent', 'selector': 'app-checkbox'},{'name': 'ColorPickerComponent', 'selector': 'app-color-picker'},{'name': 'ComingSoonComponent', 'selector': 'app-coming-soon'},{'name': 'CompaniesComponent', 'selector': 'app-companies'},{'name': 'CompanyDocumentsComponent', 'selector': 'app-company-documents'},{'name': 'CompanyHolidaysComponent', 'selector': 'app-company-holidays'},{'name': 'ComponentShowcaseComponent', 'selector': 'app-component-showcase'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DataTableComponent', 'selector': 'app-data-table'},{'name': 'DateTimePickerComponent', 'selector': 'app-date-time-picker'},{'name': 'DepartmentsComponent', 'selector': 'app-departments'},{'name': 'DevicesComponent', 'selector': 'app-devices'},{'name': 'DividerComponent', 'selector': 'app-divider'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DoorsComponent', 'selector': 'app-doors'},{'name': 'DraggableCardsComponent', 'selector': 'app-draggable-cards'},{'name': 'DraggableCardsDemoComponent', 'selector': 'app-draggable-cards-demo'},{'name': 'EChartsChartComponent', 'selector': 'app-echarts-chart'},{'name': 'EChartsDemoComponent', 'selector': 'app-echarts-demo'},{'name': 'EmployeesComponent', 'selector': 'app-employees'},{'name': 'EmployeesNewComponent', 'selector': 'app-employees-new'},{'name': 'EmptyStateComponent', 'selector': 'app-empty-state'},{'name': 'Error401Component', 'selector': 'app-error-401'},{'name': 'Error404Component', 'selector': 'app-error-404'},{'name': 'Error500Component', 'selector': 'app-error-500'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'ErrorToastComponent', 'selector': 'app-error-toast'},{'name': 'EventAnalyticsComponent', 'selector': 'app-event-analytics'},{'name': 'EventCheckinHistoryComponent', 'selector': 'app-event-checkin-history'},{'name': 'EventEmailConfirmationComponent', 'selector': 'app-event-email-confirmation'},{'name': 'EventKioskConfigComponent', 'selector': 'app-event-kiosk-config'},{'name': 'EventRegistrationComponent', 'selector': 'app-event-registration'},{'name': 'EventRegistrationFieldsComponent', 'selector': 'app-event-registration-fields'},{'name': 'EventsComponent', 'selector': 'app-events'},{'name': 'FaceRecognitionComponent', 'selector': 'app-face-recognition'},{'name': 'FaceRecognitionDemoComponent', 'selector': 'app-face-recognition-demo'},{'name': 'FaceRecognitionLiveComponent', 'selector': 'app-face-recognition-live'},{'name': 'FaceRecognitionTestComponent', 'selector': 'app-face-recognition-test'},{'name': 'FaqComponent', 'selector': 'app-faq'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'FilterSectionComponent', 'selector': 'app-filter-section'},{'name': 'ForgotPasswordComponent', 'selector': 'app-forgot-password'},{'name': 'FormFieldComponent', 'selector': 'app-form-field'},{'name': 'GalleryComponent', 'selector': 'app-gallery'},{'name': 'GalleryDemoComponent', 'selector': 'app-gallery-demo'},{'name': 'GlassButtonComponent', 'selector': 'app-glass-button'},{'name': 'GlassCardComponent', 'selector': 'app-glass-card'},{'name': 'GlassInputComponent', 'selector': 'app-glass-input'},{'name': 'GroupFaceRecognitionComponent', 'selector': 'app-group-face-recognition'},{'name': 'GuestsComponent', 'selector': 'app-guests'},{'name': 'HardwareStatusDashboardComponent', 'selector': 'app-hardware-status-dashboard'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HeatmapAnalyticsComponent', 'selector': 'app-heatmap-analytics'},{'name': 'HelpCenter', 'selector': 'app-help-center'},{'name': 'HelpCenterComponent', 'selector': 'app-help-center'},{'name': 'HrDashboardComponent', 'selector': 'app-hr-dashboard'},{'name': 'IconComponent', 'selector': 'app-icon'},{'name': 'IncidentReportsComponent', 'selector': 'app-incident-reports'},{'name': 'KioskViewComponent', 'selector': 'app-kiosk-view'},{'name': 'LandingComponent', 'selector': 'app-landing'},{'name': 'LeafletMapComponent', 'selector': 'app-leaflet-map'},{'name': 'LeavesComponent', 'selector': 'app-leaves'},{'name': 'LicenseManagementComponent', 'selector': 'app-license-management'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoadingStateComponent', 'selector': 'app-loading-state'},{'name': 'LocationsComponent', 'selector': 'app-locations'},{'name': 'LockScreenComponent', 'selector': 'app-lock-screen'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MapDemoComponent', 'selector': 'app-map-demo'},{'name': 'MaterialButtonComponent', 'selector': 'app-material-button'},{'name': 'MaterialCardComponent', 'selector': 'app-material-card'},{'name': 'MaterialDialogComponent', 'selector': 'app-material-dialog'},{'name': 'MaterialInputComponent', 'selector': 'app-material-input'},{'name': 'MaterialTableComponent', 'selector': 'app-material-table'},{'name': 'MfaSetupComponent', 'selector': 'app-mfa-setup'},{'name': 'MobileCameraComponent', 'selector': 'app-mobile-camera'},{'name': 'MobileDemoComponent', 'selector': 'app-mobile-demo'},{'name': 'ModalComponent', 'selector': 'app-modal'},{'name': 'ModalFormComponent', 'selector': 'app-modal-form'},{'name': 'ModuleSubscriptionComponent', 'selector': 'app-module-subscription'},{'name': 'MonitoringComponent', 'selector': 'app-monitoring'},{'name': 'NotificationCenterComponent', 'selector': 'app-notification-center'},{'name': 'NotificationDemoComponent', 'selector': 'app-notification-demo'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'NotificationSettingsComponent', 'selector': 'app-notification-settings'},{'name': 'OffcanvasComponent', 'selector': 'app-offcanvas'},{'name': 'OffcanvasDemoComponent', 'selector': 'app-offcanvas-demo'},{'name': 'OvertimeRequestsComponent', 'selector': 'app-overtime-requests'},{'name': 'PageLayoutComponent', 'selector': 'app-page-layout'},{'name': 'PaginationComponent', 'selector': 'app-pagination'},{'name': 'ParkingBlacklistComponent', 'selector': 'app-parking-blacklist'},{'name': 'ParkingDashboardComponent', 'selector': 'app-parking-dashboard'},{'name': 'ParkingEntryComponent', 'selector': 'app-parking-entry'},{'name': 'ParkingExitComponent', 'selector': 'app-parking-exit'},{'name': 'ParkingLogsComponent', 'selector': 'app-parking-logs'},{'name': 'ParkingReservationComponent', 'selector': 'app-parking-reservation'},{'name': 'ParkingRulesComponent', 'selector': 'app-parking-rules'},{'name': 'ParkingSpotsComponent', 'selector': 'app-parking-spots'},{'name': 'ParkingStatisticsComponent', 'selector': 'app-parking-statistics'},{'name': 'PayrollExportComponent', 'selector': 'app-payroll-export'},{'name': 'PerformanceDashboardComponent', 'selector': 'app-performance-dashboard'},{'name': 'PopoverComponent', 'selector': 'app-popover'},{'name': 'PortalLayoutComponent', 'selector': 'app-portal-layout'},{'name': 'PositionsComponent', 'selector': 'app-positions'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'PublicVerificationComponent', 'selector': 'app-public-verification'},{'name': 'QRCodesComponent', 'selector': 'app-qr-codes'},{'name': 'RadioComponent', 'selector': 'app-radio'},{'name': 'RangeSliderComponent', 'selector': 'app-range-slider'},{'name': 'RatingComponent', 'selector': 'app-rating'},{'name': 'RatingDemoComponent', 'selector': 'app-rating-demo'},{'name': 'RbacComponent', 'selector': 'app-rbac'},{'name': 'RecognitionHistoryComponent', 'selector': 'app-recognition-history'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReportsComponent', 'selector': 'app-reports'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'RFIDCardsComponent', 'selector': 'app-rfid-cards'},{'name': 'RichTextComponent', 'selector': 'app-rich-text'},{'name': 'RichTextEditorComponent', 'selector': 'app-rich-text-editor'},{'name': 'RichTextEditorDemoComponent', 'selector': 'app-rich-text-editor-demo'},{'name': 'SafetyDashboardComponent', 'selector': 'app-safety-dashboard'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ShiftsComponent', 'selector': 'app-shifts'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SkeletonComponent', 'selector': 'app-skeleton'},{'name': 'StatisticsCardComponent', 'selector': 'app-statistics-card'},{'name': 'StatisticsGridComponent', 'selector': 'app-statistics-grid'},{'name': 'StepperComponent', 'selector': 'app-stepper'},{'name': 'StructureComponent', 'selector': 'app-structure'},{'name': 'SuperAdminAnnouncementsComponent', 'selector': 'app-super-admin-announcements'},{'name': 'SuperAdminDashboardComponent', 'selector': 'app-super-admin-dashboard'},{'name': 'SuperAdminLayoutComponent', 'selector': 'app-super-admin-layout'},{'name': 'SuperAdminReportsComponent', 'selector': 'app-super-admin-reports'},{'name': 'SurveillanceMapComponent', 'selector': 'app-surveillance-map'},{'name': 'SwiperGalleryComponent', 'selector': 'app-swiper-gallery'},{'name': 'SwiperGalleryDemoComponent', 'selector': 'app-swiper-gallery-demo'},{'name': 'SwitchComponent', 'selector': 'app-switch'},{'name': 'SystemSettingsComponent', 'selector': 'app-system-settings'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TemplateManagementComponent', 'selector': 'app-template-management'},{'name': 'TestApiComponent', 'selector': 'app-test-api'},{'name': 'ThemeSwitcherComponent', 'selector': 'app-theme-switcher'},{'name': 'TimelineComponent', 'selector': 'app-timeline'},{'name': 'TimelineDemoComponent', 'selector': 'app-timeline-demo'},{'name': 'TimesheetsComponent', 'selector': 'app-timesheets'},{'name': 'TimestampComponent', 'selector': 'app-timestamp'},{'name': 'TimestampDemoComponent', 'selector': 'app-timestamp-demo'},{'name': 'TooltipComponent', 'selector': 'app-tooltip'},{'name': 'UsersComponent', 'selector': 'app-users'},{'name': 'ValidationDemoComponent', 'selector': 'app-validation-demo'},{'name': 'VehiclesComponent', 'selector': 'app-vehicles'},{'name': 'VideoAnalyticsComponent', 'selector': 'app-video-analytics'},{'name': 'VideoPlaybackComponent', 'selector': 'app-video-playback'},{'name': 'VisitorBadgesComponent', 'selector': 'app-visitor-badges'},{'name': 'VisitorBlacklistComponent', 'selector': 'app-visitor-blacklist'},{'name': 'VisitorDashboardComponent', 'selector': 'app-visitor-dashboard'},{'name': 'VisitorInvitationsComponent', 'selector': 'app-visitor-invitations'},{'name': 'VisitorParcelsComponent', 'selector': 'app-visitor-parcels'},{'name': 'VisitorReportsComponent', 'selector': 'app-visitor-reports'},{'name': 'VisitorsComponent', 'selector': 'app-visitors'},{'name': 'WatchlistComponent', 'selector': 'app-watchlist'},{'name': 'ZoneConfigComponent', 'selector': 'app-zone-config'}];
+    var DIRECTIVES = [{'name': 'HasPermissionDirective', 'selector': '[appHasPermission]'},{'name': 'ImageOptimizationDirective', 'selector': '[appImageOptimization]'}];
+    var ACTUAL_COMPONENT = {'name': 'PerformanceDashboardComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'PerformanceDashboardComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

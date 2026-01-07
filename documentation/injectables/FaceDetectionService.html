@@ -1,0 +1,2586 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >FaceDetectionService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/core/services/face-detection.service.ts</code>
+        </p>
+
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#detection$" >detection$</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_detections" >_detections</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#detections" >detections</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#detectionsCount" >detectionsCount</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#enrollment$" >enrollment$</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_enrollments" >_enrollments</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#enrollments" >enrollments</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#enrollmentsCount" >enrollmentsCount</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#faceDescriptors" >faceDescriptors</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#isInitialized" >isInitialized</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#modelsLoaded" >modelsLoaded</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#recognition$" >recognition$</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_recognitions" >_recognitions</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#recognitions" >recognitions</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#recognitionsCount" >recognitionsCount</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#recognizedCount" >recognizedCount</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#addFaceDescriptor" >addFaceDescriptor</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#captureImageData" >captureImageData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#clearEnrollments" >clearEnrollments</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#detectFaces" >detectFaces</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#enrollFace" >enrollFace</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#exportEnrollments" >exportEnrollments</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#generateFaceId" >generateFaceId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getAgeAndGender" >getAgeAndGender</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getEnrolledFaces" >getEnrolledFaces</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getFaceExpressions" >getFaceExpressions</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#importEnrollments" >importEnrollments</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#initializeModels" >initializeModels</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#isModelLoaded" >isModelLoaded</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#isReady" >isReady</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#loadModelSafely" >loadModelSafely</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#recognizeFaces" >recognizeFaces</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#removeFace" >removeFace</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="75" class="link-to-prism">src/app/core/services/face-detection.service.ts:75</a></div>
+                            </td>
+                        </tr>
+
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addFaceDescriptor"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>addFaceDescriptor</b></span>
+                        <a href="#addFaceDescriptor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>addFaceDescriptor(faceId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, imageElement: HTMLImageElement | HTMLVideoElement | HTMLCanvasElement)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="381"
+                                    class="link-to-prism">src/app/core/services/face-detection.service.ts:381</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Add additional descriptors to existing enrollment</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>faceId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>imageElement</td>
+                                            <td>
+                                                        <code>HTMLImageElement | HTMLVideoElement | HTMLCanvasElement</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="captureImageData"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>captureImageData</b></span>
+                        <a href="#captureImageData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>captureImageData(element: HTMLImageElement | HTMLVideoElement | HTMLCanvasElement)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="462"
+                                    class="link-to-prism">src/app/core/services/face-detection.service.ts:462</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Capture image data as base64</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>element</td>
+                                            <td>
+                                                        <code>HTMLImageElement | HTMLVideoElement | HTMLCanvasElement</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="clearEnrollments"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>clearEnrollments</b></span>
+                        <a href="#clearEnrollments"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>clearEnrollments()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="420"
+                                    class="link-to-prism">src/app/core/services/face-detection.service.ts:420</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Clear all enrolled faces</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="detectFaces"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>detectFaces</b></span>
+                        <a href="#detectFaces"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>detectFaces(imageElement: HTMLImageElement | HTMLVideoElement | HTMLCanvasElement)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="212"
+                                    class="link-to-prism">src/app/core/services/face-detection.service.ts:212</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Detect faces in an image</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>imageElement</td>
+                                            <td>
+                                                        <code>HTMLImageElement | HTMLVideoElement | HTMLCanvasElement</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;FaceDetectionResult[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="enrollFace"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>enrollFace</b></span>
+                        <a href="#enrollFace"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>enrollFace(imageElement: HTMLImageElement | HTMLVideoElement | HTMLCanvasElement, name: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, faceId?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="332"
+                                    class="link-to-prism">src/app/core/services/face-detection.service.ts:332</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Enroll a new face</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>imageElement</td>
+                                            <td>
+                                                        <code>HTMLImageElement | HTMLVideoElement | HTMLCanvasElement</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>name</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>faceId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/FaceEnrollmentData.html" target="_self" >Promise&lt;FaceEnrollmentData&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="exportEnrollments"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>exportEnrollments</b></span>
+                        <a href="#exportEnrollments"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>exportEnrollments()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="428"
+                                    class="link-to-prism">src/app/core/services/face-detection.service.ts:428</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Export enrollment data</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateFaceId"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>generateFaceId</b></span>
+                        <a href="#generateFaceId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generateFaceId()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="455"
+                                    class="link-to-prism">src/app/core/services/face-detection.service.ts:455</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Generate unique face ID</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAgeAndGender"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>getAgeAndGender</b></span>
+                        <a href="#getAgeAndGender"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAgeAndGender(imageElement: HTMLImageElement | HTMLVideoElement | HTMLCanvasElement)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="504"
+                                    class="link-to-prism">src/app/core/services/face-detection.service.ts:504</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get age and gender prediction</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>imageElement</td>
+                                            <td>
+                                                        <code>HTMLImageElement | HTMLVideoElement | HTMLCanvasElement</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getEnrolledFaces"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>getEnrolledFaces</b></span>
+                        <a href="#getEnrolledFaces"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getEnrolledFaces()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="413"
+                                    class="link-to-prism">src/app/core/services/face-detection.service.ts:413</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get all enrolled faces</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/FaceEnrollmentData.html" target="_self" >FaceEnrollmentData[]</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getFaceExpressions"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>getFaceExpressions</b></span>
+                        <a href="#getFaceExpressions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getFaceExpressions(imageElement: HTMLImageElement | HTMLVideoElement | HTMLCanvasElement)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="480"
+                                    class="link-to-prism">src/app/core/services/face-detection.service.ts:480</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get face expressions</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>imageElement</td>
+                                            <td>
+                                                        <code>HTMLImageElement | HTMLVideoElement | HTMLCanvasElement</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="importEnrollments"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>importEnrollments</b></span>
+                        <a href="#importEnrollments"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>importEnrollments(data: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="436"
+                                    class="link-to-prism">src/app/core/services/face-detection.service.ts:436</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Import enrollment data</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="initializeModels"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>initializeModels</b></span>
+                        <a href="#initializeModels"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>initializeModels()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="84"
+                                    class="link-to-prism">src/app/core/services/face-detection.service.ts:84</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Initialize face-api.js models</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isModelLoaded"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>isModelLoaded</b></span>
+                        <a href="#isModelLoaded"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isModelLoaded(net: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="177"
+                                    class="link-to-prism">src/app/core/services/face-detection.service.ts:177</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Check if a model is loaded</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>net</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isReady"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>isReady</b></span>
+                        <a href="#isReady"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isReady()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="205"
+                                    class="link-to-prism">src/app/core/services/face-detection.service.ts:205</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Check if models are loaded</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadModelSafely"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>loadModelSafely</b></span>
+                        <a href="#loadModelSafely"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>loadModelSafely(modelName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, loadFn: () => void)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="147"
+                                    class="link-to-prism">src/app/core/services/face-detection.service.ts:147</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Load a model safely with error handling</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>modelName</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>loadFn</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="recognizeFaces"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>recognizeFaces</b></span>
+                        <a href="#recognizeFaces"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>recognizeFaces(detectionResults: FaceDetectionResult[])</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="287"
+                                    class="link-to-prism">src/app/core/services/face-detection.service.ts:287</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Recognize faces using enrolled descriptors</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>detectionResults</td>
+                                            <td>
+                                                        <code>FaceDetectionResult[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/FaceRecognitionResult.html" target="_self" >Promise&lt;FaceRecognitionResult[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="removeFace"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>removeFace</b></span>
+                        <a href="#removeFace"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>removeFace(faceId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="405"
+                                    class="link-to-prism">src/app/core/services/face-detection.service.ts:405</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Remove a face from enrollment</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>faceId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="detection$"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>detection$</b></span>
+                        <a href="#detection$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Observable&lt;FaceDetectionResult[]&gt;(observer &#x3D;&gt; {
+    observer.next(this._detections());
+    // Note: This is a compatibility layer - prefer using signals directly
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">src/app/core/services/face-detection.service.ts:64</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_detections"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_detections</b></span>
+                        <a href="#_detections"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;FaceDetectionResult[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/app/core/services/face-detection.service.ts:48</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="detections"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>detections</b></span>
+                        <a href="#detections"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this._detections.asReadonly()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/app/core/services/face-detection.service.ts:53</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="detectionsCount"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>detectionsCount</b></span>
+                        <a href="#detectionsCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; this._detections().length)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/app/core/services/face-detection.service.ts:58</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="enrollment$"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>enrollment$</b></span>
+                        <a href="#enrollment$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Observable&lt;FaceEnrollmentData[]&gt;(observer &#x3D;&gt; {
+    observer.next(this._enrollments());
+    // Note: This is a compatibility layer - prefer using signals directly
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">src/app/core/services/face-detection.service.ts:72</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_enrollments"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_enrollments</b></span>
+                        <a href="#_enrollments"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;FaceEnrollmentData[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/app/core/services/face-detection.service.ts:50</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="enrollments"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>enrollments</b></span>
+                        <a href="#enrollments"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this._enrollments.asReadonly()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/core/services/face-detection.service.ts:55</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="enrollmentsCount"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>enrollmentsCount</b></span>
+                        <a href="#enrollmentsCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; this._enrollments().length)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/core/services/face-detection.service.ts:61</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="faceDescriptors"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>faceDescriptors</b></span>
+                        <a href="#faceDescriptors"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/FaceEnrollmentData.html" target="_self" >Map&lt;string | FaceEnrollmentData&gt;</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/core/services/face-detection.service.ts:45</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isInitialized"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>isInitialized</b></span>
+                        <a href="#isInitialized"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/app/core/services/face-detection.service.ts:44</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="modelsLoaded"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>modelsLoaded</b></span>
+                        <a href="#modelsLoaded"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/core/services/face-detection.service.ts:43</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="recognition$"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>recognition$</b></span>
+                        <a href="#recognition$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Observable&lt;FaceRecognitionResult[]&gt;(observer &#x3D;&gt; {
+    observer.next(this._recognitions());
+    // Note: This is a compatibility layer - prefer using signals directly
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/app/core/services/face-detection.service.ts:68</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_recognitions"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_recognitions</b></span>
+                        <a href="#_recognitions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;FaceRecognitionResult[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/core/services/face-detection.service.ts:49</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="recognitions"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>recognitions</b></span>
+                        <a href="#recognitions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this._recognitions.asReadonly()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">src/app/core/services/face-detection.service.ts:54</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="recognitionsCount"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>recognitionsCount</b></span>
+                        <a href="#recognitionsCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; this._recognitions().length)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/app/core/services/face-detection.service.ts:59</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="recognizedCount"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>recognizedCount</b></span>
+                        <a href="#recognizedCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; this._recognitions().filter(r &#x3D;&gt; r.isRecognized).length)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/core/services/face-detection.service.ts:60</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, signal, computed } from &#x27;@angular/core&#x27;;
+import * as faceapi from &#x27;face-api.js&#x27;;
+import { Observable } from &#x27;rxjs&#x27;;
+
+export interface FaceDetectionResult {
+  detection: faceapi.FaceDetection;
+  landmarks?: faceapi.FaceLandmarks68;
+  descriptor?: Float32Array;
+  confidence: number;
+  boundingBox: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  };
+  age?: number;
+  gender?: string;
+  genderProbability?: number;
+  expressions?: any;
+  snapshot?: string; // Base64 image data
+}
+
+export interface FaceRecognitionResult {
+  id: string;
+  faceId: string;
+  confidence: number;
+  name?: string;
+  isRecognized: boolean;
+}
+
+export interface FaceEnrollmentData {
+  id: string;
+  name: string;
+  descriptors: Float32Array[];
+  imageData: string;
+  enrolledAt: Date;
+}
+
+@Injectable({
+  providedIn: &#x27;root&#x27;
+})
+export class FaceDetectionService {
+  private modelsLoaded &#x3D; false;
+  private isInitialized &#x3D; false;
+  private faceDescriptors: Map&lt;string, FaceEnrollmentData&gt; &#x3D; new Map();
+
+  // ✅ Signals for reactive state
+  private _detections &#x3D; signal&lt;FaceDetectionResult[]&gt;([]);
+  private _recognitions &#x3D; signal&lt;FaceRecognitionResult[]&gt;([]);
+  private _enrollments &#x3D; signal&lt;FaceEnrollmentData[]&gt;([]);
+
+  // ✅ Readonly signals for public access
+  public readonly detections &#x3D; this._detections.asReadonly();
+  public readonly recognitions &#x3D; this._recognitions.asReadonly();
+  public readonly enrollments &#x3D; this._enrollments.asReadonly();
+
+  // ✅ Computed signals for derived state
+  public readonly detectionsCount &#x3D; computed(() &#x3D;&gt; this._detections().length);
+  public readonly recognitionsCount &#x3D; computed(() &#x3D;&gt; this._recognitions().length);
+  public readonly recognizedCount &#x3D; computed(() &#x3D;&gt; this._recognitions().filter(r &#x3D;&gt; r.isRecognized).length);
+  public readonly enrollmentsCount &#x3D; computed(() &#x3D;&gt; this._enrollments().length);
+
+  // ✅ Observable compatibility layer (for backward compatibility)
+  public detection$ &#x3D; new Observable&lt;FaceDetectionResult[]&gt;(observer &#x3D;&gt; {
+    observer.next(this._detections());
+    // Note: This is a compatibility layer - prefer using signals directly
+  });
+  public recognition$ &#x3D; new Observable&lt;FaceRecognitionResult[]&gt;(observer &#x3D;&gt; {
+    observer.next(this._recognitions());
+    // Note: This is a compatibility layer - prefer using signals directly
+  });
+  public enrollment$ &#x3D; new Observable&lt;FaceEnrollmentData[]&gt;(observer &#x3D;&gt; {
+    observer.next(this._enrollments());
+    // Note: This is a compatibility layer - prefer using signals directly
+  });
+
+  constructor() {
+    this.initializeModels();
+  }
+
+  /**
+   * Initialize face-api.js models
+   */
+  private async initializeModels(): Promise&lt;void&gt; {
+    try {
+      // Load models from assets - use base path
+      // face-api.js will automatically look for manifest files in subdirectories
+      const basePath &#x3D; &#x27;/assets/models&#x27;;
+
+      // Loading face detection models
+
+      // Load essential models first
+      await this.loadModelSafely(&#x27;TinyFaceDetector&#x27;, () &#x3D;&gt;
+        faceapi.nets.tinyFaceDetector.loadFromUri(&#x60;${basePath}/tiny_face_detector&#x60;)
+      );
+
+      // @ts-ignore - ssdMobilenetv1 exists in runtime but might be missing in types
+      await this.loadModelSafely(&#x27;SsdMobilenetv1&#x27;, () &#x3D;&gt;
+        (faceapi.nets as any).ssdMobilenetv1.loadFromUri(&#x60;${basePath}/ssd_mobilenetv1&#x60;)
+      );
+
+      await this.loadModelSafely(&#x27;FaceLandmark68Net&#x27;, () &#x3D;&gt;
+        faceapi.nets.faceLandmark68Net.loadFromUri(&#x60;${basePath}/face_landmark_68&#x60;)
+      );
+
+      await this.loadModelSafely(&#x27;FaceRecognitionNet&#x27;, () &#x3D;&gt;
+        faceapi.nets.faceRecognitionNet.loadFromUri(&#x60;${basePath}/face_recognition&#x60;)
+      );
+
+      // Load Age and Gender model
+      await this.loadModelSafely(&#x27;AgeGenderNet&#x27;, () &#x3D;&gt;
+        (faceapi.nets.ageGenderNet as any).loadFromUri(&#x60;${basePath}/age_gender_model&#x60;)
+      );
+
+      // Load Face Expression model
+      await this.loadModelSafely(&#x27;FaceExpressionNet&#x27;, () &#x3D;&gt;
+        (faceapi.nets.faceExpressionNet as any).loadFromUri(&#x60;${basePath}/face_expression&#x60;)
+      );
+
+      // Check if essential models are loaded
+      const hasTinyFaceDetector &#x3D; this.isModelLoaded(faceapi.nets.tinyFaceDetector);
+      const hasLandmarks &#x3D; this.isModelLoaded(faceapi.nets.faceLandmark68Net);
+      const hasRecognition &#x3D; this.isModelLoaded(faceapi.nets.faceRecognitionNet);
+
+      if (hasTinyFaceDetector &amp;&amp; hasLandmarks &amp;&amp; hasRecognition) {
+        this.modelsLoaded &#x3D; true;
+        this.isInitialized &#x3D; true;
+        // Face detection models loaded successfully
+      } else {
+        console.warn(&#x27;⚠️ Some models failed to load&#x27;);
+        console.warn(&#x60;TinyFaceDetector: ${hasTinyFaceDetector}, Landmarks: ${hasLandmarks}, Recognition: ${hasRecognition}&#x60;);
+        // Still mark as loaded if we have at least detection and landmarks
+        this.modelsLoaded &#x3D; hasTinyFaceDetector &amp;&amp; hasLandmarks;
+        this.isInitialized &#x3D; this.modelsLoaded;
+      }
+    } catch (error) {
+      console.error(&#x27;Failed to load face detection models:&#x27;, error);
+      // Don&#x27;t throw - allow app to continue without face detection
+      this.modelsLoaded &#x3D; false;
+      this.isInitialized &#x3D; false;
+    }
+  }
+
+  /**
+   * Load a model safely with error handling
+   */
+  private async loadModelSafely(modelName: string, loadFn: () &#x3D;&gt; Promise&lt;void&gt;): Promise&lt;void&gt; {
+    try {
+      await loadFn();
+      // Model loaded successfully
+    } catch (error: any) {
+      console.error(&#x60;✗ Failed to load ${modelName}:&#x60;, error?.message || error);
+      // Try loading from base path as fallback
+      try {
+        const basePath &#x3D; &#x27;/assets/models&#x27;;
+        if (modelName &#x3D;&#x3D;&#x3D; &#x27;TinyFaceDetector&#x27;) {
+          await faceapi.nets.tinyFaceDetector.loadFromUri(basePath);
+        } else if (modelName &#x3D;&#x3D;&#x3D; &#x27;FaceLandmark68Net&#x27;) {
+          await faceapi.nets.faceLandmark68Net.loadFromUri(basePath);
+        } else if (modelName &#x3D;&#x3D;&#x3D; &#x27;FaceRecognitionNet&#x27;) {
+          await faceapi.nets.faceRecognitionNet.loadFromUri(basePath);
+        } else if (modelName &#x3D;&#x3D;&#x3D; &#x27;FaceExpressionNet&#x27; &amp;&amp; faceapi.nets.faceExpressionNet) {
+          await faceapi.nets.faceExpressionNet.loadFromUri(basePath);
+        } else if (modelName &#x3D;&#x3D;&#x3D; &#x27;AgeGenderNet&#x27; &amp;&amp; faceapi.nets.ageGenderNet) {
+          await faceapi.nets.ageGenderNet.loadFromUri(basePath);
+        }
+        // Model loaded from base path
+      } catch (fallbackError) {
+        console.error(&#x60;✗ ${modelName} failed to load from fallback path:&#x60;, fallbackError);
+      }
+    }
+  }
+
+  /**
+   * Check if a model is loaded
+   */
+  private isModelLoaded(net: any): boolean {
+    try {
+      if (!net) return false;
+      // Check if model has isLoaded property or method
+      if (typeof net.isLoaded &#x3D;&#x3D;&#x3D; &#x27;function&#x27;) {
+        return net.isLoaded();
+      }
+      // Some versions use a property instead
+      if (typeof net.isLoaded &#x3D;&#x3D;&#x3D; &#x27;boolean&#x27;) {
+        return net.isLoaded;
+      }
+      // Check for _isLoaded internal property
+      if (net._isLoaded &#x3D;&#x3D;&#x3D; true) {
+        return true;
+      }
+      // If model has params, it&#x27;s likely loaded
+      if (net.params) {
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Check if models are loaded
+   */
+  public isReady(): boolean {
+    return this.isInitialized &amp;&amp; this.modelsLoaded;
+  }
+
+  /**
+   * Detect faces in an image
+   */
+  public async detectFaces(imageElement: HTMLImageElement | HTMLVideoElement | HTMLCanvasElement): Promise&lt;FaceDetectionResult[]&gt; {
+    if (!this.isReady()) {
+      throw new Error(&#x27;Face detection models not loaded&#x27;);
+    }
+
+    try {
+      // Use SsdMobilenetv1Options for better accuracy if available, otherwise TinyFaceDetectorOptions
+      // @ts-ignore
+      const useSsd &#x3D; faceapi.nets.ssdMobilenetv1 &amp;&amp; (faceapi.nets.ssdMobilenetv1 as any).isLoaded;
+
+      const options &#x3D; useSsd
+        // @ts-ignore
+        ? new faceapi.SsdMobilenetv1Options({ minConfidence: 0.5 })
+        : new faceapi.TinyFaceDetectorOptions({ inputSize: 512, scoreThreshold: 0.5 });
+
+      // Create detection task
+      let task &#x3D; faceapi.detectAllFaces(imageElement, options)
+        .withFaceLandmarks();
+
+      // Add expressions if model loaded
+      // @ts-ignore
+      if (faceapi.nets.faceExpressionNet &amp;&amp; (faceapi.nets.faceExpressionNet as any).isLoaded) {
+        // @ts-ignore - chaining works but types might be tricky
+        task &#x3D; task.withFaceExpressions();
+      }
+
+      // Add age and gender if model loaded
+      // @ts-ignore
+      if (faceapi.nets.ageGenderNet &amp;&amp; (faceapi.nets.ageGenderNet as any).isLoaded) {
+        // @ts-ignore
+        task &#x3D; task.withAgeAndGender();
+      }
+
+      // Add descriptors (always needed for recognition)
+
+      // Note: detectAllFaces uses withFaceDescriptors (plural) in runtime,
+      // but type definition might incorrectly say withFaceDescriptor (singular)
+      // @ts-ignore
+      const detections &#x3D; await task.withFaceDescriptors();
+
+      const results: FaceDetectionResult[] &#x3D; detections.map((detection: any) &#x3D;&gt; {
+        const result: FaceDetectionResult &#x3D; {
+          detection: detection.detection,
+          landmarks: detection.landmarks,
+          descriptor: detection.descriptor,
+          confidence: detection.detection.score,
+          boundingBox: {
+            x: detection.detection.box.x,
+            y: detection.detection.box.y,
+            width: detection.detection.box.width,
+            height: detection.detection.box.height
+          }
+        };
+
+        if (detection.age) result.age &#x3D; Math.round(detection.age);
+        if (detection.gender) {
+          result.gender &#x3D; detection.gender;
+          result.genderProbability &#x3D; detection.genderProbability;
+        }
+        if (detection.expressions) result.expressions &#x3D; detection.expressions;
+
+        return result;
+      });
+
+      this._detections.set(results);
+      return results;
+    } catch (error) {
+      console.error(&#x27;Face detection failed:&#x27;, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Recognize faces using enrolled descriptors
+   */
+  public async recognizeFaces(detectionResults: FaceDetectionResult[]): Promise&lt;FaceRecognitionResult[]&gt; {
+    if (!this.isReady()) {
+      throw new Error(&#x27;Face detection models not loaded&#x27;);
+    }
+
+    const recognitionResults: FaceRecognitionResult[] &#x3D; [];
+    const enrolledFaces &#x3D; Array.from(this.faceDescriptors.values());
+
+    for (const detection of detectionResults) {
+      if (!detection.descriptor) continue;
+
+      let bestMatch: FaceRecognitionResult &#x3D; {
+        id: &#x27;&#x27;,
+        faceId: &#x27;&#x27;,
+        confidence: 0,
+        isRecognized: false
+      };
+
+      for (const enrolledFace of enrolledFaces) {
+        for (const enrolledDescriptor of enrolledFace.descriptors) {
+          const distance &#x3D; faceapi.euclideanDistance(detection.descriptor, enrolledDescriptor);
+          const confidence &#x3D; 1 - distance; // Convert distance to confidence
+
+          if (confidence &gt; bestMatch.confidence &amp;&amp; confidence &gt; 0.6) { // Threshold for recognition
+            bestMatch &#x3D; {
+              id: enrolledFace.id,
+              faceId: enrolledFace.id,
+              confidence,
+              name: enrolledFace.name,
+              isRecognized: true
+            };
+          }
+        }
+      }
+
+      recognitionResults.push(bestMatch);
+    }
+
+    this._recognitions.set(recognitionResults);
+    return recognitionResults;
+  }
+
+  /**
+   * Enroll a new face
+   */
+  public async enrollFace(
+    imageElement: HTMLImageElement | HTMLVideoElement | HTMLCanvasElement,
+    name: string,
+    faceId?: string
+  ): Promise&lt;FaceEnrollmentData&gt; {
+    if (!this.isReady()) {
+      throw new Error(&#x27;Face detection models not loaded&#x27;);
+    }
+
+    try {
+      const detections &#x3D; await this.detectFaces(imageElement);
+
+      if (detections.length &#x3D;&#x3D;&#x3D; 0) {
+        throw new Error(&#x27;No face detected in the image&#x27;);
+      }
+
+      if (detections.length &gt; 1) {
+        throw new Error(&#x27;Multiple faces detected. Please use an image with only one face&#x27;);
+      }
+
+      const detection &#x3D; detections[0];
+      if (!detection.descriptor) {
+        throw new Error(&#x27;Could not extract face descriptor&#x27;);
+      }
+
+      const id &#x3D; faceId || this.generateFaceId();
+      const imageData &#x3D; this.captureImageData(imageElement);
+
+      const enrollmentData: FaceEnrollmentData &#x3D; {
+        id,
+        name,
+        descriptors: [detection.descriptor],
+        imageData,
+        enrolledAt: new Date()
+      };
+
+      this.faceDescriptors.set(id, enrollmentData);
+      this._enrollments.set(Array.from(this.faceDescriptors.values()));
+
+      return enrollmentData;
+    } catch (error) {
+      console.error(&#x27;Face enrollment failed:&#x27;, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Add additional descriptors to existing enrollment
+   */
+  public async addFaceDescriptor(faceId: string, imageElement: HTMLImageElement | HTMLVideoElement | HTMLCanvasElement): Promise&lt;void&gt; {
+    const enrollment &#x3D; this.faceDescriptors.get(faceId);
+    if (!enrollment) {
+      throw new Error(&#x27;Face not found&#x27;);
+    }
+
+    const detections &#x3D; await this.detectFaces(imageElement);
+    if (detections.length &#x3D;&#x3D;&#x3D; 0) {
+      throw new Error(&#x27;No face detected in the image&#x27;);
+    }
+
+    const detection &#x3D; detections[0];
+    if (!detection.descriptor) {
+      throw new Error(&#x27;Could not extract face descriptor&#x27;);
+    }
+
+    enrollment.descriptors.push(detection.descriptor);
+    this.faceDescriptors.set(faceId, enrollment);
+    this._enrollments.set(Array.from(this.faceDescriptors.values()));
+  }
+
+  /**
+   * Remove a face from enrollment
+   */
+  public removeFace(faceId: string): void {
+    this.faceDescriptors.delete(faceId);
+    this._enrollments.set(Array.from(this.faceDescriptors.values()));
+  }
+
+  /**
+   * Get all enrolled faces
+   */
+  public getEnrolledFaces(): FaceEnrollmentData[] {
+    return Array.from(this.faceDescriptors.values());
+  }
+
+  /**
+   * Clear all enrolled faces
+   */
+  public clearEnrollments(): void {
+    this.faceDescriptors.clear();
+    this._enrollments.set([]);
+  }
+
+  /**
+   * Export enrollment data
+   */
+  public exportEnrollments(): string {
+    const data &#x3D; Array.from(this.faceDescriptors.values());
+    return JSON.stringify(data, null, 2);
+  }
+
+  /**
+   * Import enrollment data
+   */
+  public importEnrollments(data: string): void {
+    try {
+      const enrollments: FaceEnrollmentData[] &#x3D; JSON.parse(data);
+      this.faceDescriptors.clear();
+
+      enrollments.forEach(enrollment &#x3D;&gt; {
+        this.faceDescriptors.set(enrollment.id, enrollment);
+      });
+
+      this._enrollments.set(Array.from(this.faceDescriptors.values()));
+    } catch (error) {
+      console.error(&#x27;Failed to import enrollments:&#x27;, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Generate unique face ID
+   */
+  private generateFaceId(): string {
+    return &#x27;face_&#x27; + Date.now() + &#x27;_&#x27; + Math.random().toString(36).substr(2, 9);
+  }
+
+  /**
+   * Capture image data as base64
+   */
+  private captureImageData(element: HTMLImageElement | HTMLVideoElement | HTMLCanvasElement): string {
+    const canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
+    const ctx &#x3D; canvas.getContext(&#x27;2d&#x27;);
+
+    if (!ctx) {
+      throw new Error(&#x27;Could not get canvas context&#x27;);
+    }
+
+    canvas.width &#x3D; element.width || (element as any).videoWidth || (element as any).naturalWidth;
+    canvas.height &#x3D; element.height || (element as any).videoHeight || (element as any).naturalHeight;
+
+    ctx.drawImage(element, 0, 0);
+    return canvas.toDataURL(&#x27;image/jpeg&#x27;, 0.8);
+  }
+
+  /**
+   * Get face expressions
+   */
+  public async getFaceExpressions(imageElement: HTMLImageElement | HTMLVideoElement | HTMLCanvasElement): Promise&lt;any&gt; {
+    if (!this.isReady()) {
+      throw new Error(&#x27;Face detection models not loaded&#x27;);
+    }
+
+    try {
+      const detections &#x3D; await faceapi
+        .detectAllFaces(imageElement, new faceapi.TinyFaceDetectorOptions())
+        .withFaceLandmarks()
+        .withFaceExpressions?.() || [];
+
+      return detections.map((detection: any) &#x3D;&gt; ({
+        expressions: detection.expressions,
+        confidence: detection.detection.score
+      }));
+    } catch (error) {
+      console.error(&#x27;Face expression detection failed:&#x27;, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get age and gender prediction
+   */
+  public async getAgeAndGender(imageElement: HTMLImageElement | HTMLVideoElement | HTMLCanvasElement): Promise&lt;any&gt; {
+    if (!this.isReady()) {
+      throw new Error(&#x27;Face detection models not loaded&#x27;);
+    }
+
+    try {
+      const detections &#x3D; await faceapi
+        .detectAllFaces(imageElement, new faceapi.TinyFaceDetectorOptions())
+        .withFaceLandmarks()
+        .withAgeAndGender?.() || [];
+
+      return detections.map((detection: any) &#x3D;&gt; ({
+        age: Math.round(detection.age),
+        gender: detection.gender,
+        genderProbability: detection.genderProbability,
+        confidence: detection.detection.score
+      }));
+    } catch (error) {
+      console.error(&#x27;Age and gender detection failed:&#x27;, error);
+      throw error;
+    }
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'FaceDetectionService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

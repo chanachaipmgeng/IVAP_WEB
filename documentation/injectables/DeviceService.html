@@ -1,0 +1,1883 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >DeviceService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/core/services/device.service.ts</code>
+        </p>
+
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#createDevice" >createDevice</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#deleteDevice" >deleteDevice</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#deviceHeartbeat" >deviceHeartbeat</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getDeviceApiKey" >getDeviceApiKey</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getDeviceApiKeyPublic" >getDeviceApiKeyPublic</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getDeviceById" >getDeviceById</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getDeviceConfig" >getDeviceConfig</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getDevices" >getDevices</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getDeviceStatistics" >getDeviceStatistics</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getOptions" >getOptions</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#linkDeviceToEvent" >linkDeviceToEvent</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#regenerateApiKey" >regenerateApiKey</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#updateDevice" >updateDevice</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#updateDeviceConfig" >updateDeviceConfig</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(api: <a href="../injectables/ApiService.html" target="_self">ApiService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/core/services/device.service.ts:26</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>api</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ApiService.html" target="_self" >ApiService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createDevice"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>createDevice</b></span>
+                        <a href="#createDevice"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createDevice(companyId: <a href="../undefineds/UUID.html" target="_self">UUID</a>, data: <a href="../interfaces/DeviceCreate.html" target="_self">DeviceCreate</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="58"
+                                    class="link-to-prism">src/app/core/services/device.service.ts:58</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Create device
+Backend: POST /api/v1/device/company/{companyId}/devices</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>companyId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#UUID" target="_self" >UUID</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Company ID</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                            <code><a href="../interfaces/DeviceCreate.html" target="_self" >DeviceCreate</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Device create data</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Device.html" target="_self" >Observable&lt;Device&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable containing created device</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteDevice"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>deleteDevice</b></span>
+                        <a href="#deleteDevice"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deleteDevice(deviceId: <a href="../undefineds/UUID.html" target="_self">UUID</a>, companyId: <a href="../undefineds/UUID.html" target="_self">UUID</a>, useScopedPath: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="136"
+                                    class="link-to-prism">src/app/core/services/device.service.ts:136</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Delete device
+Backend: DELETE /api/v1/device/{deviceId} or DELETE /api/v1/device/company/{companyId}/devices/{deviceId}</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>deviceId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#UUID" target="_self" >UUID</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                            <td>
+                                                    <p>Device ID</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>companyId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#UUID" target="_self" >UUID</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                            <td>
+                                                    <p>Company ID</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>useScopedPath</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>false</code>
+                                            </td>
+
+                                            <td>
+                                                    <p>Use scoped path format (company/{companyId}/devices/{deviceId})</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable<void></p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deviceHeartbeat"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>deviceHeartbeat</b></span>
+                        <a href="#deviceHeartbeat"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deviceHeartbeat(deviceId: <a href="../undefineds/UUID.html" target="_self">UUID</a>, status: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="205"
+                                    class="link-to-prism">src/app/core/services/device.service.ts:205</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Device heartbeat
+Backend: POST /api/v1/device/{deviceId}/heartbeat</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>deviceId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#UUID" target="_self" >UUID</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Device ID</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>status</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Status data</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable containing heartbeat response</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDeviceApiKey"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>getDeviceApiKey</b></span>
+                        <a href="#getDeviceApiKey"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getDeviceApiKey(deviceId: <a href="../undefineds/UUID.html" target="_self">UUID</a>, companyId: <a href="../undefineds/UUID.html" target="_self">UUID</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="234"
+                                    class="link-to-prism">src/app/core/services/device.service.ts:234</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get device API key
+Backend: GET /api/v1/device/company/{companyId}/devices/{deviceId}/key</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>deviceId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#UUID" target="_self" >UUID</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Device ID</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>companyId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#UUID" target="_self" >UUID</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Company ID</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;DeviceApiKeyResponse&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable containing API key</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDeviceApiKeyPublic"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>getDeviceApiKeyPublic</b></span>
+                        <a href="#getDeviceApiKeyPublic"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getDeviceApiKeyPublic(deviceId: <a href="../undefineds/UUID.html" target="_self">UUID</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="42"
+                                    class="link-to-prism">src/app/core/services/device.service.ts:42</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get device API key (public endpoint)
+Backend: GET /api/v1/device/devices/{deviceId}/key</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>deviceId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#UUID" target="_self" >UUID</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Device ID</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;DeviceApiKeyResponse&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable containing API key</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDeviceById"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>getDeviceById</b></span>
+                        <a href="#getDeviceById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getDeviceById(deviceId: <a href="../undefineds/UUID.html" target="_self">UUID</a>, companyId: <a href="../undefineds/UUID.html" target="_self">UUID</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="87"
+                                    class="link-to-prism">src/app/core/services/device.service.ts:87</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get device by ID
+Backend: GET /api/v1/device/{deviceId}</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>deviceId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#UUID" target="_self" >UUID</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Device ID</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>companyId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#UUID" target="_self" >UUID</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Company ID (required query param)</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Device.html" target="_self" >Observable&lt;Device&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable containing device</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDeviceConfig"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>getDeviceConfig</b></span>
+                        <a href="#getDeviceConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getDeviceConfig(deviceId: <a href="../undefineds/UUID.html" target="_self">UUID</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="179"
+                                    class="link-to-prism">src/app/core/services/device.service.ts:179</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get device configuration
+Backend: GET /api/v1/device/{deviceId}/config</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>deviceId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#UUID" target="_self" >UUID</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Device ID</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable containing device configuration</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDevices"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>getDevices</b></span>
+                        <a href="#getDevices"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getDevices(companyId: <a href="../undefineds/UUID.html" target="_self">UUID</a>, filters?: <a href="../interfaces/DeviceFilters.html" target="_self">DeviceFilters</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="74"
+                                    class="link-to-prism">src/app/core/services/device.service.ts:74</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get all devices for a company
+Backend: GET /api/v1/device/company/{companyId}/devices</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>companyId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#UUID" target="_self" >UUID</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Company ID</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>filters</td>
+                                            <td>
+                                                            <code><a href="../interfaces/DeviceFilters.html" target="_self" >DeviceFilters</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Query parameters for pagination and filtering</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;PaginatedApiResponse&lt;Device&gt;&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable containing paginated devices</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDeviceStatistics"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>getDeviceStatistics</b></span>
+                        <a href="#getDeviceStatistics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getDeviceStatistics(companyId: <a href="../undefineds/UUID.html" target="_self">UUID</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="167"
+                                    class="link-to-prism">src/app/core/services/device.service.ts:167</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get device statistics
+Backend: GET /api/v1/device/company/{companyId}/devices/statistics</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>companyId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#UUID" target="_self" >UUID</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Company ID</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable containing device statistics</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getOptions"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getOptions</b></span>
+                        <a href="#getOptions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getOptions()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="32"
+                                    class="link-to-prism">src/app/core/services/device.service.ts:32</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Helper to ensure skipTransform is used for all device API calls</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>{ skipTransform: boolean; }</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="linkDeviceToEvent"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>linkDeviceToEvent</b></span>
+                        <a href="#linkDeviceToEvent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>linkDeviceToEvent(deviceId: <a href="../undefineds/UUID.html" target="_self">UUID</a>, eventId: <a href="../undefineds/UUID.html" target="_self">UUID | null</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="155"
+                                    class="link-to-prism">src/app/core/services/device.service.ts:155</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Link device to event
+Backend: POST /api/v1/device/{deviceId}/link-event</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>deviceId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#UUID" target="_self" >UUID</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Device ID</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>eventId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#UUID" target="_self" >UUID | null</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Event ID (null to unlink)</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable containing link result</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="regenerateApiKey"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>regenerateApiKey</b></span>
+                        <a href="#regenerateApiKey"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>regenerateApiKey(deviceId: <a href="../undefineds/UUID.html" target="_self">UUID</a>, companyId: <a href="../undefineds/UUID.html" target="_self">UUID</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="218"
+                                    class="link-to-prism">src/app/core/services/device.service.ts:218</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Regenerate API key
+Backend: POST /api/v1/device/{deviceId}/regenerate-key</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>deviceId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#UUID" target="_self" >UUID</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Device ID</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>companyId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#UUID" target="_self" >UUID</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Company ID (required query param)</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Device.html" target="_self" >Observable&lt;Device&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable containing updated device</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateDevice"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>updateDevice</b></span>
+                        <a href="#updateDevice"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateDevice(deviceId: <a href="../undefineds/UUID.html" target="_self">UUID</a>, companyId: <a href="../undefineds/UUID.html" target="_self">UUID</a>, data: <a href="../interfaces/DeviceUpdate.html" target="_self">DeviceUpdate</a>, useScopedPath: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="105"
+                                    class="link-to-prism">src/app/core/services/device.service.ts:105</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Update device
+Backend: PUT /api/v1/device/{deviceId} or PUT /api/v1/device/company/{companyId}/devices/{deviceId}</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>deviceId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#UUID" target="_self" >UUID</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                            <td>
+                                                    <p>Device ID</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>companyId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#UUID" target="_self" >UUID</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                            <td>
+                                                    <p>Company ID</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                            <code><a href="../interfaces/DeviceUpdate.html" target="_self" >DeviceUpdate</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                            <td>
+                                                    <p>Device update data</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>useScopedPath</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>false</code>
+                                            </td>
+
+                                            <td>
+                                                    <p>Use scoped path format (company/{companyId}/devices/{deviceId})</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Device.html" target="_self" >Observable&lt;Device&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable containing updated device</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateDeviceConfig"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>updateDeviceConfig</b></span>
+                        <a href="#updateDeviceConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateDeviceConfig(deviceId: <a href="../undefineds/UUID.html" target="_self">UUID</a>, config: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="192"
+                                    class="link-to-prism">src/app/core/services/device.service.ts:192</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Update device configuration
+Backend: PUT /api/v1/device/{deviceId}/config</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>deviceId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#UUID" target="_self" >UUID</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Device ID</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>config</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Configuration data</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable containing updated configuration</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@angular/core&#x27;;
+import { Observable } from &#x27;rxjs&#x27;;
+import { map } from &#x27;rxjs/operators&#x27;;
+import { ApiService } from &#x27;./api.service&#x27;;
+import { UUID, PaginatedResponse } from &#x27;../models/base.model&#x27;;
+import {
+  Device,
+  DeviceCreate,
+  DeviceUpdate,
+  DeviceApiKeyResponse,
+  DeviceFilters
+} from &#x27;../models/device.model&#x27;;
+import { handleApiResponse, handlePaginatedResponse, PaginatedApiResponse } from &#x27;../utils/response-handler&#x27;;
+
+@Injectable({
+  providedIn: &#x27;root&#x27;
+})
+export class DeviceService {
+  constructor(private api: ApiService) {}
+
+  /**
+   * Helper to ensure skipTransform is used for all device API calls
+   */
+  private getOptions() {
+    return { skipTransform: true };
+  }
+
+  /**
+   * Get device API key (public endpoint)
+   * Backend: GET /api/v1/device/devices/{deviceId}/key
+   * @param deviceId Device ID
+   * @returns Observable containing API key
+   */
+  public getDeviceApiKeyPublic(deviceId: UUID): Observable&lt;DeviceApiKeyResponse&gt; {
+    return this.api.get&lt;any&gt;(&#x60;/devices/${deviceId}/key&#x60;, undefined, this.getOptions()).pipe(
+      map(response &#x3D;&gt; {
+        const data &#x3D; handleApiResponse&lt;DeviceApiKeyResponse&gt;(response);
+        return data;
+      })
+    );
+  }
+
+  /**
+   * Create device
+   * Backend: POST /api/v1/device/company/{companyId}/devices
+   * @param companyId Company ID
+   * @param data Device create data
+   * @returns Observable containing created device
+   */
+  public createDevice(companyId: UUID, data: DeviceCreate): Observable&lt;Device&gt; {
+    return this.api.post&lt;any&gt;(&#x60;/devices/company/${companyId}/devices&#x60;, data, undefined, this.getOptions()).pipe(
+      map(response &#x3D;&gt; {
+        const data &#x3D; handleApiResponse&lt;Device&gt;(response);
+        return data;
+      })
+    );
+  }
+
+  /**
+   * Get all devices for a company
+   * Backend: GET /api/v1/device/company/{companyId}/devices
+   * @param companyId Company ID
+   * @param filters Query parameters for pagination and filtering
+   * @returns Observable containing paginated devices
+   */
+  public getDevices(companyId: UUID, filters?: DeviceFilters): Observable&lt;PaginatedApiResponse&lt;Device&gt;&gt; {
+    return this.api.get&lt;any&gt;(&#x60;/devices/company/${companyId}/devices&#x60;, filters, this.getOptions()).pipe(
+      map(response &#x3D;&gt; handlePaginatedResponse&lt;Device&gt;(response))
+    );
+  }
+
+  /**
+   * Get device by ID
+   * Backend: GET /api/v1/device/{deviceId}
+   * @param deviceId Device ID
+   * @param companyId Company ID (required query param)
+   * @returns Observable containing device
+   */
+  public getDeviceById(deviceId: UUID, companyId: UUID): Observable&lt;Device&gt; {
+    return this.api.get&lt;any&gt;(&#x60;/devices/${deviceId}&#x60;, { companyId }, this.getOptions()).pipe(
+      map(response &#x3D;&gt; {
+        const data &#x3D; handleApiResponse&lt;Device&gt;(response);
+        return data;
+      })
+    );
+  }
+
+  /**
+   * Update device
+   * Backend: PUT /api/v1/device/{deviceId} or PUT /api/v1/device/company/{companyId}/devices/{deviceId}
+   * @param deviceId Device ID
+   * @param companyId Company ID
+   * @param data Device update data
+   * @param useScopedPath Use scoped path format (company/{companyId}/devices/{deviceId})
+   * @returns Observable containing updated device
+   */
+  public updateDevice(
+    deviceId: UUID,
+    companyId: UUID,
+    data: DeviceUpdate,
+    useScopedPath: boolean &#x3D; false
+  ): Observable&lt;Device&gt; {
+    if (useScopedPath) {
+      return this.api.put&lt;any&gt;(&#x60;/devices/company/${companyId}/devices/${deviceId}&#x60;, data, undefined, this.getOptions()).pipe(
+        map(response &#x3D;&gt; {
+          const data &#x3D; handleApiResponse&lt;Device&gt;(response);
+          return data;
+        })
+      );
+    } else {
+      return this.api.put&lt;any&gt;(&#x60;/devices/${deviceId}&#x60;, data, { companyId }, this.getOptions()).pipe(
+        map(response &#x3D;&gt; {
+          const data &#x3D; handleApiResponse&lt;Device&gt;(response);
+          return data;
+        })
+      );
+    }
+  }
+
+  /**
+   * Delete device
+   * Backend: DELETE /api/v1/device/{deviceId} or DELETE /api/v1/device/company/{companyId}/devices/{deviceId}
+   * @param deviceId Device ID
+   * @param companyId Company ID
+   * @param useScopedPath Use scoped path format (company/{companyId}/devices/{deviceId})
+   * @returns Observable&lt;void&gt;
+   */
+  public deleteDevice(
+    deviceId: UUID,
+    companyId: UUID,
+    useScopedPath: boolean &#x3D; false
+  ): Observable&lt;void&gt; {
+    if (useScopedPath) {
+      return this.api.delete&lt;void&gt;(&#x60;/devices/company/${companyId}/devices/${deviceId}&#x60;, undefined, undefined, this.getOptions());
+    } else {
+      return this.api.delete&lt;void&gt;(&#x60;/devices/${deviceId}&#x60;, { companyId }, undefined, this.getOptions());
+    }
+  }
+
+  /**
+   * Link device to event
+   * Backend: POST /api/v1/device/{deviceId}/link-event
+   * @param deviceId Device ID
+   * @param eventId Event ID (null to unlink)
+   * @returns Observable containing link result
+   */
+  public linkDeviceToEvent(deviceId: UUID, eventId: UUID | null): Observable&lt;any&gt; {
+    return this.api.post&lt;any&gt;(&#x60;/devices/${deviceId}/link-event&#x60;, { eventId }, undefined, this.getOptions()).pipe(
+      map(response &#x3D;&gt; handleApiResponse&lt;any&gt;(response))
+    );
+  }
+
+  /**
+   * Get device statistics
+   * Backend: GET /api/v1/device/company/{companyId}/devices/statistics
+   * @param companyId Company ID
+   * @returns Observable containing device statistics
+   */
+  public getDeviceStatistics(companyId: UUID): Observable&lt;any&gt; {
+    return this.api.get&lt;any&gt;(&#x60;/devices/company/${companyId}/devices/statistics&#x60;, undefined, this.getOptions()).pipe(
+      map(response &#x3D;&gt; handleApiResponse&lt;any&gt;(response))
+    );
+  }
+
+  /**
+   * Get device configuration
+   * Backend: GET /api/v1/device/{deviceId}/config
+   * @param deviceId Device ID
+   * @returns Observable containing device configuration
+   */
+  public getDeviceConfig(deviceId: UUID): Observable&lt;any&gt; {
+    return this.api.get&lt;any&gt;(&#x60;/devices/${deviceId}/config&#x60;, undefined, this.getOptions()).pipe(
+      map(response &#x3D;&gt; handleApiResponse&lt;any&gt;(response))
+    );
+  }
+
+  /**
+   * Update device configuration
+   * Backend: PUT /api/v1/device/{deviceId}/config
+   * @param deviceId Device ID
+   * @param config Configuration data
+   * @returns Observable containing updated configuration
+   */
+  public updateDeviceConfig(deviceId: UUID, config: any): Observable&lt;any&gt; {
+    return this.api.put&lt;any&gt;(&#x60;/devices/${deviceId}/config&#x60;, config, undefined, this.getOptions()).pipe(
+      map(response &#x3D;&gt; handleApiResponse&lt;any&gt;(response))
+    );
+  }
+
+  /**
+   * Device heartbeat
+   * Backend: POST /api/v1/device/{deviceId}/heartbeat
+   * @param deviceId Device ID
+   * @param status Status data
+   * @returns Observable containing heartbeat response
+   */
+  public deviceHeartbeat(deviceId: UUID, status: any): Observable&lt;any&gt; {
+    return this.api.post&lt;any&gt;(&#x60;/devices/${deviceId}/heartbeat&#x60;, status, undefined, this.getOptions()).pipe(
+      map(response &#x3D;&gt; handleApiResponse&lt;any&gt;(response))
+    );
+  }
+
+  /**
+   * Regenerate API key
+   * Backend: POST /api/v1/device/{deviceId}/regenerate-key
+   * @param deviceId Device ID
+   * @param companyId Company ID (required query param)
+   * @returns Observable containing updated device
+   */
+  public regenerateApiKey(deviceId: UUID, companyId: UUID): Observable&lt;Device&gt; {
+    return this.api.post&lt;any&gt;(&#x60;/devices/${deviceId}/regenerate-key&#x60;, {}, { companyId }, this.getOptions()).pipe(
+      map(response &#x3D;&gt; {
+        const data &#x3D; handleApiResponse&lt;Device&gt;(response);
+        return data;
+      })
+    );
+  }
+
+  /**
+   * Get device API key
+   * Backend: GET /api/v1/device/company/{companyId}/devices/{deviceId}/key
+   * @param deviceId Device ID
+   * @param companyId Company ID
+   * @returns Observable containing API key
+   */
+  public getDeviceApiKey(deviceId: UUID, companyId: UUID): Observable&lt;DeviceApiKeyResponse&gt; {
+    return this.api.get&lt;any&gt;(&#x60;/devices/company/${companyId}/devices/${deviceId}/key&#x60;, undefined, this.getOptions()).pipe(
+      map(response &#x3D;&gt; handleApiResponse&lt;DeviceApiKeyResponse&gt;(response))
+    );
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'DeviceService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

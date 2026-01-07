@@ -1,0 +1,1857 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >ParkingService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/core/services/parking.service.ts</code>
+        </p>
+
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#cancelReservation" >cancelReservation</a>
+                            </li>
+                            <li>
+                                <a href="#createParkingSpace" >createParkingSpace</a>
+                            </li>
+                            <li>
+                                <a href="#createReservation" >createReservation</a>
+                            </li>
+                            <li>
+                                <a href="#createVehicle" >createVehicle</a>
+                            </li>
+                            <li>
+                                <a href="#deleteVehicle" >deleteVehicle</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getCompanyId" >getCompanyId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getCompanyIdSafe" >getCompanyIdSafe</a>
+                            </li>
+                            <li>
+                                <a href="#getParkingEvents" >getParkingEvents</a>
+                            </li>
+                            <li>
+                                <a href="#getParkingSpaceById" >getParkingSpaceById</a>
+                            </li>
+                            <li>
+                                <a href="#getParkingSpaces" >getParkingSpaces</a>
+                            </li>
+                            <li>
+                                <a href="#getStatistics" >getStatistics</a>
+                            </li>
+                            <li>
+                                <a href="#getVehicleById" >getVehicleById</a>
+                            </li>
+                            <li>
+                                <a href="#getVehicles" >getVehicles</a>
+                            </li>
+                            <li>
+                                <a href="#recordVehicleEntry" >recordVehicleEntry</a>
+                            </li>
+                            <li>
+                                <a href="#recordVehicleExit" >recordVehicleExit</a>
+                            </li>
+                            <li>
+                                <a href="#updateParkingSpace" >updateParkingSpace</a>
+                            </li>
+                            <li>
+                                <a href="#updateVehicle" >updateVehicle</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(api: <a href="../injectables/ApiService.html" target="_self">ApiService</a>, auth: <a href="../injectables/AuthService.html" target="_self">AuthService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/app/core/services/parking.service.ts:40</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>api</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ApiService.html" target="_self" >ApiService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>auth</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AuthService.html" target="_self" >AuthService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cancelReservation"></a>
+                    <span class="name">
+                        <span ><b>cancelReservation</b></span>
+                        <a href="#cancelReservation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cancelReservation(reservationId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="350"
+                                    class="link-to-prism">src/app/core/services/parking.service.ts:350</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Cancel parking reservation</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>reservationId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createParkingSpace"></a>
+                    <span class="name">
+                        <span ><b>createParkingSpace</b></span>
+                        <a href="#createParkingSpace"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>createParkingSpace(space: <a href="../interfaces/ParkingSpaceCreate.html" target="_self">ParkingSpaceCreate</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="237"
+                                    class="link-to-prism">src/app/core/services/parking.service.ts:237</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Create new parking space</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>space</td>
+                                            <td>
+                                                            <code><a href="../interfaces/ParkingSpaceCreate.html" target="_self" >ParkingSpaceCreate</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/ParkingSpace.html" target="_self" >Observable&lt;ParkingSpace&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createReservation"></a>
+                    <span class="name">
+                        <span ><b>createReservation</b></span>
+                        <a href="#createReservation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>createReservation(reservation: <a href="../interfaces/ParkingReservationCreate.html" target="_self">ParkingReservationCreate</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="333"
+                                    class="link-to-prism">src/app/core/services/parking.service.ts:333</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Create parking reservation</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>reservation</td>
+                                            <td>
+                                                            <code><a href="../interfaces/ParkingReservationCreate.html" target="_self" >ParkingReservationCreate</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/ParkingReservation.html" target="_self" >Observable&lt;ParkingReservation&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createVehicle"></a>
+                    <span class="name">
+                        <span ><b>createVehicle</b></span>
+                        <a href="#createVehicle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>createVehicle(vehicle: <a href="../interfaces/ParkingVehicleCreate.html" target="_self">ParkingVehicleCreate</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="131"
+                                    class="link-to-prism">src/app/core/services/parking.service.ts:131</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Create new parking vehicle</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>vehicle</td>
+                                            <td>
+                                                            <code><a href="../interfaces/ParkingVehicleCreate.html" target="_self" >ParkingVehicleCreate</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;ParkingVehicle&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteVehicle"></a>
+                    <span class="name">
+                        <span ><b>deleteVehicle</b></span>
+                        <a href="#deleteVehicle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>deleteVehicle(vehicleId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="165"
+                                    class="link-to-prism">src/app/core/services/parking.service.ts:165</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Delete parking vehicle</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>vehicleId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getCompanyId"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getCompanyId</b></span>
+                        <a href="#getCompanyId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getCompanyId()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="50"
+                                    class="link-to-prism">src/app/core/services/parking.service.ts:50</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get current company ID from auth</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getCompanyIdSafe"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getCompanyIdSafe</b></span>
+                        <a href="#getCompanyIdSafe"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getCompanyIdSafe()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="61"
+                                    class="link-to-prism">src/app/core/services/parking.service.ts:61</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get company ID for API calls (with error handling)</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>string | null</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getParkingEvents"></a>
+                    <span class="name">
+                        <span ><b>getParkingEvents</b></span>
+                        <a href="#getParkingEvents"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getParkingEvents(params?: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="307"
+                                    class="link-to-prism">src/app/core/services/parking.service.ts:307</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get parking events with pagination</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>params</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;PaginatedApiResponse&lt;ParkingEvent&gt;&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getParkingSpaceById"></a>
+                    <span class="name">
+                        <span ><b>getParkingSpaceById</b></span>
+                        <a href="#getParkingSpaceById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getParkingSpaceById(spaceId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="220"
+                                    class="link-to-prism">src/app/core/services/parking.service.ts:220</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get parking space by ID</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>spaceId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/ParkingSpace.html" target="_self" >Observable&lt;ParkingSpace&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getParkingSpaces"></a>
+                    <span class="name">
+                        <span ><b>getParkingSpaces</b></span>
+                        <a href="#getParkingSpaces"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getParkingSpaces(params?: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="180"
+                                    class="link-to-prism">src/app/core/services/parking.service.ts:180</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get all parking spaces with pagination</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>params</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;PaginatedApiResponse&lt;ParkingSpace&gt;&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getStatistics"></a>
+                    <span class="name">
+                        <span ><b>getStatistics</b></span>
+                        <a href="#getStatistics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getStatistics()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="365"
+                                    class="link-to-prism">src/app/core/services/parking.service.ts:365</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get parking statistics</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/ParkingStatistics.html" target="_self" >Observable&lt;ParkingStatistics&gt;</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getVehicleById"></a>
+                    <span class="name">
+                        <span ><b>getVehicleById</b></span>
+                        <a href="#getVehicleById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getVehicleById(vehicleId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="114"
+                                    class="link-to-prism">src/app/core/services/parking.service.ts:114</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get parking vehicle by ID</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>vehicleId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;ParkingVehicle&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getVehicles"></a>
+                    <span class="name">
+                        <span ><b>getVehicles</b></span>
+                        <a href="#getVehicles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getVehicles(params?: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="74"
+                                    class="link-to-prism">src/app/core/services/parking.service.ts:74</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get all parking vehicles with pagination</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>params</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;PaginatedApiResponse&lt;ParkingVehicle&gt;&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="recordVehicleEntry"></a>
+                    <span class="name">
+                        <span ><b>recordVehicleEntry</b></span>
+                        <a href="#recordVehicleEntry"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>recordVehicleEntry(entry: <a href="../interfaces/VehicleEntryRequest.html" target="_self">VehicleEntryRequest</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="273"
+                                    class="link-to-prism">src/app/core/services/parking.service.ts:273</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Record vehicle entry</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>entry</td>
+                                            <td>
+                                                            <code><a href="../interfaces/VehicleEntryRequest.html" target="_self" >VehicleEntryRequest</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;ParkingEvent&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="recordVehicleExit"></a>
+                    <span class="name">
+                        <span ><b>recordVehicleExit</b></span>
+                        <a href="#recordVehicleExit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>recordVehicleExit(exit: <a href="../interfaces/VehicleExitRequest.html" target="_self">VehicleExitRequest</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="290"
+                                    class="link-to-prism">src/app/core/services/parking.service.ts:290</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Record vehicle exit</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>exit</td>
+                                            <td>
+                                                            <code><a href="../interfaces/VehicleExitRequest.html" target="_self" >VehicleExitRequest</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;ParkingEvent&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateParkingSpace"></a>
+                    <span class="name">
+                        <span ><b>updateParkingSpace</b></span>
+                        <a href="#updateParkingSpace"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateParkingSpace(spaceId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, space: <a href="../interfaces/ParkingSpaceUpdate.html" target="_self">ParkingSpaceUpdate</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="254"
+                                    class="link-to-prism">src/app/core/services/parking.service.ts:254</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Update parking space</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>spaceId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>space</td>
+                                            <td>
+                                                            <code><a href="../interfaces/ParkingSpaceUpdate.html" target="_self" >ParkingSpaceUpdate</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/ParkingSpace.html" target="_self" >Observable&lt;ParkingSpace&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateVehicle"></a>
+                    <span class="name">
+                        <span ><b>updateVehicle</b></span>
+                        <a href="#updateVehicle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateVehicle(vehicleId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, vehicle: <a href="../interfaces/ParkingVehicleUpdate.html" target="_self">ParkingVehicleUpdate</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="148"
+                                    class="link-to-prism">src/app/core/services/parking.service.ts:148</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Update parking vehicle</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>vehicleId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>vehicle</td>
+                                            <td>
+                                                            <code><a href="../interfaces/ParkingVehicleUpdate.html" target="_self" >ParkingVehicleUpdate</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;ParkingVehicle&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@angular/core&#x27;;
+import { Observable, of, throwError } from &#x27;rxjs&#x27;;
+import { catchError, map } from &#x27;rxjs/operators&#x27;;
+import { ApiService } from &#x27;./api.service&#x27;;
+import { AuthService } from &#x27;./auth.service&#x27;;
+import {
+  ParkingVehicle,
+  ParkingVehicleCreate,
+  ParkingVehicleUpdate,
+  ParkingSpace,
+  ParkingSpaceCreate,
+  ParkingSpaceUpdate,
+  ParkingEvent,
+  VehicleEntryRequest,
+  VehicleExitRequest,
+  ParkingReservation,
+  ParkingReservationCreate,
+  ParkingReservationUpdate,
+  ParkingStatistics
+} from &#x27;../models/parking.model&#x27;;
+import { PaginatedResponse } from &#x27;../models/base.model&#x27;;
+import { PaginatedApiResponse } from &#x27;../utils/response-handler&#x27;;
+
+@Injectable({
+  providedIn: &#x27;root&#x27;
+})
+export class ParkingService {
+
+  constructor(
+    private api: ApiService,
+    private auth: AuthService
+  ) {}
+
+  /**
+   * Get current company ID from auth
+   */
+  private getCompanyId(): string {
+    const companyId &#x3D; this.auth.currentUser()?.companyId || (this.auth.currentUser() as any)?.company_id;
+    if (!companyId) {
+      throw new Error(&#x27;Company ID not found. User must be logged in.&#x27;);
+    }
+    return typeof companyId &#x3D;&#x3D;&#x3D; &#x27;number&#x27; ? companyId.toString() : companyId;
+  }
+
+  /**
+   * Get company ID for API calls (with error handling)
+   */
+  private getCompanyIdSafe(): string | null {
+    try {
+      return this.getCompanyId();
+    } catch {
+      return null;
+    }
+  }
+
+  // &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; Vehicle Management &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+
+  /**
+   * Get all parking vehicles with pagination
+   */
+  getVehicles(params?: any): Observable&lt;PaginatedApiResponse&lt;ParkingVehicle&gt;&gt; {
+    try {
+      const companyId &#x3D; this.getCompanyId();
+      const options &#x3D; { skipTransform: true };
+      return this.api.get&lt;any&gt;(&#x60;/parking/vehicles&#x60;, { company_id: companyId, ...params }, options).pipe(
+        map((response: any) &#x3D;&gt; {
+          const items &#x3D; response.items || response.data || [];
+          return {
+            total: response.total || items.length,
+            data: items,
+            items: items,
+            page: response.page || 1,
+            size: response.size || response.page_size || items.length
+          } as PaginatedApiResponse&lt;ParkingVehicle&gt;;
+        }),
+        catchError((error) &#x3D;&gt; {
+          console.error(&#x27;Error loading parking vehicles:&#x27;, error);
+          return of({
+            data: [],
+            items: [],
+            total: 0,
+            page: 1,
+            size: 10
+          } as PaginatedApiResponse&lt;ParkingVehicle&gt;);
+        })
+      );
+    } catch (error) {
+      return of({
+        data: [],
+        items: [],
+        total: 0,
+        page: 1,
+        size: 10
+      } as PaginatedApiResponse&lt;ParkingVehicle&gt;);
+    }
+  }
+
+  /**
+   * Get parking vehicle by ID
+   */
+  getVehicleById(vehicleId: string): Observable&lt;ParkingVehicle&gt; {
+    try {
+      const companyId &#x3D; this.getCompanyId();
+      const options &#x3D; { skipTransform: true };
+      return this.api.get&lt;any&gt;(&#x60;/parking/vehicles/${vehicleId}&#x60;, { company_id: companyId }, options).pipe(
+        map((response: any) &#x3D;&gt; {
+          return response.data || response;
+        })
+      );
+    } catch (error) {
+      return throwError(() &#x3D;&gt; error);
+    }
+  }
+
+  /**
+   * Create new parking vehicle
+   */
+  createVehicle(vehicle: ParkingVehicleCreate): Observable&lt;ParkingVehicle&gt; {
+    try {
+      const companyId &#x3D; this.getCompanyId();
+      const options &#x3D; { skipTransform: true };
+      return this.api.post&lt;any&gt;(&#x60;/parking/vehicles&#x60;, vehicle, { company_id: companyId }, options).pipe(
+        map((response: any) &#x3D;&gt; {
+          return response.data || response;
+        })
+      );
+    } catch (error) {
+      return throwError(() &#x3D;&gt; error);
+    }
+  }
+
+  /**
+   * Update parking vehicle
+   */
+  updateVehicle(vehicleId: string, vehicle: ParkingVehicleUpdate): Observable&lt;ParkingVehicle&gt; {
+    try {
+      const companyId &#x3D; this.getCompanyId();
+      const options &#x3D; { skipTransform: true };
+      return this.api.put&lt;any&gt;(&#x60;/parking/vehicles/${vehicleId}&#x60;, vehicle, { company_id: companyId }, options).pipe(
+        map((response: any) &#x3D;&gt; {
+          return response.data || response;
+        })
+      );
+    } catch (error) {
+      return throwError(() &#x3D;&gt; error);
+    }
+  }
+
+  /**
+   * Delete parking vehicle
+   */
+  deleteVehicle(vehicleId: string): Observable&lt;void&gt; {
+    try {
+      const companyId &#x3D; this.getCompanyId();
+      const options &#x3D; { skipTransform: true };
+      return this.api.delete&lt;void&gt;(&#x60;/parking/vehicles/${vehicleId}&#x60;, { company_id: companyId }, undefined, options);
+    } catch (error) {
+      return throwError(() &#x3D;&gt; error);
+    }
+  }
+
+  // &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; Parking Space Management &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+
+  /**
+   * Get all parking spaces with pagination
+   */
+  getParkingSpaces(params?: any): Observable&lt;PaginatedApiResponse&lt;ParkingSpace&gt;&gt; {
+    const companyId &#x3D; this.getCompanyIdSafe();
+    if (!companyId) {
+      console.warn(&#x27;Company ID not found, returning empty parking spaces&#x27;);
+      return of({
+        data: [],
+        items: [],
+        total: 0,
+        page: 1,
+        size: 10
+      } as PaginatedApiResponse&lt;ParkingSpace&gt;);
+    }
+    const options &#x3D; { skipTransform: true };
+    return this.api.get&lt;any&gt;(&#x60;/parking/spaces&#x60;, { company_id: companyId, ...params }, options).pipe(
+      map((response: any) &#x3D;&gt; {
+        const items &#x3D; response.items || response.data || [];
+        return {
+          total: response.total || items.length,
+          data: items,
+          items: items,
+          page: response.page || 1,
+          size: response.size || response.page_size || items.length
+        } as PaginatedApiResponse&lt;ParkingSpace&gt;;
+      }),
+      catchError((error) &#x3D;&gt; {
+        console.error(&#x27;Error loading parking spaces:&#x27;, error);
+        return of({
+          data: [],
+          items: [],
+          total: 0,
+          page: 1,
+          size: 10
+        } as PaginatedApiResponse&lt;ParkingSpace&gt;);
+      })
+    );
+  }
+
+  /**
+   * Get parking space by ID
+   */
+  getParkingSpaceById(spaceId: string): Observable&lt;ParkingSpace&gt; {
+    try {
+      const companyId &#x3D; this.getCompanyId();
+      const options &#x3D; { skipTransform: true };
+      return this.api.get&lt;any&gt;(&#x60;/parking/spaces/${spaceId}&#x60;, { company_id: companyId }, options).pipe(
+        map((response: any) &#x3D;&gt; {
+          return response.data || response;
+        })
+      );
+    } catch (error) {
+      return throwError(() &#x3D;&gt; error);
+    }
+  }
+
+  /**
+   * Create new parking space
+   */
+  createParkingSpace(space: ParkingSpaceCreate): Observable&lt;ParkingSpace&gt; {
+    try {
+      const companyId &#x3D; this.getCompanyId();
+      const options &#x3D; { skipTransform: true };
+      return this.api.post&lt;any&gt;(&#x60;/parking/spaces&#x60;, space, { company_id: companyId }, options).pipe(
+        map((response: any) &#x3D;&gt; {
+          return response.data || response;
+        })
+      );
+    } catch (error) {
+      return throwError(() &#x3D;&gt; error);
+    }
+  }
+
+  /**
+   * Update parking space
+   */
+  updateParkingSpace(spaceId: string, space: ParkingSpaceUpdate): Observable&lt;ParkingSpace&gt; {
+    try {
+      const companyId &#x3D; this.getCompanyId();
+      const options &#x3D; { skipTransform: true };
+      return this.api.put&lt;any&gt;(&#x60;/parking/spaces/${spaceId}&#x60;, space, { company_id: companyId }, options).pipe(
+        map((response: any) &#x3D;&gt; {
+          return response.data || response;
+        })
+      );
+    } catch (error) {
+      return throwError(() &#x3D;&gt; error);
+    }
+  }
+
+  // &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; Parking Events (Entry/Exit) &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+
+  /**
+   * Record vehicle entry
+   */
+  recordVehicleEntry(entry: VehicleEntryRequest): Observable&lt;ParkingEvent&gt; {
+    try {
+      const companyId &#x3D; this.getCompanyId();
+      const options &#x3D; { skipTransform: true };
+      return this.api.post&lt;any&gt;(&#x60;/parking/entry&#x60;, entry, { company_id: companyId }, options).pipe(
+        map((response: any) &#x3D;&gt; {
+          return response.data || response;
+        })
+      );
+    } catch (error) {
+      return throwError(() &#x3D;&gt; error);
+    }
+  }
+
+  /**
+   * Record vehicle exit
+   */
+  recordVehicleExit(exit: VehicleExitRequest): Observable&lt;ParkingEvent&gt; {
+    try {
+      const companyId &#x3D; this.getCompanyId();
+      const options &#x3D; { skipTransform: true };
+      return this.api.post&lt;any&gt;(&#x60;/parking/exit&#x60;, exit, { company_id: companyId }, options).pipe(
+        map((response: any) &#x3D;&gt; {
+          return response.data || response;
+        })
+      );
+    } catch (error) {
+      return throwError(() &#x3D;&gt; error);
+    }
+  }
+
+  /**
+   * Get parking events with pagination
+   */
+  getParkingEvents(params?: any): Observable&lt;PaginatedApiResponse&lt;ParkingEvent&gt;&gt; {
+    try {
+      const companyId &#x3D; this.getCompanyId();
+      const options &#x3D; { skipTransform: true };
+      return this.api.get&lt;any&gt;(&#x60;/parking/events&#x60;, { company_id: companyId, ...params }, options).pipe(
+        map((response: any) &#x3D;&gt; {
+          const items &#x3D; response.items || response.data || [];
+          return {
+            total: response.total || items.length,
+            data: items,
+            items: items,
+            page: response.page || 1,
+            size: response.size || response.page_size || items.length
+          } as PaginatedApiResponse&lt;ParkingEvent&gt;;
+        })
+      );
+    } catch (error) {
+      return throwError(() &#x3D;&gt; error);
+    }
+  }
+
+  // &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; Parking Reservations &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+
+  /**
+   * Create parking reservation
+   */
+  createReservation(reservation: ParkingReservationCreate): Observable&lt;ParkingReservation&gt; {
+    try {
+      const companyId &#x3D; this.getCompanyId();
+      const options &#x3D; { skipTransform: true };
+      return this.api.post&lt;any&gt;(&#x60;/parking/reservations&#x60;, reservation, { company_id: companyId }, options).pipe(
+        map((response: any) &#x3D;&gt; {
+          return response.data || response;
+        })
+      );
+    } catch (error) {
+      return throwError(() &#x3D;&gt; error);
+    }
+  }
+
+  /**
+   * Cancel parking reservation
+   */
+  cancelReservation(reservationId: string): Observable&lt;void&gt; {
+    try {
+      const companyId &#x3D; this.getCompanyId();
+      const options &#x3D; { skipTransform: true };
+      return this.api.delete&lt;void&gt;(&#x60;/parking/reservations/${reservationId}&#x60;, { company_id: companyId }, undefined, options);
+    } catch (error) {
+      return throwError(() &#x3D;&gt; error);
+    }
+  }
+
+  // &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; Parking Statistics &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+
+  /**
+   * Get parking statistics
+   */
+  getStatistics(): Observable&lt;ParkingStatistics&gt; {
+    try {
+      const companyId &#x3D; this.getCompanyId();
+      const options &#x3D; { skipTransform: true };
+      return this.api.get&lt;any&gt;(&#x60;/parking/statistics&#x60;, { company_id: companyId }, options).pipe(
+        map((response: any) &#x3D;&gt; {
+          return response.data || response;
+        })
+      );
+    } catch (error) {
+      return throwError(() &#x3D;&gt; error);
+    }
+  }
+}
+
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'ParkingService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -1,0 +1,3714 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >EnvironmentMonitoringService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/core/services/environment-monitoring.service.ts</code>
+        </p>
+
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#activeAlertsCount" >activeAlertsCount</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_alerts" >_alerts</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#alerts" >alerts</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#alertsCount" >alertsCount</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#isMonitoring" >isMonitoring</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_metrics" >_metrics</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#metrics" >metrics</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Optional</span>
+                                <a href="#monitoringInterval" >monitoringInterval</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#onlineSensorsCount" >onlineSensorsCount</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_sensors" >_sensors</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#sensors" >sensors</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#sensorsCount" >sensorsCount</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_zones" >_zones</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#zones" >zones</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#acknowledgeAlert" >acknowledgeAlert</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#calculateAverageResponseTime" >calculateAverageResponseTime</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#calculateConfidence" >calculateConfidence</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#calculateEnvironmentScore" >calculateEnvironmentScore</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#calculateMetrics" >calculateMetrics</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#calculateResolutionRate" >calculateResolutionRate</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#calculateSensorStatus" >calculateSensorStatus</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#calculateSeverity" >calculateSeverity</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#calculateTrend" >calculateTrend</a>
+                            </li>
+                            <li>
+                                <a href="#createZone" >createZone</a>
+                            </li>
+                            <li>
+                                <a href="#generateEnvironmentReport" >generateEnvironmentReport</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#generateId" >generateId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#generateSimulatedValue" >generateSimulatedValue</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getAlertDescription" >getAlertDescription</a>
+                            </li>
+                            <li>
+                                <a href="#getAlerts" >getAlerts</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getBaseValueForSensorType" >getBaseValueForSensorType</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getDefaultMetrics" >getDefaultMetrics</a>
+                            </li>
+                            <li>
+                                <a href="#getMetrics" >getMetrics</a>
+                            </li>
+                            <li>
+                                <a href="#getSensor" >getSensor</a>
+                            </li>
+                            <li>
+                                <a href="#getSensors" >getSensors</a>
+                            </li>
+                            <li>
+                                <a href="#getZones" >getZones</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#groupBy" >groupBy</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#initializeDemoData" >initializeDemoData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#mapSensorTypeToAlertType" >mapSensorTypeToAlertType</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#processSensorData" >processSensorData</a>
+                            </li>
+                            <li>
+                                <a href="#resolveAlert" >resolveAlert</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#simulateEnvironmentMonitoring" >simulateEnvironmentMonitoring</a>
+                            </li>
+                            <li>
+                                <a href="#startMonitoring" >startMonitoring</a>
+                            </li>
+                            <li>
+                                <a href="#stopMonitoring" >stopMonitoring</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#updateMetrics" >updateMetrics</a>
+                            </li>
+                            <li>
+                                <a href="#updateSensor" >updateSensor</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="112" class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:112</a></div>
+                            </td>
+                        </tr>
+
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="acknowledgeAlert"></a>
+                    <span class="name">
+                        <span ><b>acknowledgeAlert</b></span>
+                        <a href="#acknowledgeAlert"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>acknowledgeAlert(alertId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, acknowledgedBy: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="195"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:195</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Acknowledge alert</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>alertId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>acknowledgedBy</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calculateAverageResponseTime"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>calculateAverageResponseTime</b></span>
+                        <a href="#calculateAverageResponseTime"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>calculateAverageResponseTime(alerts: EnvironmentAlert[])</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="505"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:505</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Calculate average response time</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>alerts</td>
+                                            <td>
+                                                        <code>EnvironmentAlert[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calculateConfidence"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>calculateConfidence</b></span>
+                        <a href="#calculateConfidence"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>calculateConfidence(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, threshold: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="416"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:416</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Calculate confidence based on value and threshold</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>value</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>threshold</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calculateEnvironmentScore"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>calculateEnvironmentScore</b></span>
+                        <a href="#calculateEnvironmentScore"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>calculateEnvironmentScore(alerts: EnvironmentAlert[], sensors: <a href="../interfaces/EnvironmentSensor.html" target="_self">EnvironmentSensor[]</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="531"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:531</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Calculate environment score</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>alerts</td>
+                                            <td>
+                                                        <code>EnvironmentAlert[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>sensors</td>
+                                            <td>
+                                                            <code><a href="../interfaces/EnvironmentSensor.html" target="_self" >EnvironmentSensor[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calculateMetrics"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>calculateMetrics</b></span>
+                        <a href="#calculateMetrics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>calculateMetrics(alerts: EnvironmentAlert[], sensors: <a href="../interfaces/EnvironmentSensor.html" target="_self">EnvironmentSensor[]</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="464"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:464</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Calculate metrics</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>alerts</td>
+                                            <td>
+                                                        <code>EnvironmentAlert[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>sensors</td>
+                                            <td>
+                                                            <code><a href="../interfaces/EnvironmentSensor.html" target="_self" >EnvironmentSensor[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/EnvironmentMetrics.html" target="_self" >EnvironmentMetrics</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calculateResolutionRate"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>calculateResolutionRate</b></span>
+                        <a href="#calculateResolutionRate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>calculateResolutionRate(alerts: EnvironmentAlert[])</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="522"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:522</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Calculate resolution rate</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>alerts</td>
+                                            <td>
+                                                        <code>EnvironmentAlert[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calculateSensorStatus"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>calculateSensorStatus</b></span>
+                        <a href="#calculateSensorStatus"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>calculateSensorStatus(sensors: <a href="../interfaces/EnvironmentSensor.html" target="_self">EnvironmentSensor[]</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="492"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:492</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Calculate sensor status</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>sensors</td>
+                                            <td>
+                                                            <code><a href="../interfaces/EnvironmentSensor.html" target="_self" >EnvironmentSensor[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>literal type</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calculateSeverity"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>calculateSeverity</b></span>
+                        <a href="#calculateSeverity"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>calculateSeverity(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, threshold: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="405"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:405</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Calculate severity based on value and threshold</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>value</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>threshold</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>&quot;low&quot; | &quot;medium&quot; | &quot;high&quot; | &quot;critical&quot; | null</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calculateTrend"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>calculateTrend</b></span>
+                        <a href="#calculateTrend"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>calculateTrend(alerts: EnvironmentAlert[])</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="551"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:551</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Calculate trend</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>alerts</td>
+                                            <td>
+                                                        <code>EnvironmentAlert[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>&quot;improving&quot; | &quot;stable&quot; | &quot;declining&quot;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createZone"></a>
+                    <span class="name">
+                        <span ><b>createZone</b></span>
+                        <a href="#createZone"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>createZone(zone: Omit<EnvironmentZone | "id" | "createdAt" | "updatedAt">)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="302"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:302</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Create zone</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>zone</td>
+                                            <td>
+                                                        <code>Omit&lt;EnvironmentZone | &quot;id&quot; | &quot;createdAt&quot; | &quot;updatedAt&quot;&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/EnvironmentZone.html" target="_self" >EnvironmentZone</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateEnvironmentReport"></a>
+                    <span class="name">
+                        <span ><b>generateEnvironmentReport</b></span>
+                        <a href="#generateEnvironmentReport"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>generateEnvironmentReport(options: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="325"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:325</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Generate environment report</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>options</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateId"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>generateId</b></span>
+                        <a href="#generateId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generateId()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="755"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:755</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Generate unique ID</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateSimulatedValue"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>generateSimulatedValue</b></span>
+                        <a href="#generateSimulatedValue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generateSimulatedValue(sensor: <a href="../interfaces/EnvironmentSensor.html" target="_self">EnvironmentSensor</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="381"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:381</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Generate simulated sensor value</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>sensor</td>
+                                            <td>
+                                                            <code><a href="../interfaces/EnvironmentSensor.html" target="_self" >EnvironmentSensor</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAlertDescription"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getAlertDescription</b></span>
+                        <a href="#getAlertDescription"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAlertDescription(sensorType: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, threshold: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="439"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:439</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get alert description</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>sensorType</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>value</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>threshold</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAlerts"></a>
+                    <span class="name">
+                        <span ><b>getAlerts</b></span>
+                        <a href="#getAlerts"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getAlerts(filter?: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="227"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:227</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get alerts by filter</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>filter</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>EnvironmentAlert[]</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getBaseValueForSensorType"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getBaseValueForSensorType</b></span>
+                        <a href="#getBaseValueForSensorType"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getBaseValueForSensorType(type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="390"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:390</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get base value for sensor type</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>type</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDefaultMetrics"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getDefaultMetrics</b></span>
+                        <a href="#getDefaultMetrics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getDefaultMetrics()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="578"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:578</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get default metrics</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/EnvironmentMetrics.html" target="_self" >EnvironmentMetrics</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getMetrics"></a>
+                    <span class="name">
+                        <span ><b>getMetrics</b></span>
+                        <a href="#getMetrics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getMetrics()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="318"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:318</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get metrics</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/EnvironmentMetrics.html" target="_self" >EnvironmentMetrics</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getSensor"></a>
+                    <span class="name">
+                        <span ><b>getSensor</b></span>
+                        <a href="#getSensor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getSensor(sensorId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="275"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:275</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get sensor by ID</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>sensorId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/EnvironmentSensor.html" target="_self" >EnvironmentSensor | undefined</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getSensors"></a>
+                    <span class="name">
+                        <span ><b>getSensors</b></span>
+                        <a href="#getSensors"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getSensors()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="268"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:268</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get sensors</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/EnvironmentSensor.html" target="_self" >EnvironmentSensor[]</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getZones"></a>
+                    <span class="name">
+                        <span ><b>getZones</b></span>
+                        <a href="#getZones"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getZones()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="295"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:295</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get zones</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>EnvironmentZone[]</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="groupBy"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>groupBy</b></span>
+                        <a href="#groupBy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>groupBy(array: T[], property: unknown)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="567"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:567</a></div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Type parameters :</b>
+                            <ul class="type-parameters">
+                                    <li>T</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Group array by property</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>array</td>
+                                            <td>
+                                                        <code>T[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>property</td>
+                                            <td>
+                                                        <code>unknown</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>literal type</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="initializeDemoData"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>initializeDemoData</b></span>
+                        <a href="#initializeDemoData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>initializeDemoData()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="595"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:595</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Initialize demo data</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mapSensorTypeToAlertType"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>mapSensorTypeToAlertType</b></span>
+                        <a href="#mapSensorTypeToAlertType"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>mapSensorTypeToAlertType(sensorType: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="424"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:424</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Map sensor type to alert type</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>sensorType</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="processSensorData"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>processSensorData</b></span>
+                        <a href="#processSensorData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>processSensorData(sensorId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, timestamp: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank">Date</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="144"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:144</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Process sensor data</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>sensorId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>value</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>timestamp</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" >Date</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>new Date()</code>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;EnvironmentAlert[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resolveAlert"></a>
+                    <span class="name">
+                        <span ><b>resolveAlert</b></span>
+                        <a href="#resolveAlert"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>resolveAlert(alertId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, resolvedBy: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="211"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:211</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Resolve alert</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>alertId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>resolvedBy</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="simulateEnvironmentMonitoring"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>simulateEnvironmentMonitoring</b></span>
+                        <a href="#simulateEnvironmentMonitoring"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>simulateEnvironmentMonitoring()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="367"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:367</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Simulate environment monitoring</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="startMonitoring"></a>
+                    <span class="name">
+                        <span ><b>startMonitoring</b></span>
+                        <a href="#startMonitoring"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>startMonitoring()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="121"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:121</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Start environment monitoring</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="stopMonitoring"></a>
+                    <span class="name">
+                        <span ><b>stopMonitoring</b></span>
+                        <a href="#stopMonitoring"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>stopMonitoring()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="133"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:133</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Stop environment monitoring</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateMetrics"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>updateMetrics</b></span>
+                        <a href="#updateMetrics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateMetrics()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="454"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:454</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Update metrics</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateSensor"></a>
+                    <span class="name">
+                        <span ><b>updateSensor</b></span>
+                        <a href="#updateSensor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateSensor(sensor: <a href="../interfaces/EnvironmentSensor.html" target="_self">EnvironmentSensor</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="282"
+                                    class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:282</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Update sensor</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>sensor</td>
+                                            <td>
+                                                            <code><a href="../interfaces/EnvironmentSensor.html" target="_self" >EnvironmentSensor</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="activeAlertsCount"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>activeAlertsCount</b></span>
+                        <a href="#activeAlertsCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; this._alerts().filter(a &#x3D;&gt; a.status &#x3D;&#x3D;&#x3D; &#x27;active&#x27;).length)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="107" class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:107</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_alerts"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_alerts</b></span>
+                        <a href="#_alerts"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;EnvironmentAlert[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="94" class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:94</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="alerts"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>alerts</b></span>
+                        <a href="#alerts"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this._alerts.asReadonly()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="100" class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:100</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="alertsCount"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>alertsCount</b></span>
+                        <a href="#alertsCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; this._alerts().length)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="106" class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:106</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isMonitoring"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>isMonitoring</b></span>
+                        <a href="#isMonitoring"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="111" class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:111</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_metrics"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_metrics</b></span>
+                        <a href="#_metrics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;EnvironmentMetrics&gt;(this.getDefaultMetrics())</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="97" class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:97</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="metrics"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>metrics</b></span>
+                        <a href="#metrics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this._metrics.asReadonly()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="103" class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:103</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="monitoringInterval"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Optional</span>
+                        <span ><b>monitoringInterval</b></span>
+                        <a href="#monitoringInterval"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="112" class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:112</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onlineSensorsCount"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>onlineSensorsCount</b></span>
+                        <a href="#onlineSensorsCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; this._sensors().filter(s &#x3D;&gt; s.status &#x3D;&#x3D;&#x3D; &#x27;online&#x27;).length)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="109" class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:109</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_sensors"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_sensors</b></span>
+                        <a href="#_sensors"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;EnvironmentSensor[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:95</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sensors"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>sensors</b></span>
+                        <a href="#sensors"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this._sensors.asReadonly()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="101" class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:101</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sensorsCount"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>sensorsCount</b></span>
+                        <a href="#sensorsCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; this._sensors().length)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="108" class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:108</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_zones"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_zones</b></span>
+                        <a href="#_zones"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;EnvironmentZone[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="96" class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:96</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="zones"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>zones</b></span>
+                        <a href="#zones"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this._zones.asReadonly()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="102" class="link-to-prism">src/app/core/services/environment-monitoring.service.ts:102</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, signal, computed } from &#x27;@angular/core&#x27;;
+import { Observable } from &#x27;rxjs&#x27;;
+
+export interface EnvironmentAlert {
+  id: string;
+  type: &#x27;smoke_fire&#x27; | &#x27;emergency_exit_blocked&#x27; | &#x27;liquid_spill&#x27; | &#x27;temperature_anomaly&#x27; | &#x27;gas_leak&#x27; | &#x27;flooding&#x27;;
+  severity: &#x27;low&#x27; | &#x27;medium&#x27; | &#x27;high&#x27; | &#x27;critical&#x27;;
+  confidence: number;
+  location: string;
+  zoneId: string;
+  timestamp: Date;
+  sensorId: string;
+  sensorType: &#x27;camera&#x27; | &#x27;smoke_detector&#x27; | &#x27;temperature_sensor&#x27; | &#x27;gas_sensor&#x27; | &#x27;motion_sensor&#x27; | &#x27;water_sensor&#x27;;
+  value: number;
+  unit: string;
+  threshold: number;
+  description: string;
+  status: &#x27;active&#x27; | &#x27;acknowledged&#x27; | &#x27;resolved&#x27;;
+  acknowledgedBy?: string;
+  acknowledgedAt?: Date;
+  resolvedBy?: string;
+  resolvedAt?: Date;
+  imageUrl?: string;
+  videoUrl?: string;
+}
+
+export interface EnvironmentSensor {
+  id: string;
+  name: string;
+  type: &#x27;camera&#x27; | &#x27;smoke_detector&#x27; | &#x27;temperature_sensor&#x27; | &#x27;gas_sensor&#x27; | &#x27;motion_sensor&#x27; | &#x27;water_sensor&#x27;;
+  location: string;
+  zoneId: string;
+  isActive: boolean;
+  lastReading: number;
+  unit: string;
+  threshold: {
+    warning: number;
+    critical: number;
+  };
+  status: &#x27;online&#x27; | &#x27;offline&#x27; | &#x27;maintenance&#x27; | &#x27;error&#x27;;
+  lastUpdate: Date;
+  batteryLevel?: number;
+  signalStrength?: number;
+}
+
+export interface EnvironmentMetrics {
+  totalAlerts: number;
+  alertsByType: { [key: string]: number };
+  alertsBySeverity: { [key: string]: number };
+  alertsByLocation: { [key: string]: number };
+  sensorStatus: {
+    online: number;
+    offline: number;
+    maintenance: number;
+    error: number;
+  };
+  averageResponseTime: number;
+  resolutionRate: number;
+  environmentScore: number;
+  trend: &#x27;improving&#x27; | &#x27;stable&#x27; | &#x27;declining&#x27;;
+}
+
+export interface EnvironmentZone {
+  id: string;
+  name: string;
+  type: &#x27;indoor&#x27; | &#x27;outdoor&#x27; | &#x27;warehouse&#x27; | &#x27;office&#x27; | &#x27;factory&#x27; | &#x27;storage&#x27;;
+  sensors: string[];
+  rules: EnvironmentRule[];
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface EnvironmentRule {
+  id: string;
+  type: &#x27;temperature_range&#x27; | &#x27;humidity_range&#x27; | &#x27;smoke_detection&#x27; | &#x27;gas_detection&#x27; | &#x27;water_detection&#x27; | &#x27;motion_detection&#x27;;
+  sensorType: string;
+  threshold: {
+    min?: number;
+    max?: number;
+    warning: number;
+    critical: number;
+  };
+  severity: &#x27;low&#x27; | &#x27;medium&#x27; | &#x27;high&#x27; | &#x27;critical&#x27;;
+  isEnabled: boolean;
+  description: string;
+}
+
+@Injectable({
+  providedIn: &#x27;root&#x27;
+})
+export class EnvironmentMonitoringService {
+  // ✅ Signals for reactive state
+  private _alerts &#x3D; signal&lt;EnvironmentAlert[]&gt;([]);
+  private _sensors &#x3D; signal&lt;EnvironmentSensor[]&gt;([]);
+  private _zones &#x3D; signal&lt;EnvironmentZone[]&gt;([]);
+  private _metrics &#x3D; signal&lt;EnvironmentMetrics&gt;(this.getDefaultMetrics());
+
+  // ✅ Readonly signals for public access
+  public readonly alerts &#x3D; this._alerts.asReadonly();
+  public readonly sensors &#x3D; this._sensors.asReadonly();
+  public readonly zones &#x3D; this._zones.asReadonly();
+  public readonly metrics &#x3D; this._metrics.asReadonly();
+
+  // ✅ Computed signals for derived state
+  public readonly alertsCount &#x3D; computed(() &#x3D;&gt; this._alerts().length);
+  public readonly activeAlertsCount &#x3D; computed(() &#x3D;&gt; this._alerts().filter(a &#x3D;&gt; a.status &#x3D;&#x3D;&#x3D; &#x27;active&#x27;).length);
+  public readonly sensorsCount &#x3D; computed(() &#x3D;&gt; this._sensors().length);
+  public readonly onlineSensorsCount &#x3D; computed(() &#x3D;&gt; this._sensors().filter(s &#x3D;&gt; s.status &#x3D;&#x3D;&#x3D; &#x27;online&#x27;).length);
+
+  private isMonitoring &#x3D; false;
+  private monitoringInterval?: any;
+
+  constructor() {
+    this.initializeDemoData();
+  }
+
+  /**
+   * Start environment monitoring
+   */
+  startMonitoring(): void {
+    if (this.isMonitoring) return;
+
+    this.isMonitoring &#x3D; true;
+    this.monitoringInterval &#x3D; setInterval(() &#x3D;&gt; {
+      this.simulateEnvironmentMonitoring();
+    }, 3000); // Check every 3 seconds
+  }
+
+  /**
+   * Stop environment monitoring
+   */
+  stopMonitoring(): void {
+    if (this.monitoringInterval) {
+      clearInterval(this.monitoringInterval);
+      this.monitoringInterval &#x3D; undefined;
+    }
+    this.isMonitoring &#x3D; false;
+  }
+
+  /**
+   * Process sensor data
+   */
+  async processSensorData(sensorId: string, value: number, timestamp: Date &#x3D; new Date()): Promise&lt;EnvironmentAlert[]&gt; {
+    const sensor &#x3D; this._sensors().find(s &#x3D;&gt; s.id &#x3D;&#x3D;&#x3D; sensorId);
+    if (!sensor || !sensor.isActive) return [];
+
+    const alerts: EnvironmentAlert[] &#x3D; [];
+    const zone &#x3D; this._zones().find(z &#x3D;&gt; z.id &#x3D;&#x3D;&#x3D; sensor.zoneId);
+    if (!zone) return [];
+
+    // Check against thresholds
+    const rule &#x3D; zone.rules.find(r &#x3D;&gt; r.sensorType &#x3D;&#x3D;&#x3D; sensor.type);
+    if (!rule || !rule.isEnabled) return [];
+
+    const severity &#x3D; this.calculateSeverity(value, rule.threshold);
+    if (severity) {
+      const alert: EnvironmentAlert &#x3D; {
+        id: this.generateId(),
+        type: this.mapSensorTypeToAlertType(sensor.type),
+        severity: severity,
+        confidence: this.calculateConfidence(value, rule.threshold),
+        location: sensor.location,
+        zoneId: sensor.zoneId,
+        timestamp: timestamp,
+        sensorId: sensorId,
+        sensorType: sensor.type,
+        value: value,
+        unit: sensor.unit,
+        threshold: rule.threshold.critical,
+        description: this.getAlertDescription(sensor.type, value, rule.threshold),
+        status: &#x27;active&#x27;
+      };
+
+      alerts.push(alert);
+    }
+
+    // Update sensor reading
+    sensor.lastReading &#x3D; value;
+    sensor.lastUpdate &#x3D; timestamp;
+    this.updateSensor(sensor);
+
+    // Add alerts
+    if (alerts.length &gt; 0) {
+      this._alerts.update(current &#x3D;&gt; [...current, ...alerts]);
+      this.updateMetrics();
+    }
+
+    return alerts;
+  }
+
+  /**
+   * Acknowledge alert
+   */
+  acknowledgeAlert(alertId: string, acknowledgedBy: string): void {
+    this._alerts.update(alerts &#x3D;&gt; {
+      const alert &#x3D; alerts.find(a &#x3D;&gt; a.id &#x3D;&#x3D;&#x3D; alertId);
+      if (alert) {
+        alert.status &#x3D; &#x27;acknowledged&#x27;;
+        alert.acknowledgedBy &#x3D; acknowledgedBy;
+        alert.acknowledgedAt &#x3D; new Date();
+      }
+      return [...alerts];
+    });
+    this.updateMetrics();
+  }
+
+  /**
+   * Resolve alert
+   */
+  resolveAlert(alertId: string, resolvedBy: string): void {
+    this._alerts.update(alerts &#x3D;&gt; {
+      const alert &#x3D; alerts.find(a &#x3D;&gt; a.id &#x3D;&#x3D;&#x3D; alertId);
+      if (alert) {
+        alert.status &#x3D; &#x27;resolved&#x27;;
+        alert.resolvedBy &#x3D; resolvedBy;
+        alert.resolvedAt &#x3D; new Date();
+      }
+      return [...alerts];
+    });
+    this.updateMetrics();
+  }
+
+  /**
+   * Get alerts by filter
+   */
+  getAlerts(filter?: {
+    type?: string;
+    severity?: string;
+    status?: string;
+    zoneId?: string;
+    sensorType?: string;
+    dateFrom?: Date;
+    dateTo?: Date;
+  }): EnvironmentAlert[] {
+    let alerts &#x3D; this._alerts();
+
+    if (filter) {
+      if (filter.type) {
+        alerts &#x3D; alerts.filter(a &#x3D;&gt; a.type &#x3D;&#x3D;&#x3D; filter.type);
+      }
+      if (filter.severity) {
+        alerts &#x3D; alerts.filter(a &#x3D;&gt; a.severity &#x3D;&#x3D;&#x3D; filter.severity);
+      }
+      if (filter.status) {
+        alerts &#x3D; alerts.filter(a &#x3D;&gt; a.status &#x3D;&#x3D;&#x3D; filter.status);
+      }
+      if (filter.zoneId) {
+        alerts &#x3D; alerts.filter(a &#x3D;&gt; a.zoneId &#x3D;&#x3D;&#x3D; filter.zoneId);
+      }
+      if (filter.sensorType) {
+        alerts &#x3D; alerts.filter(a &#x3D;&gt; a.sensorType &#x3D;&#x3D;&#x3D; filter.sensorType);
+      }
+      if (filter.dateFrom) {
+        alerts &#x3D; alerts.filter(a &#x3D;&gt; a.timestamp &gt;&#x3D; filter.dateFrom!);
+      }
+      if (filter.dateTo) {
+        alerts &#x3D; alerts.filter(a &#x3D;&gt; a.timestamp &lt;&#x3D; filter.dateTo!);
+      }
+    }
+
+    return alerts;
+  }
+
+  /**
+   * Get sensors
+   */
+  getSensors(): EnvironmentSensor[] {
+    return this._sensors();
+  }
+
+  /**
+   * Get sensor by ID
+   */
+  getSensor(sensorId: string): EnvironmentSensor | undefined {
+    return this._sensors().find(s &#x3D;&gt; s.id &#x3D;&#x3D;&#x3D; sensorId);
+  }
+
+  /**
+   * Update sensor
+   */
+  updateSensor(sensor: EnvironmentSensor): void {
+    this._sensors.update(sensors &#x3D;&gt; {
+      const index &#x3D; sensors.findIndex(s &#x3D;&gt; s.id &#x3D;&#x3D;&#x3D; sensor.id);
+      if (index !&#x3D;&#x3D; -1) {
+        sensors[index] &#x3D; { ...sensor };
+      }
+      return [...sensors];
+    });
+  }
+
+  /**
+   * Get zones
+   */
+  getZones(): EnvironmentZone[] {
+    return this._zones();
+  }
+
+  /**
+   * Create zone
+   */
+  createZone(zone: Omit&lt;EnvironmentZone, &#x27;id&#x27; | &#x27;createdAt&#x27; | &#x27;updatedAt&#x27;&gt;): EnvironmentZone {
+    const newZone: EnvironmentZone &#x3D; {
+      ...zone,
+      id: this.generateId(),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
+    this._zones.update(zones &#x3D;&gt; [...zones, newZone]);
+
+    return newZone;
+  }
+
+  /**
+   * Get metrics
+   */
+  getMetrics(): EnvironmentMetrics {
+    return this._metrics();
+  }
+
+  /**
+   * Generate environment report
+   */
+  generateEnvironmentReport(options: {
+    dateFrom: Date;
+    dateTo: Date;
+    zoneIds?: string[];
+    sensorTypes?: string[];
+  }): any {
+    const alerts &#x3D; this.getAlerts({
+      dateFrom: options.dateFrom,
+      dateTo: options.dateTo,
+      zoneId: options.zoneIds?.[0],
+      sensorType: options.sensorTypes?.[0]
+    });
+
+    const sensors &#x3D; this._sensors();
+    const zones &#x3D; this._zones();
+
+    const report &#x3D; {
+      period: {
+        from: options.dateFrom,
+        to: options.dateTo
+      },
+      summary: {
+        totalAlerts: alerts.length,
+        alertsByType: this.groupBy(alerts, &#x27;type&#x27;),
+        alertsBySeverity: this.groupBy(alerts, &#x27;severity&#x27;),
+        alertsByLocation: this.groupBy(alerts, &#x27;location&#x27;),
+        sensorStatus: this.calculateSensorStatus(sensors),
+        averageResponseTime: this.calculateAverageResponseTime(alerts),
+        resolutionRate: this.calculateResolutionRate(alerts)
+      },
+      alerts: alerts,
+      sensors: sensors.filter(s &#x3D;&gt; options.zoneIds?.includes(s.zoneId) || !options.zoneIds),
+      zones: zones.filter(z &#x3D;&gt; options.zoneIds?.includes(z.id) || !options.zoneIds),
+      generatedAt: new Date()
+    };
+
+    return report;
+  }
+
+  /**
+   * Simulate environment monitoring
+   */
+  private simulateEnvironmentMonitoring(): void {
+    const sensors &#x3D; this._sensors().filter(s &#x3D;&gt; s.isActive &amp;&amp; s.status &#x3D;&#x3D;&#x3D; &#x27;online&#x27;);
+
+    for (const sensor of sensors) {
+      if (Math.random() &lt; 0.02) { // 2% chance per sensor
+        const simulatedValue &#x3D; this.generateSimulatedValue(sensor);
+        this.processSensorData(sensor.id, simulatedValue);
+      }
+    }
+  }
+
+  /**
+   * Generate simulated sensor value
+   */
+  private generateSimulatedValue(sensor: EnvironmentSensor): number {
+    const baseValue &#x3D; this.getBaseValueForSensorType(sensor.type);
+    const variation &#x3D; (Math.random() - 0.5) * baseValue * 0.2; // ±10% variation
+    return Math.max(0, baseValue + variation);
+  }
+
+  /**
+   * Get base value for sensor type
+   */
+  private getBaseValueForSensorType(type: string): number {
+    const baseValues &#x3D; {
+      temperature_sensor: 22, // Celsius
+      humidity_sensor: 50, // Percentage
+      smoke_detector: 0.1, // mg/m³
+      gas_sensor: 0.5, // ppm
+      water_sensor: 0, // mm
+      motion_sensor: 0 // motion detected (0 or 1)
+    };
+    return baseValues[type as keyof typeof baseValues] || 0;
+  }
+
+  /**
+   * Calculate severity based on value and threshold
+   */
+  private calculateSeverity(value: number, threshold: any): &#x27;low&#x27; | &#x27;medium&#x27; | &#x27;high&#x27; | &#x27;critical&#x27; | null {
+    if (value &gt;&#x3D; threshold.critical) return &#x27;critical&#x27;;
+    if (value &gt;&#x3D; threshold.warning) return &#x27;high&#x27;;
+    if (value &gt;&#x3D; threshold.warning * 0.8) return &#x27;medium&#x27;;
+    if (value &gt;&#x3D; threshold.warning * 0.6) return &#x27;low&#x27;;
+    return null;
+  }
+
+  /**
+   * Calculate confidence based on value and threshold
+   */
+  private calculateConfidence(value: number, threshold: any): number {
+    const normalizedValue &#x3D; value / threshold.critical;
+    return Math.min(1, Math.max(0.5, normalizedValue));
+  }
+
+  /**
+   * Map sensor type to alert type
+   */
+  private mapSensorTypeToAlertType(sensorType: string): EnvironmentAlert[&#x27;type&#x27;] {
+    const mapping: { [key: string]: EnvironmentAlert[&#x27;type&#x27;] } &#x3D; {
+      smoke_detector: &#x27;smoke_fire&#x27;,
+      temperature_sensor: &#x27;temperature_anomaly&#x27;,
+      gas_sensor: &#x27;gas_leak&#x27;,
+      water_sensor: &#x27;flooding&#x27;,
+      motion_sensor: &#x27;emergency_exit_blocked&#x27;,
+      camera: &#x27;liquid_spill&#x27;
+    };
+    return mapping[sensorType] || &#x27;temperature_anomaly&#x27;;
+  }
+
+  /**
+   * Get alert description
+   */
+  private getAlertDescription(sensorType: string, value: number, threshold: any): string {
+    const descriptions &#x3D; {
+      smoke_detector: &#x60;Smoke detected: ${value.toFixed(2)} mg/m³ (threshold: ${threshold.critical} mg/m³)&#x60;,
+      temperature_sensor: &#x60;Temperature anomaly: ${value.toFixed(1)}°C (threshold: ${threshold.critical}°C)&#x60;,
+      gas_sensor: &#x60;Gas leak detected: ${value.toFixed(2)} ppm (threshold: ${threshold.critical} ppm)&#x60;,
+      water_sensor: &#x60;Water detected: ${value.toFixed(1)} mm (threshold: ${threshold.critical} mm)&#x60;,
+      motion_sensor: &#x60;Motion detected in restricted area&#x60;,
+      camera: &#x60;Liquid spill detected in monitored area&#x60;
+    };
+    return descriptions[sensorType as keyof typeof descriptions] || &#x27;Environment alert detected&#x27;;
+  }
+
+  /**
+   * Update metrics
+   */
+  private updateMetrics(): void {
+    const alerts &#x3D; this._alerts();
+    const sensors &#x3D; this._sensors();
+    const metrics &#x3D; this.calculateMetrics(alerts, sensors);
+    this._metrics.set(metrics);
+  }
+
+  /**
+   * Calculate metrics
+   */
+  private calculateMetrics(alerts: EnvironmentAlert[], sensors: EnvironmentSensor[]): EnvironmentMetrics {
+    const totalAlerts &#x3D; alerts.length;
+    const alertsByType &#x3D; this.groupBy(alerts, &#x27;type&#x27;);
+    const alertsBySeverity &#x3D; this.groupBy(alerts, &#x27;severity&#x27;);
+    const alertsByLocation &#x3D; this.groupBy(alerts, &#x27;location&#x27;);
+
+    const sensorStatus &#x3D; this.calculateSensorStatus(sensors);
+    const averageResponseTime &#x3D; this.calculateAverageResponseTime(alerts);
+    const resolutionRate &#x3D; this.calculateResolutionRate(alerts);
+    const environmentScore &#x3D; this.calculateEnvironmentScore(alerts, sensors);
+    const trend &#x3D; this.calculateTrend(alerts);
+
+    return {
+      totalAlerts,
+      alertsByType,
+      alertsBySeverity,
+      alertsByLocation,
+      sensorStatus,
+      averageResponseTime,
+      resolutionRate,
+      environmentScore,
+      trend
+    };
+  }
+
+  /**
+   * Calculate sensor status
+   */
+  private calculateSensorStatus(sensors: EnvironmentSensor[]): { online: number; offline: number; maintenance: number; error: number } {
+    const grouped &#x3D; this.groupBy(sensors, &#x27;status&#x27;);
+    return {
+      online: grouped[&#x27;online&#x27;] || 0,
+      offline: grouped[&#x27;offline&#x27;] || 0,
+      maintenance: grouped[&#x27;maintenance&#x27;] || 0,
+      error: grouped[&#x27;error&#x27;] || 0
+    };
+  }
+
+  /**
+   * Calculate average response time
+   */
+  private calculateAverageResponseTime(alerts: EnvironmentAlert[]): number {
+    const acknowledgedAlerts &#x3D; alerts.filter(a &#x3D;&gt; a.acknowledgedAt);
+    if (acknowledgedAlerts.length &#x3D;&#x3D;&#x3D; 0) return 0;
+
+    const totalTime &#x3D; acknowledgedAlerts.reduce((sum, a) &#x3D;&gt; {
+      if (a.acknowledgedAt) {
+        return sum + (a.acknowledgedAt.getTime() - a.timestamp.getTime());
+      }
+      return sum;
+    }, 0);
+
+    return totalTime / acknowledgedAlerts.length / 1000 / 60; // in minutes
+  }
+
+  /**
+   * Calculate resolution rate
+   */
+  private calculateResolutionRate(alerts: EnvironmentAlert[]): number {
+    if (alerts.length &#x3D;&#x3D;&#x3D; 0) return 0;
+    const resolvedAlerts &#x3D; alerts.filter(a &#x3D;&gt; a.status &#x3D;&#x3D;&#x3D; &#x27;resolved&#x27;);
+    return (resolvedAlerts.length / alerts.length) * 100;
+  }
+
+  /**
+   * Calculate environment score
+   */
+  private calculateEnvironmentScore(alerts: EnvironmentAlert[], sensors: EnvironmentSensor[]): number {
+    if (alerts.length &#x3D;&#x3D;&#x3D; 0) return 100;
+
+    const criticalAlerts &#x3D; alerts.filter(a &#x3D;&gt; a.severity &#x3D;&#x3D;&#x3D; &#x27;critical&#x27;).length;
+    const highAlerts &#x3D; alerts.filter(a &#x3D;&gt; a.severity &#x3D;&#x3D;&#x3D; &#x27;high&#x27;).length;
+    const mediumAlerts &#x3D; alerts.filter(a &#x3D;&gt; a.severity &#x3D;&#x3D;&#x3D; &#x27;medium&#x27;).length;
+    const lowAlerts &#x3D; alerts.filter(a &#x3D;&gt; a.severity &#x3D;&#x3D;&#x3D; &#x27;low&#x27;).length;
+
+    const offlineSensors &#x3D; sensors.filter(s &#x3D;&gt; s.status &#x3D;&#x3D;&#x3D; &#x27;offline&#x27;).length;
+    const totalSensors &#x3D; sensors.length;
+
+    const alertScore &#x3D; 100 - (criticalAlerts * 15 + highAlerts * 10 + mediumAlerts * 5 + lowAlerts * 2);
+    const sensorScore &#x3D; totalSensors &gt; 0 ? ((totalSensors - offlineSensors) / totalSensors) * 100 : 100;
+
+    return Math.max(0, Math.min(100, (alertScore + sensorScore) / 2));
+  }
+
+  /**
+   * Calculate trend
+   */
+  private calculateTrend(alerts: EnvironmentAlert[]): &#x27;improving&#x27; | &#x27;stable&#x27; | &#x27;declining&#x27; {
+    const now &#x3D; new Date();
+    const lastWeek &#x3D; new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const twoWeeksAgo &#x3D; new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
+
+    const recentAlerts &#x3D; alerts.filter(a &#x3D;&gt; a.timestamp &gt;&#x3D; lastWeek);
+    const olderAlerts &#x3D; alerts.filter(a &#x3D;&gt; a.timestamp &gt;&#x3D; twoWeeksAgo &amp;&amp; a.timestamp &lt; lastWeek);
+
+    if (recentAlerts.length &lt; olderAlerts.length) return &#x27;improving&#x27;;
+    if (recentAlerts.length &gt; olderAlerts.length) return &#x27;declining&#x27;;
+    return &#x27;stable&#x27;;
+  }
+
+  /**
+   * Group array by property
+   */
+  private groupBy&lt;T&gt;(array: T[], property: keyof T): { [key: string]: number } {
+    return array.reduce((groups, item) &#x3D;&gt; {
+      const key &#x3D; String(item[property]);
+      groups[key] &#x3D; (groups[key] || 0) + 1;
+      return groups;
+    }, {} as { [key: string]: number });
+  }
+
+  /**
+   * Get default metrics
+   */
+  private getDefaultMetrics(): EnvironmentMetrics {
+    return {
+      totalAlerts: 0,
+      alertsByType: {},
+      alertsBySeverity: {},
+      alertsByLocation: {},
+      sensorStatus: { online: 0, offline: 0, maintenance: 0, error: 0 },
+      averageResponseTime: 0,
+      resolutionRate: 0,
+      environmentScore: 100,
+      trend: &#x27;stable&#x27;
+    };
+  }
+
+  /**
+   * Initialize demo data
+   */
+  private initializeDemoData(): void {
+    // Create demo zones
+    const demoZones: EnvironmentZone[] &#x3D; [
+      {
+        id: &#x27;env-zone-1&#x27;,
+        name: &#x27;Main Office Floor&#x27;,
+        type: &#x27;office&#x27;,
+        sensors: [&#x27;temp-sensor-1&#x27;, &#x27;humidity-sensor-1&#x27;, &#x27;smoke-detector-1&#x27;],
+        rules: [
+          {
+            id: &#x27;rule-1&#x27;,
+            type: &#x27;temperature_range&#x27;,
+            sensorType: &#x27;temperature_sensor&#x27;,
+            threshold: { min: 18, max: 26, warning: 25, critical: 30 },
+            severity: &#x27;high&#x27;,
+            isEnabled: true,
+            description: &#x27;Office temperature monitoring&#x27;
+          },
+          {
+            id: &#x27;rule-2&#x27;,
+            type: &#x27;smoke_detection&#x27;,
+            sensorType: &#x27;smoke_detector&#x27;,
+            threshold: { warning: 0.5, critical: 1.0 },
+            severity: &#x27;critical&#x27;,
+            isEnabled: true,
+            description: &#x27;Smoke detection in office&#x27;
+          }
+        ],
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: &#x27;env-zone-2&#x27;,
+        name: &#x27;Warehouse Storage&#x27;,
+        type: &#x27;warehouse&#x27;,
+        sensors: [&#x27;temp-sensor-2&#x27;, &#x27;water-sensor-1&#x27;, &#x27;gas-sensor-1&#x27;],
+        rules: [
+          {
+            id: &#x27;rule-3&#x27;,
+            type: &#x27;temperature_range&#x27;,
+            sensorType: &#x27;temperature_sensor&#x27;,
+            threshold: { min: 15, max: 25, warning: 24, critical: 28 },
+            severity: &#x27;medium&#x27;,
+            isEnabled: true,
+            description: &#x27;Warehouse temperature monitoring&#x27;
+          },
+          {
+            id: &#x27;rule-4&#x27;,
+            type: &#x27;water_detection&#x27;,
+            sensorType: &#x27;water_sensor&#x27;,
+            threshold: { warning: 1, critical: 5 },
+            severity: &#x27;high&#x27;,
+            isEnabled: true,
+            description: &#x27;Water leak detection&#x27;
+          }
+        ],
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ];
+
+    this._zones.set(demoZones);
+
+    // Create demo sensors
+    const demoSensors: EnvironmentSensor[] &#x3D; [
+      {
+        id: &#x27;temp-sensor-1&#x27;,
+        name: &#x27;Office Temperature Sensor&#x27;,
+        type: &#x27;temperature_sensor&#x27;,
+        location: &#x27;Main Office Floor&#x27;,
+        zoneId: &#x27;env-zone-1&#x27;,
+        isActive: true,
+        lastReading: 22.5,
+        unit: &#x27;°C&#x27;,
+        threshold: { warning: 25, critical: 30 },
+        status: &#x27;online&#x27;,
+        lastUpdate: new Date(),
+        batteryLevel: 85,
+        signalStrength: 95
+      },
+      {
+        id: &#x27;smoke-detector-1&#x27;,
+        name: &#x27;Office Smoke Detector&#x27;,
+        type: &#x27;smoke_detector&#x27;,
+        location: &#x27;Main Office Floor&#x27;,
+        zoneId: &#x27;env-zone-1&#x27;,
+        isActive: true,
+        lastReading: 0.1,
+        unit: &#x27;mg/m³&#x27;,
+        threshold: { warning: 0.5, critical: 1.0 },
+        status: &#x27;online&#x27;,
+        lastUpdate: new Date(),
+        batteryLevel: 90,
+        signalStrength: 98
+      },
+      {
+        id: &#x27;temp-sensor-2&#x27;,
+        name: &#x27;Warehouse Temperature Sensor&#x27;,
+        type: &#x27;temperature_sensor&#x27;,
+        location: &#x27;Warehouse Storage&#x27;,
+        zoneId: &#x27;env-zone-2&#x27;,
+        isActive: true,
+        lastReading: 20.8,
+        unit: &#x27;°C&#x27;,
+        threshold: { warning: 24, critical: 28 },
+        status: &#x27;online&#x27;,
+        lastUpdate: new Date(),
+        batteryLevel: 78,
+        signalStrength: 88
+      },
+      {
+        id: &#x27;water-sensor-1&#x27;,
+        name: &#x27;Warehouse Water Sensor&#x27;,
+        type: &#x27;water_sensor&#x27;,
+        location: &#x27;Warehouse Storage&#x27;,
+        zoneId: &#x27;env-zone-2&#x27;,
+        isActive: true,
+        lastReading: 0,
+        unit: &#x27;mm&#x27;,
+        threshold: { warning: 1, critical: 5 },
+        status: &#x27;online&#x27;,
+        lastUpdate: new Date(),
+        batteryLevel: 92,
+        signalStrength: 85
+      }
+    ];
+
+    this._sensors.set(demoSensors);
+
+    // Create demo alerts
+    const demoAlerts: EnvironmentAlert[] &#x3D; [
+      {
+        id: &#x27;env-alert-1&#x27;,
+        type: &#x27;temperature_anomaly&#x27;,
+        severity: &#x27;medium&#x27;,
+        confidence: 0.85,
+        location: &#x27;Main Office Floor&#x27;,
+        zoneId: &#x27;env-zone-1&#x27;,
+        timestamp: new Date(Date.now() - 30 * 60 * 1000), // 30 minutes ago
+        sensorId: &#x27;temp-sensor-1&#x27;,
+        sensorType: &#x27;temperature_sensor&#x27;,
+        value: 26.5,
+        unit: &#x27;°C&#x27;,
+        threshold: 30,
+        description: &#x27;Temperature anomaly: 26.5°C (threshold: 30°C)&#x27;,
+        status: &#x27;acknowledged&#x27;,
+        acknowledgedBy: &#x27;admin-1&#x27;,
+        acknowledgedAt: new Date(Date.now() - 25 * 60 * 1000)
+      }
+    ];
+
+    this._alerts.set(demoAlerts);
+    this.updateMetrics();
+  }
+
+  /**
+   * Generate unique ID
+   */
+  private generateId(): string {
+    return &#x27;env-&#x27; + Date.now() + &#x27;-&#x27; + Math.random().toString(36).substr(2, 9);
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'EnvironmentMonitoringService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

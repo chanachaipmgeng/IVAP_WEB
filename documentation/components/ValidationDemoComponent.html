@@ -1,0 +1,3012 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  ValidationDemoComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-validation-demo</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../interfaces/Module.html" target="_self" >CommonModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >FormsModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >ReactiveFormsModule</a></code>
+                                <code><a href="../components/GlassCardComponent.html" target="_self" >GlassCardComponent</a></code>
+                                <code><a href="../components/GlassButtonComponent.html" target="_self" >GlassButtonComponent</a></code>
+                            <code>NgOptimizedImage</code>
+                                <code><a href="../directives/ImageOptimizationDirective.html" target="_self" >ImageOptimizationDirective</a></code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./validation-demo.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./validation-demo.component.scss</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#advancedFieldConfigs" >advancedFieldConfigs</a>
+                            </li>
+                            <li>
+                                <a href="#advancedForm" >advancedForm</a>
+                            </li>
+                            <li>
+                                <a href="#basicFieldConfigs" >basicFieldConfigs</a>
+                            </li>
+                            <li>
+                                <a href="#basicForm" >basicForm</a>
+                            </li>
+                            <li>
+                                <a href="#dateFieldConfigs" >dateFieldConfigs</a>
+                            </li>
+                            <li>
+                                <a href="#dateForm" >dateForm</a>
+                            </li>
+                            <li>
+                                <a href="#fileFieldConfigs" >fileFieldConfigs</a>
+                            </li>
+                            <li>
+                                <a href="#fileForm" >fileForm</a>
+                            </li>
+                            <li>
+                                <a href="#filePreview" >filePreview</a>
+                            </li>
+                            <li>
+                                <a href="#formErrors" >formErrors</a>
+                            </li>
+                            <li>
+                                <a href="#passwordFieldConfigs" >passwordFieldConfigs</a>
+                            </li>
+                            <li>
+                                <a href="#passwordForm" >passwordForm</a>
+                            </li>
+                            <li>
+                                <a href="#selectedDemo" >selectedDemo</a>
+                            </li>
+                            <li>
+                                <a href="#selectedFile" >selectedFile</a>
+                            </li>
+                            <li>
+                                <a href="#validationDemos" >validationDemos</a>
+                            </li>
+                            <li>
+                                <a href="#validationSummary" >validationSummary</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#createAdvancedForm" >createAdvancedForm</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#createBasicForm" >createBasicForm</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#createDateForm" >createDateForm</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#createFileForm" >createFileForm</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#createFilePreview" >createFilePreview</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#createPasswordForm" >createPasswordForm</a>
+                            </li>
+                            <li>
+                                <a href="#fillExampleData" >fillExampleData</a>
+                            </li>
+                            <li>
+                                <a href="#getFieldError" >getFieldError</a>
+                            </li>
+                            <li>
+                                <a href="#getFieldStatus" >getFieldStatus</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#initializeFieldConfigs" >initializeFieldConfigs</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#initializeValidationDemos" >initializeValidationDemos</a>
+                            </li>
+                            <li>
+                                <a href="#isBase64Image" >isBase64Image</a>
+                            </li>
+                            <li>
+                                <a href="#isFieldInvalid" >isFieldInvalid</a>
+                            </li>
+                            <li>
+                                <a href="#isFieldValid" >isFieldValid</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onFieldChange" >onFieldChange</a>
+                            </li>
+                            <li>
+                                <a href="#onFileSelect" >onFileSelect</a>
+                            </li>
+                            <li>
+                                <a href="#onSubmit" >onSubmit</a>
+                            </li>
+                            <li>
+                                <a href="#resetForm" >resetForm</a>
+                            </li>
+                            <li>
+                                <a href="#selectDemo" >selectDemo</a>
+                            </li>
+                            <li>
+                                <a href="#t" >t</a>
+                            </li>
+                            <li>
+                                <a href="#updateFormErrors" >updateFormErrors</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(fb: FormBuilder, validationService: <a href="../injectables/ValidationService.html" target="_self">ValidationService</a>, i18n: <a href="../injectables/I18nService.html" target="_self">I18nService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="81" class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:81</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>fb</td>
+                                                  
+                                                        <td>
+                                                                    <code>FormBuilder</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>validationService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ValidationService.html" target="_self" >ValidationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>i18n</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/I18nService.html" target="_self" >I18nService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createAdvancedForm"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>createAdvancedForm</b></span>
+                        <a href="#createAdvancedForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createAdvancedForm()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="110"
+                                    class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:110</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>FormGroup</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createBasicForm"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>createBasicForm</b></span>
+                        <a href="#createBasicForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createBasicForm()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="101"
+                                    class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:101</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>FormGroup</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createDateForm"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>createDateForm</b></span>
+                        <a href="#createDateForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createDateForm()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="133"
+                                    class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:133</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>FormGroup</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createFileForm"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>createFileForm</b></span>
+                        <a href="#createFileForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createFileForm()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="120"
+                                    class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:120</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>FormGroup</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createFilePreview"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>createFilePreview</b></span>
+                        <a href="#createFilePreview"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createFilePreview(file: File)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="292"
+                                    class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:292</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>file</td>
+                                            <td>
+                                                        <code>File</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createPasswordForm"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>createPasswordForm</b></span>
+                        <a href="#createPasswordForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createPasswordForm()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="140"
+                                    class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:140</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>FormGroup</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fillExampleData"></a>
+                    <span class="name">
+                        <span ><b>fillExampleData</b></span>
+                        <a href="#fillExampleData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>fillExampleData(example: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="353"
+                                    class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:353</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>example</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getFieldError"></a>
+                    <span class="name">
+                        <span ><b>getFieldError</b></span>
+                        <a href="#getFieldError"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getFieldError(fieldName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="302"
+                                    class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:302</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>fieldName</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getFieldStatus"></a>
+                    <span class="name">
+                        <span ><b>getFieldStatus</b></span>
+                        <a href="#getFieldStatus"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getFieldStatus(fieldName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="313"
+                                    class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:313</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>fieldName</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="initializeFieldConfigs"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>initializeFieldConfigs</b></span>
+                        <a href="#initializeFieldConfigs"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>initializeFieldConfigs()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="147"
+                                    class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:147</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="initializeValidationDemos"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>initializeValidationDemos</b></span>
+                        <a href="#initializeValidationDemos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>initializeValidationDemos()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="179"
+                                    class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:179</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isBase64Image"></a>
+                    <span class="name">
+                        <span ><b>isBase64Image</b></span>
+                        <a href="#isBase64Image"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isBase64Image(url: string | null | undefined)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="78"
+                                    class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:78</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Check if image URL is Base64 encoded</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>url</td>
+                                            <td>
+                                                        <code>string | null | undefined</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isFieldInvalid"></a>
+                    <span class="name">
+                        <span ><b>isFieldInvalid</b></span>
+                        <a href="#isFieldInvalid"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isFieldInvalid(fieldName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="323"
+                                    class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:323</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>fieldName</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isFieldValid"></a>
+                    <span class="name">
+                        <span ><b>isFieldValid</b></span>
+                        <a href="#isFieldValid"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isFieldValid(fieldName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="328"
+                                    class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:328</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>fieldName</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="95"
+                                    class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:95</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onFieldChange"></a>
+                    <span class="name">
+                        <span ><b>onFieldChange</b></span>
+                        <a href="#onFieldChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onFieldChange(fieldName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="261"
+                                    class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:261</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>fieldName</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onFileSelect"></a>
+                    <span class="name">
+                        <span ><b>onFileSelect</b></span>
+                        <a href="#onFileSelect"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onFileSelect(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, fieldName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="272"
+                                    class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:272</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>fieldName</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSubmit"></a>
+                    <span class="name">
+                        <span ><b>onSubmit</b></span>
+                        <a href="#onSubmit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSubmit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="333"
+                                    class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:333</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resetForm"></a>
+                    <span class="name">
+                        <span ><b>resetForm</b></span>
+                        <a href="#resetForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>resetForm()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="345"
+                                    class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:345</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectDemo"></a>
+                    <span class="name">
+                        <span ><b>selectDemo</b></span>
+                        <a href="#selectDemo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>selectDemo(demo: <a href="../interfaces/ValidationDemo.html" target="_self">ValidationDemo</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="245"
+                                    class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:245</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>demo</td>
+                                            <td>
+                                                            <code><a href="../interfaces/ValidationDemo.html" target="_self" >ValidationDemo</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="t"></a>
+                    <span class="name">
+                        <span ><b>t</b></span>
+                        <a href="#t"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>t(key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="384"
+                                    class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:384</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>key</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateFormErrors"></a>
+                    <span class="name">
+                        <span ><b>updateFormErrors</b></span>
+                        <a href="#updateFormErrors"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateFormErrors()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="250"
+                                    class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:250</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="advancedFieldConfigs"></a>
+                    <span class="name">
+                        <span ><b>advancedFieldConfigs</b></span>
+                        <a href="#advancedFieldConfigs"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>FieldValidationConfig[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:60</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="advancedForm"></a>
+                    <span class="name">
+                        <span ><b>advancedForm</b></span>
+                        <a href="#advancedForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>FormGroup</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:53</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="basicFieldConfigs"></a>
+                    <span class="name">
+                        <span ><b>basicFieldConfigs</b></span>
+                        <a href="#basicFieldConfigs"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>FieldValidationConfig[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:59</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="basicForm"></a>
+                    <span class="name">
+                        <span ><b>basicForm</b></span>
+                        <a href="#basicForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>FormGroup</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:52</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="dateFieldConfigs"></a>
+                    <span class="name">
+                        <span ><b>dateFieldConfigs</b></span>
+                        <a href="#dateFieldConfigs"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>FieldValidationConfig[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:62</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="dateForm"></a>
+                    <span class="name">
+                        <span ><b>dateForm</b></span>
+                        <a href="#dateForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>FormGroup</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:55</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fileFieldConfigs"></a>
+                    <span class="name">
+                        <span ><b>fileFieldConfigs</b></span>
+                        <a href="#fileFieldConfigs"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>FieldValidationConfig[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:61</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fileForm"></a>
+                    <span class="name">
+                        <span ><b>fileForm</b></span>
+                        <a href="#fileForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>FormGroup</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:54</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filePreview"></a>
+                    <span class="name">
+                        <span ><b>filePreview</b></span>
+                        <a href="#filePreview"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;string | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:73</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="formErrors"></a>
+                    <span class="name">
+                        <span ><b>formErrors</b></span>
+                        <a href="#formErrors"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;{ [key: string]: string[] }&gt;({})</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:68</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="passwordFieldConfigs"></a>
+                    <span class="name">
+                        <span ><b>passwordFieldConfigs</b></span>
+                        <a href="#passwordFieldConfigs"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>FieldValidationConfig[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:63</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="passwordForm"></a>
+                    <span class="name">
+                        <span ><b>passwordForm</b></span>
+                        <a href="#passwordForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>FormGroup</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:56</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedDemo"></a>
+                    <span class="name">
+                        <span ><b>selectedDemo</b></span>
+                        <a href="#selectedDemo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;ValidationDemo | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:67</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedFile"></a>
+                    <span class="name">
+                        <span ><b>selectedFile</b></span>
+                        <a href="#selectedFile"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;File | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:72</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="validationDemos"></a>
+                    <span class="name">
+                        <span ><b>validationDemos</b></span>
+                        <a href="#validationDemos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;ValidationDemo[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:66</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="validationSummary"></a>
+                    <span class="name">
+                        <span ><b>validationSummary</b></span>
+                        <a href="#validationSummary"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;any&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">src/app/features/portal/demo-group/validation-demo/validation-demo.component.ts:69</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, signal } from &#x27;@angular/core&#x27;;
+import { CommonModule, NgOptimizedImage } from &#x27;@angular/common&#x27;;
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl } from &#x27;@angular/forms&#x27;;
+import { GlassCardComponent } from &#x27;../../../../shared/components/glass-card/glass-card.component&#x27;;
+import { GlassButtonComponent } from &#x27;../../../../shared/components/glass-button/glass-button.component&#x27;;
+import { ValidationService, FieldValidationConfig } from &#x27;../../../../core/services/validation.service&#x27;;
+import { CustomValidators } from &#x27;../../../../shared/validators/custom.validators&#x27;;
+import { I18nService } from &#x27;../../../../core/services/i18n.service&#x27;;
+
+import { ImageOptimizationDirective } from &#x27;../../../../shared/directives/image-optimization.directive&#x27;;
+
+/**
+ * Validation demo interface
+ */
+interface ValidationDemo {
+  name: string;
+  description: string;
+  form: FormGroup;
+  fieldConfigs: FieldValidationConfig[];
+  examples: any[];
+}
+
+@Component({
+  selector: &#x27;app-validation-demo&#x27;,
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    GlassCardComponent,
+    GlassButtonComponent,
+    NgOptimizedImage,
+    ImageOptimizationDirective
+  ],
+  templateUrl: &#x27;./validation-demo.component.html&#x27;,
+  styleUrl: &#x27;./validation-demo.component.scss&#x27;
+})
+export class ValidationDemoComponent implements OnInit {
+  // Demo forms
+  basicForm: FormGroup;
+  advancedForm: FormGroup;
+  fileForm: FormGroup;
+  dateForm: FormGroup;
+  passwordForm: FormGroup;
+
+  // Field configurations
+  basicFieldConfigs: FieldValidationConfig[] &#x3D; [];
+  advancedFieldConfigs: FieldValidationConfig[] &#x3D; [];
+  fileFieldConfigs: FieldValidationConfig[] &#x3D; [];
+  dateFieldConfigs: FieldValidationConfig[] &#x3D; [];
+  passwordFieldConfigs: FieldValidationConfig[] &#x3D; [];
+
+  // Demo data
+  validationDemos &#x3D; signal&lt;ValidationDemo[]&gt;([]);
+  selectedDemo &#x3D; signal&lt;ValidationDemo | null&gt;(null);
+  formErrors &#x3D; signal&lt;{ [key: string]: string[] }&gt;({});
+  validationSummary &#x3D; signal&lt;any&gt;(null);
+
+  // File upload
+  selectedFile &#x3D; signal&lt;File | null&gt;(null);
+  filePreview &#x3D; signal&lt;string | null&gt;(null);
+
+  /**
+   * Check if image URL is Base64 encoded
+   */
+  isBase64Image(url: string | null | undefined): boolean {
+    if (!url) return false;
+    return url.startsWith(&#x27;data:image/&#x27;) || url.startsWith(&#x27;data:image/svg+xml&#x27;);
+  }
+
+  constructor(
+    private fb: FormBuilder,
+    private validationService: ValidationService,
+    private i18n: I18nService
+  ) {
+    this.basicForm &#x3D; this.createBasicForm();
+    this.advancedForm &#x3D; this.createAdvancedForm();
+    this.fileForm &#x3D; this.createFileForm();
+    this.dateForm &#x3D; this.createDateForm();
+    this.passwordForm &#x3D; this.createPasswordForm();
+  }
+
+  ngOnInit(): void {
+    this.initializeFieldConfigs();
+    this.initializeValidationDemos();
+    this.selectedDemo.set(this.validationDemos()[0]);
+  }
+
+  private createBasicForm(): FormGroup {
+    return this.fb.group({
+      email: [&#x27;&#x27;, [Validators.required, CustomValidators.email]],
+      username: [&#x27;&#x27;, [Validators.required, CustomValidators.username]],
+      phoneNumber: [&#x27;&#x27;, [Validators.required, CustomValidators.phoneNumber]],
+      website: [&#x27;&#x27;, [CustomValidators.url]]
+    });
+  }
+
+  private createAdvancedForm(): FormGroup {
+    return this.fb.group({
+      thaiId: [&#x27;&#x27;, [Validators.required, CustomValidators.thaiId]],
+      creditCard: [&#x27;&#x27;, [Validators.required, CustomValidators.creditCard]],
+      ipAddress: [&#x27;&#x27;, [CustomValidators.ipAddress]],
+      macAddress: [&#x27;&#x27;, [CustomValidators.macAddress]],
+      age: [&#x27;&#x27;, [Validators.required, CustomValidators.minAge(18)]]
+    }, { validators: [] });
+  }
+
+  private createFileForm(): FormGroup {
+    return this.fb.group({
+      profileImage: [null, [
+        CustomValidators.fileSize(5), // 5MB max
+        CustomValidators.fileType([&#x27;image/&#x27;])
+      ]],
+      document: [null, [
+        CustomValidators.fileSize(10), // 10MB max
+        CustomValidators.fileType([&#x27;application/pdf&#x27;, &#x27;application/msword&#x27;, &#x27;application/vnd.openxmlformats-officedocument.wordprocessingml.document&#x27;])
+      ]]
+    });
+  }
+
+  private createDateForm(): FormGroup {
+    return this.fb.group({
+      startDate: [&#x27;&#x27;, [Validators.required]],
+      endDate: [&#x27;&#x27;, [Validators.required]]
+    }, { validators: [CustomValidators.dateRange(&#x27;startDate&#x27;, &#x27;endDate&#x27;)] });
+  }
+
+  private createPasswordForm(): FormGroup {
+    return this.fb.group({
+      password: [&#x27;&#x27;, [Validators.required, CustomValidators.strongPassword]],
+      confirmPassword: [&#x27;&#x27;, [Validators.required]]
+    }, { validators: [CustomValidators.passwordMatch(&#x27;password&#x27;, &#x27;confirmPassword&#x27;)] });
+  }
+
+  private initializeFieldConfigs(): void {
+    this.basicFieldConfigs &#x3D; [
+      this.validationService.createFieldConfig(&#x27;email&#x27;, [&#x27;required&#x27;, &#x27;email&#x27;]),
+      this.validationService.createFieldConfig(&#x27;username&#x27;, [&#x27;required&#x27;, &#x27;username&#x27;]),
+      this.validationService.createFieldConfig(&#x27;phoneNumber&#x27;, [&#x27;required&#x27;, &#x27;phoneNumber&#x27;]),
+      this.validationService.createFieldConfig(&#x27;website&#x27;, [&#x27;url&#x27;])
+    ];
+
+    this.advancedFieldConfigs &#x3D; [
+      this.validationService.createFieldConfig(&#x27;thaiId&#x27;, [&#x27;required&#x27;, &#x27;thaiId&#x27;]),
+      this.validationService.createFieldConfig(&#x27;creditCard&#x27;, [&#x27;required&#x27;, &#x27;creditCard&#x27;]),
+      this.validationService.createFieldConfig(&#x27;ipAddress&#x27;, [&#x27;ipAddress&#x27;]),
+      this.validationService.createFieldConfig(&#x27;macAddress&#x27;, [&#x27;macAddress&#x27;]),
+      this.validationService.createFieldConfig(&#x27;age&#x27;, [&#x27;required&#x27;, &#x27;minAge&#x27;])
+    ];
+
+    this.fileFieldConfigs &#x3D; [
+      this.validationService.createFieldConfig(&#x27;profileImage&#x27;, [&#x27;fileSize&#x27;, &#x27;fileType&#x27;]),
+      this.validationService.createFieldConfig(&#x27;document&#x27;, [&#x27;fileSize&#x27;, &#x27;fileType&#x27;])
+    ];
+
+    this.dateFieldConfigs &#x3D; [
+      this.validationService.createFieldConfig(&#x27;startDate&#x27;, [&#x27;required&#x27;]),
+      this.validationService.createFieldConfig(&#x27;endDate&#x27;, [&#x27;required&#x27;])
+    ];
+
+    this.passwordFieldConfigs &#x3D; [
+      this.validationService.createFieldConfig(&#x27;password&#x27;, [&#x27;required&#x27;, &#x27;strongPassword&#x27;]),
+      this.validationService.createFieldConfig(&#x27;confirmPassword&#x27;, [&#x27;required&#x27;])
+    ];
+  }
+
+  private initializeValidationDemos(): void {
+    this.validationDemos.set([
+      {
+        name: &#x27;Basic Validation&#x27;,
+        description: &#x27;Common form validations like email, username, phone number&#x27;,
+        form: this.basicForm,
+        fieldConfigs: this.basicFieldConfigs,
+        examples: [
+          { field: &#x27;email&#x27;, value: &#x27;john@example.com&#x27;, valid: true },
+          { field: &#x27;email&#x27;, value: &#x27;invalid-email&#x27;, valid: false },
+          { field: &#x27;username&#x27;, value: &#x27;john_doe123&#x27;, valid: true },
+          { field: &#x27;username&#x27;, value: &#x27;ab&#x27;, valid: false },
+          { field: &#x27;phoneNumber&#x27;, value: &#x27;0812345678&#x27;, valid: true },
+          { field: &#x27;phoneNumber&#x27;, value: &#x27;123&#x27;, valid: false }
+        ]
+      },
+      {
+        name: &#x27;Advanced Validation&#x27;,
+        description: &#x27;Complex validations like Thai ID, credit card, IP address&#x27;,
+        form: this.advancedForm,
+        fieldConfigs: this.advancedFieldConfigs,
+        examples: [
+          { field: &#x27;thaiId&#x27;, value: &#x27;1234567890123&#x27;, valid: true },
+          { field: &#x27;thaiId&#x27;, value: &#x27;1234567890124&#x27;, valid: false },
+          { field: &#x27;creditCard&#x27;, value: &#x27;4111111111111111&#x27;, valid: true },
+          { field: &#x27;creditCard&#x27;, value: &#x27;1234567890123456&#x27;, valid: false },
+          { field: &#x27;ipAddress&#x27;, value: &#x27;192.168.1.1&#x27;, valid: true },
+          { field: &#x27;ipAddress&#x27;, value: &#x27;999.999.999.999&#x27;, valid: false }
+        ]
+      },
+      {
+        name: &#x27;File Validation&#x27;,
+        description: &#x27;File upload validations for size and type&#x27;,
+        form: this.fileForm,
+        fieldConfigs: this.fileFieldConfigs,
+        examples: [
+          { field: &#x27;profileImage&#x27;, type: &#x27;image/jpeg&#x27;, size: &#x27;2MB&#x27;, valid: true },
+          { field: &#x27;profileImage&#x27;, type: &#x27;text/plain&#x27;, size: &#x27;1MB&#x27;, valid: false },
+          { field: &#x27;document&#x27;, type: &#x27;application/pdf&#x27;, size: &#x27;5MB&#x27;, valid: true },
+          { field: &#x27;document&#x27;, type: &#x27;image/jpeg&#x27;, size: &#x27;3MB&#x27;, valid: false }
+        ]
+      },
+      {
+        name: &#x27;Date Validation&#x27;,
+        description: &#x27;Date range and age validations&#x27;,
+        form: this.dateForm,
+        fieldConfigs: this.dateFieldConfigs,
+        examples: [
+          { field: &#x27;startDate&#x27;, value: &#x27;2024-01-01&#x27;, endDate: &#x27;2024-12-31&#x27;, valid: true },
+          { field: &#x27;startDate&#x27;, value: &#x27;2024-12-31&#x27;, endDate: &#x27;2024-01-01&#x27;, valid: false }
+        ]
+      },
+      {
+        name: &#x27;Password Validation&#x27;,
+        description: &#x27;Strong password and confirmation validations&#x27;,
+        form: this.passwordForm,
+        fieldConfigs: this.passwordFieldConfigs,
+        examples: [
+          { field: &#x27;password&#x27;, value: &#x27;MyStr0ng!Pass&#x27;, confirmPassword: &#x27;MyStr0ng!Pass&#x27;, valid: true },
+          { field: &#x27;password&#x27;, value: &#x27;weak&#x27;, confirmPassword: &#x27;weak&#x27;, valid: false },
+          { field: &#x27;password&#x27;, value: &#x27;MyStr0ng!Pass&#x27;, confirmPassword: &#x27;DifferentPass&#x27;, valid: false }
+        ]
+      }
+    ]);
+  }
+
+  selectDemo(demo: ValidationDemo): void {
+    this.selectedDemo.set(demo);
+    this.updateFormErrors();
+  }
+
+  updateFormErrors(): void {
+    const demo &#x3D; this.selectedDemo();
+    if (demo) {
+      const errors &#x3D; this.validationService.getFormErrors(demo.form, demo.fieldConfigs);
+      this.formErrors.set(errors);
+
+      const summary &#x3D; this.validationService.getValidationSummary(demo.form, demo.fieldConfigs);
+      this.validationSummary.set(summary);
+    }
+  }
+
+  onFieldChange(fieldName: string): void {
+    const demo &#x3D; this.selectedDemo();
+    if (demo) {
+      const control &#x3D; demo.form.get(fieldName);
+      if (control) {
+        control.markAsTouched();
+        this.updateFormErrors();
+      }
+    }
+  }
+
+  onFileSelect(event: any, fieldName: string): void {
+    const file &#x3D; event.target.files[0];
+    if (file) {
+      const demo &#x3D; this.selectedDemo();
+      if (demo) {
+        const control &#x3D; demo.form.get(fieldName);
+        if (control) {
+          control.setValue(file);
+          control.markAsTouched();
+          this.updateFormErrors();
+        }
+      }
+
+      if (fieldName &#x3D;&#x3D;&#x3D; &#x27;profileImage&#x27;) {
+        this.selectedFile.set(file);
+        this.createFilePreview(file);
+      }
+    }
+  }
+
+  private createFilePreview(file: File): void {
+    if (file.type.startsWith(&#x27;image/&#x27;)) {
+      const reader &#x3D; new FileReader();
+      reader.onload &#x3D; (e) &#x3D;&gt; {
+        this.filePreview.set(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  getFieldError(fieldName: string): string {
+    const demo &#x3D; this.selectedDemo();
+    if (!demo) return &#x27;&#x27;;
+
+    const control &#x3D; demo.form.get(fieldName);
+    if (!control || !control.errors || !control.touched) return &#x27;&#x27;;
+
+    const fieldConfig &#x3D; demo.fieldConfigs.find(fc &#x3D;&gt; fc.fieldName &#x3D;&#x3D;&#x3D; fieldName);
+    return this.validationService.getErrorMessage(control, fieldName, fieldConfig?.customMessages);
+  }
+
+  getFieldStatus(fieldName: string): any {
+    const demo &#x3D; this.selectedDemo();
+    if (!demo) return null;
+
+    const control &#x3D; demo.form.get(fieldName);
+    if (!control) return null;
+
+    return this.validationService.getFieldStatus(control);
+  }
+
+  isFieldInvalid(fieldName: string): boolean {
+    const status &#x3D; this.getFieldStatus(fieldName);
+    return status ? status.isInvalid : false;
+  }
+
+  isFieldValid(fieldName: string): boolean {
+    const status &#x3D; this.getFieldStatus(fieldName);
+    return status ? status.isValid : false;
+  }
+
+  onSubmit(): void {
+    const demo &#x3D; this.selectedDemo();
+    if (!demo) return;
+
+    if (demo.form.valid) {
+      alert(&#x27;Form is valid! Data: &#x27; + JSON.stringify(demo.form.value, null, 2));
+    } else {
+      alert(&#x27;Form has validation errors. Please check the fields.&#x27;);
+      this.updateFormErrors();
+    }
+  }
+
+  resetForm(): void {
+    const demo &#x3D; this.selectedDemo();
+    if (demo) {
+      demo.form.reset();
+      this.updateFormErrors();
+    }
+  }
+
+  fillExampleData(example: any): void {
+    const demo &#x3D; this.selectedDemo();
+    if (!demo) return;
+
+    if (example.field) {
+      const control &#x3D; demo.form.get(example.field);
+      if (control) {
+        control.setValue(example.value);
+        control.markAsTouched();
+      }
+    }
+
+    if (example.endDate) {
+      const endControl &#x3D; demo.form.get(&#x27;endDate&#x27;);
+      if (endControl) {
+        endControl.setValue(example.endDate);
+        endControl.markAsTouched();
+      }
+    }
+
+    if (example.confirmPassword) {
+      const confirmControl &#x3D; demo.form.get(&#x27;confirmPassword&#x27;);
+      if (confirmControl) {
+        confirmControl.setValue(example.confirmPassword);
+        confirmControl.markAsTouched();
+      }
+    }
+
+    this.updateFormErrors();
+  }
+
+  t(key: string): string {
+    return this.i18n.translate(key);
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;space-y-6&quot;&gt;
+  &lt;!-- Header --&gt;
+  &lt;div class&#x3D;&quot;flex items-center justify-between&quot;&gt;
+    &lt;h1 class&#x3D;&quot;text-3xl font-bold text-gray-900 dark:text-gray-100&quot;&gt;
+      Advanced Form Validation Demo
+    &lt;/h1&gt;
+    &lt;div class&#x3D;&quot;flex space-x-2&quot;&gt;
+      &lt;app-glass-button (clicked)&#x3D;&quot;onSubmit()&quot; variant&#x3D;&quot;primary&quot;&gt;
+        &lt;i class&#x3D;&quot;fas fa-check mr-2&quot;&gt;&lt;/i&gt; Validate Form
+      &lt;/app-glass-button&gt;
+      &lt;app-glass-button (clicked)&#x3D;&quot;resetForm()&quot; variant&#x3D;&quot;secondary&quot;&gt;
+        &lt;i class&#x3D;&quot;fas fa-undo mr-2&quot;&gt;&lt;/i&gt; Reset
+      &lt;/app-glass-button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Demo Selection --&gt;
+  &lt;app-glass-card class&#x3D;&quot;p-6&quot;&gt;
+    &lt;h3 class&#x3D;&quot;text-xl font-semibold text-white mb-4&quot;&gt;Select Validation Demo&lt;/h3&gt;
+    &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4&quot;&gt;
+      &lt;button
+        *ngFor&#x3D;&quot;let demo of validationDemos()&quot;
+        (click)&#x3D;&quot;selectDemo(demo)&quot;
+        [class]&#x3D;&quot;&#x27;p-4 rounded-lg border transition-all &#x27; + (selectedDemo()?.name &#x3D;&#x3D;&#x3D; demo.name ? &#x27;border-blue-500 bg-blue-500/20&#x27; : &#x27;border-gray-600 bg-gray-800 hover:bg-gray-700&#x27;)&quot;
+      &gt;
+        &lt;h4 class&#x3D;&quot;text-lg font-medium text-white mb-2&quot;&gt;{{ demo.name }}&lt;/h4&gt;
+        &lt;p class&#x3D;&quot;text-sm text-gray-400&quot;&gt;{{ demo.description }}&lt;/p&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/app-glass-card&gt;
+
+  &lt;!-- Validation Summary --&gt;
+  &lt;app-glass-card *ngIf&#x3D;&quot;validationSummary()&quot; class&#x3D;&quot;p-6&quot;&gt;
+    &lt;h3 class&#x3D;&quot;text-xl font-semibold text-white mb-4&quot;&gt;Validation Summary&lt;/h3&gt;
+    &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-4 gap-4&quot;&gt;
+      &lt;div class&#x3D;&quot;text-center&quot;&gt;
+        &lt;div class&#x3D;&quot;text-2xl font-bold text-white&quot;&gt;{{ validationSummary()?.totalFields }}&lt;/div&gt;
+        &lt;div class&#x3D;&quot;text-sm text-gray-400&quot;&gt;Total Fields&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;text-center&quot;&gt;
+        &lt;div class&#x3D;&quot;text-2xl font-bold text-green-400&quot;&gt;{{ validationSummary()?.validFields }}&lt;/div&gt;
+        &lt;div class&#x3D;&quot;text-sm text-gray-400&quot;&gt;Valid Fields&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;text-center&quot;&gt;
+        &lt;div class&#x3D;&quot;text-2xl font-bold text-red-400&quot;&gt;{{ validationSummary()?.invalidFields }}&lt;/div&gt;
+        &lt;div class&#x3D;&quot;text-sm text-gray-400&quot;&gt;Invalid Fields&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;text-center&quot;&gt;
+        &lt;div class&#x3D;&quot;text-2xl font-bold text-yellow-400&quot;&gt;{{ validationSummary()?.errorCount }}&lt;/div&gt;
+        &lt;div class&#x3D;&quot;text-sm text-gray-400&quot;&gt;Total Errors&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/app-glass-card&gt;
+
+  &lt;!-- Form Demo --&gt;
+  &lt;div *ngIf&#x3D;&quot;selectedDemo()&quot; class&#x3D;&quot;grid grid-cols-1 lg:grid-cols-2 gap-6&quot;&gt;
+    &lt;!-- Form --&gt;
+    &lt;app-glass-card class&#x3D;&quot;p-6&quot;&gt;
+      &lt;h3 class&#x3D;&quot;text-xl font-semibold text-white mb-4&quot;&gt;{{ selectedDemo()?.name }}&lt;/h3&gt;
+      &lt;form [formGroup]&#x3D;&quot;selectedDemo()!.form&quot; (ngSubmit)&#x3D;&quot;onSubmit()&quot; class&#x3D;&quot;space-y-4&quot;&gt;
+
+        &lt;!-- Basic Validation Form --&gt;
+        &lt;div *ngIf&#x3D;&quot;selectedDemo()?.name &#x3D;&#x3D;&#x3D; &#x27;Basic Validation&#x27;&quot;&gt;
+          &lt;div class&#x3D;&quot;space-y-4&quot;&gt;
+            &lt;div&gt;
+              &lt;label class&#x3D;&quot;block text-sm font-medium text-gray-300 mb-2&quot;&gt;Email Address&lt;/label&gt;
+              &lt;input
+                type&#x3D;&quot;email&quot;
+                formControlName&#x3D;&quot;email&quot;
+                (blur)&#x3D;&quot;onFieldChange(&#x27;email&#x27;)&quot;
+                class&#x3D;&quot;glass-input w-full&quot;
+                [class.border-red-500]&#x3D;&quot;isFieldInvalid(&#x27;email&#x27;)&quot;
+                [class.border-green-500]&#x3D;&quot;isFieldValid(&#x27;email&#x27;)&quot;
+                placeholder&#x3D;&quot;Enter email address&quot;&gt;
+              &lt;div *ngIf&#x3D;&quot;isFieldInvalid(&#x27;email&#x27;)&quot; class&#x3D;&quot;text-red-400 text-sm mt-1&quot;&gt;
+                {{ getFieldError(&#x27;email&#x27;) }}
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div&gt;
+              &lt;label class&#x3D;&quot;block text-sm font-medium text-gray-300 mb-2&quot;&gt;Username&lt;/label&gt;
+              &lt;input
+                type&#x3D;&quot;text&quot;
+                formControlName&#x3D;&quot;username&quot;
+                (blur)&#x3D;&quot;onFieldChange(&#x27;username&#x27;)&quot;
+                class&#x3D;&quot;glass-input w-full&quot;
+                [class.border-red-500]&#x3D;&quot;isFieldInvalid(&#x27;username&#x27;)&quot;
+                [class.border-green-500]&#x3D;&quot;isFieldValid(&#x27;username&#x27;)&quot;
+                placeholder&#x3D;&quot;Enter username&quot;&gt;
+              &lt;div *ngIf&#x3D;&quot;isFieldInvalid(&#x27;username&#x27;)&quot; class&#x3D;&quot;text-red-400 text-sm mt-1&quot;&gt;
+                {{ getFieldError(&#x27;username&#x27;) }}
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div&gt;
+              &lt;label class&#x3D;&quot;block text-sm font-medium text-gray-300 mb-2&quot;&gt;Phone Number&lt;/label&gt;
+              &lt;input
+                type&#x3D;&quot;tel&quot;
+                formControlName&#x3D;&quot;phoneNumber&quot;
+                (blur)&#x3D;&quot;onFieldChange(&#x27;phoneNumber&#x27;)&quot;
+                class&#x3D;&quot;glass-input w-full&quot;
+                [class.border-red-500]&#x3D;&quot;isFieldInvalid(&#x27;phoneNumber&#x27;)&quot;
+                [class.border-green-500]&#x3D;&quot;isFieldValid(&#x27;phoneNumber&#x27;)&quot;
+                placeholder&#x3D;&quot;Enter phone number&quot;&gt;
+              &lt;div *ngIf&#x3D;&quot;isFieldInvalid(&#x27;phoneNumber&#x27;)&quot; class&#x3D;&quot;text-red-400 text-sm mt-1&quot;&gt;
+                {{ getFieldError(&#x27;phoneNumber&#x27;) }}
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div&gt;
+              &lt;label class&#x3D;&quot;block text-sm font-medium text-gray-300 mb-2&quot;&gt;Website (Optional)&lt;/label&gt;
+              &lt;input
+                type&#x3D;&quot;url&quot;
+                formControlName&#x3D;&quot;website&quot;
+                (blur)&#x3D;&quot;onFieldChange(&#x27;website&#x27;)&quot;
+                class&#x3D;&quot;glass-input w-full&quot;
+                [class.border-red-500]&#x3D;&quot;isFieldInvalid(&#x27;website&#x27;)&quot;
+                [class.border-green-500]&#x3D;&quot;isFieldValid(&#x27;website&#x27;)&quot;
+                placeholder&#x3D;&quot;Enter website URL&quot;&gt;
+              &lt;div *ngIf&#x3D;&quot;isFieldInvalid(&#x27;website&#x27;)&quot; class&#x3D;&quot;text-red-400 text-sm mt-1&quot;&gt;
+                {{ getFieldError(&#x27;website&#x27;) }}
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Advanced Validation Form --&gt;
+        &lt;div *ngIf&#x3D;&quot;selectedDemo()?.name &#x3D;&#x3D;&#x3D; &#x27;Advanced Validation&#x27;&quot;&gt;
+          &lt;div class&#x3D;&quot;space-y-4&quot;&gt;
+            &lt;div&gt;
+              &lt;label class&#x3D;&quot;block text-sm font-medium text-gray-300 mb-2&quot;&gt;Thai ID&lt;/label&gt;
+              &lt;input
+                type&#x3D;&quot;text&quot;
+                formControlName&#x3D;&quot;thaiId&quot;
+                (blur)&#x3D;&quot;onFieldChange(&#x27;thaiId&#x27;)&quot;
+                class&#x3D;&quot;glass-input w-full&quot;
+                [class.border-red-500]&#x3D;&quot;isFieldInvalid(&#x27;thaiId&#x27;)&quot;
+                [class.border-green-500]&#x3D;&quot;isFieldValid(&#x27;thaiId&#x27;)&quot;
+                placeholder&#x3D;&quot;Enter Thai ID&quot;&gt;
+              &lt;div *ngIf&#x3D;&quot;isFieldInvalid(&#x27;thaiId&#x27;)&quot; class&#x3D;&quot;text-red-400 text-sm mt-1&quot;&gt;
+                {{ getFieldError(&#x27;thaiId&#x27;) }}
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div&gt;
+              &lt;label class&#x3D;&quot;block text-sm font-medium text-gray-300 mb-2&quot;&gt;Credit Card&lt;/label&gt;
+              &lt;input
+                type&#x3D;&quot;text&quot;
+                formControlName&#x3D;&quot;creditCard&quot;
+                (blur)&#x3D;&quot;onFieldChange(&#x27;creditCard&#x27;)&quot;
+                class&#x3D;&quot;glass-input w-full&quot;
+                [class.border-red-500]&#x3D;&quot;isFieldInvalid(&#x27;creditCard&#x27;)&quot;
+                [class.border-green-500]&#x3D;&quot;isFieldValid(&#x27;creditCard&#x27;)&quot;
+                placeholder&#x3D;&quot;Enter credit card number&quot;&gt;
+              &lt;div *ngIf&#x3D;&quot;isFieldInvalid(&#x27;creditCard&#x27;)&quot; class&#x3D;&quot;text-red-400 text-sm mt-1&quot;&gt;
+                {{ getFieldError(&#x27;creditCard&#x27;) }}
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div&gt;
+              &lt;label class&#x3D;&quot;block text-sm font-medium text-gray-300 mb-2&quot;&gt;IP Address&lt;/label&gt;
+              &lt;input
+                type&#x3D;&quot;text&quot;
+                formControlName&#x3D;&quot;ipAddress&quot;
+                (blur)&#x3D;&quot;onFieldChange(&#x27;ipAddress&#x27;)&quot;
+                class&#x3D;&quot;glass-input w-full&quot;
+                [class.border-red-500]&#x3D;&quot;isFieldInvalid(&#x27;ipAddress&#x27;)&quot;
+                [class.border-green-500]&#x3D;&quot;isFieldValid(&#x27;ipAddress&#x27;)&quot;
+                placeholder&#x3D;&quot;Enter IP address&quot;&gt;
+              &lt;div *ngIf&#x3D;&quot;isFieldInvalid(&#x27;ipAddress&#x27;)&quot; class&#x3D;&quot;text-red-400 text-sm mt-1&quot;&gt;
+                {{ getFieldError(&#x27;ipAddress&#x27;) }}
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div&gt;
+              &lt;label class&#x3D;&quot;block text-sm font-medium text-gray-300 mb-2&quot;&gt;MAC Address&lt;/label&gt;
+              &lt;input
+                type&#x3D;&quot;text&quot;
+                formControlName&#x3D;&quot;macAddress&quot;
+                (blur)&#x3D;&quot;onFieldChange(&#x27;macAddress&#x27;)&quot;
+                class&#x3D;&quot;glass-input w-full&quot;
+                [class.border-red-500]&#x3D;&quot;isFieldInvalid(&#x27;macAddress&#x27;)&quot;
+                [class.border-green-500]&#x3D;&quot;isFieldValid(&#x27;macAddress&#x27;)&quot;
+                placeholder&#x3D;&quot;Enter MAC address&quot;&gt;
+              &lt;div *ngIf&#x3D;&quot;isFieldInvalid(&#x27;macAddress&#x27;)&quot; class&#x3D;&quot;text-red-400 text-sm mt-1&quot;&gt;
+                {{ getFieldError(&#x27;macAddress&#x27;) }}
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div&gt;
+              &lt;label class&#x3D;&quot;block text-sm font-medium text-gray-300 mb-2&quot;&gt;Birth Date (Age 18+)&lt;/label&gt;
+              &lt;input
+                type&#x3D;&quot;date&quot;
+                formControlName&#x3D;&quot;age&quot;
+                (blur)&#x3D;&quot;onFieldChange(&#x27;age&#x27;)&quot;
+                class&#x3D;&quot;glass-input w-full&quot;
+                [class.border-red-500]&#x3D;&quot;isFieldInvalid(&#x27;age&#x27;)&quot;
+                [class.border-green-500]&#x3D;&quot;isFieldValid(&#x27;age&#x27;)&quot;&gt;
+              &lt;div *ngIf&#x3D;&quot;isFieldInvalid(&#x27;age&#x27;)&quot; class&#x3D;&quot;text-red-400 text-sm mt-1&quot;&gt;
+                {{ getFieldError(&#x27;age&#x27;) }}
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- File Validation Form --&gt;
+        &lt;div *ngIf&#x3D;&quot;selectedDemo()?.name &#x3D;&#x3D;&#x3D; &#x27;File Validation&#x27;&quot;&gt;
+          &lt;div class&#x3D;&quot;space-y-4&quot;&gt;
+            &lt;div&gt;
+              &lt;label class&#x3D;&quot;block text-sm font-medium text-gray-300 mb-2&quot;&gt;Profile Image (Max 5MB)&lt;/label&gt;
+              &lt;input
+                type&#x3D;&quot;file&quot;
+                formControlName&#x3D;&quot;profileImage&quot;
+                (change)&#x3D;&quot;onFileSelect($event, &#x27;profileImage&#x27;)&quot;
+                accept&#x3D;&quot;image/*&quot;
+                class&#x3D;&quot;glass-input w-full&quot;
+                [class.border-red-500]&#x3D;&quot;isFieldInvalid(&#x27;profileImage&#x27;)&quot;
+                [class.border-green-500]&#x3D;&quot;isFieldValid(&#x27;profileImage&#x27;)&quot;&gt;
+              &lt;div *ngIf&#x3D;&quot;isFieldInvalid(&#x27;profileImage&#x27;)&quot; class&#x3D;&quot;text-red-400 text-sm mt-1&quot;&gt;
+                {{ getFieldError(&#x27;profileImage&#x27;) }}
+              &lt;/div&gt;
+              &lt;div *ngIf&#x3D;&quot;filePreview()&quot; class&#x3D;&quot;mt-2&quot;&gt;
+                &lt;img *ngIf&#x3D;&quot;filePreview() &amp;&amp; !isBase64Image(filePreview()!)&quot;
+                     appImageOptimization [ngSrc]&#x3D;&quot;filePreview()!&quot; alt&#x3D;&quot;Preview&quot; class&#x3D;&quot;w-20 h-20 object-cover rounded&quot; loading&#x3D;&quot;lazy&quot;&gt;
+                &lt;img *ngIf&#x3D;&quot;filePreview() &amp;&amp; isBase64Image(filePreview()!)&quot;
+                     [src]&#x3D;&quot;filePreview()!&quot; alt&#x3D;&quot;Preview&quot; class&#x3D;&quot;w-20 h-20 object-cover rounded&quot; loading&#x3D;&quot;lazy&quot;&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div&gt;
+              &lt;label class&#x3D;&quot;block text-sm font-medium text-gray-300 mb-2&quot;&gt;Document (PDF/DOC, Max 10MB)&lt;/label&gt;
+              &lt;input
+                type&#x3D;&quot;file&quot;
+                formControlName&#x3D;&quot;document&quot;
+                (change)&#x3D;&quot;onFileSelect($event, &#x27;document&#x27;)&quot;
+                accept&#x3D;&quot;.pdf,.doc,.docx&quot;
+                class&#x3D;&quot;glass-input w-full&quot;
+                [class.border-red-500]&#x3D;&quot;isFieldInvalid(&#x27;document&#x27;)&quot;
+                [class.border-green-500]&#x3D;&quot;isFieldValid(&#x27;document&#x27;)&quot;&gt;
+              &lt;div *ngIf&#x3D;&quot;isFieldInvalid(&#x27;document&#x27;)&quot; class&#x3D;&quot;text-red-400 text-sm mt-1&quot;&gt;
+                {{ getFieldError(&#x27;document&#x27;) }}
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Date Validation Form --&gt;
+        &lt;div *ngIf&#x3D;&quot;selectedDemo()?.name &#x3D;&#x3D;&#x3D; &#x27;Date Validation&#x27;&quot;&gt;
+          &lt;div class&#x3D;&quot;space-y-4&quot;&gt;
+            &lt;div&gt;
+              &lt;label class&#x3D;&quot;block text-sm font-medium text-gray-300 mb-2&quot;&gt;Start Date&lt;/label&gt;
+              &lt;input
+                type&#x3D;&quot;date&quot;
+                formControlName&#x3D;&quot;startDate&quot;
+                (blur)&#x3D;&quot;onFieldChange(&#x27;startDate&#x27;)&quot;
+                class&#x3D;&quot;glass-input w-full&quot;
+                [class.border-red-500]&#x3D;&quot;isFieldInvalid(&#x27;startDate&#x27;)&quot;
+                [class.border-green-500]&#x3D;&quot;isFieldValid(&#x27;startDate&#x27;)&quot;&gt;
+              &lt;div *ngIf&#x3D;&quot;isFieldInvalid(&#x27;startDate&#x27;)&quot; class&#x3D;&quot;text-red-400 text-sm mt-1&quot;&gt;
+                {{ getFieldError(&#x27;startDate&#x27;) }}
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div&gt;
+              &lt;label class&#x3D;&quot;block text-sm font-medium text-gray-300 mb-2&quot;&gt;End Date&lt;/label&gt;
+              &lt;input
+                type&#x3D;&quot;date&quot;
+                formControlName&#x3D;&quot;endDate&quot;
+                (blur)&#x3D;&quot;onFieldChange(&#x27;endDate&#x27;)&quot;
+                class&#x3D;&quot;glass-input w-full&quot;
+                [class.border-red-500]&#x3D;&quot;isFieldInvalid(&#x27;endDate&#x27;)&quot;
+                [class.border-green-500]&#x3D;&quot;isFieldValid(&#x27;endDate&#x27;)&quot;&gt;
+              &lt;div *ngIf&#x3D;&quot;isFieldInvalid(&#x27;endDate&#x27;)&quot; class&#x3D;&quot;text-red-400 text-sm mt-1&quot;&gt;
+                {{ getFieldError(&#x27;endDate&#x27;) }}
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Password Validation Form --&gt;
+        &lt;div *ngIf&#x3D;&quot;selectedDemo()?.name &#x3D;&#x3D;&#x3D; &#x27;Password Validation&#x27;&quot;&gt;
+          &lt;div class&#x3D;&quot;space-y-4&quot;&gt;
+            &lt;div&gt;
+              &lt;label class&#x3D;&quot;block text-sm font-medium text-gray-300 mb-2&quot;&gt;Password&lt;/label&gt;
+              &lt;input
+                type&#x3D;&quot;password&quot;
+                formControlName&#x3D;&quot;password&quot;
+                (blur)&#x3D;&quot;onFieldChange(&#x27;password&#x27;)&quot;
+                class&#x3D;&quot;glass-input w-full&quot;
+                [class.border-red-500]&#x3D;&quot;isFieldInvalid(&#x27;password&#x27;)&quot;
+                [class.border-green-500]&#x3D;&quot;isFieldValid(&#x27;password&#x27;)&quot;
+                placeholder&#x3D;&quot;Enter strong password&quot;&gt;
+              &lt;div *ngIf&#x3D;&quot;isFieldInvalid(&#x27;password&#x27;)&quot; class&#x3D;&quot;text-red-400 text-sm mt-1&quot;&gt;
+                {{ getFieldError(&#x27;password&#x27;) }}
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div&gt;
+              &lt;label class&#x3D;&quot;block text-sm font-medium text-gray-300 mb-2&quot;&gt;Confirm Password&lt;/label&gt;
+              &lt;input
+                type&#x3D;&quot;password&quot;
+                formControlName&#x3D;&quot;confirmPassword&quot;
+                (blur)&#x3D;&quot;onFieldChange(&#x27;confirmPassword&#x27;)&quot;
+                class&#x3D;&quot;glass-input w-full&quot;
+                [class.border-red-500]&#x3D;&quot;isFieldInvalid(&#x27;confirmPassword&#x27;)&quot;
+                [class.border-green-500]&#x3D;&quot;isFieldValid(&#x27;confirmPassword&#x27;)&quot;
+                placeholder&#x3D;&quot;Confirm password&quot;&gt;
+              &lt;div *ngIf&#x3D;&quot;isFieldInvalid(&#x27;confirmPassword&#x27;)&quot; class&#x3D;&quot;text-red-400 text-sm mt-1&quot;&gt;
+                {{ getFieldError(&#x27;confirmPassword&#x27;) }}
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;flex justify-end space-x-2&quot;&gt;
+          &lt;app-glass-button type&#x3D;&quot;button&quot; (clicked)&#x3D;&quot;resetForm()&quot; variant&#x3D;&quot;secondary&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-undo mr-2&quot;&gt;&lt;/i&gt; Reset
+          &lt;/app-glass-button&gt;
+          &lt;app-glass-button type&#x3D;&quot;submit&quot; variant&#x3D;&quot;primary&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-check mr-2&quot;&gt;&lt;/i&gt; Validate
+          &lt;/app-glass-button&gt;
+        &lt;/div&gt;
+      &lt;/form&gt;
+    &lt;/app-glass-card&gt;
+
+    &lt;!-- Examples and Documentation --&gt;
+    &lt;app-glass-card class&#x3D;&quot;p-6&quot;&gt;
+      &lt;h3 class&#x3D;&quot;text-xl font-semibold text-white mb-4&quot;&gt;Examples &amp; Documentation&lt;/h3&gt;
+
+      &lt;!-- Examples --&gt;
+      &lt;div class&#x3D;&quot;mb-6&quot;&gt;
+        &lt;h4 class&#x3D;&quot;text-lg font-medium text-gray-300 mb-3&quot;&gt;Try Examples&lt;/h4&gt;
+        &lt;div class&#x3D;&quot;space-y-2&quot;&gt;
+          &lt;button
+            *ngFor&#x3D;&quot;let example of selectedDemo()?.examples&quot;
+            (click)&#x3D;&quot;fillExampleData(example)&quot;
+            [class]&#x3D;&quot;&#x27;w-full text-left p-3 rounded-lg border transition-all &#x27; + (example.valid ? &#x27;border-green-500 bg-green-500/10 hover:bg-green-500/20&#x27; : &#x27;border-red-500 bg-red-500/10 hover:bg-red-500/20&#x27;)&quot;
+          &gt;
+            &lt;div class&#x3D;&quot;flex items-center justify-between&quot;&gt;
+              &lt;div&gt;
+                &lt;div class&#x3D;&quot;font-medium text-white&quot;&gt;{{ example.field }}: {{ example.value }}&lt;/div&gt;
+                &lt;div class&#x3D;&quot;text-sm text-gray-400&quot;&gt;{{ example.valid ? &#x27;Valid&#x27; : &#x27;Invalid&#x27; }}&lt;/div&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;text-sm&quot;&gt;
+                &lt;i [class]&#x3D;&quot;example.valid ? &#x27;fas fa-check text-green-400&#x27; : &#x27;fas fa-times text-red-400&#x27;&quot;&gt;&lt;/i&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Field Status --&gt;
+      &lt;div class&#x3D;&quot;mb-6&quot;&gt;
+        &lt;h4 class&#x3D;&quot;text-lg font-medium text-gray-300 mb-3&quot;&gt;Field Status&lt;/h4&gt;
+        &lt;div class&#x3D;&quot;space-y-2&quot;&gt;
+          &lt;div *ngFor&#x3D;&quot;let field of validationSummary()?.fields&quot; class&#x3D;&quot;flex items-center justify-between p-2 rounded bg-gray-800&quot;&gt;
+            &lt;span class&#x3D;&quot;text-white&quot;&gt;{{ field.name }}&lt;/span&gt;
+            &lt;div class&#x3D;&quot;flex items-center space-x-2&quot;&gt;
+              &lt;span [class]&#x3D;&quot;field.isValid ? &#x27;text-green-400&#x27; : &#x27;text-red-400&#x27;&quot;&gt;
+                {{ field.isValid ? &#x27;Valid&#x27; : &#x27;Invalid&#x27; }}
+              &lt;/span&gt;
+              &lt;i [class]&#x3D;&quot;field.isValid ? &#x27;fas fa-check text-green-400&#x27; : &#x27;fas fa-times text-red-400&#x27;&quot;&gt;&lt;/i&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Validation Rules --&gt;
+      &lt;div&gt;
+        &lt;h4 class&#x3D;&quot;text-lg font-medium text-gray-300 mb-3&quot;&gt;Validation Rules&lt;/h4&gt;
+        &lt;div class&#x3D;&quot;space-y-2 text-sm text-gray-400&quot;&gt;
+          &lt;div *ngIf&#x3D;&quot;selectedDemo()?.name &#x3D;&#x3D;&#x3D; &#x27;Basic Validation&#x27;&quot;&gt;
+            &lt;div&gt;• Email: Valid email format&lt;/div&gt;
+            &lt;div&gt;• Username: 3-20 characters, alphanumeric and underscore&lt;/div&gt;
+            &lt;div&gt;• Phone: Thai phone number format&lt;/div&gt;
+            &lt;div&gt;• Website: Valid URL format&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div *ngIf&#x3D;&quot;selectedDemo()?.name &#x3D;&#x3D;&#x3D; &#x27;Advanced Validation&#x27;&quot;&gt;
+            &lt;div&gt;• Thai ID: 13 digits with check digit validation&lt;/div&gt;
+            &lt;div&gt;• Credit Card: Luhn algorithm validation&lt;/div&gt;
+            &lt;div&gt;• IP Address: Valid IPv4 format&lt;/div&gt;
+            &lt;div&gt;• MAC Address: Valid MAC address format&lt;/div&gt;
+            &lt;div&gt;• Age: Minimum 18 years old&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div *ngIf&#x3D;&quot;selectedDemo()?.name &#x3D;&#x3D;&#x3D; &#x27;File Validation&#x27;&quot;&gt;
+            &lt;div&gt;• Profile Image: Max 5MB, image files only&lt;/div&gt;
+            &lt;div&gt;• Document: Max 10MB, PDF/DOC files only&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div *ngIf&#x3D;&quot;selectedDemo()?.name &#x3D;&#x3D;&#x3D; &#x27;Date Validation&#x27;&quot;&gt;
+            &lt;div&gt;• Start Date: Required&lt;/div&gt;
+            &lt;div&gt;• End Date: Required, must be after start date&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div *ngIf&#x3D;&quot;selectedDemo()?.name &#x3D;&#x3D;&#x3D; &#x27;Password Validation&#x27;&quot;&gt;
+            &lt;div&gt;• Password: 8+ chars, uppercase, lowercase, digit, special char&lt;/div&gt;
+            &lt;div&gt;• Confirm Password: Must match password&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/app-glass-card&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="space-y-6">  <!-- Header -->  <div class="flex items-center justify-between">    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">      Advanced Form Validation Demo    </h1>    <div class="flex space-x-2">      <app-glass-button (clicked)="onSubmit()" variant="primary">        <i class="fas fa-check mr-2"></i> Validate Form      </app-glass-button>      <app-glass-button (clicked)="resetForm()" variant="secondary">        <i class="fas fa-undo mr-2"></i> Reset      </app-glass-button>    </div>  </div>  <!-- Demo Selection -->  <app-glass-card class="p-6">    <h3 class="text-xl font-semibold text-white mb-4">Select Validation Demo</h3>    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">      <button        *ngFor="let demo of validationDemos()"        (click)="selectDemo(demo)"        [class]="\'p-4 rounded-lg border transition-all \' + (selectedDemo()?.name === demo.name ? \'border-blue-500 bg-blue-500/20\' : \'border-gray-600 bg-gray-800 hover:bg-gray-700\')"      >        <h4 class="text-lg font-medium text-white mb-2">{{ demo.name }}</h4>        <p class="text-sm text-gray-400">{{ demo.description }}</p>      </button>    </div>  </app-glass-card>  <!-- Validation Summary -->  <app-glass-card *ngIf="validationSummary()" class="p-6">    <h3 class="text-xl font-semibold text-white mb-4">Validation Summary</h3>    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">      <div class="text-center">        <div class="text-2xl font-bold text-white">{{ validationSummary()?.totalFields }}</div>        <div class="text-sm text-gray-400">Total Fields</div>      </div>      <div class="text-center">        <div class="text-2xl font-bold text-green-400">{{ validationSummary()?.validFields }}</div>        <div class="text-sm text-gray-400">Valid Fields</div>      </div>      <div class="text-center">        <div class="text-2xl font-bold text-red-400">{{ validationSummary()?.invalidFields }}</div>        <div class="text-sm text-gray-400">Invalid Fields</div>      </div>      <div class="text-center">        <div class="text-2xl font-bold text-yellow-400">{{ validationSummary()?.errorCount }}</div>        <div class="text-sm text-gray-400">Total Errors</div>      </div>    </div>  </app-glass-card>  <!-- Form Demo -->  <div *ngIf="selectedDemo()" class="grid grid-cols-1 lg:grid-cols-2 gap-6">    <!-- Form -->    <app-glass-card class="p-6">      <h3 class="text-xl font-semibold text-white mb-4">{{ selectedDemo()?.name }}</h3>      <form [formGroup]="selectedDemo()!.form" (ngSubmit)="onSubmit()" class="space-y-4">        <!-- Basic Validation Form -->        <div *ngIf="selectedDemo()?.name === \'Basic Validation\'">          <div class="space-y-4">            <div>              <label class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>              <input                type="email"                formControlName="email"                (blur)="onFieldChange(\'email\')"                class="glass-input w-full"                [class.border-red-500]="isFieldInvalid(\'email\')"                [class.border-green-500]="isFieldValid(\'email\')"                placeholder="Enter email address">              <div *ngIf="isFieldInvalid(\'email\')" class="text-red-400 text-sm mt-1">                {{ getFieldError(\'email\') }}              </div>            </div>            <div>              <label class="block text-sm font-medium text-gray-300 mb-2">Username</label>              <input                type="text"                formControlName="username"                (blur)="onFieldChange(\'username\')"                class="glass-input w-full"                [class.border-red-500]="isFieldInvalid(\'username\')"                [class.border-green-500]="isFieldValid(\'username\')"                placeholder="Enter username">              <div *ngIf="isFieldInvalid(\'username\')" class="text-red-400 text-sm mt-1">                {{ getFieldError(\'username\') }}              </div>            </div>            <div>              <label class="block text-sm font-medium text-gray-300 mb-2">Phone Number</label>              <input                type="tel"                formControlName="phoneNumber"                (blur)="onFieldChange(\'phoneNumber\')"                class="glass-input w-full"                [class.border-red-500]="isFieldInvalid(\'phoneNumber\')"                [class.border-green-500]="isFieldValid(\'phoneNumber\')"                placeholder="Enter phone number">              <div *ngIf="isFieldInvalid(\'phoneNumber\')" class="text-red-400 text-sm mt-1">                {{ getFieldError(\'phoneNumber\') }}              </div>            </div>            <div>              <label class="block text-sm font-medium text-gray-300 mb-2">Website (Optional)</label>              <input                type="url"                formControlName="website"                (blur)="onFieldChange(\'website\')"                class="glass-input w-full"                [class.border-red-500]="isFieldInvalid(\'website\')"                [class.border-green-500]="isFieldValid(\'website\')"                placeholder="Enter website URL">              <div *ngIf="isFieldInvalid(\'website\')" class="text-red-400 text-sm mt-1">                {{ getFieldError(\'website\') }}              </div>            </div>          </div>        </div>        <!-- Advanced Validation Form -->        <div *ngIf="selectedDemo()?.name === \'Advanced Validation\'">          <div class="space-y-4">            <div>              <label class="block text-sm font-medium text-gray-300 mb-2">Thai ID</label>              <input                type="text"                formControlName="thaiId"                (blur)="onFieldChange(\'thaiId\')"                class="glass-input w-full"                [class.border-red-500]="isFieldInvalid(\'thaiId\')"                [class.border-green-500]="isFieldValid(\'thaiId\')"                placeholder="Enter Thai ID">              <div *ngIf="isFieldInvalid(\'thaiId\')" class="text-red-400 text-sm mt-1">                {{ getFieldError(\'thaiId\') }}              </div>            </div>            <div>              <label class="block text-sm font-medium text-gray-300 mb-2">Credit Card</label>              <input                type="text"                formControlName="creditCard"                (blur)="onFieldChange(\'creditCard\')"                class="glass-input w-full"                [class.border-red-500]="isFieldInvalid(\'creditCard\')"                [class.border-green-500]="isFieldValid(\'creditCard\')"                placeholder="Enter credit card number">              <div *ngIf="isFieldInvalid(\'creditCard\')" class="text-red-400 text-sm mt-1">                {{ getFieldError(\'creditCard\') }}              </div>            </div>            <div>              <label class="block text-sm font-medium text-gray-300 mb-2">IP Address</label>              <input                type="text"                formControlName="ipAddress"                (blur)="onFieldChange(\'ipAddress\')"                class="glass-input w-full"                [class.border-red-500]="isFieldInvalid(\'ipAddress\')"                [class.border-green-500]="isFieldValid(\'ipAddress\')"                placeholder="Enter IP address">              <div *ngIf="isFieldInvalid(\'ipAddress\')" class="text-red-400 text-sm mt-1">                {{ getFieldError(\'ipAddress\') }}              </div>            </div>            <div>              <label class="block text-sm font-medium text-gray-300 mb-2">MAC Address</label>              <input                type="text"                formControlName="macAddress"                (blur)="onFieldChange(\'macAddress\')"                class="glass-input w-full"                [class.border-red-500]="isFieldInvalid(\'macAddress\')"                [class.border-green-500]="isFieldValid(\'macAddress\')"                placeholder="Enter MAC address">              <div *ngIf="isFieldInvalid(\'macAddress\')" class="text-red-400 text-sm mt-1">                {{ getFieldError(\'macAddress\') }}              </div>            </div>            <div>              <label class="block text-sm font-medium text-gray-300 mb-2">Birth Date (Age 18+)</label>              <input                type="date"                formControlName="age"                (blur)="onFieldChange(\'age\')"                class="glass-input w-full"                [class.border-red-500]="isFieldInvalid(\'age\')"                [class.border-green-500]="isFieldValid(\'age\')">              <div *ngIf="isFieldInvalid(\'age\')" class="text-red-400 text-sm mt-1">                {{ getFieldError(\'age\') }}              </div>            </div>          </div>        </div>        <!-- File Validation Form -->        <div *ngIf="selectedDemo()?.name === \'File Validation\'">          <div class="space-y-4">            <div>              <label class="block text-sm font-medium text-gray-300 mb-2">Profile Image (Max 5MB)</label>              <input                type="file"                formControlName="profileImage"                (change)="onFileSelect($event, \'profileImage\')"                accept="image/*"                class="glass-input w-full"                [class.border-red-500]="isFieldInvalid(\'profileImage\')"                [class.border-green-500]="isFieldValid(\'profileImage\')">              <div *ngIf="isFieldInvalid(\'profileImage\')" class="text-red-400 text-sm mt-1">                {{ getFieldError(\'profileImage\') }}              </div>              <div *ngIf="filePreview()" class="mt-2">                <img *ngIf="filePreview() && !isBase64Image(filePreview()!)"                     appImageOptimization [ngSrc]="filePreview()!" alt="Preview" class="w-20 h-20 object-cover rounded" loading="lazy">                <img *ngIf="filePreview() && isBase64Image(filePreview()!)"                     [src]="filePreview()!" alt="Preview" class="w-20 h-20 object-cover rounded" loading="lazy">              </div>            </div>            <div>              <label class="block text-sm font-medium text-gray-300 mb-2">Document (PDF/DOC, Max 10MB)</label>              <input                type="file"                formControlName="document"                (change)="onFileSelect($event, \'document\')"                accept=".pdf,.doc,.docx"                class="glass-input w-full"                [class.border-red-500]="isFieldInvalid(\'document\')"                [class.border-green-500]="isFieldValid(\'document\')">              <div *ngIf="isFieldInvalid(\'document\')" class="text-red-400 text-sm mt-1">                {{ getFieldError(\'document\') }}              </div>            </div>          </div>        </div>        <!-- Date Validation Form -->        <div *ngIf="selectedDemo()?.name === \'Date Validation\'">          <div class="space-y-4">            <div>              <label class="block text-sm font-medium text-gray-300 mb-2">Start Date</label>              <input                type="date"                formControlName="startDate"                (blur)="onFieldChange(\'startDate\')"                class="glass-input w-full"                [class.border-red-500]="isFieldInvalid(\'startDate\')"                [class.border-green-500]="isFieldValid(\'startDate\')">              <div *ngIf="isFieldInvalid(\'startDate\')" class="text-red-400 text-sm mt-1">                {{ getFieldError(\'startDate\') }}              </div>            </div>            <div>              <label class="block text-sm font-medium text-gray-300 mb-2">End Date</label>              <input                type="date"                formControlName="endDate"                (blur)="onFieldChange(\'endDate\')"                class="glass-input w-full"                [class.border-red-500]="isFieldInvalid(\'endDate\')"                [class.border-green-500]="isFieldValid(\'endDate\')">              <div *ngIf="isFieldInvalid(\'endDate\')" class="text-red-400 text-sm mt-1">                {{ getFieldError(\'endDate\') }}              </div>            </div>          </div>        </div>        <!-- Password Validation Form -->        <div *ngIf="selectedDemo()?.name === \'Password Validation\'">          <div class="space-y-4">            <div>              <label class="block text-sm font-medium text-gray-300 mb-2">Password</label>              <input                type="password"                formControlName="password"                (blur)="onFieldChange(\'password\')"                class="glass-input w-full"                [class.border-red-500]="isFieldInvalid(\'password\')"                [class.border-green-500]="isFieldValid(\'password\')"                placeholder="Enter strong password">              <div *ngIf="isFieldInvalid(\'password\')" class="text-red-400 text-sm mt-1">                {{ getFieldError(\'password\') }}              </div>            </div>            <div>              <label class="block text-sm font-medium text-gray-300 mb-2">Confirm Password</label>              <input                type="password"                formControlName="confirmPassword"                (blur)="onFieldChange(\'confirmPassword\')"                class="glass-input w-full"                [class.border-red-500]="isFieldInvalid(\'confirmPassword\')"                [class.border-green-500]="isFieldValid(\'confirmPassword\')"                placeholder="Confirm password">              <div *ngIf="isFieldInvalid(\'confirmPassword\')" class="text-red-400 text-sm mt-1">                {{ getFieldError(\'confirmPassword\') }}              </div>            </div>          </div>        </div>        <div class="flex justify-end space-x-2">          <app-glass-button type="button" (clicked)="resetForm()" variant="secondary">            <i class="fas fa-undo mr-2"></i> Reset          </app-glass-button>          <app-glass-button type="submit" variant="primary">            <i class="fas fa-check mr-2"></i> Validate          </app-glass-button>        </div>      </form>    </app-glass-card>    <!-- Examples and Documentation -->    <app-glass-card class="p-6">      <h3 class="text-xl font-semibold text-white mb-4">Examples & Documentation</h3>      <!-- Examples -->      <div class="mb-6">        <h4 class="text-lg font-medium text-gray-300 mb-3">Try Examples</h4>        <div class="space-y-2">          <button            *ngFor="let example of selectedDemo()?.examples"            (click)="fillExampleData(example)"            [class]="\'w-full text-left p-3 rounded-lg border transition-all \' + (example.valid ? \'border-green-500 bg-green-500/10 hover:bg-green-500/20\' : \'border-red-500 bg-red-500/10 hover:bg-red-500/20\')"          >            <div class="flex items-center justify-between">              <div>                <div class="font-medium text-white">{{ example.field }}: {{ example.value }}</div>                <div class="text-sm text-gray-400">{{ example.valid ? \'Valid\' : \'Invalid\' }}</div>              </div>              <div class="text-sm">                <i [class]="example.valid ? \'fas fa-check text-green-400\' : \'fas fa-times text-red-400\'"></i>              </div>            </div>          </button>        </div>      </div>      <!-- Field Status -->      <div class="mb-6">        <h4 class="text-lg font-medium text-gray-300 mb-3">Field Status</h4>        <div class="space-y-2">          <div *ngFor="let field of validationSummary()?.fields" class="flex items-center justify-between p-2 rounded bg-gray-800">            <span class="text-white">{{ field.name }}</span>            <div class="flex items-center space-x-2">              <span [class]="field.isValid ? \'text-green-400\' : \'text-red-400\'">                {{ field.isValid ? \'Valid\' : \'Invalid\' }}              </span>              <i [class]="field.isValid ? \'fas fa-check text-green-400\' : \'fas fa-times text-red-400\'"></i>            </div>          </div>        </div>      </div>      <!-- Validation Rules -->      <div>        <h4 class="text-lg font-medium text-gray-300 mb-3">Validation Rules</h4>        <div class="space-y-2 text-sm text-gray-400">          <div *ngIf="selectedDemo()?.name === \'Basic Validation\'">            <div>• Email: Valid email format</div>            <div>• Username: 3-20 characters, alphanumeric and underscore</div>            <div>• Phone: Thai phone number format</div>            <div>• Website: Valid URL format</div>          </div>          <div *ngIf="selectedDemo()?.name === \'Advanced Validation\'">            <div>• Thai ID: 13 digits with check digit validation</div>            <div>• Credit Card: Luhn algorithm validation</div>            <div>• IP Address: Valid IPv4 format</div>            <div>• MAC Address: Valid MAC address format</div>            <div>• Age: Minimum 18 years old</div>          </div>          <div *ngIf="selectedDemo()?.name === \'File Validation\'">            <div>• Profile Image: Max 5MB, image files only</div>            <div>• Document: Max 10MB, PDF/DOC files only</div>          </div>          <div *ngIf="selectedDemo()?.name === \'Date Validation\'">            <div>• Start Date: Required</div>            <div>• End Date: Required, must be after start date</div>          </div>          <div *ngIf="selectedDemo()?.name === \'Password Validation\'">            <div>• Password: 8+ chars, uppercase, lowercase, digit, special char</div>            <div>• Confirm Password: Must match password</div>          </div>        </div>      </div>    </app-glass-card>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AccessControlComponent', 'selector': 'app-access-control'},{'name': 'AccessGroupsComponent', 'selector': 'app-access-groups'},{'name': 'AccessibilityDashboardComponent', 'selector': 'app-accessibility-dashboard'},{'name': 'AccessLogsComponent', 'selector': 'app-access-logs'},{'name': 'AccessSchedulesComponent', 'selector': 'app-access-schedules'},{'name': 'AccordionComponent', 'selector': 'app-accordion'},{'name': 'AccordionDemoComponent', 'selector': 'app-accordion-demo'},{'name': 'AdvancedDataTableComponent', 'selector': 'app-advanced-data-table'},{'name': 'AdvancedDataTableDemoComponent', 'selector': 'app-advanced-data-table-demo'},{'name': 'AdvancedFeaturesDashboardComponent', 'selector': 'app-advanced-features-dashboard'},{'name': 'AdvancedFormsComponent', 'selector': 'app-advanced-forms'},{'name': 'AdvancedRichTextComponent', 'selector': 'app-advanced-rich-text'},{'name': 'AdvancedUiDemoComponent', 'selector': 'app-advanced-ui-demo'},{'name': 'AIModelsComponent', 'selector': 'app-ai-models'},{'name': 'AlertComponent', 'selector': 'app-alert'},{'name': 'AlertHistoryComponent', 'selector': 'app-alert-history'},{'name': 'AlertsComponent', 'selector': 'app-alerts'},{'name': 'ApexChartComponent', 'selector': 'app-apex-chart'},{'name': 'App', 'selector': 'app-root'},{'name': 'AttendanceComponent', 'selector': 'app-attendance'},{'name': 'AuditLogsComponent', 'selector': 'app-audit-logs'},{'name': 'AvatarComponent', 'selector': 'app-avatar'},{'name': 'BackupRestoreComponent', 'selector': 'app-backup-restore'},{'name': 'BadgeComponent', 'selector': 'app-badge'},{'name': 'BaseComponent', 'selector': ''},{'name': 'BiometricDataComponent', 'selector': 'app-biometric-data'},{'name': 'BreadcrumbComponent', 'selector': 'app-breadcrumb'},{'name': 'CalendarComponent', 'selector': 'app-calendar'},{'name': 'CalendarDemoComponent', 'selector': 'app-calendar-demo'},{'name': 'ChartComponent', 'selector': 'app-chart'},{'name': 'CheckboxComponent', 'selector': 'app-checkbox'},{'name': 'ColorPickerComponent', 'selector': 'app-color-picker'},{'name': 'ComingSoonComponent', 'selector': 'app-coming-soon'},{'name': 'CompaniesComponent', 'selector': 'app-companies'},{'name': 'CompanyDocumentsComponent', 'selector': 'app-company-documents'},{'name': 'CompanyHolidaysComponent', 'selector': 'app-company-holidays'},{'name': 'ComponentShowcaseComponent', 'selector': 'app-component-showcase'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DataTableComponent', 'selector': 'app-data-table'},{'name': 'DateTimePickerComponent', 'selector': 'app-date-time-picker'},{'name': 'DepartmentsComponent', 'selector': 'app-departments'},{'name': 'DevicesComponent', 'selector': 'app-devices'},{'name': 'DividerComponent', 'selector': 'app-divider'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DoorsComponent', 'selector': 'app-doors'},{'name': 'DraggableCardsComponent', 'selector': 'app-draggable-cards'},{'name': 'DraggableCardsDemoComponent', 'selector': 'app-draggable-cards-demo'},{'name': 'EChartsChartComponent', 'selector': 'app-echarts-chart'},{'name': 'EChartsDemoComponent', 'selector': 'app-echarts-demo'},{'name': 'EmployeesComponent', 'selector': 'app-employees'},{'name': 'EmployeesNewComponent', 'selector': 'app-employees-new'},{'name': 'EmptyStateComponent', 'selector': 'app-empty-state'},{'name': 'Error401Component', 'selector': 'app-error-401'},{'name': 'Error404Component', 'selector': 'app-error-404'},{'name': 'Error500Component', 'selector': 'app-error-500'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'ErrorToastComponent', 'selector': 'app-error-toast'},{'name': 'EventAnalyticsComponent', 'selector': 'app-event-analytics'},{'name': 'EventCheckinHistoryComponent', 'selector': 'app-event-checkin-history'},{'name': 'EventEmailConfirmationComponent', 'selector': 'app-event-email-confirmation'},{'name': 'EventKioskConfigComponent', 'selector': 'app-event-kiosk-config'},{'name': 'EventRegistrationComponent', 'selector': 'app-event-registration'},{'name': 'EventRegistrationFieldsComponent', 'selector': 'app-event-registration-fields'},{'name': 'EventsComponent', 'selector': 'app-events'},{'name': 'FaceRecognitionComponent', 'selector': 'app-face-recognition'},{'name': 'FaceRecognitionDemoComponent', 'selector': 'app-face-recognition-demo'},{'name': 'FaceRecognitionLiveComponent', 'selector': 'app-face-recognition-live'},{'name': 'FaceRecognitionTestComponent', 'selector': 'app-face-recognition-test'},{'name': 'FaqComponent', 'selector': 'app-faq'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'FilterSectionComponent', 'selector': 'app-filter-section'},{'name': 'ForgotPasswordComponent', 'selector': 'app-forgot-password'},{'name': 'FormFieldComponent', 'selector': 'app-form-field'},{'name': 'GalleryComponent', 'selector': 'app-gallery'},{'name': 'GalleryDemoComponent', 'selector': 'app-gallery-demo'},{'name': 'GlassButtonComponent', 'selector': 'app-glass-button'},{'name': 'GlassCardComponent', 'selector': 'app-glass-card'},{'name': 'GlassInputComponent', 'selector': 'app-glass-input'},{'name': 'GroupFaceRecognitionComponent', 'selector': 'app-group-face-recognition'},{'name': 'GuestsComponent', 'selector': 'app-guests'},{'name': 'HardwareStatusDashboardComponent', 'selector': 'app-hardware-status-dashboard'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HeatmapAnalyticsComponent', 'selector': 'app-heatmap-analytics'},{'name': 'HelpCenter', 'selector': 'app-help-center'},{'name': 'HelpCenterComponent', 'selector': 'app-help-center'},{'name': 'HrDashboardComponent', 'selector': 'app-hr-dashboard'},{'name': 'IconComponent', 'selector': 'app-icon'},{'name': 'IncidentReportsComponent', 'selector': 'app-incident-reports'},{'name': 'KioskViewComponent', 'selector': 'app-kiosk-view'},{'name': 'LandingComponent', 'selector': 'app-landing'},{'name': 'LeafletMapComponent', 'selector': 'app-leaflet-map'},{'name': 'LeavesComponent', 'selector': 'app-leaves'},{'name': 'LicenseManagementComponent', 'selector': 'app-license-management'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoadingStateComponent', 'selector': 'app-loading-state'},{'name': 'LocationsComponent', 'selector': 'app-locations'},{'name': 'LockScreenComponent', 'selector': 'app-lock-screen'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MapDemoComponent', 'selector': 'app-map-demo'},{'name': 'MaterialButtonComponent', 'selector': 'app-material-button'},{'name': 'MaterialCardComponent', 'selector': 'app-material-card'},{'name': 'MaterialDialogComponent', 'selector': 'app-material-dialog'},{'name': 'MaterialInputComponent', 'selector': 'app-material-input'},{'name': 'MaterialTableComponent', 'selector': 'app-material-table'},{'name': 'MfaSetupComponent', 'selector': 'app-mfa-setup'},{'name': 'MobileCameraComponent', 'selector': 'app-mobile-camera'},{'name': 'MobileDemoComponent', 'selector': 'app-mobile-demo'},{'name': 'ModalComponent', 'selector': 'app-modal'},{'name': 'ModalFormComponent', 'selector': 'app-modal-form'},{'name': 'ModuleSubscriptionComponent', 'selector': 'app-module-subscription'},{'name': 'MonitoringComponent', 'selector': 'app-monitoring'},{'name': 'NotificationCenterComponent', 'selector': 'app-notification-center'},{'name': 'NotificationDemoComponent', 'selector': 'app-notification-demo'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'NotificationSettingsComponent', 'selector': 'app-notification-settings'},{'name': 'OffcanvasComponent', 'selector': 'app-offcanvas'},{'name': 'OffcanvasDemoComponent', 'selector': 'app-offcanvas-demo'},{'name': 'OvertimeRequestsComponent', 'selector': 'app-overtime-requests'},{'name': 'PageLayoutComponent', 'selector': 'app-page-layout'},{'name': 'PaginationComponent', 'selector': 'app-pagination'},{'name': 'ParkingBlacklistComponent', 'selector': 'app-parking-blacklist'},{'name': 'ParkingDashboardComponent', 'selector': 'app-parking-dashboard'},{'name': 'ParkingEntryComponent', 'selector': 'app-parking-entry'},{'name': 'ParkingExitComponent', 'selector': 'app-parking-exit'},{'name': 'ParkingLogsComponent', 'selector': 'app-parking-logs'},{'name': 'ParkingReservationComponent', 'selector': 'app-parking-reservation'},{'name': 'ParkingRulesComponent', 'selector': 'app-parking-rules'},{'name': 'ParkingSpotsComponent', 'selector': 'app-parking-spots'},{'name': 'ParkingStatisticsComponent', 'selector': 'app-parking-statistics'},{'name': 'PayrollExportComponent', 'selector': 'app-payroll-export'},{'name': 'PerformanceDashboardComponent', 'selector': 'app-performance-dashboard'},{'name': 'PopoverComponent', 'selector': 'app-popover'},{'name': 'PortalLayoutComponent', 'selector': 'app-portal-layout'},{'name': 'PositionsComponent', 'selector': 'app-positions'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'PublicVerificationComponent', 'selector': 'app-public-verification'},{'name': 'QRCodesComponent', 'selector': 'app-qr-codes'},{'name': 'RadioComponent', 'selector': 'app-radio'},{'name': 'RangeSliderComponent', 'selector': 'app-range-slider'},{'name': 'RatingComponent', 'selector': 'app-rating'},{'name': 'RatingDemoComponent', 'selector': 'app-rating-demo'},{'name': 'RbacComponent', 'selector': 'app-rbac'},{'name': 'RecognitionHistoryComponent', 'selector': 'app-recognition-history'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReportsComponent', 'selector': 'app-reports'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'RFIDCardsComponent', 'selector': 'app-rfid-cards'},{'name': 'RichTextComponent', 'selector': 'app-rich-text'},{'name': 'RichTextEditorComponent', 'selector': 'app-rich-text-editor'},{'name': 'RichTextEditorDemoComponent', 'selector': 'app-rich-text-editor-demo'},{'name': 'SafetyDashboardComponent', 'selector': 'app-safety-dashboard'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ShiftsComponent', 'selector': 'app-shifts'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SkeletonComponent', 'selector': 'app-skeleton'},{'name': 'StatisticsCardComponent', 'selector': 'app-statistics-card'},{'name': 'StatisticsGridComponent', 'selector': 'app-statistics-grid'},{'name': 'StepperComponent', 'selector': 'app-stepper'},{'name': 'StructureComponent', 'selector': 'app-structure'},{'name': 'SuperAdminAnnouncementsComponent', 'selector': 'app-super-admin-announcements'},{'name': 'SuperAdminDashboardComponent', 'selector': 'app-super-admin-dashboard'},{'name': 'SuperAdminLayoutComponent', 'selector': 'app-super-admin-layout'},{'name': 'SuperAdminReportsComponent', 'selector': 'app-super-admin-reports'},{'name': 'SurveillanceMapComponent', 'selector': 'app-surveillance-map'},{'name': 'SwiperGalleryComponent', 'selector': 'app-swiper-gallery'},{'name': 'SwiperGalleryDemoComponent', 'selector': 'app-swiper-gallery-demo'},{'name': 'SwitchComponent', 'selector': 'app-switch'},{'name': 'SystemSettingsComponent', 'selector': 'app-system-settings'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TemplateManagementComponent', 'selector': 'app-template-management'},{'name': 'TestApiComponent', 'selector': 'app-test-api'},{'name': 'ThemeSwitcherComponent', 'selector': 'app-theme-switcher'},{'name': 'TimelineComponent', 'selector': 'app-timeline'},{'name': 'TimelineDemoComponent', 'selector': 'app-timeline-demo'},{'name': 'TimesheetsComponent', 'selector': 'app-timesheets'},{'name': 'TimestampComponent', 'selector': 'app-timestamp'},{'name': 'TimestampDemoComponent', 'selector': 'app-timestamp-demo'},{'name': 'TooltipComponent', 'selector': 'app-tooltip'},{'name': 'UsersComponent', 'selector': 'app-users'},{'name': 'ValidationDemoComponent', 'selector': 'app-validation-demo'},{'name': 'VehiclesComponent', 'selector': 'app-vehicles'},{'name': 'VideoAnalyticsComponent', 'selector': 'app-video-analytics'},{'name': 'VideoPlaybackComponent', 'selector': 'app-video-playback'},{'name': 'VisitorBadgesComponent', 'selector': 'app-visitor-badges'},{'name': 'VisitorBlacklistComponent', 'selector': 'app-visitor-blacklist'},{'name': 'VisitorDashboardComponent', 'selector': 'app-visitor-dashboard'},{'name': 'VisitorInvitationsComponent', 'selector': 'app-visitor-invitations'},{'name': 'VisitorParcelsComponent', 'selector': 'app-visitor-parcels'},{'name': 'VisitorReportsComponent', 'selector': 'app-visitor-reports'},{'name': 'VisitorsComponent', 'selector': 'app-visitors'},{'name': 'WatchlistComponent', 'selector': 'app-watchlist'},{'name': 'ZoneConfigComponent', 'selector': 'app-zone-config'}];
+    var DIRECTIVES = [{'name': 'HasPermissionDirective', 'selector': '[appHasPermission]'},{'name': 'ImageOptimizationDirective', 'selector': '[appImageOptimization]'}];
+    var ACTUAL_COMPONENT = {'name': 'ValidationDemoComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'ValidationDemoComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

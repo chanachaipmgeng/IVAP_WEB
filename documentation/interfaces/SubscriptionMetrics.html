@@ -1,0 +1,1451 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  SubscriptionMetrics</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/core/services/module-subscription.service.ts</code>
+        </p>
+
+
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#activeModules" 
+>
+                                            activeModules
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#activeSubscriptions" 
+>
+                                            activeSubscriptions
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#averageRevenuePerUser" 
+>
+                                            averageRevenuePerUser
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#churnRate" 
+>
+                                            churnRate
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#expiredSubscriptions" 
+>
+                                            expiredSubscriptions
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#moduleDistribution" 
+>
+                                            moduleDistribution
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#monthlyRecurringRevenue" 
+>
+                                            monthlyRecurringRevenue
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#planDistribution" 
+>
+                                            planDistribution
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#revenueByModule" 
+>
+                                            revenueByModule
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#totalModules" 
+>
+                                            totalModules
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#totalRevenue" 
+>
+                                            totalRevenue
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#totalSubscriptions" 
+>
+                                            totalSubscriptions
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#trialSubscriptions" 
+>
+                                            trialSubscriptions
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="activeModules"></a>
+                                        <span class="name "><b>activeModules</b>
+                                            <a href="#activeModules">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>activeModules:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="activeSubscriptions"></a>
+                                        <span class="name "><b>activeSubscriptions</b>
+                                            <a href="#activeSubscriptions">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>activeSubscriptions:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="averageRevenuePerUser"></a>
+                                        <span class="name "><b>averageRevenuePerUser</b>
+                                            <a href="#averageRevenuePerUser">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>averageRevenuePerUser:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="churnRate"></a>
+                                        <span class="name "><b>churnRate</b>
+                                            <a href="#churnRate">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>churnRate:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="expiredSubscriptions"></a>
+                                        <span class="name "><b>expiredSubscriptions</b>
+                                            <a href="#expiredSubscriptions">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>expiredSubscriptions:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="moduleDistribution"></a>
+                                        <span class="name "><b>moduleDistribution</b>
+                                            <a href="#moduleDistribution">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>moduleDistribution:     <code>literal type</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>literal type</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="monthlyRecurringRevenue"></a>
+                                        <span class="name "><b>monthlyRecurringRevenue</b>
+                                            <a href="#monthlyRecurringRevenue">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>monthlyRecurringRevenue:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="planDistribution"></a>
+                                        <span class="name "><b>planDistribution</b>
+                                            <a href="#planDistribution">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>planDistribution:     <code>literal type</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>literal type</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="revenueByModule"></a>
+                                        <span class="name "><b>revenueByModule</b>
+                                            <a href="#revenueByModule">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>revenueByModule:     <code>literal type</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>literal type</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="totalModules"></a>
+                                        <span class="name "><b>totalModules</b>
+                                            <a href="#totalModules">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>totalModules:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="totalRevenue"></a>
+                                        <span class="name "><b>totalRevenue</b>
+                                            <a href="#totalRevenue">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>totalRevenue:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="totalSubscriptions"></a>
+                                        <span class="name "><b>totalSubscriptions</b>
+                                            <a href="#totalSubscriptions">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>totalSubscriptions:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="trialSubscriptions"></a>
+                                        <span class="name "><b>trialSubscriptions</b>
+                                            <a href="#trialSubscriptions">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>trialSubscriptions:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, signal, computed } from &#x27;@angular/core&#x27;;
+import { Observable } from &#x27;rxjs&#x27;;
+import {
+  Module,
+  ModuleFeature,
+  PricingTier,
+  Subscription,
+  Tenant
+} from &#x27;../models/module-subscription.model&#x27;;
+
+// Re-export for backward compatibility
+export type {
+  Module,
+  ModuleFeature,
+  PricingTier,
+  Subscription,
+  Tenant
+} from &#x27;../models/module-subscription.model&#x27;;
+
+// Additional interfaces specific to this service
+export interface SubscriptionMetrics {
+  totalModules: number;
+  activeModules: number;
+  totalSubscriptions: number;
+  activeSubscriptions: number;
+  trialSubscriptions: number;
+  expiredSubscriptions: number;
+  totalRevenue: number;
+  monthlyRecurringRevenue: number;
+  averageRevenuePerUser: number;
+  churnRate: number;
+  moduleDistribution: { [key: string]: number };
+  planDistribution: { [key: string]: number };
+  revenueByModule: { [key: string]: number };
+}
+
+@Injectable({
+  providedIn: &#x27;root&#x27;
+})
+export class ModuleSubscriptionService {
+  // ✅ Signals for reactive state
+  private _modules &#x3D; signal&lt;Module[]&gt;([]);
+  private _subscriptions &#x3D; signal&lt;Subscription[]&gt;([]);
+  private _tenants &#x3D; signal&lt;Tenant[]&gt;([]);
+  private _metrics &#x3D; signal&lt;SubscriptionMetrics&gt;(this.getDefaultMetrics());
+
+  // ✅ Readonly signals for public access
+  public readonly modules &#x3D; this._modules.asReadonly();
+  public readonly subscriptions &#x3D; this._subscriptions.asReadonly();
+  public readonly tenants &#x3D; this._tenants.asReadonly();
+  public readonly metrics &#x3D; this._metrics.asReadonly();
+
+  // ✅ Computed signals for derived state
+  public readonly modulesCount &#x3D; computed(() &#x3D;&gt; this._modules().length);
+  public readonly availableModulesCount &#x3D; computed(() &#x3D;&gt; this._modules().filter(m &#x3D;&gt; m.status &#x3D;&#x3D;&#x3D; &#x27;available&#x27;).length);
+  public readonly subscriptionsCount &#x3D; computed(() &#x3D;&gt; this._subscriptions().length);
+  public readonly activeSubscriptionsCount &#x3D; computed(() &#x3D;&gt; this._subscriptions().filter(s &#x3D;&gt; s.status &#x3D;&#x3D;&#x3D; &#x27;active&#x27;).length);
+  public readonly tenantsCount &#x3D; computed(() &#x3D;&gt; this._tenants().length);
+
+  // ✅ Observable compatibility layer (for backward compatibility)
+  public modules$ &#x3D; new Observable&lt;Module[]&gt;(observer &#x3D;&gt; {
+    observer.next(this._modules());
+    // Note: This is a compatibility layer - prefer using signals directly
+  });
+  public subscriptions$ &#x3D; new Observable&lt;Subscription[]&gt;(observer &#x3D;&gt; {
+    observer.next(this._subscriptions());
+    // Note: This is a compatibility layer - prefer using signals directly
+  });
+  public tenants$ &#x3D; new Observable&lt;Tenant[]&gt;(observer &#x3D;&gt; {
+    observer.next(this._tenants());
+    // Note: This is a compatibility layer - prefer using signals directly
+  });
+  public metrics$ &#x3D; new Observable&lt;SubscriptionMetrics&gt;(observer &#x3D;&gt; {
+    observer.next(this._metrics());
+    // Note: This is a compatibility layer - prefer using signals directly
+  });
+
+  constructor() {
+    this.initializeDemoData();
+  }
+
+  /**
+   * Get all modules
+   */
+  getModules(): Module[] {
+    return this._modules();
+  }
+
+  /**
+   * Get module by ID
+   */
+  getModule(moduleId: string): Module | undefined {
+    return this._modules().find(m &#x3D;&gt; m.id &#x3D;&#x3D;&#x3D; moduleId);
+  }
+
+  /**
+   * Get modules by category
+   */
+  getModulesByCategory(category: string): Module[] {
+    return this._modules().filter(m &#x3D;&gt; m.category &#x3D;&#x3D;&#x3D; category);
+  }
+
+  /**
+   * Get available modules for tenant
+   */
+  getAvailableModules(tenantId: string): Module[] {
+    const tenant &#x3D; this._tenants().find(t &#x3D;&gt; t.id &#x3D;&#x3D;&#x3D; tenantId);
+    if (!tenant) return [];
+
+    const subscribedModules &#x3D; this.getSubscriptionsByTenant(tenantId)
+      .map(s &#x3D;&gt; s.moduleId);
+
+    return this._modules().filter(m &#x3D;&gt;
+      m.status &#x3D;&#x3D;&#x3D; &#x27;available&#x27; &amp;&amp; !subscribedModules.includes(m.id)
+    );
+  }
+
+  /**
+   * Subscribe to module
+   */
+  subscribeToModule(tenantId: string, moduleId: string, plan: string, billingCycle: &#x27;monthly&#x27; | &#x27;quarterly&#x27; | &#x27;yearly&#x27;): Subscription | null {
+    const module &#x3D; this.getModule(moduleId);
+    const tenant &#x3D; this._tenants().find(t &#x3D;&gt; t.id &#x3D;&#x3D;&#x3D; tenantId);
+
+    if (!module || !tenant) return null;
+
+    // Check if already subscribed
+    const existingSubscription &#x3D; this.getSubscriptionsByTenant(tenantId)
+      .find(s &#x3D;&gt; s.moduleId &#x3D;&#x3D;&#x3D; moduleId);
+
+    if (existingSubscription) return null;
+
+    // Calculate price
+    const price &#x3D; this.calculatePrice(module, plan, billingCycle);
+
+    // Create subscription
+    const subscription: Subscription &#x3D; {
+      id: this.generateId(),
+      moduleId,
+      tenantId,
+      status: &#x27;trial&#x27;,
+      plan,
+      startDate: new Date(),
+      endDate: new Date(Date.now() + (module.trialDays || 30) * 24 * 60 * 60 * 1000),
+      autoRenew: true,
+      billingCycle,
+      price,
+      currency: module.pricing.currency,
+      features: module.features.filter(f &#x3D;&gt; f.isIncluded).map(f &#x3D;&gt; f.id),
+      limits: {
+        users: module.requirements.maxUsers || module.requirements.minUsers,
+        storage: module.requirements.storage,
+        apiCalls: module.requirements.apiCalls,
+        bandwidth: module.requirements.bandwidth
+      },
+      usage: {
+        users: 0,
+        storage: 0,
+        apiCalls: 0,
+        bandwidth: 0
+      }
+    };
+
+    this._subscriptions.update(subscriptions &#x3D;&gt; [...subscriptions, subscription]);
+
+    // Update tenant modules
+    if (!tenant.modules) {
+      tenant.modules &#x3D; [];
+    }
+    tenant.modules.push(moduleId);
+    this.updateTenant(tenant);
+
+    this.updateMetrics();
+    return subscription;
+  }
+
+  /**
+   * Cancel subscription
+   */
+  cancelSubscription(subscriptionId: string, reason?: string): boolean {
+    const subscriptions &#x3D; this._subscriptions();
+    const subscription &#x3D; subscriptions.find(s &#x3D;&gt; s.id &#x3D;&#x3D;&#x3D; subscriptionId);
+
+    if (!subscription) return false;
+
+    subscription.status &#x3D; &#x27;cancelled&#x27;;
+    subscription.autoRenew &#x3D; false;
+    subscription.notes &#x3D; reason;
+
+    this._subscriptions.set([...subscriptions]);
+
+    // Update tenant modules
+    const tenant &#x3D; this._tenants().find((t: Tenant) &#x3D;&gt; t.id &#x3D;&#x3D;&#x3D; subscription.tenantId);
+    if (tenant &amp;&amp; tenant.modules) {
+      tenant.modules &#x3D; tenant.modules.filter((m: string) &#x3D;&gt; m !&#x3D;&#x3D; subscription.moduleId);
+      this.updateTenant(tenant);
+    }
+
+    this.updateMetrics();
+    return true;
+  }
+
+  /**
+   * Upgrade subscription
+   */
+  upgradeSubscription(subscriptionId: string, newPlan: string, newBillingCycle: &#x27;monthly&#x27; | &#x27;quarterly&#x27; | &#x27;yearly&#x27;): boolean {
+    const subscriptions &#x3D; this._subscriptions();
+    const subscription &#x3D; subscriptions.find(s &#x3D;&gt; s.id &#x3D;&#x3D;&#x3D; subscriptionId);
+
+    if (!subscription) return false;
+
+    const module &#x3D; this.getModule(subscription.moduleId);
+    if (!module) return false;
+
+    const newPrice &#x3D; this.calculatePrice(module, newPlan, newBillingCycle);
+
+    subscription.plan &#x3D; newPlan;
+    subscription.billingCycle &#x3D; newBillingCycle;
+    subscription.price &#x3D; newPrice;
+    subscription.lastBillingDate &#x3D; new Date();
+    subscription.nextBillingDate &#x3D; this.calculateNextBillingDate(newBillingCycle);
+
+    this._subscriptions.set([...subscriptions]);
+    this.updateMetrics();
+    return true;
+  }
+
+  /**
+   * Get subscriptions by tenant
+   */
+  getSubscriptionsByTenant(tenantId: string): Subscription[] {
+    return this._subscriptions().filter(s &#x3D;&gt; s.tenantId &#x3D;&#x3D;&#x3D; tenantId);
+  }
+
+  /**
+   * Get subscription by ID
+   */
+  getSubscription(subscriptionId: string): Subscription | undefined {
+    return this._subscriptions().find(s &#x3D;&gt; s.id &#x3D;&#x3D;&#x3D; subscriptionId);
+  }
+
+  /**
+   * Update subscription usage
+   */
+  updateSubscriptionUsage(subscriptionId: string, usage: Partial&lt;Subscription[&#x27;usage&#x27;]&gt;): boolean {
+    const subscriptions &#x3D; this._subscriptions();
+    const subscription &#x3D; subscriptions.find(s &#x3D;&gt; s.id &#x3D;&#x3D;&#x3D; subscriptionId);
+
+    if (!subscription) return false;
+
+    subscription.usage &#x3D; { ...subscription.usage, ...usage };
+    this._subscriptions.set([...subscriptions]);
+    this.updateMetrics();
+    return true;
+  }
+
+  /**
+   * Get tenants
+   */
+  getTenants(): Tenant[] {
+    return this._tenants();
+  }
+
+  /**
+   * Get tenant by ID
+   */
+  getTenant(tenantId: string): Tenant | undefined {
+    return this._tenants().find(t &#x3D;&gt; t.id &#x3D;&#x3D;&#x3D; tenantId);
+  }
+
+  /**
+   * Create tenant
+   */
+  createTenant(tenant: Omit&lt;Tenant, &#x27;id&#x27; | &#x27;createdAt&#x27; | &#x27;updatedAt&#x27; | &#x27;usage&#x27;&gt;): Tenant {
+    const newTenant: Tenant &#x3D; {
+      ...tenant,
+      id: this.generateId(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      usage: {
+        users: 0,
+        storage: 0,
+        apiCalls: 0,
+        bandwidth: 0
+      }
+    };
+
+    this._tenants.update(tenants &#x3D;&gt; [...tenants, newTenant]);
+
+    return newTenant;
+  }
+
+  /**
+   * Update tenant
+   */
+  updateTenant(tenant: Tenant): void {
+    const tenants &#x3D; this._tenants();
+    const index &#x3D; tenants.findIndex(t &#x3D;&gt; t.id &#x3D;&#x3D;&#x3D; tenant.id);
+
+    if (index !&#x3D;&#x3D; -1) {
+      tenants[index] &#x3D; { ...tenant, updatedAt: new Date() };
+      this._tenants.set([...tenants]);
+    }
+  }
+
+  /**
+   * Get metrics
+   */
+  getMetrics(): SubscriptionMetrics {
+    return this._metrics();
+  }
+
+  /**
+   * Generate subscription report
+   */
+  generateSubscriptionReport(options: {
+    tenantId?: string;
+    moduleId?: string;
+    dateFrom: Date;
+    dateTo: Date;
+    includeUsage?: boolean;
+  }): any {
+    let subscriptions &#x3D; this._subscriptions();
+
+    if (options.tenantId) {
+      subscriptions &#x3D; subscriptions.filter((s: Subscription) &#x3D;&gt; s.tenantId &#x3D;&#x3D;&#x3D; options.tenantId);
+    }
+    if (options.moduleId) {
+      subscriptions &#x3D; subscriptions.filter((s: Subscription) &#x3D;&gt; s.moduleId &#x3D;&#x3D;&#x3D; options.moduleId);
+    }
+
+    const report &#x3D; {
+      period: {
+        from: options.dateFrom,
+        to: options.dateTo
+      },
+      summary: {
+        totalSubscriptions: subscriptions.length,
+      activeSubscriptions: subscriptions.filter((s: Subscription) &#x3D;&gt; s.status &#x3D;&#x3D;&#x3D; &#x27;active&#x27;).length,
+      trialSubscriptions: subscriptions.filter((s: Subscription) &#x3D;&gt; s.status &#x3D;&#x3D;&#x3D; &#x27;trial&#x27;).length,
+      totalRevenue: subscriptions.reduce((sum: number, s: Subscription) &#x3D;&gt; sum + s.price, 0),
+        averagePrice: subscriptions.length &gt; 0 ?
+          subscriptions.reduce((sum: number, s: Subscription) &#x3D;&gt; sum + s.price, 0) / subscriptions.length : 0
+      },
+      subscriptions: options.includeUsage ? subscriptions : subscriptions.map((s: Subscription) &#x3D;&gt; ({
+        id: s.id,
+        moduleId: s.moduleId,
+        tenantId: s.tenantId,
+        status: s.status,
+        plan: s.plan,
+        price: s.price,
+        currency: s.currency,
+        startDate: s.startDate,
+        endDate: s.endDate
+      })),
+      generatedAt: new Date()
+    };
+
+    return report;
+  }
+
+  /**
+   * Calculate price
+   */
+  private calculatePrice(module: Module, plan: string, billingCycle: &#x27;monthly&#x27; | &#x27;quarterly&#x27; | &#x27;yearly&#x27;): number {
+    let basePrice &#x3D; module.pricing.basePrice;
+
+    // Apply plan multiplier
+    const planMultipliers &#x3D; {
+      &#x27;basic&#x27;: 1,
+      &#x27;standard&#x27;: 1.5,
+      &#x27;premium&#x27;: 2,
+      &#x27;enterprise&#x27;: 3
+    };
+    basePrice *&#x3D; planMultipliers[plan as keyof typeof planMultipliers] || 1;
+
+    // Apply billing cycle discount
+    const cycleDiscounts &#x3D; {
+      &#x27;monthly&#x27;: 1,
+      &#x27;quarterly&#x27;: 0.95,
+      &#x27;yearly&#x27;: 0.85
+    };
+    basePrice *&#x3D; cycleDiscounts[billingCycle];
+
+    return Math.round(basePrice * 100) / 100;
+  }
+
+  /**
+   * Calculate next billing date
+   */
+  private calculateNextBillingDate(billingCycle: &#x27;monthly&#x27; | &#x27;quarterly&#x27; | &#x27;yearly&#x27;): Date {
+    const now &#x3D; new Date();
+    switch (billingCycle) {
+      case &#x27;monthly&#x27;:
+        return new Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
+      case &#x27;quarterly&#x27;:
+        return new Date(now.getFullYear(), now.getMonth() + 3, now.getDate());
+      case &#x27;yearly&#x27;:
+        return new Date(now.getFullYear() + 1, now.getMonth(), now.getDate());
+      default:
+        return new Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
+    }
+  }
+
+  /**
+   * Update metrics
+   */
+  private updateMetrics(): void {
+    const modules &#x3D; this._modules();
+    const subscriptions &#x3D; this._subscriptions();
+    const metrics &#x3D; this.calculateMetrics(modules, subscriptions);
+    this._metrics.set(metrics);
+  }
+
+  /**
+   * Calculate metrics
+   */
+  private calculateMetrics(modules: Module[], subscriptions: Subscription[]): SubscriptionMetrics {
+    const totalModules &#x3D; modules.length;
+    const activeModules &#x3D; modules.filter(m &#x3D;&gt; m.isActive).length;
+    const totalSubscriptions &#x3D; subscriptions.length;
+    const activeSubscriptions &#x3D; subscriptions.filter(s &#x3D;&gt; s.status &#x3D;&#x3D;&#x3D; &#x27;active&#x27;).length;
+    const trialSubscriptions &#x3D; subscriptions.filter(s &#x3D;&gt; s.status &#x3D;&#x3D;&#x3D; &#x27;trial&#x27;).length;
+    const expiredSubscriptions &#x3D; subscriptions.filter(s &#x3D;&gt; s.status &#x3D;&#x3D;&#x3D; &#x27;expired&#x27;).length;
+
+    const totalRevenue &#x3D; subscriptions.reduce((sum, s) &#x3D;&gt; sum + s.price, 0);
+    const monthlyRecurringRevenue &#x3D; subscriptions
+      .filter(s &#x3D;&gt; s.status &#x3D;&#x3D;&#x3D; &#x27;active&#x27; &amp;&amp; s.billingCycle &#x3D;&#x3D;&#x3D; &#x27;monthly&#x27;)
+      .reduce((sum, s) &#x3D;&gt; sum + s.price, 0);
+
+    const averageRevenuePerUser &#x3D; subscriptions.length &gt; 0 ? totalRevenue / subscriptions.length : 0;
+    const churnRate &#x3D; expiredSubscriptions / Math.max(totalSubscriptions, 1) * 100;
+
+    const moduleDistribution &#x3D; this.groupBy(subscriptions, &#x27;moduleId&#x27;);
+    const planDistribution &#x3D; this.groupBy(subscriptions, &#x27;plan&#x27;);
+    const revenueByModule &#x3D; subscriptions.reduce((acc, s) &#x3D;&gt; {
+      acc[s.moduleId] &#x3D; (acc[s.moduleId] || 0) + s.price;
+      return acc;
+    }, {} as { [key: string]: number });
+
+    return {
+      totalModules,
+      activeModules,
+      totalSubscriptions,
+      activeSubscriptions,
+      trialSubscriptions,
+      expiredSubscriptions,
+      totalRevenue,
+      monthlyRecurringRevenue,
+      averageRevenuePerUser,
+      churnRate,
+      moduleDistribution,
+      planDistribution,
+      revenueByModule
+    };
+  }
+
+  /**
+   * Group array by property
+   */
+  private groupBy&lt;T&gt;(array: T[], property: keyof T): { [key: string]: number } {
+    return array.reduce((groups, item) &#x3D;&gt; {
+      const key &#x3D; String(item[property]);
+      groups[key] &#x3D; (groups[key] || 0) + 1;
+      return groups;
+    }, {} as { [key: string]: number });
+  }
+
+  /**
+   * Get default metrics
+   */
+  private getDefaultMetrics(): SubscriptionMetrics {
+    return {
+      totalModules: 0,
+      activeModules: 0,
+      totalSubscriptions: 0,
+      activeSubscriptions: 0,
+      trialSubscriptions: 0,
+      expiredSubscriptions: 0,
+      totalRevenue: 0,
+      monthlyRecurringRevenue: 0,
+      averageRevenuePerUser: 0,
+      churnRate: 0,
+      moduleDistribution: {},
+      planDistribution: {},
+      revenueByModule: {}
+    };
+  }
+
+  /**
+   * Initialize demo data
+   */
+  private initializeDemoData(): void {
+    // Create demo modules
+    const demoModules: Module[] &#x3D; [
+      {
+        id: &#x27;module-1&#x27;,
+        name: &#x27;Video Analytics&#x27;,
+        description: &#x27;Advanced video analytics and AI-powered object detection&#x27;,
+        category: &#x27;analytics&#x27;,
+        version: &#x27;2.1.0&#x27;,
+        isActive: true,
+        isRequired: false,
+        features: [
+          { id: &#x27;real-time-detection&#x27;, name: &#x27;Real-time Detection&#x27;, description: &#x27;Real-time object detection&#x27;, isIncluded: true, isOptional: false, isPremium: false },
+          { id: &#x27;ai-analysis&#x27;, name: &#x27;AI Analysis&#x27;, description: &#x27;AI-powered video analysis&#x27;, isIncluded: true, isOptional: false, isPremium: true },
+          { id: &#x27;custom-models&#x27;, name: &#x27;Custom Models&#x27;, description: &#x27;Custom AI model training&#x27;, isIncluded: false, isOptional: true, isPremium: true }
+        ],
+        pricing: {
+          type: &#x27;tiered&#x27;,
+          basePrice: 99,
+          currency: &#x27;USD&#x27;,
+          tiers: [
+            { id: &#x27;basic&#x27;, name: &#x27;Basic&#x27;, description: &#x27;Basic video analytics&#x27;, minUsers: 1, maxUsers: 10, price: 99, features: [&#x27;real-time-detection&#x27;], isPopular: false },
+            { id: &#x27;standard&#x27;, name: &#x27;Standard&#x27;, description: &#x27;Standard video analytics&#x27;, minUsers: 11, maxUsers: 50, price: 199, features: [&#x27;real-time-detection&#x27;, &#x27;ai-analysis&#x27;], isPopular: true },
+            { id: &#x27;premium&#x27;, name: &#x27;Premium&#x27;, description: &#x27;Premium video analytics&#x27;, minUsers: 51, maxUsers: 200, price: 399, features: [&#x27;real-time-detection&#x27;, &#x27;ai-analysis&#x27;, &#x27;custom-models&#x27;], isPopular: false }
+          ]
+        },
+        dependencies: [&#x27;core&#x27;],
+        requirements: {
+          minUsers: 1,
+          maxUsers: 200,
+          storage: 100,
+          bandwidth: 1000,
+          apiCalls: 10000
+        },
+        status: &#x27;available&#x27;,
+        trialDays: 30,
+        lastUpdated: new Date(),
+        icon: &#x27;📹&#x27;,
+        documentation: &#x27;https://docs.company.com/video-analytics&#x27;,
+        supportLevel: &#x27;standard&#x27;
+      },
+      {
+        id: &#x27;module-2&#x27;,
+        name: &#x27;Face Recognition&#x27;,
+        description: &#x27;Advanced face recognition and biometric authentication&#x27;,
+        category: &#x27;security&#x27;,
+        version: &#x27;1.5.0&#x27;,
+        isActive: true,
+        isRequired: false,
+        features: [
+          { id: &#x27;face-detection&#x27;, name: &#x27;Face Detection&#x27;, description: &#x27;Real-time face detection&#x27;, isIncluded: true, isOptional: false, isPremium: false },
+          { id: &#x27;face-recognition&#x27;, name: &#x27;Face Recognition&#x27;, description: &#x27;Face recognition and matching&#x27;, isIncluded: true, isOptional: false, isPremium: true },
+          { id: &#x27;liveness-detection&#x27;, name: &#x27;Liveness Detection&#x27;, description: &#x27;Anti-spoofing liveness detection&#x27;, isIncluded: false, isOptional: true, isPremium: true }
+        ],
+        pricing: {
+          type: &#x27;per_user&#x27;,
+          basePrice: 0,
+          currency: &#x27;USD&#x27;,
+          perUserPrice: 5
+        },
+        dependencies: [&#x27;core&#x27;],
+        requirements: {
+          minUsers: 1,
+          storage: 50,
+          bandwidth: 500,
+          apiCalls: 5000
+        },
+        status: &#x27;available&#x27;,
+        trialDays: 14,
+        lastUpdated: new Date(),
+        icon: &#x27;👤&#x27;,
+        documentation: &#x27;https://docs.company.com/face-recognition&#x27;,
+        supportLevel: &#x27;premium&#x27;
+      },
+      {
+        id: &#x27;module-3&#x27;,
+        name: &#x27;Safety Monitoring&#x27;,
+        description: &#x27;Workplace safety monitoring and violation detection&#x27;,
+        category: &#x27;safety&#x27;,
+        version: &#x27;1.0.0&#x27;,
+        isActive: true,
+        isRequired: false,
+        features: [
+          { id: &#x27;safety-detection&#x27;, name: &#x27;Safety Detection&#x27;, description: &#x27;Safety violation detection&#x27;, isIncluded: true, isOptional: false, isPremium: false },
+          { id: &#x27;environment-monitoring&#x27;, name: &#x27;Environment Monitoring&#x27;, description: &#x27;Environmental safety monitoring&#x27;, isIncluded: true, isOptional: false, isPremium: true },
+          { id: &#x27;equipment-monitoring&#x27;, name: &#x27;Equipment Monitoring&#x27;, description: &#x27;Equipment health monitoring&#x27;, isIncluded: false, isOptional: true, isPremium: true }
+        ],
+        pricing: {
+          type: &#x27;custom&#x27;,
+          basePrice: 0,
+          currency: &#x27;USD&#x27;,
+          customPrice: 299
+        },
+        dependencies: [&#x27;core&#x27;, &#x27;analytics&#x27;],
+        requirements: {
+          minUsers: 10,
+          storage: 200,
+          bandwidth: 2000,
+          apiCalls: 20000
+        },
+        status: &#x27;available&#x27;,
+        trialDays: 7,
+        lastUpdated: new Date(),
+        icon: &#x27;🛡️&#x27;,
+        documentation: &#x27;https://docs.company.com/safety-monitoring&#x27;,
+        supportLevel: &#x27;enterprise&#x27;
+      }
+    ];
+
+    this._modules.set(demoModules);
+
+    // Create demo tenants
+    const demoTenants: Tenant[] &#x3D; [
+      {
+        id: &#x27;tenant-1&#x27;,
+        name: &#x27;Acme Corporation&#x27;,
+        domain: &#x27;acme.com&#x27;,
+        subdomain: &#x27;acme&#x27;,
+        status: &#x27;active&#x27;,
+        plan: &#x27;enterprise&#x27;,
+        modules: [&#x27;module-1&#x27;, &#x27;module-2&#x27;],
+        limits: {
+          maxUsers: 1000,
+          maxStorage: 1000,
+          maxApiCalls: 100000,
+          maxBandwidth: 10000
+        },
+        usage: {
+          users: 150,
+          storage: 250,
+          apiCalls: 15000,
+          bandwidth: 2000
+        },
+        billing: {
+          address: &#x27;123 Business St&#x27;,
+          city: &#x27;New York&#x27;,
+          country: &#x27;USA&#x27;,
+          postalCode: &#x27;10001&#x27;,
+          taxId: &#x27;12-3456789&#x27;,
+          paymentMethod: &#x27;credit_card&#x27;
+        },
+        createdAt: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000),
+        updatedAt: new Date(),
+        createdBy: &#x27;admin&#x27;
+      }
+    ];
+
+    this._tenants.set(demoTenants);
+
+    // Create demo subscriptions
+    const demoSubscriptions: Subscription[] &#x3D; [
+      {
+        id: &#x27;sub-1&#x27;,
+        moduleId: &#x27;module-1&#x27;,
+        tenantId: &#x27;tenant-1&#x27;,
+        status: &#x27;active&#x27;,
+        plan: &#x27;standard&#x27;,
+        startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+        endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        autoRenew: true,
+        billingCycle: &#x27;monthly&#x27;,
+        price: 199,
+        currency: &#x27;USD&#x27;,
+        features: [&#x27;real-time-detection&#x27;, &#x27;ai-analysis&#x27;],
+        limits: {
+          users: 50,
+          storage: 100,
+          apiCalls: 10000,
+          bandwidth: 1000
+        },
+        usage: {
+          users: 25,
+          storage: 45,
+          apiCalls: 3500,
+          bandwidth: 400
+        },
+        lastBillingDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+        nextBillingDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        paymentMethod: &#x27;credit_card&#x27;
+      }
+    ];
+
+    this._subscriptions.set(demoSubscriptions);
+    this.updateMetrics();
+  }
+
+  /**
+   * Generate unique ID
+   */
+  private generateId(): string {
+    return &#x27;sub-&#x27; + Date.now() + &#x27;-&#x27; + Math.random().toString(36).substr(2, 9);
+  }
+}
+
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'SubscriptionMetrics.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

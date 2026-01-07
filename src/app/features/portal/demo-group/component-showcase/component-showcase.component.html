@@ -1,0 +1,169 @@
+<div class="p-6 space-y-8 animate-fade-in pb-20">
+  <div class="flex justify-between items-center">
+    <div>
+      <h1 class="text-3xl font-bold text-slate-800 dark:text-white mb-2">Component Showcase (UI Kit)</h1>
+      <p class="text-slate-500 dark:text-slate-400">
+        A collection of reusable UI components available in the design system.
+      </p>
+    </div>
+    <app-theme-switcher></app-theme-switcher>
+  </div>
+
+  <!-- Buttons Section -->
+  <section>
+    <h2 class="text-xl font-semibold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+      <span class="text-2xl">🔘</span> Buttons
+    </h2>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      
+      <!-- Variants -->
+      <app-glass-card>
+        <h3 class="text-lg font-medium text-slate-700 dark:text-slate-200 mb-4">Variants</h3>
+        <div class="flex flex-wrap gap-3">
+          <app-glass-button *ngFor="let variant of buttonVariants" [variant]="variant">
+            {{ variant | titlecase }}
+          </app-glass-button>
+        </div>
+      </app-glass-card>
+
+      <!-- Sizes -->
+      <app-glass-card>
+        <h3 class="text-lg font-medium text-slate-700 dark:text-slate-200 mb-4">Sizes</h3>
+        <div class="flex flex-wrap items-center gap-3">
+          <app-glass-button *ngFor="let size of buttonSizes" [size]="size" variant="primary">
+            Size {{ size | uppercase }}
+          </app-glass-button>
+        </div>
+      </app-glass-card>
+
+      <!-- States -->
+      <app-glass-card>
+        <h3 class="text-lg font-medium text-slate-700 dark:text-slate-200 mb-4">States</h3>
+        <div class="flex flex-wrap gap-3">
+          <app-glass-button variant="primary">Normal</app-glass-button>
+          <app-glass-button variant="primary" [loading]="true">Loading</app-glass-button>
+          <app-glass-button variant="primary" [disabled]="true">Disabled</app-glass-button>
+          <!-- Note: Icon support in GlassButton depends on content projection or internal logic which might not be fully standard icon input in all versions, checking code it doesn't have icon input but uses content projection often or sometimes has hidden logic. The provided code didn't show an icon input, so using content projection with text -->
+          <app-glass-button variant="primary">With Icon 🔍</app-glass-button>
+        </div>
+      </app-glass-card>
+    </div>
+  </section>
+
+  <!-- Form Inputs Section -->
+  <section>
+    <h2 class="text-xl font-semibold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+      <span class="text-2xl">📝</span> Inputs & Controls
+    </h2>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      
+      <!-- Text Inputs -->
+      <app-glass-card>
+        <h3 class="text-lg font-medium text-slate-700 dark:text-slate-200 mb-4">Text Fields</h3>
+        <div class="space-y-4 max-w-md">
+          <app-glass-input label="Text Input" placeholder="Type something..." [(ngModel)]="inputText"></app-glass-input>
+          <app-glass-input label="Password" type="password" placeholder="Enter password" [(ngModel)]="inputPassword"></app-glass-input>
+          <!-- GlassInput doesn't have icon input, purely text/password usually -->
+          <app-glass-input label="Standard Input" placeholder="Standard..." [(ngModel)]="inputSearch"></app-glass-input>
+          <app-glass-input label="Error State" error="This field is required"></app-glass-input>
+        </div>
+      </app-glass-card>
+
+      <!-- Selection Controls -->
+      <app-glass-card>
+        <h3 class="text-lg font-medium text-slate-700 dark:text-slate-200 mb-4">Toggles & Checks</h3>
+        <div class="space-y-6">
+          <div class="flex items-center gap-4">
+            <app-switch label="Toggle Switch" [(ngModel)]="switchValue"></app-switch>
+            <span class="text-sm text-slate-500">Value: {{ switchValue() }}</span>
+          </div>
+          
+          <div class="flex items-center gap-4">
+            <app-checkbox label="Checkbox" [(ngModel)]="checkboxValue"></app-checkbox>
+            <span class="text-sm text-slate-500">Value: {{ checkboxValue() }}</span>
+          </div>
+
+          <div class="space-y-2">
+            <p class="text-sm font-medium text-slate-700 dark:text-slate-300">Radio Group</p>
+            <div class="flex gap-4">
+              <app-radio name="demo-radio" value="option1" label="Option 1" [(ngModel)]="radioValue"></app-radio>
+              <app-radio name="demo-radio" value="option2" label="Option 2" [(ngModel)]="radioValue"></app-radio>
+            </div>
+            <span class="text-sm text-slate-500">Selected: {{ radioValue() }}</span>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+  </section>
+
+  <!-- Feedback & Status Section -->
+  <section>
+    <h2 class="text-xl font-semibold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+      <span class="text-2xl">🔔</span> Feedback & Status
+    </h2>
+    <div class="grid grid-cols-1 gap-6">
+      
+      <!-- Badges -->
+      <app-glass-card>
+        <h3 class="text-lg font-medium text-slate-700 dark:text-slate-200 mb-4">Badges</h3>
+        <div class="flex flex-wrap gap-3">
+          <app-badge *ngFor="let variant of badgeVariants" [variant]="variant" [text]="variant | titlecase">
+          </app-badge>
+          <app-badge variant="primary" shape="pill" text="Pill Shape"></app-badge>
+          <app-badge variant="danger" icon="warning" text="With Icon"></app-badge>
+        </div>
+      </app-glass-card>
+
+      <!-- Alerts -->
+      <app-glass-card>
+        <h3 class="text-lg font-medium text-slate-700 dark:text-slate-200 mb-4">Alerts</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <app-alert variant="info" title="Information">This is an info alert message.</app-alert>
+          <app-alert variant="success" title="Success">Operation completed successfully!</app-alert>
+          <app-alert variant="warning" title="Warning">Please check your inputs carefully.</app-alert>
+          <app-alert variant="danger" title="Error">Something went wrong. Please try again.</app-alert>
+        </div>
+      </app-glass-card>
+    </div>
+  </section>
+
+  <!-- Data Display Section -->
+  <section>
+    <h2 class="text-xl font-semibold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+      <span class="text-2xl">📊</span> Data Display
+    </h2>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      
+      <!-- Avatars -->
+      <app-glass-card>
+        <h3 class="text-lg font-medium text-slate-700 dark:text-slate-200 mb-4">Avatars</h3>
+        <div class="flex flex-wrap items-center gap-4">
+          <app-avatar size="sm" name="User Small"></app-avatar>
+          <app-avatar size="md" name="User Medium"></app-avatar>
+          <app-avatar size="lg" name="User Large"></app-avatar>
+          <app-avatar size="xl" name="User XL"></app-avatar>
+          <app-avatar size="md" name="Online User" status="online"></app-avatar>
+        </div>
+      </app-glass-card>
+
+      <!-- Progress & Rating -->
+      <app-glass-card>
+        <h3 class="text-lg font-medium text-slate-700 dark:text-slate-200 mb-4">Progress & Rating</h3>
+        <div class="space-y-6">
+          <div class="space-y-2">
+            <p class="text-sm text-slate-600 dark:text-slate-400">Progress Bar</p>
+            <app-progress-bar [value]="75" [config]="progressConfig1"></app-progress-bar>
+            <app-progress-bar [value]="40" [config]="progressConfig2"></app-progress-bar>
+          </div>
+          
+          <div class="space-y-2">
+            <p class="text-sm text-slate-600 dark:text-slate-400">Star Rating</p>
+            <app-rating [(ngModel)]="ratingValue" [config]="ratingConfig"></app-rating>
+            <p class="text-xs text-slate-500">Value: {{ ratingValue() }}</p>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+  </section>
+
+</div>

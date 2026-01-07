@@ -1,7 +1,110 @@
 import { Routes } from '@angular/router';
 import { authGuard, superAdminGuard, companyAdminGuard } from './core/guards/auth.guard';
 // import { permissionGuard } from './core/guards/permission.guard';
-import { getDemoRoutes } from './demo.routes';
+
+const DEMO_ROUTES: Routes = [
+    {
+      path: 'ui-kit',
+      loadComponent: () => import('./features/portal/demo-group/component-showcase/component-showcase.component')
+        .then(m => m.ComponentShowcaseComponent),
+      title: 'UI Kit & Component Showcase'
+    },
+    {
+      path: 'map-demo',
+      loadComponent: () => import('./features/portal/demo-group/map-demo/map-demo.component')
+        .then(m => m.MapDemoComponent)
+    },
+    {
+      path: 'face-recognition-demo',
+      loadComponent: () => import('./features/portal/face-recognition/face-recognition-demo/face-recognition-demo.component')
+        .then(m => m.FaceRecognitionDemoComponent)
+    },
+    {
+      path: 'face-recognition-live',
+      loadComponent: () => import('./features/portal/face-recognition/face-recognition-live/face-recognition-live.component')
+        .then(m => m.FaceRecognitionLiveComponent)
+    },
+    {
+      path: 'timestamp-demo',
+      loadComponent: () => import('./features/portal/demo-group/timestamp-demo/timestamp-demo.component')
+        .then(m => m.TimestampDemoComponent)
+    },
+    {
+      path: 'mobile-demo',
+      loadComponent: () => import('./features/portal/demo-group/mobile-demo/mobile-demo.component')
+        .then(m => m.MobileDemoComponent)
+    },
+    {
+      path: 'echarts-demo',
+      loadComponent: () => import('./features/portal/demo-group/echarts-demo/echarts-demo.component')
+        .then(m => m.EChartsDemoComponent)
+    },
+    {
+      path: 'rating-demo',
+      loadComponent: () => import('./features/portal/demo-group/rating-demo/rating-demo.component')
+        .then(m => m.RatingDemoComponent)
+    },
+    {
+      path: 'validation-demo',
+      loadComponent: () => import('./features/portal/demo-group/validation-demo/validation-demo.component')
+        .then(m => m.ValidationDemoComponent)
+    },
+    {
+      path: 'notification-demo',
+      loadComponent: () => import('./features/portal/demo-group/notification-demo/notification-demo.component')
+        .then(m => m.NotificationDemoComponent)
+    },
+    {
+      path: 'calendar-demo',
+      loadComponent: () => import('./features/portal/demo-group/calendar-demo/calendar-demo.component')
+        .then(m => m.CalendarDemoComponent)
+    },
+    {
+      path: 'timeline-demo',
+      loadComponent: () => import('./features/portal/demo-group/timeline-demo/timeline-demo.component')
+        .then(m => m.TimelineDemoComponent)
+    },
+    {
+      path: 'advanced-ui-demo',
+      loadComponent: () => import('./features/portal/demo-group/advanced-ui-demo/advanced-ui-demo.component')
+        .then(m => m.AdvancedUiDemoComponent)
+    },
+    {
+      path: 'accordion-demo',
+      loadComponent: () => import('./features/portal/demo-group/accordion-demo/accordion-demo.component')
+        .then(m => m.AccordionDemoComponent)
+    },
+    {
+      path: 'draggable-cards-demo',
+      loadComponent: () => import('./features/portal/demo-group/draggable-cards-demo/draggable-cards-demo.component')
+        .then(m => m.DraggableCardsDemoComponent)
+    },
+    {
+      path: 'swiper-gallery-demo',
+      loadComponent: () => import('./features/portal/demo-group/swiper-gallery-demo/swiper-gallery-demo.component')
+        .then(m => m.SwiperGalleryDemoComponent)
+    },
+    {
+      path: 'offcanvas-demo',
+      loadComponent: () => import('./features/portal/demo-group/offcanvas-demo/offcanvas-demo.component')
+        .then(m => m.OffcanvasDemoComponent)
+    },
+    {
+      path: 'rich-text-editor-demo',
+      loadComponent: () => import('./features/portal/demo-group/rich-text-editor-demo/rich-text-editor-demo.component')
+        .then(m => m.RichTextEditorDemoComponent)
+    },
+    {
+      path: 'advanced-data-table-demo',
+      loadComponent: () => import('./features/portal/demo-group/advanced-data-table-demo/advanced-data-table-demo.component')
+        .then(m => m.AdvancedDataTableDemoComponent)
+    },
+    {
+      path: 'gallery-demo',
+      loadComponent: () => import('./features/portal/demo-group/gallery-demo/gallery-demo.component')
+        .then(m => m.GalleryDemoComponent)
+    }
+  ];
 
 export const routes: Routes = [
   // Landing Page
@@ -53,7 +156,7 @@ export const routes: Routes = [
     children: [
       {
         path: 'login',
-        loadComponent: () => import('./features/portal/login/login.component')
+        loadComponent: () => import('./features/auth/login/login.component')
           .then(m => m.LoginComponent)
       },
       {
@@ -63,12 +166,12 @@ export const routes: Routes = [
       },
       {
         path: 'forgot-password',
-        loadComponent: () => import('./features/portal/forgot-password/forgot-password.component')
+        loadComponent: () => import('./features/auth/forgot-password/forgot-password.component')
           .then(m => m.ForgotPasswordComponent)
       },
       {
         path: 'reset-password/:token',
-        loadComponent: () => import('./features/portal/reset-password/reset-password.component')
+        loadComponent: () => import('./features/auth/reset-password/reset-password.component')
           .then(m => m.ResetPasswordComponent)
       },
       {
@@ -410,7 +513,7 @@ export const routes: Routes = [
               .then(m => m.FaceRecognitionTestComponent)
           },
           // Demo routes (development only)
-          ...getDemoRoutes(),
+          ...DEMO_ROUTES,
           {
             path: '',
             redirectTo: 'dashboard',
@@ -427,7 +530,7 @@ export const routes: Routes = [
     children: [
       {
         path: 'login',
-        loadComponent: () => import('./features/portal/login/login.component')
+        loadComponent: () => import('./features/auth/login/login.component')
           .then(m => m.LoginComponent)
       },
       {

@@ -1,0 +1,968 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  EventKioskConfigComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/portal/event-management/events/event-kiosk-config/event-kiosk-config.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-event-kiosk-config</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../interfaces/Module.html" target="_self" >CommonModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >FormsModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >ReactiveFormsModule</a></code>
+                                <code><a href="../components/GlassCardComponent.html" target="_self" >GlassCardComponent</a></code>
+                                <code><a href="../components/GlassButtonComponent.html" target="_self" >GlassButtonComponent</a></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./event-kiosk-config.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./event-kiosk-config.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#configForm" >configForm</a>
+                            </li>
+                            <li>
+                                <a href="#previewMode" >previewMode</a>
+                            </li>
+                            <li>
+                                <a href="#selectedTheme" >selectedTheme</a>
+                            </li>
+                            <li>
+                                <a href="#themes" >themes</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#resetConfig" >resetConfig</a>
+                            </li>
+                            <li>
+                                <a href="#saveConfig" >saveConfig</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(fb: FormBuilder)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/features/portal/event-management/events/event-kiosk-config/event-kiosk-config.component.ts:26</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>fb</td>
+                                                  
+                                                        <td>
+                                                                    <code>FormBuilder</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="40"
+                                    class="link-to-prism">src/app/features/portal/event-management/events/event-kiosk-config/event-kiosk-config.component.ts:40</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resetConfig"></a>
+                    <span class="name">
+                        <span ><b>resetConfig</b></span>
+                        <a href="#resetConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>resetConfig()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="57"
+                                    class="link-to-prism">src/app/features/portal/event-management/events/event-kiosk-config/event-kiosk-config.component.ts:57</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveConfig"></a>
+                    <span class="name">
+                        <span ><b>saveConfig</b></span>
+                        <a href="#saveConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>saveConfig()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="50"
+                                    class="link-to-prism">src/app/features/portal/event-management/events/event-kiosk-config/event-kiosk-config.component.ts:50</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="configForm"></a>
+                    <span class="name">
+                        <span ><b>configForm</b></span>
+                        <a href="#configForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>FormGroup</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/features/portal/event-management/events/event-kiosk-config/event-kiosk-config.component.ts:15</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="previewMode"></a>
+                    <span class="name">
+                        <span ><b>previewMode</b></span>
+                        <a href="#previewMode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;&#x27;desktop&#x27; | &#x27;mobile&#x27;&gt;(&#x27;desktop&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/features/portal/event-management/events/event-kiosk-config/event-kiosk-config.component.ts:16</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedTheme"></a>
+                    <span class="name">
+                        <span ><b>selectedTheme</b></span>
+                        <a href="#selectedTheme"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(this.themes[0])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/features/portal/event-management/events/event-kiosk-config/event-kiosk-config.component.ts:26</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="themes"></a>
+                    <span class="name">
+                        <span ><b>themes</b></span>
+                        <a href="#themes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+    { id: &#x27;modern&#x27;, name: &#x27;Modern Dark&#x27;, primaryColor: &#x27;#6366f1&#x27;, bgColor: &#x27;#1f2937&#x27; },
+    { id: &#x27;corporate&#x27;, name: &#x27;Corporate Blue&#x27;, primaryColor: &#x27;#2563eb&#x27;, bgColor: &#x27;#ffffff&#x27; },
+    { id: &#x27;elegant&#x27;, name: &#x27;Elegant Gold&#x27;, primaryColor: &#x27;#d97706&#x27;, bgColor: &#x27;#1c1917&#x27; },
+    { id: &#x27;vibrant&#x27;, name: &#x27;Vibrant Purple&#x27;, primaryColor: &#x27;#9333ea&#x27;, bgColor: &#x27;#f3e8ff&#x27; }
+  ]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/app/features/portal/event-management/events/event-kiosk-config/event-kiosk-config.component.ts:19</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, signal } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from &#x27;@angular/forms&#x27;;
+import { GlassCardComponent } from &#x27;../../../../../shared/components/glass-card/glass-card.component&#x27;;
+import { GlassButtonComponent } from &#x27;../../../../../shared/components/glass-button/glass-button.component&#x27;;
+
+@Component({
+  selector: &#x27;app-event-kiosk-config&#x27;,
+  standalone: true,
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, GlassCardComponent, GlassButtonComponent],
+  templateUrl: &#x27;./event-kiosk-config.component.html&#x27;,
+  styleUrls: [&#x27;./event-kiosk-config.component.scss&#x27;]
+})
+export class EventKioskConfigComponent implements OnInit {
+  configForm: FormGroup;
+  previewMode &#x3D; signal&lt;&#x27;desktop&#x27; | &#x27;mobile&#x27;&gt;(&#x27;desktop&#x27;);
+  
+  // Mock themes
+  themes &#x3D; [
+    { id: &#x27;modern&#x27;, name: &#x27;Modern Dark&#x27;, primaryColor: &#x27;#6366f1&#x27;, bgColor: &#x27;#1f2937&#x27; },
+    { id: &#x27;corporate&#x27;, name: &#x27;Corporate Blue&#x27;, primaryColor: &#x27;#2563eb&#x27;, bgColor: &#x27;#ffffff&#x27; },
+    { id: &#x27;elegant&#x27;, name: &#x27;Elegant Gold&#x27;, primaryColor: &#x27;#d97706&#x27;, bgColor: &#x27;#1c1917&#x27; },
+    { id: &#x27;vibrant&#x27;, name: &#x27;Vibrant Purple&#x27;, primaryColor: &#x27;#9333ea&#x27;, bgColor: &#x27;#f3e8ff&#x27; }
+  ];
+
+  selectedTheme &#x3D; signal(this.themes[0]);
+
+  constructor(private fb: FormBuilder) {
+    this.configForm &#x3D; this.fb.group({
+      welcomeMessage: [&#x27;Welcome to the Event&#x27;, Validators.required],
+      subMessage: [&#x27;Please scan your QR code or face to check in&#x27;, Validators.required],
+      themeId: [&#x27;modern&#x27;, Validators.required],
+      showLogo: [true],
+      showTime: [true],
+      showWeather: [false],
+      autoCloseSeconds: [5, [Validators.min(1), Validators.max(60)]]
+    });
+  }
+
+  ngOnInit() {
+    // Load existing config (Mock)
+    this.configForm.get(&#x27;themeId&#x27;)?.valueChanges.subscribe(themeId &#x3D;&gt; {
+      const theme &#x3D; this.themes.find(t &#x3D;&gt; t.id &#x3D;&#x3D;&#x3D; themeId);
+      if (theme) {
+        this.selectedTheme.set(theme);
+      }
+    });
+  }
+
+  saveConfig() {
+    if (this.configForm.valid) {
+      console.log(&#x27;Saving kiosk config:&#x27;, this.configForm.value);
+      alert(&#x27;Kiosk configuration saved successfully!&#x27;);
+    }
+  }
+
+  resetConfig() {
+    this.configForm.reset({
+      welcomeMessage: &#x27;Welcome to the Event&#x27;,
+      subMessage: &#x27;Please scan your QR code or face to check in&#x27;,
+      themeId: &#x27;modern&#x27;,
+      showLogo: true,
+      showTime: true,
+      showWeather: false,
+      autoCloseSeconds: 5
+    });
+  }
+}
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;h-full flex flex-col p-6 space-y-6&quot;&gt;
+  &lt;!-- Header --&gt;
+  &lt;div class&#x3D;&quot;flex justify-between items-center&quot;&gt;
+    &lt;div&gt;
+      &lt;h1 class&#x3D;&quot;text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400&quot;&gt;
+        Kiosk Configuration
+      &lt;/h1&gt;
+      &lt;p class&#x3D;&quot;text-gray-500 dark:text-gray-400 mt-1&quot;&gt;Customize the check-in screen experience for your attendees&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;flex gap-2&quot;&gt;
+      &lt;app-glass-button (click)&#x3D;&quot;resetConfig()&quot; variant&#x3D;&quot;secondary&quot; icon&#x3D;&quot;refresh&quot;&gt;
+        Reset Defaults
+      &lt;/app-glass-button&gt;
+      &lt;app-glass-button (click)&#x3D;&quot;saveConfig()&quot; variant&#x3D;&quot;primary&quot; icon&#x3D;&quot;save&quot;&gt;
+        Save Changes
+      &lt;/app-glass-button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class&#x3D;&quot;flex flex-col lg:flex-row gap-6 flex-1 overflow-hidden&quot;&gt;
+    &lt;!-- Configuration Form --&gt;
+    &lt;app-glass-card class&#x3D;&quot;w-full lg:w-1/3 flex flex-col overflow-y-auto custom-scrollbar&quot;&gt;
+      &lt;div class&#x3D;&quot;p-4 space-y-6&quot;&gt;
+        &lt;h2 class&#x3D;&quot;text-lg font-semibold text-gray-800 dark:text-gray-100 border-b border-gray-200 dark:border-gray-700 pb-2&quot;&gt;
+          Display Settings
+        &lt;/h2&gt;
+        
+        &lt;form [formGroup]&#x3D;&quot;configForm&quot; class&#x3D;&quot;space-y-4&quot;&gt;
+          &lt;!-- Welcome Message --&gt;
+          &lt;div&gt;
+            &lt;label class&#x3D;&quot;block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1&quot;&gt;Welcome Headline&lt;/label&gt;
+            &lt;input type&#x3D;&quot;text&quot; formControlName&#x3D;&quot;welcomeMessage&quot; 
+                   class&#x3D;&quot;w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-gray-900 dark:text-gray-100&quot;&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Sub Message --&gt;
+          &lt;div&gt;
+            &lt;label class&#x3D;&quot;block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1&quot;&gt;Subtitle / Instructions&lt;/label&gt;
+            &lt;textarea formControlName&#x3D;&quot;subMessage&quot; rows&#x3D;&quot;2&quot;
+                      class&#x3D;&quot;w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-gray-900 dark:text-gray-100&quot;&gt;&lt;/textarea&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Theme Selection --&gt;
+          &lt;div&gt;
+            &lt;label class&#x3D;&quot;block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2&quot;&gt;Theme&lt;/label&gt;
+            &lt;div class&#x3D;&quot;grid grid-cols-2 gap-3&quot;&gt;
+              &lt;div *ngFor&#x3D;&quot;let theme of themes&quot; 
+                   (click)&#x3D;&quot;configForm.patchValue({themeId: theme.id})&quot;
+                   class&#x3D;&quot;cursor-pointer rounded-lg p-3 border-2 transition-all flex items-center gap-2&quot;
+                   [ngClass]&#x3D;&quot;{&#x27;border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20&#x27;: configForm.get(&#x27;themeId&#x27;)?.value &#x3D;&#x3D;&#x3D; theme.id, &#x27;border-gray-200 dark:border-gray-700&#x27;: configForm.get(&#x27;themeId&#x27;)?.value !&#x3D;&#x3D; theme.id}&quot;&gt;
+                &lt;div class&#x3D;&quot;w-6 h-6 rounded-full border shadow-sm&quot; [style.backgroundColor]&#x3D;&quot;theme.primaryColor&quot;&gt;&lt;/div&gt;
+                &lt;span class&#x3D;&quot;text-sm font-medium text-gray-700 dark:text-gray-300&quot;&gt;{{ theme.name }}&lt;/span&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Toggles --&gt;
+          &lt;div class&#x3D;&quot;space-y-3 pt-2&quot;&gt;
+            &lt;div class&#x3D;&quot;flex items-center justify-between&quot;&gt;
+              &lt;span class&#x3D;&quot;text-sm font-medium text-gray-700 dark:text-gray-300&quot;&gt;Show Event Logo&lt;/span&gt;
+              &lt;label class&#x3D;&quot;relative inline-flex items-center cursor-pointer&quot;&gt;
+                &lt;input type&#x3D;&quot;checkbox&quot; formControlName&#x3D;&quot;showLogo&quot; class&#x3D;&quot;sr-only peer&quot;&gt;
+                &lt;div class&#x3D;&quot;w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[&#x27;&#x27;] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600&quot;&gt;&lt;/div&gt;
+              &lt;/label&gt;
+            &lt;/div&gt;
+            
+            &lt;div class&#x3D;&quot;flex items-center justify-between&quot;&gt;
+              &lt;span class&#x3D;&quot;text-sm font-medium text-gray-700 dark:text-gray-300&quot;&gt;Show Clock&lt;/span&gt;
+              &lt;label class&#x3D;&quot;relative inline-flex items-center cursor-pointer&quot;&gt;
+                &lt;input type&#x3D;&quot;checkbox&quot; formControlName&#x3D;&quot;showTime&quot; class&#x3D;&quot;sr-only peer&quot;&gt;
+                &lt;div class&#x3D;&quot;w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[&#x27;&#x27;] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600&quot;&gt;&lt;/div&gt;
+              &lt;/label&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;flex items-center justify-between&quot;&gt;
+              &lt;span class&#x3D;&quot;text-sm font-medium text-gray-700 dark:text-gray-300&quot;&gt;Show Weather Widget&lt;/span&gt;
+              &lt;label class&#x3D;&quot;relative inline-flex items-center cursor-pointer&quot;&gt;
+                &lt;input type&#x3D;&quot;checkbox&quot; formControlName&#x3D;&quot;showWeather&quot; class&#x3D;&quot;sr-only peer&quot;&gt;
+                &lt;div class&#x3D;&quot;w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[&#x27;&#x27;] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600&quot;&gt;&lt;/div&gt;
+              &lt;/label&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Timeout --&gt;
+          &lt;div&gt;
+            &lt;label class&#x3D;&quot;block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1&quot;&gt;
+              Auto-close Success Screen (Seconds)
+            &lt;/label&gt;
+            &lt;input type&#x3D;&quot;number&quot; formControlName&#x3D;&quot;autoCloseSeconds&quot; min&#x3D;&quot;1&quot; max&#x3D;&quot;60&quot;
+                   class&#x3D;&quot;w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-gray-900 dark:text-gray-100&quot;&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+    &lt;/app-glass-card&gt;
+
+    &lt;!-- Preview --&gt;
+    &lt;div class&#x3D;&quot;flex-1 flex flex-col min-h-[500px]&quot;&gt;
+      &lt;div class&#x3D;&quot;flex items-center justify-between mb-2&quot;&gt;
+        &lt;h2 class&#x3D;&quot;text-lg font-semibold text-gray-800 dark:text-gray-100&quot;&gt;Live Preview&lt;/h2&gt;
+        &lt;div class&#x3D;&quot;flex bg-gray-100 dark:bg-gray-800 rounded-lg p-1&quot;&gt;
+          &lt;button (click)&#x3D;&quot;previewMode.set(&#x27;desktop&#x27;)&quot; 
+                  [class.bg-white]&#x3D;&quot;previewMode() &#x3D;&#x3D;&#x3D; &#x27;desktop&#x27;&quot;
+                  [class.shadow-sm]&#x3D;&quot;previewMode() &#x3D;&#x3D;&#x3D; &#x27;desktop&#x27;&quot;
+                  [class.text-indigo-600]&#x3D;&quot;previewMode() &#x3D;&#x3D;&#x3D; &#x27;desktop&#x27;&quot;
+                  class&#x3D;&quot;px-3 py-1 rounded-md text-sm font-medium transition-all text-gray-500 dark:text-gray-400&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-desktop mr-1&quot;&gt;&lt;/i&gt; Desktop
+          &lt;/button&gt;
+          &lt;button (click)&#x3D;&quot;previewMode.set(&#x27;mobile&#x27;)&quot; 
+                  [class.bg-white]&#x3D;&quot;previewMode() &#x3D;&#x3D;&#x3D; &#x27;mobile&#x27;&quot;
+                  [class.shadow-sm]&#x3D;&quot;previewMode() &#x3D;&#x3D;&#x3D; &#x27;mobile&#x27;&quot;
+                  [class.text-indigo-600]&#x3D;&quot;previewMode() &#x3D;&#x3D;&#x3D; &#x27;mobile&#x27;&quot;
+                  class&#x3D;&quot;px-3 py-1 rounded-md text-sm font-medium transition-all text-gray-500 dark:text-gray-400&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-mobile-alt mr-1&quot;&gt;&lt;/i&gt; Mobile
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;flex-1 bg-gray-200 dark:bg-gray-900 rounded-2xl flex items-center justify-center p-8 overflow-hidden relative border-4 border-gray-300 dark:border-gray-700&quot;&gt;
+        &lt;!-- Device Frame --&gt;
+        &lt;div [class.w-full]&#x3D;&quot;previewMode() &#x3D;&#x3D;&#x3D; &#x27;desktop&#x27;&quot; 
+             [class.h-full]&#x3D;&quot;previewMode() &#x3D;&#x3D;&#x3D; &#x27;desktop&#x27;&quot;
+             [class.max-w-md]&#x3D;&quot;previewMode() &#x3D;&#x3D;&#x3D; &#x27;mobile&#x27;&quot;
+             [class.aspect-[9/16]]&#x3D;&quot;previewMode() &#x3D;&#x3D;&#x3D; &#x27;mobile&#x27;&quot;
+             [class.h-[90%]]&#x3D;&quot;previewMode() &#x3D;&#x3D;&#x3D; &#x27;mobile&#x27;&quot;
+             class&#x3D;&quot;bg-white relative shadow-2xl overflow-hidden transition-all duration-300&quot;
+             [style.backgroundColor]&#x3D;&quot;selectedTheme().bgColor&quot;
+             [style.color]&#x3D;&quot;selectedTheme().id &#x3D;&#x3D;&#x3D; &#x27;corporate&#x27; || selectedTheme().id &#x3D;&#x3D;&#x3D; &#x27;vibrant&#x27; ? &#x27;#1f2937&#x27; : &#x27;#ffffff&#x27;&quot;&gt;
+             
+             &lt;!-- Mock Content --&gt;
+             &lt;div class&#x3D;&quot;h-full flex flex-col&quot;&gt;
+               &lt;!-- Header --&gt;
+               &lt;div class&#x3D;&quot;p-6 flex justify-between items-start&quot;&gt;
+                 &lt;div *ngIf&#x3D;&quot;configForm.get(&#x27;showLogo&#x27;)?.value&quot; class&#x3D;&quot;h-12 w-12 rounded-lg bg-current opacity-20 flex items-center justify-center&quot;&gt;
+                    &lt;i class&#x3D;&quot;fas fa-cube text-2xl&quot;&gt;&lt;/i&gt;
+                 &lt;/div&gt;
+                 &lt;div *ngIf&#x3D;&quot;configForm.get(&#x27;showTime&#x27;)?.value&quot; class&#x3D;&quot;text-right&quot;&gt;
+                   &lt;div class&#x3D;&quot;text-2xl font-bold&quot;&gt;10:45&lt;/div&gt;
+                   &lt;div class&#x3D;&quot;text-sm opacity-70&quot;&gt;Monday, Jan 7&lt;/div&gt;
+                 &lt;/div&gt;
+               &lt;/div&gt;
+
+               &lt;!-- Main Content --&gt;
+               &lt;div class&#x3D;&quot;flex-1 flex flex-col items-center justify-center p-8 text-center space-y-8&quot;&gt;
+                 &lt;div class&#x3D;&quot;h-48 w-48 rounded-2xl border-4 border-dashed border-current opacity-30 flex items-center justify-center&quot;&gt;
+                   &lt;div class&#x3D;&quot;text-center&quot;&gt;
+                     &lt;i class&#x3D;&quot;fas fa-qrcode text-6xl mb-2&quot;&gt;&lt;/i&gt;
+                     &lt;div class&#x3D;&quot;text-sm&quot;&gt;Scan QR Code&lt;/div&gt;
+                   &lt;/div&gt;
+                 &lt;/div&gt;
+
+                 &lt;div class&#x3D;&quot;space-y-2 max-w-sm&quot;&gt;
+                   &lt;h1 class&#x3D;&quot;text-3xl font-bold leading-tight&quot;&gt;{{ configForm.get(&#x27;welcomeMessage&#x27;)?.value }}&lt;/h1&gt;
+                   &lt;p class&#x3D;&quot;text-lg opacity-80&quot;&gt;{{ configForm.get(&#x27;subMessage&#x27;)?.value }}&lt;/p&gt;
+                 &lt;/div&gt;
+
+                 &lt;button class&#x3D;&quot;px-8 py-3 rounded-full font-semibold shadow-lg transform hover:scale-105 transition-all text-white&quot;
+                         [style.backgroundColor]&#x3D;&quot;selectedTheme().primaryColor&quot;&gt;
+                    &lt;i class&#x3D;&quot;fas fa-camera mr-2&quot;&gt;&lt;/i&gt; Face Check-in
+                 &lt;/button&gt;
+               &lt;/div&gt;
+
+               &lt;!-- Footer --&gt;
+               &lt;div *ngIf&#x3D;&quot;configForm.get(&#x27;showWeather&#x27;)?.value&quot; class&#x3D;&quot;p-6 flex items-center justify-center opacity-70&quot;&gt;
+                 &lt;i class&#x3D;&quot;fas fa-cloud-sun text-xl mr-2&quot;&gt;&lt;/i&gt;
+                 &lt;span&gt;28°C Partly Cloudy&lt;/span&gt;
+               &lt;/div&gt;
+             &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./event-kiosk-config.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">.custom-scrollbar {
+  &amp;::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  &amp;::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &amp;::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.5);
+    border-radius: 20px;
+    &amp;:hover {
+      background-color: rgba(156, 163, 175, 0.8);
+    }
+  }
+}
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="h-full flex flex-col p-6 space-y-6">  <!-- Header -->  <div class="flex justify-between items-center">    <div>      <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">        Kiosk Configuration      </h1>      <p class="text-gray-500 dark:text-gray-400 mt-1">Customize the check-in screen experience for your attendees</p>    </div>    <div class="flex gap-2">      <app-glass-button (click)="resetConfig()" variant="secondary" icon="refresh">        Reset Defaults      </app-glass-button>      <app-glass-button (click)="saveConfig()" variant="primary" icon="save">        Save Changes      </app-glass-button>    </div>  </div>  <div class="flex flex-col lg:flex-row gap-6 flex-1 overflow-hidden">    <!-- Configuration Form -->    <app-glass-card class="w-full lg:w-1/3 flex flex-col overflow-y-auto custom-scrollbar">      <div class="p-4 space-y-6">        <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 border-b border-gray-200 dark:border-gray-700 pb-2">          Display Settings        </h2>                <form [formGroup]="configForm" class="space-y-4">          <!-- Welcome Message -->          <div>            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Welcome Headline</label>            <input type="text" formControlName="welcomeMessage"                    class="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-gray-900 dark:text-gray-100">          </div>          <!-- Sub Message -->          <div>            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Subtitle / Instructions</label>            <textarea formControlName="subMessage" rows="2"                      class="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-gray-900 dark:text-gray-100"></textarea>          </div>          <!-- Theme Selection -->          <div>            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Theme</label>            <div class="grid grid-cols-2 gap-3">              <div *ngFor="let theme of themes"                    (click)="configForm.patchValue({themeId: theme.id})"                   class="cursor-pointer rounded-lg p-3 border-2 transition-all flex items-center gap-2"                   [ngClass]="{\'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20\': configForm.get(\'themeId\')?.value === theme.id, \'border-gray-200 dark:border-gray-700\': configForm.get(\'themeId\')?.value !== theme.id}">                <div class="w-6 h-6 rounded-full border shadow-sm" [style.backgroundColor]="theme.primaryColor"></div>                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ theme.name }}</span>              </div>            </div>          </div>          <!-- Toggles -->          <div class="space-y-3 pt-2">            <div class="flex items-center justify-between">              <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Show Event Logo</span>              <label class="relative inline-flex items-center cursor-pointer">                <input type="checkbox" formControlName="showLogo" class="sr-only peer">                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[\'\'] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600"></div>              </label>            </div>                        <div class="flex items-center justify-between">              <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Show Clock</span>              <label class="relative inline-flex items-center cursor-pointer">                <input type="checkbox" formControlName="showTime" class="sr-only peer">                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[\'\'] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600"></div>              </label>            </div>            <div class="flex items-center justify-between">              <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Show Weather Widget</span>              <label class="relative inline-flex items-center cursor-pointer">                <input type="checkbox" formControlName="showWeather" class="sr-only peer">                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[\'\'] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600"></div>              </label>            </div>          </div>          <!-- Timeout -->          <div>            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">              Auto-close Success Screen (Seconds)            </label>            <input type="number" formControlName="autoCloseSeconds" min="1" max="60"                   class="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-gray-900 dark:text-gray-100">          </div>        </form>      </div>    </app-glass-card>    <!-- Preview -->    <div class="flex-1 flex flex-col min-h-[500px]">      <div class="flex items-center justify-between mb-2">        <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Live Preview</h2>        <div class="flex bg-gray-100 dark:bg-gray-800 rounded-lg p-1">          <button (click)="previewMode.set(\'desktop\')"                   [class.bg-white]="previewMode() === \'desktop\'"                  [class.shadow-sm]="previewMode() === \'desktop\'"                  [class.text-indigo-600]="previewMode() === \'desktop\'"                  class="px-3 py-1 rounded-md text-sm font-medium transition-all text-gray-500 dark:text-gray-400">            <i class="fas fa-desktop mr-1"></i> Desktop          </button>          <button (click)="previewMode.set(\'mobile\')"                   [class.bg-white]="previewMode() === \'mobile\'"                  [class.shadow-sm]="previewMode() === \'mobile\'"                  [class.text-indigo-600]="previewMode() === \'mobile\'"                  class="px-3 py-1 rounded-md text-sm font-medium transition-all text-gray-500 dark:text-gray-400">            <i class="fas fa-mobile-alt mr-1"></i> Mobile          </button>        </div>      </div>      <div class="flex-1 bg-gray-200 dark:bg-gray-900 rounded-2xl flex items-center justify-center p-8 overflow-hidden relative border-4 border-gray-300 dark:border-gray-700">        <!-- Device Frame -->        <div [class.w-full]="previewMode() === \'desktop\'"              [class.h-full]="previewMode() === \'desktop\'"             [class.max-w-md]="previewMode() === \'mobile\'"             [class.aspect-[9/16]]="previewMode() === \'mobile\'"             [class.h-[90%]]="previewMode() === \'mobile\'"             class="bg-white relative shadow-2xl overflow-hidden transition-all duration-300"             [style.backgroundColor]="selectedTheme().bgColor"             [style.color]="selectedTheme().id === \'corporate\' || selectedTheme().id === \'vibrant\' ? \'#1f2937\' : \'#ffffff\'">                          <!-- Mock Content -->             <div class="h-full flex flex-col">               <!-- Header -->               <div class="p-6 flex justify-between items-start">                 <div *ngIf="configForm.get(\'showLogo\')?.value" class="h-12 w-12 rounded-lg bg-current opacity-20 flex items-center justify-center">                    <i class="fas fa-cube text-2xl"></i>                 </div>                 <div *ngIf="configForm.get(\'showTime\')?.value" class="text-right">                   <div class="text-2xl font-bold">10:45</div>                   <div class="text-sm opacity-70">Monday, Jan 7</div>                 </div>               </div>               <!-- Main Content -->               <div class="flex-1 flex flex-col items-center justify-center p-8 text-center space-y-8">                 <div class="h-48 w-48 rounded-2xl border-4 border-dashed border-current opacity-30 flex items-center justify-center">                   <div class="text-center">                     <i class="fas fa-qrcode text-6xl mb-2"></i>                     <div class="text-sm">Scan QR Code</div>                   </div>                 </div>                 <div class="space-y-2 max-w-sm">                   <h1 class="text-3xl font-bold leading-tight">{{ configForm.get(\'welcomeMessage\')?.value }}</h1>                   <p class="text-lg opacity-80">{{ configForm.get(\'subMessage\')?.value }}</p>                 </div>                 <button class="px-8 py-3 rounded-full font-semibold shadow-lg transform hover:scale-105 transition-all text-white"                         [style.backgroundColor]="selectedTheme().primaryColor">                    <i class="fas fa-camera mr-2"></i> Face Check-in                 </button>               </div>               <!-- Footer -->               <div *ngIf="configForm.get(\'showWeather\')?.value" class="p-6 flex items-center justify-center opacity-70">                 <i class="fas fa-cloud-sun text-xl mr-2"></i>                 <span>28°C Partly Cloudy</span>               </div>             </div>        </div>      </div>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AccessControlComponent', 'selector': 'app-access-control'},{'name': 'AccessGroupsComponent', 'selector': 'app-access-groups'},{'name': 'AccessibilityDashboardComponent', 'selector': 'app-accessibility-dashboard'},{'name': 'AccessLogsComponent', 'selector': 'app-access-logs'},{'name': 'AccessSchedulesComponent', 'selector': 'app-access-schedules'},{'name': 'AccordionComponent', 'selector': 'app-accordion'},{'name': 'AccordionDemoComponent', 'selector': 'app-accordion-demo'},{'name': 'AdvancedDataTableComponent', 'selector': 'app-advanced-data-table'},{'name': 'AdvancedDataTableDemoComponent', 'selector': 'app-advanced-data-table-demo'},{'name': 'AdvancedFeaturesDashboardComponent', 'selector': 'app-advanced-features-dashboard'},{'name': 'AdvancedFormsComponent', 'selector': 'app-advanced-forms'},{'name': 'AdvancedRichTextComponent', 'selector': 'app-advanced-rich-text'},{'name': 'AdvancedUiDemoComponent', 'selector': 'app-advanced-ui-demo'},{'name': 'AIModelsComponent', 'selector': 'app-ai-models'},{'name': 'AlertComponent', 'selector': 'app-alert'},{'name': 'AlertHistoryComponent', 'selector': 'app-alert-history'},{'name': 'AlertsComponent', 'selector': 'app-alerts'},{'name': 'ApexChartComponent', 'selector': 'app-apex-chart'},{'name': 'App', 'selector': 'app-root'},{'name': 'AttendanceComponent', 'selector': 'app-attendance'},{'name': 'AuditLogsComponent', 'selector': 'app-audit-logs'},{'name': 'AvatarComponent', 'selector': 'app-avatar'},{'name': 'BackupRestoreComponent', 'selector': 'app-backup-restore'},{'name': 'BadgeComponent', 'selector': 'app-badge'},{'name': 'BaseComponent', 'selector': ''},{'name': 'BiometricDataComponent', 'selector': 'app-biometric-data'},{'name': 'BreadcrumbComponent', 'selector': 'app-breadcrumb'},{'name': 'CalendarComponent', 'selector': 'app-calendar'},{'name': 'CalendarDemoComponent', 'selector': 'app-calendar-demo'},{'name': 'ChartComponent', 'selector': 'app-chart'},{'name': 'CheckboxComponent', 'selector': 'app-checkbox'},{'name': 'ColorPickerComponent', 'selector': 'app-color-picker'},{'name': 'ComingSoonComponent', 'selector': 'app-coming-soon'},{'name': 'CompaniesComponent', 'selector': 'app-companies'},{'name': 'CompanyDocumentsComponent', 'selector': 'app-company-documents'},{'name': 'CompanyHolidaysComponent', 'selector': 'app-company-holidays'},{'name': 'ComponentShowcaseComponent', 'selector': 'app-component-showcase'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DataTableComponent', 'selector': 'app-data-table'},{'name': 'DateTimePickerComponent', 'selector': 'app-date-time-picker'},{'name': 'DepartmentsComponent', 'selector': 'app-departments'},{'name': 'DevicesComponent', 'selector': 'app-devices'},{'name': 'DividerComponent', 'selector': 'app-divider'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DoorsComponent', 'selector': 'app-doors'},{'name': 'DraggableCardsComponent', 'selector': 'app-draggable-cards'},{'name': 'DraggableCardsDemoComponent', 'selector': 'app-draggable-cards-demo'},{'name': 'EChartsChartComponent', 'selector': 'app-echarts-chart'},{'name': 'EChartsDemoComponent', 'selector': 'app-echarts-demo'},{'name': 'EmployeesComponent', 'selector': 'app-employees'},{'name': 'EmployeesNewComponent', 'selector': 'app-employees-new'},{'name': 'EmptyStateComponent', 'selector': 'app-empty-state'},{'name': 'Error401Component', 'selector': 'app-error-401'},{'name': 'Error404Component', 'selector': 'app-error-404'},{'name': 'Error500Component', 'selector': 'app-error-500'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'ErrorToastComponent', 'selector': 'app-error-toast'},{'name': 'EventAnalyticsComponent', 'selector': 'app-event-analytics'},{'name': 'EventCheckinHistoryComponent', 'selector': 'app-event-checkin-history'},{'name': 'EventEmailConfirmationComponent', 'selector': 'app-event-email-confirmation'},{'name': 'EventKioskConfigComponent', 'selector': 'app-event-kiosk-config'},{'name': 'EventRegistrationComponent', 'selector': 'app-event-registration'},{'name': 'EventRegistrationFieldsComponent', 'selector': 'app-event-registration-fields'},{'name': 'EventsComponent', 'selector': 'app-events'},{'name': 'FaceRecognitionComponent', 'selector': 'app-face-recognition'},{'name': 'FaceRecognitionDemoComponent', 'selector': 'app-face-recognition-demo'},{'name': 'FaceRecognitionLiveComponent', 'selector': 'app-face-recognition-live'},{'name': 'FaceRecognitionTestComponent', 'selector': 'app-face-recognition-test'},{'name': 'FaqComponent', 'selector': 'app-faq'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'FilterSectionComponent', 'selector': 'app-filter-section'},{'name': 'ForgotPasswordComponent', 'selector': 'app-forgot-password'},{'name': 'FormFieldComponent', 'selector': 'app-form-field'},{'name': 'GalleryComponent', 'selector': 'app-gallery'},{'name': 'GalleryDemoComponent', 'selector': 'app-gallery-demo'},{'name': 'GlassButtonComponent', 'selector': 'app-glass-button'},{'name': 'GlassCardComponent', 'selector': 'app-glass-card'},{'name': 'GlassInputComponent', 'selector': 'app-glass-input'},{'name': 'GroupFaceRecognitionComponent', 'selector': 'app-group-face-recognition'},{'name': 'GuestsComponent', 'selector': 'app-guests'},{'name': 'HardwareStatusDashboardComponent', 'selector': 'app-hardware-status-dashboard'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HeatmapAnalyticsComponent', 'selector': 'app-heatmap-analytics'},{'name': 'HelpCenter', 'selector': 'app-help-center'},{'name': 'HelpCenterComponent', 'selector': 'app-help-center'},{'name': 'HrDashboardComponent', 'selector': 'app-hr-dashboard'},{'name': 'IconComponent', 'selector': 'app-icon'},{'name': 'IncidentReportsComponent', 'selector': 'app-incident-reports'},{'name': 'KioskViewComponent', 'selector': 'app-kiosk-view'},{'name': 'LandingComponent', 'selector': 'app-landing'},{'name': 'LeafletMapComponent', 'selector': 'app-leaflet-map'},{'name': 'LeavesComponent', 'selector': 'app-leaves'},{'name': 'LicenseManagementComponent', 'selector': 'app-license-management'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoadingStateComponent', 'selector': 'app-loading-state'},{'name': 'LocationsComponent', 'selector': 'app-locations'},{'name': 'LockScreenComponent', 'selector': 'app-lock-screen'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MapDemoComponent', 'selector': 'app-map-demo'},{'name': 'MaterialButtonComponent', 'selector': 'app-material-button'},{'name': 'MaterialCardComponent', 'selector': 'app-material-card'},{'name': 'MaterialDialogComponent', 'selector': 'app-material-dialog'},{'name': 'MaterialInputComponent', 'selector': 'app-material-input'},{'name': 'MaterialTableComponent', 'selector': 'app-material-table'},{'name': 'MfaSetupComponent', 'selector': 'app-mfa-setup'},{'name': 'MobileCameraComponent', 'selector': 'app-mobile-camera'},{'name': 'MobileDemoComponent', 'selector': 'app-mobile-demo'},{'name': 'ModalComponent', 'selector': 'app-modal'},{'name': 'ModalFormComponent', 'selector': 'app-modal-form'},{'name': 'ModuleSubscriptionComponent', 'selector': 'app-module-subscription'},{'name': 'MonitoringComponent', 'selector': 'app-monitoring'},{'name': 'NotificationCenterComponent', 'selector': 'app-notification-center'},{'name': 'NotificationDemoComponent', 'selector': 'app-notification-demo'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'NotificationSettingsComponent', 'selector': 'app-notification-settings'},{'name': 'OffcanvasComponent', 'selector': 'app-offcanvas'},{'name': 'OffcanvasDemoComponent', 'selector': 'app-offcanvas-demo'},{'name': 'OvertimeRequestsComponent', 'selector': 'app-overtime-requests'},{'name': 'PageLayoutComponent', 'selector': 'app-page-layout'},{'name': 'PaginationComponent', 'selector': 'app-pagination'},{'name': 'ParkingBlacklistComponent', 'selector': 'app-parking-blacklist'},{'name': 'ParkingDashboardComponent', 'selector': 'app-parking-dashboard'},{'name': 'ParkingEntryComponent', 'selector': 'app-parking-entry'},{'name': 'ParkingExitComponent', 'selector': 'app-parking-exit'},{'name': 'ParkingLogsComponent', 'selector': 'app-parking-logs'},{'name': 'ParkingReservationComponent', 'selector': 'app-parking-reservation'},{'name': 'ParkingRulesComponent', 'selector': 'app-parking-rules'},{'name': 'ParkingSpotsComponent', 'selector': 'app-parking-spots'},{'name': 'ParkingStatisticsComponent', 'selector': 'app-parking-statistics'},{'name': 'PayrollExportComponent', 'selector': 'app-payroll-export'},{'name': 'PerformanceDashboardComponent', 'selector': 'app-performance-dashboard'},{'name': 'PopoverComponent', 'selector': 'app-popover'},{'name': 'PortalLayoutComponent', 'selector': 'app-portal-layout'},{'name': 'PositionsComponent', 'selector': 'app-positions'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'PublicVerificationComponent', 'selector': 'app-public-verification'},{'name': 'QRCodesComponent', 'selector': 'app-qr-codes'},{'name': 'RadioComponent', 'selector': 'app-radio'},{'name': 'RangeSliderComponent', 'selector': 'app-range-slider'},{'name': 'RatingComponent', 'selector': 'app-rating'},{'name': 'RatingDemoComponent', 'selector': 'app-rating-demo'},{'name': 'RbacComponent', 'selector': 'app-rbac'},{'name': 'RecognitionHistoryComponent', 'selector': 'app-recognition-history'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReportsComponent', 'selector': 'app-reports'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'RFIDCardsComponent', 'selector': 'app-rfid-cards'},{'name': 'RichTextComponent', 'selector': 'app-rich-text'},{'name': 'RichTextEditorComponent', 'selector': 'app-rich-text-editor'},{'name': 'RichTextEditorDemoComponent', 'selector': 'app-rich-text-editor-demo'},{'name': 'SafetyDashboardComponent', 'selector': 'app-safety-dashboard'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ShiftsComponent', 'selector': 'app-shifts'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SkeletonComponent', 'selector': 'app-skeleton'},{'name': 'StatisticsCardComponent', 'selector': 'app-statistics-card'},{'name': 'StatisticsGridComponent', 'selector': 'app-statistics-grid'},{'name': 'StepperComponent', 'selector': 'app-stepper'},{'name': 'StructureComponent', 'selector': 'app-structure'},{'name': 'SuperAdminAnnouncementsComponent', 'selector': 'app-super-admin-announcements'},{'name': 'SuperAdminDashboardComponent', 'selector': 'app-super-admin-dashboard'},{'name': 'SuperAdminLayoutComponent', 'selector': 'app-super-admin-layout'},{'name': 'SuperAdminReportsComponent', 'selector': 'app-super-admin-reports'},{'name': 'SurveillanceMapComponent', 'selector': 'app-surveillance-map'},{'name': 'SwiperGalleryComponent', 'selector': 'app-swiper-gallery'},{'name': 'SwiperGalleryDemoComponent', 'selector': 'app-swiper-gallery-demo'},{'name': 'SwitchComponent', 'selector': 'app-switch'},{'name': 'SystemSettingsComponent', 'selector': 'app-system-settings'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TemplateManagementComponent', 'selector': 'app-template-management'},{'name': 'TestApiComponent', 'selector': 'app-test-api'},{'name': 'ThemeSwitcherComponent', 'selector': 'app-theme-switcher'},{'name': 'TimelineComponent', 'selector': 'app-timeline'},{'name': 'TimelineDemoComponent', 'selector': 'app-timeline-demo'},{'name': 'TimesheetsComponent', 'selector': 'app-timesheets'},{'name': 'TimestampComponent', 'selector': 'app-timestamp'},{'name': 'TimestampDemoComponent', 'selector': 'app-timestamp-demo'},{'name': 'TooltipComponent', 'selector': 'app-tooltip'},{'name': 'UsersComponent', 'selector': 'app-users'},{'name': 'ValidationDemoComponent', 'selector': 'app-validation-demo'},{'name': 'VehiclesComponent', 'selector': 'app-vehicles'},{'name': 'VideoAnalyticsComponent', 'selector': 'app-video-analytics'},{'name': 'VideoPlaybackComponent', 'selector': 'app-video-playback'},{'name': 'VisitorBadgesComponent', 'selector': 'app-visitor-badges'},{'name': 'VisitorBlacklistComponent', 'selector': 'app-visitor-blacklist'},{'name': 'VisitorDashboardComponent', 'selector': 'app-visitor-dashboard'},{'name': 'VisitorInvitationsComponent', 'selector': 'app-visitor-invitations'},{'name': 'VisitorParcelsComponent', 'selector': 'app-visitor-parcels'},{'name': 'VisitorReportsComponent', 'selector': 'app-visitor-reports'},{'name': 'VisitorsComponent', 'selector': 'app-visitors'},{'name': 'WatchlistComponent', 'selector': 'app-watchlist'},{'name': 'ZoneConfigComponent', 'selector': 'app-zone-config'}];
+    var DIRECTIVES = [{'name': 'HasPermissionDirective', 'selector': '[appHasPermission]'},{'name': 'ImageOptimizationDirective', 'selector': '[appImageOptimization]'}];
+    var ACTUAL_COMPONENT = {'name': 'EventKioskConfigComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'EventKioskConfigComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

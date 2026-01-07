@@ -1,0 +1,2836 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  SwiperGalleryComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/shared/components/swiper-gallery/swiper-gallery.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+                <code>AfterViewInit</code>
+                <code>OnDestroy</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-swiper-gallery</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../interfaces/Module.html" target="_self" >CommonModule</a></code>
+                            <code>NgOptimizedImage</code>
+                                <code><a href="../directives/ImageOptimizationDirective.html" target="_self" >ImageOptimizationDirective</a></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./swiper-gallery.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./swiper-gallery.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#currentSlide" >currentSlide</a>
+                            </li>
+                            <li>
+                                <a href="#defaultConfig" >defaultConfig</a>
+                            </li>
+                            <li>
+                                <a href="#isInitialized" >isInitialized</a>
+                            </li>
+                            <li>
+                                <a href="#swiper" >swiper</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                <a href="#swiperContainer" >swiperContainer</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#getCurrentSlideIndex" >getCurrentSlideIndex</a>
+                            </li>
+                            <li>
+                                <a href="#getSlideClasses" >getSlideClasses</a>
+                            </li>
+                            <li>
+                                <a href="#getSlideStyles" >getSlideStyles</a>
+                            </li>
+                            <li>
+                                <a href="#getTotalSlides" >getTotalSlides</a>
+                            </li>
+                            <li>
+                                <a href="#goToSlide" >goToSlide</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#initializeSwiper" >initializeSwiper</a>
+                            </li>
+                            <li>
+                                <a href="#isSwiperReady" >isSwiperReady</a>
+                            </li>
+                            <li>
+                                <a href="#nextSlide" >nextSlide</a>
+                            </li>
+                            <li>
+                                <a href="#ngAfterViewInit" >ngAfterViewInit</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onSlideClick" >onSlideClick</a>
+                            </li>
+                            <li>
+                                <a href="#prevSlide" >prevSlide</a>
+                            </li>
+                            <li>
+                                <a href="#startAutoplay" >startAutoplay</a>
+                            </li>
+                            <li>
+                                <a href="#stopAutoplay" >stopAutoplay</a>
+                            </li>
+                            <li>
+                                <a href="#toggleAutoplay" >toggleAutoplay</a>
+                            </li>
+                            <li>
+                                <a href="#trackBySlideId" >trackBySlideId</a>
+                            </li>
+                            <li>
+                                <a href="#updateSlides" >updateSlides</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#ariaLabel" >ariaLabel</a>
+                            </li>
+                            <li>
+                                <a href="#config" >config</a>
+                            </li>
+                            <li>
+                                <a href="#customClass" >customClass</a>
+                            </li>
+                            <li>
+                                <a href="#height" >height</a>
+                            </li>
+                            <li>
+                                <a href="#loading" >loading</a>
+                            </li>
+                            <li>
+                                <a href="#slides" >slides</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#galleryReady" >galleryReady</a>
+                            </li>
+                            <li>
+                                <a href="#slideChange" >slideChange</a>
+                            </li>
+                            <li>
+                                <a href="#slideClick" >slideClick</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#mergedConfig" >mergedConfig</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="228" class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:228</a></div>
+                            </td>
+                        </tr>
+
+            </tbody>
+        </table>
+</section>
+
+    <section data-compodoc="block-inputs">
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="ariaLabel"></a>
+                        <b>ariaLabel</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="169" class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:169</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>ARIA label for the component</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="config"></a>
+                        <b>config</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Partial&lt;SwiperGalleryConfig&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{}</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="149" class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:149</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Gallery configuration</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="customClass"></a>
+                        <b>customClass</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="164" class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:164</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Custom CSS classes</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="height"></a>
+                        <b>height</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;400px&#x27;</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="159" class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:159</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Gallery height</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="loading"></a>
+                        <b>loading</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="154" class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:154</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Loading state</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="slides"></a>
+                        <b>slides</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/SwiperSlide.html" target="_self" >SwiperSlide[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="144" class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:144</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Gallery slides</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+    <section data-compodoc="block-outputs">
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="galleryReady"></a>
+                        <b>galleryReady</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="184" class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:184</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Gallery ready event</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="slideChange"></a>
+                        <b>slideChange</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="174" class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:174</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Slide change event</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="slideClick"></a>
+                        <b>slideClick</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="179" class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:179</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Slide click event</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getCurrentSlideIndex"></a>
+                    <span class="name">
+                        <span ><b>getCurrentSlideIndex</b></span>
+                        <a href="#getCurrentSlideIndex"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getCurrentSlideIndex()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="448"
+                                    class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:448</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get current slide index</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getSlideClasses"></a>
+                    <span class="name">
+                        <span ><b>getSlideClasses</b></span>
+                        <a href="#getSlideClasses"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getSlideClasses(slide: <a href="../interfaces/SwiperSlide.html" target="_self">SwiperSlide</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="469"
+                                    class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:469</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get slide classes</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>slide</td>
+                                            <td>
+                                                            <code><a href="../interfaces/SwiperSlide.html" target="_self" >SwiperSlide</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>string[]</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getSlideStyles"></a>
+                    <span class="name">
+                        <span ><b>getSlideStyles</b></span>
+                        <a href="#getSlideStyles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getSlideStyles(slide: <a href="../interfaces/SwiperSlide.html" target="_self">SwiperSlide</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="489"
+                                    class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:489</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get slide styles</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>slide</td>
+                                            <td>
+                                                            <code><a href="../interfaces/SwiperSlide.html" target="_self" >SwiperSlide</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Record&lt;string, string&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTotalSlides"></a>
+                    <span class="name">
+                        <span ><b>getTotalSlides</b></span>
+                        <a href="#getTotalSlides"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getTotalSlides()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="455"
+                                    class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:455</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get total slides count</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="goToSlide"></a>
+                    <span class="name">
+                        <span ><b>goToSlide</b></span>
+                        <a href="#goToSlide"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>goToSlide(index: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="378"
+                                    class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:378</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Go to slide</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>index</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="initializeSwiper"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>initializeSwiper</b></span>
+                        <a href="#initializeSwiper"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>initializeSwiper()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="270"
+                                    class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:270</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Initialize Swiper</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isSwiperReady"></a>
+                    <span class="name">
+                        <span ><b>isSwiperReady</b></span>
+                        <a href="#isSwiperReady"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isSwiperReady()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="462"
+                                    class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:462</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Check if swiper is ready</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="nextSlide"></a>
+                    <span class="name">
+                        <span ><b>nextSlide</b></span>
+                        <a href="#nextSlide"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>nextSlide()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="387"
+                                    class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:387</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Go to next slide</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngAfterViewInit"></a>
+                    <span class="name">
+                        <span ><b>ngAfterViewInit</b></span>
+                        <a href="#ngAfterViewInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngAfterViewInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="248"
+                                    class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:248</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="254"
+                                    class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:254</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="232"
+                                    class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:232</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSlideClick"></a>
+                    <span class="name">
+                        <span ><b>onSlideClick</b></span>
+                        <a href="#onSlideClick"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSlideClick(index: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, slide: <a href="../interfaces/SwiperSlide.html" target="_self">SwiperSlide</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="371"
+                                    class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:371</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle slide click</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>index</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>slide</td>
+                                            <td>
+                                                            <code><a href="../interfaces/SwiperSlide.html" target="_self" >SwiperSlide</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="prevSlide"></a>
+                    <span class="name">
+                        <span ><b>prevSlide</b></span>
+                        <a href="#prevSlide"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>prevSlide()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="396"
+                                    class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:396</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Go to previous slide</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="startAutoplay"></a>
+                    <span class="name">
+                        <span ><b>startAutoplay</b></span>
+                        <a href="#startAutoplay"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>startAutoplay()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="405"
+                                    class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:405</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Start autoplay</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="stopAutoplay"></a>
+                    <span class="name">
+                        <span ><b>stopAutoplay</b></span>
+                        <a href="#stopAutoplay"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>stopAutoplay()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="414"
+                                    class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:414</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Stop autoplay</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleAutoplay"></a>
+                    <span class="name">
+                        <span ><b>toggleAutoplay</b></span>
+                        <a href="#toggleAutoplay"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleAutoplay()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="423"
+                                    class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:423</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Toggle autoplay</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="trackBySlideId"></a>
+                    <span class="name">
+                        <span ><b>trackBySlideId</b></span>
+                        <a href="#trackBySlideId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>trackBySlideId(index: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, slide: <a href="../interfaces/SwiperSlide.html" target="_self">SwiperSlide</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="504"
+                                    class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:504</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Track by function for ngFor</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>index</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>slide</td>
+                                            <td>
+                                                            <code><a href="../interfaces/SwiperSlide.html" target="_self" >SwiperSlide</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateSlides"></a>
+                    <span class="name">
+                        <span ><b>updateSlides</b></span>
+                        <a href="#updateSlides"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateSlides(slides: <a href="../interfaces/SwiperSlide.html" target="_self">SwiperSlide[]</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="436"
+                                    class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:436</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Update slides</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>slides</td>
+                                            <td>
+                                                            <code><a href="../interfaces/SwiperSlide.html" target="_self" >SwiperSlide[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currentSlide"></a>
+                    <span class="name">
+                        <span ><b>currentSlide</b></span>
+                        <a href="#currentSlide"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/SwiperSlide.html" target="_self" >SwiperSlide | null</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="227" class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:227</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="defaultConfig"></a>
+                    <span class="name">
+                        <span ><b>defaultConfig</b></span>
+                        <a href="#defaultConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/SwiperGalleryConfig.html" target="_self" >SwiperGalleryConfig</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    slidesPerView: 1,
+    spaceBetween: 30,
+    direction: &#x27;horizontal&#x27;,
+    loop: false,
+    centeredSlides: false,
+    grabCursor: true,
+    navigation: true,
+    pagination: true,
+    paginationType: &#x27;bullets&#x27;,
+    paginationClickable: true,
+    autoplay: false,
+    autoplayDelay: 3000,
+    autoplayPauseOnMouseEnter: true,
+    effect: &#x27;slide&#x27;,
+    thumbs: false,
+    zoom: false,
+    zoomMaxRatio: 3,
+    zoomMinRatio: 1,
+    breakpoints: {
+      640: { slidesPerView: 2, spaceBetween: 20 },
+      768: { slidesPerView: 3, spaceBetween: 30 },
+      1024: { slidesPerView: 4, spaceBetween: 40 }
+    },
+    speed: 300,
+    freeMode: false,
+    freeModeSticky: false,
+    watchSlidesProgress: false,
+    watchSlidesVisibility: false,
+    preloadImages: true,
+    lazy: false,
+    keyboard: true,
+    mousewheel: false,
+    hashNavigation: false,
+    history: false,
+    a11y: true
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="187" class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:187</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isInitialized"></a>
+                    <span class="name">
+                        <span ><b>isInitialized</b></span>
+                        <a href="#isInitialized"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="228" class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:228</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="swiper"></a>
+                    <span class="name">
+                        <span ><b>swiper</b></span>
+                        <a href="#swiper"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Swiper | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="226" class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:226</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="swiperContainer"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                        <span ><b>swiperContainer</b></span>
+                        <a href="#swiperContainer"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>ElementRef</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;swiperContainer&#x27;, {static: false})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="139" class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:139</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Swiper container element reference</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="mergedConfig"></a>
+                        <span class="name"><b>mergedConfig</b><a href="#mergedConfig"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>mergedConfig()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="263" class="link-to-prism">src/app/shared/components/swiper-gallery/swiper-gallery.component.ts:263</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Get merged configuration</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="../interfaces/SwiperGalleryConfig.html" target="_self" >SwiperGalleryConfig</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit } from &#x27;@angular/core&#x27;;
+import { CommonModule, NgOptimizedImage } from &#x27;@angular/common&#x27;;
+import { Swiper } from &#x27;swiper&#x27;;
+import type { SwiperOptions } from &#x27;swiper/types&#x27;;
+import { Navigation, Pagination, Autoplay, Thumbs, Zoom, EffectFade, EffectCube, EffectFlip, EffectCoverflow, EffectCards } from &#x27;swiper/modules&#x27;;
+
+import { ImageOptimizationDirective } from &#x27;../../directives/image-optimization.directive&#x27;;
+
+/**
+ * Swiper slide interface
+ */
+export interface SwiperSlide {
+  id: string;
+  src: string;
+  alt: string;
+  title?: string;
+  description?: string;
+  thumbnail?: string;
+  video?: string;
+  type: &#x27;image&#x27; | &#x27;video&#x27; | &#x27;content&#x27;;
+  data?: any;
+}
+
+/**
+ * Swiper gallery configuration interface
+ */
+export interface SwiperGalleryConfig {
+  // Basic settings
+  slidesPerView: number | &#x27;auto&#x27;;
+  spaceBetween: number;
+  direction: &#x27;horizontal&#x27; | &#x27;vertical&#x27;;
+  loop: boolean;
+  centeredSlides: boolean;
+  grabCursor: boolean;
+
+  // Navigation
+  navigation: boolean;
+  navigationPrevEl?: string;
+  navigationNextEl?: string;
+
+  // Pagination
+  pagination: boolean;
+  paginationType: &#x27;bullets&#x27; | &#x27;fraction&#x27; | &#x27;progressbar&#x27; | &#x27;custom&#x27;;
+  paginationClickable: boolean;
+
+  // Autoplay
+  autoplay: boolean;
+  autoplayDelay: number;
+  autoplayPauseOnMouseEnter: boolean;
+
+  // Effects
+  effect: &#x27;slide&#x27; | &#x27;fade&#x27; | &#x27;cube&#x27; | &#x27;flip&#x27; | &#x27;coverflow&#x27; | &#x27;cards&#x27;;
+  fadeEffect?: {
+    crossFade: boolean;
+  };
+  cubeEffect?: {
+    shadow: boolean;
+    slideShadows: boolean;
+    shadowOffset: number;
+    shadowScale: number;
+  };
+  flipEffect?: {
+    slideShadows: boolean;
+    limitRotation: boolean;
+  };
+  coverflowEffect?: {
+    rotate: number;
+    stretch: number;
+    depth: number;
+    modifier: number;
+    slideShadows: boolean;
+  };
+  cardsEffect?: {
+    perSlideOffset: number;
+    perSlideRotate: number;
+    rotateOnSwipe: boolean;
+    transformEl: string;
+  };
+
+  // Thumbs
+  thumbs: boolean;
+  thumbsSwiper?: Swiper;
+
+  // Zoom
+  zoom: boolean;
+  zoomMaxRatio: number;
+  zoomMinRatio: number;
+
+  // Responsive
+  breakpoints: { [key: number]: SwiperOptions };
+
+  // Other
+  speed: number;
+  freeMode: boolean;
+  freeModeSticky: boolean;
+  watchSlidesProgress: boolean;
+  watchSlidesVisibility: boolean;
+  preloadImages: boolean;
+  lazy: boolean;
+  keyboard: boolean;
+  mousewheel: boolean;
+  hashNavigation: boolean;
+  history: boolean;
+  a11y: boolean;
+}
+
+@Component({
+  selector: &#x27;app-swiper-gallery&#x27;,
+  standalone: true,
+  imports: [
+    CommonModule,
+    NgOptimizedImage,
+    ImageOptimizationDirective
+  ],
+  templateUrl: &#x27;./swiper-gallery.component.html&#x27;,
+  styleUrls: [&#x27;./swiper-gallery.component.scss&#x27;]
+})
+export class SwiperGalleryComponent implements OnInit, AfterViewInit, OnDestroy {
+  /**
+   * Swiper container element reference
+   */
+  @ViewChild(&#x27;swiperContainer&#x27;, { static: false }) swiperContainer!: ElementRef;
+
+  /**
+   * Gallery slides
+   */
+  @Input() slides: SwiperSlide[] &#x3D; [];
+
+  /**
+   * Gallery configuration
+   */
+  @Input() config: Partial&lt;SwiperGalleryConfig&gt; &#x3D; {};
+
+  /**
+   * Loading state
+   */
+  @Input() loading: boolean &#x3D; false;
+
+  /**
+   * Gallery height
+   */
+  @Input() height: string &#x3D; &#x27;400px&#x27;;
+
+  /**
+   * Custom CSS classes
+   */
+  @Input() customClass?: string;
+
+  /**
+   * ARIA label for the component
+   */
+  @Input() ariaLabel?: string;
+
+  /**
+   * Slide change event
+   */
+  @Output() slideChange &#x3D; new EventEmitter&lt;{ activeIndex: number; slide: SwiperSlide }&gt;();
+
+  /**
+   * Slide click event
+   */
+  @Output() slideClick &#x3D; new EventEmitter&lt;{ index: number; slide: SwiperSlide }&gt;();
+
+  /**
+   * Gallery ready event
+   */
+  @Output() galleryReady &#x3D; new EventEmitter&lt;Swiper&gt;();
+
+  // Default configuration
+  defaultConfig: SwiperGalleryConfig &#x3D; {
+    slidesPerView: 1,
+    spaceBetween: 30,
+    direction: &#x27;horizontal&#x27;,
+    loop: false,
+    centeredSlides: false,
+    grabCursor: true,
+    navigation: true,
+    pagination: true,
+    paginationType: &#x27;bullets&#x27;,
+    paginationClickable: true,
+    autoplay: false,
+    autoplayDelay: 3000,
+    autoplayPauseOnMouseEnter: true,
+    effect: &#x27;slide&#x27;,
+    thumbs: false,
+    zoom: false,
+    zoomMaxRatio: 3,
+    zoomMinRatio: 1,
+    breakpoints: {
+      640: { slidesPerView: 2, spaceBetween: 20 },
+      768: { slidesPerView: 3, spaceBetween: 30 },
+      1024: { slidesPerView: 4, spaceBetween: 40 }
+    },
+    speed: 300,
+    freeMode: false,
+    freeModeSticky: false,
+    watchSlidesProgress: false,
+    watchSlidesVisibility: false,
+    preloadImages: true,
+    lazy: false,
+    keyboard: true,
+    mousewheel: false,
+    hashNavigation: false,
+    history: false,
+    a11y: true
+  };
+
+  // Component state
+  swiper: Swiper | null &#x3D; null;
+  currentSlide: SwiperSlide | null &#x3D; null;
+  isInitialized: boolean &#x3D; false;
+
+  constructor() {}
+
+  ngOnInit(): void {
+    // Initialize Swiper modules
+    Swiper.use([
+      Navigation,
+      Pagination,
+      Autoplay,
+      Thumbs,
+      Zoom,
+      EffectFade,
+      EffectCube,
+      EffectFlip,
+      EffectCoverflow,
+      EffectCards
+    ]);
+  }
+
+  ngAfterViewInit(): void {
+    if (this.slides.length &gt; 0) {
+      this.initializeSwiper();
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.swiper) {
+      this.swiper.destroy(true, true);
+    }
+  }
+
+  /**
+   * Get merged configuration
+   */
+  get mergedConfig(): SwiperGalleryConfig {
+    return { ...this.defaultConfig, ...this.config };
+  }
+
+  /**
+   * Initialize Swiper
+   */
+  private initializeSwiper(): void {
+    if (this.swiper) {
+      this.swiper.destroy(true, true);
+    }
+
+    const config &#x3D; this.mergedConfig;
+    const swiperConfig: SwiperOptions &#x3D; {
+      modules: [Navigation, Pagination, Autoplay, Thumbs, Zoom, EffectFade, EffectCube, EffectFlip, EffectCoverflow, EffectCards],
+
+      // Basic settings
+      slidesPerView: config.slidesPerView,
+      spaceBetween: config.spaceBetween,
+      direction: config.direction,
+      loop: config.loop,
+      centeredSlides: config.centeredSlides,
+      grabCursor: config.grabCursor,
+
+      // Navigation
+      navigation: config.navigation ? {
+        prevEl: config.navigationPrevEl || &#x27;.swiper-button-prev&#x27;,
+        nextEl: config.navigationNextEl || &#x27;.swiper-button-next&#x27;
+      } : false,
+
+      // Pagination
+      pagination: config.pagination ? {
+        el: &#x27;.swiper-pagination&#x27;,
+        type: config.paginationType,
+        clickable: config.paginationClickable
+      } : false,
+
+      // Autoplay
+      autoplay: config.autoplay ? {
+        delay: config.autoplayDelay,
+        pauseOnMouseEnter: config.autoplayPauseOnMouseEnter,
+        disableOnInteraction: false
+      } : false,
+
+      // Effects
+      effect: config.effect,
+      fadeEffect: config.fadeEffect,
+      cubeEffect: config.cubeEffect,
+      flipEffect: config.flipEffect,
+      coverflowEffect: config.coverflowEffect,
+      cardsEffect: config.cardsEffect,
+
+      // Thumbs
+      thumbs: config.thumbs ? {
+        swiper: config.thumbsSwiper
+      } : undefined,
+
+      // Zoom
+      zoom: config.zoom ? {
+        maxRatio: config.zoomMaxRatio,
+        minRatio: config.zoomMinRatio
+      } : false,
+
+      // Responsive
+      breakpoints: config.breakpoints,
+
+      // Other
+      speed: config.speed,
+      freeMode: config.freeMode ? {
+        enabled: true,
+        sticky: config.freeModeSticky
+      } : false,
+      watchSlidesProgress: config.watchSlidesProgress,
+      keyboard: config.keyboard,
+      mousewheel: config.mousewheel,
+      hashNavigation: config.hashNavigation,
+      history: config.history,
+      a11y: config.a11y ? {
+        enabled: true,
+        prevSlideMessage: &#x27;Previous slide&#x27;,
+        nextSlideMessage: &#x27;Next slide&#x27;,
+        firstSlideMessage: &#x27;This is the first slide&#x27;,
+        lastSlideMessage: &#x27;This is the last slide&#x27;
+      } : undefined,
+
+      // Events
+      on: {
+        init: () &#x3D;&gt; {
+          this.isInitialized &#x3D; true;
+          this.galleryReady.emit(this.swiper!);
+        },
+        slideChange: () &#x3D;&gt; {
+          if (this.swiper) {
+            const activeIndex &#x3D; this.swiper.activeIndex;
+            const slide &#x3D; this.slides[activeIndex];
+            this.currentSlide &#x3D; slide;
+            this.slideChange.emit({ activeIndex, slide });
+          }
+        }
+      }
+    };
+
+    this.swiper &#x3D; new Swiper(this.swiperContainer.nativeElement, swiperConfig);
+  }
+
+  /**
+   * Handle slide click
+   */
+  onSlideClick(index: number, slide: SwiperSlide): void {
+    this.slideClick.emit({ index, slide });
+  }
+
+  /**
+   * Go to slide
+   */
+  goToSlide(index: number): void {
+    if (this.swiper) {
+      this.swiper.slideTo(index);
+    }
+  }
+
+  /**
+   * Go to next slide
+   */
+  nextSlide(): void {
+    if (this.swiper) {
+      this.swiper.slideNext();
+    }
+  }
+
+  /**
+   * Go to previous slide
+   */
+  prevSlide(): void {
+    if (this.swiper) {
+      this.swiper.slidePrev();
+    }
+  }
+
+  /**
+   * Start autoplay
+   */
+  startAutoplay(): void {
+    if (this.swiper) {
+      this.swiper.autoplay?.start();
+    }
+  }
+
+  /**
+   * Stop autoplay
+   */
+  stopAutoplay(): void {
+    if (this.swiper) {
+      this.swiper.autoplay?.stop();
+    }
+  }
+
+  /**
+   * Toggle autoplay
+   */
+  toggleAutoplay(): void {
+    if (this.swiper) {
+      if (this.swiper.autoplay?.running) {
+        this.stopAutoplay();
+      } else {
+        this.startAutoplay();
+      }
+    }
+  }
+
+  /**
+   * Update slides
+   */
+  updateSlides(slides: SwiperSlide[]): void {
+    this.slides &#x3D; slides;
+    if (this.isInitialized &amp;&amp; this.swiper) {
+      this.swiper.update();
+    } else if (slides.length &gt; 0) {
+      this.initializeSwiper();
+    }
+  }
+
+  /**
+   * Get current slide index
+   */
+  getCurrentSlideIndex(): number {
+    return this.swiper ? this.swiper.activeIndex : 0;
+  }
+
+  /**
+   * Get total slides count
+   */
+  getTotalSlides(): number {
+    return this.slides.length;
+  }
+
+  /**
+   * Check if swiper is ready
+   */
+  isSwiperReady(): boolean {
+    return this.isInitialized &amp;&amp; this.swiper !&#x3D;&#x3D; null;
+  }
+
+  /**
+   * Get slide classes
+   */
+  getSlideClasses(slide: SwiperSlide): string[] {
+    const classes &#x3D; [&#x27;swiper-slide&#x27;];
+
+    if (slide.type &#x3D;&#x3D;&#x3D; &#x27;video&#x27;) {
+      classes.push(&#x27;slide-video&#x27;);
+    } else if (slide.type &#x3D;&#x3D;&#x3D; &#x27;content&#x27;) {
+      classes.push(&#x27;slide-content&#x27;);
+    } else {
+      classes.push(&#x27;slide-image&#x27;);
+    }
+
+    return classes;
+  }
+
+  /**
+   * Get slide styles
+   */
+  /**
+   * Get slide styles
+   */
+  getSlideStyles(slide: SwiperSlide): Record&lt;string, string&gt; {
+    const styles: Record&lt;string, string&gt; &#x3D; {};
+
+    if (slide.type &#x3D;&#x3D;&#x3D; &#x27;image&#x27; &amp;&amp; slide.src) {
+      styles[&#x27;background-image&#x27;] &#x3D; &#x60;url(${slide.src})&#x60;;
+      styles[&#x27;background-size&#x27;] &#x3D; &#x27;cover&#x27;;
+      styles[&#x27;background-position&#x27;] &#x3D; &#x27;center&#x27;;
+    }
+
+    return styles;
+  }
+
+  /**
+   * Track by function for ngFor
+   */
+  trackBySlideId(index: number, slide: SwiperSlide): string {
+    return slide.id;
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;swiper-gallery-container relative w-full bg-white/5 rounded-xl overflow-hidden backdrop-blur-sm&quot; [class]&#x3D;&quot;customClass || &#x27;&#x27;&quot; [style.height]&#x3D;&quot;height&quot; role&#x3D;&quot;group&quot; [attr.aria-label]&#x3D;&quot;ariaLabel || &#x27;Image gallery&#x27;&quot;&gt;
+  &lt;!-- Loading State --&gt;
+  &lt;div *ngIf&#x3D;&quot;loading&quot; class&#x3D;&quot;gallery-loading flex flex-col items-center justify-center h-full min-h-[300px] text-gray-400&quot; role&#x3D;&quot;status&quot; [attr.aria-live]&#x3D;&quot;&#x27;polite&#x27;&quot;&gt;
+    &lt;div class&#x3D;&quot;loading-spinner w-12 h-12 border-3 border-white/10 border-t-primary-500 rounded-full animate-spin mb-4&quot; [attr.aria-hidden]&#x3D;&quot;true&quot;&gt;&lt;/div&gt;
+    &lt;p class&#x3D;&quot;m-0 text-base&quot;&gt;กำลังโหลดรูปภาพ...&lt;/p&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Empty State --&gt;
+  &lt;div *ngIf&#x3D;&quot;!loading &amp;&amp; slides.length &#x3D;&#x3D;&#x3D; 0&quot; class&#x3D;&quot;gallery-empty flex flex-col items-center justify-center h-full min-h-[300px] text-gray-400&quot; role&#x3D;&quot;status&quot; [attr.aria-live]&#x3D;&quot;&#x27;polite&#x27;&quot;&gt;
+    &lt;i class&#x3D;&quot;fas fa-images fa-3x mb-4 opacity-50&quot; [attr.aria-hidden]&#x3D;&quot;true&quot;&gt;&lt;/i&gt;
+    &lt;p class&#x3D;&quot;m-0 text-lg&quot;&gt;ไม่มีรูปภาพในแกลเลอรี่&lt;/p&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Swiper Container --&gt;
+  &lt;div
+    *ngIf&#x3D;&quot;!loading &amp;&amp; slides.length &gt; 0&quot;
+    #swiperContainer
+    class&#x3D;&quot;swiper w-full h-full rounded-xl overflow-hidden&quot;
+    [class]&#x3D;&quot;&#x27;swiper-&#x27; + mergedConfig.effect&quot;
+    role&#x3D;&quot;region&quot;
+    [attr.aria-label]&#x3D;&quot;ariaLabel || &#x27;Image gallery&#x27;&quot;&gt;
+
+    &lt;!-- Swiper Wrapper --&gt;
+    &lt;div class&#x3D;&quot;swiper-wrapper&quot;&gt;
+      &lt;!-- Swiper Slides --&gt;
+      &lt;div
+        *ngFor&#x3D;&quot;let slide of slides; trackBy: trackBySlideId; let i &#x3D; index&quot;
+        class&#x3D;&quot;swiper-slide&quot;
+        [ngClass]&#x3D;&quot;getSlideClasses(slide)&quot;
+        [style]&#x3D;&quot;getSlideStyles(slide)&quot;
+        role&#x3D;&quot;group&quot;
+        [attr.aria-label]&#x3D;&quot;slide.title || slide.alt || &#x27;Slide &#x27; + (i + 1)&quot;
+        [attr.aria-current]&#x3D;&quot;currentSlide &#x3D;&#x3D;&#x3D; slide ? &#x27;true&#x27; : null&quot;
+        [attr.tabindex]&#x3D;&quot;0&quot;
+        (click)&#x3D;&quot;onSlideClick(i, slide)&quot;
+        (keydown.enter)&#x3D;&quot;onSlideClick(i, slide)&quot;
+        (keydown.space)&#x3D;&quot;onSlideClick(i, slide); $event.preventDefault()&quot;&gt;
+
+        &lt;!-- Image Slide --&gt;
+        &lt;div *ngIf&#x3D;&quot;slide.type &#x3D;&#x3D;&#x3D; &#x27;image&#x27;&quot; class&#x3D;&quot;slide-content relative w-full h-full flex items-center justify-center&quot;&gt;
+          &lt;img appImageOptimization
+            [ngSrc]&#x3D;&quot;slide.src&quot;
+            [alt]&#x3D;&quot;slide.alt&quot;
+            class&#x3D;&quot;slide-image w-full h-full object-cover rounded-xl&quot;
+            loading&#x3D;&quot;lazy&quot;&gt;
+
+          &lt;div *ngIf&#x3D;&quot;slide.title || slide.description&quot; class&#x3D;&quot;slide-overlay absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-8 px-6 text-white transform translate-y-full transition-transform group-hover:translate-y-0&quot;&gt;
+            &lt;div class&#x3D;&quot;slide-info&quot;&gt;
+              &lt;h3 *ngIf&#x3D;&quot;slide.title&quot; class&#x3D;&quot;slide-title text-xl font-semibold m-0 mb-2 text-white&quot;&gt;{{ slide.title }}&lt;/h3&gt;
+              &lt;p *ngIf&#x3D;&quot;slide.description&quot; class&#x3D;&quot;slide-description text-sm leading-relaxed m-0 text-white/90&quot;&gt;{{ slide.description }}&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Video Slide --&gt;
+        &lt;div *ngIf&#x3D;&quot;slide.type &#x3D;&#x3D;&#x3D; &#x27;video&#x27;&quot; class&#x3D;&quot;slide-content relative w-full h-full flex items-center justify-center&quot;&gt;
+          &lt;video
+            [src]&#x3D;&quot;slide.video&quot;
+            class&#x3D;&quot;slide-video w-full h-full object-cover rounded-xl&quot;
+            controls
+            preload&#x3D;&quot;metadata&quot;&gt;
+            &lt;source [src]&#x3D;&quot;slide.video&quot; type&#x3D;&quot;video/mp4&quot;&gt;
+            เบราว์เซอร์ของคุณไม่รองรับการเล่นวิดีโอ
+          &lt;/video&gt;
+
+          &lt;div *ngIf&#x3D;&quot;slide.title || slide.description&quot; class&#x3D;&quot;slide-overlay absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-8 px-6 text-white transform translate-y-full transition-transform group-hover:translate-y-0&quot;&gt;
+            &lt;div class&#x3D;&quot;slide-info&quot;&gt;
+              &lt;h3 *ngIf&#x3D;&quot;slide.title&quot; class&#x3D;&quot;slide-title text-xl font-semibold m-0 mb-2 text-white&quot;&gt;{{ slide.title }}&lt;/h3&gt;
+              &lt;p *ngIf&#x3D;&quot;slide.description&quot; class&#x3D;&quot;slide-description text-sm leading-relaxed m-0 text-white/90&quot;&gt;{{ slide.description }}&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Content Slide --&gt;
+        &lt;div *ngIf&#x3D;&quot;slide.type &#x3D;&#x3D;&#x3D; &#x27;content&#x27;&quot; class&#x3D;&quot;slide-content relative w-full h-full flex items-center justify-center bg-white/5 p-8&quot;&gt;
+          &lt;div class&#x3D;&quot;slide-custom-content text-center text-white max-w-[600px] p-8&quot;&gt;
+            &lt;h3 *ngIf&#x3D;&quot;slide.title&quot; class&#x3D;&quot;text-3xl font-bold m-0 mb-4 text-white&quot;&gt;{{ slide.title }}&lt;/h3&gt;
+            &lt;p *ngIf&#x3D;&quot;slide.description&quot; class&#x3D;&quot;text-lg leading-relaxed m-0 mb-6 text-gray-400&quot;&gt;{{ slide.description }}&lt;/p&gt;
+            &lt;div [innerHTML]&#x3D;&quot;slide.data?.content&quot;&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Zoom Button for Images --&gt;
+        &lt;div *ngIf&#x3D;&quot;slide.type &#x3D;&#x3D;&#x3D; &#x27;image&#x27; &amp;&amp; mergedConfig.zoom&quot; class&#x3D;&quot;slide-zoom-btn absolute top-4 right-4 w-10 h-10 bg-black/60 border border-white/20 rounded-full flex items-center justify-center text-white cursor-pointer transition-all opacity-0 group-hover:opacity-100 hover:bg-black/80 hover:scale-110&quot;&gt;
+          &lt;i class&#x3D;&quot;fas fa-search-plus text-sm&quot;&gt;&lt;/i&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Navigation Buttons --&gt;
+    &lt;div *ngIf&#x3D;&quot;mergedConfig.navigation&quot; class&#x3D;&quot;swiper-button-prev absolute top-1/2 left-4 -translate-y-1/2 w-12 h-12 bg-black/60 border border-white/20 rounded-full flex items-center justify-center text-white cursor-pointer transition-all z-10 hover:bg-black/80 hover:scale-110 after:hidden&quot;&gt;
+      &lt;i class&#x3D;&quot;fas fa-chevron-left text-base&quot;&gt;&lt;/i&gt;
+    &lt;/div&gt;
+    &lt;div *ngIf&#x3D;&quot;mergedConfig.navigation&quot; class&#x3D;&quot;swiper-button-next absolute top-1/2 right-4 -translate-y-1/2 w-12 h-12 bg-black/60 border border-white/20 rounded-full flex items-center justify-center text-white cursor-pointer transition-all z-10 hover:bg-black/80 hover:scale-110 after:hidden&quot;&gt;
+      &lt;i class&#x3D;&quot;fas fa-chevron-right text-base&quot;&gt;&lt;/i&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Pagination --&gt;
+    &lt;div *ngIf&#x3D;&quot;mergedConfig.pagination&quot; class&#x3D;&quot;swiper-pagination absolute bottom-4 left-1/2 -translate-x-1/2 z-10&quot; role&#x3D;&quot;tablist&quot; [attr.aria-label]&#x3D;&quot;&#x27;Slide pagination&#x27;&quot;&gt;&lt;/div&gt;
+
+    &lt;!-- Thumbs Container --&gt;
+    &lt;div *ngIf&#x3D;&quot;mergedConfig.thumbs&quot; class&#x3D;&quot;swiper-thumbs absolute bottom-0 left-0 right-0 h-16 bg-black/60 z-10&quot;&gt;
+      &lt;div class&#x3D;&quot;swiper-wrapper flex items-center&quot;&gt;
+        &lt;div
+          *ngFor&#x3D;&quot;let slide of slides; trackBy: trackBySlideId&quot;
+          class&#x3D;&quot;swiper-slide thumb-slide w-12 h-12 rounded-xl overflow-hidden cursor-pointer transition-all opacity-60 hover:opacity-80&quot;&gt;
+          &lt;img appImageOptimization
+            [ngSrc]&#x3D;&quot;slide.thumbnail || slide.src&quot;
+            [alt]&#x3D;&quot;slide.alt&quot;
+            class&#x3D;&quot;thumb-image w-full h-full object-cover&quot; loading&#x3D;&quot;lazy&quot;&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Gallery Controls --&gt;
+  &lt;div *ngIf&#x3D;&quot;!loading &amp;&amp; slides.length &gt; 0&quot; class&#x3D;&quot;gallery-controls absolute top-4 right-4 flex gap-4 z-20 md:top-2 md:right-2 md:flex-col md:gap-2&quot;&gt;
+    &lt;div class&#x3D;&quot;control-group flex items-center gap-2 bg-black/60 p-2 rounded-xl backdrop-blur-sm md:p-1 md:gap-1&quot;&gt;
+      &lt;button
+        class&#x3D;&quot;control-btn flex items-center justify-center w-10 h-10 bg-white/10 border border-white/20 rounded-full text-white cursor-pointer transition-all hover:bg-white/20 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed md:w-8 md:h-8&quot;
+        (click)&#x3D;&quot;prevSlide()&quot;
+        [disabled]&#x3D;&quot;!isSwiperReady()&quot;
+        [attr.aria-label]&#x3D;&quot;&#x27;Previous slide&#x27;&quot;
+        [attr.tabindex]&#x3D;&quot;0&quot;&gt;
+        &lt;i class&#x3D;&quot;fas fa-chevron-left text-sm&quot; [attr.aria-hidden]&#x3D;&quot;true&quot;&gt;&lt;/i&gt;
+      &lt;/button&gt;
+
+      &lt;span class&#x3D;&quot;slide-counter text-white text-sm font-semibold min-w-[4rem] text-center md:text-xs md:min-w-[3rem]&quot; role&#x3D;&quot;status&quot; [attr.aria-live]&#x3D;&quot;&#x27;polite&#x27;&quot;&gt;
+        {{ getCurrentSlideIndex() + 1 }} / {{ getTotalSlides() }}
+      &lt;/span&gt;
+
+      &lt;button
+        class&#x3D;&quot;control-btn flex items-center justify-center w-10 h-10 bg-white/10 border border-white/20 rounded-full text-white cursor-pointer transition-all hover:bg-white/20 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed md:w-8 md:h-8&quot;
+        (click)&#x3D;&quot;nextSlide()&quot;
+        [disabled]&#x3D;&quot;!isSwiperReady()&quot;
+        [attr.aria-label]&#x3D;&quot;&#x27;Next slide&#x27;&quot;
+        [attr.tabindex]&#x3D;&quot;0&quot;&gt;
+        &lt;i class&#x3D;&quot;fas fa-chevron-right text-sm&quot; [attr.aria-hidden]&#x3D;&quot;true&quot;&gt;&lt;/i&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;control-group flex items-center gap-2 bg-black/60 p-2 rounded-xl backdrop-blur-sm md:p-1 md:gap-1&quot;&gt;
+      &lt;button
+        *ngIf&#x3D;&quot;mergedConfig.autoplay&quot;
+        class&#x3D;&quot;control-btn flex items-center justify-center w-10 h-10 bg-white/10 border border-white/20 rounded-full text-white cursor-pointer transition-all hover:bg-white/20 hover:scale-110 md:w-8 md:h-8&quot;
+        [class.bg-primary-500]&#x3D;&quot;isSwiperReady() &amp;&amp; swiper?.autoplay?.running&quot;
+        [class.text-white]&#x3D;&quot;isSwiperReady() &amp;&amp; swiper?.autoplay?.running&quot;
+        (click)&#x3D;&quot;toggleAutoplay()&quot;
+        [attr.aria-label]&#x3D;&quot;isSwiperReady() &amp;&amp; swiper?.autoplay?.running ? &#x27;Pause autoplay&#x27; : &#x27;Start autoplay&#x27;&quot;
+        [attr.tabindex]&#x3D;&quot;0&quot;&gt;
+        &lt;i class&#x3D;&quot;fas text-sm&quot; [class.fa-pause]&#x3D;&quot;isSwiperReady() &amp;&amp; swiper?.autoplay?.running&quot; [class.fa-play]&#x3D;&quot;!(isSwiperReady() &amp;&amp; swiper?.autoplay?.running)&quot; [attr.aria-hidden]&#x3D;&quot;true&quot;&gt;&lt;/i&gt;
+      &lt;/button&gt;
+
+      &lt;button
+        class&#x3D;&quot;control-btn flex items-center justify-center w-10 h-10 bg-white/10 border border-white/20 rounded-full text-white cursor-pointer transition-all hover:bg-white/20 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed md:w-8 md:h-8&quot;
+        (click)&#x3D;&quot;goToSlide(0)&quot;
+        [disabled]&#x3D;&quot;!isSwiperReady()&quot;
+        [attr.aria-label]&#x3D;&quot;&#x27;Go to first slide&#x27;&quot;
+        [attr.tabindex]&#x3D;&quot;0&quot;&gt;
+        &lt;i class&#x3D;&quot;fas fa-home text-sm&quot; [attr.aria-hidden]&#x3D;&quot;true&quot;&gt;&lt;/i&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Current Slide Info --&gt;
+  &lt;div *ngIf&#x3D;&quot;!loading &amp;&amp; slides.length &gt; 0 &amp;&amp; currentSlide&quot; class&#x3D;&quot;current-slide-info absolute bottom-4 left-4 right-4 bg-black/60 p-4 rounded-lg backdrop-blur-sm z-10 md:bottom-2 md:left-2 md:right-2 md:p-3&quot;&gt;
+    &lt;div class&#x3D;&quot;slide-info-content&quot;&gt;
+      &lt;h4 *ngIf&#x3D;&quot;currentSlide.title&quot; class&#x3D;&quot;current-title text-lg font-semibold m-0 mb-2 text-white md:text-base&quot;&gt;{{ currentSlide.title }}&lt;/h4&gt;
+      &lt;p *ngIf&#x3D;&quot;currentSlide.description&quot; class&#x3D;&quot;current-description text-sm leading-relaxed m-0 text-white/90 md:text-xs&quot;&gt;{{ currentSlide.description }}&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./swiper-gallery.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">// Swiper Gallery Component Styles
+// Most styles migrated to Tailwind classes in HTML template
+// Keeping only complex styles that require SCSS (Swiper imports, effect-specific styles, complex selectors)
+
+// Import Swiper styles - keeping Swiper library imports
+@use &#x27;swiper/css&#x27;;
+@use &#x27;swiper/css/navigation&#x27;;
+@use &#x27;swiper/css/pagination&#x27;;
+@use &#x27;swiper/css/autoplay&#x27;;
+@use &#x27;swiper/css/thumbs&#x27;;
+@use &#x27;swiper/css/zoom&#x27;;
+@use &#x27;swiper/css/effect-fade&#x27;;
+@use &#x27;swiper/css/effect-cube&#x27;;
+@use &#x27;swiper/css/effect-flip&#x27;;
+@use &#x27;swiper/css/effect-coverflow&#x27;;
+@use &#x27;swiper/css/effect-cards&#x27;;
+
+// CSS Variables - Using Design Tokens
+:root {
+  --gallery-accent: var(--color-primary-500);
+}
+
+// Swiper Container - keeping Swiper-specific styles
+.swiper {
+  .swiper-wrapper {
+    align-items: stretch;
+  }
+
+  .swiper-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: var(--transition-normal);
+
+    &amp;:hover {
+      transform: scale(1.02);
+    }
+
+    &amp;.slide-image {
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    &amp;.slide-video {
+      background: #000;
+    }
+  }
+}
+
+// Slide Overlay - keeping complex hover transform
+.slide-overlay {
+  .swiper-slide:hover &amp; {
+    transform: translateY(0);
+  }
+}
+
+// Zoom Button - keeping complex hover opacity
+.slide-zoom-btn {
+  .swiper-slide:hover &amp; {
+    opacity: 1;
+  }
+}
+
+// Pagination - keeping Swiper pagination styles
+.swiper-pagination {
+  .swiper-pagination-bullet {
+    width: 0.75rem;
+    height: 0.75rem;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    margin: 0 0.25rem;
+    transition: var(--transition-normal);
+
+    &amp;.swiper-pagination-bullet-active {
+      background: var(--gallery-accent);
+      transform: scale(1.2);
+    }
+  }
+
+  .swiper-pagination-fraction {
+    color: white;
+    font-size: 0.875rem;
+    font-weight: var(--font-weight-semibold); /* 600 */
+    background: rgba(0, 0, 0, 0.6);
+    padding: var(--spacing-sm) var(--spacing-md); /* 8px 16px */
+    border-radius: var(--spacing-md); /* 16px */
+  }
+
+  .swiper-pagination-progressbar {
+    background: rgba(255, 255, 255, 0.2);
+    height: 0.25rem;
+    border-radius: 0.125rem;
+
+    .swiper-pagination-progressbar-fill {
+      background: var(--gallery-accent);
+      border-radius: calc(var(--spacing-xs) / 2); /* 2px */
+    }
+  }
+}
+
+// Thumbs - keeping Swiper thumbs styles
+.swiper-thumbs {
+  .swiper-wrapper {
+    align-items: center;
+  }
+
+  .thumb-slide {
+    &amp;.swiper-slide-thumb-active {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+  }
+}
+
+// Effect-specific styles - keeping Swiper effect styles
+.swiper-effect-fade {
+  .swiper-slide {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+
+    &amp;.swiper-slide-active {
+      opacity: 1;
+    }
+  }
+}
+
+.swiper-effect-cube {
+  .swiper-slide {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.swiper-effect-flip {
+  .swiper-slide {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.swiper-effect-coverflow {
+  .swiper-slide {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.swiper-effect-cards {
+  .swiper-slide {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-xl); /* 16px */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Animation keyframes
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .swiper-gallery-container {
+    border: 2px solid #ffffff;
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next,
+  .control-btn {
+    border: 2px solid #ffffff;
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .swiper-slide,
+  .slide-overlay,
+  .control-btn,
+  .thumb-slide {
+    transition: none;
+  }
+
+  .swiper-slide:hover {
+    transform: none;
+  }
+}
+
+// Touch device optimizations - keeping complex touch device styles
+@media (hover: none) and (pointer: coarse) {
+  .slide-overlay {
+    transform: translateY(0);
+    position: relative;
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  .slide-zoom-btn {
+    opacity: 1;
+  }
+
+  .swiper-slide:hover {
+    transform: none;
+  }
+}
+
+// Responsive styles migrated to Tailwind responsive classes in HTML template
+// Using md: breakpoint for mobile-first responsive design
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="swiper-gallery-container relative w-full bg-white/5 rounded-xl overflow-hidden backdrop-blur-sm" [class]="customClass || \'\'" [style.height]="height" role="group" [attr.aria-label]="ariaLabel || \'Image gallery\'">  <!-- Loading State -->  <div *ngIf="loading" class="gallery-loading flex flex-col items-center justify-center h-full min-h-[300px] text-gray-400" role="status" [attr.aria-live]="\'polite\'">    <div class="loading-spinner w-12 h-12 border-3 border-white/10 border-t-primary-500 rounded-full animate-spin mb-4" [attr.aria-hidden]="true"></div>    <p class="m-0 text-base">กำลังโหลดรูปภาพ...</p>  </div>  <!-- Empty State -->  <div *ngIf="!loading && slides.length === 0" class="gallery-empty flex flex-col items-center justify-center h-full min-h-[300px] text-gray-400" role="status" [attr.aria-live]="\'polite\'">    <i class="fas fa-images fa-3x mb-4 opacity-50" [attr.aria-hidden]="true"></i>    <p class="m-0 text-lg">ไม่มีรูปภาพในแกลเลอรี่</p>  </div>  <!-- Swiper Container -->  <div    *ngIf="!loading && slides.length > 0"    #swiperContainer    class="swiper w-full h-full rounded-xl overflow-hidden"    [class]="\'swiper-\' + mergedConfig.effect"    role="region"    [attr.aria-label]="ariaLabel || \'Image gallery\'">    <!-- Swiper Wrapper -->    <div class="swiper-wrapper">      <!-- Swiper Slides -->      <div        *ngFor="let slide of slides; trackBy: trackBySlideId; let i = index"        class="swiper-slide"        [ngClass]="getSlideClasses(slide)"        [style]="getSlideStyles(slide)"        role="group"        [attr.aria-label]="slide.title || slide.alt || \'Slide \' + (i + 1)"        [attr.aria-current]="currentSlide === slide ? \'true\' : null"        [attr.tabindex]="0"        (click)="onSlideClick(i, slide)"        (keydown.enter)="onSlideClick(i, slide)"        (keydown.space)="onSlideClick(i, slide); $event.preventDefault()">        <!-- Image Slide -->        <div *ngIf="slide.type === \'image\'" class="slide-content relative w-full h-full flex items-center justify-center">          <img appImageOptimization            [ngSrc]="slide.src"            [alt]="slide.alt"            class="slide-image w-full h-full object-cover rounded-xl"            loading="lazy">          <div *ngIf="slide.title || slide.description" class="slide-overlay absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-8 px-6 text-white transform translate-y-full transition-transform group-hover:translate-y-0">            <div class="slide-info">              <h3 *ngIf="slide.title" class="slide-title text-xl font-semibold m-0 mb-2 text-white">{{ slide.title }}</h3>              <p *ngIf="slide.description" class="slide-description text-sm leading-relaxed m-0 text-white/90">{{ slide.description }}</p>            </div>          </div>        </div>        <!-- Video Slide -->        <div *ngIf="slide.type === \'video\'" class="slide-content relative w-full h-full flex items-center justify-center">          <video            [src]="slide.video"            class="slide-video w-full h-full object-cover rounded-xl"            controls            preload="metadata">            <source [src]="slide.video" type="video/mp4">            เบราว์เซอร์ของคุณไม่รองรับการเล่นวิดีโอ          </video>          <div *ngIf="slide.title || slide.description" class="slide-overlay absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-8 px-6 text-white transform translate-y-full transition-transform group-hover:translate-y-0">            <div class="slide-info">              <h3 *ngIf="slide.title" class="slide-title text-xl font-semibold m-0 mb-2 text-white">{{ slide.title }}</h3>              <p *ngIf="slide.description" class="slide-description text-sm leading-relaxed m-0 text-white/90">{{ slide.description }}</p>            </div>          </div>        </div>        <!-- Content Slide -->        <div *ngIf="slide.type === \'content\'" class="slide-content relative w-full h-full flex items-center justify-center bg-white/5 p-8">          <div class="slide-custom-content text-center text-white max-w-[600px] p-8">            <h3 *ngIf="slide.title" class="text-3xl font-bold m-0 mb-4 text-white">{{ slide.title }}</h3>            <p *ngIf="slide.description" class="text-lg leading-relaxed m-0 mb-6 text-gray-400">{{ slide.description }}</p>            <div [innerHTML]="slide.data?.content"></div>          </div>        </div>        <!-- Zoom Button for Images -->        <div *ngIf="slide.type === \'image\' && mergedConfig.zoom" class="slide-zoom-btn absolute top-4 right-4 w-10 h-10 bg-black/60 border border-white/20 rounded-full flex items-center justify-center text-white cursor-pointer transition-all opacity-0 group-hover:opacity-100 hover:bg-black/80 hover:scale-110">          <i class="fas fa-search-plus text-sm"></i>        </div>      </div>    </div>    <!-- Navigation Buttons -->    <div *ngIf="mergedConfig.navigation" class="swiper-button-prev absolute top-1/2 left-4 -translate-y-1/2 w-12 h-12 bg-black/60 border border-white/20 rounded-full flex items-center justify-center text-white cursor-pointer transition-all z-10 hover:bg-black/80 hover:scale-110 after:hidden">      <i class="fas fa-chevron-left text-base"></i>    </div>    <div *ngIf="mergedConfig.navigation" class="swiper-button-next absolute top-1/2 right-4 -translate-y-1/2 w-12 h-12 bg-black/60 border border-white/20 rounded-full flex items-center justify-center text-white cursor-pointer transition-all z-10 hover:bg-black/80 hover:scale-110 after:hidden">      <i class="fas fa-chevron-right text-base"></i>    </div>    <!-- Pagination -->    <div *ngIf="mergedConfig.pagination" class="swiper-pagination absolute bottom-4 left-1/2 -translate-x-1/2 z-10" role="tablist" [attr.aria-label]="\'Slide pagination\'"></div>    <!-- Thumbs Container -->    <div *ngIf="mergedConfig.thumbs" class="swiper-thumbs absolute bottom-0 left-0 right-0 h-16 bg-black/60 z-10">      <div class="swiper-wrapper flex items-center">        <div          *ngFor="let slide of slides; trackBy: trackBySlideId"          class="swiper-slide thumb-slide w-12 h-12 rounded-xl overflow-hidden cursor-pointer transition-all opacity-60 hover:opacity-80">          <img appImageOptimization            [ngSrc]="slide.thumbnail || slide.src"            [alt]="slide.alt"            class="thumb-image w-full h-full object-cover" loading="lazy">        </div>      </div>    </div>  </div>  <!-- Gallery Controls -->  <div *ngIf="!loading && slides.length > 0" class="gallery-controls absolute top-4 right-4 flex gap-4 z-20 md:top-2 md:right-2 md:flex-col md:gap-2">    <div class="control-group flex items-center gap-2 bg-black/60 p-2 rounded-xl backdrop-blur-sm md:p-1 md:gap-1">      <button        class="control-btn flex items-center justify-center w-10 h-10 bg-white/10 border border-white/20 rounded-full text-white cursor-pointer transition-all hover:bg-white/20 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed md:w-8 md:h-8"        (click)="prevSlide()"        [disabled]="!isSwiperReady()"        [attr.aria-label]="\'Previous slide\'"        [attr.tabindex]="0">        <i class="fas fa-chevron-left text-sm" [attr.aria-hidden]="true"></i>      </button>      <span class="slide-counter text-white text-sm font-semibold min-w-[4rem] text-center md:text-xs md:min-w-[3rem]" role="status" [attr.aria-live]="\'polite\'">        {{ getCurrentSlideIndex() + 1 }} / {{ getTotalSlides() }}      </span>      <button        class="control-btn flex items-center justify-center w-10 h-10 bg-white/10 border border-white/20 rounded-full text-white cursor-pointer transition-all hover:bg-white/20 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed md:w-8 md:h-8"        (click)="nextSlide()"        [disabled]="!isSwiperReady()"        [attr.aria-label]="\'Next slide\'"        [attr.tabindex]="0">        <i class="fas fa-chevron-right text-sm" [attr.aria-hidden]="true"></i>      </button>    </div>    <div class="control-group flex items-center gap-2 bg-black/60 p-2 rounded-xl backdrop-blur-sm md:p-1 md:gap-1">      <button        *ngIf="mergedConfig.autoplay"        class="control-btn flex items-center justify-center w-10 h-10 bg-white/10 border border-white/20 rounded-full text-white cursor-pointer transition-all hover:bg-white/20 hover:scale-110 md:w-8 md:h-8"        [class.bg-primary-500]="isSwiperReady() && swiper?.autoplay?.running"        [class.text-white]="isSwiperReady() && swiper?.autoplay?.running"        (click)="toggleAutoplay()"        [attr.aria-label]="isSwiperReady() && swiper?.autoplay?.running ? \'Pause autoplay\' : \'Start autoplay\'"        [attr.tabindex]="0">        <i class="fas text-sm" [class.fa-pause]="isSwiperReady() && swiper?.autoplay?.running" [class.fa-play]="!(isSwiperReady() && swiper?.autoplay?.running)" [attr.aria-hidden]="true"></i>      </button>      <button        class="control-btn flex items-center justify-center w-10 h-10 bg-white/10 border border-white/20 rounded-full text-white cursor-pointer transition-all hover:bg-white/20 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed md:w-8 md:h-8"        (click)="goToSlide(0)"        [disabled]="!isSwiperReady()"        [attr.aria-label]="\'Go to first slide\'"        [attr.tabindex]="0">        <i class="fas fa-home text-sm" [attr.aria-hidden]="true"></i>      </button>    </div>  </div>  <!-- Current Slide Info -->  <div *ngIf="!loading && slides.length > 0 && currentSlide" class="current-slide-info absolute bottom-4 left-4 right-4 bg-black/60 p-4 rounded-lg backdrop-blur-sm z-10 md:bottom-2 md:left-2 md:right-2 md:p-3">    <div class="slide-info-content">      <h4 *ngIf="currentSlide.title" class="current-title text-lg font-semibold m-0 mb-2 text-white md:text-base">{{ currentSlide.title }}</h4>      <p *ngIf="currentSlide.description" class="current-description text-sm leading-relaxed m-0 text-white/90 md:text-xs">{{ currentSlide.description }}</p>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AccessControlComponent', 'selector': 'app-access-control'},{'name': 'AccessGroupsComponent', 'selector': 'app-access-groups'},{'name': 'AccessibilityDashboardComponent', 'selector': 'app-accessibility-dashboard'},{'name': 'AccessLogsComponent', 'selector': 'app-access-logs'},{'name': 'AccessSchedulesComponent', 'selector': 'app-access-schedules'},{'name': 'AccordionComponent', 'selector': 'app-accordion'},{'name': 'AccordionDemoComponent', 'selector': 'app-accordion-demo'},{'name': 'AdvancedDataTableComponent', 'selector': 'app-advanced-data-table'},{'name': 'AdvancedDataTableDemoComponent', 'selector': 'app-advanced-data-table-demo'},{'name': 'AdvancedFeaturesDashboardComponent', 'selector': 'app-advanced-features-dashboard'},{'name': 'AdvancedFormsComponent', 'selector': 'app-advanced-forms'},{'name': 'AdvancedRichTextComponent', 'selector': 'app-advanced-rich-text'},{'name': 'AdvancedUiDemoComponent', 'selector': 'app-advanced-ui-demo'},{'name': 'AIModelsComponent', 'selector': 'app-ai-models'},{'name': 'AlertComponent', 'selector': 'app-alert'},{'name': 'AlertHistoryComponent', 'selector': 'app-alert-history'},{'name': 'AlertsComponent', 'selector': 'app-alerts'},{'name': 'ApexChartComponent', 'selector': 'app-apex-chart'},{'name': 'App', 'selector': 'app-root'},{'name': 'AttendanceComponent', 'selector': 'app-attendance'},{'name': 'AuditLogsComponent', 'selector': 'app-audit-logs'},{'name': 'AvatarComponent', 'selector': 'app-avatar'},{'name': 'BackupRestoreComponent', 'selector': 'app-backup-restore'},{'name': 'BadgeComponent', 'selector': 'app-badge'},{'name': 'BaseComponent', 'selector': ''},{'name': 'BiometricDataComponent', 'selector': 'app-biometric-data'},{'name': 'BreadcrumbComponent', 'selector': 'app-breadcrumb'},{'name': 'CalendarComponent', 'selector': 'app-calendar'},{'name': 'CalendarDemoComponent', 'selector': 'app-calendar-demo'},{'name': 'ChartComponent', 'selector': 'app-chart'},{'name': 'CheckboxComponent', 'selector': 'app-checkbox'},{'name': 'ColorPickerComponent', 'selector': 'app-color-picker'},{'name': 'ComingSoonComponent', 'selector': 'app-coming-soon'},{'name': 'CompaniesComponent', 'selector': 'app-companies'},{'name': 'CompanyDocumentsComponent', 'selector': 'app-company-documents'},{'name': 'CompanyHolidaysComponent', 'selector': 'app-company-holidays'},{'name': 'ComponentShowcaseComponent', 'selector': 'app-component-showcase'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DataTableComponent', 'selector': 'app-data-table'},{'name': 'DateTimePickerComponent', 'selector': 'app-date-time-picker'},{'name': 'DepartmentsComponent', 'selector': 'app-departments'},{'name': 'DevicesComponent', 'selector': 'app-devices'},{'name': 'DividerComponent', 'selector': 'app-divider'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DoorsComponent', 'selector': 'app-doors'},{'name': 'DraggableCardsComponent', 'selector': 'app-draggable-cards'},{'name': 'DraggableCardsDemoComponent', 'selector': 'app-draggable-cards-demo'},{'name': 'EChartsChartComponent', 'selector': 'app-echarts-chart'},{'name': 'EChartsDemoComponent', 'selector': 'app-echarts-demo'},{'name': 'EmployeesComponent', 'selector': 'app-employees'},{'name': 'EmployeesNewComponent', 'selector': 'app-employees-new'},{'name': 'EmptyStateComponent', 'selector': 'app-empty-state'},{'name': 'Error401Component', 'selector': 'app-error-401'},{'name': 'Error404Component', 'selector': 'app-error-404'},{'name': 'Error500Component', 'selector': 'app-error-500'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'ErrorToastComponent', 'selector': 'app-error-toast'},{'name': 'EventAnalyticsComponent', 'selector': 'app-event-analytics'},{'name': 'EventCheckinHistoryComponent', 'selector': 'app-event-checkin-history'},{'name': 'EventEmailConfirmationComponent', 'selector': 'app-event-email-confirmation'},{'name': 'EventKioskConfigComponent', 'selector': 'app-event-kiosk-config'},{'name': 'EventRegistrationComponent', 'selector': 'app-event-registration'},{'name': 'EventRegistrationFieldsComponent', 'selector': 'app-event-registration-fields'},{'name': 'EventsComponent', 'selector': 'app-events'},{'name': 'FaceRecognitionComponent', 'selector': 'app-face-recognition'},{'name': 'FaceRecognitionDemoComponent', 'selector': 'app-face-recognition-demo'},{'name': 'FaceRecognitionLiveComponent', 'selector': 'app-face-recognition-live'},{'name': 'FaceRecognitionTestComponent', 'selector': 'app-face-recognition-test'},{'name': 'FaqComponent', 'selector': 'app-faq'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'FilterSectionComponent', 'selector': 'app-filter-section'},{'name': 'ForgotPasswordComponent', 'selector': 'app-forgot-password'},{'name': 'FormFieldComponent', 'selector': 'app-form-field'},{'name': 'GalleryComponent', 'selector': 'app-gallery'},{'name': 'GalleryDemoComponent', 'selector': 'app-gallery-demo'},{'name': 'GlassButtonComponent', 'selector': 'app-glass-button'},{'name': 'GlassCardComponent', 'selector': 'app-glass-card'},{'name': 'GlassInputComponent', 'selector': 'app-glass-input'},{'name': 'GroupFaceRecognitionComponent', 'selector': 'app-group-face-recognition'},{'name': 'GuestsComponent', 'selector': 'app-guests'},{'name': 'HardwareStatusDashboardComponent', 'selector': 'app-hardware-status-dashboard'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HeatmapAnalyticsComponent', 'selector': 'app-heatmap-analytics'},{'name': 'HelpCenter', 'selector': 'app-help-center'},{'name': 'HelpCenterComponent', 'selector': 'app-help-center'},{'name': 'HrDashboardComponent', 'selector': 'app-hr-dashboard'},{'name': 'IconComponent', 'selector': 'app-icon'},{'name': 'IncidentReportsComponent', 'selector': 'app-incident-reports'},{'name': 'KioskViewComponent', 'selector': 'app-kiosk-view'},{'name': 'LandingComponent', 'selector': 'app-landing'},{'name': 'LeafletMapComponent', 'selector': 'app-leaflet-map'},{'name': 'LeavesComponent', 'selector': 'app-leaves'},{'name': 'LicenseManagementComponent', 'selector': 'app-license-management'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoadingStateComponent', 'selector': 'app-loading-state'},{'name': 'LocationsComponent', 'selector': 'app-locations'},{'name': 'LockScreenComponent', 'selector': 'app-lock-screen'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MapDemoComponent', 'selector': 'app-map-demo'},{'name': 'MaterialButtonComponent', 'selector': 'app-material-button'},{'name': 'MaterialCardComponent', 'selector': 'app-material-card'},{'name': 'MaterialDialogComponent', 'selector': 'app-material-dialog'},{'name': 'MaterialInputComponent', 'selector': 'app-material-input'},{'name': 'MaterialTableComponent', 'selector': 'app-material-table'},{'name': 'MfaSetupComponent', 'selector': 'app-mfa-setup'},{'name': 'MobileCameraComponent', 'selector': 'app-mobile-camera'},{'name': 'MobileDemoComponent', 'selector': 'app-mobile-demo'},{'name': 'ModalComponent', 'selector': 'app-modal'},{'name': 'ModalFormComponent', 'selector': 'app-modal-form'},{'name': 'ModuleSubscriptionComponent', 'selector': 'app-module-subscription'},{'name': 'MonitoringComponent', 'selector': 'app-monitoring'},{'name': 'NotificationCenterComponent', 'selector': 'app-notification-center'},{'name': 'NotificationDemoComponent', 'selector': 'app-notification-demo'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'NotificationSettingsComponent', 'selector': 'app-notification-settings'},{'name': 'OffcanvasComponent', 'selector': 'app-offcanvas'},{'name': 'OffcanvasDemoComponent', 'selector': 'app-offcanvas-demo'},{'name': 'OvertimeRequestsComponent', 'selector': 'app-overtime-requests'},{'name': 'PageLayoutComponent', 'selector': 'app-page-layout'},{'name': 'PaginationComponent', 'selector': 'app-pagination'},{'name': 'ParkingBlacklistComponent', 'selector': 'app-parking-blacklist'},{'name': 'ParkingDashboardComponent', 'selector': 'app-parking-dashboard'},{'name': 'ParkingEntryComponent', 'selector': 'app-parking-entry'},{'name': 'ParkingExitComponent', 'selector': 'app-parking-exit'},{'name': 'ParkingLogsComponent', 'selector': 'app-parking-logs'},{'name': 'ParkingReservationComponent', 'selector': 'app-parking-reservation'},{'name': 'ParkingRulesComponent', 'selector': 'app-parking-rules'},{'name': 'ParkingSpotsComponent', 'selector': 'app-parking-spots'},{'name': 'ParkingStatisticsComponent', 'selector': 'app-parking-statistics'},{'name': 'PayrollExportComponent', 'selector': 'app-payroll-export'},{'name': 'PerformanceDashboardComponent', 'selector': 'app-performance-dashboard'},{'name': 'PopoverComponent', 'selector': 'app-popover'},{'name': 'PortalLayoutComponent', 'selector': 'app-portal-layout'},{'name': 'PositionsComponent', 'selector': 'app-positions'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'PublicVerificationComponent', 'selector': 'app-public-verification'},{'name': 'QRCodesComponent', 'selector': 'app-qr-codes'},{'name': 'RadioComponent', 'selector': 'app-radio'},{'name': 'RangeSliderComponent', 'selector': 'app-range-slider'},{'name': 'RatingComponent', 'selector': 'app-rating'},{'name': 'RatingDemoComponent', 'selector': 'app-rating-demo'},{'name': 'RbacComponent', 'selector': 'app-rbac'},{'name': 'RecognitionHistoryComponent', 'selector': 'app-recognition-history'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReportsComponent', 'selector': 'app-reports'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'RFIDCardsComponent', 'selector': 'app-rfid-cards'},{'name': 'RichTextComponent', 'selector': 'app-rich-text'},{'name': 'RichTextEditorComponent', 'selector': 'app-rich-text-editor'},{'name': 'RichTextEditorDemoComponent', 'selector': 'app-rich-text-editor-demo'},{'name': 'SafetyDashboardComponent', 'selector': 'app-safety-dashboard'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ShiftsComponent', 'selector': 'app-shifts'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SkeletonComponent', 'selector': 'app-skeleton'},{'name': 'StatisticsCardComponent', 'selector': 'app-statistics-card'},{'name': 'StatisticsGridComponent', 'selector': 'app-statistics-grid'},{'name': 'StepperComponent', 'selector': 'app-stepper'},{'name': 'StructureComponent', 'selector': 'app-structure'},{'name': 'SuperAdminAnnouncementsComponent', 'selector': 'app-super-admin-announcements'},{'name': 'SuperAdminDashboardComponent', 'selector': 'app-super-admin-dashboard'},{'name': 'SuperAdminLayoutComponent', 'selector': 'app-super-admin-layout'},{'name': 'SuperAdminReportsComponent', 'selector': 'app-super-admin-reports'},{'name': 'SurveillanceMapComponent', 'selector': 'app-surveillance-map'},{'name': 'SwiperGalleryComponent', 'selector': 'app-swiper-gallery'},{'name': 'SwiperGalleryDemoComponent', 'selector': 'app-swiper-gallery-demo'},{'name': 'SwitchComponent', 'selector': 'app-switch'},{'name': 'SystemSettingsComponent', 'selector': 'app-system-settings'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TemplateManagementComponent', 'selector': 'app-template-management'},{'name': 'TestApiComponent', 'selector': 'app-test-api'},{'name': 'ThemeSwitcherComponent', 'selector': 'app-theme-switcher'},{'name': 'TimelineComponent', 'selector': 'app-timeline'},{'name': 'TimelineDemoComponent', 'selector': 'app-timeline-demo'},{'name': 'TimesheetsComponent', 'selector': 'app-timesheets'},{'name': 'TimestampComponent', 'selector': 'app-timestamp'},{'name': 'TimestampDemoComponent', 'selector': 'app-timestamp-demo'},{'name': 'TooltipComponent', 'selector': 'app-tooltip'},{'name': 'UsersComponent', 'selector': 'app-users'},{'name': 'ValidationDemoComponent', 'selector': 'app-validation-demo'},{'name': 'VehiclesComponent', 'selector': 'app-vehicles'},{'name': 'VideoAnalyticsComponent', 'selector': 'app-video-analytics'},{'name': 'VideoPlaybackComponent', 'selector': 'app-video-playback'},{'name': 'VisitorBadgesComponent', 'selector': 'app-visitor-badges'},{'name': 'VisitorBlacklistComponent', 'selector': 'app-visitor-blacklist'},{'name': 'VisitorDashboardComponent', 'selector': 'app-visitor-dashboard'},{'name': 'VisitorInvitationsComponent', 'selector': 'app-visitor-invitations'},{'name': 'VisitorParcelsComponent', 'selector': 'app-visitor-parcels'},{'name': 'VisitorReportsComponent', 'selector': 'app-visitor-reports'},{'name': 'VisitorsComponent', 'selector': 'app-visitors'},{'name': 'WatchlistComponent', 'selector': 'app-watchlist'},{'name': 'ZoneConfigComponent', 'selector': 'app-zone-config'}];
+    var DIRECTIVES = [{'name': 'HasPermissionDirective', 'selector': '[appHasPermission]'},{'name': 'ImageOptimizationDirective', 'selector': '[appImageOptimization]'}];
+    var ACTUAL_COMPONENT = {'name': 'SwiperGalleryComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'SwiperGalleryComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

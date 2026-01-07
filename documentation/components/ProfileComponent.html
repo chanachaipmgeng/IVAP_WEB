@@ -1,0 +1,2036 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  ProfileComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/portal/company-management/profile/profile.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-profile</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../interfaces/Module.html" target="_self" >CommonModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >FormsModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >RouterModule</a></code>
+                                <code><a href="../components/GlassCardComponent.html" target="_self" >GlassCardComponent</a></code>
+                                <code><a href="../components/GlassButtonComponent.html" target="_self" >GlassButtonComponent</a></code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./profile.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./profile.component.scss</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#activeTab" >activeTab</a>
+                            </li>
+                            <li>
+                                <a href="#confirmPassword" >confirmPassword</a>
+                            </li>
+                            <li>
+                                <a href="#currentPassword" >currentPassword</a>
+                            </li>
+                            <li>
+                                <a href="#emailNotifications" >emailNotifications</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#i18n" >i18n</a>
+                            </li>
+                            <li>
+                                <a href="#loading" >loading</a>
+                            </li>
+                            <li>
+                                <a href="#newPassword" >newPassword</a>
+                            </li>
+                            <li>
+                                <a href="#passwordStrength" >passwordStrength</a>
+                            </li>
+                            <li>
+                                <a href="#profile" >profile</a>
+                            </li>
+                            <li>
+                                <a href="#pushNotifications" >pushNotifications</a>
+                            </li>
+                            <li>
+                                <a href="#saving" >saving</a>
+                            </li>
+                            <li>
+                                <a href="#showPasswordModal" >showPasswordModal</a>
+                            </li>
+                            <li>
+                                <a href="#smsNotifications" >smsNotifications</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#changePassword" >changePassword</a>
+                            </li>
+                            <li>
+                                <a href="#checkPasswordStrength" >checkPasswordStrength</a>
+                            </li>
+                            <li>
+                                <a href="#getPasswordStrengthColor" >getPasswordStrengthColor</a>
+                            </li>
+                            <li>
+                                <a href="#getPasswordStrengthText" >getPasswordStrengthText</a>
+                            </li>
+                            <li>
+                                <a href="#loadProfile" >loadProfile</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onFileSelected" >onFileSelected</a>
+                            </li>
+                            <li>
+                                <a href="#saveNotificationSettings" >saveNotificationSettings</a>
+                            </li>
+                            <li>
+                                <a href="#selectTab" >selectTab</a>
+                            </li>
+                            <li>
+                                <a href="#updateProfile" >updateProfile</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(api: <a href="../injectables/ApiService.html" target="_self">ApiService</a>, auth: <a href="../injectables/AuthService.html" target="_self">AuthService</a>, i18n: <a href="../injectables/I18nService.html" target="_self">I18nService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">src/app/features/portal/company-management/profile/profile.component.ts:82</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>api</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ApiService.html" target="_self" >ApiService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>auth</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AuthService.html" target="_self" >AuthService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>i18n</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/I18nService.html" target="_self" >I18nService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="changePassword"></a>
+                    <span class="name">
+                        <span ><b>changePassword</b></span>
+                        <a href="#changePassword"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>changePassword()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="195"
+                                    class="link-to-prism">src/app/features/portal/company-management/profile/profile.component.ts:195</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="checkPasswordStrength"></a>
+                    <span class="name">
+                        <span ><b>checkPasswordStrength</b></span>
+                        <a href="#checkPasswordStrength"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>checkPasswordStrength(password: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="239"
+                                    class="link-to-prism">src/app/features/portal/company-management/profile/profile.component.ts:239</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>password</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPasswordStrengthColor"></a>
+                    <span class="name">
+                        <span ><b>getPasswordStrengthColor</b></span>
+                        <a href="#getPasswordStrengthColor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getPasswordStrengthColor()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="251"
+                                    class="link-to-prism">src/app/features/portal/company-management/profile/profile.component.ts:251</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPasswordStrengthText"></a>
+                    <span class="name">
+                        <span ><b>getPasswordStrengthText</b></span>
+                        <a href="#getPasswordStrengthText"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getPasswordStrengthText()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="257"
+                                    class="link-to-prism">src/app/features/portal/company-management/profile/profile.component.ts:257</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadProfile"></a>
+                    <span class="name">
+                        <span ><b>loadProfile</b></span>
+                        <a href="#loadProfile"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>loadProfile()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="94"
+                                    class="link-to-prism">src/app/features/portal/company-management/profile/profile.component.ts:94</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="90"
+                                    class="link-to-prism">src/app/features/portal/company-management/profile/profile.component.ts:90</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onFileSelected"></a>
+                    <span class="name">
+                        <span ><b>onFileSelected</b></span>
+                        <a href="#onFileSelected"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onFileSelected(event: <a href="../interfaces/Event.html" target="_self">Event</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="287"
+                                    class="link-to-prism">src/app/features/portal/company-management/profile/profile.component.ts:287</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Event.html" target="_self" >Event</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveNotificationSettings"></a>
+                    <span class="name">
+                        <span ><b>saveNotificationSettings</b></span>
+                        <a href="#saveNotificationSettings"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>saveNotificationSettings()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="263"
+                                    class="link-to-prism">src/app/features/portal/company-management/profile/profile.component.ts:263</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectTab"></a>
+                    <span class="name">
+                        <span ><b>selectTab</b></span>
+                        <a href="#selectTab"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>selectTab(tab: "profile" | "security" | "notifications")</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="283"
+                                    class="link-to-prism">src/app/features/portal/company-management/profile/profile.component.ts:283</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>tab</td>
+                                            <td>
+                                                        <code>&quot;profile&quot; | &quot;security&quot; | &quot;notifications&quot;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateProfile"></a>
+                    <span class="name">
+                        <span ><b>updateProfile</b></span>
+                        <a href="#updateProfile"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateProfile()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="139"
+                                    class="link-to-prism">src/app/features/portal/company-management/profile/profile.component.ts:139</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="activeTab"></a>
+                    <span class="name">
+                        <span ><b>activeTab</b></span>
+                        <a href="#activeTab"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;&#x27;profile&#x27; | &#x27;security&#x27; | &#x27;notifications&#x27;&gt;(&#x27;profile&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/features/portal/company-management/profile/profile.component.ts:57</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="confirmPassword"></a>
+                    <span class="name">
+                        <span ><b>confirmPassword</b></span>
+                        <a href="#confirmPassword"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="76" class="link-to-prism">src/app/features/portal/company-management/profile/profile.component.ts:76</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currentPassword"></a>
+                    <span class="name">
+                        <span ><b>currentPassword</b></span>
+                        <a href="#currentPassword"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">src/app/features/portal/company-management/profile/profile.component.ts:74</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="emailNotifications"></a>
+                    <span class="name">
+                        <span ><b>emailNotifications</b></span>
+                        <a href="#emailNotifications"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>true</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="80" class="link-to-prism">src/app/features/portal/company-management/profile/profile.component.ts:80</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="i18n"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>i18n</b></span>
+                        <a href="#i18n"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../injectables/I18nService.html" target="_self" >I18nService</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="87" class="link-to-prism">src/app/features/portal/company-management/profile/profile.component.ts:87</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loading"></a>
+                    <span class="name">
+                        <span ><b>loading</b></span>
+                        <a href="#loading"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/features/portal/company-management/profile/profile.component.ts:55</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="newPassword"></a>
+                    <span class="name">
+                        <span ><b>newPassword</b></span>
+                        <a href="#newPassword"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="75" class="link-to-prism">src/app/features/portal/company-management/profile/profile.component.ts:75</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="passwordStrength"></a>
+                    <span class="name">
+                        <span ><b>passwordStrength</b></span>
+                        <a href="#passwordStrength"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>0</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="77" class="link-to-prism">src/app/features/portal/company-management/profile/profile.component.ts:77</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="profile"></a>
+                    <span class="name">
+                        <span ><b>profile</b></span>
+                        <a href="#profile"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/UserProfile.html" target="_self" >UserProfile</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    id: &#x27;&#x27;,
+    firstName: &#x27;&#x27;,
+    lastName: &#x27;&#x27;,
+    email: &#x27;&#x27;,
+    phone: &#x27;&#x27;,
+    department: &#x27;&#x27;,
+    position: &#x27;&#x27;,
+    role: &#x27;&#x27;,
+    createdAt: &#x27;&#x27;,
+    updatedAt: &#x27;&#x27;
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/features/portal/company-management/profile/profile.component.ts:60</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pushNotifications"></a>
+                    <span class="name">
+                        <span ><b>pushNotifications</b></span>
+                        <a href="#pushNotifications"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>true</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="81" class="link-to-prism">src/app/features/portal/company-management/profile/profile.component.ts:81</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saving"></a>
+                    <span class="name">
+                        <span ><b>saving</b></span>
+                        <a href="#saving"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/features/portal/company-management/profile/profile.component.ts:56</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showPasswordModal"></a>
+                    <span class="name">
+                        <span ><b>showPasswordModal</b></span>
+                        <a href="#showPasswordModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/app/features/portal/company-management/profile/profile.component.ts:58</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="smsNotifications"></a>
+                    <span class="name">
+                        <span ><b>smsNotifications</b></span>
+                        <a href="#smsNotifications"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">src/app/features/portal/company-management/profile/profile.component.ts:82</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, signal } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormsModule } from &#x27;@angular/forms&#x27;;
+import { RouterModule } from &#x27;@angular/router&#x27;;
+import { GlassCardComponent } from &#x27;../../../../shared/components/glass-card/glass-card.component&#x27;;
+import { GlassButtonComponent } from &#x27;../../../../shared/components/glass-button/glass-button.component&#x27;;
+import { AuthService } from &#x27;../../../../core/services/auth.service&#x27;;
+import { I18nService } from &#x27;../../../../core/services/i18n.service&#x27;;
+import { ApiService } from &#x27;../../../../core/services/api.service&#x27;;
+import { User } from &#x27;../../../../core/models/user.model&#x27;;
+
+/**
+ * User profile interface
+ */
+export interface UserProfile {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string;
+  department?: string;
+  position?: string;
+  role: string;
+  avatar?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+@Component({
+  selector: &#x27;app-profile&#x27;,
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    GlassCardComponent,
+    GlassButtonComponent
+  ],
+  templateUrl: &#x27;./profile.component.html&#x27;,
+  styleUrl: &#x27;./profile.component.scss&#x27;
+})
+export class ProfileComponent implements OnInit {
+  loading &#x3D; signal(false);
+  saving &#x3D; signal(false);
+  activeTab &#x3D; signal&lt;&#x27;profile&#x27; | &#x27;security&#x27; | &#x27;notifications&#x27;&gt;(&#x27;profile&#x27;);
+  showPasswordModal &#x3D; signal(false);
+
+  profile: UserProfile &#x3D; {
+    id: &#x27;&#x27;,
+    firstName: &#x27;&#x27;,
+    lastName: &#x27;&#x27;,
+    email: &#x27;&#x27;,
+    phone: &#x27;&#x27;,
+    department: &#x27;&#x27;,
+    position: &#x27;&#x27;,
+    role: &#x27;&#x27;,
+    createdAt: &#x27;&#x27;,
+    updatedAt: &#x27;&#x27;
+  };
+
+  // Security
+  currentPassword &#x3D; &#x27;&#x27;;
+  newPassword &#x3D; &#x27;&#x27;;
+  confirmPassword &#x3D; &#x27;&#x27;;
+  passwordStrength &#x3D; 0;
+
+  // Notifications
+  emailNotifications &#x3D; true;
+  pushNotifications &#x3D; true;
+  smsNotifications &#x3D; false;
+
+  constructor(
+    private api: ApiService,
+    private auth: AuthService,
+    public i18n: I18nService
+  ) {}
+
+  ngOnInit(): void {
+    this.loadProfile();
+  }
+
+  loadProfile(): void {
+    this.loading.set(true);
+
+    // ใช้ auth.getCurrentUserInfo() แทนการเรียกใช้โดยตรง
+    this.auth.getCurrentUserInfo().subscribe({
+      next: (user: User) &#x3D;&gt; {
+        this.profile &#x3D; {
+          id: user.member_id || user.memberId || user.id || &#x27;&#x27;,
+          firstName: user.first_name || &#x27;&#x27;,  // snake_case only
+          lastName: user.last_name || &#x27;&#x27;,  // snake_case only
+          email: user.email || &#x27;&#x27;,
+          phone: user.phone_number || &#x27;&#x27;,  // snake_case only
+          department: &#x27;&#x27;, // ถ้ามี endpoint สำหรับดึง department
+          position: &#x27;&#x27;, // ถ้ามี endpoint สำหรับดึง position
+          role: user.roles?.[0] || &#x27;user&#x27;,
+          avatar: user.picture || &#x27;&#x27;,
+          createdAt: user.created_at || new Date().toISOString(),  // snake_case only
+          updatedAt: user.updated_at || new Date().toISOString()  // snake_case only
+        };
+        this.loading.set(false);
+      },
+      error: (error: any) &#x3D;&gt; {
+        console.error(&#x27;Error loading profile:&#x27;, error);
+        // Fallback to cached user data
+        const currentUser &#x3D; this.auth.currentUser();
+        if (currentUser) {
+          this.profile &#x3D; {
+            id: currentUser.id || currentUser.member_id || &#x27;&#x27;,
+            firstName: currentUser.first_name || &#x27;&#x27;,  // snake_case only
+            lastName: currentUser.last_name || &#x27;&#x27;,  // snake_case only
+            email: currentUser.email,
+            phone: currentUser.phone_number || &#x27;&#x27;,  // snake_case only
+            department: &#x27;&#x27;,
+            position: &#x27;&#x27;,
+            role: currentUser.roles?.[0] || &#x27;user&#x27;,
+            avatar: currentUser.picture || &#x27;&#x27;,
+            createdAt: currentUser.created_at || new Date().toISOString(),  // snake_case only
+            updatedAt: currentUser.updated_at || new Date().toISOString()  // snake_case only
+          };
+        }
+        this.loading.set(false);
+      }
+    });
+  }
+
+  updateProfile(): void {
+    if (!this.profile.id) {
+      alert(this.i18n.t(&#x27;pages.profile.profileIdNotFound&#x27;));
+      return;
+    }
+
+    this.saving.set(true);
+
+    const updateData: any &#x3D; {
+      first_name: this.profile.firstName,
+      last_name: this.profile.lastName,
+      email: this.profile.email,
+      phone_number: this.profile.phone || null
+    };
+
+    // Only include fields that are being updated
+    if (this.profile.avatar) {
+      updateData.picture &#x3D; this.profile.avatar;
+    }
+
+    this.api.put&lt;any&gt;(&#x60;/members/${this.profile.id}&#x60;, updateData).subscribe({
+      next: (response: any) &#x3D;&gt; {
+        const updated &#x3D; response.data || response;
+        // Update local profile
+        if (updated.first_name) this.profile.firstName &#x3D; updated.first_name;
+        if (updated.last_name) this.profile.lastName &#x3D; updated.last_name;
+        if (updated.email) this.profile.email &#x3D; updated.email;
+        if (updated.phone_number) this.profile.phone &#x3D; updated.phone_number;
+        if (updated.picture) this.profile.avatar &#x3D; updated.picture;
+        if (updated.updated_at) this.profile.updatedAt &#x3D; updated.updated_at;
+
+        // Update auth service user data
+        const currentUser &#x3D; this.auth.currentUser();
+        if (currentUser) {
+          const updatedUser &#x3D; {
+            ...currentUser,
+            first_name: this.profile.firstName,
+            last_name: this.profile.lastName,
+            email: this.profile.email,
+            phone_number: this.profile.phone,
+            picture: this.profile.avatar
+          };
+          this.auth.setCurrentUser(updatedUser);
+        }
+
+        this.saving.set(false);
+        alert(this.i18n.t(&#x27;pages.profile.profileUpdated&#x27;));
+      },
+      error: (error: any) &#x3D;&gt; {
+        console.error(&#x27;Error updating profile:&#x27;, error);
+        alert(this.i18n.t(&#x27;pages.profile.profileUpdateError&#x27;) + &#x27; &#x27; + (error.error?.detail || error.message || this.i18n.t(&#x27;pages.profile.unknownError&#x27;)));
+        this.saving.set(false);
+      }
+    });
+  }
+
+  changePassword(): void {
+    if (!this.currentPassword || !this.newPassword) {
+      alert(this.i18n.t(&#x27;pages.profile.fillAllFields&#x27;));
+      return;
+    }
+
+    if (this.newPassword !&#x3D;&#x3D; this.confirmPassword) {
+      alert(this.i18n.t(&#x27;pages.profile.passwordsDoNotMatch&#x27;));
+      return;
+    }
+
+    if (this.passwordStrength &lt; 50) {
+      alert(this.i18n.t(&#x27;pages.profile.passwordTooWeak&#x27;));
+      return;
+    }
+
+    if (!this.profile.id) {
+      alert(this.i18n.t(&#x27;pages.profile.profileIdNotFound&#x27;));
+      return;
+    }
+
+    this.saving.set(true);
+
+    // Update password via member update endpoint
+    this.api.put&lt;any&gt;(&#x60;/members/${this.profile.id}&#x60;, {
+      password: this.newPassword
+    }).subscribe({
+      next: () &#x3D;&gt; {
+        this.saving.set(false);
+        this.showPasswordModal.set(false);
+        this.currentPassword &#x3D; &#x27;&#x27;;
+        this.newPassword &#x3D; &#x27;&#x27;;
+        this.confirmPassword &#x3D; &#x27;&#x27;;
+        this.passwordStrength &#x3D; 0;
+        alert(this.i18n.t(&#x27;pages.profile.passwordChanged&#x27;));
+      },
+      error: (error: any) &#x3D;&gt; {
+        console.error(&#x27;Error changing password:&#x27;, error);
+        alert(this.i18n.t(&#x27;pages.profile.passwordChangeError&#x27;) + &#x27; &#x27; + (error.error?.detail || error.message || this.i18n.t(&#x27;pages.profile.unknownError&#x27;)));
+        this.saving.set(false);
+      }
+    });
+  }
+
+  checkPasswordStrength(password: string): void {
+    let strength &#x3D; 0;
+
+    if (password.length &gt;&#x3D; 8) strength +&#x3D; 20;
+    if (/[A-Z]/.test(password)) strength +&#x3D; 20;
+    if (/[a-z]/.test(password)) strength +&#x3D; 20;
+    if (/[0-9]/.test(password)) strength +&#x3D; 20;
+    if (/[^A-Za-z0-9]/.test(password)) strength +&#x3D; 20;
+
+    this.passwordStrength &#x3D; strength;
+  }
+
+  getPasswordStrengthColor(): string {
+    if (this.passwordStrength &lt; 40) return &#x27;weak&#x27;;
+    if (this.passwordStrength &lt; 80) return &#x27;medium&#x27;;
+    return &#x27;strong&#x27;;
+  }
+
+  getPasswordStrengthText(): string {
+    if (this.passwordStrength &lt; 40) return this.i18n.t(&#x27;pages.profile.passwordStrength.weak&#x27;);
+    if (this.passwordStrength &lt; 80) return this.i18n.t(&#x27;pages.profile.passwordStrength.medium&#x27;);
+    return this.i18n.t(&#x27;pages.profile.passwordStrength.strong&#x27;);
+  }
+
+  saveNotificationSettings(): void {
+    if (!this.profile.id) {
+      alert(this.i18n.t(&#x27;pages.profile.profileIdNotFound&#x27;));
+      return;
+    }
+
+    // Save notification preferences (could be extended to use a dedicated endpoint)
+    // For now, we can store in user preferences or extend MemberUpdate schema
+    const notificationData &#x3D; {
+      email_notifications: this.emailNotifications,
+      push_notifications: this.pushNotifications,
+      sms_notifications: this.smsNotifications
+    };
+
+    // TODO: Create dedicated notification settings endpoint if needed
+    // For now, we&#x27;ll use a generic approach
+    // Notification settings saved
+    alert(this.i18n.t(&#x27;pages.profile.notificationSettingsSaved&#x27;));
+  }
+
+  selectTab(tab: &#x27;profile&#x27; | &#x27;security&#x27; | &#x27;notifications&#x27;): void {
+    this.activeTab.set(tab);
+  }
+
+  onFileSelected(event: Event): void {
+    const input &#x3D; event.target as HTMLInputElement;
+    if (input.files &amp;&amp; input.files[0]) {
+      const file &#x3D; input.files[0];
+
+      // Validate file type
+      if (!file.type.startsWith(&#x27;image/&#x27;)) {
+        alert(this.i18n.t(&#x27;pages.profile.selectImageFile&#x27;));
+        return;
+      }
+
+      // Validate file size (max 5MB)
+      if (file.size &gt; 5 * 1024 * 1024) {
+        alert(this.i18n.t(&#x27;pages.profile.imageSizeTooLarge&#x27;));
+        return;
+      }
+
+      // Convert to base64 for upload
+      const reader &#x3D; new FileReader();
+      reader.onload &#x3D; (e: any) &#x3D;&gt; {
+        const base64Image &#x3D; e.target.result;
+
+        // Update profile avatar
+        if (this.profile.id) {
+          this.saving.set(true);
+          this.api.put&lt;any&gt;(&#x60;/members/${this.profile.id}&#x60;, {
+            picture: base64Image
+          }).subscribe({
+            next: (response: any) &#x3D;&gt; {
+              const updated &#x3D; response.data || response;
+              if (updated.picture) {
+                this.profile.avatar &#x3D; updated.picture;
+                // Update auth service
+                const currentUser &#x3D; this.auth.currentUser();
+                if (currentUser) {
+                  const updatedUser &#x3D; { ...currentUser, picture: updated.picture };
+                  this.auth.setCurrentUser(updatedUser);
+                }
+              }
+              this.saving.set(false);
+              alert(this.i18n.t(&#x27;pages.profile.avatarUploaded&#x27;));
+            },
+            error: (error: any) &#x3D;&gt; {
+              console.error(&#x27;Error uploading avatar:&#x27;, error);
+              alert(this.i18n.t(&#x27;pages.profile.avatarUploadError&#x27;) + &#x27; &#x27; + (error.error?.detail || error.message || this.i18n.t(&#x27;pages.profile.unknownError&#x27;)));
+              this.saving.set(false);
+            }
+          });
+        } else {
+          alert(this.i18n.t(&#x27;pages.profile.profileIdNotFound&#x27;));
+        }
+      };
+      reader.onerror &#x3D; () &#x3D;&gt; {
+        alert(this.i18n.t(&#x27;pages.profile.errorReadingFile&#x27;));
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+}
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;space-y-6&quot;&gt;
+  &lt;!-- Header --&gt;
+  &lt;div&gt;
+    &lt;h1 class&#x3D;&quot;text-3xl font-bold text-gray-900 dark:text-gray-100&quot;&gt;{{ i18n.t(&#x27;pages.profile.title&#x27;) }}&lt;/h1&gt;
+    &lt;p class&#x3D;&quot;text-gray-600 dark:text-gray-400 mt-2&quot;&gt;{{ i18n.t(&#x27;pages.profile.description&#x27;) }}&lt;/p&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Tab Navigation --&gt;
+  &lt;div class&#x3D;&quot;glass rounded-lg p-1 flex space-x-1&quot;&gt;
+    &lt;button
+      [class]&#x3D;&quot;activeTab() &#x3D;&#x3D;&#x3D; &#x27;profile&#x27; 
+        ? &#x27;bg-primary-500/20 text-primary-600 dark:text-primary-400&#x27; 
+        : &#x27;text-gray-600 dark:text-gray-400&#x27;&quot;
+      (click)&#x3D;&quot;selectTab(&#x27;profile&#x27;)&quot;
+      class&#x3D;&quot;flex-1 py-2 px-4 rounded-lg font-medium transition-colors&quot;
+    &gt;
+      {{ i18n.t(&#x27;pages.profile.profileInformation&#x27;) }}
+    &lt;/button&gt;
+    &lt;button
+      [class]&#x3D;&quot;activeTab() &#x3D;&#x3D;&#x3D; &#x27;security&#x27; 
+        ? &#x27;bg-primary-500/20 text-primary-600 dark:text-primary-400&#x27; 
+        : &#x27;text-gray-600 dark:text-gray-400&#x27;&quot;
+      (click)&#x3D;&quot;selectTab(&#x27;security&#x27;)&quot;
+      class&#x3D;&quot;flex-1 py-2 px-4 rounded-lg font-medium transition-colors&quot;
+    &gt;
+      {{ i18n.t(&#x27;pages.profile.security&#x27;) }}
+    &lt;/button&gt;
+    &lt;button
+      [class]&#x3D;&quot;activeTab() &#x3D;&#x3D;&#x3D; &#x27;notifications&#x27; 
+        ? &#x27;bg-primary-500/20 text-primary-600 dark:text-primary-400&#x27; 
+        : &#x27;text-gray-600 dark:text-gray-400&#x27;&quot;
+      (click)&#x3D;&quot;selectTab(&#x27;notifications&#x27;)&quot;
+      class&#x3D;&quot;flex-1 py-2 px-4 rounded-lg font-medium transition-colors&quot;
+    &gt;
+      {{ i18n.t(&#x27;pages.profile.notifications&#x27;) }}
+    &lt;/button&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Profile Tab --&gt;
+  &lt;div *ngIf&#x3D;&quot;activeTab() &#x3D;&#x3D;&#x3D; &#x27;profile&#x27;&quot;&gt;
+    &lt;app-glass-card customClass&#x3D;&quot;p-6&quot;&gt;
+      &lt;div class&#x3D;&quot;space-y-6&quot;&gt;
+        &lt;!-- Avatar Section --&gt;
+        &lt;div class&#x3D;&quot;flex flex-col items-center mb-6&quot;&gt;
+          &lt;div class&#x3D;&quot;w-24 h-24 rounded-full bg-primary-500/20 flex items-center justify-center mb-4&quot;&gt;
+            &lt;span class&#x3D;&quot;text-3xl font-bold text-primary-600 dark:text-primary-400&quot;&gt;
+              {{ (profile.firstName &amp;&amp; profile.firstName[0]) || &#x27;&#x27; }}{{ (profile.lastName &amp;&amp; profile.lastName[0]) || &#x27;&#x27; }}
+            &lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;flex space-x-2&quot;&gt;
+            &lt;label for&#x3D;&quot;avatar-upload&quot; class&#x3D;&quot;cursor-pointer&quot;&gt;
+              &lt;app-glass-button variant&#x3D;&quot;secondary&quot; size&#x3D;&quot;sm&quot;&gt;
+                {{ i18n.t(&#x27;pages.profile.changePhoto&#x27;) }}
+              &lt;/app-glass-button&gt;
+            &lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;file&quot;
+              id&#x3D;&quot;avatar-upload&quot;
+              accept&#x3D;&quot;image/*&quot;
+              (change)&#x3D;&quot;onFileSelected($event)&quot;
+              style&#x3D;&quot;display: none;&quot;
+            /&gt;
+            &lt;app-glass-button variant&#x3D;&quot;danger&quot; size&#x3D;&quot;sm&quot;&gt;
+              {{ i18n.t(&#x27;pages.profile.remove&#x27;) }}
+            &lt;/app-glass-button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Form Section --&gt;
+        &lt;div class&#x3D;&quot;space-y-4&quot;&gt;
+          &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-2 gap-4&quot;&gt;
+            &lt;div&gt;
+              &lt;label class&#x3D;&quot;block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300&quot;&gt;
+                {{ i18n.t(&#x27;pages.profile.firstName&#x27;) }}
+              &lt;/label&gt;
+              &lt;input
+                type&#x3D;&quot;text&quot;
+                [(ngModel)]&#x3D;&quot;profile.firstName&quot;
+                [placeholder]&#x3D;&quot;i18n.t(&#x27;pages.profile.enterFirstName&#x27;)&quot;
+                class&#x3D;&quot;glass-input w-full&quot;
+              /&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+              &lt;label class&#x3D;&quot;block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300&quot;&gt;
+                {{ i18n.t(&#x27;pages.profile.lastName&#x27;) }}
+              &lt;/label&gt;
+              &lt;input
+                type&#x3D;&quot;text&quot;
+                [(ngModel)]&#x3D;&quot;profile.lastName&quot;
+                [placeholder]&#x3D;&quot;i18n.t(&#x27;pages.profile.enterLastName&#x27;)&quot;
+                class&#x3D;&quot;glass-input w-full&quot;
+              /&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div&gt;
+            &lt;label class&#x3D;&quot;block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300&quot;&gt;
+              {{ i18n.t(&#x27;pages.profile.email&#x27;) }}
+            &lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;email&quot;
+              [(ngModel)]&#x3D;&quot;profile.email&quot;
+              [placeholder]&#x3D;&quot;i18n.t(&#x27;pages.profile.enterEmail&#x27;)&quot;
+              class&#x3D;&quot;glass-input w-full&quot;
+            /&gt;
+          &lt;/div&gt;
+
+          &lt;div&gt;
+            &lt;label class&#x3D;&quot;block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300&quot;&gt;
+              {{ i18n.t(&#x27;pages.profile.phone&#x27;) }}
+            &lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;tel&quot;
+              [(ngModel)]&#x3D;&quot;profile.phone&quot;
+              [placeholder]&#x3D;&quot;i18n.t(&#x27;pages.profile.enterPhone&#x27;)&quot;
+              class&#x3D;&quot;glass-input w-full&quot;
+            /&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-2 gap-4&quot;&gt;
+            &lt;div&gt;
+              &lt;label class&#x3D;&quot;block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300&quot;&gt;
+                {{ i18n.t(&#x27;pages.profile.department&#x27;) }}
+              &lt;/label&gt;
+              &lt;input
+                type&#x3D;&quot;text&quot;
+                [(ngModel)]&#x3D;&quot;profile.department&quot;
+                [placeholder]&#x3D;&quot;i18n.t(&#x27;pages.profile.enterDepartment&#x27;)&quot;
+                class&#x3D;&quot;glass-input w-full&quot;
+              /&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+              &lt;label class&#x3D;&quot;block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300&quot;&gt;
+                {{ i18n.t(&#x27;pages.profile.position&#x27;) }}
+              &lt;/label&gt;
+              &lt;input
+                type&#x3D;&quot;text&quot;
+                [(ngModel)]&#x3D;&quot;profile.position&quot;
+                [placeholder]&#x3D;&quot;i18n.t(&#x27;pages.profile.enterPosition&#x27;)&quot;
+                class&#x3D;&quot;glass-input w-full&quot;
+              /&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;flex justify-end space-x-2 pt-4&quot;&gt;
+            &lt;app-glass-button variant&#x3D;&quot;secondary&quot; (clicked)&#x3D;&quot;selectTab(&#x27;security&#x27;)&quot;&gt;
+              {{ i18n.t(&#x27;pages.profile.cancel&#x27;) }}
+            &lt;/app-glass-button&gt;
+            &lt;app-glass-button 
+              variant&#x3D;&quot;primary&quot; 
+              (clicked)&#x3D;&quot;updateProfile()&quot;
+              [loading]&#x3D;&quot;saving()&quot;
+              [disabled]&#x3D;&quot;saving()&quot;
+            &gt;
+              {{ i18n.t(&#x27;pages.profile.saveChanges&#x27;) }}
+            &lt;/app-glass-button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/app-glass-card&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Security Tab --&gt;
+  &lt;div *ngIf&#x3D;&quot;activeTab() &#x3D;&#x3D;&#x3D; &#x27;security&#x27;&quot;&gt;
+    &lt;app-glass-card customClass&#x3D;&quot;p-6&quot;&gt;
+      &lt;div class&#x3D;&quot;space-y-4&quot;&gt;
+        &lt;h2 class&#x3D;&quot;text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4&quot;&gt;{{ i18n.t(&#x27;pages.profile.changePassword&#x27;) }}&lt;/h2&gt;
+        
+        &lt;div&gt;
+          &lt;label class&#x3D;&quot;block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300&quot;&gt;
+            {{ i18n.t(&#x27;pages.profile.currentPassword&#x27;) }}
+          &lt;/label&gt;
+          &lt;input
+            type&#x3D;&quot;password&quot;
+            [(ngModel)]&#x3D;&quot;currentPassword&quot;
+            [placeholder]&#x3D;&quot;i18n.t(&#x27;pages.profile.enterCurrentPassword&#x27;)&quot;
+            class&#x3D;&quot;glass-input w-full&quot;
+          /&gt;
+        &lt;/div&gt;
+        
+        &lt;div&gt;
+          &lt;label class&#x3D;&quot;block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300&quot;&gt;
+            {{ i18n.t(&#x27;pages.profile.newPassword&#x27;) }}
+          &lt;/label&gt;
+          &lt;input
+            type&#x3D;&quot;password&quot;
+            [(ngModel)]&#x3D;&quot;newPassword&quot;
+            (input)&#x3D;&quot;checkPasswordStrength(newPassword)&quot;
+            [placeholder]&#x3D;&quot;i18n.t(&#x27;pages.profile.enterNewPassword&#x27;)&quot;
+            class&#x3D;&quot;glass-input w-full&quot;
+          /&gt;
+          &lt;div class&#x3D;&quot;mt-2&quot; *ngIf&#x3D;&quot;newPassword&quot;&gt;
+            &lt;div class&#x3D;&quot;w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2&quot;&gt;
+              &lt;div 
+                class&#x3D;&quot;h-2 rounded-full transition-all&quot;
+                [class.bg-red-500]&#x3D;&quot;passwordStrength &lt; 40&quot;
+                [class.bg-yellow-500]&#x3D;&quot;passwordStrength &gt;&#x3D; 40 &amp;&amp; passwordStrength &lt; 80&quot;
+                [class.bg-green-500]&#x3D;&quot;passwordStrength &gt;&#x3D; 80&quot;
+                [style.width.%]&#x3D;&quot;passwordStrength&quot;
+              &gt;&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;span class&#x3D;&quot;text-xs mt-1 text-gray-600 dark:text-gray-400&quot;&gt;
+              {{ getPasswordStrengthText() }}
+            &lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        
+        &lt;div&gt;
+          &lt;label class&#x3D;&quot;block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300&quot;&gt;
+            {{ i18n.t(&#x27;pages.profile.confirmPassword&#x27;) }}
+          &lt;/label&gt;
+          &lt;input
+            type&#x3D;&quot;password&quot;
+            [(ngModel)]&#x3D;&quot;confirmPassword&quot;
+            [placeholder]&#x3D;&quot;i18n.t(&#x27;pages.profile.confirmNewPassword&#x27;)&quot;
+            class&#x3D;&quot;glass-input w-full&quot;
+          /&gt;
+        &lt;/div&gt;
+        
+        &lt;div class&#x3D;&quot;flex justify-end space-x-2 pt-4&quot;&gt;
+          &lt;app-glass-button 
+            variant&#x3D;&quot;primary&quot; 
+            (clicked)&#x3D;&quot;changePassword()&quot;
+            [loading]&#x3D;&quot;saving()&quot;
+            [disabled]&#x3D;&quot;saving()&quot;
+          &gt;
+            🔒 {{ i18n.t(&#x27;pages.profile.changePassword&#x27;) }}
+          &lt;/app-glass-button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/app-glass-card&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Notifications Tab --&gt;
+  &lt;div *ngIf&#x3D;&quot;activeTab() &#x3D;&#x3D;&#x3D; &#x27;notifications&#x27;&quot;&gt;
+    &lt;app-glass-card customClass&#x3D;&quot;p-6&quot;&gt;
+      &lt;div class&#x3D;&quot;space-y-4&quot;&gt;
+        &lt;h2 class&#x3D;&quot;text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4&quot;&gt;{{ i18n.t(&#x27;pages.profile.notificationPreferences&#x27;) }}&lt;/h2&gt;
+        
+        &lt;div class&#x3D;&quot;space-y-4&quot;&gt;
+          &lt;div class&#x3D;&quot;flex items-center justify-between p-4 glass rounded-lg&quot;&gt;
+            &lt;div&gt;
+              &lt;h3 class&#x3D;&quot;font-medium text-gray-900 dark:text-gray-100&quot;&gt;{{ i18n.t(&#x27;pages.profile.emailNotifications&#x27;) }}&lt;/h3&gt;
+              &lt;p class&#x3D;&quot;text-sm text-gray-600 dark:text-gray-400&quot;&gt;{{ i18n.t(&#x27;pages.profile.emailNotificationsDesc&#x27;) }}&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;label class&#x3D;&quot;relative inline-flex items-center cursor-pointer&quot;&gt;
+              &lt;input
+                type&#x3D;&quot;checkbox&quot;
+                [(ngModel)]&#x3D;&quot;emailNotifications&quot;
+                class&#x3D;&quot;sr-only peer&quot;
+              /&gt;
+              &lt;div class&#x3D;&quot;w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 dark:peer-focus:ring-primary-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[&#x27;&#x27;] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600&quot;&gt;&lt;/div&gt;
+            &lt;/label&gt;
+          &lt;/div&gt;
+          
+          &lt;div class&#x3D;&quot;flex items-center justify-between p-4 glass rounded-lg&quot;&gt;
+            &lt;div&gt;
+              &lt;h3 class&#x3D;&quot;font-medium text-gray-900 dark:text-gray-100&quot;&gt;{{ i18n.t(&#x27;pages.profile.pushNotifications&#x27;) }}&lt;/h3&gt;
+              &lt;p class&#x3D;&quot;text-sm text-gray-600 dark:text-gray-400&quot;&gt;{{ i18n.t(&#x27;pages.profile.pushNotificationsDesc&#x27;) }}&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;label class&#x3D;&quot;relative inline-flex items-center cursor-pointer&quot;&gt;
+              &lt;input
+                type&#x3D;&quot;checkbox&quot;
+                [(ngModel)]&#x3D;&quot;pushNotifications&quot;
+                class&#x3D;&quot;sr-only peer&quot;
+              /&gt;
+              &lt;div class&#x3D;&quot;w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 dark:peer-focus:ring-primary-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[&#x27;&#x27;] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600&quot;&gt;&lt;/div&gt;
+            &lt;/label&gt;
+          &lt;/div&gt;
+          
+          &lt;div class&#x3D;&quot;flex items-center justify-between p-4 glass rounded-lg&quot;&gt;
+            &lt;div&gt;
+              &lt;h3 class&#x3D;&quot;font-medium text-gray-900 dark:text-gray-100&quot;&gt;{{ i18n.t(&#x27;pages.profile.smsNotifications&#x27;) }}&lt;/h3&gt;
+              &lt;p class&#x3D;&quot;text-sm text-gray-600 dark:text-gray-400&quot;&gt;{{ i18n.t(&#x27;pages.profile.smsNotificationsDesc&#x27;) }}&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;label class&#x3D;&quot;relative inline-flex items-center cursor-pointer&quot;&gt;
+              &lt;input
+                type&#x3D;&quot;checkbox&quot;
+                [(ngModel)]&#x3D;&quot;smsNotifications&quot;
+                class&#x3D;&quot;sr-only peer&quot;
+              /&gt;
+              &lt;div class&#x3D;&quot;w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 dark:peer-focus:ring-primary-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[&#x27;&#x27;] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600&quot;&gt;&lt;/div&gt;
+            &lt;/label&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        
+        &lt;div class&#x3D;&quot;flex justify-end space-x-2 pt-4&quot;&gt;
+          &lt;app-glass-button variant&#x3D;&quot;primary&quot; (clicked)&#x3D;&quot;saveNotificationSettings()&quot;&gt;
+            {{ i18n.t(&#x27;pages.profile.savePreferences&#x27;) }}
+          &lt;/app-glass-button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/app-glass-card&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="space-y-6">  <!-- Header -->  <div>    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ i18n.t(\'pages.profile.title\') }}</h1>    <p class="text-gray-600 dark:text-gray-400 mt-2">{{ i18n.t(\'pages.profile.description\') }}</p>  </div>  <!-- Tab Navigation -->  <div class="glass rounded-lg p-1 flex space-x-1">    <button      [class]="activeTab() === \'profile\'         ? \'bg-primary-500/20 text-primary-600 dark:text-primary-400\'         : \'text-gray-600 dark:text-gray-400\'"      (click)="selectTab(\'profile\')"      class="flex-1 py-2 px-4 rounded-lg font-medium transition-colors"    >      {{ i18n.t(\'pages.profile.profileInformation\') }}    </button>    <button      [class]="activeTab() === \'security\'         ? \'bg-primary-500/20 text-primary-600 dark:text-primary-400\'         : \'text-gray-600 dark:text-gray-400\'"      (click)="selectTab(\'security\')"      class="flex-1 py-2 px-4 rounded-lg font-medium transition-colors"    >      {{ i18n.t(\'pages.profile.security\') }}    </button>    <button      [class]="activeTab() === \'notifications\'         ? \'bg-primary-500/20 text-primary-600 dark:text-primary-400\'         : \'text-gray-600 dark:text-gray-400\'"      (click)="selectTab(\'notifications\')"      class="flex-1 py-2 px-4 rounded-lg font-medium transition-colors"    >      {{ i18n.t(\'pages.profile.notifications\') }}    </button>  </div>  <!-- Profile Tab -->  <div *ngIf="activeTab() === \'profile\'">    <app-glass-card customClass="p-6">      <div class="space-y-6">        <!-- Avatar Section -->        <div class="flex flex-col items-center mb-6">          <div class="w-24 h-24 rounded-full bg-primary-500/20 flex items-center justify-center mb-4">            <span class="text-3xl font-bold text-primary-600 dark:text-primary-400">              {{ (profile.firstName && profile.firstName[0]) || \'\' }}{{ (profile.lastName && profile.lastName[0]) || \'\' }}            </span>          </div>          <div class="flex space-x-2">            <label for="avatar-upload" class="cursor-pointer">              <app-glass-button variant="secondary" size="sm">                {{ i18n.t(\'pages.profile.changePhoto\') }}              </app-glass-button>            </label>            <input              type="file"              id="avatar-upload"              accept="image/*"              (change)="onFileSelected($event)"              style="display: none;"            />            <app-glass-button variant="danger" size="sm">              {{ i18n.t(\'pages.profile.remove\') }}            </app-glass-button>          </div>        </div>        <!-- Form Section -->        <div class="space-y-4">          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">            <div>              <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">                {{ i18n.t(\'pages.profile.firstName\') }}              </label>              <input                type="text"                [(ngModel)]="profile.firstName"                [placeholder]="i18n.t(\'pages.profile.enterFirstName\')"                class="glass-input w-full"              />            </div>            <div>              <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">                {{ i18n.t(\'pages.profile.lastName\') }}              </label>              <input                type="text"                [(ngModel)]="profile.lastName"                [placeholder]="i18n.t(\'pages.profile.enterLastName\')"                class="glass-input w-full"              />            </div>          </div>          <div>            <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">              {{ i18n.t(\'pages.profile.email\') }}            </label>            <input              type="email"              [(ngModel)]="profile.email"              [placeholder]="i18n.t(\'pages.profile.enterEmail\')"              class="glass-input w-full"            />          </div>          <div>            <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">              {{ i18n.t(\'pages.profile.phone\') }}            </label>            <input              type="tel"              [(ngModel)]="profile.phone"              [placeholder]="i18n.t(\'pages.profile.enterPhone\')"              class="glass-input w-full"            />          </div>          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">            <div>              <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">                {{ i18n.t(\'pages.profile.department\') }}              </label>              <input                type="text"                [(ngModel)]="profile.department"                [placeholder]="i18n.t(\'pages.profile.enterDepartment\')"                class="glass-input w-full"              />            </div>            <div>              <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">                {{ i18n.t(\'pages.profile.position\') }}              </label>              <input                type="text"                [(ngModel)]="profile.position"                [placeholder]="i18n.t(\'pages.profile.enterPosition\')"                class="glass-input w-full"              />            </div>          </div>          <div class="flex justify-end space-x-2 pt-4">            <app-glass-button variant="secondary" (clicked)="selectTab(\'security\')">              {{ i18n.t(\'pages.profile.cancel\') }}            </app-glass-button>            <app-glass-button               variant="primary"               (clicked)="updateProfile()"              [loading]="saving()"              [disabled]="saving()"            >              {{ i18n.t(\'pages.profile.saveChanges\') }}            </app-glass-button>          </div>        </div>      </div>    </app-glass-card>  </div>  <!-- Security Tab -->  <div *ngIf="activeTab() === \'security\'">    <app-glass-card customClass="p-6">      <div class="space-y-4">        <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">{{ i18n.t(\'pages.profile.changePassword\') }}</h2>                <div>          <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">            {{ i18n.t(\'pages.profile.currentPassword\') }}          </label>          <input            type="password"            [(ngModel)]="currentPassword"            [placeholder]="i18n.t(\'pages.profile.enterCurrentPassword\')"            class="glass-input w-full"          />        </div>                <div>          <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">            {{ i18n.t(\'pages.profile.newPassword\') }}          </label>          <input            type="password"            [(ngModel)]="newPassword"            (input)="checkPasswordStrength(newPassword)"            [placeholder]="i18n.t(\'pages.profile.enterNewPassword\')"            class="glass-input w-full"          />          <div class="mt-2" *ngIf="newPassword">            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">              <div                 class="h-2 rounded-full transition-all"                [class.bg-red-500]="passwordStrength < 40"                [class.bg-yellow-500]="passwordStrength >= 40 && passwordStrength < 80"                [class.bg-green-500]="passwordStrength >= 80"                [style.width.%]="passwordStrength"              ></div>            </div>            <span class="text-xs mt-1 text-gray-600 dark:text-gray-400">              {{ getPasswordStrengthText() }}            </span>          </div>        </div>                <div>          <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">            {{ i18n.t(\'pages.profile.confirmPassword\') }}          </label>          <input            type="password"            [(ngModel)]="confirmPassword"            [placeholder]="i18n.t(\'pages.profile.confirmNewPassword\')"            class="glass-input w-full"          />        </div>                <div class="flex justify-end space-x-2 pt-4">          <app-glass-button             variant="primary"             (clicked)="changePassword()"            [loading]="saving()"            [disabled]="saving()"          >            🔒 {{ i18n.t(\'pages.profile.changePassword\') }}          </app-glass-button>        </div>      </div>    </app-glass-card>  </div>  <!-- Notifications Tab -->  <div *ngIf="activeTab() === \'notifications\'">    <app-glass-card customClass="p-6">      <div class="space-y-4">        <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">{{ i18n.t(\'pages.profile.notificationPreferences\') }}</h2>                <div class="space-y-4">          <div class="flex items-center justify-between p-4 glass rounded-lg">            <div>              <h3 class="font-medium text-gray-900 dark:text-gray-100">{{ i18n.t(\'pages.profile.emailNotifications\') }}</h3>              <p class="text-sm text-gray-600 dark:text-gray-400">{{ i18n.t(\'pages.profile.emailNotificationsDesc\') }}</p>            </div>            <label class="relative inline-flex items-center cursor-pointer">              <input                type="checkbox"                [(ngModel)]="emailNotifications"                class="sr-only peer"              />              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 dark:peer-focus:ring-primary-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[\'\'] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600"></div>            </label>          </div>                    <div class="flex items-center justify-between p-4 glass rounded-lg">            <div>              <h3 class="font-medium text-gray-900 dark:text-gray-100">{{ i18n.t(\'pages.profile.pushNotifications\') }}</h3>              <p class="text-sm text-gray-600 dark:text-gray-400">{{ i18n.t(\'pages.profile.pushNotificationsDesc\') }}</p>            </div>            <label class="relative inline-flex items-center cursor-pointer">              <input                type="checkbox"                [(ngModel)]="pushNotifications"                class="sr-only peer"              />              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 dark:peer-focus:ring-primary-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[\'\'] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600"></div>            </label>          </div>                    <div class="flex items-center justify-between p-4 glass rounded-lg">            <div>              <h3 class="font-medium text-gray-900 dark:text-gray-100">{{ i18n.t(\'pages.profile.smsNotifications\') }}</h3>              <p class="text-sm text-gray-600 dark:text-gray-400">{{ i18n.t(\'pages.profile.smsNotificationsDesc\') }}</p>            </div>            <label class="relative inline-flex items-center cursor-pointer">              <input                type="checkbox"                [(ngModel)]="smsNotifications"                class="sr-only peer"              />              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 dark:peer-focus:ring-primary-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[\'\'] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600"></div>            </label>          </div>        </div>                <div class="flex justify-end space-x-2 pt-4">          <app-glass-button variant="primary" (clicked)="saveNotificationSettings()">            {{ i18n.t(\'pages.profile.savePreferences\') }}          </app-glass-button>        </div>      </div>    </app-glass-card>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AccessControlComponent', 'selector': 'app-access-control'},{'name': 'AccessGroupsComponent', 'selector': 'app-access-groups'},{'name': 'AccessibilityDashboardComponent', 'selector': 'app-accessibility-dashboard'},{'name': 'AccessLogsComponent', 'selector': 'app-access-logs'},{'name': 'AccessSchedulesComponent', 'selector': 'app-access-schedules'},{'name': 'AccordionComponent', 'selector': 'app-accordion'},{'name': 'AccordionDemoComponent', 'selector': 'app-accordion-demo'},{'name': 'AdvancedDataTableComponent', 'selector': 'app-advanced-data-table'},{'name': 'AdvancedDataTableDemoComponent', 'selector': 'app-advanced-data-table-demo'},{'name': 'AdvancedFeaturesDashboardComponent', 'selector': 'app-advanced-features-dashboard'},{'name': 'AdvancedFormsComponent', 'selector': 'app-advanced-forms'},{'name': 'AdvancedRichTextComponent', 'selector': 'app-advanced-rich-text'},{'name': 'AdvancedUiDemoComponent', 'selector': 'app-advanced-ui-demo'},{'name': 'AIModelsComponent', 'selector': 'app-ai-models'},{'name': 'AlertComponent', 'selector': 'app-alert'},{'name': 'AlertHistoryComponent', 'selector': 'app-alert-history'},{'name': 'AlertsComponent', 'selector': 'app-alerts'},{'name': 'ApexChartComponent', 'selector': 'app-apex-chart'},{'name': 'App', 'selector': 'app-root'},{'name': 'AttendanceComponent', 'selector': 'app-attendance'},{'name': 'AuditLogsComponent', 'selector': 'app-audit-logs'},{'name': 'AvatarComponent', 'selector': 'app-avatar'},{'name': 'BackupRestoreComponent', 'selector': 'app-backup-restore'},{'name': 'BadgeComponent', 'selector': 'app-badge'},{'name': 'BaseComponent', 'selector': ''},{'name': 'BiometricDataComponent', 'selector': 'app-biometric-data'},{'name': 'BreadcrumbComponent', 'selector': 'app-breadcrumb'},{'name': 'CalendarComponent', 'selector': 'app-calendar'},{'name': 'CalendarDemoComponent', 'selector': 'app-calendar-demo'},{'name': 'ChartComponent', 'selector': 'app-chart'},{'name': 'CheckboxComponent', 'selector': 'app-checkbox'},{'name': 'ColorPickerComponent', 'selector': 'app-color-picker'},{'name': 'ComingSoonComponent', 'selector': 'app-coming-soon'},{'name': 'CompaniesComponent', 'selector': 'app-companies'},{'name': 'CompanyDocumentsComponent', 'selector': 'app-company-documents'},{'name': 'CompanyHolidaysComponent', 'selector': 'app-company-holidays'},{'name': 'ComponentShowcaseComponent', 'selector': 'app-component-showcase'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DataTableComponent', 'selector': 'app-data-table'},{'name': 'DateTimePickerComponent', 'selector': 'app-date-time-picker'},{'name': 'DepartmentsComponent', 'selector': 'app-departments'},{'name': 'DevicesComponent', 'selector': 'app-devices'},{'name': 'DividerComponent', 'selector': 'app-divider'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DoorsComponent', 'selector': 'app-doors'},{'name': 'DraggableCardsComponent', 'selector': 'app-draggable-cards'},{'name': 'DraggableCardsDemoComponent', 'selector': 'app-draggable-cards-demo'},{'name': 'EChartsChartComponent', 'selector': 'app-echarts-chart'},{'name': 'EChartsDemoComponent', 'selector': 'app-echarts-demo'},{'name': 'EmployeesComponent', 'selector': 'app-employees'},{'name': 'EmployeesNewComponent', 'selector': 'app-employees-new'},{'name': 'EmptyStateComponent', 'selector': 'app-empty-state'},{'name': 'Error401Component', 'selector': 'app-error-401'},{'name': 'Error404Component', 'selector': 'app-error-404'},{'name': 'Error500Component', 'selector': 'app-error-500'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'ErrorToastComponent', 'selector': 'app-error-toast'},{'name': 'EventAnalyticsComponent', 'selector': 'app-event-analytics'},{'name': 'EventCheckinHistoryComponent', 'selector': 'app-event-checkin-history'},{'name': 'EventEmailConfirmationComponent', 'selector': 'app-event-email-confirmation'},{'name': 'EventKioskConfigComponent', 'selector': 'app-event-kiosk-config'},{'name': 'EventRegistrationComponent', 'selector': 'app-event-registration'},{'name': 'EventRegistrationFieldsComponent', 'selector': 'app-event-registration-fields'},{'name': 'EventsComponent', 'selector': 'app-events'},{'name': 'FaceRecognitionComponent', 'selector': 'app-face-recognition'},{'name': 'FaceRecognitionDemoComponent', 'selector': 'app-face-recognition-demo'},{'name': 'FaceRecognitionLiveComponent', 'selector': 'app-face-recognition-live'},{'name': 'FaceRecognitionTestComponent', 'selector': 'app-face-recognition-test'},{'name': 'FaqComponent', 'selector': 'app-faq'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'FilterSectionComponent', 'selector': 'app-filter-section'},{'name': 'ForgotPasswordComponent', 'selector': 'app-forgot-password'},{'name': 'FormFieldComponent', 'selector': 'app-form-field'},{'name': 'GalleryComponent', 'selector': 'app-gallery'},{'name': 'GalleryDemoComponent', 'selector': 'app-gallery-demo'},{'name': 'GlassButtonComponent', 'selector': 'app-glass-button'},{'name': 'GlassCardComponent', 'selector': 'app-glass-card'},{'name': 'GlassInputComponent', 'selector': 'app-glass-input'},{'name': 'GroupFaceRecognitionComponent', 'selector': 'app-group-face-recognition'},{'name': 'GuestsComponent', 'selector': 'app-guests'},{'name': 'HardwareStatusDashboardComponent', 'selector': 'app-hardware-status-dashboard'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HeatmapAnalyticsComponent', 'selector': 'app-heatmap-analytics'},{'name': 'HelpCenter', 'selector': 'app-help-center'},{'name': 'HelpCenterComponent', 'selector': 'app-help-center'},{'name': 'HrDashboardComponent', 'selector': 'app-hr-dashboard'},{'name': 'IconComponent', 'selector': 'app-icon'},{'name': 'IncidentReportsComponent', 'selector': 'app-incident-reports'},{'name': 'KioskViewComponent', 'selector': 'app-kiosk-view'},{'name': 'LandingComponent', 'selector': 'app-landing'},{'name': 'LeafletMapComponent', 'selector': 'app-leaflet-map'},{'name': 'LeavesComponent', 'selector': 'app-leaves'},{'name': 'LicenseManagementComponent', 'selector': 'app-license-management'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoadingStateComponent', 'selector': 'app-loading-state'},{'name': 'LocationsComponent', 'selector': 'app-locations'},{'name': 'LockScreenComponent', 'selector': 'app-lock-screen'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MapDemoComponent', 'selector': 'app-map-demo'},{'name': 'MaterialButtonComponent', 'selector': 'app-material-button'},{'name': 'MaterialCardComponent', 'selector': 'app-material-card'},{'name': 'MaterialDialogComponent', 'selector': 'app-material-dialog'},{'name': 'MaterialInputComponent', 'selector': 'app-material-input'},{'name': 'MaterialTableComponent', 'selector': 'app-material-table'},{'name': 'MfaSetupComponent', 'selector': 'app-mfa-setup'},{'name': 'MobileCameraComponent', 'selector': 'app-mobile-camera'},{'name': 'MobileDemoComponent', 'selector': 'app-mobile-demo'},{'name': 'ModalComponent', 'selector': 'app-modal'},{'name': 'ModalFormComponent', 'selector': 'app-modal-form'},{'name': 'ModuleSubscriptionComponent', 'selector': 'app-module-subscription'},{'name': 'MonitoringComponent', 'selector': 'app-monitoring'},{'name': 'NotificationCenterComponent', 'selector': 'app-notification-center'},{'name': 'NotificationDemoComponent', 'selector': 'app-notification-demo'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'NotificationSettingsComponent', 'selector': 'app-notification-settings'},{'name': 'OffcanvasComponent', 'selector': 'app-offcanvas'},{'name': 'OffcanvasDemoComponent', 'selector': 'app-offcanvas-demo'},{'name': 'OvertimeRequestsComponent', 'selector': 'app-overtime-requests'},{'name': 'PageLayoutComponent', 'selector': 'app-page-layout'},{'name': 'PaginationComponent', 'selector': 'app-pagination'},{'name': 'ParkingBlacklistComponent', 'selector': 'app-parking-blacklist'},{'name': 'ParkingDashboardComponent', 'selector': 'app-parking-dashboard'},{'name': 'ParkingEntryComponent', 'selector': 'app-parking-entry'},{'name': 'ParkingExitComponent', 'selector': 'app-parking-exit'},{'name': 'ParkingLogsComponent', 'selector': 'app-parking-logs'},{'name': 'ParkingReservationComponent', 'selector': 'app-parking-reservation'},{'name': 'ParkingRulesComponent', 'selector': 'app-parking-rules'},{'name': 'ParkingSpotsComponent', 'selector': 'app-parking-spots'},{'name': 'ParkingStatisticsComponent', 'selector': 'app-parking-statistics'},{'name': 'PayrollExportComponent', 'selector': 'app-payroll-export'},{'name': 'PerformanceDashboardComponent', 'selector': 'app-performance-dashboard'},{'name': 'PopoverComponent', 'selector': 'app-popover'},{'name': 'PortalLayoutComponent', 'selector': 'app-portal-layout'},{'name': 'PositionsComponent', 'selector': 'app-positions'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'PublicVerificationComponent', 'selector': 'app-public-verification'},{'name': 'QRCodesComponent', 'selector': 'app-qr-codes'},{'name': 'RadioComponent', 'selector': 'app-radio'},{'name': 'RangeSliderComponent', 'selector': 'app-range-slider'},{'name': 'RatingComponent', 'selector': 'app-rating'},{'name': 'RatingDemoComponent', 'selector': 'app-rating-demo'},{'name': 'RbacComponent', 'selector': 'app-rbac'},{'name': 'RecognitionHistoryComponent', 'selector': 'app-recognition-history'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReportsComponent', 'selector': 'app-reports'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'RFIDCardsComponent', 'selector': 'app-rfid-cards'},{'name': 'RichTextComponent', 'selector': 'app-rich-text'},{'name': 'RichTextEditorComponent', 'selector': 'app-rich-text-editor'},{'name': 'RichTextEditorDemoComponent', 'selector': 'app-rich-text-editor-demo'},{'name': 'SafetyDashboardComponent', 'selector': 'app-safety-dashboard'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ShiftsComponent', 'selector': 'app-shifts'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SkeletonComponent', 'selector': 'app-skeleton'},{'name': 'StatisticsCardComponent', 'selector': 'app-statistics-card'},{'name': 'StatisticsGridComponent', 'selector': 'app-statistics-grid'},{'name': 'StepperComponent', 'selector': 'app-stepper'},{'name': 'StructureComponent', 'selector': 'app-structure'},{'name': 'SuperAdminAnnouncementsComponent', 'selector': 'app-super-admin-announcements'},{'name': 'SuperAdminDashboardComponent', 'selector': 'app-super-admin-dashboard'},{'name': 'SuperAdminLayoutComponent', 'selector': 'app-super-admin-layout'},{'name': 'SuperAdminReportsComponent', 'selector': 'app-super-admin-reports'},{'name': 'SurveillanceMapComponent', 'selector': 'app-surveillance-map'},{'name': 'SwiperGalleryComponent', 'selector': 'app-swiper-gallery'},{'name': 'SwiperGalleryDemoComponent', 'selector': 'app-swiper-gallery-demo'},{'name': 'SwitchComponent', 'selector': 'app-switch'},{'name': 'SystemSettingsComponent', 'selector': 'app-system-settings'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TemplateManagementComponent', 'selector': 'app-template-management'},{'name': 'TestApiComponent', 'selector': 'app-test-api'},{'name': 'ThemeSwitcherComponent', 'selector': 'app-theme-switcher'},{'name': 'TimelineComponent', 'selector': 'app-timeline'},{'name': 'TimelineDemoComponent', 'selector': 'app-timeline-demo'},{'name': 'TimesheetsComponent', 'selector': 'app-timesheets'},{'name': 'TimestampComponent', 'selector': 'app-timestamp'},{'name': 'TimestampDemoComponent', 'selector': 'app-timestamp-demo'},{'name': 'TooltipComponent', 'selector': 'app-tooltip'},{'name': 'UsersComponent', 'selector': 'app-users'},{'name': 'ValidationDemoComponent', 'selector': 'app-validation-demo'},{'name': 'VehiclesComponent', 'selector': 'app-vehicles'},{'name': 'VideoAnalyticsComponent', 'selector': 'app-video-analytics'},{'name': 'VideoPlaybackComponent', 'selector': 'app-video-playback'},{'name': 'VisitorBadgesComponent', 'selector': 'app-visitor-badges'},{'name': 'VisitorBlacklistComponent', 'selector': 'app-visitor-blacklist'},{'name': 'VisitorDashboardComponent', 'selector': 'app-visitor-dashboard'},{'name': 'VisitorInvitationsComponent', 'selector': 'app-visitor-invitations'},{'name': 'VisitorParcelsComponent', 'selector': 'app-visitor-parcels'},{'name': 'VisitorReportsComponent', 'selector': 'app-visitor-reports'},{'name': 'VisitorsComponent', 'selector': 'app-visitors'},{'name': 'WatchlistComponent', 'selector': 'app-watchlist'},{'name': 'ZoneConfigComponent', 'selector': 'app-zone-config'}];
+    var DIRECTIVES = [{'name': 'HasPermissionDirective', 'selector': '[appHasPermission]'},{'name': 'ImageOptimizationDirective', 'selector': '[appImageOptimization]'}];
+    var ACTUAL_COMPONENT = {'name': 'ProfileComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'ProfileComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

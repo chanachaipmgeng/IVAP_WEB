@@ -1,0 +1,1482 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  Error500Component</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/shared/components/error-pages/error-500/error-500.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-error-500</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../interfaces/Module.html" target="_self" >CommonModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >RouterModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >FormsModule</a></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./error-500.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./error-500.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#currentTime" >currentTime</a>
+                            </li>
+                            <li>
+                                <a href="#errorId" >errorId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#i18n" >i18n</a>
+                            </li>
+                            <li>
+                                <a href="#isRetrying" >isRetrying</a>
+                            </li>
+                            <li>
+                                <a href="#maxRetries" >maxRetries</a>
+                            </li>
+                            <li>
+                                <a href="#retryCount" >retryCount</a>
+                            </li>
+                            <li>
+                                <a href="#retryDelay" >retryDelay</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#canRetry" >canRetry</a>
+                            </li>
+                            <li>
+                                <a href="#generateErrorId" >generateErrorId</a>
+                            </li>
+                            <li>
+                                <a href="#getRetryDelay" >getRetryDelay</a>
+                            </li>
+                            <li>
+                                <a href="#goBack" >goBack</a>
+                            </li>
+                            <li>
+                                <a href="#goHome" >goHome</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#reportIssue" >reportIssue</a>
+                            </li>
+                            <li>
+                                <a href="#retry" >retry</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#ariaLabel" >ariaLabel</a>
+                            </li>
+                            <li>
+                                <a href="#customClass" >customClass</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(router: Router, i18n: <a href="../injectables/I18nService.html" target="_self">I18nService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/app/shared/components/error-pages/error-500/error-500.component.ts:68</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                    <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>i18n</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/I18nService.html" target="_self" >I18nService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section data-compodoc="block-inputs">
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="ariaLabel"></a>
+                        <b>ariaLabel</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/shared/components/error-pages/error-500/error-500.component.ts:38</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>ARIA label for the component</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="customClass"></a>
+                        <b>customClass</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/shared/components/error-pages/error-500/error-500.component.ts:33</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Custom CSS classes</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="canRetry"></a>
+                    <span class="name">
+                        <span ><b>canRetry</b></span>
+                        <a href="#canRetry"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>canRetry()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="148"
+                                    class="link-to-prism">src/app/shared/components/error-pages/error-500/error-500.component.ts:148</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Check if retry is allowed</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateErrorId"></a>
+                    <span class="name">
+                        <span ><b>generateErrorId</b></span>
+                        <a href="#generateErrorId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>generateErrorId()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="88"
+                                    class="link-to-prism">src/app/shared/components/error-pages/error-500/error-500.component.ts:88</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Generate unique error ID</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getRetryDelay"></a>
+                    <span class="name">
+                        <span ><b>getRetryDelay</b></span>
+                        <a href="#getRetryDelay"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getRetryDelay()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="141"
+                                    class="link-to-prism">src/app/shared/components/error-pages/error-500/error-500.component.ts:141</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get retry delay in seconds</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="goBack"></a>
+                    <span class="name">
+                        <span ><b>goBack</b></span>
+                        <a href="#goBack"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>goBack()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="120"
+                                    class="link-to-prism">src/app/shared/components/error-pages/error-500/error-500.component.ts:120</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Navigate back</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="goHome"></a>
+                    <span class="name">
+                        <span ><b>goHome</b></span>
+                        <a href="#goHome"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>goHome()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="113"
+                                    class="link-to-prism">src/app/shared/components/error-pages/error-500/error-500.component.ts:113</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Navigate to home page</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="80"
+                                    class="link-to-prism">src/app/shared/components/error-pages/error-500/error-500.component.ts:80</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Initialize component</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="reportIssue"></a>
+                    <span class="name">
+                        <span ><b>reportIssue</b></span>
+                        <a href="#reportIssue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>reportIssue()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="127"
+                                    class="link-to-prism">src/app/shared/components/error-pages/error-500/error-500.component.ts:127</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Report issue with error details</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="retry"></a>
+                    <span class="name">
+                        <span ><b>retry</b></span>
+                        <a href="#retry"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>retry()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="95"
+                                    class="link-to-prism">src/app/shared/components/error-pages/error-500/error-500.component.ts:95</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Retry loading the page</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currentTime"></a>
+                    <span class="name">
+                        <span ><b>currentTime</b></span>
+                        <a href="#currentTime"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" >Date</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Date()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/app/shared/components/error-pages/error-500/error-500.component.ts:68</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Current time</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="errorId"></a>
+                    <span class="name">
+                        <span ><b>errorId</b></span>
+                        <a href="#errorId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/shared/components/error-pages/error-500/error-500.component.ts:43</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Unique error ID for tracking</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="i18n"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>i18n</b></span>
+                        <a href="#i18n"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../injectables/I18nService.html" target="_self" >I18nService</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">src/app/shared/components/error-pages/error-500/error-500.component.ts:72</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isRetrying"></a>
+                    <span class="name">
+                        <span ><b>isRetrying</b></span>
+                        <a href="#isRetrying"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/app/shared/components/error-pages/error-500/error-500.component.ts:58</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Retry in progress</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="maxRetries"></a>
+                    <span class="name">
+                        <span ><b>maxRetries</b></span>
+                        <a href="#maxRetries"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>3</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/app/shared/components/error-pages/error-500/error-500.component.ts:53</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Maximum retry attempts</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="retryCount"></a>
+                    <span class="name">
+                        <span ><b>retryCount</b></span>
+                        <a href="#retryCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>0</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/app/shared/components/error-pages/error-500/error-500.component.ts:48</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Retry attempt count</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="retryDelay"></a>
+                    <span class="name">
+                        <span ><b>retryDelay</b></span>
+                        <a href="#retryDelay"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>2000</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/app/shared/components/error-pages/error-500/error-500.component.ts:63</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Retry delay in milliseconds</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, Input } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { Router, RouterModule } from &#x27;@angular/router&#x27;;
+import { FormsModule } from &#x27;@angular/forms&#x27;;
+import { I18nService } from &#x27;../../../../core/services/i18n.service&#x27;;
+
+@Component({
+  selector: &#x27;app-error-500&#x27;,
+  standalone: true,
+  imports: [CommonModule, RouterModule, FormsModule],
+  templateUrl: &#x27;./error-500.component.html&#x27;,
+  styleUrls: [&#x27;./error-500.component.scss&#x27;]
+})
+export class Error500Component implements OnInit {
+  /**
+   * Custom CSS classes
+   */
+  @Input() customClass?: string;
+
+  /**
+   * ARIA label for the component
+   */
+  @Input() ariaLabel?: string;
+
+  /**
+   * Unique error ID for tracking
+   */
+  errorId: string &#x3D; &#x27;&#x27;;
+
+  /**
+   * Retry attempt count
+   */
+  retryCount: number &#x3D; 0;
+
+  /**
+   * Maximum retry attempts
+   */
+  maxRetries: number &#x3D; 3;
+
+  /**
+   * Retry in progress
+   */
+  isRetrying: boolean &#x3D; false;
+
+  /**
+   * Retry delay in milliseconds
+   */
+  retryDelay: number &#x3D; 2000; // 2 seconds
+
+  /**
+   * Current time
+   */
+  currentTime: Date &#x3D; new Date();
+
+  constructor(
+    private router: Router,
+    public i18n: I18nService
+  ) {
+    this.generateErrorId();
+  }
+
+  /**
+   * Initialize component
+   */
+  ngOnInit(): void {
+    // Log error for debugging
+    console.error(&#x27;500 Internal Server Error - Error ID:&#x27;, this.errorId);
+  }
+
+  /**
+   * Generate unique error ID
+   */
+  generateErrorId(): void {
+    this.errorId &#x3D; &#x27;ERR-&#x27; + Date.now() + &#x27;-&#x27; + Math.random().toString(36).substr(2, 9).toUpperCase();
+  }
+
+  /**
+   * Retry loading the page
+   */
+  retry(): void {
+    if (this.retryCount &gt;&#x3D; this.maxRetries) {
+      return;
+    }
+
+    this.isRetrying &#x3D; true;
+    this.retryCount++;
+
+    setTimeout(() &#x3D;&gt; {
+      this.isRetrying &#x3D; false;
+      // Try to reload the page
+      window.location.reload();
+    }, this.retryDelay);
+  }
+
+  /**
+   * Navigate to home page
+   */
+  goHome(): void {
+    this.router.navigate([&#x27;/dashboard&#x27;]);
+  }
+
+  /**
+   * Navigate back
+   */
+  goBack(): void {
+    window.history.back();
+  }
+
+  /**
+   * Report issue with error details
+   */
+  reportIssue(): void {
+    // Navigate to issue reporting with error details
+    this.router.navigate([&#x27;/support/contact&#x27;], {
+      queryParams: {
+        error: &#x27;500&#x27;,
+        errorId: this.errorId,
+        timestamp: new Date().toISOString()
+      }
+    });
+  }
+
+  /**
+   * Get retry delay in seconds
+   */
+  getRetryDelay(): number {
+    return this.retryDelay / 1000;
+  }
+
+  /**
+   * Check if retry is allowed
+   */
+  canRetry(): boolean {
+    return this.retryCount &lt; this.maxRetries &amp;&amp; !this.isRetrying;
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;error-500-container min-h-screen flex items-center justify-center p-8 relative overflow-hidden&quot; [class]&#x3D;&quot;customClass || &#x27;&#x27;&quot; role&#x3D;&quot;main&quot; [attr.aria-label]&#x3D;&quot;ariaLabel || &#x27;Internal server error&#x27;&quot;&gt;
+  &lt;div class&#x3D;&quot;error-500-content bg-white/95 backdrop-blur-sm rounded-3xl p-12 max-w-4xl w-full text-center shadow-2xl relative z-10 md:p-8&quot;&gt;
+      &lt;!-- Error Illustration --&gt;
+      &lt;div class&#x3D;&quot;error-illustration mb-8 relative&quot; [attr.aria-hidden]&#x3D;&quot;&#x27;true&#x27;&quot;&gt;
+        &lt;div class&#x3D;&quot;error-number text-9xl font-black bg-gradient-to-br from-red-500 to-orange-600 bg-clip-text text-transparent leading-none mb-4 drop-shadow-md md:text-6xl&quot;&gt;500&lt;/div&gt;
+        &lt;div class&#x3D;&quot;error-icon text-error-500 opacity-80 animate-shake&quot;&gt;
+          &lt;svg width&#x3D;&quot;200&quot; height&#x3D;&quot;200&quot; viewBox&#x3D;&quot;0 0 200 200&quot; fill&#x3D;&quot;none&quot; xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; [attr.aria-hidden]&#x3D;&quot;&#x27;true&#x27;&quot;&gt;
+          &lt;circle cx&#x3D;&quot;100&quot; cy&#x3D;&quot;100&quot; r&#x3D;&quot;80&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; fill&#x3D;&quot;none&quot; opacity&#x3D;&quot;0.1&quot;/&gt;
+          &lt;path d&#x3D;&quot;M60 60L140 140M140 60L60 140&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;3&quot; stroke-linecap&#x3D;&quot;round&quot;/&gt;
+          &lt;circle cx&#x3D;&quot;100&quot; cy&#x3D;&quot;100&quot; r&#x3D;&quot;20&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; fill&#x3D;&quot;none&quot;/&gt;
+          &lt;path d&#x3D;&quot;M85 85L115 115M115 85L85 115&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot;/&gt;
+        &lt;/svg&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Error Message --&gt;
+    &lt;div class&#x3D;&quot;error-message mb-10&quot; role&#x3D;&quot;alert&quot;&gt;
+      &lt;h1 class&#x3D;&quot;error-title text-5xl font-bold text-gray-800 mb-4 leading-tight md:text-4xl md:text-2xl&quot;&gt;{{ i18n.t(&#x27;pages.errorPages.serverError.title&#x27;) }}&lt;/h1&gt;
+      &lt;p class&#x3D;&quot;error-description text-lg text-gray-500 leading-relaxed max-w-2xl mx-auto mb-6&quot;&gt;
+        {{ i18n.t(&#x27;pages.errorPages.serverError.message&#x27;) }}
+      &lt;/p&gt;
+      &lt;div class&#x3D;&quot;error-details bg-gray-50 border border-gray-200 rounded-lg p-4 text-left max-w-md mx-auto&quot; role&#x3D;&quot;status&quot; [attr.aria-live]&#x3D;&quot;&#x27;polite&#x27;&quot;&gt;
+        &lt;div class&#x3D;&quot;error-id text-sm text-gray-700 mb-2 last:mb-0&quot;&gt;
+          &lt;strong class&#x3D;&quot;text-gray-800&quot;&gt;{{ i18n.t(&#x27;pages.errorPages.serverError.errorId&#x27;) }}&lt;/strong&gt; &lt;span [attr.aria-label]&#x3D;&quot;&#x27;Error ID: &#x27; + errorId&quot;&gt;{{ errorId }}&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;error-time text-sm text-gray-700 mb-2 last:mb-0&quot;&gt;
+          &lt;strong class&#x3D;&quot;text-gray-800&quot;&gt;{{ i18n.t(&#x27;pages.errorPages.serverError.time&#x27;) }}&lt;/strong&gt; &lt;span [attr.aria-label]&#x3D;&quot;&#x27;Error time: &#x27; + currentTime.toLocaleString()&quot;&gt;{{ currentTime.toLocaleString() }}&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Status Information --&gt;
+    &lt;div class&#x3D;&quot;status-section mb-8&quot;&gt;
+      &lt;div class&#x3D;&quot;status-indicator flex items-center justify-center gap-2 mb-4&quot;&gt;
+        &lt;div class&#x3D;&quot;status-dot w-2 h-2 bg-warning-400 rounded-full animate-pulse&quot;&gt;&lt;/div&gt;
+        &lt;span class&#x3D;&quot;status-text text-sm text-gray-700 font-medium&quot;&gt;{{ i18n.t(&#x27;pages.errorPages.serverError.serviceStatus&#x27;) }} {{ i18n.t(&#x27;pages.errorPages.serverError.investigating&#x27;) }}&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;retry-info&quot; *ngIf&#x3D;&quot;retryCount &gt; 0&quot;&gt;
+        &lt;p class&#x3D;&quot;retry-count text-sm text-gray-500 m-0&quot;&gt;
+          {{ i18n.t(&#x27;pages.errorPages.serverError.retryAttempts&#x27;) }} {{ retryCount }}/{{ maxRetries }}
+        &lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Troubleshooting Steps --&gt;
+    &lt;div class&#x3D;&quot;troubleshooting mb-10 text-left&quot;&gt;
+      &lt;h3 class&#x3D;&quot;troubleshooting-title text-xl font-semibold text-gray-800 mb-4 text-center&quot;&gt;{{ i18n.t(&#x27;pages.errorPages.serverError.whatYouCanTry&#x27;) }}&lt;/h3&gt;
+      &lt;ul class&#x3D;&quot;troubleshooting-list list-none p-0 m-0 max-w-lg mx-auto&quot;&gt;
+        &lt;li class&#x3D;&quot;troubleshooting-item flex items-start gap-3 py-3 text-gray-700 text-sm leading-relaxed border-b border-gray-200 last:border-b-0&quot;&gt;
+          &lt;svg width&#x3D;&quot;16&quot; height&#x3D;&quot;16&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; class&#x3D;&quot;text-error-500 mt-0.5 flex-shrink-0&quot;&gt;
+            &lt;path d&#x3D;&quot;M1 4v6h6&quot;&gt;&lt;/path&gt;
+            &lt;path d&#x3D;&quot;M3.51 15a9 9 0 1 0 2.13-9.36L1 10&quot;&gt;&lt;/path&gt;
+          &lt;/svg&gt;
+          &lt;span&gt;{{ i18n.t(&#x27;pages.errorPages.serverError.waitAndRetry&#x27;) }}&lt;/span&gt;
+        &lt;/li&gt;
+        &lt;li class&#x3D;&quot;troubleshooting-item flex items-start gap-3 py-3 text-gray-700 text-sm leading-relaxed border-b border-gray-200 last:border-b-0&quot;&gt;
+          &lt;svg width&#x3D;&quot;16&quot; height&#x3D;&quot;16&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; class&#x3D;&quot;text-error-500 mt-0.5 flex-shrink-0&quot;&gt;
+            &lt;path d&#x3D;&quot;M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8&quot;&gt;&lt;/path&gt;
+            &lt;path d&#x3D;&quot;M21 3v5h-5&quot;&gt;&lt;/path&gt;
+            &lt;path d&#x3D;&quot;M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16&quot;&gt;&lt;/path&gt;
+            &lt;path d&#x3D;&quot;M3 21v-5h5&quot;&gt;&lt;/path&gt;
+          &lt;/svg&gt;
+          &lt;span&gt;{{ i18n.t(&#x27;pages.errorPages.serverError.checkConnection&#x27;) }}&lt;/span&gt;
+        &lt;/li&gt;
+        &lt;li class&#x3D;&quot;troubleshooting-item flex items-start gap-3 py-3 text-gray-700 text-sm leading-relaxed border-b border-gray-200 last:border-b-0&quot;&gt;
+          &lt;svg width&#x3D;&quot;16&quot; height&#x3D;&quot;16&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; class&#x3D;&quot;text-error-500 mt-0.5 flex-shrink-0&quot;&gt;
+            &lt;path d&#x3D;&quot;M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8&quot;&gt;&lt;/path&gt;
+            &lt;path d&#x3D;&quot;M21 3v5h-5&quot;&gt;&lt;/path&gt;
+            &lt;path d&#x3D;&quot;M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16&quot;&gt;&lt;/path&gt;
+            &lt;path d&#x3D;&quot;M3 21v-5h5&quot;&gt;&lt;/path&gt;
+          &lt;/svg&gt;
+          &lt;span&gt;{{ i18n.t(&#x27;pages.errorPages.serverError.clearCache&#x27;) }}&lt;/span&gt;
+        &lt;/li&gt;
+        &lt;li class&#x3D;&quot;troubleshooting-item flex items-start gap-3 py-3 text-gray-700 text-sm leading-relaxed border-b border-gray-200 last:border-b-0&quot;&gt;
+          &lt;svg width&#x3D;&quot;16&quot; height&#x3D;&quot;16&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; class&#x3D;&quot;text-error-500 mt-0.5 flex-shrink-0&quot;&gt;
+            &lt;path d&#x3D;&quot;M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z&quot;&gt;&lt;/path&gt;
+            &lt;polyline points&#x3D;&quot;14,2 14,8 20,8&quot;&gt;&lt;/polyline&gt;
+            &lt;line x1&#x3D;&quot;16&quot; y1&#x3D;&quot;13&quot; x2&#x3D;&quot;8&quot; y2&#x3D;&quot;13&quot;&gt;&lt;/line&gt;
+            &lt;line x1&#x3D;&quot;16&quot; y1&#x3D;&quot;17&quot; x2&#x3D;&quot;8&quot; y2&#x3D;&quot;17&quot;&gt;&lt;/line&gt;
+            &lt;polyline points&#x3D;&quot;10,9 9,9 8,9&quot;&gt;&lt;/polyline&gt;
+          &lt;/svg&gt;
+          &lt;span&gt;{{ i18n.t(&#x27;pages.errorPages.serverError.contactSupport&#x27;) }}&lt;/span&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Action Buttons --&gt;
+    &lt;div class&#x3D;&quot;action-buttons flex gap-4 justify-center flex-wrap mb-8 md:flex-col md:items-center&quot;&gt;
+      &lt;button
+        (click)&#x3D;&quot;retry()&quot;
+        [disabled]&#x3D;&quot;!canRetry()&quot;
+        class&#x3D;&quot;btn btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold no-underline border-none cursor-pointer transition-all text-base bg-error-500 text-white hover:bg-red-500 hover:-translate-y-0.5 hover:shadow-lg disabled:bg-gray-300 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none md:w-full md:max-w-xs md:justify-center&quot;
+        [class.loading]&#x3D;&quot;isRetrying&quot;
+      &gt;
+        &lt;svg *ngIf&#x3D;&quot;!isRetrying&quot; width&#x3D;&quot;16&quot; height&#x3D;&quot;16&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;&gt;
+          &lt;path d&#x3D;&quot;M1 4v6h6&quot;&gt;&lt;/path&gt;
+          &lt;path d&#x3D;&quot;M3.51 15a9 9 0 1 0 2.13-9.36L1 10&quot;&gt;&lt;/path&gt;
+        &lt;/svg&gt;
+        &lt;svg *ngIf&#x3D;&quot;isRetrying&quot; width&#x3D;&quot;16&quot; height&#x3D;&quot;16&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; class&#x3D;&quot;spinning animate-spin&quot;&gt;
+          &lt;path d&#x3D;&quot;M1 4v6h6&quot;&gt;&lt;/path&gt;
+          &lt;path d&#x3D;&quot;M3.51 15a9 9 0 1 0 2.13-9.36L1 10&quot;&gt;&lt;/path&gt;
+        &lt;/svg&gt;
+        {{ isRetrying ? i18n.t(&#x27;pages.errorPages.serverError.retrying&#x27;) : i18n.t(&#x27;pages.errorPages.serverError.retry&#x27;) }}
+        &lt;span *ngIf&#x3D;&quot;isRetrying&quot; class&#x3D;&quot;retry-timer text-xs opacity-80&quot;&gt;({{ getRetryDelay() }}s)&lt;/span&gt;
+      &lt;/button&gt;
+
+      &lt;button (click)&#x3D;&quot;goBack()&quot; class&#x3D;&quot;btn btn-outline inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold no-underline border-none cursor-pointer transition-all text-base bg-transparent text-error-500 border-2 border-error-500 hover:bg-error-500 hover:text-white hover:-translate-y-0.5 md:w-full md:max-w-xs md:justify-center&quot;&gt;
+        &lt;svg width&#x3D;&quot;16&quot; height&#x3D;&quot;16&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;&gt;
+          &lt;path d&#x3D;&quot;M19 12H5M12 19l-7-7 7-7&quot;&gt;&lt;/path&gt;
+        &lt;/svg&gt;
+        {{ i18n.t(&#x27;pages.errorPages.serverError.goBack&#x27;) }}
+      &lt;/button&gt;
+
+      &lt;button (click)&#x3D;&quot;goHome()&quot; class&#x3D;&quot;btn btn-secondary inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold no-underline border-none cursor-pointer transition-all text-base bg-gray-500 text-white hover:bg-gray-600 hover:-translate-y-0.5 hover:shadow-lg md:w-full md:max-w-xs md:justify-center&quot;&gt;
+        &lt;svg width&#x3D;&quot;16&quot; height&#x3D;&quot;16&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;&gt;
+          &lt;path d&#x3D;&quot;M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z&quot;&gt;&lt;/path&gt;
+          &lt;polyline points&#x3D;&quot;9,22 9,12 15,12 15,22&quot;&gt;&lt;/polyline&gt;
+        &lt;/svg&gt;
+        {{ i18n.t(&#x27;pages.errorPages.serverError.goHome&#x27;) }}
+      &lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Support Information --&gt;
+    &lt;div class&#x3D;&quot;support-section mb-8&quot;&gt;
+      &lt;div class&#x3D;&quot;support-card bg-gray-50 border border-gray-200 rounded-2xl p-6 flex items-center gap-4 max-w-lg mx-auto md:flex-col md:text-center&quot;&gt;
+        &lt;div class&#x3D;&quot;support-icon text-error-500 flex-shrink-0&quot;&gt;
+          &lt;svg width&#x3D;&quot;24&quot; height&#x3D;&quot;24&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;&gt;
+            &lt;path d&#x3D;&quot;M9 12l2 2 4-4&quot;&gt;&lt;/path&gt;
+            &lt;path d&#x3D;&quot;M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3&quot;&gt;&lt;/path&gt;
+            &lt;path d&#x3D;&quot;M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3&quot;&gt;&lt;/path&gt;
+            &lt;path d&#x3D;&quot;M12 3c0 1-1 3-3 3s-3-2-3-3 1-3 3-3 3 2 3 3&quot;&gt;&lt;/path&gt;
+            &lt;path d&#x3D;&quot;M12 21c0-1 1-3 3-3s3 2 3 3-1 3-3 3-3-2-3-3&quot;&gt;&lt;/path&gt;
+          &lt;/svg&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;support-content text-left flex-1 md:text-center&quot;&gt;
+          &lt;h4 class&#x3D;&quot;text-base font-semibold text-gray-800 m-0 mb-2&quot;&gt;{{ i18n.t(&#x27;pages.errorPages.serverError.needHelp&#x27;) }}&lt;/h4&gt;
+          &lt;p class&#x3D;&quot;text-sm text-gray-500 m-0 mb-4 leading-relaxed&quot;&gt;{{ i18n.t(&#x27;pages.errorPages.serverError.needHelpMessage&#x27;) }}&lt;/p&gt;
+          &lt;button (click)&#x3D;&quot;reportIssue()&quot; class&#x3D;&quot;btn btn-outline btn-sm inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold no-underline border-none cursor-pointer transition-all text-sm bg-transparent text-error-500 border-2 border-error-500 hover:bg-error-500 hover:text-white hover:-translate-y-0.5&quot;&gt;
+            &lt;svg width&#x3D;&quot;14&quot; height&#x3D;&quot;14&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;&gt;
+              &lt;path d&#x3D;&quot;M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z&quot;&gt;&lt;/path&gt;
+              &lt;polyline points&#x3D;&quot;14,2 14,8 20,8&quot;&gt;&lt;/polyline&gt;
+              &lt;line x1&#x3D;&quot;16&quot; y1&#x3D;&quot;13&quot; x2&#x3D;&quot;8&quot; y2&#x3D;&quot;13&quot;&gt;&lt;/line&gt;
+              &lt;line x1&#x3D;&quot;16&quot; y1&#x3D;&quot;17&quot; x2&#x3D;&quot;8&quot; y2&#x3D;&quot;17&quot;&gt;&lt;/line&gt;
+              &lt;polyline points&#x3D;&quot;10,9 9,9 8,9&quot;&gt;&lt;/polyline&gt;
+            &lt;/svg&gt;
+            {{ i18n.t(&#x27;pages.errorPages.serverError.reportIssue&#x27;) }}
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Additional Information --&gt;
+    &lt;div class&#x3D;&quot;additional-info&quot;&gt;
+      &lt;p class&#x3D;&quot;info-text text-gray-500 text-sm leading-relaxed m-0&quot;&gt;
+        {{ i18n.t(&#x27;pages.errorPages.serverError.autoLogged&#x27;) }}
+      &lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./error-500.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">// Error 500 Component Styles
+// Most styles migrated to Tailwind classes in HTML template
+// Keeping only complex styles that require SCSS (pseudo-elements, animations)
+
+.error-500-container {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+
+  &amp;::before {
+    content: &#x27;&#x27;;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url(&#x27;data:image/svg+xml,&lt;svg xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 100 100&quot;&gt;&lt;defs&gt;&lt;pattern id&#x3D;&quot;grain&quot; width&#x3D;&quot;100&quot; height&#x3D;&quot;100&quot; patternUnits&#x3D;&quot;userSpaceOnUse&quot;&gt;&lt;circle cx&#x3D;&quot;25&quot; cy&#x3D;&quot;25&quot; r&#x3D;&quot;1&quot; fill&#x3D;&quot;white&quot; opacity&#x3D;&quot;0.1&quot;/&gt;&lt;circle cx&#x3D;&quot;75&quot; cy&#x3D;&quot;75&quot; r&#x3D;&quot;1&quot; fill&#x3D;&quot;white&quot; opacity&#x3D;&quot;0.1&quot;/&gt;&lt;circle cx&#x3D;&quot;50&quot; cy&#x3D;&quot;10&quot; r&#x3D;&quot;0.5&quot; fill&#x3D;&quot;white&quot; opacity&#x3D;&quot;0.1&quot;/&gt;&lt;circle cx&#x3D;&quot;10&quot; cy&#x3D;&quot;60&quot; r&#x3D;&quot;0.5&quot; fill&#x3D;&quot;white&quot; opacity&#x3D;&quot;0.1&quot;/&gt;&lt;circle cx&#x3D;&quot;90&quot; cy&#x3D;&quot;40&quot; r&#x3D;&quot;0.5&quot; fill&#x3D;&quot;white&quot; opacity&#x3D;&quot;0.1&quot;/&gt;&lt;/pattern&gt;&lt;/defs&gt;&lt;rect width&#x3D;&quot;100&quot; height&#x3D;&quot;100&quot; fill&#x3D;&quot;url(%23grain)&quot;/&gt;&lt;/svg&gt;&#x27;);
+    opacity: 0.3;
+  }
+}
+
+// Error illustration styles - keeping animation in SCSS
+.error-illustration {
+  .error-icon {
+    animation: shake 2s ease-in-out infinite;
+  }
+}
+
+// Animation keyframes
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+// Animation class for Tailwind
+.animate-shake {
+  animation: shake 2s ease-in-out infinite;
+}
+
+// Most styles migrated to Tailwind classes in HTML template
+// Keeping only complex styles that require SCSS
+
+// Responsive styles migrated to Tailwind responsive classes in HTML template
+// Using md: breakpoint for mobile-first responsive design
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="error-500-container min-h-screen flex items-center justify-center p-8 relative overflow-hidden" [class]="customClass || \'\'" role="main" [attr.aria-label]="ariaLabel || \'Internal server error\'">  <div class="error-500-content bg-white/95 backdrop-blur-sm rounded-3xl p-12 max-w-4xl w-full text-center shadow-2xl relative z-10 md:p-8">      <!-- Error Illustration -->      <div class="error-illustration mb-8 relative" [attr.aria-hidden]="\'true\'">        <div class="error-number text-9xl font-black bg-gradient-to-br from-red-500 to-orange-600 bg-clip-text text-transparent leading-none mb-4 drop-shadow-md md:text-6xl">500</div>        <div class="error-icon text-error-500 opacity-80 animate-shake">          <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" [attr.aria-hidden]="\'true\'">          <circle cx="100" cy="100" r="80" stroke="currentColor" stroke-width="2" fill="none" opacity="0.1"/>          <path d="M60 60L140 140M140 60L60 140" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>          <circle cx="100" cy="100" r="20" stroke="currentColor" stroke-width="2" fill="none"/>          <path d="M85 85L115 115M115 85L85 115" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>        </svg>      </div>    </div>    <!-- Error Message -->    <div class="error-message mb-10" role="alert">      <h1 class="error-title text-5xl font-bold text-gray-800 mb-4 leading-tight md:text-4xl md:text-2xl">{{ i18n.t(\'pages.errorPages.serverError.title\') }}</h1>      <p class="error-description text-lg text-gray-500 leading-relaxed max-w-2xl mx-auto mb-6">        {{ i18n.t(\'pages.errorPages.serverError.message\') }}      </p>      <div class="error-details bg-gray-50 border border-gray-200 rounded-lg p-4 text-left max-w-md mx-auto" role="status" [attr.aria-live]="\'polite\'">        <div class="error-id text-sm text-gray-700 mb-2 last:mb-0">          <strong class="text-gray-800">{{ i18n.t(\'pages.errorPages.serverError.errorId\') }}</strong> <span [attr.aria-label]="\'Error ID: \' + errorId">{{ errorId }}</span>        </div>        <div class="error-time text-sm text-gray-700 mb-2 last:mb-0">          <strong class="text-gray-800">{{ i18n.t(\'pages.errorPages.serverError.time\') }}</strong> <span [attr.aria-label]="\'Error time: \' + currentTime.toLocaleString()">{{ currentTime.toLocaleString() }}</span>        </div>      </div>    </div>    <!-- Status Information -->    <div class="status-section mb-8">      <div class="status-indicator flex items-center justify-center gap-2 mb-4">        <div class="status-dot w-2 h-2 bg-warning-400 rounded-full animate-pulse"></div>        <span class="status-text text-sm text-gray-700 font-medium">{{ i18n.t(\'pages.errorPages.serverError.serviceStatus\') }} {{ i18n.t(\'pages.errorPages.serverError.investigating\') }}</span>      </div>      <div class="retry-info" *ngIf="retryCount > 0">        <p class="retry-count text-sm text-gray-500 m-0">          {{ i18n.t(\'pages.errorPages.serverError.retryAttempts\') }} {{ retryCount }}/{{ maxRetries }}        </p>      </div>    </div>    <!-- Troubleshooting Steps -->    <div class="troubleshooting mb-10 text-left">      <h3 class="troubleshooting-title text-xl font-semibold text-gray-800 mb-4 text-center">{{ i18n.t(\'pages.errorPages.serverError.whatYouCanTry\') }}</h3>      <ul class="troubleshooting-list list-none p-0 m-0 max-w-lg mx-auto">        <li class="troubleshooting-item flex items-start gap-3 py-3 text-gray-700 text-sm leading-relaxed border-b border-gray-200 last:border-b-0">          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-error-500 mt-0.5 flex-shrink-0">            <path d="M1 4v6h6"></path>            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>          </svg>          <span>{{ i18n.t(\'pages.errorPages.serverError.waitAndRetry\') }}</span>        </li>        <li class="troubleshooting-item flex items-start gap-3 py-3 text-gray-700 text-sm leading-relaxed border-b border-gray-200 last:border-b-0">          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-error-500 mt-0.5 flex-shrink-0">            <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>            <path d="M21 3v5h-5"></path>            <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>            <path d="M3 21v-5h5"></path>          </svg>          <span>{{ i18n.t(\'pages.errorPages.serverError.checkConnection\') }}</span>        </li>        <li class="troubleshooting-item flex items-start gap-3 py-3 text-gray-700 text-sm leading-relaxed border-b border-gray-200 last:border-b-0">          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-error-500 mt-0.5 flex-shrink-0">            <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>            <path d="M21 3v5h-5"></path>            <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>            <path d="M3 21v-5h5"></path>          </svg>          <span>{{ i18n.t(\'pages.errorPages.serverError.clearCache\') }}</span>        </li>        <li class="troubleshooting-item flex items-start gap-3 py-3 text-gray-700 text-sm leading-relaxed border-b border-gray-200 last:border-b-0">          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-error-500 mt-0.5 flex-shrink-0">            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>            <polyline points="14,2 14,8 20,8"></polyline>            <line x1="16" y1="13" x2="8" y2="13"></line>            <line x1="16" y1="17" x2="8" y2="17"></line>            <polyline points="10,9 9,9 8,9"></polyline>          </svg>          <span>{{ i18n.t(\'pages.errorPages.serverError.contactSupport\') }}</span>        </li>      </ul>    </div>    <!-- Action Buttons -->    <div class="action-buttons flex gap-4 justify-center flex-wrap mb-8 md:flex-col md:items-center">      <button        (click)="retry()"        [disabled]="!canRetry()"        class="btn btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold no-underline border-none cursor-pointer transition-all text-base bg-error-500 text-white hover:bg-red-500 hover:-translate-y-0.5 hover:shadow-lg disabled:bg-gray-300 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none md:w-full md:max-w-xs md:justify-center"        [class.loading]="isRetrying"      >        <svg *ngIf="!isRetrying" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">          <path d="M1 4v6h6"></path>          <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>        </svg>        <svg *ngIf="isRetrying" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spinning animate-spin">          <path d="M1 4v6h6"></path>          <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>        </svg>        {{ isRetrying ? i18n.t(\'pages.errorPages.serverError.retrying\') : i18n.t(\'pages.errorPages.serverError.retry\') }}        <span *ngIf="isRetrying" class="retry-timer text-xs opacity-80">({{ getRetryDelay() }}s)</span>      </button>      <button (click)="goBack()" class="btn btn-outline inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold no-underline border-none cursor-pointer transition-all text-base bg-transparent text-error-500 border-2 border-error-500 hover:bg-error-500 hover:text-white hover:-translate-y-0.5 md:w-full md:max-w-xs md:justify-center">        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">          <path d="M19 12H5M12 19l-7-7 7-7"></path>        </svg>        {{ i18n.t(\'pages.errorPages.serverError.goBack\') }}      </button>      <button (click)="goHome()" class="btn btn-secondary inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold no-underline border-none cursor-pointer transition-all text-base bg-gray-500 text-white hover:bg-gray-600 hover:-translate-y-0.5 hover:shadow-lg md:w-full md:max-w-xs md:justify-center">        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>          <polyline points="9,22 9,12 15,12 15,22"></polyline>        </svg>        {{ i18n.t(\'pages.errorPages.serverError.goHome\') }}      </button>    </div>    <!-- Support Information -->    <div class="support-section mb-8">      <div class="support-card bg-gray-50 border border-gray-200 rounded-2xl p-6 flex items-center gap-4 max-w-lg mx-auto md:flex-col md:text-center">        <div class="support-icon text-error-500 flex-shrink-0">          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">            <path d="M9 12l2 2 4-4"></path>            <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"></path>            <path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"></path>            <path d="M12 3c0 1-1 3-3 3s-3-2-3-3 1-3 3-3 3 2 3 3"></path>            <path d="M12 21c0-1 1-3 3-3s3 2 3 3-1 3-3 3-3-2-3-3"></path>          </svg>        </div>        <div class="support-content text-left flex-1 md:text-center">          <h4 class="text-base font-semibold text-gray-800 m-0 mb-2">{{ i18n.t(\'pages.errorPages.serverError.needHelp\') }}</h4>          <p class="text-sm text-gray-500 m-0 mb-4 leading-relaxed">{{ i18n.t(\'pages.errorPages.serverError.needHelpMessage\') }}</p>          <button (click)="reportIssue()" class="btn btn-outline btn-sm inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold no-underline border-none cursor-pointer transition-all text-sm bg-transparent text-error-500 border-2 border-error-500 hover:bg-error-500 hover:text-white hover:-translate-y-0.5">            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>              <polyline points="14,2 14,8 20,8"></polyline>              <line x1="16" y1="13" x2="8" y2="13"></line>              <line x1="16" y1="17" x2="8" y2="17"></line>              <polyline points="10,9 9,9 8,9"></polyline>            </svg>            {{ i18n.t(\'pages.errorPages.serverError.reportIssue\') }}          </button>        </div>      </div>    </div>    <!-- Additional Information -->    <div class="additional-info">      <p class="info-text text-gray-500 text-sm leading-relaxed m-0">        {{ i18n.t(\'pages.errorPages.serverError.autoLogged\') }}      </p>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AccessControlComponent', 'selector': 'app-access-control'},{'name': 'AccessGroupsComponent', 'selector': 'app-access-groups'},{'name': 'AccessibilityDashboardComponent', 'selector': 'app-accessibility-dashboard'},{'name': 'AccessLogsComponent', 'selector': 'app-access-logs'},{'name': 'AccessSchedulesComponent', 'selector': 'app-access-schedules'},{'name': 'AccordionComponent', 'selector': 'app-accordion'},{'name': 'AccordionDemoComponent', 'selector': 'app-accordion-demo'},{'name': 'AdvancedDataTableComponent', 'selector': 'app-advanced-data-table'},{'name': 'AdvancedDataTableDemoComponent', 'selector': 'app-advanced-data-table-demo'},{'name': 'AdvancedFeaturesDashboardComponent', 'selector': 'app-advanced-features-dashboard'},{'name': 'AdvancedFormsComponent', 'selector': 'app-advanced-forms'},{'name': 'AdvancedRichTextComponent', 'selector': 'app-advanced-rich-text'},{'name': 'AdvancedUiDemoComponent', 'selector': 'app-advanced-ui-demo'},{'name': 'AIModelsComponent', 'selector': 'app-ai-models'},{'name': 'AlertComponent', 'selector': 'app-alert'},{'name': 'AlertHistoryComponent', 'selector': 'app-alert-history'},{'name': 'AlertsComponent', 'selector': 'app-alerts'},{'name': 'ApexChartComponent', 'selector': 'app-apex-chart'},{'name': 'App', 'selector': 'app-root'},{'name': 'AttendanceComponent', 'selector': 'app-attendance'},{'name': 'AuditLogsComponent', 'selector': 'app-audit-logs'},{'name': 'AvatarComponent', 'selector': 'app-avatar'},{'name': 'BackupRestoreComponent', 'selector': 'app-backup-restore'},{'name': 'BadgeComponent', 'selector': 'app-badge'},{'name': 'BaseComponent', 'selector': ''},{'name': 'BiometricDataComponent', 'selector': 'app-biometric-data'},{'name': 'BreadcrumbComponent', 'selector': 'app-breadcrumb'},{'name': 'CalendarComponent', 'selector': 'app-calendar'},{'name': 'CalendarDemoComponent', 'selector': 'app-calendar-demo'},{'name': 'ChartComponent', 'selector': 'app-chart'},{'name': 'CheckboxComponent', 'selector': 'app-checkbox'},{'name': 'ColorPickerComponent', 'selector': 'app-color-picker'},{'name': 'ComingSoonComponent', 'selector': 'app-coming-soon'},{'name': 'CompaniesComponent', 'selector': 'app-companies'},{'name': 'CompanyDocumentsComponent', 'selector': 'app-company-documents'},{'name': 'CompanyHolidaysComponent', 'selector': 'app-company-holidays'},{'name': 'ComponentShowcaseComponent', 'selector': 'app-component-showcase'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DataTableComponent', 'selector': 'app-data-table'},{'name': 'DateTimePickerComponent', 'selector': 'app-date-time-picker'},{'name': 'DepartmentsComponent', 'selector': 'app-departments'},{'name': 'DevicesComponent', 'selector': 'app-devices'},{'name': 'DividerComponent', 'selector': 'app-divider'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DoorsComponent', 'selector': 'app-doors'},{'name': 'DraggableCardsComponent', 'selector': 'app-draggable-cards'},{'name': 'DraggableCardsDemoComponent', 'selector': 'app-draggable-cards-demo'},{'name': 'EChartsChartComponent', 'selector': 'app-echarts-chart'},{'name': 'EChartsDemoComponent', 'selector': 'app-echarts-demo'},{'name': 'EmployeesComponent', 'selector': 'app-employees'},{'name': 'EmployeesNewComponent', 'selector': 'app-employees-new'},{'name': 'EmptyStateComponent', 'selector': 'app-empty-state'},{'name': 'Error401Component', 'selector': 'app-error-401'},{'name': 'Error404Component', 'selector': 'app-error-404'},{'name': 'Error500Component', 'selector': 'app-error-500'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'ErrorToastComponent', 'selector': 'app-error-toast'},{'name': 'EventAnalyticsComponent', 'selector': 'app-event-analytics'},{'name': 'EventCheckinHistoryComponent', 'selector': 'app-event-checkin-history'},{'name': 'EventEmailConfirmationComponent', 'selector': 'app-event-email-confirmation'},{'name': 'EventKioskConfigComponent', 'selector': 'app-event-kiosk-config'},{'name': 'EventRegistrationComponent', 'selector': 'app-event-registration'},{'name': 'EventRegistrationFieldsComponent', 'selector': 'app-event-registration-fields'},{'name': 'EventsComponent', 'selector': 'app-events'},{'name': 'FaceRecognitionComponent', 'selector': 'app-face-recognition'},{'name': 'FaceRecognitionDemoComponent', 'selector': 'app-face-recognition-demo'},{'name': 'FaceRecognitionLiveComponent', 'selector': 'app-face-recognition-live'},{'name': 'FaceRecognitionTestComponent', 'selector': 'app-face-recognition-test'},{'name': 'FaqComponent', 'selector': 'app-faq'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'FilterSectionComponent', 'selector': 'app-filter-section'},{'name': 'ForgotPasswordComponent', 'selector': 'app-forgot-password'},{'name': 'FormFieldComponent', 'selector': 'app-form-field'},{'name': 'GalleryComponent', 'selector': 'app-gallery'},{'name': 'GalleryDemoComponent', 'selector': 'app-gallery-demo'},{'name': 'GlassButtonComponent', 'selector': 'app-glass-button'},{'name': 'GlassCardComponent', 'selector': 'app-glass-card'},{'name': 'GlassInputComponent', 'selector': 'app-glass-input'},{'name': 'GroupFaceRecognitionComponent', 'selector': 'app-group-face-recognition'},{'name': 'GuestsComponent', 'selector': 'app-guests'},{'name': 'HardwareStatusDashboardComponent', 'selector': 'app-hardware-status-dashboard'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HeatmapAnalyticsComponent', 'selector': 'app-heatmap-analytics'},{'name': 'HelpCenter', 'selector': 'app-help-center'},{'name': 'HelpCenterComponent', 'selector': 'app-help-center'},{'name': 'HrDashboardComponent', 'selector': 'app-hr-dashboard'},{'name': 'IconComponent', 'selector': 'app-icon'},{'name': 'IncidentReportsComponent', 'selector': 'app-incident-reports'},{'name': 'KioskViewComponent', 'selector': 'app-kiosk-view'},{'name': 'LandingComponent', 'selector': 'app-landing'},{'name': 'LeafletMapComponent', 'selector': 'app-leaflet-map'},{'name': 'LeavesComponent', 'selector': 'app-leaves'},{'name': 'LicenseManagementComponent', 'selector': 'app-license-management'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoadingStateComponent', 'selector': 'app-loading-state'},{'name': 'LocationsComponent', 'selector': 'app-locations'},{'name': 'LockScreenComponent', 'selector': 'app-lock-screen'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MapDemoComponent', 'selector': 'app-map-demo'},{'name': 'MaterialButtonComponent', 'selector': 'app-material-button'},{'name': 'MaterialCardComponent', 'selector': 'app-material-card'},{'name': 'MaterialDialogComponent', 'selector': 'app-material-dialog'},{'name': 'MaterialInputComponent', 'selector': 'app-material-input'},{'name': 'MaterialTableComponent', 'selector': 'app-material-table'},{'name': 'MfaSetupComponent', 'selector': 'app-mfa-setup'},{'name': 'MobileCameraComponent', 'selector': 'app-mobile-camera'},{'name': 'MobileDemoComponent', 'selector': 'app-mobile-demo'},{'name': 'ModalComponent', 'selector': 'app-modal'},{'name': 'ModalFormComponent', 'selector': 'app-modal-form'},{'name': 'ModuleSubscriptionComponent', 'selector': 'app-module-subscription'},{'name': 'MonitoringComponent', 'selector': 'app-monitoring'},{'name': 'NotificationCenterComponent', 'selector': 'app-notification-center'},{'name': 'NotificationDemoComponent', 'selector': 'app-notification-demo'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'NotificationSettingsComponent', 'selector': 'app-notification-settings'},{'name': 'OffcanvasComponent', 'selector': 'app-offcanvas'},{'name': 'OffcanvasDemoComponent', 'selector': 'app-offcanvas-demo'},{'name': 'OvertimeRequestsComponent', 'selector': 'app-overtime-requests'},{'name': 'PageLayoutComponent', 'selector': 'app-page-layout'},{'name': 'PaginationComponent', 'selector': 'app-pagination'},{'name': 'ParkingBlacklistComponent', 'selector': 'app-parking-blacklist'},{'name': 'ParkingDashboardComponent', 'selector': 'app-parking-dashboard'},{'name': 'ParkingEntryComponent', 'selector': 'app-parking-entry'},{'name': 'ParkingExitComponent', 'selector': 'app-parking-exit'},{'name': 'ParkingLogsComponent', 'selector': 'app-parking-logs'},{'name': 'ParkingReservationComponent', 'selector': 'app-parking-reservation'},{'name': 'ParkingRulesComponent', 'selector': 'app-parking-rules'},{'name': 'ParkingSpotsComponent', 'selector': 'app-parking-spots'},{'name': 'ParkingStatisticsComponent', 'selector': 'app-parking-statistics'},{'name': 'PayrollExportComponent', 'selector': 'app-payroll-export'},{'name': 'PerformanceDashboardComponent', 'selector': 'app-performance-dashboard'},{'name': 'PopoverComponent', 'selector': 'app-popover'},{'name': 'PortalLayoutComponent', 'selector': 'app-portal-layout'},{'name': 'PositionsComponent', 'selector': 'app-positions'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'PublicVerificationComponent', 'selector': 'app-public-verification'},{'name': 'QRCodesComponent', 'selector': 'app-qr-codes'},{'name': 'RadioComponent', 'selector': 'app-radio'},{'name': 'RangeSliderComponent', 'selector': 'app-range-slider'},{'name': 'RatingComponent', 'selector': 'app-rating'},{'name': 'RatingDemoComponent', 'selector': 'app-rating-demo'},{'name': 'RbacComponent', 'selector': 'app-rbac'},{'name': 'RecognitionHistoryComponent', 'selector': 'app-recognition-history'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReportsComponent', 'selector': 'app-reports'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'RFIDCardsComponent', 'selector': 'app-rfid-cards'},{'name': 'RichTextComponent', 'selector': 'app-rich-text'},{'name': 'RichTextEditorComponent', 'selector': 'app-rich-text-editor'},{'name': 'RichTextEditorDemoComponent', 'selector': 'app-rich-text-editor-demo'},{'name': 'SafetyDashboardComponent', 'selector': 'app-safety-dashboard'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ShiftsComponent', 'selector': 'app-shifts'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SkeletonComponent', 'selector': 'app-skeleton'},{'name': 'StatisticsCardComponent', 'selector': 'app-statistics-card'},{'name': 'StatisticsGridComponent', 'selector': 'app-statistics-grid'},{'name': 'StepperComponent', 'selector': 'app-stepper'},{'name': 'StructureComponent', 'selector': 'app-structure'},{'name': 'SuperAdminAnnouncementsComponent', 'selector': 'app-super-admin-announcements'},{'name': 'SuperAdminDashboardComponent', 'selector': 'app-super-admin-dashboard'},{'name': 'SuperAdminLayoutComponent', 'selector': 'app-super-admin-layout'},{'name': 'SuperAdminReportsComponent', 'selector': 'app-super-admin-reports'},{'name': 'SurveillanceMapComponent', 'selector': 'app-surveillance-map'},{'name': 'SwiperGalleryComponent', 'selector': 'app-swiper-gallery'},{'name': 'SwiperGalleryDemoComponent', 'selector': 'app-swiper-gallery-demo'},{'name': 'SwitchComponent', 'selector': 'app-switch'},{'name': 'SystemSettingsComponent', 'selector': 'app-system-settings'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TemplateManagementComponent', 'selector': 'app-template-management'},{'name': 'TestApiComponent', 'selector': 'app-test-api'},{'name': 'ThemeSwitcherComponent', 'selector': 'app-theme-switcher'},{'name': 'TimelineComponent', 'selector': 'app-timeline'},{'name': 'TimelineDemoComponent', 'selector': 'app-timeline-demo'},{'name': 'TimesheetsComponent', 'selector': 'app-timesheets'},{'name': 'TimestampComponent', 'selector': 'app-timestamp'},{'name': 'TimestampDemoComponent', 'selector': 'app-timestamp-demo'},{'name': 'TooltipComponent', 'selector': 'app-tooltip'},{'name': 'UsersComponent', 'selector': 'app-users'},{'name': 'ValidationDemoComponent', 'selector': 'app-validation-demo'},{'name': 'VehiclesComponent', 'selector': 'app-vehicles'},{'name': 'VideoAnalyticsComponent', 'selector': 'app-video-analytics'},{'name': 'VideoPlaybackComponent', 'selector': 'app-video-playback'},{'name': 'VisitorBadgesComponent', 'selector': 'app-visitor-badges'},{'name': 'VisitorBlacklistComponent', 'selector': 'app-visitor-blacklist'},{'name': 'VisitorDashboardComponent', 'selector': 'app-visitor-dashboard'},{'name': 'VisitorInvitationsComponent', 'selector': 'app-visitor-invitations'},{'name': 'VisitorParcelsComponent', 'selector': 'app-visitor-parcels'},{'name': 'VisitorReportsComponent', 'selector': 'app-visitor-reports'},{'name': 'VisitorsComponent', 'selector': 'app-visitors'},{'name': 'WatchlistComponent', 'selector': 'app-watchlist'},{'name': 'ZoneConfigComponent', 'selector': 'app-zone-config'}];
+    var DIRECTIVES = [{'name': 'HasPermissionDirective', 'selector': '[appHasPermission]'},{'name': 'ImageOptimizationDirective', 'selector': '[appImageOptimization]'}];
+    var ACTUAL_COMPONENT = {'name': 'Error500Component'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'Error500Component.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

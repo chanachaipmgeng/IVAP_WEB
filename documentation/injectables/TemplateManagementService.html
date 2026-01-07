@@ -1,0 +1,4185 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >TemplateManagementService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/core/services/template-management.service.ts</code>
+        </p>
+
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#activeTemplatesCount" >activeTemplatesCount</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#activeTheme" >activeTheme</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#apiUrl" >apiUrl</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_colorPalettes" >_colorPalettes</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#colorPalettes" >colorPalettes</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#colorPalettes$" >colorPalettes$</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#http" >http</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_metrics" >_metrics</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#metrics" >metrics</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#metrics$" >metrics$</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_templates" >_templates</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#templates" >templates</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#templates$" >templates$</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#templatesCount" >templatesCount</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_themes" >_themes</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#themes" >themes</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#themes$" >themes$</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#themesCount" >themesCount</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#activateTheme" >activateTheme</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#calculateMetrics" >calculateMetrics</a>
+                            </li>
+                            <li>
+                                <a href="#createColorPalette" >createColorPalette</a>
+                            </li>
+                            <li>
+                                <a href="#createTemplate" >createTemplate</a>
+                            </li>
+                            <li>
+                                <a href="#createTheme" >createTheme</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#darkenColor" >darkenColor</a>
+                            </li>
+                            <li>
+                                <a href="#deleteTemplate" >deleteTemplate</a>
+                            </li>
+                            <li>
+                                <a href="#exportTheme" >exportTheme</a>
+                            </li>
+                            <li>
+                                <a href="#generateColorVariants" >generateColorVariants</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#generateCSS" >generateCSS</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#generateId" >generateId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#generateSCSS" >generateSCSS</a>
+                            </li>
+                            <li>
+                                <a href="#getActiveTheme" >getActiveTheme</a>
+                            </li>
+                            <li>
+                                <a href="#getColorPalettes" >getColorPalettes</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getDefaultMetrics" >getDefaultMetrics</a>
+                            </li>
+                            <li>
+                                <a href="#getMetrics" >getMetrics</a>
+                            </li>
+                            <li>
+                                <a href="#getTemplates" >getTemplates</a>
+                            </li>
+                            <li>
+                                <a href="#getTemplatesByType" >getTemplatesByType</a>
+                            </li>
+                            <li>
+                                <a href="#getThemes" >getThemes</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#groupBy" >groupBy</a>
+                            </li>
+                            <li>
+                                <a href="#importTheme" >importTheme</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#initializeDemoData" >initializeDemoData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#lightenColor" >lightenColor</a>
+                            </li>
+                            <li>
+                                <a href="#loadTemplates" >loadTemplates</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#parseCSS" >parseCSS</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#parseSCSS" >parseSCSS</a>
+                            </li>
+                            <li>
+                                <a href="#updateColorPalette" >updateColorPalette</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#updateMetrics" >updateMetrics</a>
+                            </li>
+                            <li>
+                                <a href="#updateTemplate" >updateTemplate</a>
+                            </li>
+                            <li>
+                                <a href="#updateTheme" >updateTheme</a>
+                            </li>
+                            <li>
+                                <a href="#useTemplate" >useTemplate</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">src/app/core/services/template-management.service.ts:82</a></div>
+                            </td>
+                        </tr>
+
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="activateTheme"></a>
+                    <span class="name">
+                        <span ><b>activateTheme</b></span>
+                        <a href="#activateTheme"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>activateTheme(themeId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="149"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:149</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Activate theme</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>themeId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calculateMetrics"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>calculateMetrics</b></span>
+                        <a href="#calculateMetrics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>calculateMetrics(themes: <a href="../interfaces/Theme.html" target="_self">Theme[]</a>, colorPalettes: ColorPalette[], templates: <a href="../interfaces/Template.html" target="_self">Template[]</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="759"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:759</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Calculate metrics</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>themes</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Theme.html" target="_self" >Theme[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>colorPalettes</td>
+                                            <td>
+                                                        <code>ColorPalette[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>templates</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Template.html" target="_self" >Template[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/TemplateMetrics.html" target="_self" >TemplateMetrics</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createColorPalette"></a>
+                    <span class="name">
+                        <span ><b>createColorPalette</b></span>
+                        <a href="#createColorPalette"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>createColorPalette(palette: Omit<ColorPalette | "id" | "createdAt" | "updatedAt" | "usage">)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="182"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:182</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Create color palette</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>palette</td>
+                                            <td>
+                                                        <code>Omit&lt;ColorPalette | &quot;id&quot; | &quot;createdAt&quot; | &quot;updatedAt&quot; | &quot;usage&quot;&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/ColorPalette.html" target="_self" >ColorPalette</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createTemplate"></a>
+                    <span class="name">
+                        <span ><b>createTemplate</b></span>
+                        <a href="#createTemplate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>createTemplate(companyId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, template: <a href="../interfaces/Template.html" target="_self">Omit&lt;Template | &quot;id&quot; | &quot;createdAt&quot; | &quot;updatedAt&quot; | &quot;usage&quot;&gt;</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="336"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:336</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Create template</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>companyId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>template</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Template.html" target="_self" >Omit&lt;Template | &quot;id&quot; | &quot;createdAt&quot; | &quot;updatedAt&quot; | &quot;usage&quot;&gt;</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Template.html" target="_self" >Observable&lt;Template&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createTheme"></a>
+                    <span class="name">
+                        <span ><b>createTheme</b></span>
+                        <a href="#createTheme"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>createTheme(theme: <a href="../interfaces/Theme.html" target="_self">Omit&lt;Theme | &quot;id&quot; | &quot;createdAt&quot; | &quot;updatedAt&quot; | &quot;usage&quot;&gt;</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="105"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:105</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Create theme</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>theme</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Theme.html" target="_self" >Omit&lt;Theme | &quot;id&quot; | &quot;createdAt&quot; | &quot;updatedAt&quot; | &quot;usage&quot;&gt;</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Theme.html" target="_self" >Theme</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="darkenColor"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>darkenColor</b></span>
+                        <a href="#darkenColor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>darkenColor(color: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, amount: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="731"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:731</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Darken color</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>color</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>amount</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteTemplate"></a>
+                    <span class="name">
+                        <span ><b>deleteTemplate</b></span>
+                        <a href="#deleteTemplate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>deleteTemplate(templateId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, companyId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="503"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:503</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Delete template</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>templateId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>companyId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="exportTheme"></a>
+                    <span class="name">
+                        <span ><b>exportTheme</b></span>
+                        <a href="#exportTheme"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>exportTheme(themeId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, format: "json" | "css" | "scss")</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="546"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:546</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Export theme</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>themeId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>format</td>
+                                            <td>
+                                                        <code>&quot;json&quot; | &quot;css&quot; | &quot;scss&quot;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>&#x27;json&#x27;</code>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateColorVariants"></a>
+                    <span class="name">
+                        <span ><b>generateColorVariants</b></span>
+                        <a href="#generateColorVariants"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>generateColorVariants(color: <a href="../interfaces/Color.html" target="_self">Color</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="223"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:223</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Generate color variants</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>color</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Color.html" target="_self" >Color</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>ColorVariant[]</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateCSS"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>generateCSS</b></span>
+                        <a href="#generateCSS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generateCSS(theme: <a href="../interfaces/Theme.html" target="_self">Theme</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="600"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:600</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Generate CSS from theme</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>theme</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Theme.html" target="_self" >Theme</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateId"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>generateId</b></span>
+                        <a href="#generateId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generateId()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="1005"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:1005</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Generate unique ID</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateSCSS"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>generateSCSS</b></span>
+                        <a href="#generateSCSS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generateSCSS(theme: <a href="../interfaces/Theme.html" target="_self">Theme</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="629"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:629</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Generate SCSS from theme</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>theme</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Theme.html" target="_self" >Theme</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getActiveTheme"></a>
+                    <span class="name">
+                        <span ><b>getActiveTheme</b></span>
+                        <a href="#getActiveTheme"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getActiveTheme()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="98"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:98</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get active theme</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Theme.html" target="_self" >Theme | undefined</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getColorPalettes"></a>
+                    <span class="name">
+                        <span ><b>getColorPalettes</b></span>
+                        <a href="#getColorPalettes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getColorPalettes()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="175"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:175</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get color palettes</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>ColorPalette[]</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDefaultMetrics"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getDefaultMetrics</b></span>
+                        <a href="#getDefaultMetrics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getDefaultMetrics()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="812"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:812</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get default metrics</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/TemplateMetrics.html" target="_self" >TemplateMetrics</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getMetrics"></a>
+                    <span class="name">
+                        <span ><b>getMetrics</b></span>
+                        <a href="#getMetrics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getMetrics()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="593"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:593</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get metrics</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/TemplateMetrics.html" target="_self" >TemplateMetrics</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTemplates"></a>
+                    <span class="name">
+                        <span ><b>getTemplates</b></span>
+                        <a href="#getTemplates"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getTemplates()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="322"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:322</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get templates (from local cache)</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Template.html" target="_self" >Template[]</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTemplatesByType"></a>
+                    <span class="name">
+                        <span ><b>getTemplatesByType</b></span>
+                        <a href="#getTemplatesByType"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getTemplatesByType(type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="329"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:329</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get templates by type</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>type</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Template.html" target="_self" >Template[]</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getThemes"></a>
+                    <span class="name">
+                        <span ><b>getThemes</b></span>
+                        <a href="#getThemes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getThemes()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="91"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:91</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get all themes</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Theme.html" target="_self" >Theme[]</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="groupBy"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>groupBy</b></span>
+                        <a href="#groupBy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>groupBy(array: T[], property: unknown)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="801"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:801</a></div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Type parameters :</b>
+                            <ul class="type-parameters">
+                                    <li>T</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Group array by property</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>array</td>
+                                            <td>
+                                                        <code>T[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>property</td>
+                                            <td>
+                                                        <code>unknown</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>literal type</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="importTheme"></a>
+                    <span class="name">
+                        <span ><b>importTheme</b></span>
+                        <a href="#importTheme"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>importTheme(themeData: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, format: "json" | "css" | "scss")</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="565"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:565</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Import theme</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>themeData</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>format</td>
+                                            <td>
+                                                        <code>&quot;json&quot; | &quot;css&quot; | &quot;scss&quot;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>&#x27;json&#x27;</code>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Theme.html" target="_self" >Theme | null</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="initializeDemoData"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>initializeDemoData</b></span>
+                        <a href="#initializeDemoData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>initializeDemoData()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="837"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:837</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Initialize demo data</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="lightenColor"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>lightenColor</b></span>
+                        <a href="#lightenColor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>lightenColor(color: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, amount: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="714"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:714</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Lighten color</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>color</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>amount</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadTemplates"></a>
+                    <span class="name">
+                        <span ><b>loadTemplates</b></span>
+                        <a href="#loadTemplates"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>loadTemplates(companyId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, filter?: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="262"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:262</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Load templates from API</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>companyId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>filter</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Template.html" target="_self" >Observable&lt;Template[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="parseCSS"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>parseCSS</b></span>
+                        <a href="#parseCSS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>parseCSS(css: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="657"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:657</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Parse CSS to theme</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>css</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="parseSCSS"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>parseSCSS</b></span>
+                        <a href="#parseSCSS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>parseSCSS(scss: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="706"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:706</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Parse SCSS to theme</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>scss</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateColorPalette"></a>
+                    <span class="name">
+                        <span ><b>updateColorPalette</b></span>
+                        <a href="#updateColorPalette"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateColorPalette(paletteId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, updates: Partial<ColorPalette>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="206"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:206</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Update color palette</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>paletteId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>updates</td>
+                                            <td>
+                                                        <code>Partial&lt;ColorPalette&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateMetrics"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>updateMetrics</b></span>
+                        <a href="#updateMetrics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateMetrics()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="748"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:748</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Update metrics</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateTemplate"></a>
+                    <span class="name">
+                        <span ><b>updateTemplate</b></span>
+                        <a href="#updateTemplate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateTemplate(templateId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, companyId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, updates: <a href="../interfaces/Template.html" target="_self">Partial&lt;Template&gt;</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="416"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:416</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Update template</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>templateId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>companyId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>updates</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Template.html" target="_self" >Partial&lt;Template&gt;</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Template.html" target="_self" >Observable&lt;Template&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateTheme"></a>
+                    <span class="name">
+                        <span ><b>updateTheme</b></span>
+                        <a href="#updateTheme"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateTheme(themeId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, updates: <a href="../interfaces/Theme.html" target="_self">Partial&lt;Theme&gt;</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="128"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:128</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Update theme</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>themeId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>updates</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Theme.html" target="_self" >Partial&lt;Theme&gt;</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="useTemplate"></a>
+                    <span class="name">
+                        <span ><b>useTemplate</b></span>
+                        <a href="#useTemplate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>useTemplate(templateId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="524"
+                                    class="link-to-prism">src/app/core/services/template-management.service.ts:524</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Use template</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>templateId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>userId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="activeTemplatesCount"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>activeTemplatesCount</b></span>
+                        <a href="#activeTemplatesCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; this._templates().filter(t &#x3D;&gt; t.isActive).length)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">src/app/core/services/template-management.service.ts:64</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="activeTheme"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>activeTheme</b></span>
+                        <a href="#activeTheme"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; this._themes().find(t &#x3D;&gt; t.isActive))</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/app/core/services/template-management.service.ts:62</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="apiUrl"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>apiUrl</b></span>
+                        <a href="#apiUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x60;${environment.apiUrl}/templates&#x60;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/core/services/template-management.service.ts:46</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_colorPalettes"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_colorPalettes</b></span>
+                        <a href="#_colorPalettes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;ColorPalette[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/app/core/services/template-management.service.ts:50</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="colorPalettes"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>colorPalettes</b></span>
+                        <a href="#colorPalettes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this._colorPalettes.asReadonly()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/core/services/template-management.service.ts:56</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="colorPalettes$"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>colorPalettes$</b></span>
+                        <a href="#colorPalettes$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Observable&lt;ColorPalette[]&gt;(observer &#x3D;&gt; {
+    observer.next(this._colorPalettes());
+    // Note: This is a compatibility layer - prefer using signals directly
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">src/app/core/services/template-management.service.ts:71</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="http"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>http</b></span>
+                        <a href="#http"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(HttpClient)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/core/services/template-management.service.ts:45</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_metrics"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_metrics</b></span>
+                        <a href="#_metrics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;TemplateMetrics&gt;(this.getDefaultMetrics())</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/app/core/services/template-management.service.ts:52</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="metrics"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>metrics</b></span>
+                        <a href="#metrics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this._metrics.asReadonly()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/app/core/services/template-management.service.ts:58</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="metrics$"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>metrics$</b></span>
+                        <a href="#metrics$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Observable&lt;TemplateMetrics&gt;(observer &#x3D;&gt; {
+    observer.next(this._metrics());
+    // Note: This is a compatibility layer - prefer using signals directly
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="79" class="link-to-prism">src/app/core/services/template-management.service.ts:79</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_templates"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_templates</b></span>
+                        <a href="#_templates"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;Template[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">src/app/core/services/template-management.service.ts:51</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="templates"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>templates</b></span>
+                        <a href="#templates"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this._templates.asReadonly()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/core/services/template-management.service.ts:57</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="templates$"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>templates$</b></span>
+                        <a href="#templates$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Observable&lt;Template[]&gt;(observer &#x3D;&gt; {
+    observer.next(this._templates());
+    // Note: This is a compatibility layer - prefer using signals directly
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="75" class="link-to-prism">src/app/core/services/template-management.service.ts:75</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="templatesCount"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>templatesCount</b></span>
+                        <a href="#templatesCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; this._templates().length)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/app/core/services/template-management.service.ts:63</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_themes"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_themes</b></span>
+                        <a href="#_themes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;Theme[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/core/services/template-management.service.ts:49</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="themes"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>themes</b></span>
+                        <a href="#themes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this._themes.asReadonly()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/core/services/template-management.service.ts:55</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="themes$"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>themes$</b></span>
+                        <a href="#themes$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Observable&lt;Theme[]&gt;(observer &#x3D;&gt; {
+    observer.next(this._themes());
+    // Note: This is a compatibility layer - prefer using signals directly
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/app/core/services/template-management.service.ts:67</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="themesCount"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>themesCount</b></span>
+                        <a href="#themesCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; this._themes().length)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/core/services/template-management.service.ts:61</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, inject, signal, computed } from &#x27;@angular/core&#x27;;
+import { HttpClient, HttpParams } from &#x27;@angular/common/http&#x27;;
+import { Observable, of } from &#x27;rxjs&#x27;;
+import { map, catchError, tap } from &#x27;rxjs/operators&#x27;;
+import { environment } from &#x27;../../../environments/environment&#x27;;
+import {
+  Template,
+  TemplateContent,
+  TemplateAsset,
+  TemplateVariable,
+  TemplateMetrics,
+  Theme,
+  TypographySettings,
+  SpacingSettings,
+  ComponentSettings,
+  LayoutSettings,
+  AnimationSettings,
+  ColorPalette,
+  Color,
+  ColorVariant
+} from &#x27;../models/template-management.model&#x27;;
+
+// Re-export for backward compatibility
+export type {
+  Template,
+  TemplateContent,
+  TemplateAsset,
+  TemplateVariable,
+  TemplateMetrics,
+  Theme,
+  TypographySettings,
+  SpacingSettings,
+  ComponentSettings,
+  LayoutSettings,
+  AnimationSettings,
+  ColorPalette,
+  Color,
+  ColorVariant
+};
+
+@Injectable({
+  providedIn: &#x27;root&#x27;
+})
+export class TemplateManagementService {
+  private http &#x3D; inject(HttpClient);
+  private apiUrl &#x3D; &#x60;${environment.apiUrl}/templates&#x60;;
+
+  // ✅ Signals for reactive state
+  private _themes &#x3D; signal&lt;Theme[]&gt;([]);
+  private _colorPalettes &#x3D; signal&lt;ColorPalette[]&gt;([]);
+  private _templates &#x3D; signal&lt;Template[]&gt;([]);
+  private _metrics &#x3D; signal&lt;TemplateMetrics&gt;(this.getDefaultMetrics());
+
+  // ✅ Readonly signals for public access
+  public readonly themes &#x3D; this._themes.asReadonly();
+  public readonly colorPalettes &#x3D; this._colorPalettes.asReadonly();
+  public readonly templates &#x3D; this._templates.asReadonly();
+  public readonly metrics &#x3D; this._metrics.asReadonly();
+
+  // ✅ Computed signals for derived state
+  public readonly themesCount &#x3D; computed(() &#x3D;&gt; this._themes().length);
+  public readonly activeTheme &#x3D; computed(() &#x3D;&gt; this._themes().find(t &#x3D;&gt; t.isActive));
+  public readonly templatesCount &#x3D; computed(() &#x3D;&gt; this._templates().length);
+  public readonly activeTemplatesCount &#x3D; computed(() &#x3D;&gt; this._templates().filter(t &#x3D;&gt; t.isActive).length);
+
+  // ✅ Observable compatibility layer (for backward compatibility)
+  public themes$ &#x3D; new Observable&lt;Theme[]&gt;(observer &#x3D;&gt; {
+    observer.next(this._themes());
+    // Note: This is a compatibility layer - prefer using signals directly
+  });
+  public colorPalettes$ &#x3D; new Observable&lt;ColorPalette[]&gt;(observer &#x3D;&gt; {
+    observer.next(this._colorPalettes());
+    // Note: This is a compatibility layer - prefer using signals directly
+  });
+  public templates$ &#x3D; new Observable&lt;Template[]&gt;(observer &#x3D;&gt; {
+    observer.next(this._templates());
+    // Note: This is a compatibility layer - prefer using signals directly
+  });
+  public metrics$ &#x3D; new Observable&lt;TemplateMetrics&gt;(observer &#x3D;&gt; {
+    observer.next(this._metrics());
+    // Note: This is a compatibility layer - prefer using signals directly
+  });
+
+  constructor() {
+    // Initialize with empty data, load from API when needed
+  }
+
+  /**
+   * Get all themes
+   */
+  getThemes(): Theme[] {
+    return this._themes();
+  }
+
+  /**
+   * Get active theme
+   */
+  getActiveTheme(): Theme | undefined {
+    return this.activeTheme();
+  }
+
+  /**
+   * Create theme
+   */
+  createTheme(theme: Omit&lt;Theme, &#x27;id&#x27; | &#x27;createdAt&#x27; | &#x27;updatedAt&#x27; | &#x27;usage&#x27;&gt;): Theme {
+    const newTheme: Theme &#x3D; {
+      ...theme,
+      id: this.generateId(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      usage: {
+        users: [],
+        pages: [],
+        lastUsed: new Date(),
+        usageCount: 0
+      }
+    };
+
+    this._themes.update(themes &#x3D;&gt; [...themes, newTheme]);
+
+    this.updateMetrics();
+    return newTheme;
+  }
+
+  /**
+   * Update theme
+   */
+  updateTheme(themeId: string, updates: Partial&lt;Theme&gt;): boolean {
+    let updated &#x3D; false;
+    this._themes.update(themes &#x3D;&gt; {
+      const theme &#x3D; themes.find(t &#x3D;&gt; t.id &#x3D;&#x3D;&#x3D; themeId);
+      if (!theme) return themes;
+
+      Object.assign(theme, updates);
+      theme.updatedAt &#x3D; new Date();
+      updated &#x3D; true;
+      return [...themes];
+    });
+
+    if (updated) {
+      this.updateMetrics();
+    }
+    return updated;
+  }
+
+  /**
+   * Activate theme
+   */
+  activateTheme(themeId: string): boolean {
+    let activated &#x3D; false;
+    this._themes.update(themes &#x3D;&gt; {
+      // Deactivate all themes
+      themes.forEach(t &#x3D;&gt; t.isActive &#x3D; false);
+
+      // Activate selected theme
+      const theme &#x3D; themes.find(t &#x3D;&gt; t.id &#x3D;&#x3D;&#x3D; themeId);
+      if (!theme) return themes;
+
+      theme.isActive &#x3D; true;
+      theme.usage.lastUsed &#x3D; new Date();
+      theme.usage.usageCount++;
+      activated &#x3D; true;
+      return [...themes];
+    });
+
+    if (activated) {
+      this.updateMetrics();
+    }
+    return activated;
+  }
+
+  /**
+   * Get color palettes
+   */
+  getColorPalettes(): ColorPalette[] {
+    return this._colorPalettes();
+  }
+
+  /**
+   * Create color palette
+   */
+  createColorPalette(palette: Omit&lt;ColorPalette, &#x27;id&#x27; | &#x27;createdAt&#x27; | &#x27;updatedAt&#x27; | &#x27;usage&#x27;&gt;): ColorPalette {
+    const newPalette: ColorPalette &#x3D; {
+      ...palette,
+      id: this.generateId(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      usage: {
+        components: [],
+        pages: [],
+        lastUsed: new Date(),
+        usageCount: 0
+      }
+    };
+
+    const palettes &#x3D; this._colorPalettes();
+    this._colorPalettes.update(palettes &#x3D;&gt; [...palettes, newPalette]);
+
+    this.updateMetrics();
+    return newPalette;
+  }
+
+  /**
+   * Update color palette
+   */
+  updateColorPalette(paletteId: string, updates: Partial&lt;ColorPalette&gt;): boolean {
+    const palettes &#x3D; this._colorPalettes();
+    const palette &#x3D; palettes.find(p &#x3D;&gt; p.id &#x3D;&#x3D;&#x3D; paletteId);
+
+    if (!palette) return false;
+
+    Object.assign(palette, updates);
+    palette.updatedAt &#x3D; new Date();
+
+    this._colorPalettes.set([...palettes]);
+    this.updateMetrics();
+    return true;
+  }
+
+  /**
+   * Generate color variants
+   */
+  generateColorVariants(color: Color): ColorVariant[] {
+    const variants: ColorVariant[] &#x3D; [];
+
+    // Light variant
+    variants.push({
+      id: this.generateId(),
+      name: &#x60;${color.name}-light&#x60;,
+      value: this.lightenColor(color.value, 0.2),
+      type: &#x27;light&#x27;,
+      opacity: 0.8,
+      description: &#x60;Light variant of ${color.name}&#x60;
+    });
+
+    // Dark variant
+    variants.push({
+      id: this.generateId(),
+      name: &#x60;${color.name}-dark&#x60;,
+      value: this.darkenColor(color.value, 0.2),
+      type: &#x27;dark&#x27;,
+      opacity: 1,
+      description: &#x60;Dark variant of ${color.name}&#x60;
+    });
+
+    // Hover variant
+    variants.push({
+      id: this.generateId(),
+      name: &#x60;${color.name}-hover&#x60;,
+      value: this.lightenColor(color.value, 0.1),
+      type: &#x27;hover&#x27;,
+      opacity: 1,
+      description: &#x60;Hover variant of ${color.name}&#x60;
+    });
+
+    return variants;
+  }
+
+  /**
+   * Load templates from API
+   */
+  loadTemplates(companyId: string, filter?: { template_type?: string; category?: string; is_active?: boolean }): Observable&lt;Template[]&gt; {
+    let params &#x3D; new HttpParams().set(&#x27;company_id&#x27;, companyId);
+
+    if (filter) {
+      if (filter.template_type) params &#x3D; params.set(&#x27;template_type&#x27;, filter.template_type);
+      if (filter.category) params &#x3D; params.set(&#x27;category&#x27;, filter.category);
+      if (filter.is_active !&#x3D;&#x3D; undefined) params &#x3D; params.set(&#x27;is_active&#x27;, filter.is_active.toString());
+    }
+
+    return this.http.get&lt;{ items: any[], total: number }&gt;(&#x60;${this.apiUrl}/templates&#x60;, { params }).pipe(
+      map((response) &#x3D;&gt; {
+        const templates &#x3D; response.items.map(t &#x3D;&gt; ({
+          id: t.id,
+          name: t.name,
+          displayName: t.name,
+          description: t.description,
+          type: t.channel || &#x27;email&#x27;,
+          category: &#x27;notification&#x27;,
+          isActive: t.is_active,
+          isPublic: !t.is_system_template,
+          theme: &#x27;&#x27;,
+          content: {
+            html: t.html_body || t.body,
+            css: &#x27;&#x27;,
+            assets: []
+          },
+          variables: t.variables || [],
+          preview: {
+            image: &#x27;&#x27;,
+            thumbnail: &#x27;&#x27;,
+            description: t.description
+          },
+          usage: {
+            instances: 0,
+            lastUsed: t.last_used ? new Date(t.last_used) : new Date(),
+            usageCount: t.usage_count || 0
+          },
+          metadata: {
+            createdBy: &#x27;&#x27;,
+            tags: [],
+            version: &#x27;1.0.0&#x27;,
+            compatibility: [],
+            dependencies: []
+          },
+          createdAt: new Date(t.created_at),
+          updatedAt: new Date(t.updated_at)
+        }));
+        this._templates.set(templates);
+        return templates;
+      }),
+      catchError((error) &#x3D;&gt; {
+        console.error(&#x27;Error loading templates:&#x27;, error);
+        return of(this._templates());
+      })
+    );
+  }
+
+  /**
+   * Get templates (from local cache)
+   */
+  getTemplates(): Template[] {
+    return this._templates();
+  }
+
+  /**
+   * Get templates by type
+   */
+  getTemplatesByType(type: string): Template[] {
+    return this._templates().filter(t &#x3D;&gt; t.type &#x3D;&#x3D;&#x3D; type);
+  }
+
+  /**
+   * Create template
+   */
+  createTemplate(companyId: string, template: Omit&lt;Template, &#x27;id&#x27; | &#x27;createdAt&#x27; | &#x27;updatedAt&#x27; | &#x27;usage&#x27;&gt;): Observable&lt;Template&gt; {
+    const params &#x3D; new HttpParams().set(&#x27;company_id&#x27;, companyId);
+
+    return this.http.post&lt;any&gt;(&#x60;${this.apiUrl}/templates&#x60;, {
+      name: template.name,
+      description: template.description,
+      subject: template.preview?.description,
+      content: {
+        html: template.content.html,
+        text: template.content.html
+      },
+      variables: template.variables || [],
+      defaultValues: {},
+      isActive: template.isActive
+    }, { params }).pipe(
+      map((response) &#x3D;&gt; {
+        const newTemplate: Template &#x3D; {
+          id: response.id,
+          name: response.name,
+          displayName: response.name,
+          description: response.description,
+          type: response.channel || &#x27;email&#x27;,
+          category: &#x27;notification&#x27;,
+          isActive: response.is_active,
+          isPublic: !response.is_system_template,
+          theme: &#x27;&#x27;,
+          content: {
+            html: response.html_body || response.body,
+            css: &#x27;&#x27;,
+            assets: []
+          },
+          variables: response.variables || [],
+          preview: {
+            image: &#x27;&#x27;,
+            thumbnail: &#x27;&#x27;,
+            description: response.description
+          },
+          usage: {
+            instances: 0,
+            lastUsed: new Date(),
+            usageCount: 0
+          },
+          metadata: {
+            createdBy: &#x27;&#x27;,
+            tags: [],
+            version: &#x27;1.0.0&#x27;,
+            compatibility: [],
+            dependencies: []
+          },
+          createdAt: new Date(response.created_at),
+          updatedAt: new Date(response.updated_at)
+        };
+        this._templates.update(templates &#x3D;&gt; [...templates, newTemplate]);
+        this.updateMetrics();
+        return newTemplate;
+      }),
+      catchError((error) &#x3D;&gt; {
+        console.error(&#x27;Error creating template:&#x27;, error);
+        // Fallback to local creation
+        const fallbackTemplate: Template &#x3D; {
+          ...template,
+          id: this.generateId(),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          usage: {
+            instances: 0,
+            lastUsed: new Date(),
+            usageCount: 0
+          }
+        };
+        this._templates.update(templates &#x3D;&gt; [...templates, fallbackTemplate]);
+        this.updateMetrics();
+        return of(fallbackTemplate);
+      })
+    );
+  }
+
+  /**
+   * Update template
+   */
+  updateTemplate(templateId: string, companyId: string, updates: Partial&lt;Template&gt;): Observable&lt;Template&gt; {
+    const params &#x3D; new HttpParams().set(&#x27;company_id&#x27;, companyId);
+
+    return this.http.put&lt;any&gt;(&#x60;${this.apiUrl}/templates/${templateId}&#x60;, {
+      name: updates.name,
+      description: updates.description,
+      subject: updates.preview?.description,
+      content: updates.content ? {
+        html: updates.content.html,
+        text: updates.content.html
+      } : undefined,
+      variables: updates.variables,
+      isActive: updates.isActive
+    }, { params }).pipe(
+      map((response) &#x3D;&gt; {
+        const updatedTemplate: Template &#x3D; {
+          id: response.id,
+          name: response.name,
+          displayName: response.name,
+          description: response.description,
+          type: response.channel || &#x27;email&#x27;,
+          category: &#x27;notification&#x27;,
+          isActive: response.is_active,
+          isPublic: !response.is_system_template,
+          theme: &#x27;&#x27;,
+          content: {
+            html: response.html_body || response.body,
+            css: &#x27;&#x27;,
+            assets: []
+          },
+          variables: response.variables || [],
+          preview: {
+            image: &#x27;&#x27;,
+            thumbnail: &#x27;&#x27;,
+            description: response.description
+          },
+          usage: {
+            instances: 0,
+            lastUsed: response.last_used ? new Date(response.last_used) : new Date(),
+            usageCount: response.usage_count || 0
+          },
+          metadata: {
+            createdBy: &#x27;&#x27;,
+            tags: [],
+            version: &#x27;1.0.0&#x27;,
+            compatibility: [],
+            dependencies: []
+          },
+          createdAt: new Date(response.created_at),
+          updatedAt: new Date(response.updated_at)
+        };
+        this._templates.update(templates &#x3D;&gt; {
+          const index &#x3D; templates.findIndex(t &#x3D;&gt; t.id &#x3D;&#x3D;&#x3D; templateId);
+          if (index !&#x3D;&#x3D; -1) {
+            templates[index] &#x3D; updatedTemplate;
+            return [...templates];
+          }
+          return templates;
+        });
+        this.updateMetrics();
+        return updatedTemplate;
+      }),
+      catchError((error) &#x3D;&gt; {
+        console.error(&#x27;Error updating template:&#x27;, error);
+        // Fallback to local update
+        this._templates.update(templates &#x3D;&gt; {
+          const template &#x3D; templates.find(t &#x3D;&gt; t.id &#x3D;&#x3D;&#x3D; templateId);
+          if (template) {
+            Object.assign(template, updates);
+            template.updatedAt &#x3D; new Date();
+            return [...templates];
+          }
+          return templates;
+        });
+        const template &#x3D; this._templates().find(t &#x3D;&gt; t.id &#x3D;&#x3D;&#x3D; templateId);
+        if (template) {
+          this.updateMetrics();
+          return of(template);
+        }
+        throw error;
+      })
+    );
+  }
+
+  /**
+   * Delete template
+   */
+  deleteTemplate(templateId: string, companyId: string): Observable&lt;void&gt; {
+    const params &#x3D; new HttpParams().set(&#x27;company_id&#x27;, companyId);
+
+    return this.http.delete&lt;void&gt;(&#x60;${this.apiUrl}/templates/${templateId}&#x60;, { params }).pipe(
+      tap(() &#x3D;&gt; {
+        this._templates.update(templates &#x3D;&gt; templates.filter(t &#x3D;&gt; t.id !&#x3D;&#x3D; templateId));
+        this.updateMetrics();
+      }),
+      catchError((error) &#x3D;&gt; {
+        console.error(&#x27;Error deleting template:&#x27;, error);
+        // Fallback to local delete
+        this._templates.update(templates &#x3D;&gt; templates.filter(t &#x3D;&gt; t.id !&#x3D;&#x3D; templateId));
+        this.updateMetrics();
+        return of(undefined);
+      })
+    );
+  }
+
+  /**
+   * Use template
+   */
+  useTemplate(templateId: string, userId: string): boolean {
+    let used &#x3D; false;
+    this._templates.update(templates &#x3D;&gt; {
+      const template &#x3D; templates.find(t &#x3D;&gt; t.id &#x3D;&#x3D;&#x3D; templateId);
+      if (!template || !template.isActive) return templates;
+
+      template.usage.instances++;
+      template.usage.lastUsed &#x3D; new Date();
+      template.usage.usageCount++;
+      used &#x3D; true;
+      return [...templates];
+    });
+
+    if (used) {
+      this.updateMetrics();
+    }
+    return used;
+  }
+
+  /**
+   * Export theme
+   */
+  exportTheme(themeId: string, format: &#x27;json&#x27; | &#x27;css&#x27; | &#x27;scss&#x27; &#x3D; &#x27;json&#x27;): string {
+    const theme &#x3D; this._themes().find((t: Theme) &#x3D;&gt; t.id &#x3D;&#x3D;&#x3D; themeId);
+    if (!theme) return &#x27;&#x27;;
+
+    switch (format) {
+      case &#x27;json&#x27;:
+        return JSON.stringify(theme, null, 2);
+      case &#x27;css&#x27;:
+        return this.generateCSS(theme);
+      case &#x27;scss&#x27;:
+        return this.generateSCSS(theme);
+      default:
+        return JSON.stringify(theme, null, 2);
+    }
+  }
+
+  /**
+   * Import theme
+   */
+  importTheme(themeData: string, format: &#x27;json&#x27; | &#x27;css&#x27; | &#x27;scss&#x27; &#x3D; &#x27;json&#x27;): Theme | null {
+    try {
+      let theme: any;
+
+      switch (format) {
+        case &#x27;json&#x27;:
+          theme &#x3D; JSON.parse(themeData);
+          break;
+        case &#x27;css&#x27;:
+          theme &#x3D; this.parseCSS(themeData);
+          break;
+        case &#x27;scss&#x27;:
+          theme &#x3D; this.parseSCSS(themeData);
+          break;
+        default:
+          return null;
+      }
+
+      return this.createTheme(theme);
+    } catch (error) {
+      console.error(&#x27;Theme import failed:&#x27;, error);
+      return null;
+    }
+  }
+
+  /**
+   * Get metrics
+   */
+  getMetrics(): TemplateMetrics {
+    return this._metrics();
+  }
+
+  /**
+   * Generate CSS from theme
+   */
+  private generateCSS(theme: Theme): string {
+    const css &#x3D; &#x60;
+:root {
+  /* Primary Colors */
+  --primary-50: #f0f9ff;
+  --primary-500: #3b82f6;
+  --primary-900: #1e3a8a;
+
+  /* Typography */
+  --font-family-primary: ${theme.typography.fontFamily.primary};
+  --font-size-base: ${theme.typography.fontSize.base};
+
+  /* Spacing */
+  --spacing-base: ${theme.spacing.base}px;
+  --spacing-sm: ${theme.spacing.base * theme.spacing.scale}px;
+  --spacing-md: ${theme.spacing.base * theme.spacing.scale * 2}px;
+
+  /* Components */
+  --button-border-radius: ${theme.components.button.borderRadius};
+  --input-border-radius: ${theme.components.input.borderRadius};
+}
+    &#x60;.trim();
+
+    return css;
+  }
+
+  /**
+   * Generate SCSS from theme
+   */
+  private generateSCSS(theme: Theme): string {
+    const scss &#x3D; &#x60;
+// Theme: ${theme.name}
+// Generated: ${new Date().toISOString()}
+
+$primary-50: #f0f9ff;
+$primary-500: #3b82f6;
+$primary-900: #1e3a8a;
+
+$font-family-primary: ${theme.typography.fontFamily.primary};
+$font-size-base: ${theme.typography.fontSize.base};
+
+$spacing-base: ${theme.spacing.base}px;
+$spacing-sm: #{$spacing-base * ${theme.spacing.scale}};
+$spacing-md: #{$spacing-base * ${theme.spacing.scale * 2}};
+
+.button {
+  border-radius: ${theme.components.button.borderRadius};
+  padding: ${theme.components.button.padding};
+}
+    &#x60;.trim();
+
+    return scss;
+  }
+
+  /**
+   * Parse CSS to theme
+   */
+  private parseCSS(css: string): any {
+    // Simple CSS parsing - in a real app, use a proper CSS parser
+    const theme: any &#x3D; {
+      name: &#x27;Imported Theme&#x27;,
+      displayName: &#x27;Imported Theme&#x27;,
+      description: &#x27;Theme imported from CSS&#x27;,
+      type: &#x27;custom&#x27;,
+      isActive: false,
+      isDefault: false,
+      colorPalette: &#x27;&#x27;,
+      typography: {
+        fontFamily: { primary: &#x27;Inter&#x27;, secondary: &#x27;Inter&#x27;, monospace: &#x27;Fira Code&#x27; },
+        fontSize: { xs: &#x27;0.75rem&#x27;, sm: &#x27;0.875rem&#x27;, base: &#x27;1rem&#x27;, lg: &#x27;1.125rem&#x27;, xl: &#x27;1.25rem&#x27;, &#x27;2xl&#x27;: &#x27;1.5rem&#x27;, &#x27;3xl&#x27;: &#x27;1.875rem&#x27;, &#x27;4xl&#x27;: &#x27;2.25rem&#x27; },
+        fontWeight: { light: 300, normal: 400, medium: 500, semibold: 600, bold: 700 },
+        lineHeight: { tight: 1.25, normal: 1.5, relaxed: 1.75 },
+        letterSpacing: { tight: &#x27;-0.025em&#x27;, normal: &#x27;0&#x27;, wide: &#x27;0.025em&#x27; }
+      },
+      spacing: {
+        base: 4,
+        scale: 1.5,
+        breakpoints: { xs: 0, sm: 640, md: 768, lg: 1024, xl: 1280, &#x27;2xl&#x27;: 1536 },
+        padding: { xs: &#x27;0.5rem&#x27;, sm: &#x27;0.75rem&#x27;, md: &#x27;1rem&#x27;, lg: &#x27;1.5rem&#x27;, xl: &#x27;2rem&#x27; },
+        margin: { xs: &#x27;0.5rem&#x27;, sm: &#x27;0.75rem&#x27;, md: &#x27;1rem&#x27;, lg: &#x27;1.5rem&#x27;, xl: &#x27;2rem&#x27; }
+      },
+      components: {
+        button: { borderRadius: &#x27;0.375rem&#x27;, padding: &#x27;0.5rem 1rem&#x27;, fontSize: &#x27;1rem&#x27;, fontWeight: 500, minHeight: &#x27;2.5rem&#x27;, transition: &#x27;all 0.2s&#x27; },
+        input: { borderRadius: &#x27;0.375rem&#x27;, padding: &#x27;0.5rem 0.75rem&#x27;, fontSize: &#x27;1rem&#x27;, borderWidth: &#x27;1px&#x27;, focusRingWidth: &#x27;2px&#x27;, transition: &#x27;all 0.2s&#x27; },
+        card: { borderRadius: &#x27;0.5rem&#x27;, padding: &#x27;1.5rem&#x27;, shadow: &#x27;0 1px 3px rgba(0, 0, 0, 0.1)&#x27;, borderWidth: &#x27;1px&#x27; },
+        modal: { borderRadius: &#x27;0.5rem&#x27;, padding: &#x27;1.5rem&#x27;, maxWidth: &#x27;32rem&#x27;, backdropBlur: &#x27;4px&#x27; }
+      },
+      layout: {
+        container: { maxWidth: &#x27;1200px&#x27;, padding: &#x27;0 1rem&#x27;, margin: &#x27;0 auto&#x27; },
+        grid: { columns: 12, gap: &#x27;1rem&#x27;, breakpoints: {} },
+        sidebar: { width: &#x27;16rem&#x27;, collapsedWidth: &#x27;4rem&#x27;, transition: &#x27;width 0.3s&#x27; },
+        header: { height: &#x27;4rem&#x27;, padding: &#x27;0 1rem&#x27;, shadow: &#x27;0 1px 3px rgba(0, 0, 0, 0.1)&#x27; }
+      },
+      animations: {
+        duration: { fast: &#x27;0.15s&#x27;, normal: &#x27;0.3s&#x27;, slow: &#x27;0.5s&#x27; },
+        easing: { linear: &#x27;linear&#x27;, ease: &#x27;ease&#x27;, easeIn: &#x27;ease-in&#x27;, easeOut: &#x27;ease-out&#x27;, easeInOut: &#x27;ease-in-out&#x27; },
+        transitions: { color: &#x27;color 0.2s&#x27;, background: &#x27;background-color 0.2s&#x27;, transform: &#x27;transform 0.2s&#x27;, opacity: &#x27;opacity 0.2s&#x27; }
+      }
+    };
+
+    return theme;
+  }
+
+  /**
+   * Parse SCSS to theme
+   */
+  private parseSCSS(scss: string): any {
+    // Simple SCSS parsing - in a real app, use a proper SCSS parser
+    return this.parseCSS(scss);
+  }
+
+  /**
+   * Lighten color
+   */
+  private lightenColor(color: string, amount: number): string {
+    // Simple color lightening - in a real app, use a proper color library
+    const hex &#x3D; color.replace(&#x27;#&#x27;, &#x27;&#x27;);
+    const r &#x3D; parseInt(hex.substr(0, 2), 16);
+    const g &#x3D; parseInt(hex.substr(2, 2), 16);
+    const b &#x3D; parseInt(hex.substr(4, 2), 16);
+
+    const newR &#x3D; Math.min(255, Math.floor(r + (255 - r) * amount));
+    const newG &#x3D; Math.min(255, Math.floor(g + (255 - g) * amount));
+    const newB &#x3D; Math.min(255, Math.floor(b + (255 - b) * amount));
+
+    return &#x60;#${newR.toString(16).padStart(2, &#x27;0&#x27;)}${newG.toString(16).padStart(2, &#x27;0&#x27;)}${newB.toString(16).padStart(2, &#x27;0&#x27;)}&#x60;;
+  }
+
+  /**
+   * Darken color
+   */
+  private darkenColor(color: string, amount: number): string {
+    // Simple color darkening - in a real app, use a proper color library
+    const hex &#x3D; color.replace(&#x27;#&#x27;, &#x27;&#x27;);
+    const r &#x3D; parseInt(hex.substr(0, 2), 16);
+    const g &#x3D; parseInt(hex.substr(2, 2), 16);
+    const b &#x3D; parseInt(hex.substr(4, 2), 16);
+
+    const newR &#x3D; Math.max(0, Math.floor(r * (1 - amount)));
+    const newG &#x3D; Math.max(0, Math.floor(g * (1 - amount)));
+    const newB &#x3D; Math.max(0, Math.floor(b * (1 - amount)));
+
+    return &#x60;#${newR.toString(16).padStart(2, &#x27;0&#x27;)}${newG.toString(16).padStart(2, &#x27;0&#x27;)}${newB.toString(16).padStart(2, &#x27;0&#x27;)}&#x60;;
+  }
+
+  /**
+   * Update metrics
+   */
+  private updateMetrics(): void {
+    const themes &#x3D; this._themes();
+    const colorPalettes &#x3D; this._colorPalettes();
+    const templates &#x3D; this._templates();
+    const metrics &#x3D; this.calculateMetrics(themes, colorPalettes, templates);
+    this._metrics.set(metrics);
+  }
+
+  /**
+   * Calculate metrics
+   */
+  private calculateMetrics(themes: Theme[], colorPalettes: ColorPalette[], templates: Template[]): TemplateMetrics {
+    const totalThemes &#x3D; themes.length;
+    const activeThemes &#x3D; themes.filter(t &#x3D;&gt; t.isActive).length;
+    const totalTemplates &#x3D; templates.length;
+    const activeTemplates &#x3D; templates.filter(t &#x3D;&gt; t.isActive).length;
+    const totalColorPalettes &#x3D; colorPalettes.length;
+    const activeColorPalettes &#x3D; colorPalettes.filter(p &#x3D;&gt; p.isActive).length;
+
+    const themeUsage &#x3D; this.groupBy(themes, &#x27;name&#x27;);
+    const templateUsage &#x3D; this.groupBy(templates, &#x27;type&#x27;);
+    const colorPaletteUsage &#x3D; this.groupBy(colorPalettes, &#x27;type&#x27;);
+    const mostUsedTemplates &#x3D; this.groupBy(templates, &#x27;name&#x27;);
+
+    const averageTemplateSize &#x3D; templates.length &gt; 0 ?
+      templates.reduce((sum, t) &#x3D;&gt; sum + (t.content.html.length + t.content.css.length), 0) / templates.length : 0;
+
+    const totalAssets &#x3D; templates.reduce((sum, t) &#x3D;&gt; sum + t.content.assets.length, 0);
+
+    return {
+      totalThemes,
+      activeThemes,
+      totalTemplates,
+      activeTemplates,
+      totalColorPalettes,
+      activeColorPalettes,
+      themeUsage,
+      templateUsage,
+      colorPaletteUsage,
+      mostUsedTemplates,
+      averageTemplateSize,
+      totalAssets,
+      usageStats: {
+        mostUsedTemplate: mostUsedTemplates ? Object.keys(mostUsedTemplates)[0] || &#x27;&#x27; : &#x27;&#x27;,
+        mostUsedTheme: themeUsage ? Object.keys(themeUsage)[0] || &#x27;&#x27; : &#x27;&#x27;,
+        totalUsage: Object.values(templateUsage || {}).reduce((sum, count) &#x3D;&gt; sum + count, 0)
+      }
+    };
+  }
+
+  /**
+   * Group array by property
+   */
+  private groupBy&lt;T&gt;(array: T[], property: keyof T): { [key: string]: number } {
+    return array.reduce((groups, item) &#x3D;&gt; {
+      const key &#x3D; String(item[property]);
+      groups[key] &#x3D; (groups[key] || 0) + 1;
+      return groups;
+    }, {} as { [key: string]: number });
+  }
+
+  /**
+   * Get default metrics
+   */
+  private getDefaultMetrics(): TemplateMetrics {
+    return {
+      totalThemes: 0,
+      activeThemes: 0,
+      totalTemplates: 0,
+      activeTemplates: 0,
+      totalColorPalettes: 0,
+      activeColorPalettes: 0,
+      themeUsage: {},
+      templateUsage: {},
+      colorPaletteUsage: {},
+      mostUsedTemplates: {},
+      averageTemplateSize: 0,
+      totalAssets: 0,
+      usageStats: {
+        mostUsedTemplate: &#x27;&#x27;,
+        mostUsedTheme: &#x27;&#x27;,
+        totalUsage: 0
+      }
+    };
+  }
+
+  /**
+   * Initialize demo data
+   */
+  private initializeDemoData(): void {
+    // Create demo color palettes
+    const demoColorPalettes: ColorPalette[] &#x3D; [
+      {
+        id: &#x27;palette-1&#x27;,
+        name: &#x27;Default Blue&#x27;,
+        description: &#x27;Default blue color palette&#x27;,
+        type: &#x27;primary&#x27;,
+        colors: [
+          {
+            id: &#x27;color-1&#x27;,
+            name: &#x27;Primary Blue&#x27;,
+            value: &#x27;#3b82f6&#x27;,
+            rgb: { r: 59, g: 130, b: 246 },
+            hsl: { h: 217, s: 91, l: 60 },
+            alpha: 1,
+            usage: &#x27;primary&#x27;,
+            description: &#x27;Primary brand color&#x27;,
+            isCustom: false,
+            variants: []
+          }
+        ],
+        isDefault: true,
+        isActive: true,
+        usage: {
+          components: [&#x27;button&#x27;, &#x27;link&#x27;],
+          pages: [&#x27;dashboard&#x27;, &#x27;login&#x27;],
+          lastUsed: new Date(),
+          usageCount: 150
+        },
+        metadata: {
+          createdBy: &#x27;system&#x27;,
+          tags: [&#x27;default&#x27;, &#x27;blue&#x27;, &#x27;primary&#x27;],
+          version: &#x27;1.0.0&#x27;,
+          compatibility: [&#x27;all&#x27;]
+        },
+        createdAt: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000),
+        updatedAt: new Date()
+      }
+    ];
+
+    this._colorPalettes.set(demoColorPalettes);
+
+    // Create demo themes
+    const demoThemes: Theme[] &#x3D; [
+      {
+        id: &#x27;theme-1&#x27;,
+        name: &#x27;default&#x27;,
+        displayName: &#x27;Default Theme&#x27;,
+        description: &#x27;Default application theme&#x27;,
+        type: &#x27;light&#x27;,
+        isActive: true,
+        isDefault: true,
+        colorPalette: &#x27;palette-1&#x27;,
+        typography: {
+          fontFamily: { primary: &#x27;Inter&#x27;, secondary: &#x27;Inter&#x27;, monospace: &#x27;Fira Code&#x27; },
+          fontSize: { xs: &#x27;0.75rem&#x27;, sm: &#x27;0.875rem&#x27;, base: &#x27;1rem&#x27;, lg: &#x27;1.125rem&#x27;, xl: &#x27;1.25rem&#x27;, &#x27;2xl&#x27;: &#x27;1.5rem&#x27;, &#x27;3xl&#x27;: &#x27;1.875rem&#x27;, &#x27;4xl&#x27;: &#x27;2.25rem&#x27; },
+          fontWeight: { light: 300, normal: 400, medium: 500, semibold: 600, bold: 700 },
+          lineHeight: { tight: 1.25, normal: 1.5, relaxed: 1.75 },
+          letterSpacing: { tight: &#x27;-0.025em&#x27;, normal: &#x27;0&#x27;, wide: &#x27;0.025em&#x27; }
+        },
+        spacing: {
+          base: 4,
+          scale: 1.5,
+          breakpoints: { xs: 0, sm: 640, md: 768, lg: 1024, xl: 1280, &#x27;2xl&#x27;: 1536 },
+          padding: { xs: &#x27;0.5rem&#x27;, sm: &#x27;0.75rem&#x27;, md: &#x27;1rem&#x27;, lg: &#x27;1.5rem&#x27;, xl: &#x27;2rem&#x27; },
+          margin: { xs: &#x27;0.5rem&#x27;, sm: &#x27;0.75rem&#x27;, md: &#x27;1rem&#x27;, lg: &#x27;1.5rem&#x27;, xl: &#x27;2rem&#x27; }
+        },
+        components: {
+          button: { borderRadius: &#x27;0.375rem&#x27;, padding: &#x27;0.5rem 1rem&#x27;, fontSize: &#x27;1rem&#x27;, fontWeight: 500, minHeight: &#x27;2.5rem&#x27;, transition: &#x27;all 0.2s&#x27; },
+          input: { borderRadius: &#x27;0.375rem&#x27;, padding: &#x27;0.5rem 0.75rem&#x27;, fontSize: &#x27;1rem&#x27;, borderWidth: &#x27;1px&#x27;, focusRingWidth: &#x27;2px&#x27;, transition: &#x27;all 0.2s&#x27; },
+          cards: { borderRadius: &#x27;0.5rem&#x27;, padding: &#x27;1.5rem&#x27;, shadow: &#x27;0 1px 3px rgba(0, 0, 0, 0.1)&#x27; },
+          modals: { borderRadius: &#x27;0.5rem&#x27;, padding: &#x27;1.5rem&#x27;, backdrop: &#x27;rgba(0, 0, 0, 0.5)&#x27; }
+        },
+        layout: {
+          container: { maxWidth: &#x27;1200px&#x27;, padding: &#x27;0 1rem&#x27;, margin: &#x27;0 auto&#x27; },
+          grid: { columns: 12, gap: &#x27;1rem&#x27;, breakpoints: {} },
+          sidebar: { width: &#x27;16rem&#x27;, collapsedWidth: &#x27;4rem&#x27;, transition: &#x27;width 0.3s&#x27; },
+          header: { height: &#x27;4rem&#x27;, padding: &#x27;0 1rem&#x27;, shadow: &#x27;0 1px 3px rgba(0, 0, 0, 0.1)&#x27; }
+        },
+        animations: {
+          duration: { fast: &#x27;0.15s&#x27;, normal: &#x27;0.3s&#x27;, slow: &#x27;0.5s&#x27; },
+          easing: { linear: &#x27;linear&#x27;, ease: &#x27;ease&#x27;, easeIn: &#x27;ease-in&#x27;, easeOut: &#x27;ease-out&#x27;, easeInOut: &#x27;ease-in-out&#x27; },
+          transitions: {
+            fade: &#x27;opacity 0.2s&#x27;,
+            slide: &#x27;transform 0.2s&#x27;,
+            scale: &#x27;transform 0.2s&#x27;,
+            transform: &#x27;transform 0.2s&#x27;,
+            opacity: &#x27;opacity 0.2s&#x27;,
+            color: &#x27;color 0.2s&#x27;,
+            background: &#x27;background-color 0.2s&#x27;
+          }
+        },
+        usage: {
+          users: [&#x27;admin&#x27;, &#x27;user-1&#x27;],
+          pages: [&#x27;dashboard&#x27;, &#x27;login&#x27;],
+          lastUsed: new Date(),
+          usageCount: 500
+        },
+        metadata: {
+          createdBy: &#x27;system&#x27;,
+          tags: [&#x27;default&#x27;, &#x27;light&#x27;, &#x27;modern&#x27;],
+          version: &#x27;1.0.0&#x27;,
+          compatibility: [&#x27;all&#x27;]
+        },
+        createdAt: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000),
+        updatedAt: new Date()
+      }
+    ];
+
+    this._themes.set(demoThemes);
+
+    // Create demo templates
+    const demoTemplates: Template[] &#x3D; [
+      {
+        id: &#x27;template-1&#x27;,
+        name: &#x27;dashboard-layout&#x27;,
+        displayName: &#x27;Dashboard Layout&#x27;,
+        description: &#x27;Standard dashboard layout template&#x27;,
+        type: &#x27;layout&#x27;,
+        category: &#x27;dashboard&#x27;,
+        isActive: true,
+        isPublic: true,
+        theme: &#x27;theme-1&#x27;,
+        content: {
+          html: &#x27;&lt;div class&#x3D;&quot;dashboard-layout&quot;&gt;&lt;header class&#x3D;&quot;header&quot;&gt;&lt;/header&gt;&lt;aside class&#x3D;&quot;sidebar&quot;&gt;&lt;/aside&gt;&lt;main class&#x3D;&quot;main-content&quot;&gt;&lt;/main&gt;&lt;/div&gt;&#x27;,
+          css: &#x27;.dashboard-layout { display: grid; grid-template-areas: &quot;header header&quot; &quot;sidebar main&quot;; }&#x27;,
+          assets: []
+        },
+        variables: [
+          {
+            id: &#x27;var-1&#x27;,
+            name: &#x27;title&#x27;,
+            type: &#x27;text&#x27;,
+            defaultValue: &#x27;Dashboard&#x27;,
+            required: true,
+            description: &#x27;Page title&#x27;
+          }
+        ],
+        preview: {
+          image: &#x27;/assets/templates/dashboard-layout.png&#x27;,
+          thumbnail: &#x27;/assets/templates/dashboard-layout-thumb.png&#x27;,
+          description: &#x27;Clean dashboard layout with header, sidebar, and main content area&#x27;
+        },
+        usage: {
+          instances: 5,
+          lastUsed: new Date(),
+          usageCount: 25
+        },
+        metadata: {
+          createdBy: &#x27;admin&#x27;,
+          tags: [&#x27;dashboard&#x27;, &#x27;layout&#x27;, &#x27;responsive&#x27;],
+          version: &#x27;1.0.0&#x27;,
+          compatibility: [&#x27;all&#x27;],
+          dependencies: []
+        },
+        createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+        updatedAt: new Date()
+      }
+    ];
+
+    this._templates.set(demoTemplates);
+    this.updateMetrics();
+  }
+
+  /**
+   * Generate unique ID
+   */
+  private generateId(): string {
+    return &#x27;template-&#x27; + Date.now() + &#x27;-&#x27; + Math.random().toString(36).substr(2, 9);
+  }
+}
+
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'TemplateManagementService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

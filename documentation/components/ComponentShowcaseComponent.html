@@ -1,0 +1,1247 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  ComponentShowcaseComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/portal/demo-group/component-showcase/component-showcase.component.ts</code>
+</p>
+
+
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-component-showcase</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../interfaces/Module.html" target="_self" >CommonModule</a></code>
+                                <code><a href="../interfaces/Module.html" target="_self" >FormsModule</a></code>
+                                <code><a href="../components/GlassCardComponent.html" target="_self" >GlassCardComponent</a></code>
+                                <code><a href="../components/GlassButtonComponent.html" target="_self" >GlassButtonComponent</a></code>
+                                <code><a href="../components/GlassInputComponent.html" target="_self" >GlassInputComponent</a></code>
+                                <code><a href="../components/BadgeComponent.html" target="_self" >BadgeComponent</a></code>
+                                <code><a href="../components/AlertComponent.html" target="_self" >AlertComponent</a></code>
+                                <code><a href="../components/AvatarComponent.html" target="_self" >AvatarComponent</a></code>
+                                <code><a href="../components/SwitchComponent.html" target="_self" >SwitchComponent</a></code>
+                                <code><a href="../components/CheckboxComponent.html" target="_self" >CheckboxComponent</a></code>
+                                <code><a href="../components/RadioComponent.html" target="_self" >RadioComponent</a></code>
+                                <code><a href="../components/ThemeSwitcherComponent.html" target="_self" >ThemeSwitcherComponent</a></code>
+                                <code><a href="../components/ProgressBarComponent.html" target="_self" >ProgressBarComponent</a></code>
+                                <code><a href="../components/RatingComponent.html" target="_self" >RatingComponent</a></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./component-showcase.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./component-showcase.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#badgeVariants" >badgeVariants</a>
+                            </li>
+                            <li>
+                                <a href="#buttonSizes" >buttonSizes</a>
+                            </li>
+                            <li>
+                                <a href="#buttonVariants" >buttonVariants</a>
+                            </li>
+                            <li>
+                                <a href="#checkboxValue" >checkboxValue</a>
+                            </li>
+                            <li>
+                                <a href="#inputNumber" >inputNumber</a>
+                            </li>
+                            <li>
+                                <a href="#inputPassword" >inputPassword</a>
+                            </li>
+                            <li>
+                                <a href="#inputSearch" >inputSearch</a>
+                            </li>
+                            <li>
+                                <a href="#inputText" >inputText</a>
+                            </li>
+                            <li>
+                                <a href="#progressConfig1" >progressConfig1</a>
+                            </li>
+                            <li>
+                                <a href="#progressConfig2" >progressConfig2</a>
+                            </li>
+                            <li>
+                                <a href="#radioValue" >radioValue</a>
+                            </li>
+                            <li>
+                                <a href="#ratingConfig" >ratingConfig</a>
+                            </li>
+                            <li>
+                                <a href="#ratingValue" >ratingValue</a>
+                            </li>
+                            <li>
+                                <a href="#switchValue" >switchValue</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#copyCode" >copyCode</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="copyCode"></a>
+                    <span class="name">
+                        <span ><b>copyCode</b></span>
+                        <a href="#copyCode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>copyCode(code: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="99"
+                                    class="link-to-prism">src/app/features/portal/demo-group/component-showcase/component-showcase.component.ts:99</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>code</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="badgeVariants"></a>
+                    <span class="name">
+                        <span ><b>badgeVariants</b></span>
+                        <a href="#badgeVariants"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/typealiases.html#BadgeVariant" target="_self" >BadgeVariant[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[&#x27;default&#x27;, &#x27;primary&#x27;, &#x27;success&#x27;, &#x27;warning&#x27;, &#x27;danger&#x27;, &#x27;info&#x27;, &#x27;secondary&#x27;]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/app/features/portal/demo-group/component-showcase/component-showcase.component.ts:68</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="buttonSizes"></a>
+                    <span class="name">
+                        <span ><b>buttonSizes</b></span>
+                        <a href="#buttonSizes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>(&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;)[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[&#x27;sm&#x27;, &#x27;md&#x27;, &#x27;lg&#x27;]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/app/features/portal/demo-group/component-showcase/component-showcase.component.ts:65</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="buttonVariants"></a>
+                    <span class="name">
+                        <span ><b>buttonVariants</b></span>
+                        <a href="#buttonVariants"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>(&quot;primary&quot; | &quot;secondary&quot; | &quot;danger&quot;)[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[&#x27;primary&#x27;, &#x27;secondary&#x27;, &#x27;danger&#x27;]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/app/features/portal/demo-group/component-showcase/component-showcase.component.ts:62</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="checkboxValue"></a>
+                    <span class="name">
+                        <span ><b>checkboxValue</b></span>
+                        <a href="#checkboxValue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/features/portal/demo-group/component-showcase/component-showcase.component.ts:55</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="inputNumber"></a>
+                    <span class="name">
+                        <span ><b>inputNumber</b></span>
+                        <a href="#inputNumber"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(0)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">src/app/features/portal/demo-group/component-showcase/component-showcase.component.ts:51</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="inputPassword"></a>
+                    <span class="name">
+                        <span ><b>inputPassword</b></span>
+                        <a href="#inputPassword"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(&#x27;&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/features/portal/demo-group/component-showcase/component-showcase.component.ts:49</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="inputSearch"></a>
+                    <span class="name">
+                        <span ><b>inputSearch</b></span>
+                        <a href="#inputSearch"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(&#x27;&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/app/features/portal/demo-group/component-showcase/component-showcase.component.ts:50</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="inputText"></a>
+                    <span class="name">
+                        <span ><b>inputText</b></span>
+                        <a href="#inputText"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(&#x27;&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/app/features/portal/demo-group/component-showcase/component-showcase.component.ts:48</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="progressConfig1"></a>
+                    <span class="name">
+                        <span ><b>progressConfig1</b></span>
+                        <a href="#progressConfig1"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/ProgressBarConfig.html" target="_self" >Partial&lt;ProgressBarConfig&gt;</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    showPercentage: true,
+    color: &#x27;primary&#x27;
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">src/app/features/portal/demo-group/component-showcase/component-showcase.component.ts:71</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="progressConfig2"></a>
+                    <span class="name">
+                        <span ><b>progressConfig2</b></span>
+                        <a href="#progressConfig2"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/ProgressBarConfig.html" target="_self" >Partial&lt;ProgressBarConfig&gt;</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    striped: true,
+    animated: true,
+    color: &#x27;success&#x27;
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="76" class="link-to-prism">src/app/features/portal/demo-group/component-showcase/component-showcase.component.ts:76</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="radioValue"></a>
+                    <span class="name">
+                        <span ><b>radioValue</b></span>
+                        <a href="#radioValue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(&#x27;option1&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/features/portal/demo-group/component-showcase/component-showcase.component.ts:56</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ratingConfig"></a>
+                    <span class="name">
+                        <span ><b>ratingConfig</b></span>
+                        <a href="#ratingConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/RatingConfig.html" target="_self" >RatingConfig</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    max: 5,
+    readOnly: false,
+    showText: true,
+    showCancel: false, // Changed from true to false for cleaner demo
+    cancelText: &#x27;Clear&#x27;,
+    clearable: true,
+    theme: &#x27;stars&#x27;,
+    size: &#x27;medium&#x27;,
+    color: &#x27;#fbbf24&#x27;,
+    emptyColor: &#x27;#d1d5db&#x27;,
+    textPosition: &#x27;right&#x27;,
+    animation: true,
+    animationDuration: 300
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="83" class="link-to-prism">src/app/features/portal/demo-group/component-showcase/component-showcase.component.ts:83</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ratingValue"></a>
+                    <span class="name">
+                        <span ><b>ratingValue</b></span>
+                        <a href="#ratingValue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(3.5)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/app/features/portal/demo-group/component-showcase/component-showcase.component.ts:59</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="switchValue"></a>
+                    <span class="name">
+                        <span ><b>switchValue</b></span>
+                        <a href="#switchValue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">src/app/features/portal/demo-group/component-showcase/component-showcase.component.ts:54</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, signal } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormsModule } from &#x27;@angular/forms&#x27;;
+import { GlassCardComponent } from &#x27;../../../../shared/components/glass-card/glass-card.component&#x27;;
+import { GlassButtonComponent } from &#x27;../../../../shared/components/glass-button/glass-button.component&#x27;;
+import { GlassInputComponent } from &#x27;../../../../shared/components/glass-input/glass-input.component&#x27;;
+import { BadgeComponent, BadgeVariant } from &#x27;../../../../shared/components/badge/badge.component&#x27;;
+import { AlertComponent } from &#x27;../../../../shared/components/alert/alert.component&#x27;;
+import { AvatarComponent } from &#x27;../../../../shared/components/avatar/avatar.component&#x27;;
+import { SwitchComponent } from &#x27;../../../../shared/components/switch/switch.component&#x27;;
+import { CheckboxComponent } from &#x27;../../../../shared/components/checkbox/checkbox.component&#x27;;
+import { RadioComponent } from &#x27;../../../../shared/components/radio/radio.component&#x27;;
+import { ThemeSwitcherComponent } from &#x27;../../../../shared/components/theme-switcher/theme-switcher.component&#x27;;
+import { ProgressBarComponent, ProgressBarConfig } from &#x27;../../../../shared/components/progress-bar/progress-bar.component&#x27;;
+import { RatingComponent, RatingConfig } from &#x27;../../../../shared/components/rating/rating.component&#x27;;
+
+@Component({
+  selector: &#x27;app-component-showcase&#x27;,
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    GlassCardComponent,
+    GlassButtonComponent,
+    GlassInputComponent,
+    BadgeComponent,
+    AlertComponent,
+    AvatarComponent,
+    SwitchComponent,
+    CheckboxComponent,
+    RadioComponent,
+    ThemeSwitcherComponent,
+    ProgressBarComponent,
+    RatingComponent
+  ],
+  templateUrl: &#x27;./component-showcase.component.html&#x27;,
+  styleUrls: [&#x27;./component-showcase.component.scss&#x27;]
+})
+export class ComponentShowcaseComponent {
+  // Inputs
+  inputText &#x3D; signal(&#x27;&#x27;);
+  inputPassword &#x3D; signal(&#x27;&#x27;);
+  inputSearch &#x3D; signal(&#x27;&#x27;);
+  inputNumber &#x3D; signal(0);
+
+  // Toggles
+  switchValue &#x3D; signal(false);
+  checkboxValue &#x3D; signal(false);
+  radioValue &#x3D; signal(&#x27;option1&#x27;);
+
+  // Rating
+  ratingValue &#x3D; signal(3.5);
+
+  // Button Variants - Aligned with GlassButtonComponent definition
+  buttonVariants: (&#x27;primary&#x27; | &#x27;secondary&#x27; | &#x27;danger&#x27;)[] &#x3D; [&#x27;primary&#x27;, &#x27;secondary&#x27;, &#x27;danger&#x27;];
+  
+  // Button Sizes - Aligned with GlassButtonComponent definition
+  buttonSizes: (&#x27;sm&#x27; | &#x27;md&#x27; | &#x27;lg&#x27;)[] &#x3D; [&#x27;sm&#x27;, &#x27;md&#x27;, &#x27;lg&#x27;];
+
+  // Colors for Badges - Aligned with BadgeComponent definition
+  badgeVariants: BadgeVariant[] &#x3D; [&#x27;default&#x27;, &#x27;primary&#x27;, &#x27;success&#x27;, &#x27;warning&#x27;, &#x27;danger&#x27;, &#x27;info&#x27;, &#x27;secondary&#x27;];
+
+  // Progress Bar Config
+  progressConfig1: Partial&lt;ProgressBarConfig&gt; &#x3D; {
+    showPercentage: true,
+    color: &#x27;primary&#x27;
+  };
+
+  progressConfig2: Partial&lt;ProgressBarConfig&gt; &#x3D; {
+    striped: true,
+    animated: true,
+    color: &#x27;success&#x27;
+  };
+
+  // Rating Config
+  ratingConfig: RatingConfig &#x3D; {
+    max: 5,
+    readOnly: false,
+    showText: true,
+    showCancel: false, // Changed from true to false for cleaner demo
+    cancelText: &#x27;Clear&#x27;,
+    clearable: true,
+    theme: &#x27;stars&#x27;,
+    size: &#x27;medium&#x27;,
+    color: &#x27;#fbbf24&#x27;,
+    emptyColor: &#x27;#d1d5db&#x27;,
+    textPosition: &#x27;right&#x27;,
+    animation: true,
+    animationDuration: 300
+  };
+
+  copyCode(code: string) {
+    navigator.clipboard.writeText(code);
+    // Could add toast notification here
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;p-6 space-y-8 animate-fade-in pb-20&quot;&gt;
+  &lt;div class&#x3D;&quot;flex justify-between items-center&quot;&gt;
+    &lt;div&gt;
+      &lt;h1 class&#x3D;&quot;text-3xl font-bold text-slate-800 dark:text-white mb-2&quot;&gt;Component Showcase (UI Kit)&lt;/h1&gt;
+      &lt;p class&#x3D;&quot;text-slate-500 dark:text-slate-400&quot;&gt;
+        A collection of reusable UI components available in the design system.
+      &lt;/p&gt;
+    &lt;/div&gt;
+    &lt;app-theme-switcher&gt;&lt;/app-theme-switcher&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Buttons Section --&gt;
+  &lt;section&gt;
+    &lt;h2 class&#x3D;&quot;text-xl font-semibold text-slate-800 dark:text-white mb-4 flex items-center gap-2&quot;&gt;
+      &lt;span class&#x3D;&quot;text-2xl&quot;&gt;🔘&lt;/span&gt; Buttons
+    &lt;/h2&gt;
+    &lt;div class&#x3D;&quot;grid grid-cols-1 lg:grid-cols-2 gap-6&quot;&gt;
+      
+      &lt;!-- Variants --&gt;
+      &lt;app-glass-card&gt;
+        &lt;h3 class&#x3D;&quot;text-lg font-medium text-slate-700 dark:text-slate-200 mb-4&quot;&gt;Variants&lt;/h3&gt;
+        &lt;div class&#x3D;&quot;flex flex-wrap gap-3&quot;&gt;
+          &lt;app-glass-button *ngFor&#x3D;&quot;let variant of buttonVariants&quot; [variant]&#x3D;&quot;variant&quot;&gt;
+            {{ variant | titlecase }}
+          &lt;/app-glass-button&gt;
+        &lt;/div&gt;
+      &lt;/app-glass-card&gt;
+
+      &lt;!-- Sizes --&gt;
+      &lt;app-glass-card&gt;
+        &lt;h3 class&#x3D;&quot;text-lg font-medium text-slate-700 dark:text-slate-200 mb-4&quot;&gt;Sizes&lt;/h3&gt;
+        &lt;div class&#x3D;&quot;flex flex-wrap items-center gap-3&quot;&gt;
+          &lt;app-glass-button *ngFor&#x3D;&quot;let size of buttonSizes&quot; [size]&#x3D;&quot;size&quot; variant&#x3D;&quot;primary&quot;&gt;
+            Size {{ size | uppercase }}
+          &lt;/app-glass-button&gt;
+        &lt;/div&gt;
+      &lt;/app-glass-card&gt;
+
+      &lt;!-- States --&gt;
+      &lt;app-glass-card&gt;
+        &lt;h3 class&#x3D;&quot;text-lg font-medium text-slate-700 dark:text-slate-200 mb-4&quot;&gt;States&lt;/h3&gt;
+        &lt;div class&#x3D;&quot;flex flex-wrap gap-3&quot;&gt;
+          &lt;app-glass-button variant&#x3D;&quot;primary&quot;&gt;Normal&lt;/app-glass-button&gt;
+          &lt;app-glass-button variant&#x3D;&quot;primary&quot; [loading]&#x3D;&quot;true&quot;&gt;Loading&lt;/app-glass-button&gt;
+          &lt;app-glass-button variant&#x3D;&quot;primary&quot; [disabled]&#x3D;&quot;true&quot;&gt;Disabled&lt;/app-glass-button&gt;
+          &lt;!-- Note: Icon support in GlassButton depends on content projection or internal logic which might not be fully standard icon input in all versions, checking code it doesn&#x27;t have icon input but uses content projection often or sometimes has hidden logic. The provided code didn&#x27;t show an icon input, so using content projection with text --&gt;
+          &lt;app-glass-button variant&#x3D;&quot;primary&quot;&gt;With Icon 🔍&lt;/app-glass-button&gt;
+        &lt;/div&gt;
+      &lt;/app-glass-card&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- Form Inputs Section --&gt;
+  &lt;section&gt;
+    &lt;h2 class&#x3D;&quot;text-xl font-semibold text-slate-800 dark:text-white mb-4 flex items-center gap-2&quot;&gt;
+      &lt;span class&#x3D;&quot;text-2xl&quot;&gt;📝&lt;/span&gt; Inputs &amp; Controls
+    &lt;/h2&gt;
+    &lt;div class&#x3D;&quot;grid grid-cols-1 lg:grid-cols-2 gap-6&quot;&gt;
+      
+      &lt;!-- Text Inputs --&gt;
+      &lt;app-glass-card&gt;
+        &lt;h3 class&#x3D;&quot;text-lg font-medium text-slate-700 dark:text-slate-200 mb-4&quot;&gt;Text Fields&lt;/h3&gt;
+        &lt;div class&#x3D;&quot;space-y-4 max-w-md&quot;&gt;
+          &lt;app-glass-input label&#x3D;&quot;Text Input&quot; placeholder&#x3D;&quot;Type something...&quot; [(ngModel)]&#x3D;&quot;inputText&quot;&gt;&lt;/app-glass-input&gt;
+          &lt;app-glass-input label&#x3D;&quot;Password&quot; type&#x3D;&quot;password&quot; placeholder&#x3D;&quot;Enter password&quot; [(ngModel)]&#x3D;&quot;inputPassword&quot;&gt;&lt;/app-glass-input&gt;
+          &lt;!-- GlassInput doesn&#x27;t have icon input, purely text/password usually --&gt;
+          &lt;app-glass-input label&#x3D;&quot;Standard Input&quot; placeholder&#x3D;&quot;Standard...&quot; [(ngModel)]&#x3D;&quot;inputSearch&quot;&gt;&lt;/app-glass-input&gt;
+          &lt;app-glass-input label&#x3D;&quot;Error State&quot; error&#x3D;&quot;This field is required&quot;&gt;&lt;/app-glass-input&gt;
+        &lt;/div&gt;
+      &lt;/app-glass-card&gt;
+
+      &lt;!-- Selection Controls --&gt;
+      &lt;app-glass-card&gt;
+        &lt;h3 class&#x3D;&quot;text-lg font-medium text-slate-700 dark:text-slate-200 mb-4&quot;&gt;Toggles &amp; Checks&lt;/h3&gt;
+        &lt;div class&#x3D;&quot;space-y-6&quot;&gt;
+          &lt;div class&#x3D;&quot;flex items-center gap-4&quot;&gt;
+            &lt;app-switch label&#x3D;&quot;Toggle Switch&quot; [(ngModel)]&#x3D;&quot;switchValue&quot;&gt;&lt;/app-switch&gt;
+            &lt;span class&#x3D;&quot;text-sm text-slate-500&quot;&gt;Value: {{ switchValue() }}&lt;/span&gt;
+          &lt;/div&gt;
+          
+          &lt;div class&#x3D;&quot;flex items-center gap-4&quot;&gt;
+            &lt;app-checkbox label&#x3D;&quot;Checkbox&quot; [(ngModel)]&#x3D;&quot;checkboxValue&quot;&gt;&lt;/app-checkbox&gt;
+            &lt;span class&#x3D;&quot;text-sm text-slate-500&quot;&gt;Value: {{ checkboxValue() }}&lt;/span&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;space-y-2&quot;&gt;
+            &lt;p class&#x3D;&quot;text-sm font-medium text-slate-700 dark:text-slate-300&quot;&gt;Radio Group&lt;/p&gt;
+            &lt;div class&#x3D;&quot;flex gap-4&quot;&gt;
+              &lt;app-radio name&#x3D;&quot;demo-radio&quot; value&#x3D;&quot;option1&quot; label&#x3D;&quot;Option 1&quot; [(ngModel)]&#x3D;&quot;radioValue&quot;&gt;&lt;/app-radio&gt;
+              &lt;app-radio name&#x3D;&quot;demo-radio&quot; value&#x3D;&quot;option2&quot; label&#x3D;&quot;Option 2&quot; [(ngModel)]&#x3D;&quot;radioValue&quot;&gt;&lt;/app-radio&gt;
+            &lt;/div&gt;
+            &lt;span class&#x3D;&quot;text-sm text-slate-500&quot;&gt;Selected: {{ radioValue() }}&lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/app-glass-card&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- Feedback &amp; Status Section --&gt;
+  &lt;section&gt;
+    &lt;h2 class&#x3D;&quot;text-xl font-semibold text-slate-800 dark:text-white mb-4 flex items-center gap-2&quot;&gt;
+      &lt;span class&#x3D;&quot;text-2xl&quot;&gt;🔔&lt;/span&gt; Feedback &amp; Status
+    &lt;/h2&gt;
+    &lt;div class&#x3D;&quot;grid grid-cols-1 gap-6&quot;&gt;
+      
+      &lt;!-- Badges --&gt;
+      &lt;app-glass-card&gt;
+        &lt;h3 class&#x3D;&quot;text-lg font-medium text-slate-700 dark:text-slate-200 mb-4&quot;&gt;Badges&lt;/h3&gt;
+        &lt;div class&#x3D;&quot;flex flex-wrap gap-3&quot;&gt;
+          &lt;app-badge *ngFor&#x3D;&quot;let variant of badgeVariants&quot; [variant]&#x3D;&quot;variant&quot; [text]&#x3D;&quot;variant | titlecase&quot;&gt;
+          &lt;/app-badge&gt;
+          &lt;app-badge variant&#x3D;&quot;primary&quot; shape&#x3D;&quot;pill&quot; text&#x3D;&quot;Pill Shape&quot;&gt;&lt;/app-badge&gt;
+          &lt;app-badge variant&#x3D;&quot;danger&quot; icon&#x3D;&quot;warning&quot; text&#x3D;&quot;With Icon&quot;&gt;&lt;/app-badge&gt;
+        &lt;/div&gt;
+      &lt;/app-glass-card&gt;
+
+      &lt;!-- Alerts --&gt;
+      &lt;app-glass-card&gt;
+        &lt;h3 class&#x3D;&quot;text-lg font-medium text-slate-700 dark:text-slate-200 mb-4&quot;&gt;Alerts&lt;/h3&gt;
+        &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-2 gap-4&quot;&gt;
+          &lt;app-alert variant&#x3D;&quot;info&quot; title&#x3D;&quot;Information&quot;&gt;This is an info alert message.&lt;/app-alert&gt;
+          &lt;app-alert variant&#x3D;&quot;success&quot; title&#x3D;&quot;Success&quot;&gt;Operation completed successfully!&lt;/app-alert&gt;
+          &lt;app-alert variant&#x3D;&quot;warning&quot; title&#x3D;&quot;Warning&quot;&gt;Please check your inputs carefully.&lt;/app-alert&gt;
+          &lt;app-alert variant&#x3D;&quot;danger&quot; title&#x3D;&quot;Error&quot;&gt;Something went wrong. Please try again.&lt;/app-alert&gt;
+        &lt;/div&gt;
+      &lt;/app-glass-card&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- Data Display Section --&gt;
+  &lt;section&gt;
+    &lt;h2 class&#x3D;&quot;text-xl font-semibold text-slate-800 dark:text-white mb-4 flex items-center gap-2&quot;&gt;
+      &lt;span class&#x3D;&quot;text-2xl&quot;&gt;📊&lt;/span&gt; Data Display
+    &lt;/h2&gt;
+    &lt;div class&#x3D;&quot;grid grid-cols-1 lg:grid-cols-2 gap-6&quot;&gt;
+      
+      &lt;!-- Avatars --&gt;
+      &lt;app-glass-card&gt;
+        &lt;h3 class&#x3D;&quot;text-lg font-medium text-slate-700 dark:text-slate-200 mb-4&quot;&gt;Avatars&lt;/h3&gt;
+        &lt;div class&#x3D;&quot;flex flex-wrap items-center gap-4&quot;&gt;
+          &lt;app-avatar size&#x3D;&quot;sm&quot; name&#x3D;&quot;User Small&quot;&gt;&lt;/app-avatar&gt;
+          &lt;app-avatar size&#x3D;&quot;md&quot; name&#x3D;&quot;User Medium&quot;&gt;&lt;/app-avatar&gt;
+          &lt;app-avatar size&#x3D;&quot;lg&quot; name&#x3D;&quot;User Large&quot;&gt;&lt;/app-avatar&gt;
+          &lt;app-avatar size&#x3D;&quot;xl&quot; name&#x3D;&quot;User XL&quot;&gt;&lt;/app-avatar&gt;
+          &lt;app-avatar size&#x3D;&quot;md&quot; name&#x3D;&quot;Online User&quot; status&#x3D;&quot;online&quot;&gt;&lt;/app-avatar&gt;
+        &lt;/div&gt;
+      &lt;/app-glass-card&gt;
+
+      &lt;!-- Progress &amp; Rating --&gt;
+      &lt;app-glass-card&gt;
+        &lt;h3 class&#x3D;&quot;text-lg font-medium text-slate-700 dark:text-slate-200 mb-4&quot;&gt;Progress &amp; Rating&lt;/h3&gt;
+        &lt;div class&#x3D;&quot;space-y-6&quot;&gt;
+          &lt;div class&#x3D;&quot;space-y-2&quot;&gt;
+            &lt;p class&#x3D;&quot;text-sm text-slate-600 dark:text-slate-400&quot;&gt;Progress Bar&lt;/p&gt;
+            &lt;app-progress-bar [value]&#x3D;&quot;75&quot; [config]&#x3D;&quot;progressConfig1&quot;&gt;&lt;/app-progress-bar&gt;
+            &lt;app-progress-bar [value]&#x3D;&quot;40&quot; [config]&#x3D;&quot;progressConfig2&quot;&gt;&lt;/app-progress-bar&gt;
+          &lt;/div&gt;
+          
+          &lt;div class&#x3D;&quot;space-y-2&quot;&gt;
+            &lt;p class&#x3D;&quot;text-sm text-slate-600 dark:text-slate-400&quot;&gt;Star Rating&lt;/p&gt;
+            &lt;app-rating [(ngModel)]&#x3D;&quot;ratingValue&quot; [config]&#x3D;&quot;ratingConfig&quot;&gt;&lt;/app-rating&gt;
+            &lt;p class&#x3D;&quot;text-xs text-slate-500&quot;&gt;Value: {{ ratingValue() }}&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/app-glass-card&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./component-showcase.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">:host {
+  display: block;
+  min-height: 100vh;
+}
+
+/* Add any specific component overrides here if needed */
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="p-6 space-y-8 animate-fade-in pb-20">  <div class="flex justify-between items-center">    <div>      <h1 class="text-3xl font-bold text-slate-800 dark:text-white mb-2">Component Showcase (UI Kit)</h1>      <p class="text-slate-500 dark:text-slate-400">        A collection of reusable UI components available in the design system.      </p>    </div>    <app-theme-switcher></app-theme-switcher>  </div>  <!-- Buttons Section -->  <section>    <h2 class="text-xl font-semibold text-slate-800 dark:text-white mb-4 flex items-center gap-2">      <span class="text-2xl">🔘</span> Buttons    </h2>    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">            <!-- Variants -->      <app-glass-card>        <h3 class="text-lg font-medium text-slate-700 dark:text-slate-200 mb-4">Variants</h3>        <div class="flex flex-wrap gap-3">          <app-glass-button *ngFor="let variant of buttonVariants" [variant]="variant">            {{ variant | titlecase }}          </app-glass-button>        </div>      </app-glass-card>      <!-- Sizes -->      <app-glass-card>        <h3 class="text-lg font-medium text-slate-700 dark:text-slate-200 mb-4">Sizes</h3>        <div class="flex flex-wrap items-center gap-3">          <app-glass-button *ngFor="let size of buttonSizes" [size]="size" variant="primary">            Size {{ size | uppercase }}          </app-glass-button>        </div>      </app-glass-card>      <!-- States -->      <app-glass-card>        <h3 class="text-lg font-medium text-slate-700 dark:text-slate-200 mb-4">States</h3>        <div class="flex flex-wrap gap-3">          <app-glass-button variant="primary">Normal</app-glass-button>          <app-glass-button variant="primary" [loading]="true">Loading</app-glass-button>          <app-glass-button variant="primary" [disabled]="true">Disabled</app-glass-button>          <!-- Note: Icon support in GlassButton depends on content projection or internal logic which might not be fully standard icon input in all versions, checking code it doesn\'t have icon input but uses content projection often or sometimes has hidden logic. The provided code didn\'t show an icon input, so using content projection with text -->          <app-glass-button variant="primary">With Icon 🔍</app-glass-button>        </div>      </app-glass-card>    </div>  </section>  <!-- Form Inputs Section -->  <section>    <h2 class="text-xl font-semibold text-slate-800 dark:text-white mb-4 flex items-center gap-2">      <span class="text-2xl">📝</span> Inputs & Controls    </h2>    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">            <!-- Text Inputs -->      <app-glass-card>        <h3 class="text-lg font-medium text-slate-700 dark:text-slate-200 mb-4">Text Fields</h3>        <div class="space-y-4 max-w-md">          <app-glass-input label="Text Input" placeholder="Type something..." [(ngModel)]="inputText"></app-glass-input>          <app-glass-input label="Password" type="password" placeholder="Enter password" [(ngModel)]="inputPassword"></app-glass-input>          <!-- GlassInput doesn\'t have icon input, purely text/password usually -->          <app-glass-input label="Standard Input" placeholder="Standard..." [(ngModel)]="inputSearch"></app-glass-input>          <app-glass-input label="Error State" error="This field is required"></app-glass-input>        </div>      </app-glass-card>      <!-- Selection Controls -->      <app-glass-card>        <h3 class="text-lg font-medium text-slate-700 dark:text-slate-200 mb-4">Toggles & Checks</h3>        <div class="space-y-6">          <div class="flex items-center gap-4">            <app-switch label="Toggle Switch" [(ngModel)]="switchValue"></app-switch>            <span class="text-sm text-slate-500">Value: {{ switchValue() }}</span>          </div>                    <div class="flex items-center gap-4">            <app-checkbox label="Checkbox" [(ngModel)]="checkboxValue"></app-checkbox>            <span class="text-sm text-slate-500">Value: {{ checkboxValue() }}</span>          </div>          <div class="space-y-2">            <p class="text-sm font-medium text-slate-700 dark:text-slate-300">Radio Group</p>            <div class="flex gap-4">              <app-radio name="demo-radio" value="option1" label="Option 1" [(ngModel)]="radioValue"></app-radio>              <app-radio name="demo-radio" value="option2" label="Option 2" [(ngModel)]="radioValue"></app-radio>            </div>            <span class="text-sm text-slate-500">Selected: {{ radioValue() }}</span>          </div>        </div>      </app-glass-card>    </div>  </section>  <!-- Feedback & Status Section -->  <section>    <h2 class="text-xl font-semibold text-slate-800 dark:text-white mb-4 flex items-center gap-2">      <span class="text-2xl">🔔</span> Feedback & Status    </h2>    <div class="grid grid-cols-1 gap-6">            <!-- Badges -->      <app-glass-card>        <h3 class="text-lg font-medium text-slate-700 dark:text-slate-200 mb-4">Badges</h3>        <div class="flex flex-wrap gap-3">          <app-badge *ngFor="let variant of badgeVariants" [variant]="variant" [text]="variant | titlecase">          </app-badge>          <app-badge variant="primary" shape="pill" text="Pill Shape"></app-badge>          <app-badge variant="danger" icon="warning" text="With Icon"></app-badge>        </div>      </app-glass-card>      <!-- Alerts -->      <app-glass-card>        <h3 class="text-lg font-medium text-slate-700 dark:text-slate-200 mb-4">Alerts</h3>        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">          <app-alert variant="info" title="Information">This is an info alert message.</app-alert>          <app-alert variant="success" title="Success">Operation completed successfully!</app-alert>          <app-alert variant="warning" title="Warning">Please check your inputs carefully.</app-alert>          <app-alert variant="danger" title="Error">Something went wrong. Please try again.</app-alert>        </div>      </app-glass-card>    </div>  </section>  <!-- Data Display Section -->  <section>    <h2 class="text-xl font-semibold text-slate-800 dark:text-white mb-4 flex items-center gap-2">      <span class="text-2xl">📊</span> Data Display    </h2>    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">            <!-- Avatars -->      <app-glass-card>        <h3 class="text-lg font-medium text-slate-700 dark:text-slate-200 mb-4">Avatars</h3>        <div class="flex flex-wrap items-center gap-4">          <app-avatar size="sm" name="User Small"></app-avatar>          <app-avatar size="md" name="User Medium"></app-avatar>          <app-avatar size="lg" name="User Large"></app-avatar>          <app-avatar size="xl" name="User XL"></app-avatar>          <app-avatar size="md" name="Online User" status="online"></app-avatar>        </div>      </app-glass-card>      <!-- Progress & Rating -->      <app-glass-card>        <h3 class="text-lg font-medium text-slate-700 dark:text-slate-200 mb-4">Progress & Rating</h3>        <div class="space-y-6">          <div class="space-y-2">            <p class="text-sm text-slate-600 dark:text-slate-400">Progress Bar</p>            <app-progress-bar [value]="75" [config]="progressConfig1"></app-progress-bar>            <app-progress-bar [value]="40" [config]="progressConfig2"></app-progress-bar>          </div>                    <div class="space-y-2">            <p class="text-sm text-slate-600 dark:text-slate-400">Star Rating</p>            <app-rating [(ngModel)]="ratingValue" [config]="ratingConfig"></app-rating>            <p class="text-xs text-slate-500">Value: {{ ratingValue() }}</p>          </div>        </div>      </app-glass-card>    </div>  </section></div></div>'
+    var COMPONENTS = [{'name': 'AccessControlComponent', 'selector': 'app-access-control'},{'name': 'AccessGroupsComponent', 'selector': 'app-access-groups'},{'name': 'AccessibilityDashboardComponent', 'selector': 'app-accessibility-dashboard'},{'name': 'AccessLogsComponent', 'selector': 'app-access-logs'},{'name': 'AccessSchedulesComponent', 'selector': 'app-access-schedules'},{'name': 'AccordionComponent', 'selector': 'app-accordion'},{'name': 'AccordionDemoComponent', 'selector': 'app-accordion-demo'},{'name': 'AdvancedDataTableComponent', 'selector': 'app-advanced-data-table'},{'name': 'AdvancedDataTableDemoComponent', 'selector': 'app-advanced-data-table-demo'},{'name': 'AdvancedFeaturesDashboardComponent', 'selector': 'app-advanced-features-dashboard'},{'name': 'AdvancedFormsComponent', 'selector': 'app-advanced-forms'},{'name': 'AdvancedRichTextComponent', 'selector': 'app-advanced-rich-text'},{'name': 'AdvancedUiDemoComponent', 'selector': 'app-advanced-ui-demo'},{'name': 'AIModelsComponent', 'selector': 'app-ai-models'},{'name': 'AlertComponent', 'selector': 'app-alert'},{'name': 'AlertHistoryComponent', 'selector': 'app-alert-history'},{'name': 'AlertsComponent', 'selector': 'app-alerts'},{'name': 'ApexChartComponent', 'selector': 'app-apex-chart'},{'name': 'App', 'selector': 'app-root'},{'name': 'AttendanceComponent', 'selector': 'app-attendance'},{'name': 'AuditLogsComponent', 'selector': 'app-audit-logs'},{'name': 'AvatarComponent', 'selector': 'app-avatar'},{'name': 'BackupRestoreComponent', 'selector': 'app-backup-restore'},{'name': 'BadgeComponent', 'selector': 'app-badge'},{'name': 'BaseComponent', 'selector': ''},{'name': 'BiometricDataComponent', 'selector': 'app-biometric-data'},{'name': 'BreadcrumbComponent', 'selector': 'app-breadcrumb'},{'name': 'CalendarComponent', 'selector': 'app-calendar'},{'name': 'CalendarDemoComponent', 'selector': 'app-calendar-demo'},{'name': 'ChartComponent', 'selector': 'app-chart'},{'name': 'CheckboxComponent', 'selector': 'app-checkbox'},{'name': 'ColorPickerComponent', 'selector': 'app-color-picker'},{'name': 'ComingSoonComponent', 'selector': 'app-coming-soon'},{'name': 'CompaniesComponent', 'selector': 'app-companies'},{'name': 'CompanyDocumentsComponent', 'selector': 'app-company-documents'},{'name': 'CompanyHolidaysComponent', 'selector': 'app-company-holidays'},{'name': 'ComponentShowcaseComponent', 'selector': 'app-component-showcase'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DataTableComponent', 'selector': 'app-data-table'},{'name': 'DateTimePickerComponent', 'selector': 'app-date-time-picker'},{'name': 'DepartmentsComponent', 'selector': 'app-departments'},{'name': 'DevicesComponent', 'selector': 'app-devices'},{'name': 'DividerComponent', 'selector': 'app-divider'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DoorsComponent', 'selector': 'app-doors'},{'name': 'DraggableCardsComponent', 'selector': 'app-draggable-cards'},{'name': 'DraggableCardsDemoComponent', 'selector': 'app-draggable-cards-demo'},{'name': 'EChartsChartComponent', 'selector': 'app-echarts-chart'},{'name': 'EChartsDemoComponent', 'selector': 'app-echarts-demo'},{'name': 'EmployeesComponent', 'selector': 'app-employees'},{'name': 'EmployeesNewComponent', 'selector': 'app-employees-new'},{'name': 'EmptyStateComponent', 'selector': 'app-empty-state'},{'name': 'Error401Component', 'selector': 'app-error-401'},{'name': 'Error404Component', 'selector': 'app-error-404'},{'name': 'Error500Component', 'selector': 'app-error-500'},{'name': 'ErrorMessageComponent', 'selector': 'app-error-message'},{'name': 'ErrorToastComponent', 'selector': 'app-error-toast'},{'name': 'EventAnalyticsComponent', 'selector': 'app-event-analytics'},{'name': 'EventCheckinHistoryComponent', 'selector': 'app-event-checkin-history'},{'name': 'EventEmailConfirmationComponent', 'selector': 'app-event-email-confirmation'},{'name': 'EventKioskConfigComponent', 'selector': 'app-event-kiosk-config'},{'name': 'EventRegistrationComponent', 'selector': 'app-event-registration'},{'name': 'EventRegistrationFieldsComponent', 'selector': 'app-event-registration-fields'},{'name': 'EventsComponent', 'selector': 'app-events'},{'name': 'FaceRecognitionComponent', 'selector': 'app-face-recognition'},{'name': 'FaceRecognitionDemoComponent', 'selector': 'app-face-recognition-demo'},{'name': 'FaceRecognitionLiveComponent', 'selector': 'app-face-recognition-live'},{'name': 'FaceRecognitionTestComponent', 'selector': 'app-face-recognition-test'},{'name': 'FaqComponent', 'selector': 'app-faq'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'FilterSectionComponent', 'selector': 'app-filter-section'},{'name': 'ForgotPasswordComponent', 'selector': 'app-forgot-password'},{'name': 'FormFieldComponent', 'selector': 'app-form-field'},{'name': 'GalleryComponent', 'selector': 'app-gallery'},{'name': 'GalleryDemoComponent', 'selector': 'app-gallery-demo'},{'name': 'GlassButtonComponent', 'selector': 'app-glass-button'},{'name': 'GlassCardComponent', 'selector': 'app-glass-card'},{'name': 'GlassInputComponent', 'selector': 'app-glass-input'},{'name': 'GroupFaceRecognitionComponent', 'selector': 'app-group-face-recognition'},{'name': 'GuestsComponent', 'selector': 'app-guests'},{'name': 'HardwareStatusDashboardComponent', 'selector': 'app-hardware-status-dashboard'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'HeatmapAnalyticsComponent', 'selector': 'app-heatmap-analytics'},{'name': 'HelpCenter', 'selector': 'app-help-center'},{'name': 'HelpCenterComponent', 'selector': 'app-help-center'},{'name': 'HrDashboardComponent', 'selector': 'app-hr-dashboard'},{'name': 'IconComponent', 'selector': 'app-icon'},{'name': 'IncidentReportsComponent', 'selector': 'app-incident-reports'},{'name': 'KioskViewComponent', 'selector': 'app-kiosk-view'},{'name': 'LandingComponent', 'selector': 'app-landing'},{'name': 'LeafletMapComponent', 'selector': 'app-leaflet-map'},{'name': 'LeavesComponent', 'selector': 'app-leaves'},{'name': 'LicenseManagementComponent', 'selector': 'app-license-management'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoadingStateComponent', 'selector': 'app-loading-state'},{'name': 'LocationsComponent', 'selector': 'app-locations'},{'name': 'LockScreenComponent', 'selector': 'app-lock-screen'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MaintenanceComponent', 'selector': 'app-maintenance'},{'name': 'MapComponent', 'selector': 'app-map'},{'name': 'MapDemoComponent', 'selector': 'app-map-demo'},{'name': 'MaterialButtonComponent', 'selector': 'app-material-button'},{'name': 'MaterialCardComponent', 'selector': 'app-material-card'},{'name': 'MaterialDialogComponent', 'selector': 'app-material-dialog'},{'name': 'MaterialInputComponent', 'selector': 'app-material-input'},{'name': 'MaterialTableComponent', 'selector': 'app-material-table'},{'name': 'MfaSetupComponent', 'selector': 'app-mfa-setup'},{'name': 'MobileCameraComponent', 'selector': 'app-mobile-camera'},{'name': 'MobileDemoComponent', 'selector': 'app-mobile-demo'},{'name': 'ModalComponent', 'selector': 'app-modal'},{'name': 'ModalFormComponent', 'selector': 'app-modal-form'},{'name': 'ModuleSubscriptionComponent', 'selector': 'app-module-subscription'},{'name': 'MonitoringComponent', 'selector': 'app-monitoring'},{'name': 'NotificationCenterComponent', 'selector': 'app-notification-center'},{'name': 'NotificationDemoComponent', 'selector': 'app-notification-demo'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'NotificationSettingsComponent', 'selector': 'app-notification-settings'},{'name': 'OffcanvasComponent', 'selector': 'app-offcanvas'},{'name': 'OffcanvasDemoComponent', 'selector': 'app-offcanvas-demo'},{'name': 'OvertimeRequestsComponent', 'selector': 'app-overtime-requests'},{'name': 'PageLayoutComponent', 'selector': 'app-page-layout'},{'name': 'PaginationComponent', 'selector': 'app-pagination'},{'name': 'ParkingBlacklistComponent', 'selector': 'app-parking-blacklist'},{'name': 'ParkingDashboardComponent', 'selector': 'app-parking-dashboard'},{'name': 'ParkingEntryComponent', 'selector': 'app-parking-entry'},{'name': 'ParkingExitComponent', 'selector': 'app-parking-exit'},{'name': 'ParkingLogsComponent', 'selector': 'app-parking-logs'},{'name': 'ParkingReservationComponent', 'selector': 'app-parking-reservation'},{'name': 'ParkingRulesComponent', 'selector': 'app-parking-rules'},{'name': 'ParkingSpotsComponent', 'selector': 'app-parking-spots'},{'name': 'ParkingStatisticsComponent', 'selector': 'app-parking-statistics'},{'name': 'PayrollExportComponent', 'selector': 'app-payroll-export'},{'name': 'PerformanceDashboardComponent', 'selector': 'app-performance-dashboard'},{'name': 'PopoverComponent', 'selector': 'app-popover'},{'name': 'PortalLayoutComponent', 'selector': 'app-portal-layout'},{'name': 'PositionsComponent', 'selector': 'app-positions'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'ProgressBarComponent', 'selector': 'app-progress-bar'},{'name': 'PublicVerificationComponent', 'selector': 'app-public-verification'},{'name': 'QRCodesComponent', 'selector': 'app-qr-codes'},{'name': 'RadioComponent', 'selector': 'app-radio'},{'name': 'RangeSliderComponent', 'selector': 'app-range-slider'},{'name': 'RatingComponent', 'selector': 'app-rating'},{'name': 'RatingDemoComponent', 'selector': 'app-rating-demo'},{'name': 'RbacComponent', 'selector': 'app-rbac'},{'name': 'RecognitionHistoryComponent', 'selector': 'app-recognition-history'},{'name': 'RegisterComponent', 'selector': 'app-register'},{'name': 'ReportsComponent', 'selector': 'app-reports'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'RFIDCardsComponent', 'selector': 'app-rfid-cards'},{'name': 'RichTextComponent', 'selector': 'app-rich-text'},{'name': 'RichTextEditorComponent', 'selector': 'app-rich-text-editor'},{'name': 'RichTextEditorDemoComponent', 'selector': 'app-rich-text-editor-demo'},{'name': 'SafetyDashboardComponent', 'selector': 'app-safety-dashboard'},{'name': 'SearchInputComponent', 'selector': 'app-search-input'},{'name': 'ShiftsComponent', 'selector': 'app-shifts'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SkeletonComponent', 'selector': 'app-skeleton'},{'name': 'StatisticsCardComponent', 'selector': 'app-statistics-card'},{'name': 'StatisticsGridComponent', 'selector': 'app-statistics-grid'},{'name': 'StepperComponent', 'selector': 'app-stepper'},{'name': 'StructureComponent', 'selector': 'app-structure'},{'name': 'SuperAdminAnnouncementsComponent', 'selector': 'app-super-admin-announcements'},{'name': 'SuperAdminDashboardComponent', 'selector': 'app-super-admin-dashboard'},{'name': 'SuperAdminLayoutComponent', 'selector': 'app-super-admin-layout'},{'name': 'SuperAdminReportsComponent', 'selector': 'app-super-admin-reports'},{'name': 'SurveillanceMapComponent', 'selector': 'app-surveillance-map'},{'name': 'SwiperGalleryComponent', 'selector': 'app-swiper-gallery'},{'name': 'SwiperGalleryDemoComponent', 'selector': 'app-swiper-gallery-demo'},{'name': 'SwitchComponent', 'selector': 'app-switch'},{'name': 'SystemSettingsComponent', 'selector': 'app-system-settings'},{'name': 'TabsComponent', 'selector': 'app-tabs'},{'name': 'TemplateManagementComponent', 'selector': 'app-template-management'},{'name': 'TestApiComponent', 'selector': 'app-test-api'},{'name': 'ThemeSwitcherComponent', 'selector': 'app-theme-switcher'},{'name': 'TimelineComponent', 'selector': 'app-timeline'},{'name': 'TimelineDemoComponent', 'selector': 'app-timeline-demo'},{'name': 'TimesheetsComponent', 'selector': 'app-timesheets'},{'name': 'TimestampComponent', 'selector': 'app-timestamp'},{'name': 'TimestampDemoComponent', 'selector': 'app-timestamp-demo'},{'name': 'TooltipComponent', 'selector': 'app-tooltip'},{'name': 'UsersComponent', 'selector': 'app-users'},{'name': 'ValidationDemoComponent', 'selector': 'app-validation-demo'},{'name': 'VehiclesComponent', 'selector': 'app-vehicles'},{'name': 'VideoAnalyticsComponent', 'selector': 'app-video-analytics'},{'name': 'VideoPlaybackComponent', 'selector': 'app-video-playback'},{'name': 'VisitorBadgesComponent', 'selector': 'app-visitor-badges'},{'name': 'VisitorBlacklistComponent', 'selector': 'app-visitor-blacklist'},{'name': 'VisitorDashboardComponent', 'selector': 'app-visitor-dashboard'},{'name': 'VisitorInvitationsComponent', 'selector': 'app-visitor-invitations'},{'name': 'VisitorParcelsComponent', 'selector': 'app-visitor-parcels'},{'name': 'VisitorReportsComponent', 'selector': 'app-visitor-reports'},{'name': 'VisitorsComponent', 'selector': 'app-visitors'},{'name': 'WatchlistComponent', 'selector': 'app-watchlist'},{'name': 'ZoneConfigComponent', 'selector': 'app-zone-config'}];
+    var DIRECTIVES = [{'name': 'HasPermissionDirective', 'selector': '[appHasPermission]'},{'name': 'ImageOptimizationDirective', 'selector': '[appImageOptimization]'}];
+    var ACTUAL_COMPONENT = {'name': 'ComponentShowcaseComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'ComponentShowcaseComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
