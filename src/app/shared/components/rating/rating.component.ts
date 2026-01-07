@@ -63,96 +63,120 @@ interface StarData {
   imports: [CommonModule, FormsModule],
   template: `
     <div class="rating-container" [class]="customClass">
-      <label *ngIf="label" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-        {{ label }}
-        <span *ngIf="required" class="text-error-500 ml-1">*</span>
-      </label>
+      @if (label) {
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          {{ label }}
+          @if (required) {
+            <span class="text-error-500 ml-1">*</span>
+          }
+        </label>
+      }
 
       <div class="rating-wrapper" [class]="getWrapperClass()" role="group" [attr.aria-label]="ariaLabel || label || 'Rating'">
         <!-- Rating Display -->
-        <div class="rating-display" *ngIf="!editable" role="img" [attr.aria-label]="getRatingAriaLabel()">
-          <div class="flex items-center space-x-2">
-            <div class="flex items-center" [attr.aria-hidden]="true">
-              <span *ngFor="let star of getStars(); trackBy: trackByStar"
-                    class="rating-star"
-                    [class.filled]="star.filled"
-                    [class.half]="star.half"
-                    [class.empty]="!star.filled && !star.half">
-                {{ getStarIcon() }}
-              </span>
+        @if (!editable) {
+          <div class="rating-display" role="img" [attr.aria-label]="getRatingAriaLabel()">
+            <div class="flex items-center space-x-2">
+              <div class="flex items-center" [attr.aria-hidden]="true">
+                @for (star of getStars(); track trackByStar($index, star)) {
+                  <span
+                        class="rating-star"
+                        [class.filled]="star.filled"
+                        [class.half]="star.half"
+                        [class.empty]="!star.filled && !star.half">
+                    {{ getStarIcon() }}
+                  </span>
+                }
+              </div>
+              @if (showValue) {
+                <span class="rating-value text-sm text-gray-600 dark:text-gray-400" [attr.aria-label]="'Rating: ' + value + ' out of ' + config.max">
+                  {{ value }}/{{ config.max }}
+                </span>
+              }
+              @if (showText && getRatingText()) {
+                <span class="rating-text text-sm text-gray-600 dark:text-gray-400">
+                  {{ getRatingText() }}
+                </span>
+              }
             </div>
-            <span *ngIf="showValue" class="rating-value text-sm text-gray-600 dark:text-gray-400" [attr.aria-label]="'Rating: ' + value + ' out of ' + config.max">
-              {{ value }}/{{ config.max }}
-            </span>
-            <span *ngIf="showText && getRatingText()" class="rating-text text-sm text-gray-600 dark:text-gray-400">
+          </div>
+        }
+
+        <!-- Custom Rating -->
+        @if (editable) {
+          <div class="custom-rating" role="radiogroup" [attr.aria-label]="ariaLabel || label || 'Rating'">
+            <div class="flex items-center space-x-1">
+              @for (star of getStars(); track trackByStar($index, star)) {
+                <button
+                  type="button"
+                  (click)="onStarClick(star.index)"
+                  (mouseenter)="onStarHover(star.index)"
+                  (mouseleave)="onStarLeave()"
+                  class="rating-star-button"
+                  [class.filled]="star.filled"
+                  [class.half]="star.half"
+                  [class.hover]="star.hover"
+                  [disabled]="disabled"
+                  [attr.aria-label]="'Rate ' + star.index + ' out of ' + config.max"
+                  [attr.aria-pressed]="star.filled ? 'true' : 'false'"
+                  [attr.aria-checked]="star.filled ? 'true' : 'false'"
+                  role="radio"
+                  [attr.tabindex]="disabled ? -1 : 0">
+                  {{ getStarIcon() }}
+                </button>
+              }
+              @if (config.clearable) {
+                <button
+                  type="button"
+                  (click)="onClear()"
+                  class="rating-clear-button"
+                  [disabled]="disabled"
+                  [attr.aria-label]="'Clear rating'">
+                  {{ config.cancelText }}
+                </button>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Rating Text -->
+        @if (showText && getRatingText()) {
+          <div class="rating-text-display mt-2">
+            <span class="text-sm text-gray-600 dark:text-gray-400">
               {{ getRatingText() }}
             </span>
           </div>
-        </div>
-
-        <!-- Custom Rating -->
-        <div class="custom-rating" *ngIf="editable" role="radiogroup" [attr.aria-label]="ariaLabel || label || 'Rating'">
-          <div class="flex items-center space-x-1">
-            <button
-              *ngFor="let star of getStars(); trackBy: trackByStar"
-              type="button"
-              (click)="onStarClick(star.index)"
-              (mouseenter)="onStarHover(star.index)"
-              (mouseleave)="onStarLeave()"
-              class="rating-star-button"
-              [class.filled]="star.filled"
-              [class.half]="star.half"
-              [class.hover]="star.hover"
-              [disabled]="disabled"
-              [attr.aria-label]="'Rate ' + star.index + ' out of ' + config.max"
-              [attr.aria-pressed]="star.filled ? 'true' : 'false'"
-              [attr.aria-checked]="star.filled ? 'true' : 'false'"
-              role="radio"
-              [attr.tabindex]="disabled ? -1 : 0">
-              {{ getStarIcon() }}
-            </button>
-            <button
-              *ngIf="config.clearable"
-              type="button"
-              (click)="onClear()"
-              class="rating-clear-button"
-              [disabled]="disabled"
-              [attr.aria-label]="'Clear rating'">
-              {{ config.cancelText }}
-            </button>
-          </div>
-        </div>
-
-        <!-- Rating Text -->
-        <div *ngIf="showText && getRatingText()" class="rating-text-display mt-2">
-          <span class="text-sm text-gray-600 dark:text-gray-400">
-            {{ getRatingText() }}
-          </span>
-        </div>
+        }
 
         <!-- Rating Statistics -->
-        <div *ngIf="showStats && stats" class="rating-stats mt-3">
-          <div class="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-400">
-            <span>Average: {{ stats.average | number:'1.1-1' }}</span>
-            <span>Total: {{ stats.total }}</span>
-            <span>Distribution:</span>
-            <div class="flex space-x-1" role="list" [attr.aria-label]="'Rating distribution'">
-              <span *ngFor="let dist of stats.distribution; trackBy: trackByDistribution"
-                    class="rating-distribution"
-                    [style.width.px]="dist.percentage * 50"
-                    role="listitem"
-                    [attr.aria-label]="'Rating ' + dist.rating + ': ' + dist.count + ' votes'">
-                {{ dist.rating }}
-              </span>
+        @if (showStats && stats) {
+          <div class="rating-stats mt-3">
+            <div class="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-400">
+              <span>Average: {{ stats.average | number:'1.1-1' }}</span>
+              <span>Total: {{ stats.total }}</span>
+              <span>Distribution:</span>
+              <div class="flex space-x-1" role="list" [attr.aria-label]="'Rating distribution'">
+                @for (dist of stats.distribution; track trackByDistribution($index, dist)) {
+                  <span
+                        class="rating-distribution"
+                        [style.width.px]="dist.percentage * 50"
+                        role="listitem"
+                        [attr.aria-label]="'Rating ' + dist.rating + ': ' + dist.count + ' votes'">
+                    {{ dist.rating }}
+                  </span>
+                }
+              </div>
             </div>
           </div>
-        </div>
+        }
       </div>
 
       <!-- Error Message -->
-      <div *ngIf="errorMessage" class="error-message text-red-500 text-sm mt-1">
-        {{ errorMessage }}
-      </div>
+      @if (errorMessage) {
+        <div class="error-message text-red-500 text-sm mt-1">
+          {{ errorMessage }}
+        </div>
+      }
     </div>
   `,
   styles: [`

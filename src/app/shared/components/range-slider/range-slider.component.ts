@@ -28,16 +28,22 @@ import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/f
   imports: [CommonModule, FormsModule],
   template: `
     <div class="range-slider-container" [class]="customClass || ''" role="group" [attr.aria-label]="ariaLabel || label || 'Range slider'">
-      <label *ngIf="label" [for]="sliderId" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-        {{ label }}
-        <span *ngIf="required" class="text-red-500 ml-1" [attr.aria-label]="'Required'">*</span>
-      </label>
+      @if (label) {
+        <label [for]="sliderId" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          {{ label }}
+          @if (required) {
+            <span class="text-red-500 ml-1" [attr.aria-label]="'Required'">*</span>
+          }
+        </label>
+      }
 
       <div class="range-slider-wrapper">
         <!-- Value Display -->
         <div class="value-display" role="status" [attr.aria-live]="'polite'" [attr.aria-atomic]="true">
           <span class="current-value" [attr.aria-label]="'Current value: ' + displayValue + (unit || '')">{{ displayValue }}</span>
-          <span *ngIf="unit" class="unit" [attr.aria-hidden]="true">{{ unit }}</span>
+          @if (unit) {
+            <span class="unit" [attr.aria-hidden]="true">{{ unit }}</span>
+          }
         </div>
 
         <!-- Range Slider -->
@@ -71,27 +77,31 @@ import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/f
         </div>
 
         <!-- Input Field (Optional) -->
-        <div *ngIf="showInput" class="input-field">
-          <input
-            type="number"
-            [min]="min"
-            [max]="max"
-            [step]="step"
-            [ngModel]="value"
-            (ngModelChange)="onValueChange($event)"
-            [disabled]="disabled"
-            class="number-input"
-            [class.error]="errorMessage"
-            [attr.aria-label]="'Enter value'"
-            [attr.aria-invalid]="errorMessage ? 'true' : null"
-            [attr.aria-describedby]="errorMessage ? errorId : null">
-        </div>
+        @if (showInput) {
+          <div class="input-field">
+            <input
+              type="number"
+              [min]="min"
+              [max]="max"
+              [step]="step"
+              [ngModel]="value"
+              (ngModelChange)="onValueChange($event)"
+              [disabled]="disabled"
+              class="number-input"
+              [class.error]="errorMessage"
+              [attr.aria-label]="'Enter value'"
+              [attr.aria-invalid]="errorMessage ? 'true' : null"
+              [attr.aria-describedby]="errorMessage ? errorId : null">
+          </div>
+        }
       </div>
 
       <!-- Error Message -->
-      <div *ngIf="errorMessage" [id]="errorId" class="error-message text-red-500 text-sm mt-1" role="alert" [attr.aria-live]="'polite'">
-        {{ errorMessage }}
-      </div>
+      @if (errorMessage) {
+        <div [id]="errorId" class="error-message text-red-500 text-sm mt-1" role="alert" [attr.aria-live]="'polite'">
+          {{ errorMessage }}
+        </div>
+      }
     </div>
   `,
   styles: [`

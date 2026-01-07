@@ -19,26 +19,29 @@
   </div>
 
   <!-- Tooltip Content -->
-  <div
-    *ngIf="isVisible && content"
-    #tooltipContent
-    [id]="'tooltip-' + tooltipId"
-    class="tooltip-content fixed z-[1000] max-w-[300px] px-3 py-3 rounded-xl text-sm leading-relaxed font-medium text-center break-words shadow-lg pointer-events-none opacity-0 scale-90 transition-all"
-    [ngClass]="getTooltipClasses()"
-    [class.opacity-100]="isVisible"
-    [class.scale-100]="isVisible"
-    [ngStyle]="getTooltipStyles()"
-    role="tooltip"
-    [attr.aria-hidden]="!isVisible"
-    [attr.aria-live]="mergedConfig.interactive ? 'polite' : 'off'">
+  @if (isVisible && content) {
+    <div
+      #tooltipContent
+      [id]="'tooltip-' + tooltipId"
+      class="tooltip-content fixed z-[1000] max-w-[300px] px-3 py-3 rounded-xl text-sm leading-relaxed font-medium text-center break-words shadow-lg pointer-events-none opacity-0 scale-90 transition-all"
+      [ngClass]="getTooltipClasses()"
+      [class.opacity-100]="isVisible"
+      [class.scale-100]="isVisible"
+      [ngStyle]="getTooltipStyles()"
+      role="tooltip"
+      [attr.aria-hidden]="!isVisible"
+      [attr.aria-live]="mergedConfig.interactive ? 'polite' : 'off'">
 
-    <!-- Tooltip Text -->
-    <div class="tooltip-text m-0 whitespace-pre-wrap">
-      {{ content }}
+      <!-- Tooltip Text -->
+      <div class="tooltip-text m-0 whitespace-pre-wrap">
+        {{ content }}
+      </div>
+
+      <!-- Tooltip Arrow -->
+      @if (mergedConfig.showArrow) {
+        <div class="tooltip-arrow absolute w-0 h-0 border-[6px] border-transparent" [ngClass]="'tooltip-arrow-' + actualPosition" [attr.aria-hidden]="true"></div>
+      }
     </div>
-
-    <!-- Tooltip Arrow -->
-    <div *ngIf="mergedConfig.showArrow" class="tooltip-arrow absolute w-0 h-0 border-[6px] border-transparent" [ngClass]="'tooltip-arrow-' + actualPosition" [attr.aria-hidden]="true"></div>
-  </div>
+  }
 </div>
 

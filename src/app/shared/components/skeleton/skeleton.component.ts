@@ -35,15 +35,16 @@ export interface SkeletonItem {
       [attr.aria-label]="ariaLabel || 'Loading content'"
       [attr.aria-busy]="true"
       [attr.aria-live]="ariaLive">
-      <div
-        *ngFor="let item of skeletonItems; trackBy: trackByItem"
-        class="skeleton-item"
-        [ngClass]="itemClass"
-        [style.width]="item.width"
-        [style.height]="item.height"
-        [style.margin]="item.margin"
-        [attr.aria-hidden]="true"
-      ></div>
+      @for (item of skeletonItems; track trackByItem($index, item)) {
+        <div
+          class="skeleton-item"
+          [ngClass]="itemClass"
+          [style.width]="item.width"
+          [style.height]="item.height"
+          [style.margin]="item.margin"
+          [attr.aria-hidden]="true"
+        ></div>
+      }
     </div>
   `,
   styles: [`

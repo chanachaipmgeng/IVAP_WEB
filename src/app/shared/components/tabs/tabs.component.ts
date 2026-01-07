@@ -36,27 +36,31 @@ export interface Tab {
   template: `
     <div class="border-b border-gray-200 dark:border-gray-700" role="tablist" [attr.aria-label]="ariaLabel || 'Tabs'">
       <nav class="-mb-px flex space-x-8">
-        <button
-          *ngFor="let tab of tabs; trackBy: trackByTab"
-          (click)="selectTab(tab.id)"
-          [disabled]="tab.disabled"
-          [class]="getTabClasses(tab.id)"
-          [attr.aria-selected]="activeTab === tab.id"
-          [attr.aria-controls]="getTabPanelId(tab.id)"
-          [attr.aria-disabled]="tab.disabled"
-          [attr.id]="getTabId(tab.id)"
-          role="tab"
-          [attr.tabindex]="tab.disabled ? -1 : (activeTab === tab.id ? 0 : -1)"
-          class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
-          <span *ngIf="tab.icon" class="mr-2" [attr.aria-hidden]="true">{{ tab.icon }}</span>
-          {{ tab.label }}
-          <span
-            *ngIf="tab.badge"
-            class="ml-2 px-2 py-0.5 text-xs rounded-full bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-300"
-            [attr.aria-label]="'Badge: ' + tab.badge">
-            {{ tab.badge }}
-          </span>
-        </button>
+        @for (tab of tabs; track trackByTab($index, tab)) {
+          <button
+            (click)="selectTab(tab.id)"
+            [disabled]="tab.disabled"
+            [class]="getTabClasses(tab.id)"
+            [attr.aria-selected]="activeTab === tab.id"
+            [attr.aria-controls]="getTabPanelId(tab.id)"
+            [attr.aria-disabled]="tab.disabled"
+            [attr.id]="getTabId(tab.id)"
+            role="tab"
+            [attr.tabindex]="tab.disabled ? -1 : (activeTab === tab.id ? 0 : -1)"
+            class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+            @if (tab.icon) {
+              <span class="mr-2" [attr.aria-hidden]="true">{{ tab.icon }}</span>
+            }
+            {{ tab.label }}
+            @if (tab.badge) {
+              <span
+                class="ml-2 px-2 py-0.5 text-xs rounded-full bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-300"
+                [attr.aria-label]="'Badge: ' + tab.badge">
+                {{ tab.badge }}
+              </span>
+            }
+          </button>
+        }
       </nav>
     </div>
 

@@ -43,7 +43,9 @@ import { MatRadioModule, MatRadioChange } from '@angular/material/radio';
       [attr.aria-checked]="isChecked"
       (change)="onChange($event)">
       <ng-content></ng-content>
-      <span *ngIf="label && !hasContent">{{ label }}</span>
+      @if (label && !hasContent) {
+        <span>{{ label }}</span>
+      }
     </mat-radio-button>
   `,
   providers: [

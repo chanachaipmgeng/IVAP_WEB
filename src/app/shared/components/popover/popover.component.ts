@@ -52,33 +52,41 @@ export type PopoverTrigger = 'click' | 'hover' | 'focus' | 'manual';
         <ng-content select="[popover-trigger]"></ng-content>
       </div>
 
-      <div
-        *ngIf="isOpen"
-        [id]="popoverId"
-        [class]="getPopoverClasses()"
-        [style.--popover-top.px]="positionTop"
-        [style.--popover-left.px]="positionLeft"
-        [attr.role]="role"
-        [attr.aria-hidden]="!isOpen"
-        [attr.aria-labelledby]="title ? popoverTitleId : null"
-        [attr.aria-describedby]="content ? popoverContentId : null">
-        <div class="popover-header" *ngIf="title || showCloseButton">
-          <h4 *ngIf="title" [id]="popoverTitleId" class="popover-title">{{ title }}</h4>
-          <button
-            *ngIf="showCloseButton"
-            type="button"
-            class="popover-close"
-            (click)="close()"
-            [attr.aria-label]="closeAriaLabel || 'Close popover'">
-            <mat-icon [attr.aria-hidden]="true">close</mat-icon>
-          </button>
+      @if (isOpen) {
+        <div
+          [id]="popoverId"
+          [class]="getPopoverClasses()"
+          [style.--popover-top.px]="positionTop"
+          [style.--popover-left.px]="positionLeft"
+          [attr.role]="role"
+          [attr.aria-hidden]="!isOpen"
+          [attr.aria-labelledby]="title ? popoverTitleId : null"
+          [attr.aria-describedby]="content ? popoverContentId : null">
+          @if (title || showCloseButton) {
+            <div class="popover-header">
+              @if (title) {
+                <h4 [id]="popoverTitleId" class="popover-title">{{ title }}</h4>
+              }
+              @if (showCloseButton) {
+                <button
+                  type="button"
+                  class="popover-close"
+                  (click)="close()"
+                  [attr.aria-label]="closeAriaLabel || 'Close popover'">
+                  <mat-icon [attr.aria-hidden]="true">close</mat-icon>
+                </button>
+              }
+            </div>
+          }
+          <div [id]="popoverContentId" class="popover-content">
+            <ng-content></ng-content>
+            @if (content && !hasContent) {
+              <p>{{ content }}</p>
+            }
+          </div>
+          <div class="popover-arrow" [class]="getArrowClasses()" [attr.aria-hidden]="true"></div>
         </div>
-        <div [id]="popoverContentId" class="popover-content">
-          <ng-content></ng-content>
-          <p *ngIf="content && !hasContent">{{ content }}</p>
-        </div>
-        <div class="popover-arrow" [class]="getArrowClasses()" [attr.aria-hidden]="true"></div>
-      </div>
+      }
     </div>
   `,
   styles: [`

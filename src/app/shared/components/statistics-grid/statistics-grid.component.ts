@@ -37,14 +37,15 @@ export interface StatCard {
       [class]="customClass || ''"
       role="group"
       [attr.aria-label]="ariaLabel || 'Statistics'">
-      <app-statistics-card
-        *ngFor="let stat of stats; trackBy: trackByStat"
-        [icon]="stat.icon"
-        [label]="stat.label"
-        [value]="stat.value"
-        [suffix]="stat.suffix"
-        [iconBgClass]="stat.iconBgClass || 'bg-blue-100 dark:bg-blue-900'"
-      />
+      @for (stat of stats; track trackByStat($index, stat)) {
+        <app-statistics-card
+          [icon]="stat.icon"
+          [label]="stat.label"
+          [value]="stat.value"
+          [suffix]="stat.suffix"
+          [iconBgClass]="stat.iconBgClass || 'bg-blue-100 dark:bg-blue-900'"
+        />
+      }
     </div>
   `,
   styles: []

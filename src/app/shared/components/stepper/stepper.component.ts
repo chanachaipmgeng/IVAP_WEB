@@ -53,22 +53,25 @@ export interface StepperSelectionEvent {
       (selectionChange)="onSelectionChange($event)"
       [class]="customClass"
       [attr.aria-label]="ariaLabel || 'Stepper'">
-      <mat-step
-        *ngFor="let step of steps; let i = index; trackBy: trackByStep"
-        [label]="step.label"
-        [optional]="step.optional"
-        [completed]="step.completed"
-        [editable]="step.editable"
-        [state]="getStepState(step, i)"
-        [attr.aria-label]="step.label">
-        <ng-template matStepLabel>
-          <div class="step-label">
-            <mat-icon *ngIf="step.icon" class="step-icon" [attr.aria-hidden]="true">{{ step.icon }}</mat-icon>
-            <span>{{ step.label }}</span>
-          </div>
-        </ng-template>
-        <ng-content [select]="'[step=' + i + ']'"></ng-content>
-      </mat-step>
+      @for (step of steps; track trackByStep(i, step); let i = $index) {
+        <mat-step
+          [label]="step.label"
+          [optional]="step.optional"
+          [completed]="step.completed"
+          [editable]="step.editable"
+          [state]="getStepState(step, i)"
+          [attr.aria-label]="step.label">
+          <ng-template matStepLabel>
+            <div class="step-label">
+              @if (step.icon) {
+                <mat-icon class="step-icon" [attr.aria-hidden]="true">{{ step.icon }}</mat-icon>
+              }
+              <span>{{ step.label }}</span>
+            </div>
+          </ng-template>
+          <ng-content [select]="'[step=' + i + ']'"></ng-content>
+        </mat-step>
+      }
     </mat-stepper>
   `,
   styles: [`

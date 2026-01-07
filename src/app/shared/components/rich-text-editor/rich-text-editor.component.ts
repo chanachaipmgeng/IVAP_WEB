@@ -38,25 +38,9 @@ export interface RichTextEditorConfig {
 @Component({
   selector: 'app-rich-text-editor',
   standalone: true,
-  imports: [CommonModule, FormsModule, AdvancedRichTextComponent],
-  template: `
-    <div class="rich-text-editor-wrapper" [class]="customClass || ''" role="group" [attr.aria-label]="ariaLabel || 'Rich text editor'">
-      <app-advanced-rich-text
-        [(ngModel)]="_value"
-        (ngModelChange)="onModelChange($event)"
-        [placeholder]="config.placeholder || placeholder"
-        [disabled]="disabled || config.readOnly || false"
-        [customClass]="'unified-rich-text-editor'"
-        [showCharCount]="true"
-        [ariaLabel]="ariaLabel || 'Rich text editor'">
-      </app-advanced-rich-text>
-    </div>
-  `,
-  styles: [`
-    .rich-text-editor-wrapper {
-      width: 100%;
-    }
-  `],
+  imports: [CommonModule, FormsModule],
+  templateUrl: './rich-text-editor.component.html',
+  styleUrls: ['./rich-text-editor.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

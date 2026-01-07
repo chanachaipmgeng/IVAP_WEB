@@ -39,85 +39,95 @@ import { FormsModule } from '@angular/forms';
   ],
   template: `
     <nav [class]="getPaginationClasses()" [attr.aria-label]="ariaLabel || 'Pagination Navigation'">
-      <mat-paginator
-        *ngIf="useMaterial"
-        [length]="total"
-        [pageSize]="pageSize"
-        [pageIndex]="pageIndex"
-        [pageSizeOptions]="pageSizeOptions"
-        [showFirstLastButtons]="showFirstLastButtons"
-        [hidePageSize]="hidePageSize"
-        (page)="onPageChange($event)"
-        [class]="customClass"
-        [attr.aria-label]="ariaLabel || 'Pagination Navigation'">
-      </mat-paginator>
+      @if (useMaterial) {
+        <mat-paginator
+          [length]="total"
+          [pageSize]="pageSize"
+          [pageIndex]="pageIndex"
+          [pageSizeOptions]="pageSizeOptions"
+          [showFirstLastButtons]="showFirstLastButtons"
+          [hidePageSize]="hidePageSize"
+          (page)="onPageChange($event)"
+          [class]="customClass"
+          [attr.aria-label]="ariaLabel || 'Pagination Navigation'">
+        </mat-paginator>
+      }
 
-      <div *ngIf="!useMaterial" class="pagination-custom">
-        <div class="pagination-info" *ngIf="showInfo" [attr.aria-live]="'polite'">
-          <span>Showing {{ startItem }} to {{ endItem }} of {{ total }} entries</span>
-        </div>
+      @if (!useMaterial) {
+        <div class="pagination-custom">
+          @if (showInfo) {
+            <div class="pagination-info" [attr.aria-live]="'polite'">
+              <span>Showing {{ startItem }} to {{ endItem }} of {{ total }} entries</span>
+            </div>
+          }
 
-        <div class="pagination-controls" role="group" [attr.aria-label]="'Page navigation'">
-          <button
-            mat-icon-button
-            [disabled]="pageIndex === 0"
-            (click)="goToFirst()"
-            [attr.aria-label]="'First page'"
-            [attr.aria-disabled]="pageIndex === 0">
-            <mat-icon aria-hidden="true">first_page</mat-icon>
-          </button>
-
-          <button
-            mat-icon-button
-            [disabled]="pageIndex === 0"
-            (click)="goToPrevious()"
-            [attr.aria-label]="'Previous page'"
-            [attr.aria-disabled]="pageIndex === 0">
-            <mat-icon aria-hidden="true">chevron_left</mat-icon>
-          </button>
-
-          <div class="pagination-pages" role="group" [attr.aria-label]="'Page numbers'">
+          <div class="pagination-controls" role="group" [attr.aria-label]="'Page navigation'">
             <button
-              *ngFor="let page of visiblePages; trackBy: trackByPage"
-              [class]="getPageButtonClasses(page)"
-              (click)="goToPage(page)"
-              [disabled]="page === '...'"
-              [attr.aria-label]="page === '...' ? 'More pages' : 'Go to page ' + (typeof page === 'number' ? page + 1 : page)"
-              [attr.aria-current]="page === pageIndex ? 'page' : null">
-              {{ page }}
+              mat-icon-button
+              [disabled]="pageIndex === 0"
+              (click)="goToFirst()"
+              [attr.aria-label]="'First page'"
+              [attr.aria-disabled]="pageIndex === 0">
+              <mat-icon aria-hidden="true">first_page</mat-icon>
+            </button>
+
+            <button
+              mat-icon-button
+              [disabled]="pageIndex === 0"
+              (click)="goToPrevious()"
+              [attr.aria-label]="'Previous page'"
+              [attr.aria-disabled]="pageIndex === 0">
+              <mat-icon aria-hidden="true">chevron_left</mat-icon>
+            </button>
+
+            <div class="pagination-pages" role="group" [attr.aria-label]="'Page numbers'">
+              @for (page of visiblePages; track trackByPage($index, page)) {
+                <button
+                  [class]="getPageButtonClasses(page)"
+                  (click)="goToPage(page)"
+                  [disabled]="page === '...'"
+                  [attr.aria-label]="page === '...' ? 'More pages' : 'Go to page ' + (typeof page === 'number' ? page + 1 : page)"
+                  [attr.aria-current]="page === pageIndex ? 'page' : null">
+                  {{ page }}
+                </button>
+              }
+            </div>
+
+            <button
+              mat-icon-button
+              [disabled]="pageIndex >= totalPages - 1"
+              (click)="goToNext()"
+              [attr.aria-label]="'Next page'"
+              [attr.aria-disabled]="pageIndex >= totalPages - 1">
+              <mat-icon aria-hidden="true">chevron_right</mat-icon>
+            </button>
+
+            <button
+              mat-icon-button
+              [disabled]="pageIndex >= totalPages - 1"
+              (click)="goToLast()"
+              [attr.aria-label]="'Last page'"
+              [attr.aria-disabled]="pageIndex >= totalPages - 1">
+              <mat-icon aria-hidden="true">last_page</mat-icon>
             </button>
           </div>
 
-          <button
-            mat-icon-button
-            [disabled]="pageIndex >= totalPages - 1"
-            (click)="goToNext()"
-            [attr.aria-label]="'Next page'"
-            [attr.aria-disabled]="pageIndex >= totalPages - 1">
-            <mat-icon aria-hidden="true">chevron_right</mat-icon>
-          </button>
-
-          <button
-            mat-icon-button
-            [disabled]="pageIndex >= totalPages - 1"
-            (click)="goToLast()"
-            [attr.aria-label]="'Last page'"
-            [attr.aria-disabled]="pageIndex >= totalPages - 1">
-            <mat-icon aria-hidden="true">last_page</mat-icon>
-          </button>
+          @if (!hidePageSize) {
+            <div class="pagination-size">
+              <label [for]="pageSizeSelectId">Items per page:</label>
+              <select
+                [id]="pageSizeSelectId"
+                [(ngModel)]="pageSize"
+                (change)="onPageSizeChange()"
+                [attr.aria-label]="'Items per page'">
+                @for (size of pageSizeOptions; track size) {
+                  <option [value]="size">{{ size }}</option>
+                }
+              </select>
+            </div>
+          }
         </div>
-
-        <div class="pagination-size" *ngIf="!hidePageSize">
-          <label [for]="pageSizeSelectId">Items per page:</label>
-          <select
-            [id]="pageSizeSelectId"
-            [(ngModel)]="pageSize"
-            (change)="onPageSizeChange()"
-            [attr.aria-label]="'Items per page'">
-            <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
-          </select>
-        </div>
-      </div>
+      }
     </nav>
   `,
   styles: [`
