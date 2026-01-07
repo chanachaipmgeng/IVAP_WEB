@@ -8,45 +8,53 @@
   <app-tabs [tabs]="tabs()" [activeTab]="selectedTab()" (activeTabChange)="onTabChange($event)">
     
     <!-- Overview Tab -->
-    <div *ngIf="selectedTab() === 'overview'" class="space-y-6">
-      <!-- Metrics Cards -->
-      <app-statistics-grid [stats]="statisticsCards()" [columns]="4" />
-    </div>
+    @if (selectedTab() === 'overview') {
+      <div class="space-y-6">
+        <!-- Metrics Cards -->
+        <app-statistics-grid [stats]="statisticsCards()" [columns]="4" />
+      </div>
+    }
 
     <!-- Modules Tab -->
-    <div *ngIf="selectedTab() === 'modules'" class="space-y-6">
-      <!-- Filters -->
-      <app-filter-section
-        [fields]="moduleFilterFields()"
-        [columns]="3"
-        (filterChange)="onModuleFilterChange($event)"
-      />
+    @if (selectedTab() === 'modules') {
+      <div class="space-y-6">
+        <!-- Filters -->
+        <app-filter-section
+          [fields]="moduleFilterFields()"
+          [columns]="3"
+          (filterChange)="onModuleFilterChange($event)"
+        />
 
-      <!-- Modules Table -->
-      <app-data-table
-        [columns]="moduleColumns"
-        [data]="filteredModules()"
-        [actions]="moduleActions"
-        [searchable]="false"
-      />
-    </div>
+        <!-- Modules Table -->
+        <app-data-table
+          [columns]="moduleColumns"
+          [data]="filteredModules()"
+          [actions]="moduleActions"
+          [searchable]="false"
+        />
+      </div>
+    }
 
     <!-- Subscriptions Tab -->
-    <div *ngIf="selectedTab() === 'subscriptions'" class="space-y-6">
-      <!-- Subscriptions Table -->
-      <app-data-table
-        [columns]="subscriptionColumns"
-        [data]="filteredSubscriptions()"
-        [actions]="subscriptionActions"
-        [searchable]="false"
-      />
-    </div>
+    @if (selectedTab() === 'subscriptions') {
+      <div class="space-y-6">
+        <!-- Subscriptions Table -->
+        <app-data-table
+          [columns]="subscriptionColumns"
+          [data]="filteredSubscriptions()"
+          [actions]="subscriptionActions"
+          [searchable]="false"
+        />
+      </div>
+    }
 
     <!-- Tenants Tab -->
-    <div *ngIf="selectedTab() === 'tenants'" class="space-y-6">
-      <!-- Tenants content -->
-      <p class="text-gray-600 dark:text-gray-400">{{ 'pages.moduleSubscription.tenantsManagement' | translate }}</p>
-    </div>
+    @if (selectedTab() === 'tenants') {
+      <div class="space-y-6">
+        <!-- Tenants content -->
+        <p class="text-gray-600 dark:text-gray-400">{{ 'pages.moduleSubscription.tenantsManagement' | translate }}</p>
+      </div>
+    }
   </app-tabs>
 
   <!-- Subscribe Modal -->

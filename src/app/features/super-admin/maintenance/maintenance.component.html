@@ -47,28 +47,32 @@
   <app-tabs [tabs]="tabs()" [activeTab]="activeTab()" (activeTabChange)="onTabChange($event)">
     
     <!-- Tasks Tab -->
-    <div *ngIf="activeTab() === 'tasks'" class="space-y-6">
-      <!-- Filters -->
-      <app-filter-section
-        [fields]="filterFields()"
-        [columns]="4"
-        (filterChange)="onFilterChange($event)"
-      />
+    @if (activeTab() === 'tasks') {
+      <div class="space-y-6">
+        <!-- Filters -->
+        <app-filter-section
+          [fields]="filterFields()"
+          [columns]="4"
+          (filterChange)="onFilterChange($event)"
+        />
 
-      <!-- Tasks Table -->
-      <app-data-table
-        [columns]="taskColumns"
-        [data]="filteredTasks()"
-        [actions]="taskActions"
-        [searchable]="false"
-      />
-    </div>
+        <!-- Tasks Table -->
+        <app-data-table
+          [columns]="taskColumns"
+          [data]="filteredTasks()"
+          [actions]="taskActions"
+          [searchable]="false"
+        />
+      </div>
+    }
 
     <!-- Schedules Tab -->
-    <div *ngIf="activeTab() === 'schedules'" class="space-y-6">
-      <!-- Schedules content here -->
-      <p class="text-gray-600 dark:text-gray-400">{{ 'pages.maintenance.scheduledTasks' | translate }}</p>
-    </div>
+    @if (activeTab() === 'schedules') {
+      <div class="space-y-6">
+        <!-- Schedules content here -->
+        <p class="text-gray-600 dark:text-gray-400">{{ 'pages.maintenance.scheduledTasks' | translate }}</p>
+      </div>
+    }
   </app-tabs>
 
   <!-- Add/Edit Task Modal -->

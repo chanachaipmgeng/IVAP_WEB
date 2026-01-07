@@ -52,66 +52,70 @@
   />
 
   <!-- Bulk Actions Toolbar -->
-  <div *ngIf="selectedCompanies().length > 0" class="glass-card p-4 mb-4" role="toolbar" [attr.aria-label]="'pages.companies.bulkActions' | translate">
-    <div class="flex items-center justify-between mb-2">
-      <div class="flex items-center gap-4">
-        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
-          {{ 'pages.companies.selectedCount' | translate }}: <strong>{{ selectedCompanies().length }}</strong>
-        </span>
-        <div class="flex gap-2">
-          <app-glass-button
-            variant="primary"
-            size="sm"
-            (clicked)="bulkActivate()"
-            [disabled]="bulkOperationInProgress()"
-            [attr.aria-label]="'pages.companies.bulkActivate' | translate">
-            {{ 'pages.companies.bulkActivate' | translate }}
-          </app-glass-button>
-          <app-glass-button
-            variant="secondary"
-            size="sm"
-            (clicked)="bulkDeactivate()"
-            [disabled]="bulkOperationInProgress()"
-            [attr.aria-label]="'pages.companies.bulkDeactivate' | translate">
-            {{ 'pages.companies.bulkDeactivate' | translate }}
-          </app-glass-button>
-          <app-glass-button
-            variant="danger"
-            size="sm"
-            (clicked)="bulkDelete()"
-            [disabled]="bulkOperationInProgress()"
-            [attr.aria-label]="'pages.companies.bulkDelete' | translate">
-            {{ 'pages.companies.bulkDelete' | translate }}
-          </app-glass-button>
+  @if (selectedCompanies().length > 0) {
+    <div class="glass-card p-4 mb-4" role="toolbar" [attr.aria-label]="'pages.companies.bulkActions' | translate">
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-4">
+          <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+            {{ 'pages.companies.selectedCount' | translate }}: <strong>{{ selectedCompanies().length }}</strong>
+          </span>
+          <div class="flex gap-2">
+            <app-glass-button
+              variant="primary"
+              size="sm"
+              (clicked)="bulkActivate()"
+              [disabled]="bulkOperationInProgress()"
+              [attr.aria-label]="'pages.companies.bulkActivate' | translate">
+              {{ 'pages.companies.bulkActivate' | translate }}
+            </app-glass-button>
+            <app-glass-button
+              variant="secondary"
+              size="sm"
+              (clicked)="bulkDeactivate()"
+              [disabled]="bulkOperationInProgress()"
+              [attr.aria-label]="'pages.companies.bulkDeactivate' | translate">
+              {{ 'pages.companies.bulkDeactivate' | translate }}
+            </app-glass-button>
+            <app-glass-button
+              variant="danger"
+              size="sm"
+              (clicked)="bulkDelete()"
+              [disabled]="bulkOperationInProgress()"
+              [attr.aria-label]="'pages.companies.bulkDelete' | translate">
+              {{ 'pages.companies.bulkDelete' | translate }}
+            </app-glass-button>
+          </div>
         </div>
+        <app-glass-button
+          variant="secondary"
+          size="sm"
+          (clicked)="clearSelection()"
+          [disabled]="bulkOperationInProgress()"
+          [attr.aria-label]="'pages.companies.clearSelection' | translate">
+          {{ 'pages.companies.clearSelection' | translate }}
+        </app-glass-button>
       </div>
-      <app-glass-button
-        variant="secondary"
-        size="sm"
-        (clicked)="clearSelection()"
-        [disabled]="bulkOperationInProgress()"
-        [attr.aria-label]="'pages.companies.clearSelection' | translate">
-        {{ 'pages.companies.clearSelection' | translate }}
-      </app-glass-button>
+      <!-- Bulk Operation Progress Bar -->
+      @if (bulkOperationInProgress()) {
+        <div class="mt-2">
+          <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+            <div
+              class="bg-blue-600 h-2 rounded-full transition-all duration-300"
+              [style.width.%]="bulkOperationProgress()"
+              [attr.aria-valuenow]="bulkOperationProgress()"
+              [attr.aria-valuemin]="0"
+              [attr.aria-valuemax]="100"
+              role="progressbar"
+              [attr.aria-label]="'pages.companies.processing' | translate"
+            ></div>
+          </div>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            {{ bulkOperationProgress() }}% {{ 'pages.companies.processing' | translate }}
+          </p>
+        </div>
+      }
     </div>
-    <!-- Bulk Operation Progress Bar -->
-    <div *ngIf="bulkOperationInProgress()" class="mt-2">
-      <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
-        <div
-          class="bg-blue-600 h-2 rounded-full transition-all duration-300"
-          [style.width.%]="bulkOperationProgress()"
-          [attr.aria-valuenow]="bulkOperationProgress()"
-          [attr.aria-valuemin]="0"
-          [attr.aria-valuemax]="100"
-          role="progressbar"
-          [attr.aria-label]="'pages.companies.processing' | translate"
-        ></div>
-      </div>
-      <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-        {{ bulkOperationProgress() }}% {{ 'pages.companies.processing' | translate }}
-      </p>
-    </div>
-  </div>
+  }
 
   <!-- Companies Table -->
   <app-data-table
@@ -190,11 +194,17 @@
             </label>
             <div class="flex items-center gap-4">
               <div class="relative w-24 h-24 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 flex items-center justify-center">
-                <img appImageOptimization *ngIf="formData.picture" [ngSrc]="getImageUrl(formData.picture)" alt="Company Logo" class="w-full h-full object-cover" loading="lazy">
-                <span *ngIf="!formData.picture" class="text-2xl">🏢</span>
-                <div *ngIf="uploadingImage()" class="absolute inset-0 bg-black/50 flex items-center justify-center">
-                  <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
-                </div>
+                @if (formData.picture) {
+                  <img appImageOptimization [ngSrc]="getImageUrl(formData.picture)" alt="Company Logo" class="w-full h-full object-cover" loading="lazy">
+                }
+                @if (!formData.picture) {
+                  <span class="text-2xl">🏢</span>
+                }
+                @if (uploadingImage()) {
+                  <div class="absolute inset-0 bg-black/50 flex items-center justify-center">
+                    <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+                  </div>
+                }
               </div>
               <div class="flex-1">
                 <input
@@ -215,21 +225,23 @@
                   PNG, JPG up to 5MB
                 </p>
                 <!-- Upload Progress Bar -->
-                <div *ngIf="uploadingImage()" class="mt-2">
-                  <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
-                    <div
-                      class="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                      [style.width.%]="uploadProgress()"
-                      [attr.aria-valuenow]="uploadProgress()"
-                      [attr.aria-valuemin]="0"
-                      [attr.aria-valuemax]="100"
-                      role="progressbar"
-                    ></div>
+                @if (uploadingImage()) {
+                  <div class="mt-2">
+                    <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+                      <div
+                        class="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                        [style.width.%]="uploadProgress()"
+                        [attr.aria-valuenow]="uploadProgress()"
+                        [attr.aria-valuemin]="0"
+                        [attr.aria-valuemax]="100"
+                        role="progressbar"
+                      ></div>
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      {{ uploadProgress() }}% {{ 'pages.companies.uploading' | translate }}
+                    </p>
                   </div>
-                  <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    {{ uploadProgress() }}% {{ 'pages.companies.uploading' | translate }}
-                  </p>
-                </div>
+                }
               </div>
             </div>
           </div>
@@ -479,15 +491,17 @@
               {{ 'pages.companies.enabledFeatures' | translate }}
             </label>
             <div class="flex flex-wrap gap-2">
-              <label *ngFor="let feature of availableFeatures" class="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  [checked]="isFeatureEnabled(feature)"
-                  (change)="toggleFeature(feature, $event)"
-                  class="glass-checkbox"
-                />
-                <span>{{ feature }}</span>
-              </label>
+              @for (feature of availableFeatures; track feature) {
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    [checked]="isFeatureEnabled(feature)"
+                    (change)="toggleFeature(feature, $any($event.target).checked)"
+                    class="glass-checkbox"
+                  />
+                  <span>{{ feature }}</span>
+                </label>
+              }
             </div>
           </div>
         </div>
@@ -588,18 +602,20 @@
                 />
                 <span>{{ 'pages.companies.webhookNotifications' | translate }}</span>
               </label>
-              <div *ngIf="getNotifications().webhook" class="form-group">
-                <label class="form-label">
-                  {{ 'pages.companies.webhookUrl' | translate }}
-                </label>
-                <input
-                  [value]="getNotifications().webhookUrl || ''"
-                  (input)="setNotificationField('webhookUrl', $any($event.target).value)"
-                  type="url"
-                  class="glass-input w-full"
-                  [placeholder]="'pages.companies.webhookUrlPlaceholder' | translate"
-                />
-              </div>
+              @if (getNotifications().webhook) {
+                <div class="form-group">
+                  <label class="form-label">
+                    {{ 'pages.companies.webhookUrl' | translate }}
+                  </label>
+                  <input
+                    [value]="getNotifications().webhookUrl || ''"
+                    (input)="setNotificationField('webhookUrl', $any($event.target).value)"
+                    type="url"
+                    class="glass-input w-full"
+                    [placeholder]="'pages.companies.webhookUrlPlaceholder' | translate"
+                  />
+                </div>
+              }
             </div>
           </div>
         </div>
@@ -713,86 +729,90 @@
     [config]="{ size: 'lg', scrollable: true, centered: true, animation: true }"
     (closed)="closeDetailsModal()"
   >
-    <div class="modal-form-container" *ngIf="viewingCompany()">
-      <div class="form-section">
-        <h3 class="form-section-title">
-          {{ 'pages.companies.basicInformation' | translate }}
-        </h3>
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label">{{ 'pages.companies.companyName' | translate }}</label>
-            <p class="form-value">{{ viewingCompany()!.company_name }}</p>
-          </div>
-          <div class="form-group">
-            <label class="form-label">{{ 'pages.companies.companyCode' | translate }}</label>
-            <p class="form-value">{{ viewingCompany()!.company_code }}</p>
-          </div>
-          <div class="form-group">
-            <label class="form-label">{{ 'pages.companies.ownerName' | translate }}</label>
-            <p class="form-value">{{ viewingCompany()!.owner_name || 'N/A' }}</p>
-          </div>
-          <div class="form-group">
-            <label class="form-label">{{ 'pages.companies.contact' | translate }}</label>
-            <p class="form-value">{{ viewingCompany()!.contact || 'N/A' }}</p>
-          </div>
-          <div class="form-group form-group-full">
-            <label class="form-label">{{ 'pages.companies.description' | translate }}</label>
-            <p class="form-value">{{ viewingCompany()!.company_info || 'N/A' }}</p>
+    @if (viewingCompany()) {
+      <div class="modal-form-container">
+        <div class="form-section">
+          <h3 class="form-section-title">
+            {{ 'pages.companies.basicInformation' | translate }}
+          </h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">{{ 'pages.companies.companyName' | translate }}</label>
+              <p class="form-value">{{ viewingCompany()!.company_name }}</p>
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{ 'pages.companies.companyCode' | translate }}</label>
+              <p class="form-value">{{ viewingCompany()!.company_code }}</p>
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{ 'pages.companies.ownerName' | translate }}</label>
+              <p class="form-value">{{ viewingCompany()!.owner_name || 'N/A' }}</p>
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{ 'pages.companies.contact' | translate }}</label>
+              <p class="form-value">{{ viewingCompany()!.contact || 'N/A' }}</p>
+            </div>
+            <div class="form-group form-group-full">
+              <label class="form-label">{{ 'pages.companies.description' | translate }}</label>
+              <p class="form-value">{{ viewingCompany()!.company_info || 'N/A' }}</p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="form-section">
-        <h3 class="form-section-title">
-          {{ 'pages.companies.locationInformation' | translate }}
-        </h3>
-        <div class="form-grid">
-          <div class="form-group form-group-full">
-            <label class="form-label">{{ 'pages.companies.address' | translate }}</label>
-            <p class="form-value">{{ viewingCompany()!.address }}</p>
-          </div>
-          <div class="form-group">
-            <label class="form-label">{{ 'pages.companies.latitude' | translate }}</label>
-            <p class="form-value">{{ viewingCompany()!.latitude }}</p>
-          </div>
-          <div class="form-group">
-            <label class="form-label">{{ 'pages.companies.longitude' | translate }}</label>
-            <p class="form-value">{{ viewingCompany()!.longitude }}</p>
+        <div class="form-section">
+          <h3 class="form-section-title">
+            {{ 'pages.companies.locationInformation' | translate }}
+          </h3>
+          <div class="form-grid">
+            <div class="form-group form-group-full">
+              <label class="form-label">{{ 'pages.companies.address' | translate }}</label>
+              <p class="form-value">{{ viewingCompany()!.address }}</p>
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{ 'pages.companies.latitude' | translate }}</label>
+              <p class="form-value">{{ viewingCompany()!.latitude }}</p>
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{ 'pages.companies.longitude' | translate }}</label>
+              <p class="form-value">{{ viewingCompany()!.longitude }}</p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="form-section">
-        <h3 class="form-section-title">
-          {{ 'pages.companies.statusInformation' | translate }}
-        </h3>
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label">{{ 'pages.companies.status' | translate }}</label>
-            <p class="form-value">
-              <span [class]="getStatusClassForDisplay(viewingCompany()!.status)">
-                {{ getStatusDisplayText(viewingCompany()!.status) }}
-              </span>
-            </p>
-          </div>
-          <div class="form-group">
-            <label class="form-label">{{ 'pages.companies.createdAt' | translate }}</label>
-            <p class="form-value">{{ viewingCompany()!.created_at ? formatDateTime(viewingCompany()!.created_at) : 'N/A' }}</p>
-          </div>
-          <div class="form-group">
-            <label class="form-label">{{ 'pages.companies.updatedAt' | translate }}</label>
-            <p class="form-value">{{ viewingCompany()!.updated_at ? formatDateTime(viewingCompany()!.updated_at) : 'N/A' }}</p>
+        <div class="form-section">
+          <h3 class="form-section-title">
+            {{ 'pages.companies.statusInformation' | translate }}
+          </h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">{{ 'pages.companies.status' | translate }}</label>
+              <p class="form-value">
+                <span [class]="getStatusClassForDisplay(viewingCompany()!.status)">
+                  {{ getStatusDisplayText(viewingCompany()!.status) }}
+                </span>
+              </p>
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{ 'pages.companies.createdAt' | translate }}</label>
+              <p class="form-value">{{ viewingCompany()!.created_at ? formatDateTime(viewingCompany()!.created_at) : 'N/A' }}</p>
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{ 'pages.companies.updatedAt' | translate }}</label>
+              <p class="form-value">{{ viewingCompany()!.updated_at ? formatDateTime(viewingCompany()!.updated_at) : 'N/A' }}</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    }
     <div slot="footer" class="modal-footer-actions">
       <app-glass-button variant="secondary" (clicked)="closeDetailsModal()">
         {{ 'common.close' | translate }}
       </app-glass-button>
-      <app-glass-button variant="primary" (clicked)="openEditModal(viewingCompany()!)">
-        {{ 'pages.companies.edit' | translate }}
-      </app-glass-button>
+      @if (viewingCompany()) {
+        <app-glass-button variant="primary" (clicked)="openEditModal(viewingCompany()!)">
+          {{ 'pages.companies.edit' | translate }}
+        </app-glass-button>
+      }
     </div>
   </app-modal>
 </app-page-layout>

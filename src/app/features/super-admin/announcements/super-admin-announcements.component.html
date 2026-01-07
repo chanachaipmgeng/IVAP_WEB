@@ -11,16 +11,18 @@
 
   <app-glass-card class="flex-1 overflow-hidden flex flex-col">
     <div class="overflow-auto flex-1 custom-scrollbar space-y-4 p-4">
-      <div *ngFor="let item of announcements()" class="border-b border-gray-100 dark:border-gray-700 pb-4 last:border-0">
-        <div class="flex justify-between items-start">
-          <h3 class="font-bold text-lg text-gray-800 dark:text-gray-100">{{ item.title }}</h3>
-          <span class="text-xs text-gray-400">{{ item.date | date:'medium' }}</span>
+      @for (item of announcements(); track item) {
+        <div class="border-b border-gray-100 dark:border-gray-700 pb-4 last:border-0">
+          <div class="flex justify-between items-start">
+            <h3 class="font-bold text-lg text-gray-800 dark:text-gray-100">{{ item.title }}</h3>
+            <span class="text-xs text-gray-400">{{ item.date | date:'medium' }}</span>
+          </div>
+          <p class="text-gray-600 dark:text-gray-300 mt-2">{{ item.content }}</p>
+          <span class="inline-block mt-2 px-2 py-1 rounded-full text-xs bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300">
+            {{ item.type }}
+          </span>
         </div>
-        <p class="text-gray-600 dark:text-gray-300 mt-2">{{ item.content }}</p>
-        <span class="inline-block mt-2 px-2 py-1 rounded-full text-xs bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300">
-          {{ item.type }}
-        </span>
-      </div>
+      }
     </div>
   </app-glass-card>
 </div>

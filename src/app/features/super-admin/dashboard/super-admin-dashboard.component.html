@@ -1,22 +1,24 @@
 <div class="h-full flex flex-col p-6 space-y-6 overflow-y-auto custom-scrollbar">
   <!-- Stats Grid -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-    <app-glass-card *ngFor="let stat of stats()" class="p-6">
-      <div class="flex flex-col">
-        <span class="text-sm text-gray-500 dark:text-gray-400">{{ stat.label }}</span>
-        <div class="flex items-end justify-between mt-2">
-          <span class="text-3xl font-bold text-gray-800 dark:text-white">{{ stat.value }}</span>
-          <span class="text-sm px-2 py-1 rounded-full"
-                [ngClass]="{
-                  'bg-green-100 text-green-700': stat.trend === 'up',
-                  'bg-red-100 text-red-700': stat.trend === 'down',
-                  'bg-gray-100 text-gray-700': stat.trend === 'stable'
-                }">
-            {{ stat.change }}
-          </span>
+    @for (stat of stats(); track stat) {
+      <app-glass-card class="p-6">
+        <div class="flex flex-col">
+          <span class="text-sm text-gray-500 dark:text-gray-400">{{ stat.label }}</span>
+          <div class="flex items-end justify-between mt-2">
+            <span class="text-3xl font-bold text-gray-800 dark:text-white">{{ stat.value }}</span>
+            <span class="text-sm px-2 py-1 rounded-full"
+                  [ngClass]="{
+                    'bg-green-100 text-green-700': stat.trend === 'up',
+                    'bg-red-100 text-red-700': stat.trend === 'down',
+                    'bg-gray-100 text-gray-700': stat.trend === 'stable'
+                  }">
+              {{ stat.change }}
+            </span>
+          </div>
         </div>
-      </div>
-    </app-glass-card>
+      </app-glass-card>
+    }
   </div>
 
   <!-- Charts -->

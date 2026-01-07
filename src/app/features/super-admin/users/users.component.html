@@ -115,35 +115,39 @@
             />
           </div>
 
-          <div class="form-group form-group-full" *ngIf="!editingUser()">
-            <label class="form-label">
-              {{ 'pages.users.password' | translate }}
-              <span class="required-indicator">*</span>
-            </label>
-            <input
-              [(ngModel)]="formData.password"
-              type="password"
-              class="glass-input w-full"
-              [placeholder]="'pages.users.enterPassword' | translate"
-              required
-              [attr.aria-label]="'pages.users.password' | translate"
-              [attr.aria-required]="true"
-            />
-          </div>
+          @if (!editingUser()) {
+            <div class="form-group form-group-full">
+              <label class="form-label">
+                {{ 'pages.users.password' | translate }}
+                <span class="required-indicator">*</span>
+              </label>
+              <input
+                [(ngModel)]="formData.password"
+                type="password"
+                class="glass-input w-full"
+                [placeholder]="'pages.users.enterPassword' | translate"
+                required
+                [attr.aria-label]="'pages.users.password' | translate"
+                [attr.aria-required]="true"
+              />
+            </div>
+          }
 
-          <div class="form-group form-group-full" *ngIf="editingUser()">
-            <label class="form-label">
-              {{ 'pages.users.password' | translate }} ({{ 'pages.users.optional' | translate }})
-            </label>
-            <input
-              [(ngModel)]="formData.password"
-              type="password"
-              class="glass-input w-full"
-              [placeholder]="'pages.users.enterNewPassword' | translate"
-              [attr.aria-label]="'pages.users.password' | translate"
-            />
-            <p class="form-hint">{{ 'pages.users.passwordUpdateHint' | translate }}</p>
-          </div>
+          @if (editingUser()) {
+            <div class="form-group form-group-full">
+              <label class="form-label">
+                {{ 'pages.users.password' | translate }} ({{ 'pages.users.optional' | translate }})
+              </label>
+              <input
+                [(ngModel)]="formData.password"
+                type="password"
+                class="glass-input w-full"
+                [placeholder]="'pages.users.enterNewPassword' | translate"
+                [attr.aria-label]="'pages.users.password' | translate"
+              />
+              <p class="form-hint">{{ 'pages.users.passwordUpdateHint' | translate }}</p>
+            </div>
+          }
 
           <div class="form-group form-group-full">
             <label class="form-label">
@@ -229,12 +233,16 @@
               [disabled]="getRoles()().length === 0"
             >
               <option value="">{{ 'pages.users.selectRole' | translate }}</option>
-              <option *ngFor="let role of getRoles()()" [value]="role.id">{{ role.name }}</option>
+              @for (role of getRoles()(); track role.id) {
+                <option [value]="role.id">{{ role.name }}</option>
+              }
             </select>
             <p class="form-hint">{{ 'pages.users.roleHint' | translate }}</p>
-            <p *ngIf="getRoles()().length === 0" class="form-hint text-amber-600 dark:text-amber-400">
-              {{ 'pages.users.noRolesAvailable' | translate }}
-            </p>
+            @if (getRoles()().length === 0) {
+              <p class="form-hint text-amber-600 dark:text-amber-400">
+                {{ 'pages.users.noRolesAvailable' | translate }}
+              </p>
+            }
           </div>
           <div class="form-group">
             <label class="form-label">
@@ -247,15 +255,19 @@
               [disabled]="getCompanies()().length === 0"
             >
               <option value="">{{ 'pages.users.selectCompany' | translate }}</option>
-              <option *ngFor="let company of getCompanies()()" 
-                [value]="company.company_id || company.id">
-                {{ company.company_name || company.name }}
-              </option>
+              @for (company of getCompanies()(); track (company.company_id || company.id)) {
+                <option
+                  [value]="company.company_id || company.id">
+                  {{ company.company_name || company.name }}
+                </option>
+              }
             </select>
             <p class="form-hint">{{ 'pages.users.companyHint' | translate }}</p>
-            <p *ngIf="getCompanies()().length === 0" class="form-hint text-amber-600 dark:text-amber-400">
-              {{ 'pages.users.noCompaniesAvailable' | translate }}
-            </p>
+            @if (getCompanies()().length === 0) {
+              <p class="form-hint text-amber-600 dark:text-amber-400">
+                {{ 'pages.users.noCompaniesAvailable' | translate }}
+              </p>
+            }
           </div>
         </div>
       </div>
@@ -306,39 +318,45 @@
       </div>
 
       <div class="space-y-2">
-        <div *ngFor="let role of getRoles()()"
-          class="p-4 border border-gray-100 dark:border-slate-700 rounded-2xl bg-white/70 dark:bg-slate-900/40">
-          <div class="flex items-start justify-between">
-            <div>
-              <h4 class="font-medium text-gray-900 dark:text-gray-100">{{ role.name }}</h4>
-              <p class="text-sm text-gray-600 dark:text-gray-400">{{ role.description || ('pages.users.noDescription' |
-                translate) }}</p>
+        @for (role of getRoles()(); track role.id) {
+          <div
+            class="p-4 border border-gray-100 dark:border-slate-700 rounded-2xl bg-white/70 dark:bg-slate-900/40">
+            <div class="flex items-start justify-between">
+              <div>
+                <h4 class="font-medium text-gray-900 dark:text-gray-100">{{ role.name }}</h4>
+                <p class="text-sm text-gray-600 dark:text-gray-400">{{ role.description || ('pages.users.noDescription' |
+                  translate) }}</p>
+              </div>
+              <div class="flex space-x-2">
+                <app-glass-button variant="secondary" (clicked)="editRole(role)">
+                  {{ 'pages.users.editRole' | translate }}
+                </app-glass-button>
+                <app-glass-button variant="danger" (clicked)="deleteRole(role)">
+                  {{ 'pages.users.deleteRole' | translate }}
+                </app-glass-button>
+              </div>
             </div>
-            <div class="flex space-x-2">
-              <app-glass-button variant="secondary" (clicked)="editRole(role)">
-                {{ 'pages.users.editRole' | translate }}
-              </app-glass-button>
-              <app-glass-button variant="danger" (clicked)="deleteRole(role)">
-                {{ 'pages.users.deleteRole' | translate }}
-              </app-glass-button>
+            <div class="mt-3">
+              <h5 class="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-1">
+                {{ 'pages.users.permissions' | translate }}
+              </h5>
+              @if (role.permissions.length) {
+                <div class="flex flex-wrap gap-2">
+                  @for (permission of role.permissions; track permission) {
+                    <span
+                      class="px-2 py-1 text-xs rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-200">
+                      {{ permission }}
+                    </span>
+                  }
+                </div>
+              }
+              @if (!role.permissions.length) {
+                <p class="text-xs text-gray-400 dark:text-gray-500">{{ 'pages.users.noPermissionsAssigned' | translate }}
+                </p>
+              }
             </div>
           </div>
-          <div class="mt-3">
-            <h5 class="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-1">
-              {{ 'pages.users.permissions' | translate }}
-            </h5>
-            <div *ngIf="role.permissions?.length; else noPermissions" class="flex flex-wrap gap-2">
-              <span *ngFor="let permission of role.permissions"
-                class="px-2 py-1 text-xs rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-200">
-                {{ permission }}
-              </span>
-            </div>
-            <ng-template #noPermissions>
-              <p class="text-xs text-gray-400 dark:text-gray-500">{{ 'pages.users.noPermissionsAssigned' | translate }}
-              </p>
-            </ng-template>
-          </div>
-        </div>
+        }
       </div>
     </div>
   </app-modal>
