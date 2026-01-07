@@ -39,18 +39,30 @@ export type BadgeShape = 'rounded' | 'pill' | 'square';
       [attr.role]="clickable ? 'button' : 'status'"
       [attr.tabindex]="clickable ? 0 : -1"
       [attr.aria-pressed]="clickable ? (isPressed ? 'true' : 'false') : null">
-      <mat-icon *ngIf="icon && !iconRight" [class]="iconClass" [attr.aria-hidden]="true">{{ icon }}</mat-icon>
+      
+      @if (icon && !iconRight) {
+        <mat-icon [class]="iconClass" [attr.aria-hidden]="true">{{ icon }}</mat-icon>
+      }
+      
       <ng-content></ng-content>
-      <span *ngIf="text && !hasContent" [attr.aria-hidden]="false">{{ text }}</span>
-      <mat-icon *ngIf="icon && iconRight" [class]="iconClass" [attr.aria-hidden]="true">{{ icon }}</mat-icon>
-      <mat-icon
-        *ngIf="dismissible"
-        class="badge-close"
-        (click)="onDismiss($event)"
-        [attr.aria-label]="dismissAriaLabel || 'Dismiss ' + (text || 'badge')"
-        role="button"
-        [attr.tabindex]="0"
-        [attr.aria-hidden]="false">close</mat-icon>
+      
+      @if (text && !hasContent) {
+        <span [attr.aria-hidden]="false">{{ text }}</span>
+      }
+      
+      @if (icon && iconRight) {
+        <mat-icon [class]="iconClass" [attr.aria-hidden]="true">{{ icon }}</mat-icon>
+      }
+      
+      @if (dismissible) {
+        <mat-icon
+          class="badge-close"
+          (click)="onDismiss($event)"
+          [attr.aria-label]="dismissAriaLabel || 'Dismiss ' + (text || 'badge')"
+          role="button"
+          [attr.tabindex]="0"
+          [attr.aria-hidden]="false">close</mat-icon>
+      }
     </span>
   `,
   styles: [`
@@ -72,131 +84,99 @@ export type BadgeShape = 'rounded' | 'pill' | 'square';
 
     /* Sizes - Using Design Tokens */
     .badge-xs {
-      padding: calc(var(--spacing-xs) / 2) calc(var(--spacing-xs) + var(--spacing-xs) / 2);
-      font-size: var(--font-size-xs);
-      min-height: 1rem;
+      @apply px-1.5 py-0.5 text-xs min-h-[1rem];
     }
 
     .badge-sm {
-      padding: var(--spacing-xs) var(--spacing-sm);
-      font-size: var(--font-size-xs);
-      min-height: 1.25rem;
+      @apply px-2 py-0.5 text-xs min-h-[1.25rem];
     }
 
     .badge-md {
-      padding: calc(var(--spacing-xs) + var(--spacing-xs) / 2) calc(var(--spacing-sm) + var(--spacing-xs));
-      font-size: var(--font-size-sm);
-      min-height: 1.5rem;
+      @apply px-2.5 py-1 text-sm min-h-[1.5rem];
     }
 
     .badge-lg {
-      padding: var(--spacing-sm) var(--spacing-md);
-      font-size: var(--font-size-base);
-      min-height: 1.75rem;
+      @apply px-3 py-1.5 text-base min-h-[1.75rem];
     }
 
     /* Shapes - Using Design Tokens */
     .badge-rounded {
-      border-radius: var(--radius-md);
+      @apply rounded-md;
     }
 
     .badge-pill {
-      border-radius: 9999px;
+      @apply rounded-full;
     }
 
     .badge-square {
-      border-radius: 0;
+      @apply rounded-none;
     }
 
-    /* Variants - Using Design Tokens */
+    /* Variants - Using Design Tokens via Tailwind */
     .badge-default {
-      background-color: var(--color-gray-500);
-      color: #ffffff;
+      @apply bg-gray-500 text-white;
     }
 
     .badge-primary {
-      background-color: var(--color-primary-500);
-      color: #ffffff;
+      @apply bg-primary-500 text-white;
     }
 
     .badge-success {
-      background-color: var(--color-success-500);
-      color: #ffffff;
+      @apply bg-success-500 text-white;
     }
 
     .badge-warning {
-      background-color: var(--color-warning-500);
-      color: #ffffff;
+      @apply bg-warning-500 text-white;
     }
 
     .badge-danger {
-      background-color: var(--color-error-500);
-      color: #ffffff;
+      @apply bg-error-500 text-white;
     }
 
     .badge-info {
-      background-color: var(--color-info-500);
-      color: #ffffff;
+      @apply bg-info-500 text-white;
     }
 
     .badge-secondary {
-      background-color: var(--color-secondary-500);
-      color: #ffffff;
+      @apply bg-secondary-500 text-white;
     }
 
     /* Outline variant */
     .badge-outline {
-      background-color: transparent;
-      border: 1px solid currentColor;
+      @apply bg-transparent border border-current;
     }
 
     .badge-outline.badge-default {
-      color: var(--color-gray-500);
-      border-color: var(--color-gray-500);
+      @apply text-gray-500 border-gray-500;
     }
 
     .badge-outline.badge-primary {
-      color: var(--color-primary-500);
-      border-color: var(--color-primary-500);
+      @apply text-primary-500 border-primary-500;
     }
 
     .badge-outline.badge-success {
-      color: var(--color-success-500);
-      border-color: var(--color-success-500);
+      @apply text-success-500 border-success-500;
     }
 
     .badge-outline.badge-warning {
-      color: var(--color-warning-500);
-      border-color: var(--color-warning-500);
+      @apply text-warning-500 border-warning-500;
     }
 
     .badge-outline.badge-danger {
-      color: var(--color-error-500);
-      border-color: var(--color-error-500);
+      @apply text-error-500 border-error-500;
     }
 
     .badge-outline.badge-info {
-      color: var(--color-info-500);
-      border-color: var(--color-info-500);
+      @apply text-info-500 border-info-500;
     }
 
     .badge-outline.badge-secondary {
-      color: var(--color-secondary-500);
-      border-color: var(--color-secondary-500);
+      @apply text-secondary-500 border-secondary-500;
     }
 
     /* Interactive */
     .badge-clickable {
-      cursor: pointer;
-    }
-
-    .badge-clickable:hover {
-      opacity: 0.8;
-      transform: translateY(-1px);
-    }
-
-    .badge-clickable:active {
-      transform: translateY(0);
+      @apply cursor-pointer hover:opacity-80 hover:-translate-y-[1px] active:translate-y-0;
     }
 
     /* Icons */
@@ -208,23 +188,12 @@ export type BadgeShape = 'rounded' | 'pill' | 'square';
     }
 
     .badge-close {
-      margin-left: var(--spacing-xs); /* 4px */
-      cursor: pointer;
-      opacity: 0.7;
-      transition: opacity var(--transition-fast); /* 150ms */
-    }
-
-    .badge-close:hover {
-      opacity: 1;
+      @apply ml-1 cursor-pointer opacity-70 transition-opacity hover:opacity-100;
     }
 
     /* Dot variant */
     .badge-dot {
-      width: 0.5rem;
-      height: 0.5rem;
-      padding: 0;
-      border-radius: 50%;
-      min-height: 0.5rem;
+      @apply w-2 h-2 p-0 rounded-full min-h-[0.5rem];
     }
   `]
 })

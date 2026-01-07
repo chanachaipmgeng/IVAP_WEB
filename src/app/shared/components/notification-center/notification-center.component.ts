@@ -31,9 +31,11 @@ import { BaseComponent } from '../../../core/base/base.component';
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-xl font-semibold text-white">
           Notifications
-          <span *ngIf="unreadCount() > 0" class="ml-2 px-2 py-1 bg-error-500 text-white text-sm rounded-full">
-            {{ unreadCount() }}
-          </span>
+          @if (unreadCount() > 0) {
+            <span class="ml-2 px-2 py-1 bg-error-500 text-white text-sm rounded-full">
+              {{ unreadCount() }}
+            </span>
+          }
         </h3>
         <div class="flex space-x-2">
           <app-glass-button
@@ -93,77 +95,93 @@ import { BaseComponent } from '../../../core/base/base.component';
 
       <!-- Notifications List -->
       <div class="notifications-list max-h-96 overflow-y-auto">
-        <div *ngIf="filteredNotifications().length === 0" class="text-center py-8 text-gray-400">
-          <i class="fas fa-bell-slash text-4xl mb-2"></i>
-          <p>No notifications found</p>
-        </div>
+        @if (filteredNotifications().length === 0) {
+          <div class="text-center py-8 text-gray-400">
+            <i class="fas fa-bell-slash text-4xl mb-2"></i>
+            <p>No notifications found</p>
+          </div>
+        }
 
-        <div *ngFor="let notification of filteredNotifications()"
-             class="notification-item mb-3 p-4 rounded-lg border transition-all"
-             [class]="getNotificationClass(notification)">
-          <div class="flex items-start space-x-3">
-            <!-- Icon -->
-            <div class="flex-shrink-0">
-              <i [class]="getNotificationIcon(notification)"
-                 [class]="getNotificationIconClass(notification)"></i>
-            </div>
+        @for (notification of filteredNotifications(); track trackByNotificationId($index, notification)) {
+          <div
+               class="notification-item mb-3 p-4 rounded-lg border transition-all"
+               [class]="getNotificationClass(notification)">
+            <div class="flex items-start space-x-3">
+              <!-- Icon -->
+              <div class="flex-shrink-0">
+                <i [class]="getNotificationIcon(notification)"
+                   [class]="getNotificationIconClass(notification)"></i>
+              </div>
 
-            <!-- Content -->
-            <div class="flex-1 min-w-0">
-              <div class="flex items-start justify-between">
-                <div class="flex-1">
-                  <h4 class="text-sm font-medium text-white mb-1">
-                    {{ notification.config.title }}
-                    <span *ngIf="!notification.read" class="ml-2 w-2 h-2 bg-primary-500 rounded-full inline-block"></span>
-                  </h4>
-                  <p class="text-sm text-gray-300 mb-2" [innerHTML]="notification.config.message"></p>
+              <!-- Content -->
+              <div class="flex-1 min-w-0">
+                <div class="flex items-start justify-between">
+                  <div class="flex-1">
+                    <h4 class="text-sm font-medium text-white mb-1">
+                      {{ notification.config.title }}
+                      @if (!notification.read) {
+                        <span class="ml-2 w-2 h-2 bg-primary-500 rounded-full inline-block"></span>
+                      }
+                    </h4>
+                    <p class="text-sm text-gray-300 mb-2" [innerHTML]="notification.config.message"></p>
 
-                  <!-- Tags -->
-                  <div *ngIf="notification.config.tags && notification.config.tags.length > 0" class="flex flex-wrap gap-1 mb-2">
-                    <span *ngFor="let tag of notification.config.tags"
-                          class="px-2 py-1 bg-gray-700 text-gray-300 text-xs rounded">
-                      {{ tag }}
-                    </span>
+                    <!-- Tags -->
+                    @if (notification.config.tags && notification.config.tags.length > 0) {
+                      <div class="flex flex-wrap gap-1 mb-2">
+                        @for (tag of notification.config.tags; track trackByTag($index, tag)) {
+                          <span
+                                class="px-2 py-1 bg-gray-700 text-gray-300 text-xs rounded">
+                            {{ tag }}
+                          </span>
+                        }
+                      </div>
+                    }
+
+                    <!-- Actions -->
+                    @if (notification.config.actions && notification.config.actions.length > 0) {
+                      <div class="flex space-x-2">
+                        @for (action of notification.config.actions; track action.label) {
+                          <button
+                            (click)="executeAction(action)"
+                            [class]="'px-3 py-1 text-xs rounded transition-colors ' + getActionClass(action.style)"
+                          >
+                            @if (action.icon) {
+                              <i [class]="action.icon + ' mr-1'"></i>
+                            }
+                            {{ action.label }}
+                          </button>
+                        }
+                      </div>
+                    }
                   </div>
 
                   <!-- Actions -->
-                  <div *ngIf="notification.config.actions && notification.config.actions.length > 0" class="flex space-x-2">
-                    <button
-                      *ngFor="let action of notification.config.actions"
-                      (click)="executeAction(action)"
-                      [class]="'px-3 py-1 text-xs rounded transition-colors ' + getActionClass(action.style)"
-                    >
-                      <i *ngIf="action.icon" [class]="action.icon + ' mr-1'"></i>
-                      {{ action.label }}
-                    </button>
-                  </div>
-                </div>
-
-                <!-- Actions -->
-                <div class="flex items-center space-x-2">
-                  <span class="text-xs text-gray-400">
-                    {{ formatTime(notification.timestamp) }}
-                  </span>
-                  <div class="flex space-x-1">
-                    <button
-                      *ngIf="!notification.read"
-                      (click)="markAsRead(notification.id)"
-                      class="p-1 text-gray-400 hover:text-blue-400 transition-colors"
-                      title="Mark as read">
-                      <i class="fas fa-check"></i>
-                    </button>
-                    <button
-                      (click)="dismiss(notification.id)"
-                      class="p-1 text-gray-400 hover:text-error-400 transition-colors"
-                      title="Dismiss">
-                      <i class="fas fa-times"></i>
-                    </button>
+                  <div class="flex items-center space-x-2">
+                    <span class="text-xs text-gray-400">
+                      {{ formatTime(notification.timestamp) }}
+                    </span>
+                    <div class="flex space-x-1">
+                      @if (!notification.read) {
+                        <button
+                          (click)="markAsRead(notification.id)"
+                          class="p-1 text-gray-400 hover:text-blue-400 transition-colors"
+                          title="Mark as read">
+                          <i class="fas fa-check"></i>
+                        </button>
+                      }
+                      <button
+                        (click)="dismiss(notification.id)"
+                        class="p-1 text-gray-400 hover:text-error-400 transition-colors"
+                        title="Dismiss">
+                        <i class="fas fa-times"></i>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        }
       </div>
 
       <!-- Footer -->

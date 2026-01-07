@@ -65,328 +65,374 @@ export interface PaginationConfig {
   template: `
     <div class="glass-card overflow-hidden" [ngClass]="customClass" [attr.aria-label]="ariaLabel || 'Data table'">
       <!-- Loading State -->
-      <div *ngIf="loading" class="p-12 flex flex-col items-center justify-center">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mb-4"></div>
-        <p class="text-gray-500 dark:text-gray-400">Loading...</p>
-      </div>
+      @if (loading) {
+        <div class="p-12 flex flex-col items-center justify-center">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mb-4"></div>
+          <p class="text-gray-500 dark:text-gray-400">Loading...</p>
+        </div>
+      }
 
       <!-- Content -->
-      <div *ngIf="!loading">
-        <!-- Search and Actions -->
-        <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-          <input
-            *ngIf="searchable"
-            type="text"
-            placeholder="Search..."
-            class="glass-input w-64"
-            [(ngModel)]="searchTerm"
-            (ngModelChange)="onSearch()"
-          />
-          <div class="flex space-x-2">
-            <!-- Export Button -->
-            <div *ngIf="showExport" class="relative export-menu-container">
-              <button
-                type="button"
-                class="glass-button px-3 py-1.5 text-sm flex items-center space-x-1"
-                (click)="showExportMenu = !showExportMenu"
-                [attr.aria-label]="'Export data'"
-                [attr.aria-expanded]="showExportMenu"
-                [attr.aria-haspopup]="true"
-              >
-                <span aria-hidden="true">📥</span>
-                <span>Export</span>
-                <span *ngIf="showExportMenu" aria-hidden="true">▼</span>
-                <span *ngIf="!showExportMenu" aria-hidden="true">▶</span>
-              </button>
-              <!-- Export Menu -->
-              <div
-                *ngIf="showExportMenu"
-                class="absolute right-0 mt-1 w-40 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-10"
-              >
-                <button
-                  *ngIf="exportFormats.includes('csv')"
-                  (click)="exportToCSV()"
-                  class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded-t-lg"
-                  role="menuitem"
-                  [attr.aria-label]="'Export as CSV'"
-                >
-                  <span aria-hidden="true">📄</span> Export as CSV
-                </button>
-                <button
-                  *ngIf="exportFormats.includes('excel')"
-                  (click)="exportToExcel()"
-                  class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
-                  role="menuitem"
-                  [attr.aria-label]="'Export as Excel'"
-                >
-                  <span aria-hidden="true">📊</span> Export as Excel
-                </button>
-                <button
-                  *ngIf="exportFormats.includes('json')"
-                  (click)="exportToJSON()"
-                  class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded-b-lg"
-                  role="menuitem"
-                  [attr.aria-label]="'Export as JSON'"
-                >
-                  <span aria-hidden="true">📋</span> Export as JSON
-                </button>
-              </div>
+      @if (!loading) {
+        <div>
+          <!-- Search and Actions -->
+          <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+            @if (searchable) {
+              <input
+                type="text"
+                placeholder="Search..."
+                class="glass-input w-64"
+                [(ngModel)]="searchTerm"
+                (ngModelChange)="onSearch()"
+              />
+            }
+            <div class="flex space-x-2">
+              <!-- Export Button -->
+              @if (showExport) {
+                <div class="relative export-menu-container">
+                  <button
+                    type="button"
+                    class="glass-button px-3 py-1.5 text-sm flex items-center space-x-1"
+                    (click)="showExportMenu = !showExportMenu"
+                    [attr.aria-label]="'Export data'"
+                    [attr.aria-expanded]="showExportMenu"
+                    [attr.aria-haspopup]="true"
+                  >
+                    <span aria-hidden="true">📥</span>
+                    <span>Export</span>
+                    @if (showExportMenu) { <span aria-hidden="true">▼</span> }
+                    @if (!showExportMenu) { <span aria-hidden="true">▶</span> }
+                  </button>
+                  <!-- Export Menu -->
+                  @if (showExportMenu) {
+                    <div
+                      class="absolute right-0 mt-1 w-40 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-10"
+                    >
+                      @if (exportFormats.includes('csv')) {
+                        <button
+                          (click)="exportToCSV()"
+                          class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded-t-lg"
+                          role="menuitem"
+                          [attr.aria-label]="'Export as CSV'"
+                        >
+                          <span aria-hidden="true">📄</span> Export as CSV
+                        </button>
+                      }
+                      @if (exportFormats.includes('excel')) {
+                        <button
+                          (click)="exportToExcel()"
+                          class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+                          role="menuitem"
+                          [attr.aria-label]="'Export as Excel'"
+                        >
+                          <span aria-hidden="true">📊</span> Export as Excel
+                        </button>
+                      }
+                      @if (exportFormats.includes('json')) {
+                        <button
+                          (click)="exportToJSON()"
+                          class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded-b-lg"
+                          role="menuitem"
+                          [attr.aria-label]="'Export as JSON'"
+                        >
+                          <span aria-hidden="true">📋</span> Export as JSON
+                        </button>
+                      }
+                    </div>
+                  }
+                </div>
+              }
+              <ng-content select="[actions]"></ng-content>
             </div>
-            <ng-content select="[actions]"></ng-content>
+          </div>
+
+          <!-- Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="bg-gray-50/50 dark:bg-gray-800/50">
+                <tr role="row">
+                  @if (selectable) {
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider w-12" role="columnheader" scope="col">
+                      <input
+                        type="checkbox"
+                        [checked]="isAllSelected()"
+                        [attr.indeterminate]="isIndeterminate() ? true : null"
+                        (change)="onSelectAllChange($event)"
+                        class="cursor-pointer"
+                        [attr.aria-label]="'Select all rows'"
+                        [attr.aria-checked]="isAllSelected() ? 'true' : (isIndeterminate() ? 'mixed' : 'false')"
+                        #selectAllCheckbox
+                      />
+                    </th>
+                  }
+                  @for (column of columns; track trackByColumn($index, column)) {
+                    <th
+                      [style.width]="column.width"
+                      [class.text-left]="column.align === 'left' || !column.align"
+                      [class.text-center]="column.align === 'center'"
+                      [class.text-right]="column.align === 'right'"
+                      class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                      [class.cursor-pointer]="column.sortable"
+                      [class.hover:bg-gray-100/50]="column.sortable"
+                      [class.dark:hover:bg-gray-700/50]="column.sortable"
+                      (click)="onHeaderClick($event, column)"
+                      role="columnheader"
+                      scope="col"
+                      [attr.aria-label]="column.label + (column.sortable ? ' - Click to sort' : '')"
+                      [attr.aria-sort]="getAriaSort(column.key)"
+                      [attr.tabindex]="column.sortable ? 0 : null"
+                      (keydown.enter)="column.sortable && onSort(column.key)"
+                      (keydown.space)="column.sortable && onSort(column.key); $event.preventDefault()"
+                    >
+                      <div class="flex flex-col space-y-1">
+                        <div class="flex items-center space-x-1">
+                          <span>{{ column.label }}</span>
+                          @if (column.sortable) {
+                            <span>
+                              @if (getSortDirection(column.key) === 'asc') { <span>↑</span> }
+                              @if (getSortDirection(column.key) === 'desc') { <span>↓</span> }
+                              @if (!getSortDirection(column.key) && enableMultiSort) { <span>⇅</span> }
+                            </span>
+                          }
+                        </div>
+                        <!-- Column Filter -->
+                        @if (enableColumnFilters && column.filterable) {
+                          <div class="mt-1">
+                            @if (column.filterType === 'text' || !column.filterType) {
+                              <input
+                                type="text"
+                                [value]="columnFilters[column.key] || ''"
+                                (keyup.enter)="onColumnFilter(column.key, $any($event.target).value)"
+                                (blur)="onColumnFilter(column.key, $any($event.target).value)"
+                                [placeholder]="'Filter ' + column.label"
+                                class="glass-input text-xs w-full py-1 px-2"
+                              />
+                            }
+                            @if (column.filterType === 'select' && column.filterOptions) {
+                              <select
+                                [value]="columnFilters[column.key] || ''"
+                                (change)="onColumnFilter(column.key, $any($event.target).value)"
+                                class="glass-input text-xs w-full py-1 px-2"
+                              >
+                                <option value="">All</option>
+                                @for (option of column.filterOptions; track option.value) {
+                                  <option [value]="option.value">
+                                    {{ option.label }}
+                                  </option>
+                                }
+                              </select>
+                            }
+                          </div>
+                        }
+                      </div>
+                    </th>
+                  }
+                  @if (actions.length > 0) {
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                      Actions
+                    </th>
+                  }
+                </tr>
+              </thead>
+              <!-- Virtual Scrolling Table Body -->
+              @if (enableVirtualScrolling) {
+                <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                  <cdk-virtual-scroll-viewport
+                    [itemSize]="virtualScrollItemSize"
+                    [minBufferPx]="virtualScrollBufferSize * virtualScrollItemSize"
+                    [maxBufferPx]="virtualScrollBufferSize * virtualScrollItemSize * 2"
+                    class="virtual-scroll-viewport"
+                  >
+                    <tr
+                      *cdkVirtualFor="let row of paginatedData; trackBy: trackByRowId"
+                      [class.bg-blue-50/50]="isRowSelected(row)"
+                      class="hover:bg-white/50 dark:hover:bg-gray-800/50 transition-colors"
+                      role="row"
+                      [attr.aria-selected]="selectable ? isRowSelected(row) : null"
+                      [attr.aria-label]="'Row ' + (trackByRowId(0, row) || '')"
+                      [attr.tabindex]="selectable ? 0 : null"
+                      (click)="rowClicked.emit(row)"
+                      (keydown.enter)="rowClicked.emit(row)"
+                    >
+                      @if (selectable) {
+                        <td class="px-6 py-4 whitespace-nowrap">
+                          <input
+                            type="checkbox"
+                            [checked]="isRowSelected(row)"
+                            (change)="onRowSelectChange(row, $event)"
+                            class="cursor-pointer"
+                          />
+                        </td>
+                      }
+                      @for (column of columns; track trackByColumn($index, column)) {
+                        <td
+                          [class.text-left]="column.align === 'left' || !column.align"
+                          [class.text-center]="column.align === 'center'"
+                          [class.text-right]="column.align === 'right'"
+                          class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100"
+                          role="gridcell"
+                          [attr.aria-label]="column.label + ': ' + getCellValue(row, column)"
+                        >
+                          <!-- Custom Template -->
+                          @if (column.template) {
+                            <ng-container *ngTemplateOutlet="column.template; context: { $implicit: row, column: column, value: getNestedValue(row, column.key) }"></ng-container>
+                          } @else {
+                            <!-- Default Cell -->
+                            <span [innerHTML]="getCellValue(row, column)"></span>
+                          }
+                        </td>
+                      }
+                      @if (actions.length > 0) {
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm space-x-2" role="gridcell">
+                          @for (action of actions; track trackByAction($index, action)) {
+                            @if (!action.visible || action.visible(row)) {
+                              <button
+                                [title]="action.label"
+                                (click)="action.onClick(row)"
+                                class="inline-flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                                [attr.aria-label]="action.label"
+                              >
+                                <span aria-hidden="true">{{ action.icon }}</span>
+                              </button>
+                            }
+                          }
+                        </td>
+                      }
+                    </tr>
+                    <!-- Empty State for Virtual Scrolling -->
+                    @if (paginatedData.length === 0 && !loading) {
+                      <tr role="row">
+                        <td [attr.colspan]="(selectable ? 1 : 0) + columns.length + (actions.length > 0 ? 1 : 0)" class="px-6 py-12 text-center" role="gridcell">
+                          <div class="flex flex-col items-center justify-center" role="status" [attr.aria-live]="'polite'">
+                            <span class="text-4xl mb-2" aria-hidden="true">{{ emptyIcon }}</span>
+                            <p class="text-gray-500 dark:text-gray-400">{{ emptyText }}</p>
+                          </div>
+                        </td>
+                      </tr>
+                    }
+                  </cdk-virtual-scroll-viewport>
+                </tbody>
+              }
+              <!-- Regular Table Body (Non-Virtual Scrolling) -->
+              @if (!enableVirtualScrolling) {
+                <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                  @for (row of paginatedData; track trackByRowId($index, row)) {
+                    <tr
+                      [class.bg-blue-50/50]="isRowSelected(row)"
+                      class="hover:bg-white/50 dark:hover:bg-gray-800/50 transition-colors"
+                      role="row"
+                      [attr.aria-selected]="selectable ? isRowSelected(row) : null"
+                      [attr.aria-label]="'Row ' + (trackByRowId(0, row) || '')"
+                      [attr.tabindex]="selectable ? 0 : null"
+                      (click)="rowClicked.emit(row)"
+                      (keydown.enter)="rowClicked.emit(row)"
+                    >
+                      @if (selectable) {
+                        <td class="px-6 py-4 whitespace-nowrap" role="gridcell">
+                          <input
+                            type="checkbox"
+                            [checked]="isRowSelected(row)"
+                            (change)="onRowSelectChange(row, $event)"
+                            class="cursor-pointer"
+                            [attr.aria-label]="'Select row ' + (trackByRowId(0, row) || '')"
+                            [attr.aria-checked]="isRowSelected(row)"
+                          />
+                        </td>
+                      }
+                      @for (column of columns; track trackByColumn($index, column)) {
+                        <td
+                          [class.text-left]="column.align === 'left' || !column.align"
+                          [class.text-center]="column.align === 'center'"
+                          [class.text-right]="column.align === 'right'"
+                          class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100"
+                          role="gridcell"
+                          [attr.aria-label]="column.label + ': ' + getCellValue(row, column)"
+                        >
+                          <!-- Custom Template -->
+                          @if (column.template) {
+                            <ng-container *ngTemplateOutlet="column.template; context: { $implicit: row, column: column, value: getNestedValue(row, column.key) }"></ng-container>
+                          } @else {
+                            <!-- Default Cell -->
+                            <span [innerHTML]="getCellValue(row, column)"></span>
+                          }
+                        </td>
+                      }
+                      @if (actions.length > 0) {
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm space-x-2" role="gridcell">
+                          @for (action of actions; track trackByAction($index, action)) {
+                            @if (!action.visible || action.visible(row)) {
+                              <button
+                                [title]="action.label"
+                                (click)="action.onClick(row)"
+                                class="inline-flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                                [attr.aria-label]="action.label"
+                              >
+                                <span aria-hidden="true">{{ action.icon }}</span>
+                              </button>
+                            }
+                          }
+                        </td>
+                      }
+                    </tr>
+                  }
+                  <!-- Empty State -->
+                  @if (paginatedData.length === 0 && !loading) {
+                    <tr role="row">
+                      <td [attr.colspan]="(selectable ? 1 : 0) + columns.length + (actions.length > 0 ? 1 : 0)" class="px-6 py-12 text-center" role="gridcell">
+                        <div class="flex flex-col items-center justify-center" role="status" [attr.aria-live]="'polite'">
+                          <span class="text-4xl mb-2" aria-hidden="true">{{ emptyIcon }}</span>
+                          <p class="text-gray-500 dark:text-gray-400">{{ emptyText }}</p>
+                        </div>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              }
+            </table>
           </div>
         </div>
 
-        <!-- Table -->
-        <div class="overflow-x-auto">
-          <table class="w-full">
-            <thead class="bg-gray-50/50 dark:bg-gray-800/50">
-              <tr role="row">
-                <th *ngIf="selectable" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider w-12" role="columnheader" scope="col">
-                  <input
-                    type="checkbox"
-                    [checked]="isAllSelected()"
-                    [attr.indeterminate]="isIndeterminate() ? true : null"
-                    (change)="onSelectAllChange($event)"
-                    class="cursor-pointer"
-                    [attr.aria-label]="'Select all rows'"
-                    [attr.aria-checked]="isAllSelected() ? 'true' : (isIndeterminate() ? 'mixed' : 'false')"
-                    #selectAllCheckbox
-                  />
-                </th>
-                <th
-                  *ngFor="let column of columns; trackBy: trackByColumn"
-                  [style.width]="column.width"
-                  [class.text-left]="column.align === 'left' || !column.align"
-                  [class.text-center]="column.align === 'center'"
-                  [class.text-right]="column.align === 'right'"
-                  class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
-                  [class.cursor-pointer]="column.sortable"
-                  [class.hover:bg-gray-100/50]="column.sortable"
-                  [class.dark:hover:bg-gray-700/50]="column.sortable"
-                  (click)="onHeaderClick($event, column)"
-                  role="columnheader"
-                  scope="col"
-                  [attr.aria-label]="column.label + (column.sortable ? ' - Click to sort' : '')"
-                  [attr.aria-sort]="getAriaSort(column.key)"
-                  [attr.tabindex]="column.sortable ? 0 : null"
-                  (keydown.enter)="column.sortable && onSort(column.key)"
-                  (keydown.space)="column.sortable && onSort(column.key); $event.preventDefault()"
-                >
-                  <div class="flex flex-col space-y-1">
-                    <div class="flex items-center space-x-1">
-                      <span>{{ column.label }}</span>
-                      <span *ngIf="column.sortable">
-                        <span *ngIf="getSortDirection(column.key) === 'asc'">↑</span>
-                        <span *ngIf="getSortDirection(column.key) === 'desc'">↓</span>
-                        <span *ngIf="!getSortDirection(column.key) && enableMultiSort">⇅</span>
-                      </span>
-                    </div>
-                    <!-- Column Filter -->
-                    <div *ngIf="enableColumnFilters && column.filterable" class="mt-1">
-                      <input
-                        *ngIf="column.filterType === 'text' || !column.filterType"
-                        type="text"
-                        [value]="columnFilters[column.key] || ''"
-                        (keyup.enter)="onColumnFilter(column.key, $any($event.target).value)"
-                        (blur)="onColumnFilter(column.key, $any($event.target).value)"
-                        [placeholder]="'Filter ' + column.label"
-                        class="glass-input text-xs w-full py-1 px-2"
-                      />
-                      <select
-                        *ngIf="column.filterType === 'select' && column.filterOptions"
-                        [value]="columnFilters[column.key] || ''"
-                        (change)="onColumnFilter(column.key, $any($event.target).value)"
-                        class="glass-input text-xs w-full py-1 px-2"
-                      >
-                        <option value="">All</option>
-                        <option *ngFor="let option of column.filterOptions" [value]="option.value">
-                          {{ option.label }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                </th>
-                <th *ngIf="actions.length > 0" class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <!-- Virtual Scrolling Table Body -->
-            <tbody *ngIf="enableVirtualScrolling" class="divide-y divide-gray-200 dark:divide-gray-700">
-              <cdk-virtual-scroll-viewport
-                [itemSize]="virtualScrollItemSize"
-                [minBufferPx]="virtualScrollBufferSize * virtualScrollItemSize"
-                [maxBufferPx]="virtualScrollBufferSize * virtualScrollItemSize * 2"
-                class="virtual-scroll-viewport"
+        <!-- Pagination -->
+        @if ((pagination && pagination.total > 0) || (!pagination && data.length > pageSize)) {
+          <nav class="p-4 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center" role="navigation" [attr.aria-label]="'Table pagination'">
+            <div class="text-sm text-gray-500 dark:text-gray-400" role="status" [attr.aria-live]="'polite'">
+              Showing {{ startIndex + 1 }} to {{ endIndex }} of {{ pagination ? pagination.total : data.length }} entries
+            </div>
+            <div class="flex space-x-2" role="group" [attr.aria-label]="'Pagination controls'">
+              <button
+                [disabled]="currentPageValue === 1"
+                (click)="changePage(currentPageValue - 1)"
+                class="glass-button px-3 py-1 text-sm disabled:opacity-50"
+                [attr.aria-label]="'Go to previous page'"
+                [attr.aria-disabled]="currentPageValue === 1"
               >
-                <tr
-                  *cdkVirtualFor="let row of paginatedData; trackBy: trackByRowId"
-                  [class.bg-blue-50/50]="isRowSelected(row)"
-                  class="hover:bg-white/50 dark:hover:bg-gray-800/50 transition-colors"
-                  role="row"
-                  [attr.aria-selected]="selectable ? isRowSelected(row) : null"
-                  [attr.aria-label]="'Row ' + (trackByRowId(0, row) || '')"
-                  [attr.tabindex]="selectable ? 0 : null"
-                  (click)="rowClicked.emit(row)"
-                  (keydown.enter)="rowClicked.emit(row)"
+                Previous
+              </button>
+              @for (page of pages; track trackByPage($index, page)) {
+                <button
+                  [class.bg-primary-500]="page === currentPageValue"
+                  [class.text-white]="page === currentPageValue"
+                  (click)="changePage(page)"
+                  class="glass-button px-3 py-1 text-sm"
+                  [attr.aria-label]="'Go to page ' + page"
+                  [attr.aria-current]="page === currentPageValue ? 'page' : null"
                 >
-                  <td *ngIf="selectable" class="px-6 py-4 whitespace-nowrap">
-                    <input
-                      type="checkbox"
-                      [checked]="isRowSelected(row)"
-                      (change)="onRowSelectChange(row, $event)"
-                      class="cursor-pointer"
-                    />
-                  </td>
-                  <td
-                    *ngFor="let column of columns; trackBy: trackByColumn"
-                    [class.text-left]="column.align === 'left' || !column.align"
-                    [class.text-center]="column.align === 'center'"
-                    [class.text-right]="column.align === 'right'"
-                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100"
-                    role="gridcell"
-                    [attr.aria-label]="column.label + ': ' + getCellValue(row, column)"
-                  >
-                    <!-- Custom Template -->
-                    <ng-container *ngIf="column.template; else defaultCell">
-                      <ng-container *ngTemplateOutlet="column.template; context: { $implicit: row, column: column, value: getNestedValue(row, column.key) }"></ng-container>
-                    </ng-container>
-                    <!-- Default Cell -->
-                    <ng-template #defaultCell>
-                      <span [innerHTML]="getCellValue(row, column)"></span>
-                    </ng-template>
-                  </td>
-                  <td *ngIf="actions.length > 0" class="px-6 py-4 whitespace-nowrap text-right text-sm space-x-2" role="gridcell">
-                    <ng-container *ngFor="let action of actions; trackBy: trackByAction">
-                      <button
-                        *ngIf="!action.visible || action.visible(row)"
-                        [title]="action.label"
-                        (click)="action.onClick(row)"
-                        class="inline-flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-                        [attr.aria-label]="action.label"
-                      >
-                        <span aria-hidden="true">{{ action.icon }}</span>
-                      </button>
-                    </ng-container>
-                  </td>
-                </tr>
-                <!-- Empty State for Virtual Scrolling -->
-                <tr *ngIf="paginatedData.length === 0 && !loading" role="row">
-                  <td [attr.colspan]="(selectable ? 1 : 0) + columns.length + (actions.length > 0 ? 1 : 0)" class="px-6 py-12 text-center" role="gridcell">
-                    <div class="flex flex-col items-center justify-center" role="status" [attr.aria-live]="'polite'">
-                      <span class="text-4xl mb-2" aria-hidden="true">{{ emptyIcon }}</span>
-                      <p class="text-gray-500 dark:text-gray-400">{{ emptyText }}</p>
-                    </div>
-                  </td>
-                </tr>
-              </cdk-virtual-scroll-viewport>
-            </tbody>
-            <!-- Regular Table Body (Non-Virtual Scrolling) -->
-            <tbody *ngIf="!enableVirtualScrolling" class="divide-y divide-gray-200 dark:divide-gray-700">
-              <tr
-                *ngFor="let row of paginatedData; trackBy: trackByRowId"
-                [class.bg-blue-50/50]="isRowSelected(row)"
-                class="hover:bg-white/50 dark:hover:bg-gray-800/50 transition-colors"
-                role="row"
-                [attr.aria-selected]="selectable ? isRowSelected(row) : null"
-                [attr.aria-label]="'Row ' + (trackByRowId(0, row) || '')"
-                [attr.tabindex]="selectable ? 0 : null"
-                (click)="rowClicked.emit(row)"
-                (keydown.enter)="rowClicked.emit(row)"
+                  {{ page }}
+                </button>
+              }
+              <button
+                [disabled]="currentPageValue === totalPages"
+                (click)="changePage(currentPageValue + 1)"
+                class="glass-button px-3 py-1 text-sm disabled:opacity-50"
+                [attr.aria-label]="'Go to next page'"
+                [attr.aria-disabled]="currentPageValue === totalPages"
               >
-                <td *ngIf="selectable" class="px-6 py-4 whitespace-nowrap" role="gridcell">
-                  <input
-                    type="checkbox"
-                    [checked]="isRowSelected(row)"
-                    (change)="onRowSelectChange(row, $event)"
-                    class="cursor-pointer"
-                    [attr.aria-label]="'Select row ' + (trackByRowId(0, row) || '')"
-                    [attr.aria-checked]="isRowSelected(row)"
-                  />
-                </td>
-                <td
-                  *ngFor="let column of columns; trackBy: trackByColumn"
-                  [class.text-left]="column.align === 'left' || !column.align"
-                  [class.text-center]="column.align === 'center'"
-                  [class.text-right]="column.align === 'right'"
-                  class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100"
-                  role="gridcell"
-                  [attr.aria-label]="column.label + ': ' + getCellValue(row, column)"
-                >
-                  <!-- Custom Template -->
-                  <ng-container *ngIf="column.template; else defaultCell">
-                    <ng-container *ngTemplateOutlet="column.template; context: { $implicit: row, column: column, value: getNestedValue(row, column.key) }"></ng-container>
-                  </ng-container>
-                  <!-- Default Cell -->
-                  <ng-template #defaultCell>
-                    <span [innerHTML]="getCellValue(row, column)"></span>
-                  </ng-template>
-                </td>
-                <td *ngIf="actions.length > 0" class="px-6 py-4 whitespace-nowrap text-right text-sm space-x-2" role="gridcell">
-                  <ng-container *ngFor="let action of actions; trackBy: trackByAction">
-                    <button
-                      *ngIf="!action.visible || action.visible(row)"
-                      [title]="action.label"
-                      (click)="action.onClick(row)"
-                      class="inline-flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-                      [attr.aria-label]="action.label"
-                    >
-                      <span aria-hidden="true">{{ action.icon }}</span>
-                    </button>
-                  </ng-container>
-                </td>
-              </tr>
-              <!-- Empty State -->
-              <tr *ngIf="paginatedData.length === 0 && !loading" role="row">
-                <td [attr.colspan]="(selectable ? 1 : 0) + columns.length + (actions.length > 0 ? 1 : 0)" class="px-6 py-12 text-center" role="gridcell">
-                  <div class="flex flex-col items-center justify-center" role="status" [attr.aria-live]="'polite'">
-                    <span class="text-4xl mb-2" aria-hidden="true">{{ emptyIcon }}</span>
-                    <p class="text-gray-500 dark:text-gray-400">{{ emptyText }}</p>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Pagination -->
-      <nav *ngIf="(pagination && pagination.total > 0) || (!pagination && data.length > pageSize)" class="p-4 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center" role="navigation" [attr.aria-label]="'Table pagination'">
-        <div class="text-sm text-gray-500 dark:text-gray-400" role="status" [attr.aria-live]="'polite'">
-          Showing {{ startIndex + 1 }} to {{ endIndex }} of {{ pagination ? pagination.total : data.length }} entries
-        </div>
-        <div class="flex space-x-2" role="group" [attr.aria-label]="'Pagination controls'">
-          <button
-            [disabled]="currentPageValue === 1"
-            (click)="changePage(currentPageValue - 1)"
-            class="glass-button px-3 py-1 text-sm disabled:opacity-50"
-            [attr.aria-label]="'Go to previous page'"
-            [attr.aria-disabled]="currentPageValue === 1"
-          >
-            Previous
-          </button>
-          <button
-            *ngFor="let page of pages; trackBy: trackByPage"
-            [class.bg-primary-500]="page === currentPageValue"
-            [class.text-white]="page === currentPageValue"
-            (click)="changePage(page)"
-            class="glass-button px-3 py-1 text-sm"
-            [attr.aria-label]="'Go to page ' + page"
-            [attr.aria-current]="page === currentPageValue ? 'page' : null"
-          >
-            {{ page }}
-          </button>
-          <button
-            [disabled]="currentPageValue === totalPages"
-            (click)="changePage(currentPageValue + 1)"
-            class="glass-button px-3 py-1 text-sm disabled:opacity-50"
-            [attr.aria-label]="'Go to next page'"
-            [attr.aria-disabled]="currentPageValue === totalPages"
-          >
-            Next
-          </button>
-        </div>
-      </nav>
+                Next
+              </button>
+            </div>
+          </nav>
+        }
+      }
     </div>
   `,
   styles: [`

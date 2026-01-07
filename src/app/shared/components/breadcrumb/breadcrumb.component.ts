@@ -39,40 +39,53 @@ export interface BreadcrumbItem {
       role="navigation"
       [attr.aria-label]="ariaLabel || 'Breadcrumb'">
       <ol class="breadcrumb-list" role="list">
-        <li
-          *ngFor="let item of items; let last = last; let i = index; trackBy: trackByItem"
-          [class]="getItemClasses(item, last)"
-          role="listitem"
-          [attr.aria-current]="last ? 'page' : null">
-          <a
-            *ngIf="!last && item.route && !item.disabled"
-            [routerLink]="item.route"
-            [class]="linkClass"
-            [attr.aria-label]="item.label">
-            <mat-icon *ngIf="item.icon" [class]="iconClass" [attr.aria-hidden]="true">{{ item.icon }}</mat-icon>
-            <span>{{ item.label }}</span>
-          </a>
-          <span
-            *ngIf="last || !item.route || item.disabled"
-            [class]="getSpanClasses(item, last)"
-            [attr.aria-label]="item.label">
-            <mat-icon *ngIf="item.icon" [class]="iconClass" [attr.aria-hidden]="true">{{ item.icon }}</mat-icon>
-            <span>{{ item.label }}</span>
-          </span>
-          <mat-icon
-            *ngIf="!last && separator === 'icon'"
-            [class]="separatorClass"
-            [attr.aria-hidden]="true"
-            [attr.aria-label]="'Separator'">
-            {{ separatorIcon }}
-          </mat-icon>
-          <span
-            *ngIf="!last && separator === 'text'"
-            [class]="separatorClass"
-            [attr.aria-hidden]="true">
-            {{ separatorText }}
-          </span>
-        </li>
+        @for (item of items; track trackByItem($index, item); let last = $last; let i = $index) {
+          <li
+            [class]="getItemClasses(item, last)"
+            role="listitem"
+            [attr.aria-current]="last ? 'page' : null">
+            
+            @if (!last && item.route && !item.disabled) {
+              <a
+                [routerLink]="item.route"
+                [class]="linkClass"
+                [attr.aria-label]="item.label">
+                @if (item.icon) {
+                  <mat-icon [class]="iconClass" [attr.aria-hidden]="true">{{ item.icon }}</mat-icon>
+                }
+                <span>{{ item.label }}</span>
+              </a>
+            }
+            
+            @if (last || !item.route || item.disabled) {
+              <span
+                [class]="getSpanClasses(item, last)"
+                [attr.aria-label]="item.label">
+                @if (item.icon) {
+                  <mat-icon [class]="iconClass" [attr.aria-hidden]="true">{{ item.icon }}</mat-icon>
+                }
+                <span>{{ item.label }}</span>
+              </span>
+            }
+            
+            @if (!last && separator === 'icon') {
+              <mat-icon
+                [class]="separatorClass"
+                [attr.aria-hidden]="true"
+                [attr.aria-label]="'Separator'">
+                {{ separatorIcon }}
+              </mat-icon>
+            }
+            
+            @if (!last && separator === 'text') {
+              <span
+                [class]="separatorClass"
+                [attr.aria-hidden]="true">
+                {{ separatorText }}
+              </span>
+            }
+          </li>
+        }
       </ol>
     </nav>
   `,
@@ -82,83 +95,58 @@ export interface BreadcrumbItem {
     }
 
     nav {
-      display: flex;
-      align-items: center;
+      @apply flex items-center;
     }
 
     .breadcrumb-list {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      gap: var(--spacing-sm); /* 8px */
+      @apply flex flex-wrap items-center list-none m-0 p-0 gap-2;
     }
 
     li {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-sm); /* 8px */
+      @apply flex items-center gap-2;
     }
 
     a, span {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--spacing-xs); /* 4px */
-      text-decoration: none;
-      color: inherit;
-      transition: color var(--transition-fast); /* 150ms */
+      @apply inline-flex items-center gap-1 no-underline text-inherit transition-colors duration-150;
     }
 
     a {
-      color: var(--color-gray-500);
-    }
-
-    a:hover {
-      color: var(--color-primary-500);
+      @apply text-gray-500 hover:text-primary-500;
     }
 
     .breadcrumb-item-active {
-      color: var(--color-gray-900);
-      font-weight: var(--font-weight-medium); /* 500 */
+      @apply text-gray-900 font-medium;
     }
 
     .breadcrumb-item-disabled {
-      color: var(--color-gray-400);
-      cursor: not-allowed;
+      @apply text-gray-400 cursor-not-allowed;
     }
 
     /* Separator - Using Design Tokens */
     .breadcrumb-separator {
-      color: var(--color-gray-400);
-      user-select: none;
+      @apply text-gray-400 select-none;
     }
 
     mat-icon.breadcrumb-separator {
-      font-size: 1rem;
-      width: 1rem;
-      height: 1rem;
+      @apply text-base w-4 h-4;
     }
 
     /* Icons */
     mat-icon {
-      font-size: 1rem;
-      width: 1rem;
-      height: 1rem;
+      @apply text-base w-4 h-4;
     }
 
     /* Variants - Using Design Tokens */
     .breadcrumb-sm {
-      font-size: var(--font-size-sm); /* 14px */
+      @apply text-sm;
     }
 
     .breadcrumb-md {
-      font-size: var(--font-size-base); /* 16px */
+      @apply text-base;
     }
 
     .breadcrumb-lg {
-      font-size: var(--font-size-lg); /* 18px */
+      @apply text-lg;
     }
   `]
 })

@@ -70,35 +70,25 @@ export type AlertSize = 'sm' | 'md' | 'lg';
       transition: var(--transition-normal);
     }
 
-    /* Variants - Using Design Tokens */
+    /* Variants - Using Design Tokens via Tailwind Classes preferred, but keeping SCSS for component encapsulation */
     .alert-info {
-      background-color: rgba(6, 182, 212, 0.1); /* info-500 with opacity */
-      border: 1px solid rgba(6, 182, 212, 0.3);
-      color: var(--color-info-600);
+      @apply bg-info-500/10 border-info-500/30 text-info-600;
     }
 
     .alert-success {
-      background-color: rgba(16, 185, 129, 0.1); /* success-500 with opacity */
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      color: var(--color-success-700);
+      @apply bg-success-500/10 border-success-500/30 text-success-700;
     }
 
     .alert-warning {
-      background-color: rgba(245, 158, 11, 0.1); /* warning-500 with opacity */
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      color: var(--color-warning-800);
+      @apply bg-warning-500/10 border-warning-500/30 text-warning-800;
     }
 
     .alert-danger {
-      background-color: rgba(239, 68, 68, 0.1); /* error-500 with opacity */
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      color: var(--color-error-800);
+      @apply bg-error-500/10 border-error-500/30 text-error-800;
     }
 
     .alert-default {
-      background-color: var(--color-gray-100);
-      border: 1px solid var(--color-gray-300);
-      color: var(--color-gray-700);
+      @apply bg-gray-100 border-gray-300 text-gray-700;
     }
 
     /* Sizes - Using Design Tokens */

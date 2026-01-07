@@ -43,10 +43,14 @@ interface FilePondFile {
   imports: [CommonModule, FormsModule, FilePondModule],
   template: `
     <div class="file-upload-container" [class]="customClass || ''" role="group" [attr.aria-label]="ariaLabel || label || 'File upload'">
-      <label *ngIf="label" [for]="filePondId" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-        {{ label }}
-        <span *ngIf="required" class="text-red-500 ml-1" [attr.aria-label]="'Required'">*</span>
-      </label>
+      @if (label) {
+        <label [for]="filePondId" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          {{ label }}
+          @if (required) {
+            <span class="text-red-500 ml-1" [attr.aria-label]="'Required'">*</span>
+          }
+        </label>
+      }
 
       <div class="file-upload-wrapper">
         <file-pond
@@ -64,17 +68,23 @@ interface FilePondFile {
       </div>
 
       <!-- File Info -->
-      <div *ngIf="showFileInfo && filesCount > 0" [id]="fileInfoId" class="file-info mt-3" role="status" [attr.aria-live]="'polite'">
-        <div class="text-sm text-gray-600 dark:text-gray-400">
-          {{ filesCount }} file(s) selected
-          <span *ngIf="maxFiles > 0">(max {{ maxFiles }})</span>
+      @if (showFileInfo && filesCount > 0) {
+        <div [id]="fileInfoId" class="file-info mt-3" role="status" [attr.aria-live]="'polite'">
+          <div class="text-sm text-gray-600 dark:text-gray-400">
+            {{ filesCount }} file(s) selected
+            @if (maxFiles > 0) {
+              <span>(max {{ maxFiles }})</span>
+            }
+          </div>
         </div>
-      </div>
+      }
 
       <!-- Error Message -->
-      <div *ngIf="errorMessage" [id]="errorId" class="error-message text-red-500 text-sm mt-1" role="alert" [attr.aria-live]="'assertive'">
-        {{ errorMessage }}
-      </div>
+      @if (errorMessage) {
+        <div [id]="errorId" class="error-message text-red-500 text-sm mt-1" role="alert" [attr.aria-live]="'assertive'">
+          {{ errorMessage }}
+        </div>
+      }
     </div>
   `,
   styles: [`

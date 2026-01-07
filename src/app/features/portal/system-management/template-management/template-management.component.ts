@@ -17,7 +17,7 @@ import { GlassCardComponent } from '../../../../shared/components/glass-card/gla
 import { GlassButtonComponent } from '../../../../shared/components/glass-button/glass-button.component';
 import { DataTableComponent, TableColumn, TableAction } from '../../../../shared/components/data-table/data-table.component';
 import { ModalComponent } from '../../../../shared/components/modal/modal.component';
-import { RichTextComponent } from '../../../../shared/components/rich-text/rich-text.component';
+import { RichTextEditorComponent } from '../../../../shared/components/rich-text-editor/rich-text-editor.component';
 import { TemplateManagementService } from '../../../../core/services/template-management.service';
 import { Template, TemplateContent, TemplateAsset } from '../../../../core/models/template-management.model';
 import { I18nService } from '../../../../core/services/i18n.service';
@@ -33,7 +33,7 @@ import { AuthService } from '../../../../core/services/auth.service';
     GlassButtonComponent,
     DataTableComponent,
     ModalComponent,
-    RichTextComponent
+    RichTextEditorComponent
   ],
   templateUrl: './template-management.component.html',
   styleUrl: './template-management.component.scss'

@@ -11,10 +11,14 @@
         class="lg:hidden p-2 rounded-lg glass-button hover:bg-white/50 dark:hover:bg-gray-800/50 transition-all"
         [title]="sidebarOpen ? 'Close Menu' : 'Open Menu'" aria-label="Toggle sidebar">
         <svg class="w-6 h-6 text-gray-900 dark:text-gray-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path *ngIf="!sidebarOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M4 6h16M4 12h16M4 18h16" />
-          <path *ngIf="sidebarOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M6 18L18 6M6 6l12 12" />
+          @if (!sidebarOpen) {
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16" />
+          }
+          @if (sidebarOpen) {
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M6 18L18 6M6 6l12 12" />
+          }
         </svg>
       </button>
 
@@ -39,80 +43,84 @@
       </button>
 
       <!-- User Menu -->
-      <div *ngIf="currentUser()" class="relative">
-        <button #userMenuButton (click)="toggleUserMenu()"
-          class="flex items-center space-x-3 px-3 py-2 rounded-lg glass hover:bg-white/50 dark:hover:bg-gray-800/50 transition-all"
-          [title]="getUserDisplayName()">
-          <!-- User Avatar -->
-          <div class="w-8 h-8 rounded-full bg-primary-500/20 flex items-center justify-center">
-            <span class="text-sm font-semibold text-primary-600 dark:text-primary-400">
-              {{ getUserInitials() }}
-            </span>
-          </div>
+      @if (currentUser()) {
+        <div class="relative">
+          <button #userMenuButton (click)="toggleUserMenu()"
+            class="flex items-center space-x-3 px-3 py-2 rounded-lg glass hover:bg-white/50 dark:hover:bg-gray-800/50 transition-all"
+            [title]="getUserDisplayName()">
+            <!-- User Avatar -->
+            <div class="w-8 h-8 rounded-full bg-primary-500/20 flex items-center justify-center">
+              <span class="text-sm font-semibold text-primary-600 dark:text-primary-400">
+                {{ getUserInitials() }}
+              </span>
+            </div>
 
-          <!-- User Info -->
-          <div class="text-left hidden md:block">
-            <p class="text-sm font-medium text-gray-900 dark:text-gray-100">
-              {{ getUserDisplayName() }}
-            </p>
-            <p class="text-xs text-gray-500 dark:text-gray-400">
-              {{ currentUser()?.roles?.join(', ') || 'User' }}
-            </p>
-          </div>
+            <!-- User Info -->
+            <div class="text-left hidden md:block">
+              <p class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                {{ getUserDisplayName() }}
+              </p>
+              <p class="text-xs text-gray-500 dark:text-gray-400">
+                {{ currentUser()?.roles?.join(', ') || 'User' }}
+              </p>
+            </div>
 
-          <!-- Dropdown Arrow -->
-          <svg class="w-4 h-4 text-gray-600 dark:text-gray-400 transition-transform" [class.rotate-180]="showUserMenu()"
-            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
+            <!-- Dropdown Arrow -->
+            <svg class="w-4 h-4 text-gray-600 dark:text-gray-400 transition-transform" [class.rotate-180]="showUserMenu()"
+              fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
 
-        <!-- User Dropdown Menu -->
-        <div #userMenuDropdown *ngIf="showUserMenu()"
-          class="fixed w-56 glass-dropdown rounded-lg shadow-xl py-2 z-[9999]" [style.--dropdown-top.px]="dropdownTop()"
-          [style.--dropdown-right.px]="dropdownRight()">
-          <!-- User Info Header -->
-          <div class="px-4 py-3 border-b border-primary-500/20">
-            <p class="text-sm font-medium text-current">
-              {{ getUserDisplayName() }}
-            </p>
-            <p class="text-xs opacity-70 truncate">
-              {{ currentUser()?.email || '' }}
-            </p>
-          </div>
+          <!-- User Dropdown Menu -->
+          @if (showUserMenu()) {
+            <div #userMenuDropdown
+              class="fixed w-56 glass-dropdown rounded-lg shadow-xl py-2 z-[9999]" [style.--dropdown-top.px]="dropdownTop()"
+              [style.--dropdown-right.px]="dropdownRight()">
+              <!-- User Info Header -->
+              <div class="px-4 py-3 border-b border-primary-500/20">
+                <p class="text-sm font-medium text-current">
+                  {{ getUserDisplayName() }}
+                </p>
+                <p class="text-xs opacity-70 truncate">
+                  {{ currentUser()?.email || '' }}
+                </p>
+              </div>
 
-          <!-- Menu Items -->
-          <div class="py-1">
-            <button (click)="navigateToProfile()"
-              class="w-full flex items-center space-x-3 px-4 py-2 text-sm text-current hover:bg-primary-500/10 transition-all">
-              <span class="text-lg">👤</span>
-              <span>{{ i18n.t('header.myProfile') }}</span>
-            </button>
+              <!-- Menu Items -->
+              <div class="py-1">
+                <button (click)="navigateToProfile()"
+                  class="w-full flex items-center space-x-3 px-4 py-2 text-sm text-current hover:bg-primary-500/10 transition-all">
+                  <span class="text-lg">👤</span>
+                  <span>{{ i18n.t('header.myProfile') }}</span>
+                </button>
 
-            <button (click)="toggleTheme(); closeUserMenu()"
-              class="w-full flex items-center space-x-3 px-4 py-2 text-sm text-current hover:bg-primary-500/10 transition-all">
-              <span class="text-lg">{{ getThemeIcon() }}</span>
-              <span>{{ i18n.t('header.theme') }}: {{ i18n.t('theme.' + themeService.mode()) }}</span>
-            </button>
+                <button (click)="toggleTheme(); closeUserMenu()"
+                  class="w-full flex items-center space-x-3 px-4 py-2 text-sm text-current hover:bg-primary-500/10 transition-all">
+                  <span class="text-lg">{{ getThemeIcon() }}</span>
+                  <span>{{ i18n.t('header.theme') }}: {{ i18n.t('theme.' + themeService.mode()) }}</span>
+                </button>
 
-            <button (click)="toggleLanguage(); closeUserMenu()"
-              class="w-full flex items-center space-x-3 px-4 py-2 text-sm text-current hover:bg-primary-500/10 transition-all">
-              <span class="text-lg">{{ currentLang() === 'th' ? '🇹🇭' : '🇬🇧' }}</span>
-              <span>{{ i18n.t('header.language') }}: {{ currentLang() === 'th' ? i18n.t('header.thai') :
-                i18n.t('header.english') }}</span>
-            </button>
-          </div>
+                <button (click)="toggleLanguage(); closeUserMenu()"
+                  class="w-full flex items-center space-x-3 px-4 py-2 text-sm text-current hover:bg-primary-500/10 transition-all">
+                  <span class="text-lg">{{ currentLang() === 'th' ? '🇹🇭' : '🇬🇧' }}</span>
+                  <span>{{ i18n.t('header.language') }}: {{ currentLang() === 'th' ? i18n.t('header.thai') :
+                    i18n.t('header.english') }}</span>
+                </button>
+              </div>
 
-          <!-- Logout -->
-          <div class="border-t border-primary-500/20 pt-1">
-            <button (click)="logout()"
-              class="w-full flex items-center space-x-3 px-4 py-2 text-sm text-red-500 hover:bg-red-500/10 transition-all">
-              <span class="text-lg">🚪</span>
-              <span>{{ t('common.logout') }}</span>
-            </button>
-          </div>
+              <!-- Logout -->
+              <div class="border-t border-primary-500/20 pt-1">
+                <button (click)="logout()"
+                  class="w-full flex items-center space-x-3 px-4 py-2 text-sm text-red-500 hover:bg-red-500/10 transition-all">
+                  <span class="text-lg">🚪</span>
+                  <span>{{ t('common.logout') }}</span>
+                </button>
+              </div>
+            </div>
+          }
         </div>
-      </div>
+      }
     </div>
   </div>
 </header>

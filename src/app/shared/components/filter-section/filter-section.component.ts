@@ -52,101 +52,112 @@ export interface FilterActionButton {
   template: `
     <app-glass-card [customClass]="customClass || 'p-6'" [ariaLabel]="ariaLabel || 'Filter section'">
       <div [ngClass]="gridClasses" role="group" [attr.aria-label]="'Filter fields'">
-        <div *ngFor="let field of fields; trackBy: trackByField">
-          <label
-            [for]="getFieldId(field.key)"
-            class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-            {{ field.label }}
-          </label>
+        @for (field of fields; track trackByField($index, field)) {
+          <div>
+            <label
+              [for]="getFieldId(field.key)"
+              class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+              {{ field.label }}
+            </label>
 
-          <!-- Text Input -->
-          <input
-            *ngIf="field.type === 'text'"
-            [id]="getFieldId(field.key)"
-            [(ngModel)]="field.value"
-            type="text"
-            class="glass-input w-full"
-            [placeholder]="field.placeholder || ''"
-            [disabled]="loading || false"
-            [attr.aria-label]="field.label"
-            [attr.aria-required]="field.error ? 'true' : null"
-            [attr.aria-invalid]="field.error ? 'true' : null"
-            [attr.aria-describedby]="field.error ? getFieldErrorId(field.key) : null"
-            (ngModelChange)="onFieldChange(field.key, $event)"
-            (keyup.enter)="onSearch(getFieldValueAsString(field))"
-          />
+            <!-- Text Input -->
+            @if (field.type === 'text') {
+              <input
+                [id]="getFieldId(field.key)"
+                [(ngModel)]="field.value"
+                type="text"
+                class="glass-input w-full"
+                [placeholder]="field.placeholder || ''"
+                [disabled]="loading || false"
+                [attr.aria-label]="field.label"
+                [attr.aria-required]="field.error ? 'true' : null"
+                [attr.aria-invalid]="field.error ? 'true' : null"
+                [attr.aria-describedby]="field.error ? getFieldErrorId(field.key) : null"
+                (ngModelChange)="onFieldChange(field.key, $event)"
+                (keyup.enter)="onSearch(getFieldValueAsString(field))"
+              />
+            }
 
-          <!-- Number Input -->
-          <input
-            *ngIf="field.type === 'number'"
-            [id]="getFieldId(field.key)"
-            [(ngModel)]="field.value"
-            type="number"
-            class="glass-input w-full"
-            [placeholder]="field.placeholder || ''"
-            [disabled]="loading || false"
-            [attr.aria-label]="field.label"
-            [attr.aria-required]="field.error ? 'true' : null"
-            [attr.aria-invalid]="field.error ? 'true' : null"
-            [attr.aria-describedby]="field.error ? getFieldErrorId(field.key) : null"
-            (ngModelChange)="onFieldChange(field.key, $event)"
-          />
+            <!-- Number Input -->
+            @if (field.type === 'number') {
+              <input
+                [id]="getFieldId(field.key)"
+                [(ngModel)]="field.value"
+                type="number"
+                class="glass-input w-full"
+                [placeholder]="field.placeholder || ''"
+                [disabled]="loading || false"
+                [attr.aria-label]="field.label"
+                [attr.aria-required]="field.error ? 'true' : null"
+                [attr.aria-invalid]="field.error ? 'true' : null"
+                [attr.aria-describedby]="field.error ? getFieldErrorId(field.key) : null"
+                (ngModelChange)="onFieldChange(field.key, $event)"
+              />
+            }
 
-          <!-- Date Input -->
-          <input
-            *ngIf="field.type === 'date'"
-            [id]="getFieldId(field.key)"
-            [(ngModel)]="field.value"
-            type="date"
-            class="glass-input w-full"
-            [disabled]="loading || false"
-            [attr.aria-label]="field.label"
-            [attr.aria-required]="field.error ? 'true' : null"
-            [attr.aria-invalid]="field.error ? 'true' : null"
-            [attr.aria-describedby]="field.error ? getFieldErrorId(field.key) : null"
-            (ngModelChange)="onFieldChange(field.key, $event)"
-          />
+            <!-- Date Input -->
+            @if (field.type === 'date') {
+              <input
+                [id]="getFieldId(field.key)"
+                [(ngModel)]="field.value"
+                type="date"
+                class="glass-input w-full"
+                [disabled]="loading || false"
+                [attr.aria-label]="field.label"
+                [attr.aria-required]="field.error ? 'true' : null"
+                [attr.aria-invalid]="field.error ? 'true' : null"
+                [attr.aria-describedby]="field.error ? getFieldErrorId(field.key) : null"
+                (ngModelChange)="onFieldChange(field.key, $event)"
+              />
+            }
 
-          <!-- Select -->
-          <select
-            *ngIf="field.type === 'select'"
-            [id]="getFieldId(field.key)"
-            [(ngModel)]="field.value"
-            class="glass-input w-full"
-            [disabled]="loading || false"
-            [attr.aria-label]="field.label"
-            [attr.aria-required]="field.error ? 'true' : null"
-            [attr.aria-invalid]="field.error ? 'true' : null"
-            [attr.aria-describedby]="field.error ? getFieldErrorId(field.key) : null"
-            (ngModelChange)="onFieldChange(field.key, $event)"
-          >
-            <option value="">{{ 'common.all' | translate }}</option>
-            <option *ngFor="let option of field.options; trackBy: trackByOption" [value]="option.value">
-              {{ option.label }}
-            </option>
-          </select>
+            <!-- Select -->
+            @if (field.type === 'select') {
+              <select
+                [id]="getFieldId(field.key)"
+                [(ngModel)]="field.value"
+                class="glass-input w-full"
+                [disabled]="loading || false"
+                [attr.aria-label]="field.label"
+                [attr.aria-required]="field.error ? 'true' : null"
+                [attr.aria-invalid]="field.error ? 'true' : null"
+                [attr.aria-describedby]="field.error ? getFieldErrorId(field.key) : null"
+                (ngModelChange)="onFieldChange(field.key, $event)"
+              >
+                <option value="">{{ 'common.all' | translate }}</option>
+                @for (option of field.options; track trackByOption($index, option)) {
+                  <option [value]="option.value">
+                    {{ option.label }}
+                  </option>
+                }
+              </select>
+            }
 
-          <!-- Error Message -->
-          <p
-            *ngIf="field.error"
-            [id]="getFieldErrorId(field.key)"
-            class="mt-1 text-sm text-red-600 dark:text-red-400"
-            role="alert"
-            [attr.aria-live]="'polite'">
-            {{ field.error }}
-          </p>
-        </div>
+            <!-- Error Message -->
+            @if (field.error) {
+              <p
+                [id]="getFieldErrorId(field.key)"
+                class="mt-1 text-sm text-red-600 dark:text-red-400"
+                role="alert"
+                [attr.aria-live]="'polite'">
+                {{ field.error }}
+              </p>
+            }
+          </div>
+        }
 
         <!-- Action Button -->
-        <div class="flex items-end" *ngIf="actionButton">
-          <app-glass-button
-            [variant]="actionButton.variant || 'primary'"
-            [disabled]="actionButton.disabled || false"
-            [ariaLabel]="actionButton.label"
-            (clicked)="actionButton.onClick()">
-            {{ actionButton.label }}
-          </app-glass-button>
-        </div>
+        @if (actionButton) {
+          <div class="flex items-end">
+            <app-glass-button
+              [variant]="actionButton.variant || 'primary'"
+              [disabled]="actionButton.disabled || false"
+              [ariaLabel]="actionButton.label"
+              (clicked)="actionButton.onClick()">
+              {{ actionButton.label }}
+            </app-glass-button>
+          </div>
+        }
       </div>
     </app-glass-card>
   `,

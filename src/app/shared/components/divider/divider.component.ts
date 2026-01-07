@@ -26,7 +26,9 @@ import { MatDividerModule } from '@angular/material/divider';
       [attr.role]="'separator'"
       [attr.aria-orientation]="vertical ? 'vertical' : 'horizontal'"
       [attr.aria-label]="ariaLabel || text || 'Divider'">
-      <span *ngIf="text" class="divider-text" [attr.aria-hidden]="false">{{ text }}</span>
+      @if (text) {
+        <span class="divider-text" [attr.aria-hidden]="false">{{ text }}</span>
+      }
     </mat-divider>
   `,
   styles: [`
@@ -35,22 +37,19 @@ import { MatDividerModule } from '@angular/material/divider';
     }
 
     .divider-text {
-      padding: 0 var(--spacing-md); /* 16px */
-      color: var(--color-gray-500);
-      font-size: var(--font-size-sm); /* 14px */
-      background: #ffffff;
+      @apply px-4 text-sm text-gray-500 bg-white;
     }
 
     .divider-spacing-sm {
-      margin: var(--spacing-sm) 0; /* 8px */
+      @apply my-2;
     }
 
     .divider-spacing-md {
-      margin: var(--spacing-md) 0; /* 16px */
+      @apply my-4;
     }
 
     .divider-spacing-lg {
-      margin: var(--spacing-lg) 0; /* 24px */
+      @apply my-6;
     }
   `]
 })

@@ -32,7 +32,9 @@ import { CommonModule } from '@angular/common';
       [attr.aria-busy]="loading"
       (click)="handleClick($event)"
     >
-      <span *ngIf="loading" class="inline-block animate-spin mr-2" aria-hidden="true">⟳</span>
+      @if (loading) {
+        <span class="inline-block animate-spin mr-2" aria-hidden="true">⟳</span>
+      }
       <ng-content></ng-content>
     </button>
   `,

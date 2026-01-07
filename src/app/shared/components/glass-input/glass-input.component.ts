@@ -32,13 +32,16 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   }],
   template: `
     <div class="w-full" [ngClass]="customClass">
-      <label
-        *ngIf="label"
-        [for]="inputId"
-        class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-        {{ label }}
-        <span *ngIf="required" class="text-error-500" aria-label="required">*</span>
-      </label>
+      @if (label) {
+        <label
+          [for]="inputId"
+          class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          {{ label }}
+          @if (required) {
+            <span class="text-error-500" aria-label="required">*</span>
+          }
+        </label>
+      }
       <input
         [id]="inputId"
         [type]="type"
@@ -54,16 +57,18 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
         (blur)="onTouched()"
         class="glass-input w-full text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
       />
-      <p
-        *ngIf="error"
-        [id]="errorId"
-        class="text-red-500 text-sm mt-1"
-        role="alert"
-        aria-live="polite">{{ error }}</p>
-      <p
-        *ngIf="hint && !error"
-        [id]="hintId"
-        class="text-gray-500 text-sm mt-1">{{ hint }}</p>
+      @if (error) {
+        <p
+          [id]="errorId"
+          class="text-red-500 text-sm mt-1"
+          role="alert"
+          aria-live="polite">{{ error }}</p>
+      }
+      @if (hint && !error) {
+        <p
+          [id]="hintId"
+          class="text-gray-500 text-sm mt-1">{{ hint }}</p>
+      }
     </div>
   `,
   styles: []

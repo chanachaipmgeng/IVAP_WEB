@@ -6,27 +6,26 @@
   <!-- Module Shortcuts Grid -->
   <div class="mb-8">
     <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4 px-1">
-      <i class="fas fa-th-large mr-2 text-indigo-500"></i> Main Modules
+      <i class="fas fa-th-large mr-2 text-primary-500"></i> Main Modules
     </h2>
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
-      <div *ngFor="let module of moduleShortcuts()" 
+      <app-glass-card *ngFor="let module of moduleShortcuts()" 
            (click)="navigateTo(module.route)"
-           class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm hover:shadow-md transition-all cursor-pointer border border-gray-100 dark:border-gray-700 group hover:-translate-y-1">
-        <div class="flex flex-col items-center text-center h-full">
+           padding="sm"
+           customClass="h-full hover:-translate-y-1 transition-transform cursor-pointer group flex flex-col items-center text-center">
           <div [class]="'w-12 h-12 rounded-full flex items-center justify-center text-2xl mb-3 transition-transform group-hover:scale-110 ' + module.bgClass + ' ' + module.colorClass">
             {{ module.icon }}
           </div>
           <h3 class="font-semibold text-gray-900 dark:text-gray-100 text-sm mb-1 line-clamp-1">{{ module.label }}</h3>
           <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">{{ module.description }}</p>
-        </div>
-      </div>
+      </app-glass-card>
     </div>
   </div>
 
   <!-- Key Metrics -->
   <div class="mb-8">
     <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4 px-1">
-      <i class="fas fa-chart-line mr-2 text-blue-500"></i> System Overview
+      <i class="fas fa-chart-line mr-2 text-info-500"></i> System Overview
     </h2>
     <app-statistics-grid 
       [stats]="statisticsCards()" 
@@ -69,11 +68,11 @@
         <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">
           {{ t('pages.dashboard.recentActivity') }}
         </h3>
-        <button class="text-sm text-indigo-600 dark:text-indigo-400 hover:underline">View All</button>
+        <button class="text-sm text-primary-600 dark:text-primary-400 hover:underline font-medium transition-colors">View All</button>
       </div>
       <div class="space-y-3">
         <div *ngFor="let activity of recentCheckIns(); trackBy: trackByCheckIn" 
-             class="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700/30 border border-gray-100 dark:border-gray-700">
+             class="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700/30 border border-gray-100 dark:border-gray-700 hover:bg-white dark:hover:bg-gray-700 transition-colors">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center">
               <i class="fas fa-user text-gray-400"></i>
@@ -84,7 +83,7 @@
             </div>
           </div>
           <span class="px-2 py-1 text-xs rounded-full" 
-                [ngClass]="activity.status === 'present' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'">
+                [ngClass]="activity.status === 'present' ? 'bg-success-100 text-success-700 dark:bg-success-900/30 dark:text-success-400' : 'bg-warning-100 text-warning-700 dark:bg-warning-900/30 dark:text-warning-400'">
             {{ activity.status | titlecase }}
           </span>
         </div>
@@ -97,12 +96,12 @@
         <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">
           {{ t('pages.dashboard.upcomingEvents') }}
         </h3>
-        <button class="text-sm text-indigo-600 dark:text-indigo-400 hover:underline">Calendar</button>
+        <button class="text-sm text-primary-600 dark:text-primary-400 hover:underline font-medium transition-colors">Calendar</button>
       </div>
       <div class="space-y-3">
         <div *ngFor="let event of upcomingEvents(); trackBy: trackByEvent" 
              class="flex items-center p-3 rounded-lg bg-gray-50 dark:bg-gray-700/30 border border-gray-100 dark:border-gray-700 relative overflow-hidden group hover:bg-white dark:hover:bg-gray-700 transition-all cursor-pointer">
-          <div class="w-1 bg-indigo-500 absolute left-0 top-0 bottom-0"></div>
+          <div class="w-1 bg-primary-500 absolute left-0 top-0 bottom-0"></div>
           <div class="flex-1 ml-3">
             <p class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ event.name }}</p>
             <div class="flex items-center gap-2 mt-1">
@@ -110,7 +109,7 @@
               <p class="text-xs text-gray-500">{{ event.date }}</p>
             </div>
           </div>
-          <div class="w-8 h-8 rounded-full bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 group-hover:scale-110 transition-transform">
+          <div class="w-8 h-8 rounded-full bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center text-primary-600 dark:text-primary-400 group-hover:scale-110 transition-transform">
             <i class="fas fa-chevron-right text-xs"></i>
           </div>
         </div>

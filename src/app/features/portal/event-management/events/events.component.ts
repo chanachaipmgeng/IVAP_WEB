@@ -20,7 +20,7 @@ import { of } from 'rxjs';
 import { GlassButtonComponent } from '../../../../shared/components/glass-button/glass-button.component';
 import { DataTableComponent, TableColumn, TableAction } from '../../../../shared/components/data-table/data-table.component';
 import { ModalComponent } from '../../../../shared/components/modal/modal.component';
-import { RichTextComponent } from '../../../../shared/components/rich-text/rich-text.component';
+import { RichTextEditorComponent } from '../../../../shared/components/rich-text-editor/rich-text-editor.component';
 import { PageLayoutComponent, PageAction } from '../../../../shared/components/page-layout/page-layout.component';
 import { FilterSectionComponent, FilterField } from '../../../../shared/components/filter-section/filter-section.component';
 import { ApiService } from '../../../../core/services/api.service';
@@ -45,7 +45,8 @@ import { BaseComponent } from '../../../../core/base/base.component';
     DataTableComponent,
     ModalComponent,
     PageLayoutComponent,
-    FilterSectionComponent
+    FilterSectionComponent,
+    RichTextEditorComponent
   ],
   templateUrl: './events.component.html',
   styleUrl: './events.component.scss'

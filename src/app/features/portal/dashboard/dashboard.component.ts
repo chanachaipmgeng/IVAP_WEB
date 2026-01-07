@@ -7,7 +7,7 @@ import { GlassCardComponent } from '../../../shared/components/glass-card/glass-
 import { EChartsChartComponent, EChartsOption } from '../../../shared/components/echarts-chart/echarts-chart.component';
 import { PageLayoutComponent, PageAction } from '../../../shared/components/page-layout/page-layout.component';
 import { StatisticsGridComponent, StatCard } from '../../../shared/components/statistics-grid/statistics-grid.component';
-import { MaterialService } from '../../../shared/services/material.service';
+// import { MaterialService } from '../../../shared/services/material.service';
 import { ApiService } from '../../../core/services/api.service';
 import { ErrorHandlerService } from '../../../core/services/error-handler.service';
 import { AuthService } from '../../../core/services/auth.service';
@@ -204,25 +204,25 @@ export class DashboardComponent extends BaseComponent implements OnInit {
         icon: '👥',
         label: this.i18n.t('pages.dashboard.totalEmployees'),
         value: s.totalEmployees || 0,
-        iconBgClass: 'bg-blue-100 dark:bg-blue-900'
+        iconBgClass: 'bg-primary-100 text-primary-600 dark:bg-primary-900/30 dark:text-primary-400'
       },
       {
         icon: '✓',
         label: this.i18n.t('pages.dashboard.activeEmployees'),
         value: s.activeEmployees || 0,
-        iconBgClass: 'bg-green-100 dark:bg-green-900'
+        iconBgClass: 'bg-success-100 text-success-600 dark:bg-success-900/30 dark:text-success-400'
       },
       {
         icon: '👤',
         label: this.i18n.t('pages.dashboard.totalVisitors'),
         value: s.totalVisitors || 0,
-        iconBgClass: 'bg-purple-100 dark:bg-purple-900'
+        iconBgClass: 'bg-secondary-100 text-secondary-600 dark:bg-secondary-900/30 dark:text-secondary-400'
       },
       {
         icon: '🎉',
         label: this.i18n.t('pages.dashboard.totalEvents'),
         value: s.totalEvents || 0,
-        iconBgClass: 'bg-yellow-100 dark:bg-yellow-900'
+        iconBgClass: 'bg-warning-100 text-warning-600 dark:bg-warning-900/30 dark:text-warning-400'
       }
     ];
   });
@@ -241,7 +241,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     const presentLabel = this.i18n.t('pages.dashboard.present');
     const absentLabel = this.i18n.t('pages.dashboard.absent');
     const categories = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    
+
     return {
       tooltip: {
         trigger: 'axis',
@@ -304,7 +304,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     const onlineLabel = this.i18n.t('pages.dashboard.online');
     const offlineLabel = this.i18n.t('pages.dashboard.offline');
     const maintenanceLabel = this.i18n.t('pages.dashboard.maintenance');
-    
+
     return {
       tooltip: {
         trigger: 'item',
@@ -359,7 +359,6 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     private dashboardService: DashboardService,
     private auth: AuthService,
     public i18n: I18nService,
-    private material: MaterialService,
     private guestService: GuestService
   ) {
     super();
@@ -389,7 +388,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     const companyId = this.auth.currentUser()?.companyId;
     // For demo/dev purposes, load mock data even without company ID
     // In production, this would return or handle error
-    
+
     const companyIdStr = companyId ? String(companyId) : 'mock-company-id';
 
     // Load dashboard stats
@@ -462,7 +461,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
   }
 
   refreshData(): void {
-    this.material.showInfoSnackbar(this.i18n.t('pages.dashboard.refreshingDashboardData'));
+    // this.material.showInfoSnackbar(this.i18n.t('pages.dashboard.refreshingDashboardData'));
     this.loadDashboardData();
   }
 

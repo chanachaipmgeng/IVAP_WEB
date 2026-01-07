@@ -28,10 +28,14 @@ import { FlatpickrModule } from 'angularx-flatpickr';
   imports: [CommonModule, FormsModule, FlatpickrModule],
   template: `
     <div class="date-time-picker-container" [class]="customClass || ''" role="group" [attr.aria-label]="ariaLabel || label || 'Date time picker'">
-      <label *ngIf="label" [for]="inputId" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-        {{ label }}
-        <span *ngIf="required" class="text-red-500 ml-1" [attr.aria-label]="'Required'">*</span>
-      </label>
+      @if (label) {
+        <label [for]="inputId" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          {{ label }}
+          @if (required) {
+            <span class="text-red-500 ml-1" [attr.aria-label]="'Required'">*</span>
+          }
+        </label>
+      }
 
       <div class="date-time-picker-wrapper">
         <input
@@ -50,16 +54,18 @@ import { FlatpickrModule } from 'angularx-flatpickr';
           [attr.type]="'text'"
           [attr.readonly]="!allowInput ? 'true' : null">
         <div class="date-time-icon" [attr.aria-hidden]="true">
-          <span *ngIf="type === 'date'">📅</span>
-          <span *ngIf="type === 'time'">🕐</span>
-          <span *ngIf="type === 'datetime'">📅</span>
+          @if (type === 'date') { <span>📅</span> }
+          @if (type === 'time') { <span>🕐</span> }
+          @if (type === 'datetime') { <span>📅</span> }
         </div>
       </div>
 
       <!-- Error Message -->
-      <div *ngIf="errorMessage" [id]="errorId" class="error-message text-red-500 text-sm mt-1" role="alert" [attr.aria-live]="'polite'">
-        {{ errorMessage }}
-      </div>
+      @if (errorMessage) {
+        <div [id]="errorId" class="error-message text-red-500 text-sm mt-1" role="alert" [attr.aria-live]="'polite'">
+          {{ errorMessage }}
+        </div>
+      }
     </div>
   `,
   styles: [`

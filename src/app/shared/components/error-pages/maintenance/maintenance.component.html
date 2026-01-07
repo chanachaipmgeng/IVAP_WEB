@@ -17,19 +17,25 @@
     <div class="progress-section bg-gray-50 rounded-2xl p-8 mb-12 border border-gray-200 md:p-6 md:flex-col md:items-start md:text-left">
       <div class="progress-header flex justify-between items-center mb-6 flex-wrap gap-4">
         <h3 class="progress-title text-2xl font-bold text-gray-800 m-0 md:text-xl">{{ i18n.t('pages.errorPages.maintenance.maintenanceProgress') }}</h3>
-        <div class="time-remaining flex items-center gap-2 text-sm font-semibold text-gray-700 bg-white px-4 py-2 rounded-lg border border-gray-200" *ngIf="!isMaintenanceComplete()" role="status" [attr.aria-live]="'polite'">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary-500" [attr.aria-hidden]="'true'">
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12,6 12,12 16,14"></polyline>
-          </svg>
-          <span [attr.aria-label]="'Time remaining: ' + timeRemaining">{{ i18n.t('pages.errorPages.maintenance.timeRemaining') }} {{ timeRemaining }}</span>
-        </div>
-        <div class="maintenance-complete flex items-center gap-2 text-sm font-semibold text-success-500 bg-white px-4 py-2 rounded-lg border border-success-500" *ngIf="isMaintenanceComplete()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-success-500">
-            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-          </svg>
-          <span>{{ i18n.t('pages.errorPages.maintenance.maintenanceComplete') }}</span>
-        </div>
+        
+        @if (!isMaintenanceComplete()) {
+          <div class="time-remaining flex items-center gap-2 text-sm font-semibold text-gray-700 bg-white px-4 py-2 rounded-lg border border-gray-200" role="status" [attr.aria-live]="'polite'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary-500" [attr.aria-hidden]="'true'">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12,6 12,12 16,14"></polyline>
+            </svg>
+            <span [attr.aria-label]="'Time remaining: ' + timeRemaining">{{ i18n.t('pages.errorPages.maintenance.timeRemaining') }} {{ timeRemaining }}</span>
+          </div>
+        }
+        
+        @if (isMaintenanceComplete()) {
+          <div class="maintenance-complete flex items-center gap-2 text-sm font-semibold text-success-500 bg-white px-4 py-2 rounded-lg border border-success-500">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-success-500">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>{{ i18n.t('pages.errorPages.maintenance.maintenanceComplete') }}</span>
+          </div>
+        }
       </div>
 
       <div class="progress-bar w-full h-3 bg-gray-200 rounded-md overflow-hidden mb-4">
@@ -47,14 +53,16 @@
         {{ i18n.t('pages.errorPages.maintenance.implementingFeatures') }}
       </p>
       <div class="features-grid grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4 md:grid-cols-1">
-        <div class="feature-item flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-lg transition-all hover:border-gray-300 hover:shadow-md" *ngFor="let feature of features; trackBy: trackByFeature" role="listitem">
-          <div class="feature-icon text-success-500 flex-shrink-0">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
+        @for (feature of features; track trackByFeature($index, feature)) {
+          <div class="feature-item flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-lg transition-all hover:border-gray-300 hover:shadow-md" role="listitem">
+            <div class="feature-icon text-success-500 flex-shrink-0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <span class="feature-text text-sm text-gray-700 font-medium">{{ feature }}</span>
           </div>
-          <span class="feature-text text-sm text-gray-700 font-medium">{{ feature }}</span>
-        </div>
+        }
       </div>
     </div>
 
@@ -63,17 +71,19 @@
       <h3 class="updates-title text-2xl font-bold text-gray-800 mb-8 text-center">{{ i18n.t('pages.errorPages.maintenance.maintenanceUpdates') }}</h3>
       <div class="updates-timeline relative max-w-2xl mx-auto">
         <div class="absolute left-5 top-0 bottom-0 w-0.5 bg-gray-200 md:left-4"></div>
-        <div class="timeline-item flex items-start gap-4 mb-8 relative last:mb-0" *ngFor="let update of updates; trackBy: trackByUpdate; let i = index" role="listitem">
-          <div class="timeline-marker w-10 h-10 rounded-full flex items-center justify-center text-white flex-shrink-0 relative z-10 border-3 border-white shadow-sm" [style.background-color]="getStatusColor(update.status)" [class.w-8]="false" [class.h-8]="false" [class.md:w-8]="true" [class.md:h-8]="true">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path [attr.d]="getStatusIcon(update.status)"></path>
-            </svg>
+        @for (update of updates; track trackByUpdate($index, update); let i = $index) {
+          <div class="timeline-item flex items-start gap-4 mb-8 relative last:mb-0" role="listitem">
+            <div class="timeline-marker w-10 h-10 rounded-full flex items-center justify-center text-white flex-shrink-0 relative z-10 border-3 border-white shadow-sm" [style.background-color]="getStatusColor(update.status)" [class.w-8]="false" [class.h-8]="false" [class.md:w-8]="true" [class.md:h-8]="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path [attr.d]="getStatusIcon(update.status)"></path>
+              </svg>
+            </div>
+            <div class="timeline-content flex-1 pt-2">
+              <div class="timeline-time text-sm font-semibold text-gray-700 mb-1">{{ update.time }}</div>
+              <div class="timeline-description text-sm text-gray-500 leading-relaxed">{{ update.description }}</div>
+            </div>
           </div>
-          <div class="timeline-content flex-1 pt-2">
-            <div class="timeline-time text-sm font-semibold text-gray-700 mb-1">{{ update.time }}</div>
-            <div class="timeline-description text-sm text-gray-500 leading-relaxed">{{ update.description }}</div>
-          </div>
-        </div>
+        }
       </div>
     </div>
 

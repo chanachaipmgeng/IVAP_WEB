@@ -16,7 +16,7 @@ import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { GlassCardComponent } from '../../../../shared/components/glass-card/glass-card.component';
 import { GlassButtonComponent } from '../../../../shared/components/glass-button/glass-button.component';
-import { RichTextComponent } from '../../../../shared/components/rich-text/rich-text.component';
+import { RichTextEditorComponent } from '../../../../shared/components/rich-text-editor/rich-text-editor.component';
 import { ModalComponent } from '../../../../shared/components/modal/modal.component';
 import { PageLayoutComponent, PageAction } from '../../../../shared/components/page-layout/page-layout.component';
 import { ApiService } from '../../../../core/services/api.service';
@@ -34,7 +34,7 @@ import { Notification, PortalForm } from '../../../../core/models/portal.model';
     TranslateModule,
     GlassCardComponent,
     GlassButtonComponent,
-    RichTextComponent,
+    RichTextEditorComponent,
     ModalComponent,
     PageLayoutComponent
   ],
@@ -48,7 +48,7 @@ export class NotificationsComponent implements OnInit {
   // Local state for notifications
   private notificationsList = signal<Notification[]>([]);
   private loadingState = signal(false);
-  
+
   // Getters
   getNotifications = () => this.notificationsList.asReadonly();
   getLoading = () => this.loadingState.asReadonly();

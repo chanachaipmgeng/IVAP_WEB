@@ -26,9 +26,11 @@ import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/f
   imports: [CommonModule, FormsModule],
   template: `
     <div class="color-picker-container" [class]="customClass || ''" role="group" [attr.aria-label]="ariaLabel || label || 'Color picker'">
-      <label *ngIf="label" [for]="colorInputId" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-        {{ label }}
-      </label>
+      @if (label) {
+        <label [for]="colorInputId" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          {{ label }}
+        </label>
+      }
 
       <div class="color-picker-wrapper">
         <!-- Color Preview -->
@@ -49,21 +51,22 @@ import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/f
         </div>
 
         <!-- Color Input -->
-        <input
-          *ngIf="!hideTextInput"
-          [id]="colorInputId"
-          type="text"
-          [(ngModel)]="value"
-          (ngModelChange)="onValueChange($event)"
-          [disabled]="disabled"
-          class="color-input"
-          placeholder="#3b82f6"
-          maxlength="7"
-          pattern="^#[0-9A-Fa-f]{6}$"
-          [attr.aria-label]="'Color hex value'"
-          [attr.aria-invalid]="errorMessage ? 'true' : null"
-          [attr.aria-describedby]="errorMessage ? errorId : null"
-        />
+        @if (!hideTextInput) {
+          <input
+            [id]="colorInputId"
+            type="text"
+            [(ngModel)]="value"
+            (ngModelChange)="onValueChange($event)"
+            [disabled]="disabled"
+            class="color-input"
+            placeholder="#3b82f6"
+            maxlength="7"
+            pattern="^#[0-9A-Fa-f]{6}$"
+            [attr.aria-label]="'Color hex value'"
+            [attr.aria-invalid]="errorMessage ? 'true' : null"
+            [attr.aria-describedby]="errorMessage ? errorId : null"
+          />
+        }
 
         <!-- Native Color Picker -->
         <input
@@ -78,66 +81,75 @@ import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/f
         />
 
         <!-- Color Picker Dropdown -->
-        <div
-          *ngIf="showPicker && !disabled"
-          [id]="pickerDropdownId"
-          class="color-picker-dropdown"
-          #pickerDropdown
-          role="dialog"
-          [attr.aria-label]="'Color picker'"
-          [attr.aria-labelledby]="label ? colorInputId : null">
-          <!-- Preset Colors -->
-          <div *ngIf="!hidePresets && presetColors.length > 0" class="preset-colors" role="group" [attr.aria-label]="'Preset colors'">
-            <div
-              *ngFor="let color of presetColors; trackBy: trackByColor"
-              class="preset-color"
-              [style.background-color]="color"
-              [class.active]="value === color"
-              (click)="selectPresetColor(color)"
-              [title]="color"
-              role="button"
-              [attr.aria-label]="'Select color ' + color"
-              [attr.aria-pressed]="value === color ? 'true' : 'false'"
-              [attr.tabindex]="0"
-              (keydown.enter)="selectPresetColor(color)"
-              (keydown.space)="selectPresetColor(color); $event.preventDefault()">
-            </div>
-          </div>
+        @if (showPicker && !disabled) {
+          <div
+            [id]="pickerDropdownId"
+            class="color-picker-dropdown"
+            #pickerDropdown
+            role="dialog"
+            [attr.aria-label]="'Color picker'"
+            [attr.aria-labelledby]="label ? colorInputId : null">
+            
+            <!-- Preset Colors -->
+            @if (!hidePresets && presetColors.length > 0) {
+              <div class="preset-colors" role="group" [attr.aria-label]="'Preset colors'">
+                @for (color of presetColors; track trackByColor($index, color)) {
+                  <div
+                    class="preset-color"
+                    [style.background-color]="color"
+                    [class.active]="value === color"
+                    (click)="selectPresetColor(color)"
+                    [title]="color"
+                    role="button"
+                    [attr.aria-label]="'Select color ' + color"
+                    [attr.aria-pressed]="value === color ? 'true' : 'false'"
+                    [attr.tabindex]="0"
+                    (keydown.enter)="selectPresetColor(color)"
+                    (keydown.space)="selectPresetColor(color); $event.preventDefault()">
+                  </div>
+                }
+              </div>
+            }
 
-          <!-- Custom Color Input -->
-          <div *ngIf="!hideColorPicker" class="custom-color-section" role="group" [attr.aria-label]="'Custom color'">
-            <label [for]="customColorInputId" class="custom-color-label">Custom Color:</label>
-            <div class="custom-color-inputs">
-              <input
-                [id]="customColorInputId"
-                type="text"
-                [(ngModel)]="value"
-                (ngModelChange)="onValueChange($event)"
-                class="hex-input"
-                placeholder="#000000"
-                maxlength="7"
-                pattern="^#[0-9A-Fa-f]{6}$"
-                [attr.aria-label]="'Hex color value'"
-                [attr.aria-invalid]="errorMessage ? 'true' : null"
-                [attr.aria-describedby]="errorMessage ? errorId : null"
-              />
-              <input
-                type="color"
-                [value]="value || fallbackColor"
-                (input)="onColorInputChange($event)"
-                class="color-picker-input"
-                [attr.aria-label]="'Color picker'"
-                [attr.aria-hidden]="false"
-              />
-            </div>
+            <!-- Custom Color Input -->
+            @if (!hideColorPicker) {
+              <div class="custom-color-section" role="group" [attr.aria-label]="'Custom color'">
+                <label [for]="customColorInputId" class="custom-color-label">Custom Color:</label>
+                <div class="custom-color-inputs">
+                  <input
+                    [id]="customColorInputId"
+                    type="text"
+                    [(ngModel)]="value"
+                    (ngModelChange)="onValueChange($event)"
+                    class="hex-input"
+                    placeholder="#000000"
+                    maxlength="7"
+                    pattern="^#[0-9A-Fa-f]{6}$"
+                    [attr.aria-label]="'Hex color value'"
+                    [attr.aria-invalid]="errorMessage ? 'true' : null"
+                    [attr.aria-describedby]="errorMessage ? errorId : null"
+                  />
+                  <input
+                    type="color"
+                    [value]="value || fallbackColor"
+                    (input)="onColorInputChange($event)"
+                    class="color-picker-input"
+                    [attr.aria-label]="'Color picker'"
+                    [attr.aria-hidden]="false"
+                  />
+                </div>
+              </div>
+            }
           </div>
-        </div>
+        }
       </div>
 
       <!-- Error Message -->
-      <div *ngIf="errorMessage" [id]="errorId" class="error-message text-red-500 text-sm mt-1" role="alert" [attr.aria-live]="'polite'">
-        {{ errorMessage }}
-      </div>
+      @if (errorMessage) {
+        <div [id]="errorId" class="error-message text-red-500 text-sm mt-1" role="alert" [attr.aria-live]="'polite'">
+          {{ errorMessage }}
+        </div>
+      }
     </div>
   `,
   styles: [`

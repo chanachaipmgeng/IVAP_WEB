@@ -45,19 +45,22 @@
         </div>
 
         <!-- Search Suggestions -->
-        <div class="suggestions-dropdown" *ngIf="showSuggestions && filteredSuggestions.length > 0">
-          <div
-            *ngFor="let suggestion of filteredSuggestions"
-            (click)="onSuggestionClick(suggestion)"
-            class="suggestion-item"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-gray-400">
-              <path d="m21 21-4.35-4.35"></path>
-              <circle cx="11" cy="11" r="8"></circle>
-            </svg>
-            <span>{{ suggestion }}</span>
+        @if (showSuggestions && filteredSuggestions.length > 0) {
+          <div class="suggestions-dropdown">
+            @for (suggestion of filteredSuggestions; track trackBySuggestion($index, suggestion)) {
+              <div
+                (click)="onSuggestionClick(suggestion)"
+                class="suggestion-item"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-gray-400">
+                  <path d="m21 21-4.35-4.35"></path>
+                  <circle cx="11" cy="11" r="8"></circle>
+                </svg>
+                <span>{{ suggestion }}</span>
+              </div>
+            }
           </div>
-        </div>
+        }
       </div>
     </div>
 

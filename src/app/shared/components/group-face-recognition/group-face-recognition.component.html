@@ -75,142 +75,168 @@
           class="canvas-overlay absolute top-0 left-0 w-full h-full pointer-events-none z-10"
           [class.hidden]="!isStreaming">
         </canvas>
-        <div *ngIf="!isStreaming" class="placeholder flex flex-col items-center justify-center p-12 text-gray-500 text-center">
-          <i class="fas fa-users fa-3x mb-4 opacity-50"></i>
-          <p class="m-0 text-lg">กดปุ่ม "เริ่มกล้อง" เพื่อเริ่มจดจำใบหน้าหลายคน</p>
-        </div>
+        @if (!isStreaming) {
+          <div class="placeholder flex flex-col items-center justify-center p-12 text-gray-500 text-center">
+            <i class="fas fa-users fa-3x mb-4 opacity-50"></i>
+            <p class="m-0 text-lg">กดปุ่ม "เริ่มกล้อง" เพื่อเริ่มจดจำใบหน้าหลายคน</p>
+          </div>
+        }
       </div>
 
       <!-- Image Quality Feedback -->
-      <div *ngIf="showQualityFeedback && isStreaming" class="quality-feedback absolute top-4 right-4 max-w-[300px] bg-black/80 backdrop-blur-sm rounded-xl p-4 border border-white/10 z-10">
-        <div class="quality-status flex items-center gap-2 mb-3 font-semibold" [ngClass]="getQualityStatusClass()"
-          [class.text-success-500]="getQualityStatusClass().includes('excellent')"
-          [class.text-primary-500]="getQualityStatusClass().includes('good')"
-          [class.text-warning-500]="getQualityStatusClass().includes('fair')"
-          [class.text-error-500]="getQualityStatusClass().includes('poor')"
-          [class.text-gray-500]="getQualityStatusClass().includes('unknown')">
-          <i class="fas fa-info-circle text-base"></i>
-          <span class="quality-text text-sm">{{ getQualityStatusText() }}</span>
+      @if (showQualityFeedback && isStreaming) {
+        <div class="quality-feedback absolute top-4 right-4 max-w-[300px] bg-black/80 backdrop-blur-sm rounded-xl p-4 border border-white/10 z-10">
+          <div class="quality-status flex items-center gap-2 mb-3 font-semibold" [ngClass]="getQualityStatusClass()"
+            [class.text-success-500]="getQualityStatusClass().includes('excellent')"
+            [class.text-primary-500]="getQualityStatusClass().includes('good')"
+            [class.text-warning-500]="getQualityStatusClass().includes('fair')"
+            [class.text-error-500]="getQualityStatusClass().includes('poor')"
+            [class.text-gray-500]="getQualityStatusClass().includes('unknown')">
+            <i class="fas fa-info-circle text-base"></i>
+            <span class="quality-text text-sm">{{ getQualityStatusText() }}</span>
+          </div>
+          <div class="quality-message">
+            <p class="m-0 mb-2 text-gray-400 text-sm leading-relaxed">{{ qualityFeedbackMessage }}</p>
+            @if (qualityRecommendations.length > 0) {
+              <ul class="quality-recommendations list-none p-0 m-0">
+                @for (recommendation of qualityRecommendations; track recommendation) {
+                  <li class="flex items-start gap-2 mb-1 text-gray-500 text-xs leading-snug">
+                    <i class="fas fa-lightbulb text-warning-500 text-xs mt-0.5 flex-shrink-0"></i>
+                    {{ recommendation }}
+                  </li>
+                }
+              </ul>
+            }
+          </div>
         </div>
-        <div class="quality-message">
-          <p class="m-0 mb-2 text-gray-400 text-sm leading-relaxed">{{ qualityFeedbackMessage }}</p>
-          <ul *ngIf="qualityRecommendations.length > 0" class="quality-recommendations list-none p-0 m-0">
-            <li *ngFor="let recommendation of qualityRecommendations" class="flex items-start gap-2 mb-1 text-gray-500 text-xs leading-snug">
-              <i class="fas fa-lightbulb text-warning-500 text-xs mt-0.5 flex-shrink-0"></i>
-              {{ recommendation }}
-            </li>
-          </ul>
-        </div>
-      </div>
+      }
     </app-glass-card>
   </div>
 
   <!-- Recognition Results -->
-  <div *ngIf="recognizedFaces.length > 0" class="recognition-results mb-8">
-    <app-glass-card>
-      <div class="results-header flex justify-between items-center mb-6 flex-wrap gap-4 md:flex-col md:items-start">
-        <h3 class="m-0 text-white">ผลการจดจำใบหน้า (ความมั่นใจ > {{ minConfidence * 100 }}%)</h3>
-        <div class="results-stats flex gap-4 flex-wrap">
-          <span class="stat-item flex items-center gap-2 px-4 py-2 bg-white/5 rounded-xl border border-white/10 text-gray-400 text-sm">
-            <i class="fas fa-users text-primary-500"></i>
-            จำนวนคน: {{ recognizedFaces.length }}
-          </span>
-          <span class="stat-item flex items-center gap-2 px-4 py-2 bg-white/5 rounded-xl border border-white/10 text-gray-400 text-sm">
-            <i class="fas fa-clock text-primary-500"></i>
-            เวลาล่าสุด: {{ recognizedFaces[0]?.timestamp | date:'HH:mm:ss' }}
-          </span>
-        </div>
-      </div>
-
-      <div class="faces-grid grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-4 md:grid-cols-1">
-        <div
-          *ngFor="let face of recognizedFaces; let i = index"
-          class="face-card bg-white/2 rounded-xl p-4 border border-white/10 transition-all"
-          [class.border-success-500/30]="face.confidence > 0.8"
-          [class.bg-success-500/5]="face.confidence > 0.8"
-          [class.border-warning-500/30]="face.confidence > 0.6 && face.confidence <= 0.8"
-          [class.bg-warning-500/5]="face.confidence > 0.6 && face.confidence <= 0.8"
-          [class.border-error-500/30]="face.confidence <= 0.6"
-          [class.bg-error-500/5]="face.confidence <= 0.6">
-
-          <!-- Snapshot Display -->
-          <div class="face-snapshot mb-3" *ngIf="face.snapshot">
-             <img appImageOptimization [ngSrc]="face.snapshot" alt="Face Snapshot" class="snapshot-img w-full h-auto rounded-lg" loading="lazy">
-          </div>
-
-          <div class="face-info">
-            <div class="face-name flex items-center gap-2 mb-2 text-white font-semibold text-lg">
-              <i class="fas fa-user text-primary-500"></i>
-              {{ face.firstName }} {{ face.lastName }}
-            </div>
-            <div class="face-confidence flex items-center gap-2 mb-1 text-gray-400 text-sm">
-              <i class="fas fa-percentage text-success-500"></i>
-              {{ (face.confidence * 100) | number:'1.1-1' }}%
-            </div>
-            <div class="face-details-badges flex gap-2 mb-2" *ngIf="face.age || face.gender">
-               <span *ngIf="face.gender" class="badge gender-badge px-2 py-1 rounded text-xs font-medium bg-primary-500/20 text-primary-300 border border-primary-500/30">
-                 {{ face.gender === 'male' ? 'ชาย' : 'หญิง' }}
-               </span>
-               <span *ngIf="face.age" class="badge age-badge px-2 py-1 rounded text-xs font-medium bg-info-500/20 text-info-300 border border-info-500/30">
-                 {{ face.age }} ปี
-               </span>
-            </div>
-            <div class="face-time flex items-center gap-2 text-gray-500 text-xs">
-              <i class="fas fa-clock text-gray-600"></i>
-              {{ face.timestamp | date:'HH:mm:ss' }}
-            </div>
-          </div>
-          <div class="face-location mt-2 pt-2 border-t border-white/10">
-            <small class="text-gray-500 text-xs">
-              ตำแหน่ง: ({{ face.location.left | number:'1.0-0' }}, {{ face.location.top | number:'1.0-0' }})
-            </small>
-          </div>
-        </div>
-      </div>
-    </app-glass-card>
-  </div>
-
-  <!-- Real-time Recognition List -->
-  <div *ngIf="currentRecognitions.length > 0" class="current-recognitions mb-8">
-    <app-glass-card>
-      <h3 class="m-0 mb-6 text-white">การจดจำแบบ Real-time</h3>
-      <div class="recognition-list">
-        <div
-          *ngFor="let recognition of currentRecognitions; let i = index"
-          class="recognition-item flex justify-between items-center p-4 bg-white/2 rounded-xl border border-white/10 mb-2 md:flex-col md:items-start md:gap-4">
-          <div class="recognition-info flex items-center gap-4">
-            <div class="face-indicator w-10 h-10 rounded-full bg-primary-500/20 flex items-center justify-center text-primary-500 text-xl">
-              <img appImageOptimization *ngIf="recognition.snapshot" [ngSrc]="recognition.snapshot" class="mini-snapshot w-full h-full rounded-full object-cover" alt="face" loading="lazy">
-              <i *ngIf="!recognition.snapshot" class="fas fa-user-circle"></i>
-            </div>
-            <div class="recognition-details">
-              <div class="name text-white font-semibold mb-1">
-                {{ recognition.firstName }} {{ recognition.lastName }}
-              </div>
-              <div class="confidence text-gray-400 text-sm">
-                ความมั่นใจ: {{ (recognition.confidence * 100) | number:'1.1-1' }}%
-              </div>
-            </div>
-          </div>
-          <div class="recognition-status">
-            <span class="status-badge px-3 py-1 rounded-2xl text-xs font-semibold uppercase"
-              [class.bg-success-500/20]="recognition.confidence > 0.8"
-              [class.text-success-500]="recognition.confidence > 0.8"
-              [class.border]="recognition.confidence > 0.8"
-              [class.border-success-500/30]="recognition.confidence > 0.8"
-              [class.bg-warning-500/20]="recognition.confidence > 0.6 && recognition.confidence <= 0.8"
-              [class.text-warning-500]="recognition.confidence > 0.6 && recognition.confidence <= 0.8"
-              [class.border-warning-500/30]="recognition.confidence > 0.6 && recognition.confidence <= 0.8"
-              [class.bg-error-500/20]="recognition.confidence <= 0.6"
-              [class.text-error-500]="recognition.confidence <= 0.6"
-              [class.border-error-500/30]="recognition.confidence <= 0.6">
-              {{ recognition.confidence > 0.8 ? 'สูง' : recognition.confidence > 0.6 ? 'ปานกลาง' : 'ต่ำ' }}
+  @if (recognizedFaces.length > 0) {
+    <div class="recognition-results mb-8">
+      <app-glass-card>
+        <div class="results-header flex justify-between items-center mb-6 flex-wrap gap-4 md:flex-col md:items-start">
+          <h3 class="m-0 text-white">ผลการจดจำใบหน้า (ความมั่นใจ > {{ minConfidence * 100 }}%)</h3>
+          <div class="results-stats flex gap-4 flex-wrap">
+            <span class="stat-item flex items-center gap-2 px-4 py-2 bg-white/5 rounded-xl border border-white/10 text-gray-400 text-sm">
+              <i class="fas fa-users text-primary-500"></i>
+              จำนวนคน: {{ recognizedFaces.length }}
+            </span>
+            <span class="stat-item flex items-center gap-2 px-4 py-2 bg-white/5 rounded-xl border border-white/10 text-gray-400 text-sm">
+              <i class="fas fa-clock text-primary-500"></i>
+              เวลาล่าสุด: {{ recognizedFaces[0]?.timestamp | date:'HH:mm:ss' }}
             </span>
           </div>
         </div>
-      </div>
-    </app-glass-card>
-  </div>
+
+        <div class="faces-grid grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-4 md:grid-cols-1">
+          @for (face of recognizedFaces; track face; let i = $index) {
+            <div
+              class="face-card bg-white/2 rounded-xl p-4 border border-white/10 transition-all"
+              [class.border-success-500/30]="face.confidence > 0.8"
+              [class.bg-success-500/5]="face.confidence > 0.8"
+              [class.border-warning-500/30]="face.confidence > 0.6 && face.confidence <= 0.8"
+              [class.bg-warning-500/5]="face.confidence > 0.6 && face.confidence <= 0.8"
+              [class.border-error-500/30]="face.confidence <= 0.6"
+              [class.bg-error-500/5]="face.confidence <= 0.6">
+
+              <!-- Snapshot Display -->
+              @if (face.snapshot) {
+                <div class="face-snapshot mb-3">
+                  <img appImageOptimization [ngSrc]="face.snapshot" alt="Face Snapshot" class="snapshot-img w-full h-auto rounded-lg" loading="lazy">
+                </div>
+              }
+
+              <div class="face-info">
+                <div class="face-name flex items-center gap-2 mb-2 text-white font-semibold text-lg">
+                  <i class="fas fa-user text-primary-500"></i>
+                  {{ face.firstName }} {{ face.lastName }}
+                </div>
+                <div class="face-confidence flex items-center gap-2 mb-1 text-gray-400 text-sm">
+                  <i class="fas fa-percentage text-success-500"></i>
+                  {{ (face.confidence * 100) | number:'1.1-1' }}%
+                </div>
+                @if (face.age || face.gender) {
+                  <div class="face-details-badges flex gap-2 mb-2">
+                    @if (face.gender) {
+                      <span class="badge gender-badge px-2 py-1 rounded text-xs font-medium bg-primary-500/20 text-primary-300 border border-primary-500/30">
+                        {{ face.gender === 'male' ? 'ชาย' : 'หญิง' }}
+                      </span>
+                    }
+                    @if (face.age) {
+                      <span class="badge age-badge px-2 py-1 rounded text-xs font-medium bg-info-500/20 text-info-300 border border-info-500/30">
+                        {{ face.age }} ปี
+                      </span>
+                    }
+                  </div>
+                }
+                <div class="face-time flex items-center gap-2 text-gray-500 text-xs">
+                  <i class="fas fa-clock text-gray-600"></i>
+                  {{ face.timestamp | date:'HH:mm:ss' }}
+                </div>
+              </div>
+              <div class="face-location mt-2 pt-2 border-t border-white/10">
+                <small class="text-gray-500 text-xs">
+                  ตำแหน่ง: ({{ face.location.left | number:'1.0-0' }}, {{ face.location.top | number:'1.0-0' }})
+                </small>
+              </div>
+            </div>
+          }
+        </div>
+      </app-glass-card>
+    </div>
+  }
+
+  <!-- Real-time Recognition List -->
+  @if (currentRecognitions.length > 0) {
+    <div class="current-recognitions mb-8">
+      <app-glass-card>
+        <h3 class="m-0 mb-6 text-white">การจดจำแบบ Real-time</h3>
+        <div class="recognition-list">
+          @for (recognition of currentRecognitions; track recognition; let i = $index) {
+            <div
+              class="recognition-item flex justify-between items-center p-4 bg-white/2 rounded-xl border border-white/10 mb-2 md:flex-col md:items-start md:gap-4">
+              <div class="recognition-info flex items-center gap-4">
+                <div class="face-indicator w-10 h-10 rounded-full bg-primary-500/20 flex items-center justify-center text-primary-500 text-xl">
+                  @if (recognition.snapshot) {
+                    <img appImageOptimization [ngSrc]="recognition.snapshot" class="mini-snapshot w-full h-full rounded-full object-cover" alt="face" loading="lazy">
+                  }
+                  @if (!recognition.snapshot) {
+                    <i class="fas fa-user-circle"></i>
+                  }
+                </div>
+                <div class="recognition-details">
+                  <div class="name text-white font-semibold mb-1">
+                    {{ recognition.firstName }} {{ recognition.lastName }}
+                  </div>
+                  <div class="confidence text-gray-400 text-sm">
+                    ความมั่นใจ: {{ (recognition.confidence * 100) | number:'1.1-1' }}%
+                  </div>
+                </div>
+              </div>
+              <div class="recognition-status">
+                <span class="status-badge px-3 py-1 rounded-2xl text-xs font-semibold uppercase"
+                  [class.bg-success-500/20]="recognition.confidence > 0.8"
+                  [class.text-success-500]="recognition.confidence > 0.8"
+                  [class.border]="recognition.confidence > 0.8"
+                  [class.border-success-500/30]="recognition.confidence > 0.8"
+                  [class.bg-warning-500/20]="recognition.confidence > 0.6 && recognition.confidence <= 0.8"
+                  [class.text-warning-500]="recognition.confidence > 0.6 && recognition.confidence <= 0.8"
+                  [class.border-warning-500/30]="recognition.confidence > 0.6 && recognition.confidence <= 0.8"
+                  [class.bg-error-500/20]="recognition.confidence <= 0.6"
+                  [class.text-error-500]="recognition.confidence <= 0.6"
+                  [class.border-error-500/30]="recognition.confidence <= 0.6">
+                  {{ recognition.confidence > 0.8 ? 'สูง' : recognition.confidence > 0.6 ? 'ปานกลาง' : 'ต่ำ' }}
+                </span>
+              </div>
+            </div>
+          }
+        </div>
+      </app-glass-card>
+    </div>
+  }
 
   <!-- Instructions -->
   <div class="instructions">

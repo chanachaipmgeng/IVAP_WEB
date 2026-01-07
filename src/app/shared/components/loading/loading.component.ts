@@ -17,24 +17,27 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div
-      *ngIf="show"
-      class="flex items-center justify-center"
-      [ngClass]="containerClass || customClass || 'min-h-[200px]'"
-      role="status"
-      [attr.aria-label]="ariaLabel || message || 'Loading'"
-      [attr.aria-busy]="true"
-      [attr.aria-live]="ariaLive">
-      <div class="glass-card p-8 flex flex-col items-center space-y-4">
-        <div class="relative" [attr.aria-hidden]="true">
-          <div class="w-16 h-16 border-4 border-primary-200 dark:border-primary-800 rounded-full"></div>
-          <div class="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
+    @if (show) {
+      <div
+        class="flex items-center justify-center"
+        [ngClass]="containerClass || customClass || 'min-h-[200px]'"
+        role="status"
+        [attr.aria-label]="ariaLabel || message || 'Loading'"
+        [attr.aria-busy]="true"
+        [attr.aria-live]="ariaLive">
+        <div class="glass-card p-8 flex flex-col items-center space-y-4">
+          <div class="relative" [attr.aria-hidden]="true">
+            <div class="w-16 h-16 border-4 border-primary-200 dark:border-primary-800 rounded-full"></div>
+            <div class="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
+          </div>
+          @if (message) {
+            <p class="text-gray-700 dark:text-gray-300 font-medium">
+              {{ message }}
+            </p>
+          }
         </div>
-        <p *ngIf="message" class="text-gray-700 dark:text-gray-300 font-medium">
-          {{ message }}
-        </p>
       </div>
-    </div>
+    }
   `,
   styles: []
 })

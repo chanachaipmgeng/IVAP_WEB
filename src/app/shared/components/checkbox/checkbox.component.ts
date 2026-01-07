@@ -40,7 +40,9 @@ import { MatCheckboxModule, MatCheckboxChange } from '@angular/material/checkbox
       (change)="onChange($event)"
       (indeterminateChange)="onIndeterminateChange($event)">
       <ng-content></ng-content>
-      <span *ngIf="label && !hasContent">{{ label }}</span>
+      @if (label && !hasContent) {
+        <span>{{ label }}</span>
+      }
     </mat-checkbox>
   `,
   providers: [

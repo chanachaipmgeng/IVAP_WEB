@@ -53,10 +53,14 @@ export interface EChartsData {
   imports: [CommonModule, NgxEchartsDirective],
   template: `
     <div class="echarts-chart-container" [class]="customClass || ''" role="group" [attr.aria-label]="ariaLabel || label || 'Chart'">
-      <label *ngIf="label" [for]="chartId" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-        {{ label }}
-        <span *ngIf="required" class="text-red-500 ml-1" [attr.aria-label]="'Required'">*</span>
-      </label>
+      @if (label) {
+        <label [for]="chartId" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          {{ label }}
+          @if (required) {
+            <span class="text-red-500 ml-1" [attr.aria-label]="'Required'">*</span>
+          }
+        </label>
+      }
 
       <div class="chart-wrapper">
         <div
@@ -109,56 +113,62 @@ export interface EChartsData {
         </div>
 
         <!-- Chart Controls -->
-        <div class="chart-controls" *ngIf="showControls" role="toolbar" [attr.aria-label]="'Chart controls'">
-          <div class="control-group">
-            <button
-              type="button"
-              (click)="refreshChart()"
-              class="control-button"
-              [attr.aria-label]="'Refresh chart'"
-              [attr.title]="'Refresh Chart'">
-              <span [attr.aria-hidden]="true">🔄</span>
-            </button>
-            <button
-              type="button"
-              (click)="downloadChart()"
-              class="control-button"
-              [attr.aria-label]="'Download chart'"
-              [attr.title]="'Download Chart'">
-              <span [attr.aria-hidden]="true">💾</span>
-            </button>
-            <button
-              type="button"
-              (click)="toggleFullscreen()"
-              class="control-button"
-              [attr.aria-label]="'Toggle fullscreen'"
-              [attr.title]="'Toggle Fullscreen'">
-              <span [attr.aria-hidden]="true">⛶</span>
-            </button>
+        @if (showControls) {
+          <div class="chart-controls" role="toolbar" [attr.aria-label]="'Chart controls'">
+            <div class="control-group">
+              <button
+                type="button"
+                (click)="refreshChart()"
+                class="control-button"
+                [attr.aria-label]="'Refresh chart'"
+                [attr.title]="'Refresh Chart'">
+                <span [attr.aria-hidden]="true">🔄</span>
+              </button>
+              <button
+                type="button"
+                (click)="downloadChart()"
+                class="control-button"
+                [attr.aria-label]="'Download chart'"
+                [attr.title]="'Download Chart'">
+                <span [attr.aria-hidden]="true">💾</span>
+              </button>
+              <button
+                type="button"
+                (click)="toggleFullscreen()"
+                class="control-button"
+                [attr.aria-label]="'Toggle fullscreen'"
+                [attr.title]="'Toggle Fullscreen'">
+                <span [attr.aria-hidden]="true">⛶</span>
+              </button>
+            </div>
           </div>
-        </div>
+        }
 
         <!-- Chart Info -->
-        <div *ngIf="showInfo" [id]="infoId" class="chart-info" role="status" [attr.aria-live]="'polite'">
-          <div class="info-item">
-            <span class="info-label">Type:</span>
-            <span class="info-value">{{ chartType }}</span>
+        @if (showInfo) {
+          <div [id]="infoId" class="chart-info" role="status" [attr.aria-live]="'polite'">
+            <div class="info-item">
+              <span class="info-label">Type:</span>
+              <span class="info-value">{{ chartType }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Data Points:</span>
+              <span class="info-value">{{ dataPoints }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Series:</span>
+              <span class="info-value">{{ seriesCount }}</span>
+            </div>
           </div>
-          <div class="info-item">
-            <span class="info-label">Data Points:</span>
-            <span class="info-value">{{ dataPoints }}</span>
-          </div>
-          <div class="info-item">
-            <span class="info-label">Series:</span>
-            <span class="info-value">{{ seriesCount }}</span>
-          </div>
-        </div>
+        }
       </div>
 
       <!-- Error Message -->
-      <div *ngIf="errorMessage" [id]="errorId" class="error-message text-red-500 text-sm mt-1" role="alert" [attr.aria-live]="'polite'">
-        {{ errorMessage }}
-      </div>
+      @if (errorMessage) {
+        <div [id]="errorId" class="error-message text-red-500 text-sm mt-1" role="alert" [attr.aria-live]="'polite'">
+          {{ errorMessage }}
+        </div>
+      }
     </div>
   `,
   styles: [`
