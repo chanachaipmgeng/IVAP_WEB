@@ -148,12 +148,16 @@
 
                 @if (faceImagePreview()) {
                 <div class="mt-4 flex items-center gap-4">
-                  <img *ngIf="faceImagePreview() && !isBase64Image(faceImagePreview()!)" appImageOptimization
-                    [ngSrc]="faceImagePreview()!" alt="Face preview"
-                    class="w-32 h-32 object-cover rounded-lg border-2 border-white/20" loading="lazy">
-                  <img *ngIf="faceImagePreview() && isBase64Image(faceImagePreview()!)" [src]="faceImagePreview()!"
-                    alt="Face preview" class="w-32 h-32 object-cover rounded-lg border-2 border-white/20"
-                    loading="lazy">
+                  @if (faceImagePreview() && !isBase64Image(faceImagePreview()!)) {
+                    <img appImageOptimization
+                      [ngSrc]="faceImagePreview()!" alt="Face preview"
+                      class="w-32 h-32 object-cover rounded-lg border-2 border-white/20" loading="lazy">
+                  }
+                  @if (faceImagePreview() && isBase64Image(faceImagePreview()!)) {
+                    <img [src]="faceImagePreview()!"
+                      alt="Face preview" class="w-32 h-32 object-cover rounded-lg border-2 border-white/20"
+                      loading="lazy">
+                  }
                   <app-glass-button type="button" variant="danger" size="sm" (clicked)="faceImagePreview.set(null)">
                     Remove
                   </app-glass-button>

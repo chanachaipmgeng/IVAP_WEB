@@ -32,7 +32,9 @@
           class="glass-input w-full"
         >
           <option value="all">All Categories</option>
-          <option *ngFor="let cat of categories()" [value]="cat">{{ getCategoryLabel(cat) }}</option>
+          @for (cat of categories(); track cat) {
+            <option [value]="cat">{{ getCategoryLabel(cat) }}</option>
+          }
         </select>
       </div>
       <div>
@@ -134,17 +136,20 @@
         </p>
       </div>
 
-      <div *ngIf="extractVariables(formData.content.html).length > 0">
-        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Variables Used</label>
-        <div class="flex flex-wrap gap-2">
-          <span
-            *ngFor="let variable of extractVariables(formData.content.html)"
-            class="px-2 py-1 bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 rounded text-sm"
-          >
-            {{ formatVariableDisplay(variable) }}
-          </span>
+      @if (extractVariables(formData.content.html).length > 0) {
+        <div>
+          <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Variables Used</label>
+          <div class="flex flex-wrap gap-2">
+            @for (variable of extractVariables(formData.content.html); track variable) {
+              <span
+                class="px-2 py-1 bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 rounded text-sm"
+              >
+                {{ formatVariableDisplay(variable) }}
+              </span>
+            }
+          </div>
         </div>
-      </div>
+      }
     </div>
   </app-modal>
 

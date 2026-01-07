@@ -87,18 +87,24 @@
         <div class="hero-slider-container" @slideInRight>
           <div class="hero-slider glass-card p-4">
             <div class="slider-wrapper">
-              <div *ngFor="let slide of heroSlides(); let i = index"
-                   class="slider-slide"
-                   [class.active]="i === currentSlideIndex()">
-                <img *ngIf="!isBase64Image(slide.image)"
-                     appImageOptimization [ngSrc]="slide.image" [alt]="slide.title" class="slider-image" loading="lazy">
-                <img *ngIf="isBase64Image(slide.image)"
-                     [src]="slide.image" [alt]="slide.title" class="slider-image" loading="lazy">
-                <div class="slider-overlay">
-                  <h3 class="slider-title">{{ slide.title }}</h3>
-                  <p class="slider-description">{{ slide.description }}</p>
+              @for (slide of heroSlides(); track slide; let i = $index) {
+                <div
+                     class="slider-slide"
+                     [class.active]="i === currentSlideIndex()">
+                  @if (!isBase64Image(slide.image)) {
+                    <img
+                         appImageOptimization [ngSrc]="slide.image" [alt]="slide.title" class="slider-image" loading="lazy">
+                  }
+                  @if (isBase64Image(slide.image)) {
+                    <img
+                         [src]="slide.image" [alt]="slide.title" class="slider-image" loading="lazy">
+                  }
+                  <div class="slider-overlay">
+                    <h3 class="slider-title">{{ slide.title }}</h3>
+                    <p class="slider-description">{{ slide.description }}</p>
+                  </div>
                 </div>
-              </div>
+              }
             </div>
             <!-- Slider Controls -->
             <div class="slider-controls">
@@ -111,12 +117,14 @@
             </div>
             <!-- Slider Dots -->
             <div class="slider-dots">
-              <button *ngFor="let _ of heroSlides(); let i = index"
-                      (click)="goToSlide(i)"
-                      class="slider-dot"
-                      [class.active]="i === currentSlideIndex()"
-                      [attr.aria-label]="'Go to slide ' + (i + 1)">
-              </button>
+              @for (slide of heroSlides(); track slide; let i = $index) {
+                <button
+                        (click)="goToSlide(i)"
+                        class="slider-dot"
+                        [class.active]="i === currentSlideIndex()"
+                        [attr.aria-label]="'Go to slide ' + (i + 1)">
+                </button>
+              }
             </div>
           </div>
         </div>
@@ -138,27 +146,31 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div *ngFor="let module of appModules(); let i = index"
-             class="module-card glass-card p-6 gemini-card-hover"
-             [@slideInUp]
-             [style.animation-delay]="(i * 0.1) + 's'">
-          <div class="module-icon text-5xl mb-4 text-center ai-float" [style.animation-delay]="(i * 0.2) + 's'">
-            {{ module.icon }}
+        @for (module of appModules(); track module; let i = $index) {
+          <div
+               class="module-card glass-card p-6 gemini-card-hover"
+               [@slideInUp]
+               [style.animation-delay]="(i * 0.1) + 's'">
+            <div class="module-icon text-5xl mb-4 text-center ai-float" [style.animation-delay]="(i * 0.2) + 's'">
+              {{ module.icon }}
+            </div>
+            <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-3 text-center">
+              {{ module.name }}
+            </h3>
+            <p class="text-slate-700 dark:text-gray-300 mb-4 text-center leading-relaxed">
+              {{ module.description }}
+            </p>
+            <ul class="space-y-2">
+              @for (feature of module.features; track feature) {
+                <li
+                    class="flex items-start space-x-2 text-sm text-slate-500 dark:text-gray-400">
+                  <span class="text-blue-400 mt-1">✓</span>
+                  <span>{{ feature }}</span>
+                </li>
+              }
+            </ul>
           </div>
-          <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-3 text-center">
-            {{ module.name }}
-          </h3>
-          <p class="text-slate-700 dark:text-gray-300 mb-4 text-center leading-relaxed">
-            {{ module.description }}
-          </p>
-          <ul class="space-y-2">
-            <li *ngFor="let feature of module.features"
-                class="flex items-start space-x-2 text-sm text-slate-500 dark:text-gray-400">
-              <span class="text-blue-400 mt-1">✓</span>
-              <span>{{ feature }}</span>
-            </li>
-          </ul>
-        </div>
+        }
       </div>
     </div>
   </section>
@@ -177,37 +189,45 @@
 
       <!-- Feature Cards with Images -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div *ngFor="let feature of keyFeatures(); let i = index"
-             class="feature-card glass-card overflow-hidden gemini-card-hover"
-             [@scaleIn]
-             [style.animation-delay]="(i * 0.1) + 's'">
-          <div class="feature-image-container">
-            <img *ngIf="!isBase64Image(feature.image || '/assets/images/placeholder.jpg')"
-                 appImageOptimization [ngSrc]="feature.image || '/assets/images/placeholder.jpg'"
-                 [alt]="feature.title"
-                 class="feature-image" loading="lazy">
-            <img *ngIf="isBase64Image(feature.image || '/assets/images/placeholder.jpg')"
-                 [src]="feature.image || '/assets/images/placeholder.jpg'"
-                 [alt]="feature.title"
-                 class="feature-image" loading="lazy">
-            <div class="feature-overlay">
-              <div class="feature-icon text-5xl mb-3">{{ feature.icon }}</div>
-              <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">{{ feature.title }}</h3>
+        @for (feature of keyFeatures(); track feature; let i = $index) {
+          <div
+               class="feature-card glass-card overflow-hidden gemini-card-hover"
+               [@scaleIn]
+               [style.animation-delay]="(i * 0.1) + 's'">
+            <div class="feature-image-container">
+              @if (!isBase64Image(feature.image || '/assets/images/placeholder.jpg')) {
+                <img
+                     appImageOptimization [ngSrc]="feature.image || '/assets/images/placeholder.jpg'"
+                     [alt]="feature.title"
+                     class="feature-image" loading="lazy">
+              }
+              @if (isBase64Image(feature.image || '/assets/images/placeholder.jpg')) {
+                <img
+                     [src]="feature.image || '/assets/images/placeholder.jpg'"
+                     [alt]="feature.title"
+                     class="feature-image" loading="lazy">
+              }
+              <div class="feature-overlay">
+                <div class="feature-icon text-5xl mb-3">{{ feature.icon }}</div>
+                <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">{{ feature.title }}</h3>
+              </div>
+            </div>
+            <div class="p-6">
+              <p class="text-slate-700 dark:text-gray-300 mb-4 leading-relaxed">
+                {{ feature.description }}
+              </p>
+              <ul class="space-y-2">
+                @for (benefit of feature.benefits; track benefit) {
+                  <li
+                      class="flex items-start space-x-2 text-sm text-slate-500 dark:text-gray-400">
+                    <span class="text-green-400 mt-1">•</span>
+                    <span>{{ benefit }}</span>
+                  </li>
+                }
+              </ul>
             </div>
           </div>
-          <div class="p-6">
-            <p class="text-slate-700 dark:text-gray-300 mb-4 leading-relaxed">
-              {{ feature.description }}
-            </p>
-            <ul class="space-y-2">
-              <li *ngFor="let benefit of feature.benefits"
-                  class="flex items-start space-x-2 text-sm text-slate-500 dark:text-gray-400">
-                <span class="text-green-400 mt-1">•</span>
-                <span>{{ benefit }}</span>
-              </li>
-            </ul>
-          </div>
-        </div>
+        }
       </div>
     </div>
   </section>
@@ -228,31 +248,43 @@
       <div class="gallery-container glass-card p-6">
         <div class="gallery-main">
           <div class="gallery-slide-wrapper">
-            <div *ngFor="let image of galleryImages(); let i = index"
-                 class="gallery-slide"
-                 [class.active]="i === currentGalleryIndex()">
-              <img *ngIf="!isBase64Image(image.url)"
-                   appImageOptimization [ngSrc]="image.url" [alt]="image.title" class="gallery-image" loading="lazy">
-              <img *ngIf="isBase64Image(image.url)"
-                   [src]="image.url" [alt]="image.title" class="gallery-image" loading="lazy">
-              <div class="gallery-caption">
-                <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">{{ image.title }}</h3>
-                <p class="text-slate-700 dark:text-gray-300">{{ image.description }}</p>
+            @for (image of galleryImages(); track image; let i = $index) {
+              <div
+                   class="gallery-slide"
+                   [class.active]="i === currentGalleryIndex()">
+                @if (!isBase64Image(image.url)) {
+                  <img
+                       appImageOptimization [ngSrc]="image.url" [alt]="image.title" class="gallery-image" loading="lazy">
+                }
+                @if (isBase64Image(image.url)) {
+                  <img
+                       [src]="image.url" [alt]="image.title" class="gallery-image" loading="lazy">
+                }
+                <div class="gallery-caption">
+                  <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">{{ image.title }}</h3>
+                  <p class="text-slate-700 dark:text-gray-300">{{ image.description }}</p>
+                </div>
               </div>
-            </div>
+            }
           </div>
 
           <!-- Gallery Thumbnails -->
           <div class="gallery-thumbnails">
-            <button *ngFor="let image of galleryImages(); let i = index"
-                    (click)="goToGalleryImage(i)"
-                    class="gallery-thumbnail"
-                    [class.active]="i === currentGalleryIndex()">
-              <img *ngIf="!isBase64Image(image.thumbnail || image.url)"
-                   appImageOptimization [ngSrc]="image.thumbnail || image.url" [alt]="image.title" loading="lazy">
-              <img *ngIf="isBase64Image(image.thumbnail || image.url)"
-                   [src]="image.thumbnail || image.url" [alt]="image.title" loading="lazy">
-            </button>
+            @for (image of galleryImages(); track image; let i = $index) {
+              <button
+                      (click)="goToGalleryImage(i)"
+                      class="gallery-thumbnail"
+                      [class.active]="i === currentGalleryIndex()">
+                @if (!isBase64Image(image.thumbnail || image.url)) {
+                  <img
+                       appImageOptimization [ngSrc]="image.thumbnail || image.url" [alt]="image.title" loading="lazy">
+                }
+                @if (isBase64Image(image.thumbnail || image.url)) {
+                  <img
+                       [src]="image.thumbnail || image.url" [alt]="image.title" loading="lazy">
+                }
+              </button>
+            }
           </div>
 
           <!-- Gallery Controls -->
@@ -279,16 +311,18 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        <div *ngFor="let stat of statisticsData(); let i = index"
-             class="stat-card glass-card p-8 text-center gemini-card-hover"
-             [@scaleIn]
-             [style.animation-delay]="(i * 0.1) + 's'">
-          <div class="stat-icon text-6xl mb-4 ai-float">{{ stat.icon }}</div>
-          <div class="text-5xl font-bold gradient-text mb-2">
-            {{ stat.value }}{{ stat.suffix }}
+        @for (stat of statisticsData(); track stat; let i = $index) {
+          <div
+               class="stat-card glass-card p-8 text-center gemini-card-hover"
+               [@scaleIn]
+               [style.animation-delay]="(i * 0.1) + 's'">
+            <div class="stat-icon text-6xl mb-4 ai-float">{{ stat.icon }}</div>
+            <div class="text-5xl font-bold gradient-text mb-2">
+              {{ stat.value }}{{ stat.suffix }}
+            </div>
+            <p class="text-xl text-slate-500 dark:text-gray-400">{{ stat.label }}</p>
           </div>
-          <p class="text-xl text-slate-500 dark:text-gray-400">{{ stat.label }}</p>
-        </div>
+        }
       </div>
     </div>
   </section>
@@ -306,14 +340,16 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        <div *ngFor="let benefit of businessBenefits(); let i = index"
-             class="benefit-card glass-card p-8 gemini-card-hover"
-             [@slideInUp]
-             [style.animation-delay]="(i * 0.1) + 's'">
-          <div class="text-5xl mb-6 ai-float">{{ benefit.icon }}</div>
-          <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">{{ benefit.title }}</h3>
-          <p class="text-slate-500 dark:text-gray-400 leading-relaxed">{{ benefit.desc }}</p>
-        </div>
+        @for (benefit of businessBenefits(); track benefit; let i = $index) {
+          <div
+               class="benefit-card glass-card p-8 gemini-card-hover"
+               [@slideInUp]
+               [style.animation-delay]="(i * 0.1) + 's'">
+            <div class="text-5xl mb-6 ai-float">{{ benefit.icon }}</div>
+            <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">{{ benefit.title }}</h3>
+            <p class="text-slate-500 dark:text-gray-400 leading-relaxed">{{ benefit.desc }}</p>
+          </div>
+        }
       </div>
     </div>
   </section>
@@ -331,16 +367,18 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div *ngFor="let spec of technicalSpecs(); let i = index"
-             class="spec-card glass-card p-6 flex items-start space-x-4 gemini-card-hover"
-             [@slideInRight]
-             [style.animation-delay]="(i * 0.1) + 's'">
-          <div class="text-4xl shrink-0">{{ spec.icon }}</div>
-          <div>
-            <h4 class="text-xl font-bold text-slate-900 dark:text-white mb-2">{{ spec.title }}</h4>
-            <p class="text-slate-500 dark:text-gray-400">{{ spec.desc }}</p>
+        @for (spec of technicalSpecs(); track spec; let i = $index) {
+          <div
+               class="spec-card glass-card p-6 flex items-start space-x-4 gemini-card-hover"
+               [@slideInRight]
+               [style.animation-delay]="(i * 0.1) + 's'">
+            <div class="text-4xl shrink-0">{{ spec.icon }}</div>
+            <div>
+              <h4 class="text-xl font-bold text-slate-900 dark:text-white mb-2">{{ spec.title }}</h4>
+              <p class="text-slate-500 dark:text-gray-400">{{ spec.desc }}</p>
+            </div>
           </div>
-        </div>
+        }
       </div>
     </div>
   </section>
@@ -392,11 +430,13 @@
         <div @fadeIn [style.animation-delay]="'0.1s'">
           <h4 class="text-xl font-semibold mb-6 text-slate-900 dark:text-white">{{ i18n.t('landing.mainModules') }}</h4>
           <ul class="space-y-3 text-slate-500 dark:text-gray-400">
-            <li *ngFor="let module of appModules().slice(0, 4)"
-                class="flex items-center space-x-2 hover:text-blue-400 transition-colors cursor-pointer">
-              <span class="text-blue-400">→</span>
-              <span>{{ module.name }}</span>
-            </li>
+            @for (module of appModules().slice(0, 4); track module) {
+              <li
+                  class="flex items-center space-x-2 hover:text-blue-400 transition-colors cursor-pointer">
+                <span class="text-blue-400">→</span>
+                <span>{{ module.name }}</span>
+              </li>
+            }
           </ul>
         </div>
         <div @fadeIn [style.animation-delay]="'0.2s'">
