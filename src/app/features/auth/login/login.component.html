@@ -41,10 +41,11 @@
           [class.border-red-500]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
           [attr.aria-label]="i18n.t('login.username')" [attr.aria-required]="true"
           [attr.aria-invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched" />
-        <p *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
-          class="text-red-500 text-sm mt-1">
-          {{ i18n.t('login.usernameRequired') }}
-        </p>
+        @if (loginForm.get('username')?.invalid && loginForm.get('username')?.touched) {
+          <p class="text-red-500 text-sm mt-1">
+            {{ i18n.t('login.usernameRequired') }}
+          </p>
+        }
       </div>
 
       <!-- Password -->
@@ -57,19 +58,22 @@
           [class.border-red-500]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
           [attr.aria-label]="i18n.t('login.password')" [attr.aria-required]="true"
           [attr.aria-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" />
-        <p *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-          class="text-red-500 text-sm mt-1">
-          {{ i18n.t('login.passwordRequired') }}
-        </p>
+        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+          <p class="text-red-500 text-sm mt-1">
+            {{ i18n.t('login.passwordRequired') }}
+          </p>
+        }
       </div>
 
       <!-- Error Message -->
-      <div *ngIf="errorMessage()" class="glass bg-red-500/20 border border-red-500 p-4 rounded-lg" role="alert"
-        [attr.aria-live]="'polite'">
-        <p class="text-red-700 dark:text-red-400 text-sm">
-          ✗ {{ errorMessage() }}
-        </p>
-      </div>
+      @if (errorMessage()) {
+        <div class="glass bg-red-500/20 border border-red-500 p-4 rounded-lg" role="alert"
+          [attr.aria-live]="'polite'">
+          <p class="text-red-700 dark:text-red-400 text-sm">
+            ✗ {{ errorMessage() }}
+          </p>
+        </div>
+      }
 
       <!-- Submit Button -->
       <app-glass-button type="submit" variant="primary" [fullWidth]="true" [loading]="loading()"
