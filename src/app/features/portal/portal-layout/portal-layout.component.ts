@@ -185,10 +185,22 @@ export class PortalLayoutComponent {
           permission: 'monitoring.view'
         },
         {
+          icon: '📐',
+          label: 'Zone Config',
+          route: '/portal/zone-config',
+          permission: 'monitoring.view'
+        },
+        {
           icon: '📼',
           label: 'Playback',
           route: '/portal/video-playback',
           permission: 'monitoring.view'
+        },
+        {
+          icon: '🌡️',
+          label: 'Heatmaps',
+          route: '/portal/heatmap-analytics',
+          permission: 'analytics.view'
         },
         {
           icon: '🤖',

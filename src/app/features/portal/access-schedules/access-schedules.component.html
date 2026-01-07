@@ -1,0 +1,126 @@
+<div class="h-full flex flex-col p-6 space-y-6">
+  <div class="flex justify-between items-center">
+    <div>
+      <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">
+        Time Schedules
+      </h1>
+      <p class="text-gray-500 dark:text-gray-400 mt-1">Define access time zones and schedules</p>
+    </div>
+    <app-glass-button (click)="openAddModal()" variant="primary" icon="add">
+      Create Schedule
+    </app-glass-button>
+  </div>
+
+  <app-glass-card class="flex-1 overflow-hidden flex flex-col">
+    <div class="overflow-auto flex-1 custom-scrollbar">
+      <table class="min-w-full divide-y divide-gray-200/50 dark:divide-gray-700/50">
+        <thead class="bg-gray-50/50 dark:bg-gray-800/50 sticky top-0 backdrop-blur-sm z-10">
+          <tr>
+            <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Schedule Name</th>
+            <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Type</th>
+            <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Days</th>
+            <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Time</th>
+            <th scope="col" class="px-6 py-4 text-center text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+            <th scope="col" class="px-6 py-4 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white/30 dark:bg-gray-800/30 divide-y divide-gray-200/50 dark:divide-gray-700/50">
+          <tr *ngFor="let schedule of schedules()" class="hover:bg-white/60 dark:hover:bg-gray-700/60 transition-all duration-200 group">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ schedule.name }}</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 py-1 rounded bg-gray-100 dark:bg-gray-700 text-xs font-mono uppercase">{{ schedule.type }}</span>
+            </td>
+            <td class="px-6 py-4">
+              <div class="text-sm text-gray-600 dark:text-gray-300">{{ getDaysLabel(schedule.days) }}</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm font-medium text-indigo-600 dark:text-indigo-400">
+                {{ schedule.startTime }} - {{ schedule.endTime }}
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-center">
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-medium"
+                    [class.bg-green-100]="schedule.isActive" [class.text-green-800]="schedule.isActive"
+                    [class.bg-gray-100]="!schedule.isActive" [class.text-gray-800]="!schedule.isActive"
+                    [class.dark:bg-green-900/30]="schedule.isActive" [class.dark:text-green-300]="schedule.isActive"
+                    [class.dark:bg-gray-700]="!schedule.isActive" [class.dark:text-gray-300]="!schedule.isActive">
+                {{ schedule.isActive ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button (click)="openEditModal(schedule)" class="p-1.5 text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-lg transition-colors">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button (click)="deleteSchedule(schedule.id)" class="p-1.5 text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-200 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </app-glass-card>
+</div>
+
+<!-- Modal -->
+<div *ngIf="showModal()" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+  <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+    <div class="fixed inset-0 bg-gray-900/40 backdrop-blur-sm transition-opacity" (click)="closeModal()"></div>
+    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+    <div class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-gray-100 dark:border-gray-700">
+      <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+        <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+          {{ isEditing() ? 'Edit Schedule' : 'Create Schedule' }}
+        </h3>
+        <form [formGroup]="scheduleForm" (ngSubmit)="saveSchedule()" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Schedule Name</label>
+            <input type="text" formControlName="name" class="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-gray-900 dark:text-gray-100">
+          </div>
+          
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Start Time</label>
+              <input type="time" formControlName="startTime" class="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-gray-900 dark:text-gray-100">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">End Time</label>
+              <input type="time" formControlName="endTime" class="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-gray-900 dark:text-gray-100">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Active Days</label>
+            <div class="flex flex-wrap gap-2">
+              <button type="button" *ngFor="let day of daysOfWeek" 
+                      (click)="toggleDay(day.value)"
+                      [class.bg-indigo-600]="scheduleForm.get('days')?.value.includes(day.value)"
+                      [class.text-white]="scheduleForm.get('days')?.value.includes(day.value)"
+                      [class.bg-gray-100]="!scheduleForm.get('days')?.value.includes(day.value)"
+                      [class.dark:bg-gray-700]="!scheduleForm.get('days')?.value.includes(day.value)"
+                      [class.text-gray-700]="!scheduleForm.get('days')?.value.includes(day.value)"
+                      [class.dark:text-gray-300]="!scheduleForm.get('days')?.value.includes(day.value)"
+                      class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border border-transparent hover:border-indigo-300">
+                {{ day.label }}
+              </button>
+            </div>
+          </div>
+
+          <div class="flex items-center pt-2">
+            <input type="checkbox" formControlName="isActive" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+            <label class="ml-2 block text-sm text-gray-900 dark:text-gray-100">Active</label>
+          </div>
+        </form>
+      </div>
+      <div class="bg-gray-50 dark:bg-gray-700/50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse gap-2">
+        <app-glass-button (click)="saveSchedule()" variant="primary" [disabled]="!scheduleForm.valid">Save</app-glass-button>
+        <app-glass-button (click)="closeModal()" variant="secondary">Cancel</app-glass-button>
+      </div>
+    </div>
+  </div>
+</div>
+

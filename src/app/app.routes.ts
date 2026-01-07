@@ -93,20 +93,22 @@ export const routes: Routes = [
           { path: 'event-kiosk-config', loadComponent: () => import('./features/portal/events/event-kiosk-config/event-kiosk-config.component').then(m => m.EventKioskConfigComponent) },
 
           // --- Video Analytics ---
-          { path: 'video-playback', loadComponent: () => import('./features/portal/monitoring/monitoring.component').then(m => m.MonitoringComponent) },
+          { path: 'video-playback', loadComponent: () => import('./features/portal/video-playback/video-playback.component').then(m => m.VideoPlaybackComponent) },
+          { path: 'zone-config', loadComponent: () => import('./features/portal/zone-config/zone-config.component').then(m => m.ZoneConfigComponent) },
+          { path: 'heatmap-analytics', loadComponent: () => import('./features/portal/heatmap-analytics/heatmap-analytics.component').then(m => m.HeatmapAnalyticsComponent) },
           { path: 'incident-reports', loadComponent: () => import('./features/portal/alerts/alerts.component').then(m => m.AlertsComponent) },
 
           // --- Access Control ---
           { path: 'access-dashboard', loadComponent: () => import('./features/portal/access-control/access-control.component').then(m => m.AccessControlComponent) },
-          { path: 'access-groups', loadComponent: () => import('./features/portal/access-control/access-control.component').then(m => m.AccessControlComponent) },
-          { path: 'access-schedules', loadComponent: () => import('./features/portal/access-control/access-control.component').then(m => m.AccessControlComponent) },
-          { path: 'access-logs', loadComponent: () => import('./features/portal/reports/reports.component').then(m => m.ReportsComponent) },
+          { path: 'access-groups', loadComponent: () => import('./features/portal/access-groups/access-groups.component').then(m => m.AccessGroupsComponent) },
+          { path: 'access-schedules', loadComponent: () => import('./features/portal/access-schedules/access-schedules.component').then(m => m.AccessSchedulesComponent) },
+          { path: 'access-logs', loadComponent: () => import('./features/portal/access-logs/access-logs.component').then(m => m.AccessLogsComponent) },
 
           // --- Attendance ---
           { path: 'attendance-dashboard', loadComponent: () => import('./features/portal/attendance/attendance.component').then(m => m.AttendanceComponent) },
-          { path: 'timesheets', loadComponent: () => import('./features/portal/attendance/attendance.component').then(m => m.AttendanceComponent) },
-          { path: 'overtime-requests', loadComponent: () => import('./features/portal/attendance/attendance.component').then(m => m.AttendanceComponent) },
-          { path: 'attendance-reports', loadComponent: () => import('./features/portal/reports/reports.component').then(m => m.ReportsComponent) },
+          { path: 'timesheets', loadComponent: () => import('./features/portal/timesheets/timesheets.component').then(m => m.TimesheetsComponent) },
+          { path: 'overtime-requests', loadComponent: () => import('./features/portal/overtime-requests/overtime-requests.component').then(m => m.OvertimeRequestsComponent) },
+          { path: 'attendance-reports', loadComponent: () => import('./features/portal/payroll-export/payroll-export.component').then(m => m.PayrollExportComponent) },
 
           // --- Visitor Management ---
           { path: 'visitor-dashboard', loadComponent: () => import('./features/portal/visitors/visitors.component').then(m => m.VisitorsComponent) },
