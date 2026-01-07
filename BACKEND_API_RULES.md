@@ -86,6 +86,37 @@ export interface Company {
 
 ---
 
+## 📸 Face Enrollment & Camera Usage
+
+### 1. **Camera Access**
+- ใช้ `navigator.mediaDevices.getUserMedia` เพื่อเข้าถึงกล้อง
+- ต้อง Handle permission errors เสมอ
+- ต้อง Stop stream (`stream.getTracks().forEach(track => track.stop())`) เมื่อเลิกใช้งานหรือ destroy component
+
+### 2. **Image Handling**
+- ส่งรูปภาพเป็น **Base64 String** ไปยัง Backend
+- Backend คาดหวัง Base64 string ที่ตัด header `data:image/jpeg;base64,` ออกแล้ว หรือจัดการตัดออกก่อนส่ง
+- ใช้ `Canvas` ในการ Capture ภาพจาก Video Element
+
+```typescript
+// ตัวอย่างการ Capture
+const ctx = canvas.getContext('2d');
+ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+const dataUrl = canvas.toDataURL('image/jpeg');
+const base64 = dataUrl.split(',')[1]; // ส่งค่านี้ไป Backend
+```
+
+---
+
+## 🏢 Structure & Company Info
+
+### 1. **Company Information**
+- ข้อมูลพื้นฐานบริษัทใช้ `CompanyService` (`/companies/{id}`)
+- ข้อมูลเพิ่มเติม (Email, Website, Tax ID) ให้เก็บใน JSON string ผ่านฟิลด์ `company_info` หากไม่มีฟิลด์เฉพาะใน Model
+- Mapping ฟิลด์ให้ตรงกับ `snake_case` ของ Model (`company_name`, `address`, `contact`)
+
+---
+
 ## 📋 Checklist สำหรับการพัฒนา
 
 ### สำหรับ Models (`*.model.ts`)
@@ -351,6 +382,8 @@ export class CompaniesComponent {
 - ✅ `qr-codes.component.ts` - ใช้ `snake_case` properties และ `BaseCrudService` methods
 - ✅ `rfid-cards.component.ts` - ใช้ `snake_case` properties และ `BaseCrudService` methods
 - ✅ `biometric-data.component.ts` - ใช้ `snake_case` properties และ `BaseCrudService` methods
+- ✅ `structure.component.ts` - เพิ่ม Company Info Management และใช้ `CompanyService`
+- ✅ `face-recognition-test.component.ts` - สร้างใหม่พร้อมรองรับ Camera/Upload
 
 ### สถานะปัจจุบัน
 - ✅ **22 services** ตรงกับ Backend API 100%
@@ -358,4 +391,3 @@ export class CompaniesComponent {
 - ✅ **All services** ใช้ `ApiService` แทน `HttpClient`
 - ✅ **CRUD services** extend `BaseCrudService`
 - ✅ **No linter errors**
-

@@ -21,6 +21,9 @@
 - ✅ **ปรับปรุง `NotificationAPI Service`** - ใช้ `snake_case` และ `skipTransform: true`
 - ✅ **ปรับปรุง `VisitorExtended Service`** - ใช้ `snake_case` และ `skipTransform: true`
 - ✅ **ปรับปรุง `Timestamp Service`** - ใช้ `snake_case` และ `skipTransform: true` สำหรับ API calls
+- ✅ **ปรับปรุง `BiometricData Component`** - เพิ่ม Face Enrollment (Camera/Upload)
+- ✅ **ปรับปรุง `Structure Component`** - เพิ่ม Company Info Management
+- ✅ **สร้าง `FaceRecognitionTest Component`** - เพิ่ม Identification Test (Camera/Upload)
 
 ### 2024-12-19
 - ✅ แก้ไข `user.model.ts`: ปรับ `User` interface ให้ extend `Member` โดยตรง (simplified)
@@ -363,4 +366,3 @@
 ---
 
 **เอกสารนี้จะอัปเดตเมื่อมีการปรับปรุง models และ services เพิ่มเติม**
-
