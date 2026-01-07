@@ -108,6 +108,22 @@ const base64 = dataUrl.split(',')[1]; // ส่งค่านี้ไป Backe
 
 ---
 
+## 👁️ Face Recognition & Watchlist
+
+### 1. **Face Recognition Logs**
+- ใช้ `RecognitionLog` model สำหรับแสดงประวัติ
+- เก็บข้อมูล `confidence` score (0.0 - 1.0)
+- แยกสถานะเป็น `Verified`, `Flagged`, `Uncertain`
+- **Component:** `RecognitionHistoryComponent`
+
+### 2. **Watchlist Management**
+- จัดการรายชื่อเฝ้าระวัง (VIP, Blacklist)
+- ระดับความสำคัญ: `High`, `Medium`, `Low`
+- สถานะ: `Active`, `Inactive`
+- **Component:** `WatchlistComponent`
+
+---
+
 ## 🏢 Structure & Company Info
 
 ### 1. **Company Information**
@@ -151,6 +167,7 @@ const base64 = dataUrl.split(',')[1]; // ส่งค่านี้ไป Backe
 - [ ] ใช้ `{{ model.field_name }}` แทน `{{ model.fieldName }}`
 - [ ] ใช้ `[ngModel]="formData.field_name"` แทน `[ngModel]="formData.fieldName"`
 - [ ] ใช้ `*ngFor="let item of items(); trackBy: trackByFn"` สำหรับ lists
+- [ ] ใช้ `app-glass-card` และ `app-glass-button` สำหรับ UI มาตรฐาน
 
 ---
 
@@ -274,19 +291,21 @@ export class CompaniesComponent {
 
 ```html
 <!-- companies.component.html -->
-<div *ngFor="let company of companies(); trackBy: trackByCompanyId">
-  <h3>{{ company.company_name }}</h3>
-  <p>Code: {{ company.company_code }}</p>
-  <p>Owner: {{ company.owner_name }}</p>
-  <p>Created: {{ company.created_at | date }}</p>
-</div>
+<app-glass-card>
+  <div *ngFor="let company of companies(); trackBy: trackByCompanyId">
+    <h3>{{ company.company_name }}</h3>
+    <p>Code: {{ company.company_code }}</p>
+    <p>Owner: {{ company.owner_name }}</p>
+    <p>Created: {{ company.created_at | date }}</p>
+  </div>
 
-<form (ngSubmit)="saveCompany()">
-  <input [(ngModel)]="formData.company_name" name="company_name" placeholder="Company Name" />
-  <input [(ngModel)]="formData.company_code" name="company_code" placeholder="Company Code" />
-  <input [(ngModel)]="formData.owner_name" name="owner_name" placeholder="Owner Name" />
-  <button type="submit">Save</button>
-</form>
+  <form (ngSubmit)="saveCompany()">
+    <input [(ngModel)]="formData.company_name" name="company_name" placeholder="Company Name" />
+    <input [(ngModel)]="formData.company_code" name="company_code" placeholder="Company Code" />
+    <input [(ngModel)]="formData.owner_name" name="owner_name" placeholder="Owner Name" />
+    <app-glass-button type="submit" variant="primary">Save</app-glass-button>
+  </form>
+</app-glass-card>
 ```
 
 ---
@@ -384,6 +403,8 @@ export class CompaniesComponent {
 - ✅ `biometric-data.component.ts` - ใช้ `snake_case` properties และ `BaseCrudService` methods
 - ✅ `structure.component.ts` - เพิ่ม Company Info Management และใช้ `CompanyService`
 - ✅ `face-recognition-test.component.ts` - สร้างใหม่พร้อมรองรับ Camera/Upload
+- ✅ `watchlist.component.ts` - สร้างใหม่สำหรับจัดการ Watchlist พร้อม Glass UI
+- ✅ `recognition-history.component.ts` - สร้างใหม่สำหรับดูประวัติการสแกนใบหน้า พร้อม Glass UI
 
 ### สถานะปัจจุบัน
 - ✅ **22 services** ตรงกับ Backend API 100%

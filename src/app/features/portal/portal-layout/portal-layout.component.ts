@@ -44,6 +44,12 @@ export class PortalLayoutComponent {
       expanded: false,
       children: [
         {
+          icon: '📊',
+          label: 'Overview',
+          route: '/portal/company-dashboard',
+          permission: 'dashboard.view'
+        },
+        {
           icon: '👤',
           label: 'Profile',
           route: '/portal/profile',
@@ -62,16 +68,22 @@ export class PortalLayoutComponent {
           permission: 'company.view'
         },
         {
-          icon: '📁',
-          label: 'Departments',
-          route: '/portal/departments',
-          permission: 'department.view'
+          icon: '📅',
+          label: 'Holiday Calendar',
+          route: '/portal/company-holidays',
+          permission: 'company.view'
         },
         {
-          icon: '💼',
-          label: 'Positions',
-          route: '/portal/positions',
-          permission: 'position.view'
+          icon: '📢',
+          label: 'Announcements',
+          route: '/portal/announcements',
+          permission: 'company.view'
+        },
+        {
+          icon: '📈',
+          label: 'Reports',
+          route: '/portal/company-reports',
+          permission: 'report.view'
         }
       ]
     },
@@ -84,7 +96,7 @@ export class PortalLayoutComponent {
       children: [
         {
           icon: '👁️',
-          label: 'Face Recognition Live',
+          label: 'Live Monitor',
           route: '/portal/face-recognition-live',
           permission: 'face.recognition.view'
         },
@@ -101,56 +113,81 @@ export class PortalLayoutComponent {
           permission: 'face.recognition.view'
         },
         {
-          icon: '👤',
-          label: 'Face Recognition Demo',
-          route: '/portal/face-recognition-demo'
+          icon: '🚫',
+          label: 'Watchlist',
+          route: '/portal/watchlist',
+          permission: 'face.recognition.view'
         },
         {
-          icon: '👤',
-          label: 'Biometric Data',
-          route: '/portal/biometric-data',
-          permission: 'biometric.view'
+          icon: '📜',
+          label: 'Recognition History',
+          route: '/portal/recognition-history',
+          permission: 'report.view'
         }
       ]
     },
 
-    // 4. Event Management
+    // 3. Event Management
     {
       icon: '🎉',
       label: 'Event Management',
       expanded: false,
       children: [
         {
+          icon: '📊',
+          label: 'Event Dashboard',
+          route: '/portal/event-dashboard',
+          permission: 'event.view'
+        },
+        {
           icon: '📅',
-          label: 'Events',
+          label: 'All Events',
           route: '/portal/events',
           permission: 'event.view'
         },
         {
-          icon: '📊',
-          label: 'Event Analytics',
+          icon: '📝',
+          label: 'Registration Forms',
+          route: '/portal/event-forms',
+          permission: 'event.manage'
+        },
+        {
+          icon: '🖥️',
+          label: 'Kiosk Config',
+          route: '/portal/event-kiosk-config',
+          permission: 'event.manage'
+        },
+        {
+          icon: '📈',
+          label: 'Analytics & Reports',
           route: '/portal/events/analytics',
           permission: 'event.view'
         }
       ]
     },
 
-    // 5. Video Analytics
+    // 4. Video Analytics
     {
       icon: '🔬',
       label: 'Video Analytics',
       expanded: false,
       children: [
         {
-          icon: '🔬',
-          label: 'Video Analytics',
+          icon: '📊',
+          label: 'Analytics Overview',
           route: '/portal/video-analytics',
           permission: 'analytics.view'
         },
         {
           icon: '🎥',
-          label: 'Monitoring',
+          label: 'Cameras & Zones',
           route: '/portal/monitoring',
+          permission: 'monitoring.view'
+        },
+        {
+          icon: '📼',
+          label: 'Playback',
+          route: '/portal/video-playback',
           permission: 'monitoring.view'
         },
         {
@@ -158,106 +195,166 @@ export class PortalLayoutComponent {
           label: 'AI Models',
           route: '/portal/ai-models',
           permission: 'ai.view'
+        },
+        {
+          icon: '🚨',
+          label: 'Incident Reports',
+          route: '/portal/incident-reports',
+          permission: 'report.view'
         }
       ]
     },
 
-    // 6. Access Control
+    // 5. Access Control
     {
       icon: '🚪',
       label: 'Access Control',
       expanded: false,
       children: [
         {
+          icon: '📊',
+          label: 'Access Dashboard',
+          route: '/portal/access-dashboard',
+          permission: 'door.view'
+        },
+        {
           icon: '🚪',
-          label: 'Doors',
+          label: 'Doors Management',
           route: '/portal/access-control/doors',
           permission: 'door.view'
         },
         {
-          icon: '🔲',
-          label: 'QR Codes',
-          route: '/portal/qr-codes',
-          permission: 'qrcode.view'
+          icon: '🔐',
+          label: 'Access Groups',
+          route: '/portal/access-groups',
+          permission: 'door.manage'
+        },
+        {
+          icon: '⏰',
+          label: 'Time Schedules',
+          route: '/portal/access-schedules',
+          permission: 'door.manage'
         },
         {
           icon: '💳',
-          label: 'RFID Cards',
+          label: 'Credentials (QR/RFID)',
           route: '/portal/rfid-cards',
           permission: 'rfid.view'
+        },
+        {
+          icon: '📜',
+          label: 'Access Logs',
+          route: '/portal/access-logs',
+          permission: 'report.view'
         }
       ]
     },
 
-    // 7. Attendance
+    // 6. Attendance
     {
       icon: '📋',
       label: 'Attendance',
       expanded: false,
       children: [
         {
+          icon: '📊',
+          label: 'Today Overview',
+          route: '/portal/attendance-dashboard',
+          permission: 'attendance.view'
+        },
+        {
           icon: '📋',
-          label: 'Attendance',
+          label: 'Daily Attendance',
           route: '/portal/attendance',
           permission: 'attendance.view'
         },
         {
+          icon: '🕒',
+          label: 'Timesheets',
+          route: '/portal/timesheets',
+          permission: 'attendance.manage'
+        },
+        {
+          icon: '💪',
+          label: 'Overtime (OT)',
+          route: '/portal/overtime-requests',
+          permission: 'attendance.manage'
+        },
+        {
           icon: '⏰',
-          label: 'Shifts',
+          label: 'Shift Management',
           route: '/portal/config/shifts',
           permission: 'shift.view'
         },
         {
           icon: '🏖️',
-          label: 'Leaves',
+          label: 'Leave Management',
           route: '/portal/leaves',
           permission: 'leave.view'
+        },
+        {
+          icon: '📈',
+          label: 'Monthly Reports',
+          route: '/portal/attendance-reports',
+          permission: 'report.view'
         }
       ]
     },
 
-    // 8. Visitor Management
+    // 7. Visitor Management
     {
       icon: '🚶',
       label: 'Visitor Management',
       expanded: false,
       children: [
         {
+          icon: '📊',
+          label: 'Visitor Dashboard',
+          route: '/portal/visitor-dashboard',
+          permission: 'visitor.view'
+        },
+        {
           icon: '🚶',
-          label: 'Visitors',
+          label: 'Active Visitors',
           route: '/portal/visitors',
           permission: 'visitor.view'
         },
         {
           icon: '📩',
-          label: 'Visitor Invitations',
+          label: 'Invitations',
           route: '/portal/visitor-invitations',
           permission: 'visitor.view'
         },
         {
-          icon: '📛',
-          label: 'Visitor Badges',
-          route: '/portal/visitor-badges',
-          permission: 'visitor.view'
+          icon: '⛔',
+          label: 'Blacklist',
+          route: '/portal/visitor-blacklist',
+          permission: 'visitor.manage'
         },
         {
-          icon: '🏠',
-          label: 'Guests',
-          route: '/portal/guests',
-          permission: 'guest.view'
+          icon: '📜',
+          label: 'Visitor Logs & Reports',
+          route: '/portal/visitor-reports',
+          permission: 'report.view'
         }
       ]
     },
 
-    // 9. Vehicle & Parking
+    // 8. Vehicle & Parking
     {
       icon: '🚗',
       label: 'Vehicle & Parking',
       expanded: false,
       children: [
         {
+          icon: '📊',
+          label: 'Parking Dashboard',
+          route: '/portal/parking-dashboard',
+          permission: 'parking.view'
+        },
+        {
           icon: '🚗',
-          label: 'Vehicles',
+          label: 'Registered Vehicles',
           route: '/portal/vehicles',
           permission: 'vehicle.view'
         },
@@ -268,68 +365,74 @@ export class PortalLayoutComponent {
           permission: 'parking.view'
         },
         {
-          icon: '📅',
-          label: 'Reservations',
-          route: '/portal/parking-reservation',
-          permission: 'parking.view'
+          icon: '⚖️',
+          label: 'Rules & Fees',
+          route: '/portal/parking-rules',
+          permission: 'parking.manage'
         },
         {
-          icon: '➡️',
-          label: 'Entry Gate',
-          route: '/portal/parking-entry',
-          permission: 'parking.view'
-        },
-        {
-          icon: '⬅️',
-          label: 'Exit Gate',
-          route: '/portal/parking-exit',
-          permission: 'parking.view'
-        },
-        {
-          icon: '📊',
-          label: 'Parking Stats',
-          route: '/portal/parking-statistics',
-          permission: 'parking.view'
+          icon: '📈',
+          label: 'Parking Logs',
+          route: '/portal/parking-logs',
+          permission: 'report.view'
         }
       ]
     },
 
-    // 10. Smart Surveillance
+    // 9. Smart Surveillance
     {
       icon: '🛡️',
       label: 'Smart Surveillance',
       expanded: false,
       children: [
         {
+          icon: '🗺️',
+          label: 'Map View (GIS)',
+          route: '/portal/surveillance-map',
+          permission: 'monitoring.view'
+        },
+        {
           icon: '🎥',
-          label: 'Monitoring',
+          label: 'All Cameras',
           route: '/portal/monitoring',
           permission: 'monitoring.view'
         },
         {
           icon: '🚨',
-          label: 'Alerts',
+          label: 'Active Alerts',
           route: '/portal/alerts',
           permission: 'alert.view'
         },
         {
-          icon: '📢',
-          label: 'Notifications',
-          route: '/portal/notifications',
-          permission: 'notification.view'
+          icon: '📜',
+          label: 'Alert History',
+          route: '/portal/alert-history',
+          permission: 'report.view'
         }
       ]
     },
 
-    // 11. System Management
+    // 10. System Management
     {
       icon: '⚙️',
       label: 'System Management',
       expanded: false,
       children: [
         {
+          icon: '📊',
+          label: 'System Health',
+          route: '/portal/hardware-status-dashboard',
+          permission: 'dashboard.view'
+        },
+        {
+          icon: '👥',
+          label: 'User Management',
+          route: '/portal/system-users',
+          permission: 'user.manage'
+        },
+        {
           icon: '🖥️',
-          label: 'Devices',
+          label: 'Devices Config',
           route: '/portal/devices',
           permission: 'device.view'
         },
@@ -340,15 +443,21 @@ export class PortalLayoutComponent {
           permission: 'location.view'
         },
         {
-          icon: '🔧',
-          label: 'Hardware Status',
-          route: '/portal/hardware-status-dashboard',
-          permission: 'dashboard.view'
+          icon: '📜',
+          label: 'Audit Logs',
+          route: '/portal/audit-logs',
+          permission: 'audit.view'
+        },
+        {
+          icon: '⚙️',
+          label: 'General Settings',
+          route: '/portal/system-settings',
+          permission: 'settings.manage'
         }
       ]
     },
 
-    // 12. Public & Kiosk Mode
+    // 11. Public & Kiosk Mode
     {
       icon: '🌐',
       label: 'Public & Kiosk Mode',
@@ -476,4 +585,3 @@ export class PortalLayoutComponent {
     }
   ];
 }
-

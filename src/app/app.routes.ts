@@ -77,6 +77,56 @@ export const routes: Routes = [
           .then(m => m.PortalLayoutComponent),
         canActivate: [authGuard],
         children: [
+          // --- Company Management ---
+          { path: 'company-dashboard', loadComponent: () => import('./features/portal/dashboard/dashboard.component').then(m => m.DashboardComponent) },
+          { path: 'company-holidays', loadComponent: () => import('./features/portal/events/events.component').then(m => m.EventsComponent) },
+          { path: 'announcements', loadComponent: () => import('./features/portal/notifications/notifications.component').then(m => m.NotificationsComponent) },
+          { path: 'company-reports', loadComponent: () => import('./features/portal/reports/reports.component').then(m => m.ReportsComponent) },
+
+          // --- Face Recognition ---
+          { path: 'watchlist', loadComponent: () => import('./features/portal/watchlist/watchlist.component').then(m => m.WatchlistComponent) },
+          { path: 'recognition-history', loadComponent: () => import('./features/portal/recognition-history/recognition-history.component').then(m => m.RecognitionHistoryComponent) },
+
+          // --- Event Management ---
+          { path: 'event-dashboard', loadComponent: () => import('./features/portal/events/event-analytics/event-analytics.component').then(m => m.EventAnalyticsComponent) },
+          { path: 'event-forms', loadComponent: () => import('./features/portal/events/event-registration-fields/event-registration-fields.component').then(m => m.EventRegistrationFieldsComponent) },
+          { path: 'event-kiosk-config', loadComponent: () => import('./features/portal/events/event-kiosk-config/event-kiosk-config.component').then(m => m.EventKioskConfigComponent) },
+
+          // --- Video Analytics ---
+          { path: 'video-playback', loadComponent: () => import('./features/portal/monitoring/monitoring.component').then(m => m.MonitoringComponent) },
+          { path: 'incident-reports', loadComponent: () => import('./features/portal/alerts/alerts.component').then(m => m.AlertsComponent) },
+
+          // --- Access Control ---
+          { path: 'access-dashboard', loadComponent: () => import('./features/portal/access-control/access-control.component').then(m => m.AccessControlComponent) },
+          { path: 'access-groups', loadComponent: () => import('./features/portal/access-control/access-control.component').then(m => m.AccessControlComponent) },
+          { path: 'access-schedules', loadComponent: () => import('./features/portal/access-control/access-control.component').then(m => m.AccessControlComponent) },
+          { path: 'access-logs', loadComponent: () => import('./features/portal/reports/reports.component').then(m => m.ReportsComponent) },
+
+          // --- Attendance ---
+          { path: 'attendance-dashboard', loadComponent: () => import('./features/portal/attendance/attendance.component').then(m => m.AttendanceComponent) },
+          { path: 'timesheets', loadComponent: () => import('./features/portal/attendance/attendance.component').then(m => m.AttendanceComponent) },
+          { path: 'overtime-requests', loadComponent: () => import('./features/portal/attendance/attendance.component').then(m => m.AttendanceComponent) },
+          { path: 'attendance-reports', loadComponent: () => import('./features/portal/reports/reports.component').then(m => m.ReportsComponent) },
+
+          // --- Visitor Management ---
+          { path: 'visitor-dashboard', loadComponent: () => import('./features/portal/visitors/visitors.component').then(m => m.VisitorsComponent) },
+          { path: 'visitor-blacklist', loadComponent: () => import('./features/portal/visitors/visitors.component').then(m => m.VisitorsComponent) },
+          { path: 'visitor-reports', loadComponent: () => import('./features/portal/reports/reports.component').then(m => m.ReportsComponent) },
+
+          // --- Vehicle & Parking ---
+          { path: 'parking-dashboard', loadComponent: () => import('./features/portal/parking-spots/parking-spots.component').then(m => m.ParkingSpotsComponent) },
+          { path: 'parking-rules', loadComponent: () => import('./features/portal/parking-spots/parking-spots.component').then(m => m.ParkingSpotsComponent) },
+          { path: 'parking-logs', loadComponent: () => import('./features/portal/reports/reports.component').then(m => m.ReportsComponent) },
+
+          // --- Smart Surveillance ---
+          { path: 'surveillance-map', loadComponent: () => import('./features/portal/monitoring/monitoring.component').then(m => m.MonitoringComponent) },
+          { path: 'alert-history', loadComponent: () => import('./features/portal/alerts/alerts.component').then(m => m.AlertsComponent) },
+
+          // --- System Management ---
+          { path: 'system-users', loadComponent: () => import('./features/portal/employees/employees.component').then(m => m.EmployeesComponent) },
+          { path: 'audit-logs', loadComponent: () => import('./features/super-admin/audit-logs/audit-logs.component').then(m => m.AuditLogsComponent) }, // Using super admin component if possible
+          { path: 'system-settings', loadComponent: () => import('./features/super-admin/system-settings/system-settings.component').then(m => m.SystemSettingsComponent) }, // Using super admin component if possible
+
           {
             path: 'dashboard',
             loadComponent: () => import('./features/portal/dashboard/dashboard.component')

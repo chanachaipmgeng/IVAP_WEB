@@ -24,6 +24,8 @@
 - ✅ **ปรับปรุง `BiometricData Component`** - เพิ่ม Face Enrollment (Camera/Upload)
 - ✅ **ปรับปรุง `Structure Component`** - เพิ่ม Company Info Management
 - ✅ **สร้าง `FaceRecognitionTest Component`** - เพิ่ม Identification Test (Camera/Upload)
+- ✅ **สร้าง `Watchlist Component`** - เพิ่มระบบจัดการรายชื่อเฝ้าระวัง พร้อม Glass UI และ Dark Mode
+- ✅ **สร้าง `RecognitionHistory Component`** - เพิ่มระบบดูประวัติการสแกนใบหน้า พร้อม Glass UI และ Dark Mode
 
 ### 2024-12-19
 - ✅ แก้ไข `user.model.ts`: ปรับ `User` interface ให้ extend `Member` โดยตรง (simplified)
@@ -276,32 +278,30 @@
   - **Components Migrated:** `hr-dashboard.component.ts`, `access-control.component.ts`
 
 ### 3. **Report**
-
-### 4. **Report**
 - **Model:** `report.model.ts` ⚠️
   - ต้องตรวจสอบว่าใช้ `snake_case` หรือไม่
 - **Service:** `report.service.ts` ⚠️
   - ต้องตรวจสอบว่า extend `BaseCrudService` หรือไม่
 
-### 5. **Notification** (UI Service)
+### 4. **Notification** (UI Service)
 - **Model:** `notification.model.ts` ⚠️
   - ต้องตรวจสอบว่าใช้ `snake_case` หรือไม่
 - **Service:** `notification.service.ts` ⚠️
   - ต้องตรวจสอบว่า extend `BaseCrudService` หรือไม่
 
-### 6. **Audit**
+### 5. **Audit**
 - **Model:** `audit.model.ts` ⚠️
   - ต้องตรวจสอบว่าใช้ `snake_case` หรือไม่
 - **Service:** `audit.service.ts` ⚠️
   - ต้องตรวจสอบว่า extend `BaseCrudService` หรือไม่
 
-### 7. **System / System Configuration**
+### 6. **System / System Configuration**
 - **Model:** `system.model.ts` ⚠️
   - ต้องตรวจสอบว่าใช้ `snake_case` หรือไม่
 - **Service:** `system.service.ts` / `system-configuration.service.ts` ⚠️
   - ต้องตรวจสอบว่า extend `BaseCrudService` หรือไม่
 
-### 8. **Other Services** (ยังไม่ได้ตรวจสอบ)
+### 7. **Other Services** (ยังไม่ได้ตรวจสอบ)
 - `kiosk.service.ts`
 - `license.service.ts`
 - `maintenance.service.ts`

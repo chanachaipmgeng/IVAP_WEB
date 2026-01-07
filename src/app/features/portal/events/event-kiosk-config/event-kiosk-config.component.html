@@ -1,0 +1,173 @@
+<div class="h-full flex flex-col p-6 space-y-6">
+  <!-- Header -->
+  <div class="flex justify-between items-center">
+    <div>
+      <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">
+        Kiosk Configuration
+      </h1>
+      <p class="text-gray-500 dark:text-gray-400 mt-1">Customize the check-in screen experience for your attendees</p>
+    </div>
+    <div class="flex gap-2">
+      <app-glass-button (click)="resetConfig()" variant="secondary" icon="refresh">
+        Reset Defaults
+      </app-glass-button>
+      <app-glass-button (click)="saveConfig()" variant="primary" icon="save">
+        Save Changes
+      </app-glass-button>
+    </div>
+  </div>
+
+  <div class="flex flex-col lg:flex-row gap-6 flex-1 overflow-hidden">
+    <!-- Configuration Form -->
+    <app-glass-card class="w-full lg:w-1/3 flex flex-col overflow-y-auto custom-scrollbar">
+      <div class="p-4 space-y-6">
+        <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 border-b border-gray-200 dark:border-gray-700 pb-2">
+          Display Settings
+        </h2>
+        
+        <form [formGroup]="configForm" class="space-y-4">
+          <!-- Welcome Message -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Welcome Headline</label>
+            <input type="text" formControlName="welcomeMessage" 
+                   class="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-gray-900 dark:text-gray-100">
+          </div>
+
+          <!-- Sub Message -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Subtitle / Instructions</label>
+            <textarea formControlName="subMessage" rows="2"
+                      class="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-gray-900 dark:text-gray-100"></textarea>
+          </div>
+
+          <!-- Theme Selection -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Theme</label>
+            <div class="grid grid-cols-2 gap-3">
+              <div *ngFor="let theme of themes" 
+                   (click)="configForm.patchValue({themeId: theme.id})"
+                   class="cursor-pointer rounded-lg p-3 border-2 transition-all flex items-center gap-2"
+                   [ngClass]="{'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20': configForm.get('themeId')?.value === theme.id, 'border-gray-200 dark:border-gray-700': configForm.get('themeId')?.value !== theme.id}">
+                <div class="w-6 h-6 rounded-full border shadow-sm" [style.backgroundColor]="theme.primaryColor"></div>
+                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ theme.name }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Toggles -->
+          <div class="space-y-3 pt-2">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Show Event Logo</span>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" formControlName="showLogo" class="sr-only peer">
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600"></div>
+              </label>
+            </div>
+            
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Show Clock</span>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" formControlName="showTime" class="sr-only peer">
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Show Weather Widget</span>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" formControlName="showWeather" class="sr-only peer">
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600"></div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Timeout -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Auto-close Success Screen (Seconds)
+            </label>
+            <input type="number" formControlName="autoCloseSeconds" min="1" max="60"
+                   class="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-gray-900 dark:text-gray-100">
+          </div>
+        </form>
+      </div>
+    </app-glass-card>
+
+    <!-- Preview -->
+    <div class="flex-1 flex flex-col min-h-[500px]">
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Live Preview</h2>
+        <div class="flex bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+          <button (click)="previewMode.set('desktop')" 
+                  [class.bg-white]="previewMode() === 'desktop'"
+                  [class.shadow-sm]="previewMode() === 'desktop'"
+                  [class.text-indigo-600]="previewMode() === 'desktop'"
+                  class="px-3 py-1 rounded-md text-sm font-medium transition-all text-gray-500 dark:text-gray-400">
+            <i class="fas fa-desktop mr-1"></i> Desktop
+          </button>
+          <button (click)="previewMode.set('mobile')" 
+                  [class.bg-white]="previewMode() === 'mobile'"
+                  [class.shadow-sm]="previewMode() === 'mobile'"
+                  [class.text-indigo-600]="previewMode() === 'mobile'"
+                  class="px-3 py-1 rounded-md text-sm font-medium transition-all text-gray-500 dark:text-gray-400">
+            <i class="fas fa-mobile-alt mr-1"></i> Mobile
+          </button>
+        </div>
+      </div>
+
+      <div class="flex-1 bg-gray-200 dark:bg-gray-900 rounded-2xl flex items-center justify-center p-8 overflow-hidden relative border-4 border-gray-300 dark:border-gray-700">
+        <!-- Device Frame -->
+        <div [class.w-full]="previewMode() === 'desktop'" 
+             [class.h-full]="previewMode() === 'desktop'"
+             [class.max-w-md]="previewMode() === 'mobile'"
+             [class.aspect-[9/16]]="previewMode() === 'mobile'"
+             [class.h-[90%]]="previewMode() === 'mobile'"
+             class="bg-white relative shadow-2xl overflow-hidden transition-all duration-300"
+             [style.backgroundColor]="selectedTheme().bgColor"
+             [style.color]="selectedTheme().id === 'corporate' || selectedTheme().id === 'vibrant' ? '#1f2937' : '#ffffff'">
+             
+             <!-- Mock Content -->
+             <div class="h-full flex flex-col">
+               <!-- Header -->
+               <div class="p-6 flex justify-between items-start">
+                 <div *ngIf="configForm.get('showLogo')?.value" class="h-12 w-12 rounded-lg bg-current opacity-20 flex items-center justify-center">
+                    <i class="fas fa-cube text-2xl"></i>
+                 </div>
+                 <div *ngIf="configForm.get('showTime')?.value" class="text-right">
+                   <div class="text-2xl font-bold">10:45</div>
+                   <div class="text-sm opacity-70">Monday, Jan 7</div>
+                 </div>
+               </div>
+
+               <!-- Main Content -->
+               <div class="flex-1 flex flex-col items-center justify-center p-8 text-center space-y-8">
+                 <div class="h-48 w-48 rounded-2xl border-4 border-dashed border-current opacity-30 flex items-center justify-center">
+                   <div class="text-center">
+                     <i class="fas fa-qrcode text-6xl mb-2"></i>
+                     <div class="text-sm">Scan QR Code</div>
+                   </div>
+                 </div>
+
+                 <div class="space-y-2 max-w-sm">
+                   <h1 class="text-3xl font-bold leading-tight">{{ configForm.get('welcomeMessage')?.value }}</h1>
+                   <p class="text-lg opacity-80">{{ configForm.get('subMessage')?.value }}</p>
+                 </div>
+
+                 <button class="px-8 py-3 rounded-full font-semibold shadow-lg transform hover:scale-105 transition-all text-white"
+                         [style.backgroundColor]="selectedTheme().primaryColor">
+                    <i class="fas fa-camera mr-2"></i> Face Check-in
+                 </button>
+               </div>
+
+               <!-- Footer -->
+               <div *ngIf="configForm.get('showWeather')?.value" class="p-6 flex items-center justify-center opacity-70">
+                 <i class="fas fa-cloud-sun text-xl mr-2"></i>
+                 <span>28°C Partly Cloudy</span>
+               </div>
+             </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
