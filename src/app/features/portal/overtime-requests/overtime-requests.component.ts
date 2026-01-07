@@ -2,7 +2,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GlassCardComponent } from '../../../shared/components/glass-card/glass-card.component';
-import { GlassButtonComponent } from '../../../shared/components/glass-button/glass-button.component';
+// Removed unused GlassButtonComponent import
 
 interface OTRequest {
   id: string;
@@ -17,7 +17,7 @@ interface OTRequest {
 @Component({
   selector: 'app-overtime-requests',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, GlassCardComponent, GlassButtonComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, GlassCardComponent],
   templateUrl: './overtime-requests.component.html',
   styleUrls: ['./overtime-requests.component.scss']
 })
@@ -46,4 +46,3 @@ export class OvertimeRequestsComponent implements OnInit {
     }
   }
 }
-

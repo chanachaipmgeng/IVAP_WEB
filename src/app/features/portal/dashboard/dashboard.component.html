@@ -1,100 +1,119 @@
 <app-page-layout
-  [title]="'navigation.dashboard' | translate"
-  [description]="getCurrentDate()"
-  icon="📊"
+  [title]="t('pages.dashboard.title')"
+  [subtitle]="t('pages.dashboard.subtitle')"
   [actions]="pageActions()">
-  
-  <!-- Error Message -->
-  @if (errorMessage()) {
-    <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
-      <p class="text-red-800 text-sm">{{ errorMessage() }}</p>
+
+  <!-- Module Shortcuts Grid -->
+  <div class="mb-8">
+    <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4 px-1">
+      <i class="fas fa-th-large mr-2 text-indigo-500"></i> Main Modules
+    </h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+      <div *ngFor="let module of moduleShortcuts()" 
+           (click)="navigateTo(module.route)"
+           class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm hover:shadow-md transition-all cursor-pointer border border-gray-100 dark:border-gray-700 group hover:-translate-y-1">
+        <div class="flex flex-col items-center text-center h-full">
+          <div [class]="'w-12 h-12 rounded-full flex items-center justify-center text-2xl mb-3 transition-transform group-hover:scale-110 ' + module.bgClass + ' ' + module.colorClass">
+            {{ module.icon }}
+          </div>
+          <h3 class="font-semibold text-gray-900 dark:text-gray-100 text-sm mb-1 line-clamp-1">{{ module.label }}</h3>
+          <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">{{ module.description }}</p>
+        </div>
+      </div>
     </div>
-  }
+  </div>
 
-  <app-loading *ngIf="getLoading()()" [message]="i18n.t('pages.dashboard.loadingDashboardData')" />
+  <!-- Key Metrics -->
+  <div class="mb-8">
+    <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4 px-1">
+      <i class="fas fa-chart-line mr-2 text-blue-500"></i> System Overview
+    </h2>
+    <app-statistics-grid 
+      [stats]="statisticsCards()" 
+      [columns]="4">
+    </app-statistics-grid>
+  </div>
 
-  <!-- Stats Grid -->
-  <app-statistics-grid *ngIf="!getLoading()() && stats()" [stats]="statisticsCards()" [columns]="4" />
-
-  <!-- Charts Section -->
-  <div *ngIf="!getLoading()() && stats()" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-    <!-- Attendance Trend Chart -->
-    <app-glass-card customClass="p-6">
-      <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-        {{ i18n.t('pages.dashboard.attendanceTrend7Days') }}
-      </h3>
-      <div class="h-64">
-        <app-echarts-chart [options]="attendanceChartOptions()" [height]="'256px'" [ariaLabel]="i18n.t('pages.dashboard.attendanceTrend7Days')" />
+  <!-- Charts & Activity -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+    <!-- Attendance Chart -->
+    <app-glass-card class="lg:col-span-2 h-full">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">
+          {{ t('pages.dashboard.attendanceOverview') }}
+        </h3>
+        <span class="text-xs text-gray-500 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">Last 7 Days</span>
+      </div>
+      <div class="h-64 w-full">
+        <app-echarts-chart [options]="attendanceChartOptions()" class="w-full h-full block"></app-echarts-chart>
       </div>
     </app-glass-card>
 
     <!-- Door Status Chart -->
-    <app-glass-card customClass="p-6">
-      <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-        {{ i18n.t('pages.dashboard.doorStatus') }}
-      </h3>
-      <div class="h-64">
-        <app-echarts-chart [options]="doorChartOptions()" [height]="'256px'" [ariaLabel]="i18n.t('pages.dashboard.doorStatus')" />
+    <app-glass-card class="h-full">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">
+          Door Status
+        </h3>
+      </div>
+      <div class="h-64 w-full">
+        <app-echarts-chart [options]="doorChartOptions()" class="w-full h-full block"></app-echarts-chart>
       </div>
     </app-glass-card>
   </div>
 
-  <!-- Recent Activity & Upcoming Events -->
-  <div *ngIf="!getLoading()() && stats()" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     <!-- Recent Check-ins -->
-    <app-glass-card customClass="p-6">
-      <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-        {{ i18n.t('pages.dashboard.recentCheckIns') }}
-      </h3>
+    <app-glass-card>
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">
+          {{ t('pages.dashboard.recentActivity') }}
+        </h3>
+        <button class="text-sm text-indigo-600 dark:text-indigo-400 hover:underline">View All</button>
+      </div>
       <div class="space-y-3">
-        @if (recentCheckIns().length > 0) {
-          @for (checkIn of recentCheckIns(); track trackByCheckIn($index, checkIn)) {
-            <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-              <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
-                  <span class="text-lg">👤</span>
-                </div>
-                <div>
-                  <p class="font-medium text-gray-900 dark:text-gray-100">{{ checkIn.name }}</p>
-                  <p class="text-sm text-gray-600 dark:text-gray-400">{{ checkIn.time }}</p>
-                </div>
-              </div>
-              <span class="px-2 py-1 text-xs font-semibold rounded" [class]="checkIn.status === 'present' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'">
-                {{ i18n.t('pages.dashboard.' + checkIn.status) }}
-              </span>
+        <div *ngFor="let activity of recentCheckIns(); trackBy: trackByCheckIn" 
+             class="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700/30 border border-gray-100 dark:border-gray-700">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center">
+              <i class="fas fa-user text-gray-400"></i>
             </div>
-          }
-        } @else {
-          <p class="text-gray-500 dark:text-gray-400 text-center py-8">
-            {{ i18n.t('pages.dashboard.noRecentCheckIns') }}
-          </p>
-        }
+            <div>
+              <p class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ activity.name }}</p>
+              <p class="text-xs text-gray-500">{{ activity.time }}</p>
+            </div>
+          </div>
+          <span class="px-2 py-1 text-xs rounded-full" 
+                [ngClass]="activity.status === 'present' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'">
+            {{ activity.status | titlecase }}
+          </span>
+        </div>
       </div>
     </app-glass-card>
 
     <!-- Upcoming Events -->
-    <app-glass-card customClass="p-6">
-      <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-        {{ i18n.t('pages.dashboard.upcomingEvents') }}
-      </h3>
+    <app-glass-card>
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">
+          {{ t('pages.dashboard.upcomingEvents') }}
+        </h3>
+        <button class="text-sm text-indigo-600 dark:text-indigo-400 hover:underline">Calendar</button>
+      </div>
       <div class="space-y-3">
-        @if (upcomingEvents().length > 0) {
-          @for (event of upcomingEvents(); track trackByEvent($index, event)) {
-            <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-              <div>
-                <p class="font-medium text-gray-900 dark:text-gray-100">{{ event.name }}</p>
-                <p class="text-sm text-gray-600 dark:text-gray-400">{{ event.date }}</p>
-              </div>
-              <span class="px-2 py-1 text-xs font-semibold rounded bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                {{ event.type }}
-              </span>
+        <div *ngFor="let event of upcomingEvents(); trackBy: trackByEvent" 
+             class="flex items-center p-3 rounded-lg bg-gray-50 dark:bg-gray-700/30 border border-gray-100 dark:border-gray-700 relative overflow-hidden group hover:bg-white dark:hover:bg-gray-700 transition-all cursor-pointer">
+          <div class="w-1 bg-indigo-500 absolute left-0 top-0 bottom-0"></div>
+          <div class="flex-1 ml-3">
+            <p class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ event.name }}</p>
+            <div class="flex items-center gap-2 mt-1">
+              <i class="fas fa-clock text-xs text-gray-400"></i>
+              <p class="text-xs text-gray-500">{{ event.date }}</p>
             </div>
-          }
-        } @else {
-          <p class="text-gray-500 dark:text-gray-400 text-center py-8">
-            {{ i18n.t('pages.dashboard.noUpcomingEvents') }}
-          </p>
-        }
+          </div>
+          <div class="w-8 h-8 rounded-full bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 group-hover:scale-110 transition-transform">
+            <i class="fas fa-chevron-right text-xs"></i>
+          </div>
+        </div>
       </div>
     </app-glass-card>
   </div>

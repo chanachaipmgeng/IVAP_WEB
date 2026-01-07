@@ -1,527 +1,378 @@
-/**
- * Biometric Data Component
- *
- * Component for managing biometric data (fingerprint, face, iris, etc.).
- * Supports full CRUD operations, filtering, statistics, and biometric data management.
- * Includes Face Enrollment features (Upload/Camera).
- *
- * @example
- * ```html
- * <app-biometric-data></app-biometric-data>
- * ```
- */
-
-import { Component, OnInit, signal, computed, inject, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, signal, ViewChild, ElementRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule, FormControl } from '@angular/forms';
 import { BiometricDataService } from '../../../core/services/biometric-data.service';
-import { ErrorHandlerService } from '../../../core/services/error-handler.service';
-import { ValidationService } from '../../../core/services/validation.service';
-import {
-  BiometricData,
-  BiometricType,
-  CreateBiometricDataDto,
-  UpdateBiometricDataDto,
-  BIOMETRIC_TYPE_LABELS
-} from '../../../core/models/biometric-data.model';
-import { GlassCardComponent } from '../../../shared/components/glass-card/glass-card.component';
-import { GlassButtonComponent } from '../../../shared/components/glass-button/glass-button.component';
-import { LoadingComponent } from '../../../shared/components/loading/loading.component';
-import { PageLayoutComponent, PageAction } from '../../../shared/components/page-layout/page-layout.component';
-import { StatisticsGridComponent, StatCard } from '../../../shared/components/statistics-grid/statistics-grid.component';
-import { FilterSectionComponent, FilterField } from '../../../shared/components/filter-section/filter-section.component';
+import { BiometricData, BiometricType, CreateBiometricDataDto, UpdateBiometricDataDto, BIOMETRIC_TYPE_LABELS } from '../../../core/models/biometric-data.model';
+import { PageLayoutComponent } from '../../../shared/components/page-layout/page-layout.component';
 import { DataTableComponent, TableColumn, TableAction } from '../../../shared/components/data-table/data-table.component';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
-import { I18nService } from '../../../core/services/i18n.service';
+import { FilterSectionComponent, FilterField } from '../../../shared/components/filter-section/filter-section.component';
+import { StatisticsGridComponent, StatCard } from '../../../shared/components/statistics-grid/statistics-grid.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { ErrorHandlerService } from '../../../core/services/error-handler.service';
+import { ValidationService } from '../../../core/services/validation.service';
 
 @Component({
   selector: 'app-biometric-data',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
     ReactiveFormsModule,
-    TranslateModule,
+    FormsModule,
     PageLayoutComponent,
-    StatisticsGridComponent,
-    FilterSectionComponent,
     DataTableComponent,
     ModalComponent,
-    GlassButtonComponent
+    FilterSectionComponent,
+    StatisticsGridComponent,
+    TranslateModule
   ],
   templateUrl: './biometric-data.component.html',
-  styleUrls: ['./biometric-data.component.scss']
+  styleUrl: './biometric-data.component.scss'
 })
-export class BiometricDataComponent implements OnInit, OnDestroy {
+export class BiometricDataComponent implements OnInit {
+  private fb = inject(FormBuilder);
   private biometricService = inject(BiometricDataService);
   private errorHandler = inject(ErrorHandlerService);
   private validationService = inject(ValidationService);
-  private fb = inject(FormBuilder);
-  private i18n = inject(I18nService);
 
-  // Signals
   biometricData = signal<BiometricData[]>([]);
   filteredData = signal<BiometricData[]>([]);
   isLoading = signal(false);
   showModal = signal(false);
   selectedData = signal<BiometricData | null>(null);
-  showVerifyModal = signal(false);
-  errorMessage = signal<string>('');
-
-  // Form
-  biometricForm: FormGroup;
+  errorMessage = signal<string | null>(null);
+  enrollmentMode = signal<'upload' | 'camera'>('upload');
   
-  // Camera & Enrollment
+  // Camera signals
+  videoDevices = signal<MediaDeviceInfo[]>([]);
+  selectedVideoDevice = signal<string>('');
+  videoStream: MediaStream | null = null;
+  capturedImage: string | null = null; // Base64 string
+
   @ViewChild('videoElement') videoElement!: ElementRef<HTMLVideoElement>;
   @ViewChild('canvasElement') canvasElement!: ElementRef<HTMLCanvasElement>;
-  
-  enrollmentMode = signal<'upload' | 'camera'>('upload');
-  isCameraActive = signal(false);
-  availableDevices = signal<MediaDeviceInfo[]>([]);
-  selectedDeviceId = signal<string>('');
-  stream: MediaStream | null = null;
-  capturedImage: string | null = null;
 
-  // Filters
-  filterType = signal<BiometricType | ''>('');
-  searchTerm = signal('');
-  memberIdFilter = signal('');
-
-  // Enums
+  biometricForm: FormGroup;
   BiometricType = BiometricType;
   BIOMETRIC_TYPE_LABELS = BIOMETRIC_TYPE_LABELS;
-  biometricTypes = computed(() => Object.values(BiometricType));
 
-  // Statistics
-  statistics = computed(() => {
-    const data = this.biometricData();
-    return {
-      total: data.length,
-      by_type: Object.values(BiometricType).reduce((acc, type) => {
-        acc[type] = data.filter(d => d.biometric_type === type).length;
-        return acc;
-      }, {} as Record<BiometricType, number>),
-      primary: data.filter(d => d.is_primary).length
-    };
-  });
+  biometricTypes = signal<BiometricType[]>(Object.values(BiometricType) as BiometricType[]);
 
-  // Statistics cards for grid
-  statisticsCards = computed<StatCard[]>(() => {
-    const stats = this.statistics();
-    return [
-      {
-        icon: '👤',
-        label: 'Total',
-        value: stats.total,
-        iconBgClass: 'bg-blue-100 dark:bg-blue-900'
-      },
-      {
-        icon: '👆',
-        label: 'Fingerprint',
-        value: stats.by_type[BiometricType.FINGERPRINT],
-        iconBgClass: 'bg-green-100 dark:bg-green-900'
-      },
-      {
-        icon: '😊',
-        label: 'Face',
-        value: stats.by_type[BiometricType.FACE],
-        iconBgClass: 'bg-purple-100 dark:bg-purple-900'
-      },
-      {
-        icon: '⭐',
-        label: 'Primary',
-        value: stats.primary,
-        iconBgClass: 'bg-orange-100 dark:bg-orange-900'
-      }
-    ];
-  });
-
-  // Page actions
-  pageActions = computed<PageAction[]>(() => [
-    {
-      label: '➕ Add Biometric Data',
-      variant: 'primary',
-      onClick: () => this.openAddModal()
-    }
+  statisticsCards = signal<StatCard[]>([
+    { label: 'Total Records', value: 0, icon: 'bg-blue-500' },
+    { label: 'Face Data', value: 0, icon: 'bg-green-500' },
+    { label: 'Fingerprints', value: 0, icon: 'bg-purple-500' },
+    { label: 'Other Types', value: 0, icon: 'bg-orange-500' }
   ]);
 
-  // Filter fields
-  filterFields = computed<FilterField[]>(() => [
-    {
-      key: 'search',
-      label: 'Search',
-      type: 'text',
-      placeholder: 'Search...',
-      value: this.searchTerm()
+  columns: TableColumn[] = [
+    { key: 'previewImage', label: 'Preview', sortable: false, template: undefined }, // Will be set via ng-template in HTML if needed, or use custom render
+    { key: 'member_id', label: 'Member ID', sortable: true },
+    { key: 'biometric_type', label: 'Type', sortable: true, 
+      render: (value) => this.BIOMETRIC_TYPE_LABELS[value as BiometricType] || value 
     },
-    {
-      key: 'type',
-      label: 'Type',
-      type: 'select',
-      options: [
-        { value: '', label: 'All Types' },
-        ...this.biometricTypes().map(type => ({
-          value: type,
-          label: BIOMETRIC_TYPE_LABELS[type]
-        }))
-      ],
-      value: this.filterType()
-    },
-    {
-      key: 'memberId',
-      label: 'Member ID',
-      type: 'text',
-      placeholder: 'Filter by member ID...',
-      value: this.memberIdFilter()
-    }
+    { key: 'is_primary', label: 'Primary', sortable: true, type: 'boolean' },
+    { key: 'created_at', label: 'Created At', sortable: true, type: 'date' },
+    { key: 'updated_at', label: 'Updated At', sortable: true, type: 'date' }
+  ];
+
+  actions: TableAction[] = [
+    { label: 'Edit', icon: 'edit', onClick: (row) => this.editData(row) },
+    { label: 'Delete', icon: 'trash', onClick: (row) => this.deleteData(row) }
+  ];
+
+  pageActions = signal([
+    { label: 'Export', icon: 'download', onClick: () => this.exportData(), variant: 'secondary' },
+    { label: 'Add Data', icon: 'plus', onClick: () => this.addData(), variant: 'primary' }
+  ]);
+
+  filterFields = signal<FilterField[]>([
+    { key: 'member_id', label: 'Member ID', type: 'text', placeholder: 'Search by Member ID' },
+    { key: 'biometric_type', label: 'Type', type: 'select', options: Object.entries(this.BIOMETRIC_TYPE_LABELS).map(([value, label]) => ({ label, value })) }
   ]);
 
   constructor() {
     this.biometricForm = this.fb.group({
       member_id: ['', [Validators.required]],
       biometric_type: [BiometricType.FACE, [Validators.required]],
-      biometric_value: ['', [Validators.required]], // Will store base64
-      is_primary: [false]
+      biometric_value: ['', [Validators.required]],
+      is_primary: [true]
     });
-
-    this.loadVideoInputDevices();
+    
+    // Watch for type changes to reset validation or adjust UI
+    this.biometricForm.get('biometric_type')?.valueChanges.subscribe(type => {
+      if (type === BiometricType.FACE) {
+        this.enrollmentMode.set('upload'); // Default to upload for face
+      }
+    });
   }
 
   ngOnInit() {
-    this.loadBiometricData();
-  }
-
-  ngOnDestroy(): void {
-    this.stopCamera();
-  }
-
-  loadBiometricData() {
-    this.isLoading.set(true);
-    this.errorMessage.set('');
-    this.biometricService.getBiometricData(
-      this.memberIdFilter() || undefined,
-      this.filterType() || undefined
-    ).subscribe({
-      next: (data) => {
-        this.biometricData.set(data);
-        this.applyFilters();
-        this.isLoading.set(false);
-      },
-      error: (error) => {
-        this.errorHandler.handleApiError(error);
-        this.errorMessage.set('ไม่สามารถโหลดข้อมูล Biometric ได้');
-        this.isLoading.set(false);
-      }
-    });
-  }
-
-  applyFilters() {
-    let filtered = [...this.biometricData()];
-    const search = this.searchTerm().toLowerCase();
-    const type = this.filterType();
-
-    if (search) {
-      filtered = filtered.filter(d =>
-        d.member_id.toLowerCase().includes(search) ||
-        d.biometric_type.toLowerCase().includes(search)
-      );
-    }
-
-    if (type) {
-      filtered = filtered.filter(d => d.biometric_type === type);
-    }
-
-    this.filteredData.set(filtered);
-  }
-
-  onFilterChange(event: { key: string; value: any }): void {
-    if (event.key === 'search') {
-      this.searchTerm.set(event.value);
-    } else if (event.key === 'type') {
-      this.filterType.set(event.value);
-    } else if (event.key === 'memberId') {
-      this.memberIdFilter.set(event.value);
-    }
-    this.applyFilters();
-  }
-
-  openAddModal(): void {
-    this.selectedData.set(null);
-    this.capturedImage = null;
-    this.enrollmentMode.set('upload');
-    this.stopCamera();
-    
-    this.biometricForm.reset({
-      member_id: '',
-      biometric_type: BiometricType.FACE,
-      biometric_value: '',
-      is_primary: false
-    });
-    this.showModal.set(true);
-  }
-
-  closeModal() {
-    this.showModal.set(false);
-    this.stopCamera();
-    this.resetForm();
-  }
-
-  resetForm() {
-    this.biometricForm.reset({
-      member_id: '',
-      biometric_type: BiometricType.FACE,
-      biometric_value: '',
-      is_primary: false
-    });
-    this.capturedImage = null;
-    this.biometricForm.markAsUntouched();
-    this.errorMessage.set('');
-  }
-
-  columns: TableColumn[] = [
-    { key: 'member_id', label: 'Member ID', sortable: true },
-    { key: 'biometric_type', label: 'Type', sortable: true },
-    {
-        key: 'biometric_value',
-        label: 'Preview',
-        render: (value, row) => {
-            if (row.biometric_type === 'face' && value) {
-                // Check if it's a URL or Base64 (simple check)
-                const src = value.startsWith('http') || value.startsWith('data:') ? value : 'data:image/jpeg;base64,' + value;
-                return `<img src="${src}" class="w-10 h-10 rounded-full object-cover border border-white/20">`;
-            }
-            return '-';
-        }
-    },
-    {
-      key: 'is_primary',
-      label: 'Primary',
-      render: (value) => value ? '⭐' : '-'
-    },
-    {
-      key: 'created_at',
-      label: 'Created At',
-      render: (value) => value ? new Date(value).toLocaleString() : '-'
-    }
-  ];
-
-  actions: TableAction[] = [
-    {
-      icon: '✏️',
-      label: 'Edit',
-      onClick: (row) => this.editBiometricData(row)
-    },
-    {
-      icon: '🗑️',
-      label: 'Delete',
-      variant: 'danger',
-      onClick: (row) => this.deleteBiometricData(row)
-    }
-  ];
-
-  saveBiometricData(): void {
-    this.submitBiometricData();
-  }
-
-  editBiometricData(data: BiometricData): void {
-    this.selectedData.set(data);
-    this.enrollmentMode.set('upload');
-    this.stopCamera();
-
-    // If face, set preview image
-    if (data.biometric_type === BiometricType.FACE && data.biometric_value) {
-        this.capturedImage = data.biometric_value.startsWith('data:') 
-            ? data.biometric_value 
-            : 'data:image/jpeg;base64,' + data.biometric_value;
-    } else {
-        this.capturedImage = null;
-    }
-
-    this.biometricForm.patchValue({
-      member_id: data.member_id,
-      biometric_type: data.biometric_type,
-      biometric_value: data.biometric_value,
-      is_primary: data.is_primary
-    });
-    this.showModal.set(true);
-  }
-
-  submitBiometricData() {
-    if (this.biometricForm.invalid) {
-      this.biometricForm.markAllAsTouched();
-      this.errorHandler.showError('กรุณากรอกข้อมูลให้ครบถ้วนและถูกต้อง');
-      return;
-    }
-
-    this.isLoading.set(true);
-    this.errorMessage.set('');
-    const formValue = this.biometricForm.value as CreateBiometricDataDto;
-    
-    // Ensure value is clean base64 if needed (remove data:image/...,)
-    if (formValue.biometric_value.includes('base64,')) {
-        formValue.biometric_value = formValue.biometric_value.split('base64,')[1];
-    }
-
-    const request = this.selectedData()
-      ? this.biometricService.update(this.selectedData()!.id, formValue as UpdateBiometricDataDto)
-      : this.biometricService.create(formValue);
-    
-    request.subscribe({
-      next: () => {
-        this.errorHandler.showSuccess(this.selectedData() ? 'อัปเดตข้อมูล Biometric สำเร็จ' : 'สร้างข้อมูล Biometric สำเร็จ');
-        this.loadBiometricData();
-        this.closeModal();
-      },
-      error: (error) => {
-        this.errorHandler.handleApiError(error);
-        this.errorMessage.set('ไม่สามารถบันทึกข้อมูล Biometric ได้');
-        this.isLoading.set(false);
-      }
-    });
-  }
-
-  deleteBiometricData(data: BiometricData) {
-    if (!confirm(`ต้องการลบข้อมูล Biometric นี้หรือไม่?`)) {
-      return;
-    }
-
-    this.isLoading.set(true);
-    this.errorMessage.set('');
-    this.biometricService.delete(data.id).subscribe({
-      next: () => {
-        this.errorHandler.showSuccess('ลบข้อมูลสำเร็จ');
-        this.loadBiometricData();
-      },
-      error: (error) => {
-        this.errorHandler.handleApiError(error);
-        this.errorMessage.set('ไม่สามารถลบข้อมูล Biometric ได้');
-        this.isLoading.set(false);
-      }
-    });
-  }
-
-  getFieldError(fieldName: string): string {
-    const control = this.biometricForm.get(fieldName);
-    if (control && control.invalid && control.touched) {
-      return this.validationService.getValidationErrorMessage(control, this.getFieldLabel(fieldName));
-    }
-    return '';
-  }
-
-  getFieldLabel(fieldName: string): string {
-    const labels: Record<string, string> = {
-      'member_id': 'Member ID',
-      'biometric_type': 'ประเภท',
-      'biometric_value': 'Biometric Value'
-    };
-    return labels[fieldName] || fieldName;
+    this.loadData();
+    this.getVideoDevices();
   }
   
-  // --- Enrollment Logic (Camera/Upload) ---
+  // Camera handling methods
+  async getVideoDevices() {
+    try {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const videoDevices = devices.filter(device => device.kind === 'videoinput');
+      this.videoDevices.set(videoDevices);
+      if (videoDevices.length > 0) {
+        this.selectedVideoDevice.set(videoDevices[0].deviceId);
+      }
+    } catch (error) {
+      console.error('Error listing devices:', error);
+    }
+  }
 
-  setEnrollmentMode(mode: 'upload' | 'camera'): void {
+  async setEnrollmentMode(mode: 'upload' | 'camera') {
     this.enrollmentMode.set(mode);
     if (mode === 'camera') {
-        this.startCamera();
+      await this.startCamera();
     } else {
-        this.stopCamera();
-    }
-  }
-
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        const result = e.target.result;
-        this.capturedImage = result;
-        this.biometricForm.patchValue({ biometric_value: result });
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  async loadVideoInputDevices() {
-    try {
-        if (typeof navigator !== 'undefined' && navigator.mediaDevices) {
-            const devices = await navigator.mediaDevices.enumerateDevices();
-            const videoDevices = devices.filter(device => device.kind === 'videoinput');
-            this.availableDevices.set(videoDevices);
-            
-            if (videoDevices.length > 0 && !this.selectedDeviceId()) {
-                this.selectedDeviceId.set(videoDevices[0].deviceId);
-            }
-        }
-    } catch (err) {
-        console.error('Error loading devices', err);
+      this.stopCamera();
     }
   }
 
   async startCamera() {
-    this.stopCamera();
     try {
-        const constraints = {
-            video: this.selectedDeviceId() 
-                ? { deviceId: { exact: this.selectedDeviceId() } } 
-                : true
-        };
-
-        this.stream = await navigator.mediaDevices.getUserMedia(constraints);
-        this.isCameraActive.set(true);
-        
-        setTimeout(() => {
-            if (this.videoElement) {
-                this.videoElement.nativeElement.srcObject = this.stream;
-            }
-        }, 100);
-
-    } catch (err) {
-        console.error('Error accessing camera', err);
-        this.enrollmentMode.set('upload');
+      this.stopCamera();
+      const constraints = {
+        video: { deviceId: this.selectedVideoDevice() ? { exact: this.selectedVideoDevice() } : undefined }
+      };
+      this.videoStream = await navigator.mediaDevices.getUserMedia(constraints);
+      if (this.videoElement?.nativeElement) {
+        this.videoElement.nativeElement.srcObject = this.videoStream;
+      }
+    } catch (error) {
+      console.error('Error accessing camera:', error);
+      this.errorHandler.handleApiError(error);
     }
   }
 
   stopCamera() {
-    if (this.stream) {
-        this.stream.getTracks().forEach(track => track.stop());
-        this.stream = null;
+    if (this.videoStream) {
+      this.videoStream.getTracks().forEach(track => track.stop());
+      this.videoStream = null;
     }
-    this.isCameraActive.set(false);
   }
 
   captureImage() {
-    if (!this.videoElement || !this.canvasElement) return;
-
-    const video = this.videoElement.nativeElement;
-    const canvas = this.canvasElement.nativeElement;
-    
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    
-    const ctx = canvas.getContext('2d');
-    if (ctx) {
+    if (this.videoElement?.nativeElement && this.canvasElement?.nativeElement) {
+      const video = this.videoElement.nativeElement;
+      const canvas = this.canvasElement.nativeElement;
+      
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        // Convert to Base64
         const dataUrl = canvas.toDataURL('image/jpeg');
         this.capturedImage = dataUrl;
-        this.biometricForm.patchValue({ biometric_value: dataUrl });
+        
+        // Remove data:image/jpeg;base64, prefix for API
+        const base64Value = dataUrl.split(',')[1];
+        this.biometricForm.patchValue({ biometric_value: base64Value });
+        
+        // Switch back to upload mode to show preview
+        this.enrollmentMode.set('upload');
         this.stopCamera();
-        this.enrollmentMode.set('upload'); // Switch view
+      }
     }
   }
 
-  onDeviceChange(event: any) {
-    this.selectedDeviceId.set(event.target.value);
-    if (this.enrollmentMode() === 'camera') {
-        this.startCamera();
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const reader = new FileReader();
+      
+      reader.onload = (e) => {
+        const result = e.target?.result as string;
+        this.capturedImage = result;
+        // Remove data:image/...;base64, prefix
+        const base64Value = result.split(',')[1];
+        this.biometricForm.patchValue({ biometric_value: base64Value });
+      };
+      
+      reader.readAsDataURL(file);
     }
   }
 
   clearImage() {
     this.capturedImage = null;
     this.biometricForm.patchValue({ biometric_value: '' });
-    if (this.enrollmentMode() === 'camera') {
-        this.startCamera();
+  }
+
+  // Existing CRUD methods...
+  loadData() {
+    this.isLoading.set(true);
+    this.biometricService.getAll().subscribe({
+      next: (response) => {
+        const data = response.data || [];
+        // Add preview image logic if value is base64 image (simplified check)
+        const dataWithPreview = data.map(item => ({
+            ...item,
+            previewImage: item.biometric_type === BiometricType.FACE ? `data:image/jpeg;base64,${item.biometric_value}` : null
+        }));
+        
+        this.biometricData.set(dataWithPreview);
+        this.filteredData.set(dataWithPreview);
+        this.updateStatistics(data);
+        this.isLoading.set(false);
+      },
+      error: (error) => {
+        this.errorMessage.set(this.errorHandler.handleApiError(error));
+        this.isLoading.set(false);
+      }
+    });
+  }
+
+  updateStatistics(data: BiometricData[]) {
+    const total = data.length;
+    const face = data.filter(d => d.biometric_type === BiometricType.FACE).length;
+    const fingerprint = data.filter(d => d.biometric_type === BiometricType.FINGERPRINT).length;
+    const other = total - face - fingerprint;
+
+    this.statisticsCards.set([
+      { label: 'Total Records', value: total, icon: 'bg-blue-500' },
+      { label: 'Face Data', value: face, icon: 'bg-green-500' },
+      { label: 'Fingerprints', value: fingerprint, icon: 'bg-purple-500' },
+      { label: 'Other Types', value: other, icon: 'bg-orange-500' }
+    ]);
+  }
+
+  onFilterChange(filters: Record<string, any>) {
+    let data = this.biometricData();
+    
+    if (filters['member_id']) {
+      data = data.filter(d => d.member_id.toLowerCase().includes(filters['member_id'].toLowerCase()));
     }
+    
+    if (filters['biometric_type']) {
+      data = data.filter(d => d.biometric_type === filters['biometric_type']);
+    }
+
+    this.filteredData.set(data);
+  }
+
+  addData() {
+    this.selectedData.set(null);
+    this.biometricForm.reset({
+      biometric_type: BiometricType.FACE,
+      is_primary: true
+    });
+    this.capturedImage = null;
+    this.showModal.set(true);
+  }
+
+  editData(data: BiometricData) {
+    this.selectedData.set(data);
+    this.biometricForm.patchValue({
+      member_id: data.member_id,
+      biometric_type: data.biometric_type,
+      biometric_value: data.biometric_value,
+      is_primary: data.is_primary
+    });
+    
+    if (data.biometric_type === BiometricType.FACE) {
+        this.capturedImage = `data:image/jpeg;base64,${data.biometric_value}`;
+    } else {
+        this.capturedImage = null;
+    }
+    
+    this.showModal.set(true);
+  }
+
+  deleteData(data: BiometricData) {
+    if (confirm('Are you sure you want to delete this biometric data?')) {
+      this.isLoading.set(true);
+      // Use 'id' instead of 'biometric_id'
+      this.biometricService.delete(data.id).subscribe({
+        next: () => {
+          this.loadData();
+          this.isLoading.set(false);
+        },
+        error: (error) => {
+          this.errorMessage.set(this.errorHandler.handleApiError(error));
+          this.isLoading.set(false);
+        }
+      });
+    }
+  }
+
+  saveBiometricData() {
+    if (this.biometricForm.invalid) {
+      this.markFormGroupTouched(this.biometricForm);
+      return;
+    }
+
+    this.isLoading.set(true);
+    const formValue = this.biometricForm.value;
+
+    if (this.selectedData()) {
+      const updateData: UpdateBiometricDataDto = {
+        biometric_value: formValue.biometric_value,
+        is_primary: formValue.is_primary
+      };
+
+      // Use 'id' instead of 'biometric_id'
+      this.biometricService.update(this.selectedData()!.id, updateData).subscribe({
+        next: () => {
+          this.closeModal();
+          this.loadData();
+        },
+        error: (error) => {
+          this.errorMessage.set(this.errorHandler.handleApiError(error));
+          this.isLoading.set(false);
+        }
+      });
+    } else {
+      const createData: CreateBiometricDataDto = {
+        member_id: formValue.member_id,
+        biometric_type: formValue.biometric_type,
+        biometric_value: formValue.biometric_value,
+        is_primary: formValue.is_primary
+      };
+
+      this.biometricService.create(createData).subscribe({
+        next: () => {
+          this.closeModal();
+          this.loadData();
+        },
+        error: (error) => {
+          this.errorMessage.set(this.errorHandler.handleApiError(error));
+          this.isLoading.set(false);
+        }
+      });
+    }
+  }
+
+  closeModal() {
+    this.showModal.set(false);
+    this.selectedData.set(null);
+    this.errorMessage.set(null);
+    this.stopCamera();
+  }
+
+  getFieldError(fieldName: string): string {
+    return this.validationService.getErrorMessage(this.biometricForm.get(fieldName) as FormControl, fieldName);
+  }
+
+  markFormGroupTouched(formGroup: FormGroup) {
+    Object.values(formGroup.controls).forEach(control => {
+      control.markAsTouched();
+      if (control instanceof FormGroup) {
+        this.markFormGroupTouched(control);
+      }
+    });
+  }
+
+  exportData() {
+    console.log('Exporting data...');
+    // Implement export functionality
   }
 }

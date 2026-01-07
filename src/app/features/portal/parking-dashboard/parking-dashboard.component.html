@@ -1,0 +1,59 @@
+<div class="h-full flex flex-col p-6 space-y-6">
+  <div class="flex justify-between items-center">
+    <div>
+      <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400">
+        Parking Dashboard
+      </h1>
+      <p class="text-gray-500 dark:text-gray-400 mt-1">Real-time parking occupancy and statistics</p>
+    </div>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <app-glass-card class="p-6 flex flex-col items-center justify-center">
+      <div class="text-4xl font-bold text-gray-800 dark:text-gray-200 mb-2">{{ stats().totalSpots }}</div>
+      <div class="text-sm text-gray-500 dark:text-gray-400">Total Capacity</div>
+    </app-glass-card>
+    <app-glass-card class="p-6 flex flex-col items-center justify-center">
+      <div class="text-4xl font-bold text-red-500 dark:text-red-400 mb-2">{{ stats().occupied }}</div>
+      <div class="text-sm text-gray-500 dark:text-gray-400">Occupied</div>
+    </app-glass-card>
+    <app-glass-card class="p-6 flex flex-col items-center justify-center">
+      <div class="text-4xl font-bold text-amber-500 dark:text-amber-400 mb-2">{{ stats().reserved }}</div>
+      <div class="text-sm text-gray-500 dark:text-gray-400">Reserved</div>
+    </app-glass-card>
+    <app-glass-card class="p-6 flex flex-col items-center justify-center">
+      <div class="text-4xl font-bold text-green-500 dark:text-green-400 mb-2">{{ stats().available }}</div>
+      <div class="text-sm text-gray-500 dark:text-gray-400">Available</div>
+    </app-glass-card>
+  </div>
+
+  <div class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-0">
+    <!-- Zone Status -->
+    <app-glass-card class="p-6 flex flex-col">
+      <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Zone Status</h2>
+      <div class="space-y-6">
+        <div *ngFor="let zone of zones()" class="space-y-2">
+          <div class="flex justify-between items-end">
+            <span class="font-medium text-gray-700 dark:text-gray-300">{{ zone.name }}</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400">{{ zone.occupied }} / {{ zone.capacity }}</span>
+          </div>
+          <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+            <div class="bg-current h-2.5 rounded-full transition-all duration-500" 
+                 [ngClass]="zone.color"
+                 [style.width.%]="(zone.occupied / zone.capacity) * 100"></div>
+          </div>
+        </div>
+      </div>
+    </app-glass-card>
+
+    <!-- Map Placeholder -->
+    <app-glass-card class="p-6 flex flex-col">
+      <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Live Map</h2>
+      <div class="flex-1 flex items-center justify-center bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-dashed border-gray-300 dark:border-gray-700">
+        <span class="text-gray-400">Parking Map Component Here</span>
+      </div>
+    </app-glass-card>
+  </div>
+</div>
+

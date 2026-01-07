@@ -2,7 +2,7 @@
 
 กฎและแนวทางปฏิบัติสำหรับการพัฒนา Angular Frontend ให้สอดคล้องกับ Backend API
 
-**อัปเดตล่าสุด:** 2024-12-20
+**อัปเดตล่าสุด:** 2026-01-07
 
 ---
 
@@ -86,6 +86,37 @@ export interface Company {
 
 ---
 
+## 🏠 Portal Dashboard & Navigation (New)
+
+### 1. **Landing Hub**
+- หน้า **Dashboard** (`/portal/dashboard`) ทำหน้าที่เป็น Landing Page หลัก
+- แสดง **Module Shortcuts** 12 กลุ่ม เพื่อให้เข้าถึงฟังก์ชันงานต่างๆ ได้ง่าย
+- แสดงภาพรวมระบบ (System Overview) และสถิติสำคัญ
+
+### 2. **ECharts Configuration**
+- ใช้ `NgxEchartsModule` แบบ Standalone
+- ต้องระบุ `importProvidersFrom(NgxEchartsModule.forRoot(...))` ใน `app.config.ts`
+
+---
+
+## 👑 Super Admin Dashboard (New)
+
+### 1. **Overview Dashboard**
+- หน้า **Dashboard** (`/super/dashboard`) รวมสถิติภาพรวมระบบ
+- แสดงกราฟรายได้ (Revenue Growth) และการใช้งาน Module
+- **Component:** `SuperAdminDashboardComponent`
+
+### 2. **System Reports**
+- หน้ารายงานระบบเชิงลึก (`/super/reports`)
+- **Component:** `SuperAdminReportsComponent`
+
+### 3. **Global Announcements**
+- หน้าจัดการประกาศระบบ (`/super/announcements`)
+- แจ้งเตือน Maintenance หรือ Features ใหม่
+- **Component:** `SuperAdminAnnouncementsComponent`
+
+---
+
 ## 📸 Face Enrollment & Camera Usage
 
 ### 1. **Camera Access**
@@ -94,33 +125,53 @@ export interface Company {
 - ต้อง Stop stream (`stream.getTracks().forEach(track => track.stop())`) เมื่อเลิกใช้งานหรือ destroy component
 
 ### 2. **Image Handling**
-- ส่งรูปภาพเป็น **Base64 String** ไปยัง Backend
-- Backend คาดหวัง Base64 string ที่ตัด header `data:image/jpeg;base64,` ออกแล้ว หรือจัดการตัดออกก่อนส่ง
+- ส่งรูปภาพเป็น **Base64 String** ไปยัง Backend (ตัด header `data:image/...;base64,` ออก)
 - ใช้ `Canvas` ในการ Capture ภาพจาก Video Element
-
-```typescript
-// ตัวอย่างการ Capture
-const ctx = canvas.getContext('2d');
-ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-const dataUrl = canvas.toDataURL('image/jpeg');
-const base64 = dataUrl.split(',')[1]; // ส่งค่านี้ไป Backend
-```
+- **Component:** `BiometricDataComponent`
 
 ---
 
-## 👁️ Face Recognition & Watchlist
+## 🚶 Visitor Management (New)
 
-### 1. **Face Recognition Logs**
-- ใช้ `RecognitionLog` model สำหรับแสดงประวัติ
-- เก็บข้อมูล `confidence` score (0.0 - 1.0)
-- แยกสถานะเป็น `Verified`, `Flagged`, `Uncertain`
-- **Component:** `RecognitionHistoryComponent`
+### 1. **Visitor Dashboard**
+- แสดงสถิติผู้มาติดต่อรายวัน (Total, Active, VIP)
+- **Component:** `VisitorDashboardComponent`
 
-### 2. **Watchlist Management**
-- จัดการรายชื่อเฝ้าระวัง (VIP, Blacklist)
-- ระดับความสำคัญ: `High`, `Medium`, `Low`
-- สถานะ: `Active`, `Inactive`
-- **Component:** `WatchlistComponent`
+### 2. **Blacklist**
+- จัดการรายชื่อผู้ไม่อนุญาตให้เข้าพื้นที่
+- **Component:** `VisitorBlacklistComponent`
+
+### 3. **Delivery & Parcels**
+- จัดการพัสดุขาเข้า (`/portal/visitor-parcels`)
+- **Component:** `VisitorParcelsComponent`
+
+---
+
+## 🚗 Vehicle & Parking (New)
+
+### 1. **Parking Dashboard**
+- แสดงสถานะที่จอดรถ (Occupied, Available, Reserved)
+- **Component:** `ParkingDashboardComponent`
+
+### 2. **Rules & Fees**
+- ตั้งค่ากฎและอัตราค่าบริการจอดรถ
+- **Component:** `ParkingRulesComponent`
+
+### 3. **Blocked Plates**
+- จัดการ Blacklist ทะเบียนรถ (`/portal/parking-blacklist`)
+- **Component:** `ParkingBlacklistComponent`
+
+---
+
+## 🛡️ Smart Surveillance (New)
+
+### 1. **Map View (GIS)**
+- แสดงตำแหน่งกล้องบนแผนที่
+- **Component:** `SurveillanceMapComponent`
+
+### 2. **Incident Reports**
+- รายงานอุบัติการณ์และความผิดปกติ
+- **Component:** `IncidentReportsComponent`
 
 ---
 
@@ -128,8 +179,15 @@ const base64 = dataUrl.split(',')[1]; // ส่งค่านี้ไป Backe
 
 ### 1. **Company Information**
 - ข้อมูลพื้นฐานบริษัทใช้ `CompanyService` (`/companies/{id}`)
-- ข้อมูลเพิ่มเติม (Email, Website, Tax ID) ให้เก็บใน JSON string ผ่านฟิลด์ `company_info` หากไม่มีฟิลด์เฉพาะใน Model
-- Mapping ฟิลด์ให้ตรงกับ `snake_case` ของ Model (`company_name`, `address`, `contact`)
+- **Component:** `StructureComponent` (Tab: Company Info)
+
+### 2. **Documents & Policies**
+- จัดการเอกสารและนโยบายบริษัท (`/portal/company-documents`)
+- **Component:** `CompanyDocumentsComponent`
+
+### 3. **Holiday Calendar**
+- ปฏิทินวันหยุดบริษัท
+- **Component:** `CompanyHolidaysComponent`
 
 ---
 
@@ -171,199 +229,6 @@ const base64 = dataUrl.split(',')[1]; // ส่งค่านี้ไป Backe
 
 ---
 
-## 🔧 ตัวอย่างการใช้งาน
-
-### 1. สร้าง Model
-
-```typescript
-// company.model.ts
-import { UUID, BaseTimestamps } from './base.model';
-
-export interface Company extends BaseTimestamps {
-  company_id: UUID;
-  company_name: string;
-  company_code: string;
-  company_info?: string;
-  owner_name: string;
-  contact?: string;
-  picture?: string;
-  status: 'PUBLIC' | 'PENDING' | number;
-}
-
-export interface CompanyCreate {
-  company_name: string;
-  company_code: string;
-  company_info?: string;
-  owner_name: string;
-  contact?: string;
-  picture?: string;
-}
-
-export interface CompanyUpdate {
-  company_name?: string;
-  company_code?: string;
-  company_info?: string;
-  owner_name?: string;
-  contact?: string;
-  picture?: string;
-  status?: 'PUBLIC' | 'PENDING' | number;
-}
-```
-
-### 2. สร้าง Service
-
-```typescript
-// company.service.ts
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ApiService } from './api.service';
-import { BaseCrudService } from './base-crud.service';
-import { Company, CompanyCreate, CompanyUpdate } from '../models/company.model';
-
-@Injectable({ providedIn: 'root' })
-export class CompanyService extends BaseCrudService<Company, CompanyCreate, CompanyUpdate> {
-  constructor(api: ApiService) {
-    super(api, '/companies', true); // true = useSnakeCase
-  }
-
-  // Custom methods (ถ้าจำเป็น)
-  getCompanyStatistics(companyId: string): Observable<any> {
-    const options = { skipTransform: true };
-    return this.api.get<any>(`${this.baseEndpoint}/${companyId}/statistics`, undefined, options);
-  }
-}
-```
-
-### 3. ใช้ใน Component
-
-```typescript
-// companies.component.ts
-import { Component, signal } from '@angular/core';
-import { CompanyService } from '../../core/services/company.service';
-import { Company, CompanyCreate } from '../../core/models/company.model';
-
-@Component({
-  selector: 'app-companies',
-  templateUrl: './companies.component.html'
-})
-export class CompaniesComponent {
-  companies = signal<Company[]>([]);
-  formData: CompanyCreate = {
-    company_name: '',
-    company_code: '',
-    owner_name: ''
-  };
-
-  constructor(private companyService: CompanyService) {
-    this.loadCompanies();
-  }
-
-  loadCompanies(): void {
-    this.companyService.getAll().subscribe({
-      next: (response) => {
-        this.companies.set(response.data || []);
-      },
-      error: (err) => console.error('Error loading companies:', err)
-    });
-  }
-
-  saveCompany(): void {
-    this.companyService.create(this.formData).subscribe({
-      next: () => {
-        this.loadCompanies();
-        this.resetForm();
-      },
-      error: (err) => console.error('Error saving company:', err)
-    });
-  }
-
-  resetForm(): void {
-    this.formData = {
-      company_name: '',
-      company_code: '',
-      owner_name: ''
-    };
-  }
-}
-```
-
-### 4. ใช้ใน HTML Template
-
-```html
-<!-- companies.component.html -->
-<app-glass-card>
-  <div *ngFor="let company of companies(); trackBy: trackByCompanyId">
-    <h3>{{ company.company_name }}</h3>
-    <p>Code: {{ company.company_code }}</p>
-    <p>Owner: {{ company.owner_name }}</p>
-    <p>Created: {{ company.created_at | date }}</p>
-  </div>
-
-  <form (ngSubmit)="saveCompany()">
-    <input [(ngModel)]="formData.company_name" name="company_name" placeholder="Company Name" />
-    <input [(ngModel)]="formData.company_code" name="company_code" placeholder="Company Code" />
-    <input [(ngModel)]="formData.owner_name" name="owner_name" placeholder="Owner Name" />
-    <app-glass-button type="submit" variant="primary">Save</app-glass-button>
-  </form>
-</app-glass-card>
-```
-
----
-
-## ⚠️ ข้อควรระวัง
-
-### 1. **User vs Member**
-- **ใช้ `Member` model แทน `User` model ในโค้ดใหม่**
-- **`User` model เป็น compatibility layer สำหรับ backward compatibility (extends `Member`)**
-- **`Member` model ตรงกับ backend API โดยตรง**
-- **`UserService` ถูกลบแล้ว - ใช้ `MemberService`, `RbacService`, `CompanyService` แทน**
-
-### 2. **Employee vs CompanyEmployee**
-- **ใช้ `CompanyEmployee` model แทน `Employee` model**
-- **`Employee` model เป็น legacy model (ไม่แนะนำให้ใช้)**
-- **`CompanyEmployee` model ตรงกับ backend API โดยตรง**
-- **`EmployeeService` ถูกลบแล้ว - ใช้ `CompanyEmployeeService` แทน**
-
-### 3. **skipTransform: true**
-- **ต้องใช้ `skipTransform: true` ในทุก API calls**
-- **ถ้าไม่ใช้ จะเกิด double transformation (snake_case → camelCase → snake_case)**
-- **BaseCrudService จัดการให้อัตโนมัติ ถ้า `useSnakeCase = true`**
-
-### 4. **Type Safety**
-- **ใช้ TypeScript types อย่างเคร่งครัด**
-- **ตรวจสอบ types ก่อน commit**
-- **ใช้ `read_lints` tool เพื่อตรวจสอบ errors**
-
-### 5. **Error Handling**
-- **Handle errors อย่างเหมาะสม**
-- **แสดง error messages ที่ user-friendly**
-- **Log errors สำหรับ debugging**
-
----
-
-## 🚫 สิ่งที่ห้ามทำ
-
-1. ❌ **ห้ามใช้ `camelCase` ใน models**
-2. ❌ **ห้ามแปลง `snake_case` ↔ `camelCase` ใน components**
-3. ❌ **ห้ามเขียน CRUD operations เอง (ใช้ BaseCrudService)**
-4. ❌ **ห้ามลืม `skipTransform: true` ใน custom API calls**
-5. ❌ **ห้ามใช้ legacy services (`UserService`, `EmployeeService`) ในโค้ดใหม่**
-   - ใช้ `MemberService` แทน `UserService`
-   - ใช้ `CompanyEmployeeService` แทน `EmployeeService`
-   - ใช้ `RbacService` สำหรับ role operations
-6. ❌ **ห้าม hardcode API endpoints (ใช้ `baseEndpoint`)**
-7. ❌ **ห้ามใช้ `any` type (ใช้ specific types)**
-
----
-
-## 📚 เอกสารอ้างอิง
-
-- [MODEL_SERVICE_BACKEND_COMPLIANCE.md](./MODEL_SERVICE_BACKEND_COMPLIANCE.md) - รายการ models และ services ที่ตรงกับ backend
-- [API_DOCUMENTATION.md](../API_DOCUMENTATION.md) - เอกสาร API endpoints
-- [README_BASE_SERVICE.md](./src/app/core/services/README_BASE_SERVICE.md) - เอกสาร BaseCrudService
-
----
-
 ## 🔄 การอัปเดต
 
 เอกสารนี้จะอัปเดตเมื่อมีการเปลี่ยนแปลงใน:
@@ -372,43 +237,22 @@ export class CompaniesComponent {
 - Naming conventions
 - Best practices
 
-**อัปเดตล่าสุด:** 2024-12-20
+**อัปเดตล่าสุด:** 2026-01-07
 
-## 📋 การเปลี่ยนแปลงล่าสุด (2024-12-20)
+## 📋 การเปลี่ยนแปลงล่าสุด (2026-01-07)
 
-### Services ที่ถูกลบ
-- ✅ `UserService` - ลบแล้ว (ใช้ `MemberService`, `RbacService`, `CompanyService` แทน)
-- ✅ `EmployeeService` - ลบแล้ว (ใช้ `CompanyEmployeeService` แทน)
+### Super Admin Enhancements
+- ✅ **Dashboard:** หน้าภาพรวมสถิติระบบพร้อมกราฟ
+- ✅ **Reports:** หน้ารายงานระบบ
+- ✅ **Announcements:** หน้าจัดการประกาศ Global
+- ✅ **Sidebar Layout:** ปรับโครงสร้างเมนู 4 กลุ่มหลัก
 
-### Services ที่ปรับปรุง
-- ✅ `RbacService` - แก้ไข endpoints เป็น `/rbac/roles`, `/rbac/permissions`
-- ✅ `MemberService` - เพิ่ม `resetPassword()`, `exportMembers()`
-- ✅ `CompanyEmployeeService` - แก้ไข trailing slash สำหรับ `/employees/`
-- ✅ `BiometricDataService` - Extend `BaseCrudService`, เปลี่ยน `HttpClient` → `ApiService`
-- ✅ `QRCodeService` - Extend `BaseCrudService`, เปลี่ยน `HttpClient` → `ApiService`
-- ✅ `RFIDCardService` - Extend `BaseCrudService`, เปลี่ยน `HttpClient` → `ApiService`
-- ✅ `GuestAdminService` - Extend `BaseCrudService`
-- ✅ `NotificationApiService` - ใช้ `snake_case` และ `skipTransform: true`
-- ✅ `VisitorExtendedService` - ใช้ `snake_case` และ `skipTransform: true`
-- ✅ `TimestampService` - ใช้ `snake_case` และ `skipTransform: true` สำหรับ API calls
-
-### Components ที่ปรับปรุง
-- ✅ `users.component.ts` - ใช้ `MemberService`, `RbacService`, `CompanyService`
-- ✅ `users.component.html` - ใช้ `getRoles()`, `getCompanies()` getters
-- ✅ `doors.component.html` - ใช้ `snake_case` properties
-- ✅ `hr-dashboard.component.ts` - ใช้ `CompanyEmployeeService`
-- ✅ `events.component.ts` & `.html` - ใช้ `snake_case` properties
-- ✅ `qr-codes.component.ts` - ใช้ `snake_case` properties และ `BaseCrudService` methods
-- ✅ `rfid-cards.component.ts` - ใช้ `snake_case` properties และ `BaseCrudService` methods
-- ✅ `biometric-data.component.ts` - ใช้ `snake_case` properties และ `BaseCrudService` methods
-- ✅ `structure.component.ts` - เพิ่ม Company Info Management และใช้ `CompanyService`
-- ✅ `face-recognition-test.component.ts` - สร้างใหม่พร้อมรองรับ Camera/Upload
-- ✅ `watchlist.component.ts` - สร้างใหม่สำหรับจัดการ Watchlist พร้อม Glass UI
-- ✅ `recognition-history.component.ts` - สร้างใหม่สำหรับดูประวัติการสแกนใบหน้า พร้อม Glass UI
+### Portal Enhancements
+- ✅ **Missing Components:** เพิ่ม `CompanyDocuments`, `VisitorParcels`, `ParkingBlacklist`
+- ✅ **Sidebar Logic:** ซ่อน Layer 2 อัตโนมัติสำหรับเมนูที่ไม่มีลูก
+- ✅ **Routing:** อัปเดต Routes ครบถ้วนทุกหน้าจอ
 
 ### สถานะปัจจุบัน
-- ✅ **22 services** ตรงกับ Backend API 100%
-- ✅ **All services** ใช้ `snake_case` models
-- ✅ **All services** ใช้ `ApiService` แทน `HttpClient`
-- ✅ **CRUD services** extend `BaseCrudService`
-- ✅ **No linter errors**
+- ✅ **Super Admin** มีฟีเจอร์ครบถ้วนตามแผน
+- ✅ **Portal** มีฟีเจอร์ครบถ้วนตามแผน
+- ✅ **Routes & Menus** เชื่อมโยงสมบูรณ์

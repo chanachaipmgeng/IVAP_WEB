@@ -1,17 +1,3 @@
-/**
- * Super Admin Layout Component
- *
- * Main layout component for the super admin application.
- * Provides header, sidebar navigation, and routing for super admin features.
- *
- * @example
- * ```html
- * <app-super-admin-layout>
- *   <router-outlet></router-outlet>
- * </app-super-admin-layout>
- * ```
- */
-
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -27,62 +13,80 @@ import { SidebarComponent, MenuItem } from '../../../shared/components/sidebar/s
 })
 export class SuperAdminLayoutComponent {
   menuItems: MenuItem[] = [
-    // Companies Management
+    // 1. Overview
     {
-      icon: '🏢',
-      label: 'Companies',
-      route: '/super/companies',
-      permission: 'company.manage'
+      icon: '📊',
+      label: 'Overview',
+      route: '/super/dashboard',
+      permission: 'dashboard.view'
     },
 
-    // Access Control
+    // 2. Tenant Management
     {
-      icon: '🔐',
-      label: 'Access Control',
-      route: '/super/users',
+      icon: '🏢',
+      label: 'Tenant Management',
+      route: '/super/companies',
       expanded: true,
       children: [
         {
+          icon: '🏢',
+          label: 'Companies',
+          route: '/super/companies',
+          permission: 'company.manage'
+        },
+        {
+          icon: '💳',
+          label: 'Subscriptions',
+          route: '/super/module-subscription',
+          permission: 'subscription.manage'
+        },
+        {
+          icon: '📢',
+          label: 'Announcements',
+          route: '/super/announcements',
+          permission: 'announcement.manage'
+        },
+        {
+          icon: '🔑',
+          label: 'License Keys',
+          route: '/super/license',
+          permission: 'license.manage'
+        }
+      ]
+    },
+
+    // 3. Platform Administration
+    {
+      icon: '⚙️',
+      label: 'Platform Admin',
+      route: '/super/users',
+      expanded: false,
+      children: [
+        {
           icon: '👥',
-          label: 'User Management',
+          label: 'Admin Users',
           route: '/super/users',
           permission: 'user.manage'
         },
         {
           icon: '🛡️',
-          label: 'RBAC',
+          label: 'Roles & Permissions',
           route: '/super/rbac',
           permission: 'rbac.manage'
-        }
-      ]
-    },
-
-    // System Management
-    {
-      icon: '⚙️',
-      label: 'System Management',
-      route: '/super/settings',
-      expanded: true,
-      children: [
-        {
-          icon: '🔧',
-          label: 'System Settings',
-          route: '/super/settings',
-          permission: 'system.manage'
         },
         {
-          icon: '🛠️',
-          label: 'Maintenance',
-          route: '/super/maintenance',
+          icon: '🔧',
+          label: 'Global Settings',
+          route: '/super/settings',
           permission: 'system.manage'
         }
       ]
     },
 
-    // Data & Security
+    // 4. Operations & Security
     {
       icon: '🔒',
-      label: 'Data & Security',
+      label: 'Ops & Security',
       route: '/super/audit-logs',
       expanded: false,
       children: [
@@ -93,21 +97,24 @@ export class SuperAdminLayoutComponent {
           permission: 'audit.view'
         },
         {
+          icon: '📈',
+          label: 'System Reports',
+          route: '/super/reports',
+          permission: 'report.view'
+        },
+        {
           icon: '💾',
           label: 'Backup & Restore',
           route: '/super/backup-restore',
           permission: 'system.manage'
+        },
+        {
+          icon: '🛠️',
+          label: 'Maintenance Mode',
+          route: '/super/maintenance',
+          permission: 'system.manage'
         }
       ]
-    },
-
-    // License Management
-    {
-      icon: '🔑',
-      label: 'License Management',
-      route: '/super/license',
-      permission: 'license.manage'
     }
   ];
 }
-

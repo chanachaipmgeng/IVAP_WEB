@@ -79,7 +79,8 @@ export const routes: Routes = [
         children: [
           // --- Company Management ---
           { path: 'company-dashboard', loadComponent: () => import('./features/portal/dashboard/dashboard.component').then(m => m.DashboardComponent) },
-          { path: 'company-holidays', loadComponent: () => import('./features/portal/events/events.component').then(m => m.EventsComponent) },
+          { path: 'company-holidays', loadComponent: () => import('./features/portal/company-holidays/company-holidays.component').then(m => m.CompanyHolidaysComponent) },
+          { path: 'company-documents', loadComponent: () => import('./features/portal/company-documents/company-documents.component').then(m => m.CompanyDocumentsComponent) },
           { path: 'announcements', loadComponent: () => import('./features/portal/notifications/notifications.component').then(m => m.NotificationsComponent) },
           { path: 'company-reports', loadComponent: () => import('./features/portal/reports/reports.component').then(m => m.ReportsComponent) },
 
@@ -96,7 +97,7 @@ export const routes: Routes = [
           { path: 'video-playback', loadComponent: () => import('./features/portal/video-playback/video-playback.component').then(m => m.VideoPlaybackComponent) },
           { path: 'zone-config', loadComponent: () => import('./features/portal/zone-config/zone-config.component').then(m => m.ZoneConfigComponent) },
           { path: 'heatmap-analytics', loadComponent: () => import('./features/portal/heatmap-analytics/heatmap-analytics.component').then(m => m.HeatmapAnalyticsComponent) },
-          { path: 'incident-reports', loadComponent: () => import('./features/portal/alerts/alerts.component').then(m => m.AlertsComponent) },
+          { path: 'incident-reports', loadComponent: () => import('./features/portal/incident-reports/incident-reports.component').then(m => m.IncidentReportsComponent) },
 
           // --- Access Control ---
           { path: 'access-dashboard', loadComponent: () => import('./features/portal/access-control/access-control.component').then(m => m.AccessControlComponent) },
@@ -111,18 +112,20 @@ export const routes: Routes = [
           { path: 'attendance-reports', loadComponent: () => import('./features/portal/payroll-export/payroll-export.component').then(m => m.PayrollExportComponent) },
 
           // --- Visitor Management ---
-          { path: 'visitor-dashboard', loadComponent: () => import('./features/portal/visitors/visitors.component').then(m => m.VisitorsComponent) },
-          { path: 'visitor-blacklist', loadComponent: () => import('./features/portal/visitors/visitors.component').then(m => m.VisitorsComponent) },
-          { path: 'visitor-reports', loadComponent: () => import('./features/portal/reports/reports.component').then(m => m.ReportsComponent) },
+          { path: 'visitor-dashboard', loadComponent: () => import('./features/portal/visitor-dashboard/visitor-dashboard.component').then(m => m.VisitorDashboardComponent) },
+          { path: 'visitor-blacklist', loadComponent: () => import('./features/portal/visitor-blacklist/visitor-blacklist.component').then(m => m.VisitorBlacklistComponent) },
+          { path: 'visitor-reports', loadComponent: () => import('./features/portal/visitor-reports/visitor-reports.component').then(m => m.VisitorReportsComponent) },
+          { path: 'visitor-parcels', loadComponent: () => import('./features/portal/visitor-parcels/visitor-parcels.component').then(m => m.VisitorParcelsComponent) },
 
           // --- Vehicle & Parking ---
-          { path: 'parking-dashboard', loadComponent: () => import('./features/portal/parking-spots/parking-spots.component').then(m => m.ParkingSpotsComponent) },
-          { path: 'parking-rules', loadComponent: () => import('./features/portal/parking-spots/parking-spots.component').then(m => m.ParkingSpotsComponent) },
-          { path: 'parking-logs', loadComponent: () => import('./features/portal/reports/reports.component').then(m => m.ReportsComponent) },
+          { path: 'parking-dashboard', loadComponent: () => import('./features/portal/parking-dashboard/parking-dashboard.component').then(m => m.ParkingDashboardComponent) },
+          { path: 'parking-rules', loadComponent: () => import('./features/portal/parking-rules/parking-rules.component').then(m => m.ParkingRulesComponent) },
+          { path: 'parking-logs', loadComponent: () => import('./features/portal/parking-logs/parking-logs.component').then(m => m.ParkingLogsComponent) },
+          { path: 'parking-blacklist', loadComponent: () => import('./features/portal/parking-blacklist/parking-blacklist.component').then(m => m.ParkingBlacklistComponent) },
 
           // --- Smart Surveillance ---
-          { path: 'surveillance-map', loadComponent: () => import('./features/portal/monitoring/monitoring.component').then(m => m.MonitoringComponent) },
-          { path: 'alert-history', loadComponent: () => import('./features/portal/alerts/alerts.component').then(m => m.AlertsComponent) },
+          { path: 'surveillance-map', loadComponent: () => import('./features/portal/surveillance-map/surveillance-map.component').then(m => m.SurveillanceMapComponent) },
+          { path: 'alert-history', loadComponent: () => import('./features/portal/alert-history/alert-history.component').then(m => m.AlertHistoryComponent) },
 
           // --- System Management ---
           { path: 'system-users', loadComponent: () => import('./features/portal/employees/employees.component').then(m => m.EmployeesComponent) },
@@ -435,8 +438,13 @@ export const routes: Routes = [
         children: [
           {
             path: '',
-            redirectTo: 'companies',
+            redirectTo: 'dashboard',
             pathMatch: 'full'
+          },
+          {
+            path: 'dashboard',
+            loadComponent: () => import('./features/super-admin/dashboard/super-admin-dashboard.component')
+              .then(m => m.SuperAdminDashboardComponent)
           },
           {
             path: 'companies',
@@ -462,6 +470,16 @@ export const routes: Routes = [
             path: 'settings',
             loadComponent: () => import('./features/super-admin/system-settings/system-settings.component')
               .then(m => m.SystemSettingsComponent)
+          },
+          {
+            path: 'reports',
+            loadComponent: () => import('./features/super-admin/reports/super-admin-reports.component')
+              .then(m => m.SuperAdminReportsComponent)
+          },
+          {
+            path: 'announcements',
+            loadComponent: () => import('./features/super-admin/announcements/super-admin-announcements.component')
+              .then(m => m.SuperAdminAnnouncementsComponent)
           },
           {
             path: 'audit-logs',

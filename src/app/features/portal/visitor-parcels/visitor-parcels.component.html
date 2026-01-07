@@ -1,0 +1,46 @@
+<div class="h-full flex flex-col p-6 space-y-6">
+  <div class="flex justify-between items-center">
+    <div>
+      <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400">
+        Delivery & Parcels
+      </h1>
+      <p class="text-gray-500 dark:text-gray-400 mt-1">Manage incoming packages and deliveries</p>
+    </div>
+    <app-glass-button variant="primary" icon="box">Log Parcel</app-glass-button>
+  </div>
+
+  <app-glass-card class="flex-1 overflow-hidden flex flex-col">
+    <div class="overflow-auto flex-1 custom-scrollbar">
+      <table class="min-w-full divide-y divide-gray-200/50 dark:divide-gray-700/50">
+        <thead class="bg-gray-50/50 dark:bg-gray-800/50 sticky top-0 backdrop-blur-sm z-10">
+          <tr>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Tracking No.</th>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Recipient</th>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Carrier</th>
+            <th class="px-6 py-4 text-center text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Arrived</th>
+            <th class="px-6 py-4 text-center text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Status</th>
+            <th class="px-6 py-4 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200/50 dark:divide-gray-700/50">
+          <tr *ngFor="let item of parcels()" class="hover:bg-white/60 dark:hover:bg-gray-700/60 transition-colors">
+            <td class="px-6 py-4 font-mono text-sm text-gray-900 dark:text-gray-100">{{ item.tracking }}</td>
+            <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">{{ item.recipient }}</td>
+            <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{{ item.carrier }}</td>
+            <td class="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400">{{ item.arrived | date:'medium' }}</td>
+            <td class="px-6 py-4 text-center">
+              <span class="px-2 py-1 rounded-full text-xs font-medium" 
+                    [ngClass]="item.status === 'Picked Up' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'">
+                {{ item.status }}
+              </span>
+            </td>
+            <td class="px-6 py-4 text-right">
+              <button class="text-indigo-500 hover:text-indigo-700 text-sm" *ngIf="item.status !== 'Picked Up'">Mark as Picked Up</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </app-glass-card>
+</div>
+

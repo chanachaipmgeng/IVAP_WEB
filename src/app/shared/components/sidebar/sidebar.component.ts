@@ -40,7 +40,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   // State for 2-layer navigation
   activeMainGroup: MenuItem | null = null;
   isSubmenuOpen: boolean = true; // Default open on desktop if space permits
-  
+
   private routerSubscription: Subscription | undefined;
   isMobileView = false;
 
@@ -52,7 +52,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.checkMobileView();
-    
+
     // Auto-select group based on current route
     this.routerSubscription = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
@@ -79,11 +79,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
     if (typeof window !== 'undefined') {
       const wasMobile = this.isMobileView;
       this.isMobileView = window.innerWidth < 1024;
-      
+
       // Auto logic for sidebar state when switching views
       if (this.isMobileView !== wasMobile) {
         if (!this.isMobileView) {
-          this.isSubmenuOpen = true; // Open submenu by default on desktop
+          this.isSubmenuOpen = !!(this.activeMainGroup?.children?.length); // Only open if children exist
         } else {
            this.isSubmenuOpen = false;
         }
@@ -96,7 +96,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
    */
   private findActiveGroup(): void {
     const currentUrl = this.router.url;
-    
+
     // Find group that has a child matching the current URL
     const foundGroup = this.menuItems.find(group => {
       if (group.route && currentUrl.includes(group.route)) return true;
@@ -112,6 +112,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
       // Default to first item if nothing selected yet
       this.activeMainGroup = this.menuItems[0];
     }
+
+    // Auto-close submenu if active group has no children (Desktop only)
+    if (!this.isMobileView && this.activeMainGroup) {
+      this.isSubmenuOpen = !!(this.activeMainGroup.children && this.activeMainGroup.children.length > 0);
+    }
   }
 
   get visibleMenuItems(): MenuItem[] {
@@ -124,9 +129,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
    */
   onMainGroupClick(item: MenuItem): void {
     this.activeMainGroup = item;
-    
+
     // If item has no children, it's a direct link, navigate and close mobile sidebar if needed
     if (!item.children || item.children.length === 0) {
+      this.isSubmenuOpen = false; // Close submenu for direct links
+
       if (item.route) {
         this.router.navigate([item.route]);
       }

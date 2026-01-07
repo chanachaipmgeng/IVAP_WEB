@@ -74,6 +74,12 @@ export class PortalLayoutComponent {
           permission: 'company.view'
         },
         {
+          icon: '📄',
+          label: 'Documents & Policies',
+          route: '/portal/company-documents',
+          permission: 'company.view'
+        },
+        {
           icon: '📢',
           label: 'Announcements',
           route: '/portal/announcements',
@@ -344,6 +350,12 @@ export class PortalLayoutComponent {
           permission: 'visitor.manage'
         },
         {
+          icon: '📦',
+          label: 'Delivery & Parcels',
+          route: '/portal/visitor-parcels',
+          permission: 'visitor.manage'
+        },
+        {
           icon: '📜',
           label: 'Visitor Logs & Reports',
           route: '/portal/visitor-reports',
@@ -380,6 +392,12 @@ export class PortalLayoutComponent {
           icon: '⚖️',
           label: 'Rules & Fees',
           route: '/portal/parking-rules',
+          permission: 'parking.manage'
+        },
+        {
+          icon: '🚫',
+          label: 'Blocked Plates',
+          route: '/portal/parking-blacklist',
           permission: 'parking.manage'
         },
         {

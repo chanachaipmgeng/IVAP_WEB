@@ -1,0 +1,63 @@
+<div class="h-full flex flex-col p-6 space-y-6 overflow-y-auto custom-scrollbar">
+  <!-- Stats Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <app-glass-card *ngFor="let stat of stats()" class="p-6">
+      <div class="flex flex-col">
+        <span class="text-sm text-gray-500 dark:text-gray-400">{{ stat.label }}</span>
+        <div class="flex items-end justify-between mt-2">
+          <span class="text-3xl font-bold text-gray-800 dark:text-white">{{ stat.value }}</span>
+          <span class="text-sm px-2 py-1 rounded-full"
+                [ngClass]="{
+                  'bg-green-100 text-green-700': stat.trend === 'up',
+                  'bg-red-100 text-red-700': stat.trend === 'down',
+                  'bg-gray-100 text-gray-700': stat.trend === 'stable'
+                }">
+            {{ stat.change }}
+          </span>
+        </div>
+      </div>
+    </app-glass-card>
+  </div>
+
+  <!-- Charts -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <app-glass-card class="p-6">
+      <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-white">Revenue Growth</h3>
+      <div echarts [options]="revenueChartOption" class="h-64 w-full"></div>
+    </app-glass-card>
+
+    <app-glass-card class="p-6">
+      <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-white">Module Usage Distribution</h3>
+      <div echarts [options]="usageChartOption" class="h-64 w-full"></div>
+    </app-glass-card>
+  </div>
+
+  <!-- Recent Activities -->
+  <app-glass-card class="p-6 flex-1">
+    <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-white">Recent System Activities</h3>
+    <div class="space-y-4">
+      <div class="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-2">
+        <div class="flex items-center gap-3">
+          <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+          <span class="text-sm text-gray-600 dark:text-gray-300">New company "TechCorp" registered</span>
+        </div>
+        <span class="text-xs text-gray-400">2 mins ago</span>
+      </div>
+      <div class="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-2">
+        <div class="flex items-center gap-3">
+          <div class="w-2 h-2 rounded-full bg-green-500"></div>
+          <span class="text-sm text-gray-600 dark:text-gray-300">System backup completed successfully</span>
+        </div>
+        <span class="text-xs text-gray-400">1 hour ago</span>
+      </div>
+      <div class="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-2">
+        <div class="flex items-center gap-3">
+          <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
+          <span class="text-sm text-gray-600 dark:text-gray-300">License expiring for "RetailOne" in 3 days</span>
+        </div>
+        <span class="text-xs text-gray-400">5 hours ago</span>
+      </div>
+    </div>
+  </app-glass-card>
+</div>
+
