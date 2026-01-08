@@ -50,22 +50,16 @@ export class PortalLayoutComponent {
           permission: 'dashboard.view'
         },
         {
-          icon: '👤',
-          label: 'Profile',
-          route: '/portal/profile',
-          permission: 'profile.view'
+          icon: '🏢',
+          label: 'Structure (Organization)',
+          route: '/portal/structure',
+          permission: 'company.view'
         },
         {
           icon: '👔',
           label: 'Employees',
           route: '/portal/employees',
           permission: 'employee.view'
-        },
-        {
-          icon: '🏢',
-          label: 'Structure (Organization)',
-          route: '/portal/structure',
-          permission: 'company.view'
         },
         {
           icon: '📅',
