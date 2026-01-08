@@ -44,6 +44,8 @@ export interface RecognizeManyFacesResponse {
   member_id: UUID;
   first_name?: string;
   last_name?: string;
+  employee_id?: string;
+  confidence: number;
   location: {
     top: number;
     right: number;

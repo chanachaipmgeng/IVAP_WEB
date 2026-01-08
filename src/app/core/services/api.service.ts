@@ -348,7 +348,20 @@ export class ApiService {
     return this.http.post<unknown>(`${this.baseUrl}${endpoint}`, formData, {
       headers: headers
     }).pipe(
-      map(response => toCamelCase(response) as T),
+      map(response => {
+        // Only convert to camelCase if skipTransform is false (default is to transform)
+        // For Face Recognition which returns specific snake_case contracts, we might want to skip.
+        // But since this is a shared method, let's keep consistent behavior or add options param to upload methods.
+        // For now, if we want to STOP automatic camelCase conversion globally or for specific calls, we'd need to change this.
+
+        // However, the user specifically asked to remove automatic camelCase conversion.
+        // Let's modify to return response as-is for upload methods if we want to be consistent with get/post logic,
+        // OR simply return response as-is if that's the requirement.
+
+        // Assuming we want to stop forcing camelCase on uploads to respect backend DTOs more strictly
+        // or rely on explicit manual conversion if needed.
+        return response as T;
+      }),
       catchError(this.handleError)
     );
   }
@@ -390,7 +403,7 @@ export class ApiService {
     return this.http.post<unknown>(`${this.baseUrl}${endpoint}`, formData, {
       headers: headers
     }).pipe(
-      map(response => toCamelCase(response) as T),
+      map(response => response as T), // Return response as-is without camelCase conversion
       catchError(this.handleError)
     );
   }
