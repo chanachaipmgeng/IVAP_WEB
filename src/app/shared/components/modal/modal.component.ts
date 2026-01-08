@@ -95,6 +95,26 @@ export class ModalComponent implements OnInit, OnDestroy {
   @Output() closed = new EventEmitter<void>();
 
   /**
+   * Text for confirm button
+   */
+  @Input() confirmText: string = 'Confirm';
+
+  /**
+   * Text for cancel button
+   */
+  @Input() cancelText: string = 'Cancel';
+
+  /**
+   * Icon for confirm button
+   */
+  @Input() confirmIcon: string = '';
+
+  /**
+   * Emitted when confirm button is clicked
+   */
+  @Output() confirmed = new EventEmitter<void>();
+
+  /**
    * Emitted when backdrop is clicked
    */
   @Output() backdropClick = new EventEmitter<void>();

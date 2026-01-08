@@ -1,8 +1,11 @@
-import { Component, OnInit, signal, ViewChild, ElementRef, inject } from '@angular/core';
+import { Component, OnInit, signal, ViewChild, ElementRef, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule, FormControl } from '@angular/forms';
 import { BiometricDataService } from '../../../../core/services/biometric-data.service';
+import { FaceService } from '../../../../core/services/face.service';
+import { CompanyEmployeeService } from '../../../../core/services/company-employee.service';
 import { BiometricData, BiometricType, CreateBiometricDataDto, UpdateBiometricDataDto, BIOMETRIC_TYPE_LABELS } from '../../../../core/models/biometric-data.model';
+import { EmployeeDisplay } from '../../../../core/models/employee-display.model';
 import { PageLayoutComponent, PageAction } from '../../../../shared/components/page-layout/page-layout.component';
 import { DataTableComponent, TableColumn, TableAction } from '../../../../shared/components/data-table/data-table.component';
 import { ModalComponent } from '../../../../shared/components/modal/modal.component';
@@ -32,22 +35,28 @@ import { ValidationService } from '../../../../core/services/validation.service'
 export class BiometricDataComponent implements OnInit {
   private fb = inject(FormBuilder);
   private biometricService = inject(BiometricDataService);
+  private faceService = inject(FaceService);
+  private employeeService = inject(CompanyEmployeeService);
   private errorHandler = inject(ErrorHandlerService);
   private validationService = inject(ValidationService);
 
   biometricData = signal<BiometricData[]>([]);
+  employees = signal<EmployeeDisplay[]>([]); // List of employees for dropdown
   filteredData = signal<BiometricData[]>([]);
   isLoading = signal(false);
   showModal = signal(false);
   selectedData = signal<BiometricData | null>(null);
   errorMessage = signal<string | null>(null);
   enrollmentMode = signal<'upload' | 'camera'>('upload');
-  
+
   // Camera signals
   videoDevices = signal<MediaDeviceInfo[]>([]);
   selectedVideoDevice = signal<string>('');
   videoStream: MediaStream | null = null;
-  capturedImage: string | null = null; // Base64 string
+
+  // Enrollment signals
+  capturedImages = signal<string[]>([]); // Base64 strings for preview
+  selectedFiles: File[] = []; // Actual files to upload
 
   @ViewChild('videoElement') videoElement!: ElementRef<HTMLVideoElement>;
   @ViewChild('canvasElement') canvasElement!: ElementRef<HTMLCanvasElement>;
@@ -66,14 +75,19 @@ export class BiometricDataComponent implements OnInit {
   ]);
 
   columns: TableColumn[] = [
-    { key: 'previewImage', label: 'Preview', sortable: false, template: undefined }, // Will be set via ng-template in HTML if needed, or use custom render
-    { key: 'member_id', label: 'Member ID', sortable: true },
-    { key: 'biometric_type', label: 'Type', sortable: true, 
-      render: (value) => this.BIOMETRIC_TYPE_LABELS[value as BiometricType] || value 
+    { key: 'previewImage', label: 'Preview', sortable: false, template: undefined },
+    { key: 'member_id', label: 'Employee', sortable: true,
+      render: (id) => {
+        // Find employee by member_id since biometric data uses member_id
+        const employee = this.employees().find(e => e.member_id === id);
+        return employee ? employee.full_name : id;
+      }
+    },
+    { key: 'biometric_type', label: 'Type', sortable: true,
+      render: (value) => this.BIOMETRIC_TYPE_LABELS[value as BiometricType] || value
     },
     { key: 'is_primary', label: 'Primary', sortable: true, type: 'boolean' },
-    { key: 'created_at', label: 'Created At', sortable: true, type: 'date' },
-    { key: 'updated_at', label: 'Updated At', sortable: true, type: 'date' }
+    { key: 'created_at', label: 'Created At', sortable: true, type: 'date' }
   ];
 
   actions: TableAction[] = [
@@ -98,7 +112,7 @@ export class BiometricDataComponent implements OnInit {
       biometric_value: ['', [Validators.required]],
       is_primary: [true]
     });
-    
+
     // Watch for type changes to reset validation or adjust UI
     this.biometricForm.get('biometric_type')?.valueChanges.subscribe(type => {
       if (type === BiometricType.FACE) {
@@ -108,10 +122,23 @@ export class BiometricDataComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadEmployees();
     this.loadData();
     this.getVideoDevices();
   }
-  
+
+  loadEmployees() {
+    // Load all employees (page 1, size 100 as requested)
+    this.employeeService.getEmployees({ page: 1, size: 100 }).subscribe({
+        next: (response) => {
+            if (response && response.data) {
+                this.employees.set(response.data);
+            }
+        },
+        error: (err) => console.error('Failed to load employees', err)
+    });
+  }
+
   // Camera handling methods
   async getVideoDevices() {
     try {
@@ -162,48 +189,75 @@ export class BiometricDataComponent implements OnInit {
     if (this.videoElement?.nativeElement && this.canvasElement?.nativeElement) {
       const video = this.videoElement.nativeElement;
       const canvas = this.canvasElement.nativeElement;
-      
+
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
-      
+
       const ctx = canvas.getContext('2d');
       if (ctx) {
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        // Convert to Base64
+
+        // Convert to Base64 for preview
         const dataUrl = canvas.toDataURL('image/jpeg');
-        this.capturedImage = dataUrl;
-        
-        // Remove data:image/jpeg;base64, prefix for API
-        const base64Value = dataUrl.split(',')[1];
-        this.biometricForm.patchValue({ biometric_value: base64Value });
-        
-        // Switch back to upload mode to show preview
-        this.enrollmentMode.set('upload');
-        this.stopCamera();
+        this.capturedImages.update(images => [...images, dataUrl]);
+
+        // Convert to File object for upload
+        canvas.toBlob((blob) => {
+            if (blob) {
+                const file = new File([blob], `capture-${Date.now()}.jpg`, { type: 'image/jpeg' });
+                this.selectedFiles.push(file);
+            }
+        }, 'image/jpeg');
+
+        // Don't switch back immediately, let user take more photos
+        // this.enrollmentMode.set('upload');
+        // this.stopCamera();
       }
     }
   }
 
+  // Helper to get employee name for template
+  getEmployeeName(memberId: string): string {
+    const employee = this.employees().find(e => e.member_id === memberId);
+    return employee ? employee.full_name : memberId;
+  }
+
+  // Helper to get employee ID (e.g., EMP001) for display
+  getEmployeeCode(memberId: string): string {
+    const employee = this.employees().find(e => e.member_id === memberId);
+    return employee ? (employee.employee_id || 'N/A') : '';
+  }
+
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      const file = input.files[0];
-      const reader = new FileReader();
-      
-      reader.onload = (e) => {
-        const result = e.target?.result as string;
-        this.capturedImage = result;
-        // Remove data:image/...;base64, prefix
-        const base64Value = result.split(',')[1];
-        this.biometricForm.patchValue({ biometric_value: base64Value });
-      };
-      
-      reader.readAsDataURL(file);
+    if (input && input.files && input.files.length > 0) {
+      const files = Array.from(input.files);
+
+      // Add files to selection
+      this.selectedFiles.push(...files);
+
+      // Read for preview
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const result = e.target?.result as string;
+            if (result) {
+                this.capturedImages.update(images => [...images, result]);
+            }
+        };
+        reader.readAsDataURL(file);
+      });
     }
   }
 
-  clearImage() {
-    this.capturedImage = null;
+  removeImage(index: number) {
+    this.capturedImages.update(images => images.filter((_, i) => i !== index));
+    this.selectedFiles = this.selectedFiles.filter((_, i) => i !== index);
+  }
+
+  clearImages() {
+    this.capturedImages.set([]);
+    this.selectedFiles = [];
     this.biometricForm.patchValue({ biometric_value: '' });
   }
 
@@ -218,7 +272,7 @@ export class BiometricDataComponent implements OnInit {
             ...item,
             previewImage: item.biometric_type === BiometricType.FACE ? `data:image/jpeg;base64,${item.biometric_value}` : null
         }));
-        
+
         this.biometricData.set(dataWithPreview);
         this.filteredData.set(dataWithPreview);
         this.updateStatistics(data);
@@ -247,11 +301,11 @@ export class BiometricDataComponent implements OnInit {
 
   onFilterChange(filters: Record<string, any>) {
     let data = this.biometricData();
-    
+
     if (filters['member_id']) {
       data = data.filter(d => d.member_id.toLowerCase().includes(filters['member_id'].toLowerCase()));
     }
-    
+
     if (filters['biometric_type']) {
       data = data.filter(d => d.biometric_type === filters['biometric_type']);
     }
@@ -265,7 +319,8 @@ export class BiometricDataComponent implements OnInit {
       biometric_type: BiometricType.FACE,
       is_primary: true
     });
-    this.capturedImage = null;
+    this.capturedImages.set([]);
+    this.selectedFiles = [];
     this.showModal.set(true);
   }
 
@@ -277,49 +332,96 @@ export class BiometricDataComponent implements OnInit {
       biometric_value: data.biometric_value,
       is_primary: data.is_primary
     });
-    
+
+    this.capturedImages.set([]);
+    this.selectedFiles = [];
+
     if (data.biometric_type === BiometricType.FACE) {
-        this.capturedImage = `data:image/jpeg;base64,${data.biometric_value}`;
-    } else {
-        this.capturedImage = null;
+        this.capturedImages.set([`data:image/jpeg;base64,${data.biometric_value}`]);
     }
-    
+
     this.showModal.set(true);
   }
 
   deleteData(data: BiometricData) {
     if (confirm('Are you sure you want to delete this biometric data?')) {
       this.isLoading.set(true);
-      // Use 'id' instead of 'biometric_id'
-      this.biometricService.delete(data.id).subscribe({
-        next: () => {
-          this.loadData();
-          this.isLoading.set(false);
-        },
-        error: (error) => {
-          this.errorMessage.set(this.errorHandler.handleApiError(error));
-          this.isLoading.set(false);
-        }
-      });
+
+      // If it's face data, use face service to delete properly
+      if (data.biometric_type === BiometricType.FACE) {
+          // Assuming 'id' is face_encoding_id for face data
+          this.faceService.deleteFaceEncoding(data.id).subscribe({
+            next: () => {
+              this.loadData();
+              this.isLoading.set(false);
+            },
+            error: (error) => {
+              this.errorMessage.set(this.errorHandler.handleApiError(error));
+              this.isLoading.set(false);
+            }
+          });
+      } else {
+          // Use standard delete for other types
+          this.biometricService.delete(data.id).subscribe({
+            next: () => {
+              this.loadData();
+              this.isLoading.set(false);
+            },
+            error: (error) => {
+              this.errorMessage.set(this.errorHandler.handleApiError(error));
+              this.isLoading.set(false);
+            }
+          });
+      }
     }
   }
 
   saveBiometricData() {
-    if (this.biometricForm.invalid) {
+    if (this.biometricForm.invalid && this.biometricForm.get('biometric_type')?.value !== BiometricType.FACE) {
       this.markFormGroupTouched(this.biometricForm);
       return;
+    }
+
+    // Custom validation for Face
+    if (this.biometricForm.get('biometric_type')?.value === BiometricType.FACE) {
+        if (this.selectedFiles.length === 0 && !this.selectedData()) {
+            this.errorMessage.set('Please select at least one face image.');
+            return;
+        }
+        if (!this.biometricForm.get('member_id')?.value) {
+            this.markFormGroupTouched(this.biometricForm);
+            return;
+        }
     }
 
     this.isLoading.set(true);
     const formValue = this.biometricForm.value;
 
+    // Handle Face Enrollment Separately
+    if (formValue.biometric_type === BiometricType.FACE && this.selectedFiles.length > 0) {
+        // We use the new addFace API that supports multiple files
+        this.faceService.addFace(formValue.member_id, this.selectedFiles).subscribe({
+            next: (response) => {
+                this.closeModal();
+                this.loadData();
+                // Optional: Show success message with count
+                // alert(response.message);
+            },
+            error: (error) => {
+                this.errorMessage.set(this.errorHandler.handleApiError(error));
+                this.isLoading.set(false);
+            }
+        });
+        return;
+    }
+
+    // Standard Logic for other types or updates (unchanged mostly)
     if (this.selectedData()) {
       const updateData: UpdateBiometricDataDto = {
         biometric_value: formValue.biometric_value,
         is_primary: formValue.is_primary
       };
 
-      // Use 'id' instead of 'biometric_id'
       this.biometricService.update(this.selectedData()!.id, updateData).subscribe({
         next: () => {
           this.closeModal();
@@ -353,9 +455,11 @@ export class BiometricDataComponent implements OnInit {
 
   closeModal() {
     this.showModal.set(false);
+    this.isLoading.set(false);
     this.selectedData.set(null);
     this.errorMessage.set(null);
     this.stopCamera();
+    this.clearImages();
   }
 
   getFieldError(fieldName: string): string {
@@ -376,3 +480,4 @@ export class BiometricDataComponent implements OnInit {
     // Implement export functionality
   }
 }
+

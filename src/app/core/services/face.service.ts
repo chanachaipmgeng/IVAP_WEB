@@ -75,11 +75,11 @@ export class FaceService {
   constructor(private api: ApiService) {}
 
   /**
-   * Add face encoding for a member
+   * Add face encoding for a member (supports multiple files)
    * Backend: POST /api/v1/face/members/{member_id}/add-face
    */
-  public addFace(memberId: UUID, file: File): Observable<AddFaceResponse> {
-    return this.api.upload<AddFaceResponse>(`/face/members/${memberId}/add-face`, file);
+  public addFace(memberId: UUID, files: File[]): Observable<AddFaceResponse> {
+    return this.api.uploadMultiple<AddFaceResponse>(`/face/members/${memberId}/add-face`, files);
   }
 
   /**
