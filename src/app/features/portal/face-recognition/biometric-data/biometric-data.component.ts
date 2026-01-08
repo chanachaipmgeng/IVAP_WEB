@@ -60,6 +60,7 @@ export class BiometricDataComponent implements OnInit {
 
   @ViewChild('videoElement') videoElement!: ElementRef<HTMLVideoElement>;
   @ViewChild('canvasElement') canvasElement!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('previewImage') previewImageTemplate: any;
 
   biometricForm: FormGroup;
   BiometricType = BiometricType;
@@ -74,21 +75,29 @@ export class BiometricDataComponent implements OnInit {
     { label: 'Other Types', value: 0, icon: 'bg-orange-500' }
   ]);
 
-  columns: TableColumn[] = [
-    { key: 'previewImage', label: 'Preview', sortable: false, template: undefined },
-    { key: 'member_id', label: 'Employee', sortable: true,
-      render: (id) => {
-        // Find employee by member_id since biometric data uses member_id
-        const employee = this.employees().find(e => e.member_id === id);
-        return employee ? employee.full_name : id;
-      }
-    },
-    { key: 'biometric_type', label: 'Type', sortable: true,
-      render: (value) => this.BIOMETRIC_TYPE_LABELS[value as BiometricType] || value
-    },
-    { key: 'is_primary', label: 'Primary', sortable: true, type: 'boolean' },
-    { key: 'created_at', label: 'Created At', sortable: true, type: 'date' }
-  ];
+  columns: TableColumn[] = [];
+
+  // ... (existing code)
+
+  // Initialize columns in ngOnInit or after view init to access the template
+  ngAfterViewInit() {
+      // Re-define columns fully to ensure template is picked up
+      this.columns = [
+        { key: 'previewImage', label: 'Preview', sortable: false, template: this.previewImageTemplate },
+        { key: 'member_id', label: 'Employee', sortable: true,
+          render: (id) => {
+            // Find employee by member_id since biometric data uses member_id
+            const employee = this.employees().find(e => e.member_id === id);
+            return employee ? employee.full_name : id;
+          }
+        },
+        { key: 'biometric_type', label: 'Type', sortable: true,
+          render: (value) => this.BIOMETRIC_TYPE_LABELS[value as BiometricType] || value
+        },
+        { key: 'is_primary', label: 'Primary', sortable: true, type: 'boolean' },
+        { key: 'created_at', label: 'Created At', sortable: true, type: 'date' }
+      ];
+  }
 
   actions: TableAction[] = [
     { label: 'Edit', icon: 'edit', onClick: (row) => this.editData(row) },
@@ -267,10 +276,14 @@ export class BiometricDataComponent implements OnInit {
     this.biometricService.getAll().subscribe({
       next: (response) => {
         const data = response.data || [];
-        // Add preview image logic if value is base64 image (simplified check)
+        // Add preview image logic: prefer metadata.image_url if available, else fallback to base64
         const dataWithPreview = data.map(item => ({
             ...item,
-            previewImage: item.biometric_type === BiometricType.FACE ? `data:image/jpeg;base64,${item.biometric_value}` : null
+            previewImage: item.biometric_type === BiometricType.FACE
+                ? (item.metadata?.['image_url']
+                    ? item.metadata['image_url']
+                    : (item.biometric_value ? `data:image/jpeg;base64,${item.biometric_value}` : null))
+                : null
         }));
 
         this.biometricData.set(dataWithPreview);
@@ -404,8 +417,9 @@ export class BiometricDataComponent implements OnInit {
             next: (response) => {
                 this.closeModal();
                 this.loadData();
-                // Optional: Show success message with count
-                // alert(response.message);
+                if (response.message) {
+                    alert(response.message);
+                }
             },
             error: (error) => {
                 this.errorMessage.set(this.errorHandler.handleApiError(error));

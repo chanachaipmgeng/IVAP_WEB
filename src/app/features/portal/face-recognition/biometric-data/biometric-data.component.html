@@ -27,7 +27,23 @@
     [data]="filteredData()"
     [actions]="actions"
     [searchable]="false"
-  />
+  >
+    <!-- Custom Template for Image Preview -->
+    <ng-template #previewImage let-row>
+        @if (row.previewImage || (row.metadata && row.metadata['image_url'])) {
+            <div class="w-12 h-12 rounded-full overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                <img [src]="row.previewImage || row.metadata['image_url']"
+                     alt="Biometric Preview"
+                     class="w-full h-full object-cover"
+                     onerror="this.style.display='none'">
+            </div>
+        } @else {
+            <div class="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400">
+                <span class="text-xs">No Img</span>
+            </div>
+        }
+    </ng-template>
+  </app-data-table>
 
   <!-- Add/Edit Modal -->
   <app-modal
@@ -168,13 +184,15 @@
         }
 
         <!-- Is Primary -->
-        <div class="flex items-center">
-            <input type="checkbox" formControlName="is_primary" id="is_primary"
-                class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
-            <label for="is_primary" class="ml-2 block text-sm text-slate-700 dark:text-slate-300">
-                Set as Primary Biometric
-            </label>
-        </div>
+        @if (biometricForm.get('biometric_type')?.value !== BiometricType.FACE) {
+            <div class="flex items-center">
+                <input type="checkbox" formControlName="is_primary" id="is_primary"
+                    class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                <label for="is_primary" class="ml-2 block text-sm text-slate-700 dark:text-slate-300">
+                    Set as Primary Biometric
+                </label>
+            </div>
+        }
 
     </form>
   </app-modal>
