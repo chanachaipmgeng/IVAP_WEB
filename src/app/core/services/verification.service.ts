@@ -40,7 +40,7 @@ export class VerificationService {
    * Backend: GET /api/v1/verification/history
    */
   public getHistory(limit: number = 100): Observable<VerificationHistoryResponse> {
-    return this.api.get<VerificationHistoryResponse>(`/verification/history?limit=${limit}`);
+    return this.api.get<VerificationHistoryResponse>(`/verifications/history?limit=${limit}`);
   }
 }
 
