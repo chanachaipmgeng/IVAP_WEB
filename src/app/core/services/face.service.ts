@@ -1,6 +1,6 @@
 /**
  * Face Service
- * 
+ *
  * Service for managing face recognition and face encodings
  * Matches backend face routes
  */

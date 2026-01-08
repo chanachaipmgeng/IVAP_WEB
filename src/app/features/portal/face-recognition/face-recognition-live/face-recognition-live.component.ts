@@ -130,13 +130,13 @@ export class FaceRecognitionLiveComponent extends BaseComponent implements OnIni
   maxDetectedFaces = 100;
 
   // Detection settings
-  detectionInterval = 2000; // 2 seconds
-  minConfidence = 0.7; // Increased threshold
+  detectionInterval = 1000; // Check every 1 second
+  minConfidence = 0.5; // Threshold for face detection
 
   // Tracking settings
   iouThreshold = 0.4; // Intersection over Union threshold for tracking
-  recognitionCooldown = 5000; // Time before re-recognizing the same tracked face (ms)
-  logCooldown = 10000; // Time before logging the same person again (ms)
+  recognitionCooldown = 3000; // Wait 3 seconds before recognizing the same face again
+  logCooldown = 5000; // Wait 5 seconds before logging/displaying the same face again
 
   // Stats
   stats = {
@@ -555,6 +555,23 @@ export class FaceRecognitionLiveComponent extends BaseComponent implements OnIni
     const loop = async () => {
       if (!stream.isActive) return;
 
+      // 1. Check if models are ready
+      if (!this.faceDetectionService.isReady()) {
+          console.log('Waiting for models to load...');
+          // Retry faster if waiting for models
+          this.detectionTimers.set(streamIndex, setTimeout(loop, 500));
+          return;
+      }
+
+      // 2. Check if video is ready (for real camera)
+      if (!stream.useMockCamera && stream.videoElement) {
+          if (stream.videoElement.readyState < 2) { // HAVE_CURRENT_DATA = 2
+              console.log('Waiting for video data...');
+              this.detectionTimers.set(streamIndex, setTimeout(loop, 200));
+              return;
+          }
+      }
+
       const startTime = performance.now();
       let facesFound = false;
 
@@ -571,15 +588,17 @@ export class FaceRecognitionLiveComponent extends BaseComponent implements OnIni
       } catch (error) {
         console.error('Detection loop error:', error);
       }
+      
+      // ... rest of loop logic ...
 
       // Dynamic interval adjustment
       const processingTime = performance.now() - startTime;
 
-      // Base interval: 500ms (~2 FPS) - Adjusted for performance
-      let targetInterval = 500;
+      // Base interval: 200ms (~5 FPS) for smoother detection
+      let targetInterval = 200;
 
       // If no faces found for a while (e.g., 10 frames), slow down to save resources
-      if (stream.emptyFrames > 10) {
+      if (stream.emptyFrames > 20) {
         targetInterval = 1000; // ~1 FPS for idle monitoring
       }
 
@@ -750,7 +769,7 @@ export class FaceRecognitionLiveComponent extends BaseComponent implements OnIni
             try {
               // Convert canvas to blob
               const blob = await new Promise<Blob>((resolve) => {
-                faceCanvas.toBlob((blob) => resolve(blob!), 'image/jpeg', 0.8);
+                faceCanvas.toBlob((blob) => resolve(blob!), 'image/jpeg', 0.9);
               });
               const file = new File([blob], `face-${trackedFace.id}.jpg`, { type: 'image/jpeg' });
 
@@ -761,14 +780,20 @@ export class FaceRecognitionLiveComponent extends BaseComponent implements OnIni
                 (recognitionResults) => {
                   if (recognitionResults && recognitionResults.length > 0) {
                     const result = recognitionResults[0];
-                    if (result.first_name && result.last_name) {
-                      const newName = `${result.first_name} ${result.last_name}`;
-
+                    // Update tracked face with recognition result
+                    if (result.first_name || result.last_name) {
+                      const newName = `${result.first_name || ''} ${result.last_name || ''}`.trim();
+                      const employeeId = result.employee_id;
+                      
                       // Check if name changed or it's a new recognition
                       const nameChanged = trackedFace.name !== newName;
 
                       trackedFace.name = newName;
+                      trackedFace.confidence = result.confidence; // Use API confidence
                       trackedFace.recognized = true;
+                      
+                      // Also store extra info if needed for UI
+                      // trackedFace.employeeId = employeeId; 
 
                       // Only increment recognized count if we are logging
                       if (nameChanged || (now - trackedFace.lastLog > this.logCooldown)) {

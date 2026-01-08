@@ -1,7 +1,7 @@
 import { Component, OnInit, signal, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { VerificationService, VerificationStatusResponse } from '../../../../core/services/verification.service';
+import { VerificationService } from '../../../../core/services/verification.service';
 import { Subscription, interval } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
 
@@ -40,37 +40,14 @@ export class RecognitionHistoryComponent implements OnInit, OnDestroy {
   constructor(private verificationService: VerificationService) {}
 
   ngOnInit() {
-    this.startAutoRefresh();
+    this.loadHistory();
   }
   
   ngOnDestroy() {
-    if (this.refreshSubscription) {
-      this.refreshSubscription.unsubscribe();
-    }
+    // No subscription to unsubscribe for now as we removed interval
   }
   
-  startAutoRefresh() {
-    // Refresh every 5 seconds
-    this.refreshSubscription = interval(5000).pipe(
-      startWith(0),
-      switchMap(() => {
-        this.isLoading.set(true);
-        return this.verificationService.getHistory(50);
-      })
-    ).subscribe({
-      next: (response) => {
-        const mappedLogs = response.requests.map(req => this.mapToLog(req));
-        this.logs.set(mappedLogs);
-        this.isLoading.set(false);
-      },
-      error: (err) => {
-        console.error('Failed to load history:', err);
-        this.isLoading.set(false);
-      }
-    });
-  }
-  
-  manualRefresh() {
+  loadHistory() {
     this.isLoading.set(true);
     this.verificationService.getHistory(50).subscribe({
       next: (response) => {
@@ -84,18 +61,22 @@ export class RecognitionHistoryComponent implements OnInit, OnDestroy {
       }
     });
   }
+  
+  manualRefresh() {
+    this.loadHistory();
+  }
 
-  private mapToLog(req: VerificationStatusResponse): RecognitionLog {
-    const result = req.result;
+  private mapToLog(req: any): RecognitionLog {
+    // Backend now returns enriched flat structure
     const isSuccess = req.status === 'success';
-    const confidence = result?.confidence || 0;
+    const confidence = req.confidence || 0;
     
-    // Determine type and status based on confidence and success
+    // Determine type and status
     let type: 'Employee' | 'Visitor' | 'VIP' | 'Unknown' = 'Unknown';
     let status: 'Verified' | 'Flagged' | 'Uncertain' = 'Uncertain';
     
-    if (isSuccess && result?.user_id) {
-        type = 'Employee'; // Default to Employee for now, ideally backend tells us
+    if (isSuccess && req.user_id) {
+        type = 'Employee'; 
         status = 'Verified';
     } else if (req.status === 'failed') {
         type = 'Unknown';
@@ -103,19 +84,57 @@ export class RecognitionHistoryComponent implements OnInit, OnDestroy {
     }
     
     // Extract metadata safely
-    const metadata = result?.metadata || {};
-    const location = metadata.location ? 'Detected Zone' : 'Unknown Location';
+    // Note: Backend returns 'metadata' key in to_dict() for VerificationLog, but might return 'metadata_info' if raw model used.
+    // The JSON provided shows "metadata".
+    const metadata = req.metadata || req.metadata_info || {};
+    const deviceId = req.device_id || 'Unknown Device';
     
+    // Construct name
+    let displayName = 'Unknown Person';
+    if (req.user_name && req.user_name !== 'Unknown') {
+        displayName = req.user_name;
+    } else if (req.user_id) {
+        displayName = `ID: ${req.user_id.substring(0, 8)}...`;
+    }
+
+    // Location display
+    let locationDisplay = deviceId;
+    if (req.department && req.department !== '-') {
+        locationDisplay += ` (${req.department})`;
+    }
+    
+    // Validate timestamp
+    let timestamp = new Date();
+    if (req.created_at) {
+        const parsedDate = new Date(req.created_at);
+        if (!isNaN(parsedDate.getTime())) {
+            timestamp = parsedDate;
+        }
+    }
+    
+    let snapshotUrl = 'assets/images/placeholder-face.jpg';
+    if (req.snapshot_path) {
+        // Handle backend relative paths
+        const path = req.snapshot_path;
+        if (path.startsWith('http')) {
+            snapshotUrl = path;
+        } else if (path.startsWith('/')) {
+            snapshotUrl = `http://localhost:8000${path}`;
+        } else {
+            snapshotUrl = `http://localhost:8000/${path}`;
+        }
+    }
+
     return {
       id: req.request_id,
-      timestamp: new Date(req.created_at),
-      personName: result?.user_data?.name || result?.user_id || (isSuccess ? 'Identified Person' : 'Unknown Person'),
-      personId: result?.user_id,
+      timestamp: timestamp,
+      personName: displayName,
+      personId: req.employee_id || req.user_id,
       type: type,
       confidence: confidence,
-      cameraName: req.result?.metadata?.device_id || 'Unknown Camera',
-      location: location,
-      snapshotUrl: 'assets/images/placeholder-face.jpg', // TODO: Use real snapshot URL if available
+      cameraName: deviceId, // Use device_id as camera name
+      location: locationDisplay,
+      snapshotUrl: snapshotUrl,
       status: status
     };
   }

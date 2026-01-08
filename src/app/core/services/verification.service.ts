@@ -22,7 +22,7 @@ export interface VerificationStatusResponse {
 }
 
 export interface VerificationHistoryResponse {
-  requests: VerificationStatusResponse[];
+  requests: any[]; // Changed to any to support enriched dictionary response
   total: number;
   page: number;
   size: number;

@@ -81,11 +81,16 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
       padding: 1rem;
       transition: all 0.3s ease;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 
       &:hover {
         background: rgba(255, 255, 255, 0.05);
         transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
       }
+      
+      // ... rest of video-stream-card ...
+
 
       .stream-header {
         display: flex;
@@ -679,11 +684,18 @@
 }
 
 // Responsive design
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   .face-recognition-live {
     padding: 1rem;
+    
+    .main-grid {
+      grid-template-columns: 1fr; // Stack columns on smaller screens
+      gap: 1.5rem;
+    }
 
     .live-header {
+      margin-bottom: 1.5rem;
+
       .live-title {
         font-size: 2rem;
       }
@@ -692,26 +704,53 @@
         font-size: 1rem;
       }
     }
+  }
+}
 
+@media (max-width: 768px) {
+  .face-recognition-live {
     .video-streams-grid {
       grid-template-columns: 1fr !important;
     }
 
     .stats-summary {
-      grid-template-columns: 1fr !important;
-    }
-
-    .video-modal {
-      .video-modal-content {
-        width: 95%;
-        padding: 1rem;
-
-        .modal-header {
-          h3 {
-            font-size: 1.25rem;
-          }
+      grid-template-columns: repeat(3, 1fr); // Keep stats horizontal if possible
+      gap: 0.5rem;
+      
+      .stat-item {
+        padding: 0.75rem 0.5rem;
+        
+        .stat-value {
+          font-size: 1.5rem;
+        }
+        
+        .stat-label {
+          font-size: 0.75rem;
         }
       }
+    }
+
+    // Adjust camera dropdown for mobile
+    .video-stream-card {
+        .stream-controls-single {
+            flex-direction: column;
+            align-items: stretch;
+            
+            .camera-dropdown-wrapper {
+                flex-direction: column;
+                align-items: flex-start;
+                width: 100%;
+                
+                .camera-dropdown {
+                    width: 100%;
+                }
+            }
+            
+            app-glass-button {
+                width: 100%;
+                margin-top: 0.5rem;
+            }
+        }
     }
   }
 }

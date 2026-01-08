@@ -25,46 +25,41 @@
         </div>
 
         <div class="video-streams-grid">
-          <!-- Single Stream (Loop for multiple if needed, but structure implies static) -->
-          <!-- Currently only using index 0 as per HTML structure but loop logic exists in TS. 
-               Ideally this should be an ngFor loop over videoStreams if we want multiple.
-               For now, I'll stick to modifying the existing static block for stream 0 but be aware of the TS array. -->
+          <!-- Loop through all video streams -->
+          @for (stream of videoStreams; track stream.id; let i = $index) {
           <div class="video-stream-card">
             <div class="stream-header">
-              <h3>สตรีมวิดีโอ</h3>
-              <div class="stream-status" [class]="'status-' + getStreamStatus(0)">
+              <h3>สตรีมวิดีโอ {{i + 1}}</h3>
+              <div class="stream-status" [class]="'status-' + getStreamStatus(i)">
                 <i class="fas" 
-                   [class.fa-circle]="getStreamStatus(0) === 'active'"
-                   [class.fa-spinner]="getStreamStatus(0) === 'detecting'"
-                   [class.fa-times-circle]="getStreamStatus(0) === 'inactive'"></i>
-                <span>{{ getStreamStatus(0) === 'active' ? 'กำลังทำงาน' : 
-                        getStreamStatus(0) === 'detecting' ? 'กำลังตรวจจับ' : 'ไม่ทำงาน' }}</span>
+                   [class.fa-circle]="getStreamStatus(i) === 'active'"
+                   [class.fa-spinner]="getStreamStatus(i) === 'detecting'"
+                   [class.fa-times-circle]="getStreamStatus(i) === 'inactive'"></i>
+                <span>{{ getStreamStatus(i) === 'active' ? 'กำลังทำงาน' : 
+                        getStreamStatus(i) === 'detecting' ? 'กำลังตรวจจับ' : 'ไม่ทำงาน' }}</span>
               </div>
             </div>
-            <div #videoContainer1 class="video-container">
-              @if (!videoStreams[0].isActive && !videoStreams[0].isLoading) {
-                <div class="video-placeholder">
-                  <i class="fas fa-video-slash"></i>
-                  <p>กล้องถูกปิดใช้งาน</p>
-                  <p class="hint">กด "เปิดกล้อง" เพื่อเริ่มการทำงาน</p>
-                </div>
-              }
-              @if (videoStreams[0].isLoading) {
-                <div class="video-placeholder">
-                  <i class="fas fa-circle-notch fa-spin"></i>
-                  <p>กำลังเชื่อมต่อกล้อง...</p>
-                </div>
-              }
-              
-              <!-- Fullscreen Exit Button (Only visible in fullscreen) -->
-              @if (videoStreams[0].isFullscreen) {
-                <button
-                        class="fullscreen-exit-btn"
-                        (click)="toggleFullScreen(0)">
-                  <i class="fas fa-compress"></i>
-                </button>
-              }
+            
+            <!-- Dynamic Video Container -->
+            <!-- Note: We use ViewChildren/ElementRef in TS, but for HTML we need unique IDs or direct binding -->
+            <!-- Since we use ViewChild with static names in TS, we need to map them manually or refactor TS to use ViewChildren -->
+            <!-- For now, we will use the existing ViewChild targets based on index -->
+            <div [class]="'video-container video-container-' + (i+1)" 
+                 #videoContainer1 *ngIf="i === 0">
+                 
+                 <!-- Content inside is same for all, just referencing stream object -->
+                 <ng-container *ngTemplateOutlet="videoContent; context: {$implicit: stream, index: i}"></ng-container>
             </div>
+            <div [class]="'video-container video-container-' + (i+1)" 
+                 #videoContainer2 *ngIf="i === 1">
+                 <ng-container *ngTemplateOutlet="videoContent; context: {$implicit: stream, index: i}"></ng-container>
+            </div>
+             <div [class]="'video-container video-container-' + (i+1)" 
+                 #videoContainer3 *ngIf="i === 2">
+                 <ng-container *ngTemplateOutlet="videoContent; context: {$implicit: stream, index: i}"></ng-container>
+            </div>
+
+            <!-- Video Controls -->
             <div class="stream-controls-single">
               <div class="camera-dropdown-wrapper">
                 <label class="camera-dropdown-label">
@@ -73,12 +68,12 @@
                 </label>
                 <select 
                   class="camera-dropdown"
-                  [value]="videoStreams[0].selectedDeviceId || ''"
-                  (change)="onCameraChange($event, 0)">
+                  [value]="stream.selectedDeviceId || ''"
+                  (change)="onCameraChange($event, i)">
                   @for (camera of availableCameras; track trackByCamera($index, camera)) {
                     <option 
                       [value]="camera.deviceId"
-                      [selected]="videoStreams[0].selectedDeviceId === camera.deviceId">
+                      [selected]="stream.selectedDeviceId === camera.deviceId">
                       {{ camera.label }}
                     </option>
                   }
@@ -86,36 +81,63 @@
               </div>
               
               <app-glass-button
-                [variant]="videoStreams[0].isActive ? 'secondary' : 'primary'"
+                [variant]="stream.isActive ? 'secondary' : 'primary'"
                 size="sm"
-                (click)="toggleCameraState(0)">
-                <i class="fas" [class.fa-video]="!videoStreams[0].isActive" [class.fa-video-slash]="videoStreams[0].isActive"></i>
-                {{ videoStreams[0].isActive ? 'ปิดกล้อง' : 'เปิดกล้อง' }}
+                (click)="toggleCameraState(i)">
+                <i class="fas" [class.fa-video]="!stream.isActive" [class.fa-video-slash]="stream.isActive"></i>
+                {{ stream.isActive ? 'ปิดกล้อง' : 'เปิดกล้อง' }}
               </app-glass-button>
 
-              @if (videoStreams[0].isActive) {
+              @if (stream.isActive) {
                 <app-glass-button
                   variant="secondary"
                   size="sm"
-                  (click)="toggleLandmarks(0)">
-                  <i class="fas" [class.fa-eye]="videoStreams[0].showLandmarks" [class.fa-eye-slash]="!videoStreams[0].showLandmarks"></i>
-                  {{ videoStreams[0].showLandmarks ? 'ซ่อน' : 'แสดง' }} Landmarks
+                  (click)="toggleLandmarks(i)">
+                  <i class="fas" [class.fa-eye]="stream.showLandmarks" [class.fa-eye-slash]="!stream.showLandmarks"></i>
+                  {{ stream.showLandmarks ? 'ซ่อน' : 'แสดง' }} Landmarks
                 </app-glass-button>
               }
-              @if (videoStreams[0].isActive) {
+              @if (stream.isActive) {
                 <app-glass-button
                   variant="secondary"
                   size="sm"
-                  (click)="toggleFullScreen(0)">
-                  <i class="fas" [class.fa-expand]="!videoStreams[0].isFullscreen" [class.fa-compress]="videoStreams[0].isFullscreen"></i>
-                  {{ videoStreams[0].isFullscreen ? 'ย่อหน้าจอ' : 'เต็มจอ' }}
+                  (click)="toggleFullScreen(i)">
+                  <i class="fas" [class.fa-expand]="!stream.isFullscreen" [class.fa-compress]="stream.isFullscreen"></i>
+                  {{ stream.isFullscreen ? 'ย่อหน้าจอ' : 'เต็มจอ' }}
                 </app-glass-button>
               }
             </div>
           </div>
+          }
         </div>
       </app-glass-card>
     </div>
+
+    <!-- Reusable Template for Video Content -->
+    <ng-template #videoContent let-stream let-index="index">
+        @if (!stream.isActive && !stream.isLoading) {
+        <div class="video-placeholder">
+            <i class="fas fa-video-slash"></i>
+            <p>กล้องถูกปิดใช้งาน</p>
+            <p class="hint">กด "เปิดกล้อง" เพื่อเริ่มการทำงาน</p>
+        </div>
+        }
+        @if (stream.isLoading) {
+        <div class="video-placeholder">
+            <i class="fas fa-circle-notch fa-spin"></i>
+            <p>กำลังเชื่อมต่อกล้อง...</p>
+        </div>
+        }
+        
+        <!-- Fullscreen Exit Button -->
+        @if (stream.isFullscreen) {
+        <button
+                class="fullscreen-exit-btn"
+                (click)="toggleFullScreen(index)">
+            <i class="fas fa-compress"></i>
+        </button>
+        }
+    </ng-template>
 
     <!-- Right: Detected Faces List -->
     <div class="detected-faces-section">
