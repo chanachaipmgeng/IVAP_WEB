@@ -100,13 +100,14 @@ export class BiometricDataComponent implements OnInit {
   }
 
   actions: TableAction[] = [
-    { label: 'Edit', icon: 'edit', onClick: (row) => this.editData(row) },
-    { label: 'Delete', icon: 'trash', onClick: (row) => this.deleteData(row) }
+    { label: 'Edit', icon: 'fas fa-edit', onClick: (row) => this.editData(row) }
+    // Delete action removed as requested - should be done via super-admin or employee management
+    // { label: 'Delete', icon: 'fas fa-trash', onClick: (row) => this.deleteData(row) }
   ];
 
   pageActions = signal<PageAction[]>([
-    { label: 'Export', icon: 'download', onClick: () => this.exportData(), variant: 'secondary' },
-    { label: 'Add Data', icon: 'plus', onClick: () => this.addData(), variant: 'primary' }
+    { label: 'Export', icon: 'fas fa-download', onClick: () => this.exportData(), variant: 'secondary' },
+    { label: 'Add Data', icon: 'fas fa-plus', onClick: () => this.addData(), variant: 'primary' }
   ]);
 
   filterFields = signal<FilterField[]>([
@@ -132,7 +133,6 @@ export class BiometricDataComponent implements OnInit {
 
   ngOnInit() {
     this.loadEmployees();
-    this.loadData();
     this.getVideoDevices();
   }
 
@@ -143,8 +143,14 @@ export class BiometricDataComponent implements OnInit {
             if (response && response.data) {
                 this.employees.set(response.data);
             }
+            // Load data after employees are loaded to ensure mapping works
+            this.loadData();
         },
-        error: (err) => console.error('Failed to load employees', err)
+        error: (err) => {
+            console.error('Failed to load employees', err);
+            // Load data anyway even if employee load fails
+            this.loadData();
+        }
     });
   }
 
@@ -277,14 +283,22 @@ export class BiometricDataComponent implements OnInit {
       next: (response) => {
         const data = response.data || [];
         // Add preview image logic: prefer metadata.image_url if available, else fallback to base64
-        const dataWithPreview = data.map(item => ({
-            ...item,
-            previewImage: item.biometric_type === BiometricType.FACE
-                ? (item.metadata?.['image_url']
-                    ? item.metadata['image_url']
-                    : (item.biometric_value ? `data:image/jpeg;base64,${item.biometric_value}` : null))
-                : null
-        }));
+        const dataWithPreview = data.map(item => {
+            let preview = null;
+            if (item.biometric_type === BiometricType.FACE) {
+                if (item.metadata?.['image_url']) {
+                    const url = item.metadata['image_url'];
+                    // Fix relative URL
+                    preview = url.startsWith('/') ? `http://localhost:8000${url}` : url;
+                } else if (item.biometric_value) {
+                    preview = `data:image/jpeg;base64,${item.biometric_value}`;
+                }
+            }
+            return {
+                ...item,
+                previewImage: preview
+            };
+        });
 
         this.biometricData.set(dataWithPreview);
         this.filteredData.set(dataWithPreview);
@@ -360,8 +374,11 @@ export class BiometricDataComponent implements OnInit {
     if (confirm('Are you sure you want to delete this biometric data?')) {
       this.isLoading.set(true);
 
-      // If it's face data, use face service to delete properly
-      if (data.biometric_type === BiometricType.FACE) {
+      // Check safely for face type (handle both 'face' and 'FACE') and ensure biometric_type exists
+      const typeStr = data.biometric_type ? String(data.biometric_type).toLowerCase() : '';
+      const isFace = typeStr === BiometricType.FACE.toLowerCase();
+
+      if (isFace) {
           // Assuming 'id' is face_encoding_id for face data
           this.faceService.deleteFaceEncoding(data.id).subscribe({
             next: () => {

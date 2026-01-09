@@ -100,7 +100,11 @@ export interface PageAction {
                   (clicked)="action.onClick()"
                 >
                   @if (action.icon) {
-                    <span aria-hidden="true">{{ action.icon }}</span>
+                    @if (action.icon.includes(' ')) {
+                        <i [class]="action.icon" aria-hidden="true" class="mr-2"></i>
+                    } @else {
+                        <span aria-hidden="true" class="mr-2">{{ action.icon }}</span>
+                    }
                   }
                   {{ action.label }}
                 </app-glass-button>

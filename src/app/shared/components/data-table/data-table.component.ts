@@ -292,7 +292,11 @@ export interface PaginationConfig {
                                 class="inline-flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                                 [attr.aria-label]="action.label"
                               >
-                                <span aria-hidden="true">{{ action.icon }}</span>
+                                @if (action.icon.includes(' ')) {
+                                    <i [class]="action.icon" aria-hidden="true"></i>
+                                } @else {
+                                    <span aria-hidden="true">{{ action.icon }}</span>
+                                }
                               </button>
                             }
                           }
@@ -367,7 +371,11 @@ export interface PaginationConfig {
                                 class="inline-flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                                 [attr.aria-label]="action.label"
                               >
-                                <span aria-hidden="true">{{ action.icon }}</span>
+                                @if (action.icon.includes(' ')) {
+                                    <i [class]="action.icon" aria-hidden="true"></i>
+                                } @else {
+                                    <span aria-hidden="true">{{ action.icon }}</span>
+                                }
                               </button>
                             }
                           }

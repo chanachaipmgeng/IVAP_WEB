@@ -11,7 +11,7 @@
  */
 
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, HostListener } from '@angular/core';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { GlassCardComponent } from '../../../../shared/components/glass-card/glass-card.component';
@@ -20,8 +20,6 @@ import { FaceService, RecognizeManyFacesResponse } from '../../../../core/servic
 import { FaceDetectionService, FaceDetectionResult } from '../../../../core/services/face-detection.service';
 import { I18nService } from '../../../../core/services/i18n.service';
 import { BaseComponent } from '../../../../core/base/base.component';
-
-import { ImageOptimizationDirective } from '../../../../shared/directives/image-optimization.directive';
 
 /**
  * Tracked face interface
@@ -98,12 +96,10 @@ interface DetectedFace {
   standalone: true,
   imports: [
     CommonModule,
-    NgOptimizedImage,
     FormsModule,
     TranslateModule,
     GlassCardComponent,
-    GlassButtonComponent,
-    ImageOptimizationDirective
+    GlassButtonComponent
   ],
   templateUrl: './face-recognition-live.component.html',
   styleUrls: ['./face-recognition-live.component.scss']
