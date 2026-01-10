@@ -117,28 +117,100 @@
     (closed)="closeFaceEnrollModal()"
   >
     <div class="p-4">
-      <p class="text-gray-700 dark:text-gray-300 mb-4">
-        กรุณาเลือกรูปภาพใบหน้าของพนักงานเพื่อทำการลงทะเบียนใบหน้า
-      </p>
-      
-      <!-- File Upload -->
-      <div class="mb-4">
-        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-          รูปภาพใบหน้า <span class="text-red-500">*</span>
-        </label>
-        <input
-          type="file"
-          accept="image/*"
-          (change)="onFaceImageSelected($event)"
-          class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-blue-900 dark:file:text-blue-300"
-          [disabled]="enrollingFace()"
-        />
-        @if (faceImageFile) {
-          <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">
-            เลือกไฟล์: {{ faceImageFile.name }} ({{ (faceImageFile.size / 1024).toFixed(2) }} KB)
-          </p>
-        }
+      <!-- Mode Selection -->
+      <div class="flex justify-center space-x-4 mb-6">
+        <button
+          type="button"
+          (click)="setEnrollmentMode('upload')"
+          [class.bg-primary-500]="enrollmentMode() === 'upload'"
+          [class.text-white]="enrollmentMode() === 'upload'"
+          [class.bg-white]="enrollmentMode() !== 'upload'"
+          [class.text-gray-700]="enrollmentMode() !== 'upload'"
+          class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 transition-colors flex items-center space-x-2"
+        >
+          <span>📁</span> <span>อัปโหลดรูปภาพ</span>
+        </button>
+        <button
+          type="button"
+          (click)="setEnrollmentMode('camera')"
+          [class.bg-primary-500]="enrollmentMode() === 'camera'"
+          [class.text-white]="enrollmentMode() === 'camera'"
+          [class.bg-white]="enrollmentMode() !== 'camera'"
+          [class.text-gray-700]="enrollmentMode() !== 'camera'"
+          class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 transition-colors flex items-center space-x-2"
+        >
+          <span>📷</span> <span>ถ่ายภาพ</span>
+        </button>
       </div>
+
+      <!-- Upload Mode -->
+      @if (enrollmentMode() === 'upload') {
+        <div class="mb-4">
+          <div class="flex items-center justify-center w-full">
+            <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500">
+              <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">คลิกเพื่อเลือกไฟล์</span> หรือลากวาง</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG (สูงสุด 3 ไฟล์)</p>
+              </div>
+              <input id="dropzone-file" type="file" class="hidden" accept="image/*" multiple (change)="onFaceFilesSelected($event)" />
+            </label>
+          </div>
+        </div>
+      }
+
+      <!-- Camera Mode -->
+      @if (enrollmentMode() === 'camera') {
+        <div class="mb-4 flex flex-col items-center">
+          <div class="relative w-full max-w-md bg-black rounded-lg overflow-hidden aspect-video mb-4">
+            <video #videoElement autoplay playsinline class="w-full h-full object-cover"></video>
+            <canvas #canvasElement class="hidden"></canvas>
+          </div>
+          
+          <div class="flex items-center gap-4 w-full max-w-md">
+            @if (videoDevices().length > 1) {
+              <select 
+                [ngModel]="selectedVideoDevice()" 
+                (ngModelChange)="selectedVideoDevice.set($event); startCamera()"
+                class="flex-1 glass-input text-sm"
+              >
+                @for (device of videoDevices(); track device.deviceId) {
+                  <option [value]="device.deviceId">{{ device.label || 'Camera ' + ($index + 1) }}</option>
+                }
+              </select>
+            }
+            
+            <button
+              type="button"
+              (click)="captureImage()"
+              class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full flex items-center justify-center gap-2"
+            >
+              <span>📸</span> ถ่ายภาพ
+            </button>
+          </div>
+        </div>
+      }
+
+      <!-- Preview Images -->
+      @if (capturedImages().length > 0) {
+        <div class="mb-4">
+          <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">รูปภาพที่เลือก ({{ capturedImages().length }})</p>
+          <div class="flex flex-wrap gap-2">
+            @for (img of capturedImages(); track $index) {
+              <div class="relative group w-20 h-20">
+                <img [src]="img" class="w-full h-full object-cover rounded-lg border border-gray-200 dark:border-gray-700" alt="Face preview">
+                <button
+                  type="button"
+                  (click)="removeImage($index)"
+                  class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
+                  title="ลบรูปภาพ"
+                >
+                  ×
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      }
 
       <!-- Error Message -->
       @if (errorMessage() && showFaceEnrollModal()) {
@@ -148,13 +220,13 @@
       }
 
       <!-- Actions -->
-      <div class="flex justify-end gap-2">
+      <div class="flex justify-end gap-2 mt-6">
         <app-glass-button
           variant="primary"
           [loading]="enrollingFace()"
-          [disabled]="!faceImageFile || enrollingFace()"
+          [disabled]="selectedFiles.length === 0 || enrollingFace()"
           (clicked)="enrollFace()">
-          📷 ลงทะเบียนใบหน้า
+          💾 บันทึกข้อมูล
         </app-glass-button>
         <app-glass-button
           variant="secondary"

@@ -10,7 +10,7 @@
  * ```
  */
 
-import { Component, OnInit, signal, computed, inject } from '@angular/core';
+import { Component, OnInit, signal, computed, inject, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, FormControl, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -29,6 +29,7 @@ import { ReportService } from '../../../../core/services/report.service';
 import { ErrorHandlerService } from '../../../../core/services/error-handler.service';
 import { ValidationService } from '../../../../core/services/validation.service';
 import { ApiService } from '../../../../core/services/api.service';
+import { FaceService } from '../../../../core/services/face.service'; // Added FaceService
 import { UUID, PaginatedResponse } from '../../../../core/models/base.model';
 import { BaseComponent } from '../../../../core/base/base.component';
 import { EmpType, CompanyRoleType } from '../../../../core/models/enums.model';
@@ -59,6 +60,7 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
   private errorHandler = inject(ErrorHandlerService);
   private validationService = inject(ValidationService);
   private fb = inject(FormBuilder);
+  private faceService = inject(FaceService); // Inject FaceService
 
   // Data & State Signals
   employees = signal<EmployeeDisplay[]>([]);
@@ -97,6 +99,17 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
   // Face Enrollment
   faceImageFile: File | null = null;
   profileImageFile: File | null = null;
+
+  // Advanced Face Enrollment
+  enrollmentMode = signal<'upload' | 'camera'>('upload');
+  videoDevices = signal<MediaDeviceInfo[]>([]);
+  selectedVideoDevice = signal<string>('');
+  videoStream: MediaStream | null = null;
+  capturedImages = signal<string[]>([]); // Base64 strings for preview
+  selectedFiles: File[] = []; // Actual files to upload
+
+  @ViewChild('videoElement') videoElement!: ElementRef<HTMLVideoElement>;
+  @ViewChild('canvasElement') canvasElement!: ElementRef<HTMLCanvasElement>;
 
   // Form
   employeeForm: FormGroup;
@@ -817,8 +830,12 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
   openFaceEnrollModal(employee: EmployeeDisplay): void {
     this.enrollingEmployee.set(employee);
     this.faceImageFile = null;
+    this.selectedFiles = [];
+    this.capturedImages.set([]);
+    this.enrollmentMode.set('upload');
     this.errorMessage.set('');
     this.showFaceEnrollModal.set(true);
+    this.getVideoDevices(); // Initialize devices
   }
 
   /**
@@ -828,17 +845,114 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
     this.showFaceEnrollModal.set(false);
     this.enrollingEmployee.set(null);
     this.faceImageFile = null;
+    this.selectedFiles = [];
+    this.capturedImages.set([]);
     this.errorMessage.set('');
+    this.stopCamera();
   }
 
-  /**
-   * Handle face image file selection
-   */
-  onFaceImageSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.faceImageFile = input.files[0];
+  // --- Camera & Enrollment Methods ---
+
+  async getVideoDevices() {
+    try {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const videoDevices = devices.filter(device => device.kind === 'videoinput');
+      this.videoDevices.set(videoDevices);
+      if (videoDevices.length > 0) {
+        this.selectedVideoDevice.set(videoDevices[0].deviceId);
+      }
+    } catch (error) {
+      console.error('Error listing devices:', error);
     }
+  }
+
+  async setEnrollmentMode(mode: 'upload' | 'camera') {
+    this.enrollmentMode.set(mode);
+    if (mode === 'camera') {
+      await this.startCamera();
+    } else {
+      this.stopCamera();
+    }
+  }
+
+  async startCamera() {
+    try {
+      this.stopCamera();
+      const constraints = {
+        video: { deviceId: this.selectedVideoDevice() ? { exact: this.selectedVideoDevice() } : undefined }
+      };
+      this.videoStream = await navigator.mediaDevices.getUserMedia(constraints);
+      // Wait for view update
+      setTimeout(() => {
+        if (this.videoElement?.nativeElement) {
+          this.videoElement.nativeElement.srcObject = this.videoStream;
+        }
+      }, 100);
+    } catch (error) {
+      console.error('Error accessing camera:', error);
+      this.errorHandler.handleApiError(error);
+    }
+  }
+
+  stopCamera() {
+    if (this.videoStream) {
+      this.videoStream.getTracks().forEach(track => track.stop());
+      this.videoStream = null;
+    }
+  }
+
+  captureImage() {
+    if (this.videoElement?.nativeElement && this.canvasElement?.nativeElement) {
+      const video = this.videoElement.nativeElement;
+      const canvas = this.canvasElement.nativeElement;
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        // Convert to Base64 for preview
+        const dataUrl = canvas.toDataURL('image/jpeg');
+        this.capturedImages.update(images => [...images, dataUrl]);
+
+        // Convert to File object for upload
+        canvas.toBlob((blob) => {
+            if (blob) {
+                const file = new File([blob], `capture-${Date.now()}.jpg`, { type: 'image/jpeg' });
+                this.selectedFiles.push(file);
+            }
+        }, 'image/jpeg');
+      }
+    }
+  }
+
+  onFaceFilesSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input && input.files && input.files.length > 0) {
+      const files = Array.from(input.files);
+
+      // Add files to selection
+      this.selectedFiles.push(...files);
+
+      // Read for preview
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const result = e.target?.result as string;
+            if (result) {
+                this.capturedImages.update(images => [...images, result]);
+            }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  }
+
+  removeImage(index: number) {
+    this.capturedImages.update(images => images.filter((_, i) => i !== index));
+    this.selectedFiles = this.selectedFiles.filter((_, i) => i !== index);
   }
 
   /**
@@ -846,15 +960,16 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
    */
   enrollFace(): void {
     const employee = this.enrollingEmployee();
-    if (!employee || !this.faceImageFile) {
-      this.errorHandler.showError('กรุณาเลือกไฟล์รูปภาพ');
+    if (!employee) return;
+
+    if (this.selectedFiles.length === 0) {
+      this.errorHandler.showError('กรุณาเลือกหรือถ่ายรูปภาพอย่างน้อย 1 รูป');
       return;
     }
 
     this.enrollingFace.set(true);
     this.errorMessage.set('');
 
-    // Use member_id from employee
     const memberId = employee.member_id;
     if (!memberId) {
       this.errorHandler.showError('ไม่พบ Member ID');
@@ -862,11 +977,14 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
       return;
     }
 
-    // Use ApiService directly for face enrollment
+    // Use FaceService to support multiple files
     this.subscribe(
-      this.apiService.upload(`/face/members/${memberId}/add-face`, this.faceImageFile!),
-      () => {
+      this.faceService.addFace(memberId, this.selectedFiles),
+      (response) => {
         this.errorHandler.showSuccess('ลงทะเบียนใบหน้าสำเร็จ');
+        if (response.message) {
+            // Optional: show server message
+        }
         this.enrollingFace.set(false);
         this.closeFaceEnrollModal();
       },
