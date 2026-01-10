@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, interval, timer, Subject, of } from 'rxjs';
 import { map, takeUntil, catchError, retry, switchMap, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+import { AuthService } from './auth.service';
 import {
   HardwareMetrics,
   MonitoringConfig,
@@ -62,6 +63,7 @@ export interface MonitoringAlert {
 })
 export class RealTimeHardwareMonitoringService implements OnDestroy {
   private http = inject(HttpClient);
+  private auth = inject(AuthService);
   private apiUrl = `${environment.apiUrl}/hardware`;
 
   private destroy$ = new Subject<void>();
@@ -95,23 +97,18 @@ export class RealTimeHardwareMonitoringService implements OnDestroy {
   // ✅ Observable compatibility layer (for backward compatibility)
   public monitoringConfigs$ = new Observable<MonitoringConfig[]>(observer => {
     observer.next(this._monitoringConfigs());
-    // Note: This is a compatibility layer - prefer using signals directly
   });
   public hardwareMetrics$ = new Observable<Map<string, HardwareMetrics>>(observer => {
     observer.next(this._hardwareMetrics());
-    // Note: This is a compatibility layer - prefer using signals directly
   });
   public monitoringDashboards$ = new Observable<MonitoringDashboard[]>(observer => {
     observer.next(Array.from(this._monitoringDashboards().values()));
-    // Note: This is a compatibility layer - prefer using signals directly
   });
   public alerts$ = new Observable<MonitoringAlert[]>(observer => {
     observer.next(this._alerts());
-    // Note: This is a compatibility layer - prefer using signals directly
   });
   public isMonitoring$ = new Observable<boolean>(observer => {
     observer.next(this._isMonitoring());
-    // Note: This is a compatibility layer - prefer using signals directly
   });
 
   constructor() {
@@ -162,10 +159,8 @@ export class RealTimeHardwareMonitoringService implements OnDestroy {
 
   // Monitoring Configuration
   getMonitoringConfigs(): Observable<MonitoringConfig[]> {
-    // Return observable for backward compatibility
     return new Observable(observer => {
       observer.next(this._monitoringConfigs());
-      // Note: This is a compatibility layer - prefer using signals directly
     });
   }
 
@@ -246,10 +241,22 @@ export class RealTimeHardwareMonitoringService implements OnDestroy {
     newMonitoringDevices.add(deviceId);
     this._monitoringDevices.set(newMonitoringDevices);
 
+    // Get company ID for API call
+    const user = this.auth.currentUser();
+    const companyId = user?.companyId ? String(user.companyId) : undefined;
+
     // Start monitoring interval
     interval(config.interval * 1000).pipe(
       takeUntil(this.destroy$),
-      switchMap(() => this.collectMetrics(deviceId)),
+      switchMap(() => {
+        if (companyId) {
+          // Use API if companyId is available
+          return this.getDeviceMetrics(deviceId, companyId);
+        } else {
+          // Fallback to local mock if no companyId
+          return this.collectMetrics(deviceId);
+        }
+      }),
       catchError(error => {
         console.error(`Error monitoring device ${deviceId}:`, error);
         return [];
@@ -294,10 +301,8 @@ export class RealTimeHardwareMonitoringService implements OnDestroy {
   }
 
   getMonitoringStatus(): Observable<boolean> {
-    // Return observable for backward compatibility
     return new Observable(observer => {
       observer.next(this._isMonitoring());
-      // Note: This is a compatibility layer - prefer using signals directly
     });
   }
 
@@ -309,48 +314,39 @@ export class RealTimeHardwareMonitoringService implements OnDestroy {
 
     return this.http.get<any>(`${this.apiUrl}/devices/${deviceId}/metrics`, { params }).pipe(
       map((response) => {
-        const metrics: HardwareMetrics = {
-          deviceId: response.deviceId,
+        // Ensure timestamp is a Date object
+        const metrics = response.metrics || response; // Adapt based on actual API response structure
+
+        const hardwareMetrics: HardwareMetrics = {
+          deviceId: response.deviceId || deviceId,
           timestamp: new Date(),
-          cpu: response.metrics.cpu,
+          cpu: metrics.cpu,
           memory: {
-            ...response.metrics.memory,
-            free: response.metrics.memory.total - response.metrics.memory.used,
-            usage: response.metrics.memory.usage
+            ...metrics.memory,
+            free: metrics.memory.free || (metrics.memory.total - metrics.memory.used),
+            usage: metrics.memory.usage
           },
           disk: {
-            ...response.metrics.disk,
-            free: response.metrics.disk.total - response.metrics.disk.used
+            ...metrics.disk,
+            free: metrics.disk.free || (metrics.disk.total - metrics.disk.used)
           },
-          network: response.metrics.network,
-          power: response.metrics.power,
-          temperature: response.metrics.temperature,
+          network: metrics.network,
+          power: metrics.power,
+          temperature: metrics.temperature,
           uptime: {
-            ...response.metrics.uptime,
-            lastReboot: new Date(response.metrics.uptime.lastReboot)
+            ...metrics.uptime,
+            lastReboot: metrics.uptime.lastReboot ? new Date(metrics.uptime.lastReboot) : new Date()
           },
-          processes: response.metrics.processes || [],
-          alerts: response.metrics.alerts || []
+          processes: metrics.processes || [],
+          alerts: metrics.alerts || []
         };
-        this.updateMetrics(deviceId, metrics);
-        return metrics;
+        this.updateMetrics(deviceId, hardwareMetrics);
+        return hardwareMetrics;
       }),
       catchError((error) => {
-        console.error('Error getting device metrics:', error);
+        console.error('Error getting device metrics, falling back to mock:', error);
         return this.collectMetrics(deviceId).pipe(
-          map(metrics => metrics || {
-            deviceId,
-            timestamp: new Date(),
-            cpu: { usage: 0, temperature: 0, cores: 0, loadAverage: [] },
-            memory: { total: 0, used: 0, free: 0, usage: 0, swap: { total: 0, used: 0, free: 0 } },
-            disk: { total: 0, used: 0, free: 0, usage: 0, readSpeed: 0, writeSpeed: 0, iops: 0 },
-            network: { interfaces: [], totalBytesIn: 0, totalBytesOut: 0, bandwidth: 0, latency: 0 },
-            power: { consumption: 0, voltage: 0, current: 0, efficiency: 0 },
-            temperature: { ambient: 0, cpu: 0, storage: 0, max: 0, min: 0 },
-            uptime: { current: 0, lastReboot: new Date(), totalUptime: 0, availability: 0 },
-            processes: [],
-            alerts: []
-          })
+          map(metrics => metrics!)
         );
       })
     );
@@ -397,7 +393,7 @@ export class RealTimeHardwareMonitoringService implements OnDestroy {
     );
   }
 
-  // Metrics Collection
+  // Metrics Collection (Fallback Mock)
   private collectMetrics(deviceId: string): Observable<HardwareMetrics | null> {
     return new Observable(observer => {
       // Simulate metrics collection (fallback)
@@ -611,10 +607,8 @@ export class RealTimeHardwareMonitoringService implements OnDestroy {
 
   // Dashboard Management
   getMonitoringDashboards(): Observable<MonitoringDashboard[]> {
-    // Return observable for backward compatibility
     return new Observable(observer => {
       observer.next(Array.from(this._monitoringDashboards().values()));
-      // Note: This is a compatibility layer - prefer using signals directly
     });
   }
 
@@ -634,19 +628,15 @@ export class RealTimeHardwareMonitoringService implements OnDestroy {
   }
 
   getAllHardwareMetrics(): Observable<Map<string, HardwareMetrics>> {
-    // Return observable for backward compatibility
     return new Observable(observer => {
       observer.next(this._hardwareMetrics());
-      // Note: This is a compatibility layer - prefer using signals directly
     });
   }
 
   // Alert Management
   getAlerts(): Observable<MonitoringAlert[]> {
-    // Return observable for backward compatibility
     return new Observable(observer => {
       observer.next(this._alerts());
-      // Note: This is a compatibility layer - prefer using signals directly
     });
   }
 
@@ -771,4 +761,3 @@ export class RealTimeHardwareMonitoringService implements OnDestroy {
     return 'alert-' + Math.random().toString(36).substr(2, 9);
   }
 }
-

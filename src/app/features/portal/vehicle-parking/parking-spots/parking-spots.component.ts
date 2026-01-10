@@ -248,8 +248,12 @@ export class ParkingSpotsComponent implements OnInit {
   deleteSpot(spot: ParkingSpace): void {
     if (!confirm('Are you sure you want to delete this parking space?')) return;
 
-    // Note: Backend may not have delete endpoint for parking spaces
-    console.warn('Delete not implemented in backend');
+    this.parkingService.deleteParkingSpace(spot.space_id).subscribe({
+      next: () => {
+        this.loadParkingSpots();
+      },
+      error: (error) => console.error('Error deleting parking space:', error)
+    });
   }
 
   closeModal(): void {

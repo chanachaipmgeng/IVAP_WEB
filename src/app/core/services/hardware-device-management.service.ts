@@ -1,6 +1,8 @@
-import { Injectable, signal, computed } from '@angular/core';
-import { Observable, throwError, timer } from 'rxjs';
-import { map, catchError, retry } from 'rxjs/operators';
+import { Injectable, signal, computed, inject } from '@angular/core';
+import { Observable, throwError, timer, of } from 'rxjs';
+import { map, catchError, retry, tap } from 'rxjs/operators';
+import { ApiService } from './api.service';
+import { AuthService } from './auth.service';
 
 export interface HardwareDevice {
   id: string;
@@ -251,6 +253,9 @@ export interface DeviceAlert {
   providedIn: 'root'
 })
 export class HardwareDeviceManagementService {
+  private api = inject(ApiService);
+  private auth = inject(AuthService);
+
   // ✅ Signals for reactive state
   private _devices = signal<HardwareDevice[]>([]);
   private _deviceGroups = signal<DeviceGroup[]>([]);
@@ -272,71 +277,37 @@ export class HardwareDeviceManagementService {
   public readonly activeAlertsCount = computed(() => this._alerts().filter(a => !a.acknowledged && !a.resolved).length);
 
   constructor() {
-    this.initializeDevices();
+    this.loadDevices();
   }
 
-  private initializeDevices(): void {
-    const initialDevices: HardwareDevice[] = [
-      {
-        id: 'dev-001',
-        name: 'Main Entrance Camera',
-        type: 'camera',
-        brand: 'Hikvision',
-        model: 'DS-2CD2143G0-I',
-        serialNumber: 'DS-2CD2143G0-I-20240101',
-        macAddress: '00:11:22:33:44:55',
-        ipAddress: '192.168.1.100',
-        port: 80,
-        protocol: 'rtsp',
-        status: 'online',
-        health: 'excellent',
-        firmware: {
-          version: '5.7.3',
-          build: 'build-20231215',
-          releaseDate: new Date('2023-12-15'),
-          updateAvailable: false
-        },
-        capabilities: this.getDefaultCapabilities('camera'),
-        configuration: this.getDefaultConfiguration('camera'),
-        location: {
-          building: 'Main Building',
-          floor: 'Ground Floor',
-          room: 'Entrance',
-          coordinates: { x: 100, y: 200, z: 0 }
-        },
-        network: {
-          vlan: 'VLAN-100',
-          subnet: '192.168.1.0/24',
-          gateway: '192.168.1.1',
-          dns: ['8.8.8.8', '8.8.4.4'],
-          bandwidth: 1000,
-          latency: 5
-        },
-        power: {
-          consumption: 12,
-          voltage: 12,
-          current: 1,
-          efficiency: 0.85
-        },
-        temperature: {
-          current: 35,
-          min: 20,
-          max: 60,
-          threshold: 55
-        },
-        uptime: {
-          current: 86400 * 30, // 30 days
-          lastReboot: new Date(Date.now() - 86400 * 30),
-          totalUptime: 86400 * 365 // 1 year
-        },
-        lastSeen: new Date(),
-        createdAt: new Date('2024-01-01'),
-        updatedAt: new Date(),
-        metadata: {}
-      }
-    ];
+  // Helper to get company ID
+  private getCompanyId(): string {
+    const user = this.auth.currentUser();
+    return user?.companyId ? String(user.companyId) : '';
+  }
 
-    this._devices.set(initialDevices);
+  /**
+   * Load all devices for the current company from API
+   */
+  loadDevices(): void {
+    const companyId = this.getCompanyId();
+    if (!companyId) return;
+
+    // Call API GET /company/{companyId}/devices
+    // Using ApiService which handles the base URL
+    this.api.get<any>(`/company/${companyId}/devices`, { page: 1, size: 1000 }).pipe(
+      map(response => {
+        // Handle paginated response
+        const items = response.items || response.data || [];
+        return items.map((item: any) => this.mapDeviceFromApi(item));
+      }),
+      catchError(error => {
+        console.error('Error loading devices:', error);
+        return of([]);
+      })
+    ).subscribe(devices => {
+      this._devices.set(devices);
+    });
   }
 
   // Device Management
@@ -353,63 +324,53 @@ export class HardwareDeviceManagementService {
   }
 
   addDevice(device: Omit<HardwareDevice, 'id' | 'createdAt' | 'updatedAt' | 'lastSeen'>): Observable<HardwareDevice> {
-    const newDevice: HardwareDevice = {
-      ...device,
-      id: this.generateId(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      lastSeen: new Date()
-    };
+    const companyId = this.getCompanyId();
+    if (!companyId) return throwError(() => new Error('No company ID'));
 
-    this._devices.update(devices => [...devices, newDevice]);
-
-    return new Observable(observer => {
-      observer.next(newDevice);
-      observer.complete();
-    });
+    return this.api.post<any>(`/company/${companyId}/devices`, device).pipe(
+      map(response => this.mapDeviceFromApi(response)),
+      tap(newDevice => {
+        this._devices.update(devices => [...devices, newDevice]);
+      })
+    );
   }
 
   updateDevice(id: string, updates: Partial<HardwareDevice>): Observable<HardwareDevice> {
-    this._devices.update(devices => {
-      const index = devices.findIndex(device => device.id === id);
-      if (index === -1) return devices;
+    const companyId = this.getCompanyId();
+    if (!companyId) return throwError(() => new Error('No company ID'));
 
-      devices[index] = {
-        ...devices[index],
-        ...updates,
-        updatedAt: new Date()
-      };
-      return [...devices];
-    });
-
-    const updatedDevice = this._devices().find(d => d.id === id);
-    if (!updatedDevice) {
-      return throwError(() => new Error('Device not found'));
-    }
-
-    return new Observable(observer => {
-      observer.next(updatedDevice);
-      observer.complete();
-    });
+    // Backend route: PUT /company/{companyId}/devices/{deviceId}
+    return this.api.put<any>(`/company/${companyId}/devices/${id}`, updates).pipe(
+      map(response => this.mapDeviceFromApi(response)),
+      tap(updatedDevice => {
+        this._devices.update(devices => {
+          const index = devices.findIndex(d => d.id === id);
+          if (index !== -1) {
+            devices[index] = updatedDevice;
+            return [...devices];
+          }
+          return devices;
+        });
+      })
+    );
   }
 
   removeDevice(id: string): Observable<boolean> {
-    let removed = false;
-    this._devices.update(devices => {
-      const beforeLength = devices.length;
-      const filtered = devices.filter(device => device.id !== id);
-      removed = filtered.length < beforeLength;
-      return filtered;
-    });
+    const companyId = this.getCompanyId();
+    if (!companyId) return throwError(() => new Error('No company ID'));
 
-    return new Observable(observer => {
-      observer.next(true);
-      observer.complete();
-    });
+    // Backend route: DELETE /company/{companyId}/devices/{deviceId}
+    return this.api.delete<void>(`/company/${companyId}/devices/${id}`).pipe(
+      map(() => true),
+      tap(() => {
+        this._devices.update(devices => devices.filter(d => d.id !== id));
+      })
+    );
   }
 
   // Device Discovery
   scanForDevices(networkRange: string): Observable<HardwareDevice[]> {
+    // Mock implementation for now as backend scanning is complex/not implemented
     this._isScanning.set(true);
     this._scanProgress.set(0);
 
@@ -503,50 +464,30 @@ export class HardwareDeviceManagementService {
 
   // Device Configuration
   updateDeviceConfiguration(deviceId: string, config: Partial<DeviceConfiguration>): Observable<boolean> {
-    this._devices.update(devices => {
-      const index = devices.findIndex(device => device.id === deviceId);
-      if (index === -1) return devices;
-
-      devices[index].configuration = { ...devices[index].configuration, ...config };
-      devices[index].updatedAt = new Date();
-      return [...devices];
-    });
-
-    const device = this._devices().find(d => d.id === deviceId);
-    if (!device) {
-      return throwError(() => new Error('Device not found'));
-    }
-
-    return new Observable(observer => {
-      // Simulate configuration update
-      timer(1000).subscribe(() => {
-        observer.next(true);
-        observer.complete();
-      });
-    });
+    // Backend route: PUT /{deviceId}/config
+    return this.api.put<any>(`/${deviceId}/config`, config).pipe(
+      map(() => true),
+      tap(() => {
+        this._devices.update(devices => {
+          const index = devices.findIndex(d => d.id === deviceId);
+          if (index !== -1) {
+            devices[index].configuration = { ...devices[index].configuration, ...config };
+            devices[index].updatedAt = new Date();
+            return [...devices];
+          }
+          return devices;
+        });
+      })
+    );
   }
 
   resetDeviceConfiguration(deviceId: string): Observable<boolean> {
-    this._devices.update(devices => {
-      const index = devices.findIndex(device => device.id === deviceId);
-      if (index === -1) return devices;
-
-      devices[index].configuration = this.getDefaultConfiguration(devices[index].type);
-      devices[index].updatedAt = new Date();
-      return [...devices];
-    });
-
     const device = this._devices().find(d => d.id === deviceId);
-    if (!device) {
-      return throwError(() => new Error('Device not found'));
-    }
+    if (!device) return throwError(() => new Error('Device not found'));
 
-    return new Observable(observer => {
-      timer(2000).subscribe(() => {
-        observer.next(true);
-        observer.complete();
-      });
-    });
+    const defaultConfig = this.getDefaultConfiguration(device.type);
+
+    return this.updateDeviceConfiguration(deviceId, defaultConfig);
   }
 
   // Device Groups
@@ -554,7 +495,6 @@ export class HardwareDeviceManagementService {
     // Return observable for backward compatibility
     return new Observable(observer => {
       observer.next(this._deviceGroups());
-      // Note: This is a compatibility layer - prefer using signals directly
     });
   }
 
@@ -634,10 +574,8 @@ export class HardwareDeviceManagementService {
 
   // Device Alerts
   getAlerts(): Observable<DeviceAlert[]> {
-    // Return observable for backward compatibility
     return new Observable(observer => {
       observer.next(this._alerts());
-      // Note: This is a compatibility layer - prefer using signals directly
     });
   }
 
@@ -678,6 +616,24 @@ export class HardwareDeviceManagementService {
   // Utility Methods
   private generateId(): string {
     return 'dev-' + Math.random().toString(36).substr(2, 9);
+  }
+
+  private mapDeviceFromApi(item: any): HardwareDevice {
+    // Map API response to frontend model if needed
+    // Assuming backend returns matching structure or we default missing fields
+    return {
+        ...item,
+        lastSeen: item.lastSeen ? new Date(item.lastSeen) : new Date(),
+        createdAt: item.createdAt ? new Date(item.createdAt) : new Date(),
+        updatedAt: item.updatedAt ? new Date(item.updatedAt) : new Date(),
+        configuration: item.configuration || this.getDefaultConfiguration(item.type || 'camera'),
+        capabilities: item.capabilities || this.getDefaultCapabilities(item.type || 'camera'),
+        location: item.location || { building: '', floor: '', room: '' },
+        network: item.network || { vlan: '', subnet: '', gateway: '', dns: [], bandwidth: 0, latency: 0 },
+        power: item.power || { consumption: 0, voltage: 0, current: 0, efficiency: 0 },
+        temperature: item.temperature || { current: 0, min: 0, max: 0, threshold: 0 },
+        uptime: item.uptime || { current: 0, lastReboot: new Date(), totalUptime: 0 }
+    };
   }
 
   private getDefaultCapabilities(type: string): DeviceCapabilities {
@@ -813,4 +769,3 @@ export class HardwareDeviceManagementService {
     };
   }
 }
-

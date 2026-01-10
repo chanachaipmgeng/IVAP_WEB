@@ -25,13 +25,16 @@ import { I18nService } from '../../../../core/services/i18n.service';
  * Analytics task interface
  */
 interface AnalyticsTask {
-  id: number;
+  id: string; // Changed to string as backend uses UUID
   name: string;
   type: string;
-  cameraId: number;
+  cameraId: string; // Changed to string as backend uses UUID
   cameraName: string;
   status: 'active' | 'paused' | 'stopped';
   createdAt: string;
+  confidence_threshold?: number;
+  description?: string;
+  algorithm_type?: string;
 }
 
 @Component({
@@ -51,12 +54,22 @@ interface AnalyticsTask {
 export class VideoAnalyticsComponent implements OnInit {
   tasks = signal<AnalyticsTask[]>([]);
   showModal = signal(false);
+  showConfigModal = signal(false);
   saving = signal(false);
+  savingConfig = signal(false);
+  selectedTask = signal<AnalyticsTask | null>(null);
 
   formData: any = {
     name: '',
     type: 'face_recognition',
     cameraId: null
+  };
+
+  configData: any = {
+    name: '',
+    description: '',
+    confidence_threshold: 0.5,
+    status: 'active'
   };
 
   analyticsTypes = [
@@ -185,8 +198,39 @@ export class VideoAnalyticsComponent implements OnInit {
   }
 
   configureTask(task: AnalyticsTask): void {
-    // Task configuration functionality
-    alert('Task configuration coming soon!');
+    this.selectedTask.set(task);
+    this.configData = {
+      name: task.name,
+      description: task.description || '',
+      confidence_threshold: task.confidence_threshold || 0.5,
+      status: task.status
+    };
+    this.showConfigModal.set(true);
+  }
+
+  closeConfigModal(): void {
+    this.showConfigModal.set(false);
+    this.selectedTask.set(null);
+  }
+
+  saveConfiguration(): void {
+    const task = this.selectedTask();
+    if (!task) return;
+
+    this.savingConfig.set(true);
+
+    // Call update API
+    this.api.put(`/video-analytics/analytics-tasks/${task.id}`, this.configData).subscribe({
+      next: () => {
+        this.savingConfig.set(false);
+        this.closeConfigModal();
+        this.loadTasks();
+      },
+      error: (error) => {
+        console.error('Error updating task configuration:', error);
+        this.savingConfig.set(false);
+      }
+    });
   }
 
   deleteTask(task: AnalyticsTask): void {
@@ -207,4 +251,3 @@ export class VideoAnalyticsComponent implements OnInit {
     return this.i18n.translate(key);
   }
 }
-

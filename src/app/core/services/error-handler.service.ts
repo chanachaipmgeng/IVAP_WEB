@@ -1,5 +1,6 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import { extractErrorMessage } from '../utils/response-handler';
+import { ToastrService } from 'ngx-toastr';
 
 export interface ErrorMessage {
   id: string;
@@ -16,6 +17,7 @@ export interface ErrorMessage {
   providedIn: 'root'
 })
 export class ErrorHandlerService {
+  private toastr = inject(ToastrService);
   private errors = signal<ErrorMessage[]>([]);
   public errors$ = this.errors.asReadonly();
 
@@ -23,6 +25,7 @@ export class ErrorHandlerService {
    * Show error message
    */
   showError(message: string, duration: number = 5000, action?: { label: string; handler: () => void }): string {
+    this.toastr.error(message, 'เกิดข้อผิดพลาด', { timeOut: duration });
     return this.addMessage({
       id: this.generateId(),
       message,
@@ -36,6 +39,7 @@ export class ErrorHandlerService {
    * Show warning message
    */
   showWarning(message: string, duration: number = 4000, action?: { label: string; handler: () => void }): string {
+    this.toastr.warning(message, 'แจ้งเตือน', { timeOut: duration });
     return this.addMessage({
       id: this.generateId(),
       message,
@@ -49,6 +53,7 @@ export class ErrorHandlerService {
    * Show info message
    */
   showInfo(message: string, duration: number = 3000, action?: { label: string; handler: () => void }): string {
+    this.toastr.info(message, 'ข้อมูล', { timeOut: duration });
     return this.addMessage({
       id: this.generateId(),
       message,
@@ -62,6 +67,7 @@ export class ErrorHandlerService {
    * Show success message
    */
   showSuccess(message: string, duration: number = 3000, action?: { label: string; handler: () => void }): string {
+    this.toastr.success(message, 'สำเร็จ', { timeOut: duration });
     return this.addMessage({
       id: this.generateId(),
       message,

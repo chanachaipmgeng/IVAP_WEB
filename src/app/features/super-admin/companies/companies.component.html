@@ -1,6 +1,6 @@
 <app-page-layout
-  [title]="'pages.companies.title' | translate"
-  [description]="'pages.companies.description' | translate"
+  title="จัดการบริษัท"
+  description="จัดการข้อมูลบริษัทและตั้งค่าระบบ"
   icon="🏢"
   [actions]="pageActions()">
 
@@ -9,7 +9,7 @@
     <div class="glass-card p-4">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm text-gray-600 dark:text-gray-400">{{ 'pages.companies.totalCompanies' | translate }}</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400">บริษัททั้งหมด</p>
           <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ totalRecords() }}</p>
         </div>
         <div class="text-3xl">🏢</div>
@@ -18,7 +18,7 @@
     <div class="glass-card p-4">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm text-gray-600 dark:text-gray-400">{{ 'pages.companies.activeCompanies' | translate }}</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400">ใช้งานปกติ</p>
           <p class="text-2xl font-bold text-green-600">{{ activeCompaniesCount() }}</p>
         </div>
         <div class="text-3xl">✅</div>
@@ -27,7 +27,7 @@
     <div class="glass-card p-4">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm text-gray-600 dark:text-gray-400">{{ 'pages.companies.pendingCompanies' | translate }}</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400">รออนุมัติ</p>
           <p class="text-2xl font-bold text-yellow-600">{{ pendingCompaniesCount() }}</p>
         </div>
         <div class="text-3xl">⏳</div>
@@ -36,7 +36,7 @@
     <div class="glass-card p-4">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm text-gray-600 dark:text-gray-400">{{ 'pages.companies.thisPage' | translate }}</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400">หน้านี้</p>
           <p class="text-2xl font-bold text-blue-600">{{ companies().length }}</p>
         </div>
         <div class="text-3xl">📄</div>
@@ -53,11 +53,11 @@
 
   <!-- Bulk Actions Toolbar -->
   @if (selectedCompanies().length > 0) {
-    <div class="glass-card p-4 mb-4" role="toolbar" [attr.aria-label]="'pages.companies.bulkActions' | translate">
+    <div class="glass-card p-4 mb-4" role="toolbar" aria-label="การจัดการแบบกลุ่ม">
       <div class="flex items-center justify-between mb-2">
         <div class="flex items-center gap-4">
           <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
-            {{ 'pages.companies.selectedCount' | translate }}: <strong>{{ selectedCompanies().length }}</strong>
+            เลือกแล้ว: <strong>{{ selectedCompanies().length }}</strong>
           </span>
           <div class="flex gap-2">
             <app-glass-button
@@ -65,24 +65,24 @@
               size="sm"
               (clicked)="bulkActivate()"
               [disabled]="bulkOperationInProgress()"
-              [attr.aria-label]="'pages.companies.bulkActivate' | translate">
-              {{ 'pages.companies.bulkActivate' | translate }}
+              aria-label="เปิดใช้งาน">
+              เปิดใช้งาน
             </app-glass-button>
             <app-glass-button
               variant="secondary"
               size="sm"
               (clicked)="bulkDeactivate()"
               [disabled]="bulkOperationInProgress()"
-              [attr.aria-label]="'pages.companies.bulkDeactivate' | translate">
-              {{ 'pages.companies.bulkDeactivate' | translate }}
+              aria-label="ปิดใช้งาน">
+              ปิดใช้งาน
             </app-glass-button>
             <app-glass-button
               variant="danger"
               size="sm"
               (clicked)="bulkDelete()"
               [disabled]="bulkOperationInProgress()"
-              [attr.aria-label]="'pages.companies.bulkDelete' | translate">
-              {{ 'pages.companies.bulkDelete' | translate }}
+              aria-label="ลบ">
+              ลบ
             </app-glass-button>
           </div>
         </div>
@@ -91,8 +91,8 @@
           size="sm"
           (clicked)="clearSelection()"
           [disabled]="bulkOperationInProgress()"
-          [attr.aria-label]="'pages.companies.clearSelection' | translate">
-          {{ 'pages.companies.clearSelection' | translate }}
+          aria-label="ล้างการเลือก">
+          ล้างการเลือก
         </app-glass-button>
       </div>
       <!-- Bulk Operation Progress Bar -->
@@ -106,11 +106,11 @@
               [attr.aria-valuemin]="0"
               [attr.aria-valuemax]="100"
               role="progressbar"
-              [attr.aria-label]="'pages.companies.processing' | translate"
+              aria-label="กำลังดำเนินการ"
             ></div>
           </div>
           <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-            {{ bulkOperationProgress() }}% {{ 'pages.companies.processing' | translate }}
+            {{ bulkOperationProgress() }}% กำลังดำเนินการ
           </p>
         </div>
       }
@@ -127,14 +127,14 @@
     [loading]="loading()"
     [enableColumnFilters]="true"
     [enableMultiSort]="true"
-    [emptyText]="'pages.companies.noCompanies' | translate"
-    [emptyIcon]="'🏢'"
+    emptyText="ไม่พบข้อมูลบริษัท"
+    emptyIcon="🏢"
     (sorted)="onSort($event)"
     (selectionChange)="onSelectionChange($event)"
     (filterChange)="onColumnFilterChange($event)">
     <div actions>
       <app-glass-button variant="secondary" (clicked)="exportCompanies()">
-        {{ 'pages.companies.export' | translate }}
+        ส่งออกข้อมูล
       </app-glass-button>
     </div>
   </app-data-table>
@@ -142,15 +142,15 @@
   <!-- Pagination Controls -->
   <div class="flex items-center justify-between mt-4 text-gray-600 dark:text-gray-400">
     <div class="text-sm">
-      {{ 'pages.companies.showing' | translate }} {{ (currentPage() - 1) * pageSize() + 1 }} - {{ currentPage() * pageSize() > totalRecords() ? totalRecords() : currentPage() * pageSize() }} {{ 'pages.companies.of' | translate }} {{ totalRecords() }} {{ 'pages.companies.records' | translate }}
+      แสดง {{ (currentPage() - 1) * pageSize() + 1 }} - {{ currentPage() * pageSize() > totalRecords() ? totalRecords() : currentPage() * pageSize() }} จาก {{ totalRecords() }} รายการ
     </div>
     <div class="flex items-center gap-2">
       <app-glass-button [disabled]="currentPage() === 1" (clicked)="onPageChange(currentPage() - 1)">
-        {{ 'pages.companies.previous' | translate }}
+        ก่อนหน้า
       </app-glass-button>
-      <span class="font-semibold">{{ 'pages.companies.page' | translate }} {{ currentPage() }} {{ 'pages.companies.of' | translate }} {{ totalPages() }}</span>
+      <span class="font-semibold">หน้า {{ currentPage() }} จาก {{ totalPages() }}</span>
       <app-glass-button [disabled]="currentPage() === totalPages()" (clicked)="onPageChange(currentPage() + 1)">
-        {{ 'pages.companies.next' | translate }}
+        ถัดไป
       </app-glass-button>
     </div>
   </div>
@@ -158,7 +158,7 @@
   <!-- Add/Edit Company Modal -->
   <app-modal
     [isOpen]="showModal()"
-    [title]="(editingCompany() ? ('pages.companies.editCompany' | translate) : ('pages.companies.addCompany' | translate))"
+    [title]="(editingCompany() ? 'แก้ไขข้อมูลบริษัท' : 'เพิ่มบริษัทใหม่')"
     [loading]="saving()"
     [config]="{ size: 'xl', scrollable: true, centered: true, animation: true }"
     (closed)="closeModal()"
@@ -167,30 +167,30 @@
       <!-- Basic Information Section -->
       <div class="form-section">
         <h3 class="form-section-title">
-          {{ 'pages.companies.basicInformation' | translate }}
+          ข้อมูลพื้นฐาน
         </h3>
         <div class="form-grid">
           <!-- Company Name - Full Width -->
           <div class="form-group form-group-full">
             <label class="form-label">
-              {{ 'pages.companies.companyName' | translate }}
+              ชื่อบริษัท
               <span class="required-indicator">*</span>
             </label>
             <input
               [(ngModel)]="formData.company_name"
               type="text"
               class="glass-input w-full"
-              [placeholder]="'pages.companies.companyNamePlaceholder' | translate"
+              placeholder="ระบุชื่อบริษัท"
               required
-              [attr.aria-label]="'pages.companies.companyName' | translate"
-              [attr.aria-required]="true"
+              aria-label="ชื่อบริษัท"
+              aria-required="true"
             />
           </div>
 
           <!-- Company Logo - Full Width -->
           <div class="form-group form-group-full">
             <label class="form-label">
-              {{ 'pages.companies.companyLogo' | translate }}
+              โลโก้บริษัท
             </label>
             <div class="flex items-center gap-4">
               <div class="relative w-24 h-24 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 flex items-center justify-center">
@@ -218,7 +218,7 @@
                     file:bg-blue-50 file:text-blue-700
                     hover:file:bg-blue-100
                     dark:file:bg-blue-900/30 dark:file:text-blue-400"
-                  [attr.aria-label]="'pages.companies.companyLogo' | translate"
+                  aria-label="โลโก้บริษัท"
                   [disabled]="uploadingImage()"
                 />
                 <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
@@ -238,7 +238,7 @@
                       ></div>
                     </div>
                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                      {{ uploadProgress() }}% {{ 'pages.companies.uploading' | translate }}
+                      {{ uploadProgress() }}% กำลังอัปโหลด
                     </p>
                   </div>
                 }
@@ -249,64 +249,64 @@
           <!-- Company Code and Owner Name - Two Columns -->
           <div class="form-group">
             <label class="form-label">
-              {{ 'pages.companies.companyCode' | translate }}
+              รหัสบริษัท
               <span class="required-indicator">*</span>
             </label>
             <input
               [(ngModel)]="formData.company_code"
               type="text"
               class="glass-input w-full"
-              [placeholder]="'pages.companies.companyCodePlaceholder' | translate"
+              placeholder="ระบุรหัสบริษัท"
               required
-              [attr.aria-label]="'pages.companies.companyCode' | translate"
-              [attr.aria-required]="true"
+              aria-label="รหัสบริษัท"
+              aria-required="true"
             />
           </div>
 
           <div class="form-group">
             <label class="form-label">
-              {{ 'pages.companies.ownerName' | translate }}
+              ชื่อผู้ดูแล
               <span class="required-indicator">*</span>
             </label>
             <input
               [(ngModel)]="formData.owner_name"
               type="text"
               class="glass-input w-full"
-              [placeholder]="'pages.companies.ownerNamePlaceholder' | translate"
+              placeholder="ระบุชื่อผู้ดูแล"
               required
-              [attr.aria-label]="'pages.companies.ownerName' | translate"
-              [attr.aria-required]="true"
+              aria-label="ชื่อผู้ดูแล"
+              aria-required="true"
             />
           </div>
 
           <!-- Contact - Full Width -->
           <div class="form-group form-group-full">
             <label class="form-label">
-              {{ 'pages.companies.contact' | translate }}
+              เบอร์โทรศัพท์
               <span class="required-indicator">*</span>
             </label>
             <input
               [(ngModel)]="formData.contact"
               type="text"
               class="glass-input w-full"
-              [placeholder]="'pages.companies.contactPlaceholder' | translate"
+              placeholder="ระบุเบอร์โทรศัพท์"
               required
-              [attr.aria-label]="'pages.companies.contact' | translate"
-              [attr.aria-required]="true"
+              aria-label="เบอร์โทรศัพท์"
+              aria-required="true"
             />
-            <p class="form-hint">{{ 'pages.companies.contactHint' | translate }}</p>
+            <p class="form-hint">เบอร์โทรศัพท์สำหรับติดต่อ</p>
           </div>
 
           <!-- Description - Full Width -->
           <div class="form-group form-group-full">
             <label class="form-label">
-              {{ 'pages.companies.description' | translate }}
+              รายละเอียดเพิ่มเติม
             </label>
             <textarea
               [(ngModel)]="formData.company_info"
               class="glass-input w-full"
               rows="3"
-              [placeholder]="'pages.companies.descriptionPlaceholder' | translate"
+              placeholder="ระบุรายละเอียดเพิ่มเติม"
             ></textarea>
           </div>
         </div>
@@ -315,20 +315,20 @@
       <!-- Location Information Section -->
       <div class="form-section">
         <h3 class="form-section-title">
-          {{ 'pages.companies.locationInformation' | translate }}
+          ข้อมูลที่ตั้ง
         </h3>
         <div class="form-grid">
           <!-- Address - Full Width -->
           <div class="form-group form-group-full">
             <label class="form-label">
-              {{ 'pages.companies.address' | translate }}
+              ที่อยู่
               <span class="required-indicator">*</span>
             </label>
             <textarea
               [(ngModel)]="formData.address"
               class="glass-input w-full"
               rows="2"
-              [placeholder]="'pages.companies.addressPlaceholder' | translate"
+              placeholder="ระบุที่อยู่"
               required
             ></textarea>
           </div>
@@ -336,7 +336,7 @@
           <!-- Latitude and Longitude - Two Columns -->
           <div class="form-group">
             <label class="form-label">
-              {{ 'pages.companies.latitude' | translate }}
+              ละติจูด
               <span class="required-indicator">*</span>
             </label>
             <input
@@ -346,21 +346,19 @@
               min="-90"
               max="90"
               class="glass-input w-full"
-              [placeholder]="'pages.companies.latitudePlaceholder' | translate"
-              [attr.aria-label]="'pages.companies.latitude' | translate"
-              [attr.aria-required]="true"
-              [attr.aria-describedby]="'latitude-hint'"
+              placeholder="ระบุละติจูด"
+              aria-label="ละติจูด"
+              aria-required="true"
+              aria-describedby="latitude-hint"
             />
             <p id="latitude-hint" class="form-hint text-xs text-gray-500 dark:text-gray-400 mt-1">
-              {{ 'pages.companies.latitudeHint' | translate }} (-90 to 90)
+              พิกัดละติจูด (-90 ถึง 90)
             </p>
-              required
-            />
           </div>
 
           <div class="form-group">
             <label class="form-label">
-              {{ 'pages.companies.longitude' | translate }}
+              ลองจิจูด
               <span class="required-indicator">*</span>
             </label>
             <input
@@ -370,14 +368,14 @@
               min="-180"
               max="180"
               class="glass-input w-full"
-              [placeholder]="'pages.companies.longitudePlaceholder' | translate"
+              placeholder="ระบุลองจิจูด"
               required
-              [attr.aria-label]="'pages.companies.longitude' | translate"
-              [attr.aria-required]="true"
-              [attr.aria-describedby]="'longitude-hint'"
+              aria-label="ลองจิจูด"
+              aria-required="true"
+              aria-describedby="longitude-hint"
             />
             <p id="longitude-hint" class="form-hint text-xs text-gray-500 dark:text-gray-400 mt-1">
-              {{ 'pages.companies.longitudeHint' | translate }} (-180 to 180)
+              พิกัดลองจิจูด (-180 ถึง 180)
             </p>
           </div>
         </div>
@@ -386,17 +384,17 @@
       <!-- Status Section -->
       <div class="form-section">
         <h3 class="form-section-title">
-          {{ 'pages.companies.statusInformation' | translate }}
+          ข้อมูลสถานะ
         </h3>
         <div class="form-grid">
           <!-- Status - Full Width -->
           <div class="form-group form-group-full">
             <label class="form-label">
-              {{ 'pages.companies.status' | translate }}
+              สถานะ
             </label>
             <select [(ngModel)]="formData.status" class="glass-input w-full">
-              <option value="pending">{{ 'pages.companies.pending' | translate }}</option>
-              <option value="public">{{ 'pages.companies.public' | translate }}</option>
+              <option value="pending">รออนุมัติ</option>
+              <option value="public">ใช้งานปกติ</option>
             </select>
           </div>
         </div>
@@ -404,10 +402,10 @@
     </div>
     <div slot="footer" class="modal-footer-actions">
       <app-glass-button variant="secondary" (clicked)="closeModal()">
-        {{ 'common.cancel' | translate }}
+        ยกเลิก
       </app-glass-button>
       <app-glass-button variant="primary" [loading]="saving()" (clicked)="saveCompany()">
-        {{ 'common.save' | translate }}
+        บันทึก
       </app-glass-button>
     </div>
   </app-modal>
@@ -424,57 +422,57 @@
       <!-- Subscription & Limits Section -->
       <div class="form-section">
         <h3 class="form-section-title">
-          {{ 'pages.companies.subscriptionAndLimits' | translate }}
+          การสมัครสมาชิกและขีดจำกัด
         </h3>
         <div class="form-grid">
           <div class="form-group">
             <label class="form-label">
-              {{ 'pages.companies.subscriptionType' | translate }}
+              ประเภทสมาชิก
             </label>
             <select [(ngModel)]="settings.subscription_type" class="glass-input w-full">
-              <option value="trial">{{ 'pages.companies.trial' | translate }}</option>
-              <option value="basic">{{ 'pages.companies.basic' | translate }}</option>
-              <option value="premium">{{ 'pages.companies.premium' | translate }}</option>
-              <option value="enterprise">{{ 'pages.companies.enterprise' | translate }}</option>
+              <option value="trial">ทดลองใช้</option>
+              <option value="basic">พื้นฐาน</option>
+              <option value="premium">พรีเมียม</option>
+              <option value="enterprise">องค์กร</option>
             </select>
           </div>
 
           <div class="form-group">
             <label class="form-label">
-              {{ 'pages.companies.maxUsers' | translate }}
+              จำนวนผู้ใช้สูงสุด
             </label>
             <input
               [(ngModel)]="settings.max_users"
               type="number"
               min="0"
               class="glass-input w-full"
-              [placeholder]="'pages.companies.maxUsersPlaceholder' | translate"
+              placeholder="ระบุจำนวนผู้ใช้สูงสุด"
             />
           </div>
 
           <div class="form-group">
             <label class="form-label">
-              {{ 'pages.companies.maxDevices' | translate }}
+              จำนวนอุปกรณ์สูงสุด
             </label>
             <input
               [(ngModel)]="settings.max_devices"
               type="number"
               min="0"
               class="glass-input w-full"
-              [placeholder]="'pages.companies.maxDevicesPlaceholder' | translate"
+              placeholder="ระบุจำนวนอุปกรณ์สูงสุด"
             />
           </div>
 
           <div class="form-group">
             <label class="form-label">
-              {{ 'pages.companies.maxStorageGb' | translate }}
+              พื้นที่จัดเก็บสูงสุด (GB)
             </label>
             <input
               [(ngModel)]="settings.max_storage_gb"
               type="number"
               min="0"
               class="glass-input w-full"
-              [placeholder]="'pages.companies.maxStorageGbPlaceholder' | translate"
+              placeholder="ระบุพื้นที่จัดเก็บสูงสุด"
             />
           </div>
         </div>
@@ -483,12 +481,12 @@
       <!-- Features Section -->
       <div class="form-section">
         <h3 class="form-section-title">
-          {{ 'pages.companies.features' | translate }}
+          ฟีเจอร์ที่ใช้งานได้
         </h3>
         <div class="form-grid">
           <div class="form-group form-group-full">
             <label class="form-label">
-              {{ 'pages.companies.enabledFeatures' | translate }}
+              เลือกฟีเจอร์
             </label>
             <div class="flex flex-wrap gap-2">
               @for (feature of availableFeatures; track feature) {
@@ -510,12 +508,12 @@
       <!-- General Settings Section -->
       <div class="form-section">
         <h3 class="form-section-title">
-          {{ 'pages.companies.generalSettings' | translate }}
+          ตั้งค่าทั่วไป
         </h3>
         <div class="form-grid">
           <div class="form-group">
             <label class="form-label">
-              {{ 'pages.companies.timezone' | translate }}
+              เขตเวลา
             </label>
             <select [ngModel]="getTimezone()" (ngModelChange)="setTimezone($event)" class="glass-input w-full">
               <option value="UTC">UTC</option>
@@ -527,7 +525,7 @@
 
           <div class="form-group">
             <label class="form-label">
-              {{ 'pages.companies.language' | translate }}
+              ภาษา
             </label>
             <select [ngModel]="getLanguage()" (ngModelChange)="setLanguage($event)" class="glass-input w-full">
               <option value="en">English</option>
@@ -537,7 +535,7 @@
 
           <div class="form-group">
             <label class="form-label">
-              {{ 'pages.companies.dateFormat' | translate }}
+              รูปแบบวันที่
             </label>
             <select [ngModel]="getDateFormat()" (ngModelChange)="setDateFormat($event)" class="glass-input w-full">
               <option value="YYYY-MM-DD">YYYY-MM-DD</option>
@@ -548,7 +546,7 @@
 
           <div class="form-group">
             <label class="form-label">
-              {{ 'pages.companies.timeFormat' | translate }}
+              รูปแบบเวลา
             </label>
             <select [ngModel]="getTimeFormat()" (ngModelChange)="setTimeFormat($event)" class="glass-input w-full">
               <option value="24h">24 Hour</option>
@@ -561,7 +559,7 @@
       <!-- Notification Settings Section -->
       <div class="form-section">
         <h3 class="form-section-title">
-          {{ 'pages.companies.notificationSettings' | translate }}
+          ตั้งค่าการแจ้งเตือน
         </h3>
         <div class="form-grid">
           <div class="form-group form-group-full">
@@ -573,7 +571,7 @@
                   (change)="setNotificationField('email', $any($event.target).checked)"
                   class="glass-checkbox"
                 />
-                <span>{{ 'pages.companies.emailNotifications' | translate }}</span>
+                <span>แจ้งเตือนทางอีเมล</span>
               </label>
               <label class="flex items-center gap-2 cursor-pointer">
                 <input
@@ -582,7 +580,7 @@
                   (change)="setNotificationField('sms', $any($event.target).checked)"
                   class="glass-checkbox"
                 />
-                <span>{{ 'pages.companies.smsNotifications' | translate }}</span>
+                <span>แจ้งเตือนทาง SMS</span>
               </label>
               <label class="flex items-center gap-2 cursor-pointer">
                 <input
@@ -591,7 +589,7 @@
                   (change)="setNotificationField('push', $any($event.target).checked)"
                   class="glass-checkbox"
                 />
-                <span>{{ 'pages.companies.pushNotifications' | translate }}</span>
+                <span>การแจ้งเตือนแบบ Push</span>
               </label>
               <label class="flex items-center gap-2 cursor-pointer">
                 <input
@@ -600,19 +598,19 @@
                   (change)="setNotificationField('webhook', $any($event.target).checked)"
                   class="glass-checkbox"
                 />
-                <span>{{ 'pages.companies.webhookNotifications' | translate }}</span>
+                <span>แจ้งเตือนผ่าน Webhook</span>
               </label>
               @if (getNotifications().webhook) {
                 <div class="form-group">
                   <label class="form-label">
-                    {{ 'pages.companies.webhookUrl' | translate }}
+                    URL Webhook
                   </label>
                   <input
                     [value]="getNotifications().webhookUrl || ''"
                     (input)="setNotificationField('webhookUrl', $any($event.target).value)"
                     type="url"
                     class="glass-input w-full"
-                    [placeholder]="'pages.companies.webhookUrlPlaceholder' | translate"
+                    placeholder="ระบุ URL Webhook"
                   />
                 </div>
               }
@@ -624,7 +622,7 @@
       <!-- Security Settings Section -->
       <div class="form-section">
         <h3 class="form-section-title">
-          {{ 'pages.companies.securitySettings' | translate }}
+          ตั้งค่าความปลอดภัย
         </h3>
         <div class="form-grid">
           <div class="form-group form-group-full">
@@ -635,13 +633,13 @@
                 (change)="setSecurityField('twoFactorRequired', $any($event.target).checked)"
                 class="glass-checkbox"
               />
-              <span>{{ 'pages.companies.twoFactorRequired' | translate }}</span>
+              <span>บังคับใช้ 2FA</span>
             </label>
           </div>
 
           <div class="form-group">
             <label class="form-label">
-              {{ 'pages.companies.sessionTimeout' | translate }} (minutes)
+              หมดเวลาเซสชัน (นาที)
             </label>
             <input
               [value]="getSecurity().sessionTimeout || 30"
@@ -655,7 +653,7 @@
 
           <div class="form-group form-group-full">
             <label class="form-label">
-              {{ 'pages.companies.passwordPolicy' | translate }}
+              นโยบายรหัสผ่าน
             </label>
             <div class="space-y-2 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
               <label class="flex items-center gap-2 cursor-pointer">
@@ -665,7 +663,7 @@
                   (change)="setPasswordPolicyField('requireUppercase', $any($event.target).checked)"
                   class="glass-checkbox"
                 />
-                <span>{{ 'pages.companies.requireUppercase' | translate }}</span>
+                <span>ตัวพิมพ์ใหญ่</span>
               </label>
               <label class="flex items-center gap-2 cursor-pointer">
                 <input
@@ -674,7 +672,7 @@
                   (change)="setPasswordPolicyField('requireLowercase', $any($event.target).checked)"
                   class="glass-checkbox"
                 />
-                <span>{{ 'pages.companies.requireLowercase' | translate }}</span>
+                <span>ตัวพิมพ์เล็ก</span>
               </label>
               <label class="flex items-center gap-2 cursor-pointer">
                 <input
@@ -683,7 +681,7 @@
                   (change)="setPasswordPolicyField('requireNumbers', $any($event.target).checked)"
                   class="glass-checkbox"
                 />
-                <span>{{ 'pages.companies.requireNumbers' | translate }}</span>
+                <span>ตัวเลข</span>
               </label>
               <label class="flex items-center gap-2 cursor-pointer">
                 <input
@@ -692,11 +690,11 @@
                   (change)="setPasswordPolicyField('requireSpecialChars', $any($event.target).checked)"
                   class="glass-checkbox"
                 />
-                <span>{{ 'pages.companies.requireSpecialChars' | translate }}</span>
+                <span>อักขระพิเศษ</span>
               </label>
               <div class="form-group">
                 <label class="form-label">
-                  {{ 'pages.companies.minPasswordLength' | translate }}
+                  ความยาวขั้นต่ำ
                 </label>
                 <input
                   [value]="getSecurity().passwordPolicy?.minLength || 8"
@@ -714,10 +712,10 @@
     </div>
     <div slot="footer" class="modal-footer-actions">
       <app-glass-button variant="secondary" (clicked)="closeSettingsModal()">
-        {{ 'common.cancel' | translate }}
+        ยกเลิก
       </app-glass-button>
       <app-glass-button variant="primary" [loading]="saving()" (clicked)="saveSettings()">
-        {{ 'common.save' | translate }}
+        บันทึก
       </app-glass-button>
     </div>
   </app-modal>
@@ -725,7 +723,7 @@
   <!-- Company Details Modal -->
   <app-modal
     [isOpen]="showDetailsModal()"
-    [title]="viewingCompany() ? (('pages.companies.companyDetails' | translate) + ' - ' + viewingCompany()!.company_name) : ('pages.companies.companyDetails' | translate)"
+    [title]="viewingCompany() ? ('รายละเอียดบริษัท - ' + viewingCompany()!.company_name) : 'รายละเอียดบริษัท'"
     [config]="{ size: 'lg', scrollable: true, centered: true, animation: true }"
     (closed)="closeDetailsModal()"
   >
@@ -733,27 +731,27 @@
       <div class="modal-form-container">
         <div class="form-section">
           <h3 class="form-section-title">
-            {{ 'pages.companies.basicInformation' | translate }}
+            ข้อมูลพื้นฐาน
           </h3>
           <div class="form-grid">
             <div class="form-group">
-              <label class="form-label">{{ 'pages.companies.companyName' | translate }}</label>
+              <label class="form-label">ชื่อบริษัท</label>
               <p class="form-value">{{ viewingCompany()!.company_name }}</p>
             </div>
             <div class="form-group">
-              <label class="form-label">{{ 'pages.companies.companyCode' | translate }}</label>
+              <label class="form-label">รหัสบริษัท</label>
               <p class="form-value">{{ viewingCompany()!.company_code }}</p>
             </div>
             <div class="form-group">
-              <label class="form-label">{{ 'pages.companies.ownerName' | translate }}</label>
+              <label class="form-label">ชื่อผู้ดูแล</label>
               <p class="form-value">{{ viewingCompany()!.owner_name || 'N/A' }}</p>
             </div>
             <div class="form-group">
-              <label class="form-label">{{ 'pages.companies.contact' | translate }}</label>
+              <label class="form-label">เบอร์โทรศัพท์</label>
               <p class="form-value">{{ viewingCompany()!.contact || 'N/A' }}</p>
             </div>
             <div class="form-group form-group-full">
-              <label class="form-label">{{ 'pages.companies.description' | translate }}</label>
+              <label class="form-label">รายละเอียดเพิ่มเติม</label>
               <p class="form-value">{{ viewingCompany()!.company_info || 'N/A' }}</p>
             </div>
           </div>
@@ -761,19 +759,19 @@
 
         <div class="form-section">
           <h3 class="form-section-title">
-            {{ 'pages.companies.locationInformation' | translate }}
+            ข้อมูลที่ตั้ง
           </h3>
           <div class="form-grid">
             <div class="form-group form-group-full">
-              <label class="form-label">{{ 'pages.companies.address' | translate }}</label>
+              <label class="form-label">ที่อยู่</label>
               <p class="form-value">{{ viewingCompany()!.address }}</p>
             </div>
             <div class="form-group">
-              <label class="form-label">{{ 'pages.companies.latitude' | translate }}</label>
+              <label class="form-label">ละติจูด</label>
               <p class="form-value">{{ viewingCompany()!.latitude }}</p>
             </div>
             <div class="form-group">
-              <label class="form-label">{{ 'pages.companies.longitude' | translate }}</label>
+              <label class="form-label">ลองจิจูด</label>
               <p class="form-value">{{ viewingCompany()!.longitude }}</p>
             </div>
           </div>
@@ -781,11 +779,11 @@
 
         <div class="form-section">
           <h3 class="form-section-title">
-            {{ 'pages.companies.statusInformation' | translate }}
+            ข้อมูลสถานะ
           </h3>
           <div class="form-grid">
             <div class="form-group">
-              <label class="form-label">{{ 'pages.companies.status' | translate }}</label>
+              <label class="form-label">สถานะ</label>
               <p class="form-value">
                 <span [class]="getStatusClassForDisplay(viewingCompany()!.status)">
                   {{ getStatusDisplayText(viewingCompany()!.status) }}
@@ -793,11 +791,11 @@
               </p>
             </div>
             <div class="form-group">
-              <label class="form-label">{{ 'pages.companies.createdAt' | translate }}</label>
+              <label class="form-label">วันที่สร้าง</label>
               <p class="form-value">{{ viewingCompany()!.created_at ? formatDateTime(viewingCompany()!.created_at) : 'N/A' }}</p>
             </div>
             <div class="form-group">
-              <label class="form-label">{{ 'pages.companies.updatedAt' | translate }}</label>
+              <label class="form-label">แก้ไขล่าสุด</label>
               <p class="form-value">{{ viewingCompany()!.updated_at ? formatDateTime(viewingCompany()!.updated_at) : 'N/A' }}</p>
             </div>
           </div>
@@ -806,11 +804,11 @@
     }
     <div slot="footer" class="modal-footer-actions">
       <app-glass-button variant="secondary" (clicked)="closeDetailsModal()">
-        {{ 'common.close' | translate }}
+        ปิด
       </app-glass-button>
       @if (viewingCompany()) {
         <app-glass-button variant="primary" (clicked)="openEditModal(viewingCompany()!)">
-          {{ 'pages.companies.edit' | translate }}
+          แก้ไข
         </app-glass-button>
       }
     </div>

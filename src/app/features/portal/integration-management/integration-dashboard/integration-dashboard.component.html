@@ -1,0 +1,110 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+      Integration Dashboard
+    </h1>
+    <app-glass-button (clicked)="loadDashboard()">
+      🔄 Refresh
+    </app-glass-button>
+  </div>
+
+  @if (loading()) {
+    <div class="flex justify-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+    </div>
+  } @else if (error()) {
+    <div class="bg-red-500/10 border border-red-500 text-red-500 p-4 rounded-lg">
+      {{ error() }}
+    </div>
+  } @else if (dashboardData(); as data) {
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Integrations Stats -->
+      <app-glass-card>
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">External Integrations</h3>
+          <span class="text-2xl">🔌</span>
+        </div>
+        <div class="grid grid-cols-3 gap-4 text-center">
+          <div>
+            <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{ data.integrations.total }}</div>
+            <div class="text-xs text-gray-500">Total</div>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-green-600 dark:text-green-400">{{ data.integrations.active }}</div>
+            <div class="text-xs text-gray-500">Active</div>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-gray-400">{{ data.integrations.inactive }}</div>
+            <div class="text-xs text-gray-500">Inactive</div>
+          </div>
+        </div>
+      </app-glass-card>
+
+      <!-- Webhooks Stats -->
+      <app-glass-card>
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Webhooks</h3>
+          <span class="text-2xl">🎣</span>
+        </div>
+        <div class="grid grid-cols-3 gap-4 text-center">
+          <div>
+            <div class="text-2xl font-bold text-purple-600 dark:text-purple-400">{{ data.webhooks.total }}</div>
+            <div class="text-xs text-gray-500">Total</div>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-green-600 dark:text-green-400">{{ data.webhooks.active }}</div>
+            <div class="text-xs text-gray-500">Active</div>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-gray-400">{{ data.webhooks.inactive }}</div>
+            <div class="text-xs text-gray-500">Inactive</div>
+          </div>
+        </div>
+      </app-glass-card>
+    </div>
+
+    <!-- Recent Activity -->
+    <app-glass-card>
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Recent Webhook Activity</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50/50 dark:bg-gray-700/50 dark:text-gray-400">
+            <tr>
+              <th class="px-4 py-2">Time</th>
+              <th class="px-4 py-2">Event</th>
+              <th class="px-4 py-2">Source</th>
+              <th class="px-4 py-2">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (log of data.recent_activity; track log.timestamp) {
+              <tr class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                <td class="px-4 py-2">{{ log.timestamp | date:'short' }}</td>
+                <td class="px-4 py-2">{{ log.event_type }}</td>
+                <td class="px-4 py-2">{{ log.source }}</td>
+                <td class="px-4 py-2">
+                  <span class="px-2 py-1 rounded-full text-xs font-medium"
+                    [class.bg-green-100.text-green-800]="log.success"
+                    [class.bg-red-100.text-red-800]="!log.success">
+                    {{ log.success ? 'Success' : 'Failed' }}
+                  </span>
+                </td>
+              </tr>
+            }
+            @if (data.recent_activity.length === 0) {
+              <tr>
+                <td colspan="4" class="px-4 py-8 text-center text-gray-500">
+                  No recent activity
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </app-glass-card>
+  }
+</div>
+
+

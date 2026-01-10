@@ -13,7 +13,6 @@
 import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, FormControl, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { GlassButtonComponent } from '../../../../shared/components/glass-button/glass-button.component';
 import { DataTableComponent, TableColumn, TableAction, SortEvent } from '../../../../shared/components/data-table/data-table.component';
@@ -29,7 +28,6 @@ import { PositionService } from '../../../../core/services/position.service';
 import { ReportService } from '../../../../core/services/report.service';
 import { ErrorHandlerService } from '../../../../core/services/error-handler.service';
 import { ValidationService } from '../../../../core/services/validation.service';
-import { I18nService } from '../../../../core/services/i18n.service';
 import { ApiService } from '../../../../core/services/api.service';
 import { UUID, PaginatedResponse } from '../../../../core/models/base.model';
 import { BaseComponent } from '../../../../core/base/base.component';
@@ -46,7 +44,6 @@ import { CompanyEmployeeCreate, CompanyEmployeeUpdate } from '../../../../core/m
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    TranslateModule,
     GlassButtonComponent,
     DataTableComponent,
     ModalComponent,
@@ -123,63 +120,63 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
     return [
       {
         key: 'first_name',
-        label: 'First Name',
+        label: 'ชื่อ',
         type: 'text',
-        placeholder: 'John',
+        placeholder: 'ระบุชื่อ',
         required: true,
         value: employee?.first_name || formValue.first_name || '',
         error: firstNameControl?.invalid && firstNameControl?.touched
-          ? this.validationService.getValidationErrorMessage(firstNameControl, 'First Name')
+          ? this.validationService.getValidationErrorMessage(firstNameControl, 'ชื่อ')
           : undefined
       },
       {
         key: 'last_name',
-        label: 'Last Name',
+        label: 'นามสกุล',
         type: 'text',
-        placeholder: 'Doe',
+        placeholder: 'ระบุนามสกุล',
         required: true,
         value: employee?.last_name || formValue.last_name || '',
         error: lastNameControl?.invalid && lastNameControl?.touched
-          ? this.validationService.getValidationErrorMessage(lastNameControl, 'Last Name')
+          ? this.validationService.getValidationErrorMessage(lastNameControl, 'นามสกุล')
           : undefined
       },
       {
         key: 'email',
-        label: 'Email',
+        label: 'อีเมล',
         type: 'email',
-        placeholder: 'john@example.com',
+        placeholder: 'ระบุอีเมล',
         required: true,
         value: employee?.email || formValue.email || '',
         error: emailControl?.invalid && emailControl?.touched
-          ? this.validationService.getValidationErrorMessage(emailControl, 'Email')
+          ? this.validationService.getValidationErrorMessage(emailControl, 'อีเมล')
           : undefined
       },
       {
         key: 'phone_number',
-        label: 'Phone',
+        label: 'เบอร์โทรศัพท์',
         type: 'text',
-        placeholder: '0812345678',
+        placeholder: 'ระบุเบอร์โทรศัพท์',
         value: employee?.phone_number || formValue.phone_number || '',
         error: phoneControl?.invalid && phoneControl?.touched
-          ? this.validationService.getValidationErrorMessage(phoneControl, 'Phone')
+          ? this.validationService.getValidationErrorMessage(phoneControl, 'เบอร์โทรศัพท์')
           : undefined
       },
       {
         key: 'employee_id',
-        label: 'Employee ID',
+        label: 'รหัสพนักงาน',
         type: 'text',
-        placeholder: 'EMP001',
+        placeholder: 'ระบุรหัสพนักงาน',
         value: employee?.employee_id || formValue.employee_id || '',
         error: employeeIdControl?.invalid && employeeIdControl?.touched
-          ? this.validationService.getValidationErrorMessage(employeeIdControl, 'Employee ID')
+          ? this.validationService.getValidationErrorMessage(employeeIdControl, 'รหัสพนักงาน')
           : undefined
       },
       {
         key: 'department_id',
-        label: 'Department',
+        label: 'แผนก',
         type: 'select',
         options: [
-          { value: '', label: 'Select Department' },
+          { value: '', label: 'เลือกแผนก' },
           ...depts.map(dept => ({
             value: dept.department_id,
             label: dept.th_name || dept.eng_name || ''
@@ -189,10 +186,10 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
       },
       {
         key: 'position_id',
-        label: 'Position',
+        label: 'ตำแหน่ง',
         type: 'select',
         options: [
-          { value: '', label: 'Select Position' },
+          { value: '', label: 'เลือกตำแหน่ง' },
           ...pos.map(pos => ({
             value: pos.position_id,
             label: pos.th_name || pos.eng_name || ''
@@ -202,20 +199,20 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
       },
       {
         key: 'salary',
-        label: 'Salary',
+        label: 'เงินเดือน',
         type: 'number',
         placeholder: '0',
         value: employee?.salary || formValue.salary || 0,
         error: salaryControl?.invalid && salaryControl?.touched
-          ? this.validationService.getValidationErrorMessage(salaryControl, 'Salary')
+          ? this.validationService.getValidationErrorMessage(salaryControl, 'เงินเดือน')
           : undefined
       },
       {
         key: 'boss_id',
-        label: 'Boss/Manager',
+        label: 'หัวหน้างาน',
         type: 'select',
         options: [
-          { value: '', label: 'No Manager' },
+          { value: '', label: 'ไม่มีหัวหน้างาน' },
           ...this.allEmployees().filter(emp => emp.company_employee_id !== employee?.company_employee_id).map(emp => ({
             value: emp.employee_id || emp.company_employee_id,
             label: `${emp.first_name} ${emp.last_name} (${emp.employee_id || ''})`
@@ -225,36 +222,36 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
       },
       {
         key: 'company_role_type',
-        label: 'Role Type',
+        label: 'ประเภทบทบาท',
         type: 'select',
         required: true,
         options: [
-          { value: CompanyRoleType.EMPLOYEE, label: 'Employee' },
-          { value: CompanyRoleType.ADMIN_COMPANY, label: 'Company Admin' }
+          { value: CompanyRoleType.EMPLOYEE, label: 'พนักงานทั่วไป' },
+          { value: CompanyRoleType.ADMIN_COMPANY, label: 'ผู้ดูแลบริษัท' }
         ],
         value: employee?.company_role_type || formValue.company_role_type || CompanyRoleType.EMPLOYEE
       },
       {
         key: 'emp_type',
-        label: 'Employment Type',
+        label: 'ประเภทการจ้างงาน',
         type: 'select',
         required: true,
         options: [
-          { value: EmpType.FULL_TIME, label: 'Full Time' },
-          { value: EmpType.PART_TIME, label: 'Part Time' },
-          { value: EmpType.PERMONTH, label: 'Per Month' },
-          { value: EmpType.PERDAY, label: 'Per Day' }
+          { value: EmpType.FULL_TIME, label: 'เต็มเวลา' },
+          { value: EmpType.PART_TIME, label: 'พาร์ทไทม์' },
+          { value: EmpType.PERMONTH, label: 'รายเดือน' },
+          { value: EmpType.PERDAY, label: 'รายวัน' }
         ],
         value: employee?.emp_type || formValue.emp_type || EmpType.FULL_TIME
       },
       {
         key: 'start_date',
-        label: 'Start Date',
+        label: 'วันที่เริ่มงาน',
         type: 'date',
         required: true,
         value: employee?.start_date ? new Date(employee.start_date).toISOString().split('T')[0] : formValue.start_date || new Date().toISOString().split('T')[0],
         error: startDateControl?.invalid && startDateControl?.touched
-          ? this.validationService.getValidationErrorMessage(startDateControl, 'Start Date')
+          ? this.validationService.getValidationErrorMessage(startDateControl, 'วันที่เริ่มงาน')
           : undefined
       }
     ];
@@ -263,17 +260,17 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
   // Page actions
   pageActions = computed<PageAction[]>(() => [
     {
-      label: '📊 Export Excel',
+      label: '📊 ส่งออก Excel',
       variant: 'primary',
       onClick: () => this.exportEmployeesReport()
     },
     {
-      label: this.i18n.t('common.refresh'),
+      label: 'รีเฟรช',
       variant: 'secondary',
       onClick: () => this.loadEmployees()
     },
     {
-      label: this.i18n.t('common.add') + ' Employee',
+      label: 'เพิ่มพนักงาน',
       variant: 'primary',
       onClick: () => this.openAddModal()
     }
@@ -283,26 +280,26 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
   filterFields = computed<FilterField[]>(() => [
     {
       key: 'search',
-      label: this.i18n.t('common.search'),
+      label: 'ค้นหา',
       type: 'text',
-      placeholder: 'Search employees...',
+      placeholder: 'ค้นหาพนักงาน...',
       value: this.searchControl.value || ''
     }
   ]);
 
   columns: TableColumn[] = [
-    { key: 'employee_id', label: 'Code', sortable: true },
-    { key: 'first_name', label: 'First Name', sortable: true },
-    { key: 'last_name', label: 'Last Name', sortable: true },
-    { key: 'email', label: 'Email', sortable: true },
-    { key: 'department_name', label: 'Department', sortable: true },
-    { key: 'status', label: 'Status', sortable: true, render: (value) => value || 'inactive' }
+    { key: 'employee_id', label: 'รหัส', sortable: true },
+    { key: 'first_name', label: 'ชื่อ', sortable: true },
+    { key: 'last_name', label: 'นามสกุล', sortable: true },
+    { key: 'email', label: 'อีเมล', sortable: true },
+    { key: 'department_name', label: 'แผนก', sortable: true },
+    { key: 'status', label: 'สถานะ', sortable: true, render: (value) => value || 'inactive' }
   ];
 
   actions: TableAction[] = [
-    { icon: '✏️', label: 'Edit', onClick: (row) => this.editEmployee(row) },
-    { icon: '📷', label: 'Enroll Face', onClick: (row) => this.openFaceEnrollModal(row) },
-    { icon: '🗑️', label: 'Delete', variant: 'danger', onClick: (row) => this.openDeleteModal(row) }
+    { icon: '✏️', label: 'แก้ไข', onClick: (row) => this.editEmployee(row) },
+    { icon: '📷', label: 'ลงทะเบียนใบหน้า', onClick: (row) => this.openFaceEnrollModal(row) },
+    { icon: '🗑️', label: 'ลบ', variant: 'danger', onClick: (row) => this.openDeleteModal(row) }
   ];
 
   constructor(
@@ -310,8 +307,7 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
     private departmentService: DepartmentService,
     private positionService: PositionService,
     private reportService: ReportService,
-    private apiService: ApiService,
-    private i18n: I18nService
+    private apiService: ApiService
   ) {
     super();
     this.employeeForm = this.fb.group({
@@ -379,7 +375,7 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
       },
       (error) => {
         this.errorHandler.handleApiError(error);
-        this.errorMessage.set('ไม่สามารถโหลดข้อมูล Employees ได้');
+        this.errorMessage.set('ไม่สามารถโหลดข้อมูลพนักงานได้');
         this.loading.set(false);
       }
     );
@@ -635,14 +631,14 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
       this.subscribe(
         this.employeeService.updateEmployee(employee.company_employee_id, updateData),
         () => {
-          this.errorHandler.showSuccess('อัปเดต Employee สำเร็จ');
+          this.errorHandler.showSuccess('อัปเดตข้อมูลพนักงานสำเร็จ');
           this.saving.set(false);
           this.closeModal();
           this.loadEmployees();
         },
         (error) => {
           this.errorHandler.handleApiError(error);
-          this.errorMessage.set('ไม่สามารถบันทึกข้อมูล Employee ได้');
+          this.errorMessage.set('ไม่สามารถบันทึกข้อมูลพนักงานได้');
           this.saving.set(false);
         }
       );
@@ -676,14 +672,14 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
       this.subscribe(
         this.employeeService.createEmployee(createData),
         () => {
-          this.errorHandler.showSuccess('สร้าง Employee สำเร็จ');
+          this.errorHandler.showSuccess('สร้างพนักงานสำเร็จ');
           this.saving.set(false);
           this.closeModal();
           this.loadEmployees();
         },
         (error) => {
           this.errorHandler.handleApiError(error);
-          this.errorMessage.set('ไม่สามารถบันทึกข้อมูล Employee ได้');
+          this.errorMessage.set('ไม่สามารถบันทึกข้อมูลพนักงานได้');
           this.saving.set(false);
         }
       );
@@ -723,14 +719,14 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
     this.subscribe(
       this.employeeService.deleteEmployee(employee.company_employee_id),
       () => {
-        this.errorHandler.showSuccess('ลบ Employee สำเร็จ');
+        this.errorHandler.showSuccess('ลบพนักงานสำเร็จ');
         this.deleting.set(false);
         this.closeDeleteModal();
         this.loadEmployees();
       },
       (error: any) => {
         this.errorHandler.handleApiError(error);
-        this.errorMessage.set('ไม่สามารถลบ Employee ได้');
+        this.errorMessage.set('ไม่สามารถลบพนักงานได้');
         this.deleting.set(false);
       }
     );
@@ -791,13 +787,13 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
     this.subscribe(
       this.apiService.upload(`/face/members/${memberId}/add-face`, this.faceImageFile!),
       () => {
-        this.errorHandler.showSuccess('Enroll Face สำเร็จ');
+        this.errorHandler.showSuccess('ลงทะเบียนใบหน้าสำเร็จ');
         this.enrollingFace.set(false);
         this.closeFaceEnrollModal();
       },
       (error) => {
         this.errorHandler.handleApiError(error);
-        this.errorMessage.set('ไม่สามารถ Enroll Face ได้');
+        this.errorMessage.set('ไม่สามารถลงทะเบียนใบหน้าได้');
         this.enrollingFace.set(false);
       }
     );
@@ -818,25 +814,18 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
     const labels: Record<string, string> = {
       'first_name': 'ชื่อ',
       'last_name': 'นามสกุล',
-      'email': 'Email',
+      'email': 'อีเมล',
       'phone_number': 'เบอร์โทรศัพท์',
       'department_id': 'แผนก',
       'position_id': 'ตำแหน่ง',
       'employee_id': 'รหัสพนักงาน',
       'salary': 'เงินเดือน',
-      'boss_id': 'หัวหน้า',
+      'boss_id': 'หัวหน้างาน',
       'company_role_type': 'ประเภทบทบาท',
       'emp_type': 'ประเภทการจ้างงาน',
       'start_date': 'วันที่เริ่มงาน'
     }
     return labels[fieldName] || fieldName;
-  }
-
-  /**
-   * Translate key using i18n service
-   */
-  t(key: string): string {
-    return this.i18n.translate(key);
   }
 
   /**
@@ -867,12 +856,12 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
         this.loading.set(false);
-        alert('รายงานถูก Export ไปยัง Downloads folder แล้ว');
+        this.errorHandler.showSuccess('ดาวน์โหลดรายงานสำเร็จ');
       },
       (error: any) => {
         console.error('Error exporting employees report:', error);
         this.loading.set(false);
-        alert('เกิดข้อผิดพลาดในการ Export รายงาน');
+        this.errorHandler.showError('เกิดข้อผิดพลาดในการส่งออกรายงาน');
       }
     );
   }

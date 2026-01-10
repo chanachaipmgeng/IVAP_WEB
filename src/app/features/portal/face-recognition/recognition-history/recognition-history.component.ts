@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { VerificationService } from '../../../../core/services/verification.service';
 import { Subscription, interval } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
+import { environment } from '../../../../../environments/environment';
 
 interface RecognitionLog {
   id: string;
@@ -33,7 +34,7 @@ export class RecognitionHistoryComponent implements OnInit, OnDestroy {
   filterType = signal<string>('All');
   searchQuery = signal<string>('');
   selectedDate = signal<string>(new Date().toISOString().split('T')[0]);
-  
+
   private refreshSubscription?: Subscription;
   isLoading = signal<boolean>(false);
 
@@ -42,11 +43,11 @@ export class RecognitionHistoryComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadHistory();
   }
-  
+
   ngOnDestroy() {
     // No subscription to unsubscribe for now as we removed interval
   }
-  
+
   loadHistory() {
     this.isLoading.set(true);
     this.verificationService.getHistory(50).subscribe({
@@ -61,7 +62,7 @@ export class RecognitionHistoryComponent implements OnInit, OnDestroy {
       }
     });
   }
-  
+
   manualRefresh() {
     this.loadHistory();
   }
@@ -70,25 +71,25 @@ export class RecognitionHistoryComponent implements OnInit, OnDestroy {
     // Backend now returns enriched flat structure
     const isSuccess = req.status === 'success';
     const confidence = req.confidence || 0;
-    
+
     // Determine type and status
     let type: 'Employee' | 'Visitor' | 'VIP' | 'Unknown' = 'Unknown';
     let status: 'Verified' | 'Flagged' | 'Uncertain' = 'Uncertain';
-    
+
     if (isSuccess && req.user_id) {
-        type = 'Employee'; 
+        type = 'Employee';
         status = 'Verified';
     } else if (req.status === 'failed') {
         type = 'Unknown';
         status = 'Uncertain';
     }
-    
+
     // Extract metadata safely
     // Note: Backend returns 'metadata' key in to_dict() for VerificationLog, but might return 'metadata_info' if raw model used.
     // The JSON provided shows "metadata".
     const metadata = req.metadata || req.metadata_info || {};
     const deviceId = req.device_id || 'Unknown Device';
-    
+
     // Construct name
     let displayName = 'Unknown Person';
     if (req.user_name && req.user_name !== 'Unknown') {
@@ -102,7 +103,7 @@ export class RecognitionHistoryComponent implements OnInit, OnDestroy {
     if (req.department && req.department !== '-') {
         locationDisplay += ` (${req.department})`;
     }
-    
+
     // Validate timestamp
     let timestamp = new Date();
     if (req.created_at) {
@@ -111,7 +112,7 @@ export class RecognitionHistoryComponent implements OnInit, OnDestroy {
             timestamp = parsedDate;
         }
     }
-    
+
     let snapshotUrl = 'assets/images/placeholder-face.jpg';
     if (req.snapshot_path) {
         // Handle backend relative paths
@@ -119,9 +120,9 @@ export class RecognitionHistoryComponent implements OnInit, OnDestroy {
         if (path.startsWith('http')) {
             snapshotUrl = path;
         } else if (path.startsWith('/')) {
-            snapshotUrl = `http://localhost:8000${path}`;
+            snapshotUrl = `${environment.baseUrl}${path}`;
         } else {
-            snapshotUrl = `http://localhost:8000/${path}`;
+            snapshotUrl = `${environment.baseUrl}/${path}`;
         }
     }
 

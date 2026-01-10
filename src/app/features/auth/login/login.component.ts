@@ -2,7 +2,7 @@
  * Login Component
  *
  * User authentication component for portal login.
- * Supports username/password authentication, language switching, and theme toggling.
+ * Supports username/password authentication and theme toggling.
  *
  * @example
  * ```html
@@ -14,10 +14,10 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { GlassCardComponent } from '../../../shared/components/glass-card/glass-card.component';
 import { GlassButtonComponent } from '../../../shared/components/glass-button/glass-button.component';
 import { AuthService } from '../../../core/services/auth.service';
-import { I18nService } from '../../../core/services/i18n.service';
 import { ThemeService } from '../../../core/services/theme.service';
 
 @Component({
@@ -37,22 +37,18 @@ export class LoginComponent {
   loginForm: FormGroup;
   loading = signal(false);
   errorMessage = signal('');
-  currentLang = signal('en');
 
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
-    public i18n: I18nService,
-    private theme: ThemeService
+    private theme: ThemeService,
+    private toastr: ToastrService
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
-
-    // Initialize current language after i18n is available
-    this.currentLang.set(this.i18n.currentLanguage());
   }
 
   onSubmit(): void {
@@ -69,7 +65,8 @@ export class LoginComponent {
     this.auth.login(credentials).subscribe({
       next: (response) => {
         this.loading.set(false);
-        
+        this.toastr.success('เข้าสู่ระบบสำเร็จ', 'ยินดีต้อนรับ');
+
         // Get redirect path based on user role/type
         const redirectPath = this.auth.getRedirectPath();
         this.router.navigate([redirectPath]);
@@ -77,18 +74,14 @@ export class LoginComponent {
       error: (error) => {
         this.loading.set(false);
         // Extract error message from response
-        const errorMsg = error?.error?.error?.message || 
-                        error?.error?.message || 
-                        error?.message || 
-                        this.i18n.t('login.loginFailed');
+        const errorMsg = error?.error?.error?.message ||
+                        error?.error?.message ||
+                        error?.message ||
+                        'เข้าสู่ระบบไม่สำเร็จ กรุณาตรวจสอบชื่อผู้ใช้และรหัสผ่าน';
         this.errorMessage.set(errorMsg);
+        this.toastr.error(errorMsg, 'เข้าสู่ระบบไม่สำเร็จ');
       }
     });
-  }
-
-  toggleLanguage(): void {
-    this.i18n.toggleLanguage();
-    this.currentLang.set(this.i18n.currentLanguage());
   }
 
   toggleTheme(): void {
@@ -97,11 +90,7 @@ export class LoginComponent {
 
   getThemeIcon(): string {
     const themeValue = this.theme.mode();
-    return themeValue === 'light' ? '☀️ Light' : themeValue === 'dark' ? '🌙 Dark' : '💻 Auto';
-  }
-
-  t(key: string): string {
-    return this.i18n.translate(key);
+    return themeValue === 'light' ? '☀️ สว่าง' : themeValue === 'dark' ? '🌙 มืด' : '💻 อัตโนมัติ';
   }
 
   navigateToLanding(): void {
@@ -112,4 +101,3 @@ export class LoginComponent {
     this.router.navigate(['/register']);
   }
 }
-

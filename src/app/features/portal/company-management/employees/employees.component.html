@@ -1,6 +1,6 @@
 <app-page-layout
-  [title]="'navigation.employees' | translate"
-  [description]="'pages.employees.description' | translate"
+  title="จัดการพนักงาน"
+  description="จัดการข้อมูลพนักงานในบริษัท"
   icon="👥"
   [actions]="pageActions()">
   
@@ -30,15 +30,15 @@
   <!-- Pagination Controls -->
   <div class="flex items-center justify-between mt-4 text-gray-600 dark:text-gray-400">
     <div class="text-sm">
-      {{ 'pages.employees.showingRecords' | translate }} {{ (currentPage() - 1) * pageSize() + 1 }} - {{ currentPage() * pageSize() > totalRecords() ? totalRecords() : currentPage() * pageSize() }} {{ 'common.of' | translate }} {{ totalRecords() }} {{ 'pages.employees.records' | translate }}
+      แสดง {{ (currentPage() - 1) * pageSize() + 1 }} - {{ currentPage() * pageSize() > totalRecords() ? totalRecords() : currentPage() * pageSize() }} จาก {{ totalRecords() }} รายการ
     </div>
     <div class="flex items-center gap-2">
       <app-glass-button [disabled]="currentPage() === 1" (clicked)="onPageChange(currentPage() - 1)">
-        &laquo; {{ 'common.previous' | translate }}
+        &laquo; ก่อนหน้า
       </app-glass-button>
-      <span class="font-semibold">{{ 'common.page' | translate }} {{ currentPage() }} {{ 'common.of' | translate }} {{ totalPages() }}</span>
+      <span class="font-semibold">หน้า {{ currentPage() }} จาก {{ totalPages() }}</span>
       <app-glass-button [disabled]="currentPage() === totalPages()" (clicked)="onPageChange(currentPage() + 1)">
-        {{ 'common.next' | translate }} &raquo;
+        ถัดไป &raquo;
       </app-glass-button>
     </div>
   </div>
@@ -46,11 +46,11 @@
   <!-- Add/Edit Modal Form -->
   <app-modal-form
     [isOpen]="showModal()"
-    [title]="(editingEmployee() ? ('pages.employees.editEmployee' | translate) : ('pages.employees.addEmployee' | translate))"
+    [title]="(editingEmployee() ? 'แก้ไขข้อมูลพนักงาน' : 'เพิ่มพนักงานใหม่')"
     [fields]="employeeFormFields()"
     [loading]="saving()"
-    [submitLabel]="'common.save' | translate"
-    [cancelLabel]="'common.cancel' | translate"
+    submitLabel="บันทึก"
+    cancelLabel="ยกเลิก"
     (closed)="closeModal()"
     (submitted)="onFormSubmitted($event)"
     (fieldChange)="onFormFieldChange($event)"
@@ -67,10 +67,10 @@
   @if (employees().length === 0 && !loading()) {
     <app-empty-state
       icon="👥"
-      [title]="'common.emptyState.title' | translate"
-      [description]="'pages.employees.noEmployeesFound' | translate"
+      title="ไม่พบข้อมูลพนักงาน"
+      description="ยังไม่มีข้อมูลพนักงานในระบบ หรือไม่พบข้อมูลตามเงื่อนไขการค้นหา"
       [action]="{
-        label: ('pages.employees.addEmployee' | translate),
+        label: 'เพิ่มพนักงาน',
         icon: '➕',
         variant: 'primary',
         onClick: openAddModal.bind(this)
@@ -81,29 +81,29 @@
   <!-- Delete Confirmation Modal -->
   <app-modal
     [isOpen]="showDeleteModal()"
-    [title]="'pages.employees.confirmDelete' | translate"
+    title="ยืนยันการลบ"
     [loading]="deleting()"
     (closed)="closeDeleteModal()"
   >
     <div class="p-4">
       <p class="text-gray-700 dark:text-gray-300 mb-4">
-        {{ 'pages.employees.deleteEmployeeConfirm' | translate }} <strong>{{ deletingEmployee()?.first_name }} {{ deletingEmployee()?.last_name }}</strong>?
+        คุณต้องการลบพนักงาน <strong>{{ deletingEmployee()?.first_name }} {{ deletingEmployee()?.last_name }}</strong> ใช่หรือไม่?
       </p>
       <p class="text-red-600 dark:text-red-400 text-sm mb-4">
-        {{ 'pages.employees.actionCannotBeUndone' | translate }}
+        การกระทำนี้ไม่สามารถย้อนกลับได้
       </p>
       <div class="flex justify-end gap-2">
         <app-glass-button
           variant="danger"
           [loading]="deleting()"
           (clicked)="confirmDelete()">
-          {{ 'pages.employees.deleteEmployee' | translate }}
+          ลบพนักงาน
         </app-glass-button>
         <app-glass-button
           variant="secondary"
           [disabled]="deleting()"
           (clicked)="closeDeleteModal()">
-          {{ 'common.cancel' | translate }}
+          ยกเลิก
         </app-glass-button>
       </div>
     </div>
@@ -112,13 +112,13 @@
   <!-- Face Enrollment Modal -->
   <app-modal
     [isOpen]="showFaceEnrollModal()"
-    [title]="'Enroll Face - ' + (enrollingEmployee()?.first_name || '') + ' ' + (enrollingEmployee()?.last_name || '')"
+    [title]="'ลงทะเบียนใบหน้า - ' + (enrollingEmployee()?.first_name || '') + ' ' + (enrollingEmployee()?.last_name || '')"
     [loading]="enrollingFace()"
     (closed)="closeFaceEnrollModal()"
   >
     <div class="p-4">
       <p class="text-gray-700 dark:text-gray-300 mb-4">
-        กรุณาเลือกรูปภาพใบหน้าของพนักงานเพื่อทำการ Enroll Face
+        กรุณาเลือกรูปภาพใบหน้าของพนักงานเพื่อทำการลงทะเบียนใบหน้า
       </p>
       
       <!-- File Upload -->
@@ -154,13 +154,13 @@
           [loading]="enrollingFace()"
           [disabled]="!faceImageFile || enrollingFace()"
           (clicked)="enrollFace()">
-          📷 Enroll Face
+          📷 ลงทะเบียนใบหน้า
         </app-glass-button>
         <app-glass-button
           variant="secondary"
           [disabled]="enrollingFace()"
           (clicked)="closeFaceEnrollModal()">
-          {{ 'common.cancel' | translate }}
+          ยกเลิก
         </app-glass-button>
       </div>
     </div>

@@ -254,7 +254,8 @@ export class MemberService extends BaseCrudService<Member, MemberCreate, MemberU
    */
   resetPassword(memberId: string): Observable<void> {
     const options = { skipTransform: true };
-    return this.api.post<void>(`${this.baseEndpoint}/${memberId}/reset-password`, {}, undefined, options);
+    // Use admin endpoint as per backend spec
+    return this.api.post<void>(`/admin/members/${memberId}/reset-password`, {}, undefined, options);
   }
 
   /**

@@ -1,4 +1,4 @@
-<app-page-layout [title]="'pages.users.title' | translate" [description]="'pages.users.description' | translate"
+<app-page-layout title="จัดการผู้ใช้งาน" description="จัดการข้อมูลผู้ใช้งานและกำหนดสิทธิ์การเข้าถึง"
   icon="👥" [actions]="pageActions()">
 
   <!-- Statistics Cards -->
@@ -11,7 +11,7 @@
   <app-data-table [columns]="columns" [data]="filteredUsers()" [actions]="actions" [searchable]="false">
     <div actions>
       <app-glass-button variant="secondary" (clicked)="exportUsers()">
-        {{ 'pages.users.export' | translate }}
+        ส่งออกข้อมูล
       </app-glass-button>
     </div>
   </app-data-table>
@@ -19,7 +19,7 @@
   <!-- Add/Edit User Modal -->
   <app-modal
     [isOpen]="showModal()"
-    [title]="(editingUser() ? ('pages.users.editUser' | translate) : ('pages.users.addUserModal' | translate))"
+    [title]="(editingUser() ? 'แก้ไขผู้ใช้งาน' : 'เพิ่มผู้ใช้งาน')"
     [loading]="saving()"
     [config]="{ size: 'xl', scrollable: true, centered: true, animation: true }"
     (closed)="closeModal()"
@@ -28,37 +28,37 @@
       <!-- Basic Information Section -->
       <div class="form-section">
         <h3 class="form-section-title">
-          {{ 'pages.users.basicInformation' | translate }}
+          ข้อมูลพื้นฐาน
         </h3>
         <div class="form-grid">
           <div class="form-group">
             <label class="form-label">
-              {{ 'pages.users.firstName' | translate }}
+              ชื่อจริง
               <span class="required-indicator">*</span>
             </label>
             <input
               [(ngModel)]="formData.first_name"
               type="text"
               class="glass-input w-full"
-              placeholder="John"
+              placeholder="สมชาย"
               required
-              [attr.aria-label]="'pages.users.firstName' | translate"
-              [attr.aria-required]="true"
+              aria-label="ชื่อจริง"
+              aria-required="true"
             />
           </div>
           <div class="form-group">
             <label class="form-label">
-              {{ 'pages.users.lastName' | translate }}
+              นามสกุล
               <span class="required-indicator">*</span>
             </label>
             <input
               [(ngModel)]="formData.last_name"
               type="text"
               class="glass-input w-full"
-              placeholder="Doe"
+              placeholder="ใจดี"
               required
-              [attr.aria-label]="'pages.users.lastName' | translate"
-              [attr.aria-required]="true"
+              aria-label="นามสกุล"
+              aria-required="true"
             />
           </div>
         </div>
@@ -67,68 +67,68 @@
       <!-- Account Information Section -->
       <div class="form-section">
         <h3 class="form-section-title">
-          {{ 'pages.users.accountInformation' | translate }}
+          ข้อมูลบัญชีผู้ใช้
         </h3>
         <div class="form-grid">
           <div class="form-group form-group-full">
             <label class="form-label">
-              {{ 'pages.users.username' | translate }}
+              ชื่อผู้ใช้
               <span class="required-indicator">*</span>
             </label>
             <input
               [(ngModel)]="formData.username"
               type="text"
               class="glass-input w-full"
-              placeholder="johndoe"
+              placeholder="somchai.j"
               required
-              [attr.aria-label]="'pages.users.username' | translate"
-              [attr.aria-required]="true"
+              aria-label="ชื่อผู้ใช้"
+              aria-required="true"
             />
           </div>
 
           <div class="form-group form-group-full">
             <label class="form-label">
-              {{ 'pages.users.email' | translate }}
+              อีเมล
               <span class="required-indicator">*</span>
             </label>
             <input
               [(ngModel)]="formData.email"
               type="email"
               class="glass-input w-full"
-              placeholder="john@example.com"
+              placeholder="somchai@example.com"
               required
-              [attr.aria-label]="'pages.users.email' | translate"
-              [attr.aria-required]="true"
+              aria-label="อีเมล"
+              aria-required="true"
             />
           </div>
 
           <div class="form-group form-group-full">
             <label class="form-label">
-              {{ 'pages.users.phoneNumber' | translate }}
+              เบอร์โทรศัพท์
             </label>
             <input
               [(ngModel)]="formData.phone_number"
               type="tel"
               class="glass-input w-full"
-              placeholder="+66 123 456 789"
-              [attr.aria-label]="'pages.users.phoneNumber' | translate"
+              placeholder="0812345678"
+              aria-label="เบอร์โทรศัพท์"
             />
           </div>
 
           @if (!editingUser()) {
             <div class="form-group form-group-full">
               <label class="form-label">
-                {{ 'pages.users.password' | translate }}
+                รหัสผ่าน
                 <span class="required-indicator">*</span>
               </label>
               <input
                 [(ngModel)]="formData.password"
                 type="password"
                 class="glass-input w-full"
-                [placeholder]="'pages.users.enterPassword' | translate"
+                placeholder="ระบุรหัสผ่าน"
                 required
-                [attr.aria-label]="'pages.users.password' | translate"
-                [attr.aria-required]="true"
+                aria-label="รหัสผ่าน"
+                aria-required="true"
               />
             </div>
           }
@@ -136,31 +136,31 @@
           @if (editingUser()) {
             <div class="form-group form-group-full">
               <label class="form-label">
-                {{ 'pages.users.password' | translate }} ({{ 'pages.users.optional' | translate }})
+                รหัสผ่าน (ไม่บังคับ)
               </label>
               <input
                 [(ngModel)]="formData.password"
                 type="password"
                 class="glass-input w-full"
-                [placeholder]="'pages.users.enterNewPassword' | translate"
-                [attr.aria-label]="'pages.users.password' | translate"
+                placeholder="ระบุรหัสผ่านใหม่"
+                aria-label="รหัสผ่าน"
               />
-              <p class="form-hint">{{ 'pages.users.passwordUpdateHint' | translate }}</p>
+              <p class="form-hint">ปล่อยว่างไว้หากไม่ต้องการเปลี่ยนรหัสผ่าน</p>
             </div>
           }
 
           <div class="form-group form-group-full">
             <label class="form-label">
-              {{ 'pages.users.picture' | translate }} ({{ 'pages.users.optional' | translate }})
+              รูปโปรไฟล์ (ไม่บังคับ)
             </label>
             <input
               [(ngModel)]="formData.picture"
               type="url"
               class="glass-input w-full"
               placeholder="https://example.com/avatar.jpg"
-              [attr.aria-label]="'pages.users.picture' | translate"
+              aria-label="รูปโปรไฟล์"
             />
-            <p class="form-hint">{{ 'pages.users.pictureHint' | translate }}</p>
+            <p class="form-hint">ลิงก์ URL ของรูปภาพโปรไฟล์</p>
           </div>
         </div>
       </div>
@@ -168,49 +168,49 @@
       <!-- Type & Classification Section -->
       <div class="form-section">
         <h3 class="form-section-title">
-          {{ 'pages.users.typeAndClassification' | translate }}
+          ประเภทและการจำแนก
         </h3>
         <div class="form-grid">
           <div class="form-group">
             <label class="form-label">
-              {{ 'pages.users.actorType' | translate }}
+              ประเภทผู้ใช้งาน
               <span class="required-indicator">*</span>
             </label>
             <select
               [(ngModel)]="formData.actor_type"
               class="glass-input w-full"
               required
-              [attr.aria-label]="'pages.users.actorType' | translate"
-              [attr.aria-required]="true"
+              aria-label="ประเภทผู้ใช้งาน"
+              aria-required="true"
             >
-              <option value="member">Member</option>
-              <option value="admin_system">Admin System</option>
-              <option value="guest">Guest</option>
-              <option value="public">Public</option>
-              <option value="device">Device</option>
+              <option value="member">สมาชิกทั่วไป (Member)</option>
+              <option value="admin_system">ผู้ดูแลระบบ (Admin System)</option>
+              <option value="guest">ผู้เยี่ยมชม (Guest)</option>
+              <option value="public">สาธารณะ (Public)</option>
+              <option value="device">อุปกรณ์ (Device)</option>
               <option value="api">API</option>
-              <option value="system">System</option>
+              <option value="system">ระบบ (System)</option>
             </select>
           </div>
           <div class="form-group">
             <label class="form-label">
-              {{ 'pages.users.memberType' | translate }}
+              ตำแหน่งสมาชิก
             </label>
             <select
               [(ngModel)]="formData.member_type"
               class="glass-input w-full"
-              [attr.aria-label]="'pages.users.memberType' | translate"
+              aria-label="ตำแหน่งสมาชิก"
             >
-              <option value="">{{ 'pages.users.selectMemberType' | translate }}</option>
-              <option value="admin">Admin</option>
-              <option value="employee">Employee</option>
-              <option value="manager">Manager</option>
-              <option value="security">Security</option>
-              <option value="it">IT</option>
-              <option value="hr">HR</option>
-              <option value="contractor">Contractor</option>
-              <option value="system">System</option>
-              <option value="default">Default</option>
+              <option value="">เลือกตำแหน่ง</option>
+              <option value="admin">ผู้ดูแล (Admin)</option>
+              <option value="employee">พนักงาน (Employee)</option>
+              <option value="manager">ผู้จัดการ (Manager)</option>
+              <option value="security">เจ้าหน้าที่ความปลอดภัย (Security)</option>
+              <option value="it">ไอที (IT)</option>
+              <option value="hr">ฝ่ายบุคคล (HR)</option>
+              <option value="contractor">ผู้รับเหมา (Contractor)</option>
+              <option value="system">ระบบ (System)</option>
+              <option value="default">ทั่วไป (Default)</option>
             </select>
           </div>
         </div>
@@ -219,42 +219,42 @@
       <!-- Role & Company Assignment Section -->
       <div class="form-section">
         <h3 class="form-section-title">
-          {{ 'pages.users.roleAndCompany' | translate }}
+          บทบาทและบริษัท
         </h3>
         <div class="form-grid">
           <div class="form-group">
             <label class="form-label">
-              {{ 'pages.users.role' | translate }}
+              บทบาท
             </label>
             <select
               [(ngModel)]="formData.role"
               class="glass-input w-full"
-              [attr.aria-label]="'pages.users.role' | translate"
+              aria-label="บทบาท"
               [disabled]="getRoles()().length === 0"
             >
-              <option value="">{{ 'pages.users.selectRole' | translate }}</option>
+              <option value="">เลือกบทบาท</option>
               @for (role of getRoles()(); track role.id) {
                 <option [value]="role.id">{{ role.name }}</option>
               }
             </select>
-            <p class="form-hint">{{ 'pages.users.roleHint' | translate }}</p>
+            <p class="form-hint">กำหนดสิทธิ์การเข้าถึงระบบ</p>
             @if (getRoles()().length === 0) {
               <p class="form-hint text-amber-600 dark:text-amber-400">
-                {{ 'pages.users.noRolesAvailable' | translate }}
+                ไม่พบข้อมูลบทบาทในระบบ
               </p>
             }
           </div>
           <div class="form-group">
             <label class="form-label">
-              {{ 'pages.users.company' | translate }}
+              บริษัท
             </label>
             <select
               [(ngModel)]="formData.company_id"
               class="glass-input w-full"
-              [attr.aria-label]="'pages.users.company' | translate"
+              aria-label="บริษัท"
               [disabled]="getCompanies()().length === 0"
             >
-              <option value="">{{ 'pages.users.selectCompany' | translate }}</option>
+              <option value="">เลือกบริษัท</option>
               @for (company of getCompanies()(); track (company.company_id || company.id)) {
                 <option
                   [value]="company.company_id || company.id">
@@ -262,10 +262,10 @@
                 </option>
               }
             </select>
-            <p class="form-hint">{{ 'pages.users.companyHint' | translate }}</p>
+            <p class="form-hint">สังกัดบริษัท</p>
             @if (getCompanies()().length === 0) {
               <p class="form-hint text-amber-600 dark:text-amber-400">
-                {{ 'pages.users.noCompaniesAvailable' | translate }}
+                ไม่พบข้อมูลบริษัทในระบบ
               </p>
             }
           </div>
@@ -275,7 +275,7 @@
       <!-- Status Section -->
       <div class="form-section">
         <h3 class="form-section-title">
-          {{ 'pages.users.status' | translate }}
+          สถานะการใช้งาน
         </h3>
         <div class="form-grid">
           <div class="form-group form-group-full">
@@ -286,7 +286,7 @@
                 id="is_active"
                 class="glass-checkbox"
               />
-              <span>{{ 'pages.users.activeUser' | translate }}</span>
+              <span>เปิดใช้งาน</span>
             </label>
           </div>
         </div>
@@ -294,10 +294,10 @@
     </div>
     <div slot="footer" class="modal-footer-actions">
       <app-glass-button variant="secondary" (clicked)="closeModal()">
-        {{ 'common.cancel' | translate }}
+        ยกเลิก
       </app-glass-button>
       <app-glass-button variant="primary" [loading]="saving()" (clicked)="saveUser()">
-        {{ 'common.save' | translate }}
+        บันทึก
       </app-glass-button>
     </div>
   </app-modal>
@@ -305,15 +305,15 @@
   <!-- Role Management Modal -->
   <app-modal 
     [isOpen]="showRoleModal()" 
-    [title]="'pages.users.manageRoles' | translate"
+    [title]="'จัดการบทบาท'"
     [config]="{ size: 'lg', scrollable: true, centered: true, animation: true }"
     (closed)="closeRoleModal()">
     <div class="space-y-4">
       <div class="flex justify-between items-center">
-        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">{{ 'pages.users.availableRoles' | translate }}
+        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">บทบาทที่มีในระบบ
         </h3>
         <app-glass-button variant="primary" (clicked)="openAddRoleModal()">
-          {{ 'pages.users.addRole' | translate }}
+          เพิ่มบทบาท
         </app-glass-button>
       </div>
 
@@ -324,21 +324,20 @@
             <div class="flex items-start justify-between">
               <div>
                 <h4 class="font-medium text-gray-900 dark:text-gray-100">{{ role.name }}</h4>
-                <p class="text-sm text-gray-600 dark:text-gray-400">{{ role.description || ('pages.users.noDescription' |
-                  translate) }}</p>
+                <p class="text-sm text-gray-600 dark:text-gray-400">{{ role.description || 'ไม่มีคำอธิบาย' }}</p>
               </div>
               <div class="flex space-x-2">
                 <app-glass-button variant="secondary" (clicked)="editRole(role)">
-                  {{ 'pages.users.editRole' | translate }}
+                  แก้ไข
                 </app-glass-button>
                 <app-glass-button variant="danger" (clicked)="deleteRole(role)">
-                  {{ 'pages.users.deleteRole' | translate }}
+                  ลบ
                 </app-glass-button>
               </div>
             </div>
             <div class="mt-3">
               <h5 class="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-1">
-                {{ 'pages.users.permissions' | translate }}
+                สิทธิ์การใช้งาน
               </h5>
               @if (role.permissions.length) {
                 <div class="flex flex-wrap gap-2">
@@ -351,7 +350,7 @@
                 </div>
               }
               @if (!role.permissions.length) {
-                <p class="text-xs text-gray-400 dark:text-gray-500">{{ 'pages.users.noPermissionsAssigned' | translate }}
+                <p class="text-xs text-gray-400 dark:text-gray-500">ไม่มีการกำหนดสิทธิ์
                 </p>
               }
             </div>
@@ -364,45 +363,45 @@
   <!-- Create/Edit Role Modal -->
   <app-modal 
     [isOpen]="showRoleFormModal()"
-    [title]="(editingRoleRecord() ? 'pages.users.editRoleModal' : 'pages.users.addRoleModal') | translate"
+    [title]="(editingRoleRecord() ? 'แก้ไขบทบาท' : 'เพิ่มบทบาทใหม่')"
     [loading]="roleSaving()"
     [config]="{ size: 'md', scrollable: true, centered: true, animation: true }"
     (closed)="closeRoleFormModal()">
     <div class="space-y-4">
       <div>
         <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-          {{ 'pages.users.roleName' | translate }} <span class="text-red-500">*</span>
+          ชื่อบทบาท <span class="text-red-500">*</span>
         </label>
         <input [(ngModel)]="roleFormData.name" type="text" class="glass-input w-full"
-          [placeholder]="'pages.users.roleNamePlaceholder' | translate" />
+          placeholder="เช่น Admin, Manager" />
       </div>
 
       <div>
         <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-          {{ 'pages.users.descriptionLabel' | translate }}
+          คำอธิบาย
         </label>
         <textarea [(ngModel)]="roleFormData.description" rows="3" class="glass-input w-full"
-          [placeholder]="'pages.users.describeRole' | translate"></textarea>
+          placeholder="รายละเอียดเพิ่มเติมเกี่ยวกับบทบาทนี้"></textarea>
       </div>
 
       <div>
         <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-          {{ 'pages.users.permissionsInput' | translate }}
+          รายการสิทธิ์ (Permissions)
         </label>
         <textarea [(ngModel)]="roleFormData.permissionsInput" rows="4" class="glass-input w-full"
-          [placeholder]="'pages.users.permissionsPlaceholder' | translate"></textarea>
+          placeholder="ระบุสิทธิ์แต่ละรายการ"></textarea>
         <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
-          {{ 'pages.users.permissionsHint' | translate }}
-          <code>{{ 'pages.users.permissionsExample' | translate }}</code>
+          แยกแต่ละสิทธิ์ด้วยการขึ้นบรรทัดใหม่ หรือเครื่องหมายจุลภาค (,)
+          <code>ตัวอย่าง: user.view, user.edit, report.export</code>
         </p>
       </div>
     </div>
     <div slot="footer">
       <app-glass-button variant="secondary" (clicked)="closeRoleFormModal()">
-        {{ 'Cancel' | translate }}
+        ยกเลิก
       </app-glass-button>
       <app-glass-button variant="primary" [loading]="roleSaving()" (clicked)="saveRole()">
-        {{ 'Save' | translate }}
+        บันทึก
       </app-glass-button>
     </div>
   </app-modal>

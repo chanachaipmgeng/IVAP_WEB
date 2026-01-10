@@ -454,6 +454,11 @@ export const routes: Routes = [
               .then(m => m.TemplateManagementComponent)
           },
           {
+            path: 'integration-dashboard',
+            loadComponent: () => import('./features/portal/integration-management/integration-dashboard/integration-dashboard.component')
+              .then(m => m.IntegrationDashboardComponent)
+          },
+          {
             path: 'reports',
             loadComponent: () => import('./features/portal/company-management/reports/reports.component')
               .then(m => m.ReportsComponent),

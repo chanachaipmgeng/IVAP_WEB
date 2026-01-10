@@ -265,6 +265,19 @@ export class ParkingService {
     }
   }
 
+  /**
+   * Delete parking space
+   */
+  deleteParkingSpace(spaceId: string): Observable<void> {
+    try {
+      const companyId = this.getCompanyId();
+      const options = { skipTransform: true };
+      return this.api.delete<void>(`/parking/spaces/${spaceId}`, { company_id: companyId }, undefined, options);
+    } catch (error) {
+      return throwError(() => error);
+    }
+  }
+
   // ==================== Parking Events (Entry/Exit) ====================
 
   /**

@@ -79,9 +79,9 @@
         </label>
         <input
           [(ngModel)]="formData.cameraId"
-          type="number"
+          type="text"
           class="glass-input w-full"
-          placeholder="1"
+          placeholder="e.g. 550e8400-e29b-41d4-a716-446655440000"
         />
       </div>
 
@@ -92,5 +92,74 @@
       </div>
     </div>
   </app-modal>
-</div>
 
+  <!-- Configure Task Modal -->
+  <app-modal
+    [isOpen]="showConfigModal()"
+    title="Configure Analytics Task"
+    [loading]="savingConfig()"
+    (closed)="closeConfigModal()"
+    (confirmed)="saveConfiguration()"
+  >
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Task Name
+        </label>
+        <input
+          [(ngModel)]="configData.name"
+          type="text"
+          class="glass-input w-full"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Description
+        </label>
+        <textarea
+          [(ngModel)]="configData.description"
+          rows="3"
+          class="glass-input w-full"
+          placeholder="Task description..."
+        ></textarea>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Confidence Threshold (0.0 - 1.0)
+        </label>
+        <div class="flex items-center space-x-4">
+          <input
+            [(ngModel)]="configData.confidence_threshold"
+            type="range"
+            min="0"
+            max="1"
+            step="0.05"
+            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+          />
+          <span class="text-sm font-bold text-blue-600 dark:text-blue-400 w-12">
+            {{ configData.confidence_threshold | number:'1.2-2' }}
+          </span>
+        </div>
+        <p class="text-xs text-gray-500 mt-1">
+          Minimum confidence score required for a detection to be considered valid.
+        </p>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+          Status
+        </label>
+        <select
+          [(ngModel)]="configData.status"
+          class="glass-input w-full"
+        >
+          <option value="active">Active</option>
+          <option value="paused">Paused</option>
+          <option value="inactive">Inactive</option>
+        </select>
+      </div>
+    </div>
+  </app-modal>
+</div>

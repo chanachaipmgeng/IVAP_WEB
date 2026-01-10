@@ -8,9 +8,9 @@
     <div class="container mx-auto flex items-center justify-between">
       <div class="flex items-center space-x-3">
         <button (click)="navigateToLanding()" class="glass-button flex items-center space-x-2"
-          [title]="i18n.t('login.backToHome')" [attr.aria-label]="i18n.t('login.backToHome')">
+          title="กลับหน้าหลัก" aria-label="กลับหน้าหลัก">
           <span class="text-lg">←</span>
-          <span class="hidden md:inline font-medium">{{ i18n.t('login.home') }}</span>
+          <span class="hidden md:inline font-medium">หน้าหลัก</span>
         </button>
         <div class="text-3xl">🎥</div>
         <h1 class="text-xl font-bold ai-gradient-text">IVAP Platform</h1>
@@ -22,10 +22,10 @@
     <!-- Header -->
     <div class="text-center mb-8">
       <h1 class="text-4xl font-bold bg-gradient-to-r from-primary-500 to-purple-600 bg-clip-text text-transparent mb-2">
-        {{ i18n.t('login.title') }}
+        เข้าสู่ระบบ
       </h1>
       <p class="text-gray-600 dark:text-gray-400">
-        {{ i18n.t('login.subtitle') }}
+        ยินดีต้อนรับกลับมา กรุณาเข้าสู่ระบบเพื่อดำเนินการต่อ
       </p>
     </div>
 
@@ -34,16 +34,16 @@
       <!-- Username -->
       <div>
         <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-          {{ i18n.t('login.username') }} <span class="text-red-500">*</span>
+          ชื่อผู้ใช้ <span class="text-red-500">*</span>
         </label>
         <input formControlName="username" type="text" class="glass-input w-full"
-          [placeholder]="i18n.t('login.enterUsername')"
+          placeholder="ระบุชื่อผู้ใช้"
           [class.border-red-500]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
-          [attr.aria-label]="i18n.t('login.username')" [attr.aria-required]="true"
+          aria-label="ชื่อผู้ใช้" aria-required="true"
           [attr.aria-invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched" />
         @if (loginForm.get('username')?.invalid && loginForm.get('username')?.touched) {
           <p class="text-red-500 text-sm mt-1">
-            {{ i18n.t('login.usernameRequired') }}
+            กรุณาระบุชื่อผู้ใช้
           </p>
         }
       </div>
@@ -51,16 +51,16 @@
       <!-- Password -->
       <div>
         <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-          {{ i18n.t('login.password') }} <span class="text-red-500">*</span>
+          รหัสผ่าน <span class="text-red-500">*</span>
         </label>
         <input formControlName="password" type="password" class="glass-input w-full"
-          [placeholder]="i18n.t('login.enterPassword')"
+          placeholder="ระบุรหัสผ่าน"
           [class.border-red-500]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-          [attr.aria-label]="i18n.t('login.password')" [attr.aria-required]="true"
+          aria-label="รหัสผ่าน" aria-required="true"
           [attr.aria-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" />
         @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
           <p class="text-red-500 text-sm mt-1">
-            {{ i18n.t('login.passwordRequired') }}
+            กรุณาระบุรหัสผ่าน
           </p>
         }
       </div>
@@ -68,7 +68,7 @@
       <!-- Error Message -->
       @if (errorMessage()) {
         <div class="glass bg-red-500/20 border border-red-500 p-4 rounded-lg" role="alert"
-          [attr.aria-live]="'polite'">
+          aria-live="polite">
           <p class="text-red-700 dark:text-red-400 text-sm">
             ✗ {{ errorMessage() }}
           </p>
@@ -77,33 +77,28 @@
 
       <!-- Submit Button -->
       <app-glass-button type="submit" variant="primary" [fullWidth]="true" [loading]="loading()"
-        [disabled]="loginForm.invalid || loading()" [attr.aria-label]="t('common.login')" [attr.aria-busy]="loading()">
-        {{ t('common.login') }}
+        [disabled]="loginForm.invalid || loading()" aria-label="เข้าสู่ระบบ" [attr.aria-busy]="loading()">
+        เข้าสู่ระบบ
       </app-glass-button>
     </form>
 
     <!-- Register Button -->
     <div class="mt-6">
       <app-glass-button (clicked)="navigateToRegister()" variant="secondary" [fullWidth]="true"
-        [attr.aria-label]="i18n.t('login.createAccount')">
-        {{ i18n.t('login.createAccount') }}
+        aria-label="สร้างบัญชีใหม่">
+        สร้างบัญชีใหม่
       </app-glass-button>
     </div>
 
     <!-- Forgot Password Link -->
     <div class="text-center mt-6">
       <a routerLink="/portal/forgot-password" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500">
-        {{ i18n.t('login.forgotPassword') }}
+        ลืมรหัสผ่าน?
       </a>
     </div>
 
-    <!-- Language & Theme Toggle -->
+    <!-- Theme Toggle -->
     <div class="mt-8 flex justify-center space-x-4">
-      <button (click)="toggleLanguage()" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500"
-        [attr.aria-label]="currentLang() === 'th' ? i18n.t('login.switchToEnglish') : i18n.t('login.switchToThai')">
-        {{ currentLang() === 'th' ? i18n.t('login.switchToEnglish') : i18n.t('login.switchToThai') }}
-      </button>
-      <span class="text-gray-400" aria-hidden="true">|</span>
       <button (click)="toggleTheme()" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500"
         [attr.aria-label]="getThemeIcon()">
         {{ getThemeIcon() }}

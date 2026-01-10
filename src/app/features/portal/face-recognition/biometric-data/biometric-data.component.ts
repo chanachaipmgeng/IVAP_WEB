@@ -14,6 +14,7 @@ import { StatisticsGridComponent, StatCard } from '../../../../shared/components
 import { TranslateModule } from '@ngx-translate/core';
 import { ErrorHandlerService } from '../../../../core/services/error-handler.service';
 import { ValidationService } from '../../../../core/services/validation.service';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-biometric-data',
@@ -289,7 +290,7 @@ export class BiometricDataComponent implements OnInit {
                 if (item.metadata?.['image_url']) {
                     const url = item.metadata['image_url'];
                     // Fix relative URL
-                    preview = url.startsWith('/') ? `http://localhost:8000${url}` : url;
+                    preview = url.startsWith('/') ? `${environment.baseUrl}${url}` : url;
                 } else if (item.biometric_value) {
                     preview = `data:image/jpeg;base64,${item.biometric_value}`;
                 }

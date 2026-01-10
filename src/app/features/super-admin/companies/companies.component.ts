@@ -12,10 +12,10 @@
 
 import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
-import { TranslateModule } from '@ngx-translate/core';
 
 import { GlassCardComponent } from '../../../shared/components/glass-card/glass-card.component';
 import { GlassButtonComponent } from '../../../shared/components/glass-button/glass-button.component';
@@ -26,7 +26,6 @@ import { FilterSectionComponent, FilterField } from '../../../shared/components/
 import { CompanyService } from '../../../core/services/company.service';
 import { Company, CompanyCreate, CompanyUpdate, CompanySettings, CompanySettingsUpdate, CompanyFilters } from '../../../core/models/company.model';
 import { FileUploadService } from '../../../core/services/file-upload.service';
-import { I18nService } from '../../../core/services/i18n.service';
 import { BaseComponent } from '../../../core/base/base.component';
 
 import { ImageOptimizationDirective } from '../../../shared/directives/image-optimization.directive';
@@ -39,7 +38,6 @@ import { ImageOptimizationDirective } from '../../../shared/directives/image-opt
     NgOptimizedImage,
     FormsModule,
     ReactiveFormsModule,
-    TranslateModule,
     GlassButtonComponent,
     DataTableComponent,
     ModalComponent,
@@ -78,18 +76,18 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
 
   settingsModalTitle = computed(() => {
     const companyName = this.selectedCompany()?.company_name || '';  // snake_case
-    return `${this.i18n.t('pages.companies.settings')}${companyName ? ' - ' + companyName : ''}`;
+    return `ตั้งค่า${companyName ? ' - ' + companyName : ''}`;
   });
 
   // Page actions
   pageActions = computed<PageAction[]>(() => [
     {
-      label: this.i18n.t('pages.companies.refresh'),
+      label: 'รีเฟรช',
       variant: 'secondary',
       onClick: () => this.loadCompanies()
     },
     {
-      label: this.i18n.t('pages.companies.addCompany'),
+      label: 'เพิ่มบริษัท',
       variant: 'primary',
       onClick: () => this.openAddModal()
     }
@@ -99,44 +97,44 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
   filterFields = computed<FilterField[]>(() => [
     {
       key: 'search',
-      label: this.i18n.t('pages.companies.search'),
+      label: 'ค้นหา',
       type: 'text',
-      placeholder: this.i18n.t('pages.companies.searchPlaceholder'),
+      placeholder: 'ค้นหา...',
       value: this.filters.controls.search.value
     },
     {
       key: 'status',
-      label: this.i18n.t('pages.companies.status'),
+      label: 'สถานะ',
       type: 'select',
       options: [
-        { value: '', label: this.i18n.t('pages.companies.allStatus') },
-        { value: 'public', label: this.i18n.t('pages.companies.public') },
-        { value: 'pending', label: this.i18n.t('pages.companies.pending') }
+        { value: '', label: 'สถานะทั้งหมด' },
+        { value: 'public', label: 'ใช้งานปกติ' },
+        { value: 'pending', label: 'รออนุมัติ' }
       ],
       value: this.filters.controls.status.value
     },
     {
       key: 'subscriptionType',
-      label: this.i18n.t('pages.companies.subscriptionType'),
+      label: 'ประเภทสมาชิก',
       type: 'select',
       options: [
-        { value: '', label: this.i18n.t('pages.companies.allSubscriptions') },
-        { value: 'trial', label: this.i18n.t('pages.companies.trial') },
-        { value: 'basic', label: this.i18n.t('pages.companies.basic') },
-        { value: 'premium', label: this.i18n.t('pages.companies.premium') },
-        { value: 'enterprise', label: this.i18n.t('pages.companies.enterprise') }
+        { value: '', label: 'สมาชิกทั้งหมด' },
+        { value: 'trial', label: 'ทดลองใช้' },
+        { value: 'basic', label: 'พื้นฐาน' },
+        { value: 'premium', label: 'พรีเมียม' },
+        { value: 'enterprise', label: 'องค์กร' }
       ],
       value: this.filters.controls.subscriptionType?.value || ''
     },
     {
       key: 'createdFrom',
-      label: this.i18n.t('pages.companies.createdFrom'),
+      label: 'สร้างตั้งแต่วันที่',
       type: 'date',
       value: this.filters.controls.createdFrom?.value || ''
     },
     {
       key: 'createdTo',
-      label: this.i18n.t('pages.companies.createdTo'),
+      label: 'ถึงวันที่',
       type: 'date',
       value: this.filters.controls.createdTo?.value || ''
     }
@@ -204,58 +202,59 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
     return [
       {
         key: 'company_name',  // snake_case
-        label: this.i18n.t('pages.companies.companyName'),
+        label: 'ชื่อบริษัท',
         sortable: true,
         filterable: true,
         filterType: 'text'
       },
       {
         key: 'company_code',  // snake_case
-        label: this.i18n.t('pages.companies.companyCode'),
+        label: 'รหัสบริษัท',
         sortable: true,
         filterable: true,
         filterType: 'text'
       },
       {
         key: 'owner_name',  // snake_case
-        label: this.i18n.t('pages.companies.ownerName'),
+        label: 'ชื่อผู้ดูแล',
         sortable: false,
         filterable: true,
         filterType: 'text'
       },
       {
         key: 'contact',
-        label: this.i18n.t('pages.companies.contact'),
+        label: 'เบอร์โทรศัพท์',
         sortable: false,
         filterable: false
       },
       {
         key: 'address',
-        label: this.i18n.t('pages.companies.address'),
+        label: 'ที่อยู่',
         sortable: false,
         filterable: true,
         filterType: 'text'
       },
       {
         key: 'status',
-        label: this.i18n.t('pages.companies.status'),
+        label: 'สถานะ',
         sortable: true,
         filterable: true,
         filterType: 'select',
         filterOptions: [
-          { value: '', label: this.i18n.t('pages.companies.allStatus') },
-          { value: 'public', label: this.i18n.t('pages.companies.public') },
-          { value: 'pending', label: this.i18n.t('pages.companies.pending') }
+          { value: '', label: 'สถานะทั้งหมด' },
+          { value: 'public', label: 'ใช้งานปกติ' },
+          { value: 'pending', label: 'รออนุมัติ' }
         ],
         render: (value) => {
           const statusStr = typeof value === 'string' ? value.toUpperCase() : (value === 1 ? 'PUBLIC' : 'PENDING');
           const statusClass = statusStr === 'PUBLIC' ? 'text-green-600' : statusStr === 'PENDING' ? 'text-yellow-600' : 'text-gray-600';
-          return `<span class="${statusClass}">${statusStr}</span>`;
+          const statusLabel = statusStr === 'PUBLIC' ? 'ใช้งานปกติ' : statusStr === 'PENDING' ? 'รออนุมัติ' : statusStr;
+          return `<span class="${statusClass}">${statusLabel}</span>`;
         }
       },
       {
         key: 'created_at',  // snake_case
-        label: this.i18n.t('pages.companies.createdAt'),
+        label: 'วันที่สร้าง',
         sortable: true,
         filterable: false,
         render: (value) => value ? this.formatDateTime(value) : ''
@@ -265,37 +264,43 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
 
   get actions(): TableAction[] {
     return [
-      { icon: '👁️', label: this.i18n.t('pages.companies.viewDetails'), onClick: (row) => this.openDetailsModal(row) },
-      { icon: '✏️', label: this.i18n.t('pages.companies.edit'), onClick: (row) => this.openEditModal(row) },
-      { icon: '⚙️', label: this.i18n.t('pages.companies.settings'), onClick: (row) => this.openSettingsModal(row) },
+      {
+        icon: '🚀',
+        label: 'จำลองการเข้าใช้',
+        onClick: (row) => this.simulateAccess(row),
+        visible: (row) => this.isCompanyPublic(row)
+      },
+      { icon: '👁️', label: 'ดูรายละเอียด', onClick: (row) => this.openDetailsModal(row) },
+      { icon: '✏️', label: 'แก้ไข', onClick: (row) => this.openEditModal(row) },
+      { icon: '⚙️', label: 'ตั้งค่า', onClick: (row) => this.openSettingsModal(row) },
       {
         icon: '✅',
-        label: this.i18n.t('pages.companies.activate'),
+        label: 'เปิดใช้งาน',
         onClick: (row) => this.activateCompany(row),
         visible: (row) => this.isCompanyPending(row)
       },
       {
         icon: '⏸️',
-        label: this.i18n.t('pages.companies.deactivate'),
+        label: 'ปิดใช้งาน',
         onClick: (row) => this.deactivateCompany(row),
         visible: (row) => this.isCompanyPublic(row)
       },
       {
         icon: '⛔',
-        label: this.i18n.t('pages.companies.suspend'),
+        label: 'ระงับการใช้งาน',
         variant: 'danger',
         onClick: (row) => this.suspendCompany(row),
         visible: (row) => this.isCompanyPublic(row)
       },
-      { icon: '🗑️', label: this.i18n.t('pages.companies.delete'), variant: 'danger', onClick: (row) => this.deleteCompany(row) }
+      { icon: '🗑️', label: 'ลบ', variant: 'danger', onClick: (row) => this.deleteCompany(row) }
     ];
   }
 
   constructor(
     public companyService: CompanyService,
     public fileUploadService: FileUploadService,
-    public i18n: I18nService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router
   ) {
     super();
     this.filters = new FormGroup({
@@ -342,7 +347,7 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
         this.loading.set(false);  // Clear loading state
       },
       (err) => {
-        this.toastr.error(this.i18n.t('pages.companies.failedToLoad'), err.message);
+        this.toastr.error('โหลดข้อมูลไม่สำเร็จ', err.message);
         this.loading.set(false);  // Clear loading state on error
       }
     );
@@ -365,7 +370,7 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
         });
         // Only show error if it's not a 403 (permission denied)
         if (err.status !== 403) {
-          this.toastr.error(this.i18n.t('pages.companies.failedToLoad'), err.message);
+          this.toastr.error('โหลดข้อมูลไม่สำเร็จ', err.message);
         }
       }
     );
@@ -439,33 +444,33 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
     // Validate required fields
     if (!this.formData.company_name || !this.formData.company_code || !this.formData.address ||
       !this.formData.owner_name || !this.formData.contact) {  // snake_case
-      this.toastr.error(this.i18n.t('pages.companies.requiredFieldsMissing'));
+      this.toastr.error('กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน');
       return;
     }
 
     // Validate latitude and longitude
     if (this.formData.latitude === undefined || this.formData.longitude === undefined ||
       this.formData.latitude === null || this.formData.longitude === null) {
-      this.toastr.error(this.i18n.t('pages.companies.locationRequired'));
+      this.toastr.error('กรุณาระบุพิกัดตำแหน่ง');
       return;
     }
 
     // Validate latitude range (-90 to 90)
     if (this.formData.latitude < -90 || this.formData.latitude > 90) {
-      this.toastr.error(this.i18n.t('pages.companies.invalidLatitudeRange'));
+      this.toastr.error('ละติจูดไม่ถูกต้อง (-90 ถึง 90)');
       return;
     }
 
     // Validate longitude range (-180 to 180)
     if (this.formData.longitude < -180 || this.formData.longitude > 180) {
-      this.toastr.error(this.i18n.t('pages.companies.invalidLongitudeRange'));
+      this.toastr.error('ลองจิจูดไม่ถูกต้อง (-180 ถึง 180)');
       return;
     }
 
     // Validate company code format (alphanumeric, dashes, underscores)
     const codePattern = /^[A-Za-z0-9_-]+$/;
     if (!codePattern.test(this.formData.company_code || '')) {  // snake_case
-      this.toastr.error(this.i18n.t('pages.companies.invalidCodeFormat'));
+      this.toastr.error('รูปแบบรหัสบริษัทไม่ถูกต้อง');
       return;
     }
 
@@ -473,7 +478,7 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
     if (!this.editingCompany()) {
       const existingCompany = this.companies().find(c => c.company_code.toLowerCase() === this.formData.company_code?.toLowerCase());  // snake_case
       if (existingCompany) {
-        this.toastr.error(this.i18n.t('pages.companies.codeAlreadyExists'));
+        this.toastr.error('รหัสบริษัทนี้มีอยู่ในระบบแล้ว');
         return;
       }
     } else {
@@ -483,7 +488,7 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
         c.company_id !== this.editingCompany()!.company_id  // snake_case
       );
       if (existingCompany) {
-        this.toastr.error(this.i18n.t('pages.companies.codeAlreadyExists'));
+        this.toastr.error('รหัสบริษัทนี้มีอยู่ในระบบแล้ว');
         return;
       }
     }
@@ -512,13 +517,13 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
     this.subscribe(
       request,
       () => {
-        this.toastr.success(this.editingCompany() ? this.i18n.t('pages.companies.companyUpdated') : this.i18n.t('pages.companies.companyCreated'));
+        this.toastr.success(this.editingCompany() ? 'อัปเดตข้อมูลบริษัทเรียบร้อยแล้ว' : 'สร้างบริษัทเรียบร้อยแล้ว');
         this.saving.set(false);
         this.closeModal();
         this.loadCompanies();
       },
       (err) => {
-        this.toastr.error(this.i18n.t('pages.companies.failedToSave'), err.message || err.error?.detail || 'Unknown error');
+        this.toastr.error('บันทึกข้อมูลไม่สำเร็จ', err.message || err.error?.detail || 'Unknown error');
         this.saving.set(false);
       }
     );
@@ -548,93 +553,95 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
             this.formData.picture = response.path;
             this.uploadingImage.set(false);
             this.uploadProgress.set(0);
-            this.toastr.success(this.i18n.t('pages.companies.imageUploaded'));
+            this.toastr.success('อัปโหลดรูปภาพเรียบร้อยแล้ว');
           }, 300);
         },
         (err) => {
           clearInterval(progressInterval);
           this.uploadProgress.set(0);
-          this.toastr.error(this.i18n.t('pages.companies.failedToUploadImage'), err.message);
+          this.toastr.error('อัปโหลดรูปภาพไม่สำเร็จ', err.message);
           this.uploadingImage.set(false);
         }
       );
     }
   }
 
+  simulateAccess(company: Company): void {
+    if (!confirm(`คุณต้องการจำลองการเข้าใช้งานในนามบริษัท "${company.company_name}" หรือไม่?`)) return;
+
+    // Store simulated company details in localStorage
+    localStorage.setItem('simulated_company_id', company.company_id);
+    localStorage.setItem('simulated_company_name', company.company_name);
+
+    this.toastr.info(`กำลังเข้าสู่โหมดจำลองบริษัท "${company.company_name}"`, 'กรุณารอสักครู่');
+
+    // Navigate to portal dashboard
+    setTimeout(() => {
+        this.router.navigate(['/portal/dashboard']);
+    }, 500);
+  }
+
   deleteCompany(company: Company): void {
-    if (!confirm(`${this.i18n.t('pages.companies.deleteConfirm')} "${company.company_name}"?`)) return;  // snake_case
+    if (!confirm(`คุณต้องการลบ "${company.company_name}"?`)) return;  // snake_case
 
     // ✅ Auto-unsubscribe on component destroy
     const obs = this.companyService.deleteCompany(company.company_id);  // snake_case
     this.subscribe(
       obs,
       () => {
-        this.toastr.success(`${this.i18n.t('pages.companies.companyDeleted')} "${company.company_name}"`);  // snake_case
+        this.toastr.success(`ลบบริษัท "${company.company_name}" เรียบร้อยแล้ว`);  // snake_case
         this.loadCompanies();
       },
-      (err) => this.toastr.error(this.i18n.t('pages.companies.failedToDelete'), err.message)
+      (err) => this.toastr.error('ลบบริษัทไม่สำเร็จ', err.message)
     );
   }
 
   // Status management methods
   activateCompany(company: Company): void {
-    if (!confirm(`${this.i18n.t('pages.companies.activateConfirm')} "${company.company_name}"?`)) return;  // snake_case
+    if (!confirm(`คุณต้องการเปิดใช้งาน "${company.company_name}"?`)) return;  // snake_case
 
-    // Update company status to PUBLIC
-    const updateData: CompanyUpdate = {
-      status: 'PUBLIC'  // snake_case - use uppercase
-    };
     // ✅ Auto-unsubscribe on component destroy
-    const obs = this.companyService.updateCompany(company.company_id, updateData);  // snake_case
+    const obs = this.companyService.activateCompany(company.company_id);
     this.subscribe(
       obs,
       () => {
-        this.toastr.success(`${this.i18n.t('pages.companies.companyActivated')} "${company.company_name}"`);  // snake_case
+        this.toastr.success(`เปิดใช้งานบริษัท "${company.company_name}" เรียบร้อยแล้ว`);  // snake_case
         this.loadCompanies();
       },
-      (err) => this.toastr.error(this.i18n.t('pages.companies.failedToActivate'), err.message)
+      (err) => this.toastr.error('เปิดใช้งานบริษัทไม่สำเร็จ', err.message)
     );
   }
 
   deactivateCompany(company: Company): void {
-    if (!confirm(`${this.i18n.t('pages.companies.deactivateConfirm')} "${company.company_name}"?`)) return;  // snake_case
+    if (!confirm(`คุณต้องการปิดใช้งาน "${company.company_name}"?`)) return;  // snake_case
 
-    // Update company status to PENDING
-    const updateData: CompanyUpdate = {
-      status: 'PENDING'  // snake_case - use uppercase
-    };
     // ✅ Auto-unsubscribe on component destroy
-    const obs = this.companyService.updateCompany(company.company_id, updateData);  // snake_case
+    const obs = this.companyService.deactivateCompany(company.company_id);
     this.subscribe(
       obs,
       () => {
-        this.toastr.success(`${this.i18n.t('pages.companies.companyDeactivated')} "${company.company_name}"`);  // snake_case
+        this.toastr.success(`ปิดใช้งานบริษัท "${company.company_name}" เรียบร้อยแล้ว`);  // snake_case
         this.loadCompanies();
       },
-      (err) => this.toastr.error(this.i18n.t('pages.companies.failedToDeactivate'), err.message)
+      (err) => this.toastr.error('ปิดใช้งานบริษัทไม่สำเร็จ', err.message)
     );
   }
 
   suspendCompany(company: Company): void {
-    const reason = prompt(this.i18n.t('pages.companies.suspendReasonPrompt'));
+    const reason = prompt('กรุณาระบุเหตุผลในการระงับการใช้งาน');
     if (!reason) return;
 
-    if (!confirm(`${this.i18n.t('pages.companies.suspendConfirm')} "${company.company_name}"?`)) return;  // snake_case
+    if (!confirm(`คุณต้องการระงับการใช้งาน "${company.company_name}"?`)) return;  // snake_case
 
-    // Update company status - Note: Backend may need a SUSPENDED status or use additional_settings
-    const updateData: CompanyUpdate = {
-      status: 'PENDING',  // snake_case - or use a SUSPENDED status if backend supports it
-      // Store suspend reason in company_info or additional_settings if needed
-    };
     // ✅ Auto-unsubscribe on component destroy
-    const obs = this.companyService.updateCompany(company.company_id, updateData);  // snake_case
+    const obs = this.companyService.suspendCompany(company.company_id, reason);
     this.subscribe(
       obs,
       () => {
-        this.toastr.success(`${this.i18n.t('pages.companies.companySuspended')} "${company.company_name}"`);  // snake_case
+        this.toastr.success(`ระงับการใช้งานบริษัท "${company.company_name}" เรียบร้อยแล้ว`);  // snake_case
         this.loadCompanies();
       },
-      (err) => this.toastr.error(this.i18n.t('pages.companies.failedToSuspend'), err.message)
+      (err) => this.toastr.error('ระงับการใช้งานบริษัทไม่สำเร็จ', err.message)
     );
   }
 
@@ -681,7 +688,7 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
     const selected = this.selectedCompanies();
     if (selected.length === 0) return;
 
-    if (!confirm(`${this.i18n.t('pages.companies.bulkActivateConfirm')} ${selected.length} ${this.i18n.t('pages.companies.companies')}?`)) return;
+    if (!confirm(`คุณต้องการเปิดใช้งานบริษัทที่เลือกจำนวน ${selected.length} รายการ?`)) return;
 
     this.bulkOperationInProgress.set(true);
     this.bulkOperationProgress.set(0);
@@ -698,13 +705,13 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
     );
 
     Promise.all(activatePromises).then(() => {
-      this.toastr.success(`${this.i18n.t('pages.companies.bulkActivated')} ${selected.length} ${this.i18n.t('pages.companies.companies')}`);
+      this.toastr.success(`เปิดใช้งานแล้ว ${selected.length} รายการ`);
       this.clearSelection();
       this.bulkOperationInProgress.set(false);
       this.bulkOperationProgress.set(0);
       this.loadCompanies();
     }).catch(err => {
-      this.toastr.error(this.i18n.t('pages.companies.failedToBulkActivate'), err.message);
+      this.toastr.error('เปิดใช้งานแบบกลุ่มไม่สำเร็จ', err.message);
       this.bulkOperationInProgress.set(false);
       this.bulkOperationProgress.set(0);
     });
@@ -714,7 +721,7 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
     const selected = this.selectedCompanies();
     if (selected.length === 0) return;
 
-    if (!confirm(`${this.i18n.t('pages.companies.bulkDeactivateConfirm')} ${selected.length} ${this.i18n.t('pages.companies.companies')}?`)) return;
+    if (!confirm(`คุณต้องการปิดใช้งานบริษัทที่เลือกจำนวน ${selected.length} รายการ?`)) return;
 
     this.bulkOperationInProgress.set(true);
     this.bulkOperationProgress.set(0);
@@ -731,13 +738,13 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
     );
 
     Promise.all(deactivatePromises).then(() => {
-      this.toastr.success(`${this.i18n.t('pages.companies.bulkDeactivated')} ${selected.length} ${this.i18n.t('pages.companies.companies')}`);
+      this.toastr.success(`ปิดใช้งานแล้ว ${selected.length} รายการ`);
       this.clearSelection();
       this.bulkOperationInProgress.set(false);
       this.bulkOperationProgress.set(0);
       this.loadCompanies();
     }).catch(err => {
-      this.toastr.error(this.i18n.t('pages.companies.failedToBulkDeactivate'), err.message);
+      this.toastr.error('ปิดใช้งานแบบกลุ่มไม่สำเร็จ', err.message);
       this.bulkOperationInProgress.set(false);
       this.bulkOperationProgress.set(0);
     });
@@ -747,7 +754,7 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
     const selected = this.selectedCompanies();
     if (selected.length === 0) return;
 
-    if (!confirm(`${this.i18n.t('pages.companies.bulkDeleteConfirm')} ${selected.length} ${this.i18n.t('pages.companies.companies')}?`)) return;
+    if (!confirm(`คุณต้องการลบบริษัทที่เลือกจำนวน ${selected.length} รายการ?`)) return;
 
     this.bulkOperationInProgress.set(true);
     this.bulkOperationProgress.set(0);
@@ -764,13 +771,13 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
     );
 
     Promise.all(deletePromises).then(() => {
-      this.toastr.success(`${this.i18n.t('pages.companies.bulkDeleted')} ${selected.length} ${this.i18n.t('pages.companies.companies')}`);
+      this.toastr.success(`ลบแล้ว ${selected.length} รายการ`);
       this.clearSelection();
       this.bulkOperationInProgress.set(false);
       this.bulkOperationProgress.set(0);
       this.loadCompanies();
     }).catch(err => {
-      this.toastr.error(this.i18n.t('pages.companies.failedToBulkDelete'), err.message);
+      this.toastr.error('ลบแบบกลุ่มไม่สำเร็จ', err.message);
       this.bulkOperationInProgress.set(false);
       this.bulkOperationProgress.set(0);
     });
@@ -793,13 +800,13 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
 
   getStatusDisplayText(status: 'PUBLIC' | 'PENDING' | number): string {
     const statusStr = this.getStatusString(status);
-    return statusStr;
+    return statusStr === 'PUBLIC' ? 'ใช้งานปกติ' : statusStr === 'PENDING' ? 'รออนุมัติ' : statusStr;
   }
 
   formatDateTime(dateStr: string): string {
     if (!dateStr) return '';
     const date = new Date(dateStr);
-    return date.toLocaleDateString('en-US', {
+    return date.toLocaleDateString('th-TH', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
@@ -1073,12 +1080,12 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
     this.subscribe(
       obs,
       () => {
-        this.toastr.success(this.i18n.t('pages.companies.settingsSaved'));
+        this.toastr.success('บันทึกการตั้งค่าเรียบร้อยแล้ว');
         this.saving.set(false);
         this.closeSettingsModal();
       },
       (err) => {
-        this.toastr.error(this.i18n.t('pages.companies.failedToSaveSettings'), err.message || err.error?.detail || 'Unknown error');
+        this.toastr.error('บันทึกการตั้งค่าไม่สำเร็จ', err.message || err.error?.detail || 'Unknown error');
         this.saving.set(false);
       }
     );
@@ -1088,7 +1095,7 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
     // Export companies to CSV
     const companies = this.companies();
     if (companies.length === 0) {
-      this.toastr.warning(this.i18n.t('pages.companies.noCompaniesToExport'));
+      this.toastr.warning('ไม่มีข้อมูลบริษัทสำหรับส่งออก');
       return;
     }
 
@@ -1121,10 +1128,6 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
 
-    this.toastr.success(this.i18n.t('pages.companies.companiesExported'));
-  }
-
-  t(key: string): string {
-    return this.i18n.translate(key);
+    this.toastr.success('ส่งออกข้อมูลเรียบร้อยแล้ว');
   }
 }
