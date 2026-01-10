@@ -1100,123 +1100,166 @@ export class FaceRecognitionLiveComponent extends BaseComponent implements OnIni
     // Clear canvas
     overlayCtx.clearRect(0, 0, stream.overlayCanvas.width, stream.overlayCanvas.height);
 
-    // Function to draw text with background
-    const drawTextWithBg = (text: string, x: number, y: number, bgColor: string = 'rgba(0, 0, 0, 0.7)', textColor: string = '#FFFFFF') => {
-      overlayCtx.font = '14px Arial';
-      const textMetrics = overlayCtx.measureText(text);
-      const textHeight = 14;
-      const padding = 4;
-
-      overlayCtx.fillStyle = bgColor;
-      overlayCtx.fillRect(x, y - textHeight - padding, textMetrics.width + (padding * 2), textHeight + (padding * 2));
-
-      overlayCtx.fillStyle = textColor;
-      overlayCtx.fillText(text, x + padding, y);
+    // Common Styles
+    const colors = {
+      recognized: '#10B981', // Emerald 500
+      unknown: '#EF4444',    // Red 500
+      detecting: '#3B82F6',  // Blue 500
+      text: '#FFFFFF',
+      bg: 'rgba(17, 24, 39, 0.75)' // Gray 900 with opacity
     };
+
+    // Draw scanning line animation (global time based)
+    const time = Date.now() / 1000;
+    const scanOffset = (time % 2) / 2; // 0.0 to 1.0
 
     // Draw each detection
     detections.forEach((detection, index) => {
       const { x, y, width, height } = detection.boundingBox;
 
-      // Find the most recent detection info for this bounding box
-      // Match by position and size (within tolerance)
+      // Find detection info
       let detectionInfo: DetectionInfo | undefined;
-      const tolerance = 50; // pixels
-
-      stream.currentDetections.forEach((info, faceId) => {
-        // Use the most recent detection info
+      stream.currentDetections.forEach((info) => {
+        // Simple matching logic (could be improved with IoU)
         if (!detectionInfo || info.timestamp > detectionInfo.timestamp) {
           detectionInfo = info;
         }
       });
 
-      // Fallback to detection data if no stored info
+      // Determine state
       const isRecognized = detectionInfo?.recognized || false;
-      const name = detectionInfo?.name;
-      const gender = detectionInfo?.gender || detection.gender;
-      const age = detectionInfo?.age || detection.age;
-
-      // Draw landmarks FIRST if enabled (so they appear behind bounding box)
+      const name = detectionInfo?.name || (isRecognized ? 'Unknown' : 'Scanning...');
+      const color = isRecognized ? colors.recognized : (detectionInfo ? colors.unknown : colors.detecting);
+      
+      // 1. Draw Landmarks (Subtle)
       if (stream.showLandmarks && detection.landmarks) {
+        overlayCtx.globalAlpha = 0.6;
         this.drawLandmarks(overlayCtx, detection.landmarks);
+        overlayCtx.globalAlpha = 1.0;
       }
 
-      // Draw bounding box
-      overlayCtx.strokeStyle = isRecognized ? '#10B981' : '#EF4444';
-      overlayCtx.lineWidth = 3; // Thicker line for better visibility
-      overlayCtx.strokeRect(x, y, width, height);
-
-      // Draw corner accents for modern look
-      const cornerLength = Math.min(width, height) * 0.2;
-      overlayCtx.lineWidth = 5;
-
+      // 2. Draw Bounding Box (Corners Only style)
+      overlayCtx.strokeStyle = color;
+      overlayCtx.lineWidth = 3;
+      overlayCtx.shadowColor = color;
+      overlayCtx.shadowBlur = 10;
+      
+      const cornerSize = Math.min(width, height) * 0.2;
+      
       // Top-Left
       overlayCtx.beginPath();
-      overlayCtx.moveTo(x, y + cornerLength);
+      overlayCtx.moveTo(x, y + cornerSize);
       overlayCtx.lineTo(x, y);
-      overlayCtx.lineTo(x + cornerLength, y);
+      overlayCtx.lineTo(x + cornerSize, y);
       overlayCtx.stroke();
 
       // Top-Right
       overlayCtx.beginPath();
-      overlayCtx.moveTo(x + width - cornerLength, y);
+      overlayCtx.moveTo(x + width - cornerSize, y);
       overlayCtx.lineTo(x + width, y);
-      overlayCtx.lineTo(x + width, y + cornerLength);
+      overlayCtx.lineTo(x + width, y + cornerSize);
       overlayCtx.stroke();
 
       // Bottom-Right
       overlayCtx.beginPath();
-      overlayCtx.moveTo(x + width, y + height - cornerLength);
+      overlayCtx.moveTo(x + width, y + height - cornerSize);
       overlayCtx.lineTo(x + width, y + height);
-      overlayCtx.lineTo(x + width - cornerLength, y + height);
+      overlayCtx.lineTo(x + width - cornerSize, y + height);
       overlayCtx.stroke();
 
       // Bottom-Left
       overlayCtx.beginPath();
-      overlayCtx.moveTo(x + cornerLength, y + height);
+      overlayCtx.moveTo(x + cornerSize, y + height);
       overlayCtx.lineTo(x, y + height);
-      overlayCtx.lineTo(x, y + height - cornerLength);
+      overlayCtx.lineTo(x, y + height - cornerSize);
       overlayCtx.stroke();
 
-      // Reset line width
-      overlayCtx.lineWidth = 2;
+      // Reset shadow
+      overlayCtx.shadowBlur = 0;
 
-      // Draw confidence score at top
-      const confidenceColor = isRecognized ? '#10B981' : '#EF4444';
-      const confidenceBg = isRecognized ? 'rgba(16, 185, 129, 0.7)' : 'rgba(239, 68, 68, 0.7)';
-      drawTextWithBg(
-        `${Math.round(detection.confidence * 100)}%`,
-        x,
-        y - 5,
-        confidenceBg,
-        '#FFFFFF'
-      );
-
-      // Draw name if recognized
-      if (isRecognized && name) {
-        drawTextWithBg(
-          name,
-          x,
-          y + height + 20,
-          'rgba(16, 185, 129, 0.7)',
-          '#FFFFFF'
-        );
+      // 3. Scanning Line Effect
+      if (!isRecognized) {
+        const scanY = y + (height * scanOffset);
+        const gradient = overlayCtx.createLinearGradient(x, scanY, x + width, scanY);
+        gradient.addColorStop(0, 'rgba(59, 130, 246, 0)');
+        gradient.addColorStop(0.5, 'rgba(59, 130, 246, 0.8)');
+        gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
+        
+        overlayCtx.fillStyle = gradient;
+        overlayCtx.fillRect(x, scanY - 1, width, 2);
       }
 
-      // Draw age and gender
-      if (age && gender) {
-        const genderText = gender.toLowerCase() === 'male' ? 'ชาย' : gender.toLowerCase() === 'female' ? 'หญิง' : 'ไม่ทราบ';
-        const ageText = `${Math.round(age)} ปี`;
-        const infoText = `${genderText} ${ageText}`;
+      // 4. Info Card (Glassmorphism)
+      // Position: Top of the box, centered
+      const cardWidth = Math.max(160, width * 1.2); // Min width or slightly wider than face
+      const cardHeight = 55;
+      const cardX = x + (width - cardWidth) / 2;
+      const cardY = y - cardHeight - 15; // Above the face
 
-        drawTextWithBg(
-          infoText,
-          x,
-          y + height + (isRecognized && name ? 40 : 20),
-          'rgba(96, 165, 250, 0.7)',
-          '#FFFFFF'
-        );
+      // Draw Card Background
+      overlayCtx.fillStyle = colors.bg;
+      overlayCtx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+      overlayCtx.lineWidth = 1;
+      
+      // Rounded Rect helper
+      overlayCtx.beginPath();
+      const r = 8; // border radius
+      overlayCtx.moveTo(cardX + r, cardY);
+      overlayCtx.lineTo(cardX + cardWidth - r, cardY);
+      overlayCtx.quadraticCurveTo(cardX + cardWidth, cardY, cardX + cardWidth, cardY + r);
+      overlayCtx.lineTo(cardX + cardWidth, cardY + cardHeight - r);
+      overlayCtx.quadraticCurveTo(cardX + cardWidth, cardY + cardHeight, cardX + cardWidth - r, cardY + cardHeight);
+      overlayCtx.lineTo(cardX + r, cardY + cardHeight);
+      overlayCtx.quadraticCurveTo(cardX, cardY + cardHeight, cardX, cardY + cardHeight - r);
+      overlayCtx.lineTo(cardX, cardY + r);
+      overlayCtx.quadraticCurveTo(cardX, cardY, cardX + r, cardY);
+      overlayCtx.closePath();
+      
+      overlayCtx.fill();
+      overlayCtx.stroke();
+
+      // Connecting line from card to box
+      overlayCtx.beginPath();
+      overlayCtx.moveTo(x + width / 2, y);
+      overlayCtx.lineTo(x + width / 2, cardY + cardHeight);
+      overlayCtx.strokeStyle = color;
+      overlayCtx.lineWidth = 1;
+      overlayCtx.stroke();
+
+      // 5. Draw Text Content
+      overlayCtx.fillStyle = colors.text;
+      overlayCtx.textAlign = 'left';
+      overlayCtx.textBaseline = 'middle';
+
+      // Name (Bold)
+      overlayCtx.font = 'bold 14px "Sarabun", sans-serif';
+      overlayCtx.fillText(name, cardX + 12, cardY + 18);
+
+      // Details (Smaller)
+      overlayCtx.font = '12px "Sarabun", sans-serif';
+      overlayCtx.fillStyle = '#9CA3AF'; // Gray 400
+      
+      let details = `${Math.round(detection.confidence * 100)}%`;
+      if (detection.gender) {
+        const genderText = detection.gender.toLowerCase() === 'male' ? 'ชาย' : detection.gender.toLowerCase() === 'female' ? 'หญิง' : '';
+        if (genderText) details += ` • ${genderText}`;
       }
+      if (detection.age) {
+        details += ` • ${Math.round(detection.age)} ปี`;
+      }
+      
+      overlayCtx.fillText(details, cardX + 12, cardY + 38);
+
+      // Status Indicator Dot
+      overlayCtx.beginPath();
+      overlayCtx.arc(cardX + cardWidth - 15, cardY + cardHeight / 2, 4, 0, Math.PI * 2);
+      overlayCtx.fillStyle = color;
+      overlayCtx.fill();
+      // Dot Glow
+      overlayCtx.shadowColor = color;
+      overlayCtx.shadowBlur = 8;
+      overlayCtx.stroke();
+      overlayCtx.shadowBlur = 0; // Reset
     });
   }
 

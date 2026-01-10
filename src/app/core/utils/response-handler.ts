@@ -5,7 +5,8 @@
  * and provides consistent transformation
  */
 
-import { toCamelCase } from './field-transformer';
+// Removed toCamelCase import as we want to preserve snake_case
+// import { toCamelCase } from './field-transformer';
 
 /**
  * Standard API Response Structure
@@ -30,67 +31,65 @@ export interface PaginatedApiResponse<T> {
 
 /**
  * Handle standard API response
- * Transforms response to camelCase and extracts data
+ * Extracts data without transforming field names
  */
 export function handleApiResponse<T>(response: any): T {
-  // Transform to camelCase first
-  const transformed = toCamelCase(response);
+  // Return response as-is (snake_case)
+  // Check common response structures
   
-  // Handle different response structures
-  if (transformed.data !== undefined) {
-    return transformed.data as T;
+  if (response.data !== undefined) {
+    return response.data as T;
   }
   
-  if (transformed.items !== undefined) {
-    return transformed.items as T;
+  if (response.items !== undefined) {
+    return response.items as T;
   }
   
   // If response is already the data itself
-  return transformed as T;
+  return response as T;
 }
 
 /**
  * Handle paginated API response
- * Transforms response to camelCase and normalizes structure
+ * Normalizes structure without transforming field names
  */
 export function handlePaginatedResponse<T>(response: any): PaginatedApiResponse<T> {
-  // Transform to camelCase first
-  const transformed = toCamelCase(response);
+  // Use response as-is (snake_case)
   
   // Handle different pagination structures
-  if (transformed.data && Array.isArray(transformed.data)) {
+  if (response.data && Array.isArray(response.data)) {
     return {
-      total: transformed.total || transformed.data.length,
-      data: transformed.data,
-      page: transformed.page,
-      size: transformed.size
+      total: response.total || response.data.length,
+      data: response.data,
+      page: response.page,
+      size: response.size
     };
   }
   
-  if (transformed.items && Array.isArray(transformed.items)) {
+  if (response.items && Array.isArray(response.items)) {
     return {
-      total: transformed.total || transformed.items.length,
-      data: transformed.items,
-      page: transformed.page,
-      size: transformed.size
+      total: response.total || response.items.length,
+      data: response.items,
+      page: response.page,
+      size: response.size
     };
   }
   
   // If response is already an array
-  if (Array.isArray(transformed)) {
+  if (Array.isArray(response)) {
     return {
-      total: transformed.length,
-      data: transformed
+      total: response.length,
+      data: response
     };
   }
   
-  // If response has a nested structure
-  if (transformed.results && Array.isArray(transformed.results)) {
+  // If response has a nested structure (e.g. Django/DRF style)
+  if (response.results && Array.isArray(response.results)) {
     return {
-      total: transformed.count || transformed.total || transformed.results.length,
-      data: transformed.results,
-      page: transformed.page,
-      size: transformed.size
+      total: response.count || response.total || response.results.length,
+      data: response.results,
+      page: response.page,
+      size: response.size
     };
   }
   

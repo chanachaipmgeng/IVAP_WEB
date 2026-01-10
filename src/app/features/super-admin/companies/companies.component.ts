@@ -70,7 +70,7 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
       if (typeof c.status === 'string') {
         return c.status === 'PENDING' || c.status.toUpperCase() === 'PENDING';  // snake_case - support uppercase
       }
-      return c.status === 2;
+      return c.status === 0;
     }).length;
   });
 
@@ -342,6 +342,7 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
     this.subscribe(
       obs,
       (response) => {
+        console.log('response', response);
         this.companies.set(response.data || []);
         this.totalRecords.set(response.total || 0);
         this.loading.set(false);  // Clear loading state
@@ -422,6 +423,15 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
 
   openEditModal(company: Company): void {
     this.editingCompany.set(company);
+
+    // Normalize status to uppercase for the select input
+    let statusValue: 'PUBLIC' | 'PENDING' = 'PENDING';
+    if (typeof company.status === 'string') {
+      statusValue = company.status.toUpperCase() as 'PUBLIC' | 'PENDING';
+    } else {
+      statusValue = company.status === 1 ? 'PUBLIC' : 'PENDING';
+    }
+
     this.formData = {
       company_name: company.company_name || '',  // snake_case
       company_code: company.company_code || '',  // snake_case
@@ -431,7 +441,8 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
       longitude: company.longitude || 0,
       owner_name: company.owner_name || '',  // snake_case
       contact: company.contact || '',
-      status: typeof company.status === 'string' ? company.status : (company.status === 1 ? 'PUBLIC' : 'PENDING')  // snake_case - use uppercase
+      status: statusValue,
+      picture: company.picture
     };
     this.showModal.set(true);
   }
@@ -476,7 +487,7 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
 
     // Check if code already exists (only for new companies)
     if (!this.editingCompany()) {
-      const existingCompany = this.companies().find(c => c.company_code.toLowerCase() === this.formData.company_code?.toLowerCase());  // snake_case
+      const existingCompany = this.companies().find(c => c.company_code && c.company_code.toLowerCase() === this.formData.company_code?.toLowerCase());  // snake_case
       if (existingCompany) {
         this.toastr.error('รหัสบริษัทนี้มีอยู่ในระบบแล้ว');
         return;
@@ -484,6 +495,7 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
     } else {
       // For editing, check if code exists for another company
       const existingCompany = this.companies().find(c =>
+        c.company_code &&
         c.company_code.toLowerCase() === this.formData.company_code?.toLowerCase() &&  // snake_case
         c.company_id !== this.editingCompany()!.company_id  // snake_case
       );
@@ -657,7 +669,7 @@ export class CompaniesComponent extends BaseComponent implements OnInit {
     if (typeof company.status === 'string') {
       return company.status.toUpperCase() === 'PENDING';  // snake_case - use uppercase
     }
-    return company.status === 2;
+    return company.status === 0;
   }
 
   // Details Modal

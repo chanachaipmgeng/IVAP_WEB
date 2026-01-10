@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { toCamelCase, toSnakeCase } from '../utils/field-transformer';
+import { toSnakeCase } from '../utils/field-transformer';
 import { extractErrorMessage } from '../utils/response-handler';
 
 /**
@@ -92,20 +92,9 @@ export class ApiService {
       httpOptions.responseType = options.responseType;
     }
 
-    // Transform response based on skipTransform option
+    // Return response as-is (no camelCase conversion)
     return this.http.get<unknown>(`${this.baseUrl}${endpoint}`, httpOptions).pipe(
-      map(response => {
-        // Don't transform blob or text responses
-        if (options?.responseType === 'blob' || options?.responseType === 'text') {
-          return response as T;
-        }
-        // If skipTransform is true, return response as-is (snake_case)
-        if (options?.skipTransform) {
-          return response as T;
-        }
-        // Otherwise transform to camelCase
-        return toCamelCase(response) as T;
-      }),
+      map(response => response as T),
       catchError(this.handleError)
     );
   }
@@ -147,18 +136,7 @@ export class ApiService {
     }
 
     return this.http.post<unknown>(`${this.baseUrl}${endpoint}`, transformedData, httpOptions).pipe(
-      map(response => {
-        // Don't transform blob or text responses
-        if (options?.responseType === 'blob' || options?.responseType === 'text') {
-          return response as T;
-        }
-        // If skipTransform is true, return response as-is (snake_case)
-        if (options?.skipTransform) {
-          return response as T;
-        }
-        // Otherwise transform to camelCase
-        return toCamelCase(response) as T;
-      }),
+      map(response => response as T),
       catchError(this.handleError)
     );
   }
@@ -202,12 +180,7 @@ export class ApiService {
     }
 
     return this.http.put<unknown>(`${this.baseUrl}${endpoint}`, transformedData, httpOptions).pipe(
-      map(response => {
-        if (options?.skipTransform) {
-          return response as T;
-        }
-        return toCamelCase(response) as T;
-      }),
+      map(response => response as T),
       catchError(this.handleError)
     );
   }
@@ -251,12 +224,7 @@ export class ApiService {
     }
 
     return this.http.patch<unknown>(`${this.baseUrl}${endpoint}`, transformedData, httpOptions).pipe(
-      map(response => {
-        if (options?.skipTransform) {
-          return response as T;
-        }
-        return toCamelCase(response) as T;
-      }),
+      map(response => response as T),
       catchError(this.handleError)
     );
   }
@@ -310,10 +278,7 @@ export class ApiService {
         if (!response) {
           return undefined as T;
         }
-        if (options?.skipTransform) {
-          return response as T;
-        }
-        return toCamelCase(response) as T;
+        return response as T;
       }),
       catchError(this.handleError)
     );
@@ -349,17 +314,7 @@ export class ApiService {
       headers: headers
     }).pipe(
       map(response => {
-        // Only convert to camelCase if skipTransform is false (default is to transform)
-        // For Face Recognition which returns specific snake_case contracts, we might want to skip.
-        // But since this is a shared method, let's keep consistent behavior or add options param to upload methods.
-        // For now, if we want to STOP automatic camelCase conversion globally or for specific calls, we'd need to change this.
-
-        // However, the user specifically asked to remove automatic camelCase conversion.
-        // Let's modify to return response as-is for upload methods if we want to be consistent with get/post logic,
-        // OR simply return response as-is if that's the requirement.
-
         // Assuming we want to stop forcing camelCase on uploads to respect backend DTOs more strictly
-        // or rely on explicit manual conversion if needed.
         return response as T;
       }),
       catchError(this.handleError)
@@ -415,4 +370,3 @@ export class ApiService {
     return throwError(() => error);
   }
 }
-
