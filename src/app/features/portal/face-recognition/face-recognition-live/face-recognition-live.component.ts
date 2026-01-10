@@ -751,21 +751,42 @@ export class FaceRecognitionLiveComponent extends BaseComponent implements OnIni
           const faceCtx = faceCanvas.getContext('2d');
 
           if (faceCtx) {
-            faceCanvas.width = box.width;
-            faceCanvas.height = box.height;
+            // Optimization: Resize large faces to save bandwidth
+            const MAX_DIMENSION = 320;
+            let targetWidth = box.width;
+            let targetHeight = box.height;
+            const aspectRatio = box.width / box.height;
+
+            if (targetWidth > MAX_DIMENSION || targetHeight > MAX_DIMENSION) {
+              if (targetWidth > targetHeight) {
+                targetWidth = MAX_DIMENSION;
+                targetHeight = targetWidth / aspectRatio;
+              } else {
+                targetHeight = MAX_DIMENSION;
+                targetWidth = targetHeight * aspectRatio;
+              }
+            }
+
+            faceCanvas.width = targetWidth;
+            faceCanvas.height = targetHeight;
+            
+            // Draw with smoothing for better quality downscaling
+            faceCtx.imageSmoothingEnabled = true;
+            faceCtx.imageSmoothingQuality = 'high';
+            
             faceCtx.drawImage(
               canvas,
               box.x, box.y, box.width, box.height,
-              0, 0, box.width, box.height
+              0, 0, targetWidth, targetHeight
             );
 
             // Convert to base64
-            const faceImage = faceCanvas.toDataURL('image/jpeg', 0.8);
+            const faceImage = faceCanvas.toDataURL('image/jpeg', 0.85);
 
             try {
               // Convert canvas to blob
               const blob = await new Promise<Blob>((resolve) => {
-                faceCanvas.toBlob((blob) => resolve(blob!), 'image/jpeg', 0.9);
+                faceCanvas.toBlob((blob) => resolve(blob!), 'image/jpeg', 0.85);
               });
               const file = new File([blob], `face-${trackedFace.id}.jpg`, { type: 'image/jpeg' });
 
