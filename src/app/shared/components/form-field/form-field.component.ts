@@ -27,15 +27,16 @@ import { TranslateModule } from '@ngx-translate/core';
 export interface FormFieldConfig {
   key: string;
   label: string;
-  type: 'text' | 'email' | 'password' | 'select' | 'textarea' | 'checkbox' | 'date' | 'number';
+  type: 'text' | 'email' | 'password' | 'select' | 'textarea' | 'checkbox' | 'date' | 'number' | 'file';
   placeholder?: string;
   required?: boolean;
   options?: { value: string | number; label: string }[];
-  value?: string | number | boolean | null;
+  value?: string | number | boolean | null | File;
   error?: string;
   hint?: string;
   fullWidth?: boolean; // If true, spans full width in grid
   rows?: number; // For textarea
+  accept?: string; // For file input
 }
 
 @Component({
@@ -71,6 +72,29 @@ export interface FormFieldConfig {
           [attr.aria-describedby]="config.error ? errorId : (config.hint ? hintId : null)"
           [class.border-error-500]="config.error"
           (ngModelChange)="onValueChange($event)"
+        />
+      }
+
+      <!-- File Input -->
+      @if (config.type === 'file') {
+        <input
+          [id]="fieldId"
+          type="file"
+          class="block w-full text-sm text-gray-500
+            file:mr-4 file:py-2 file:px-4
+            file:rounded-full file:border-0
+            file:text-sm file:font-semibold
+            file:bg-blue-50 file:text-blue-700
+            hover:file:bg-blue-100
+            dark:file:bg-blue-900/30 dark:file:text-blue-400"
+          [accept]="config.accept || '*/*'"
+          [required]="config.required ?? false"
+          [disabled]="disabled"
+          [attr.aria-label]="ariaLabel || config.label"
+          [attr.aria-required]="config.required ?? false"
+          [attr.aria-invalid]="!!config.error"
+          [attr.aria-describedby]="config.error ? errorId : (config.hint ? hintId : null)"
+          (change)="onFileChange($event)"
         />
       }
 
@@ -216,7 +240,7 @@ export class FormFieldComponent {
   /**
    * Emitted when field value changes
    */
-  @Output() valueChange = new EventEmitter<{ key: string; value: string | number | boolean | null }>();
+  @Output() valueChange = new EventEmitter<{ key: string; value: string | number | boolean | null | File }>();
 
   /**
    * Get error ID for ARIA describedby
@@ -237,6 +261,17 @@ export class FormFieldComponent {
    */
   onValueChange(value: string | number | boolean | null): void {
     this.valueChange.emit({ key: this.config.key, value });
+  }
+
+  /**
+   * Handle file selection
+   */
+  onFileChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      // Emit the file object
+      this.valueChange.emit({ key: this.config.key, value: input.files[0] });
+    }
   }
 }
 

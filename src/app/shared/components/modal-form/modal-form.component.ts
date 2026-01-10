@@ -153,8 +153,8 @@ export class ModalFormComponent {
   onFieldChange(event: { key: string; value: unknown }): void {
     const field = this.fields.find(f => f.key === event.key);
     if (field) {
-      // Type-safe assignment: FormFieldConfig.value accepts string | number | boolean | null | undefined
-      const value = event.value as string | number | boolean | null | undefined;
+      // Type-safe assignment: FormFieldConfig.value accepts string | number | boolean | null | undefined | File
+      const value = event.value as string | number | boolean | null | undefined | File;
       field.value = value;
       // Emit field change event for parent component to handle validation
       this.fieldChange.emit(event);

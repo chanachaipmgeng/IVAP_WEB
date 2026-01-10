@@ -90,12 +90,14 @@ export class StructureComponent extends BaseComponent implements OnInit {
 
   onTabChange(tabId: string): void {
     this.activeTab.set(tabId as 'company-info' | 'departments' | 'positions');
-    
-    // Load data for the selected tab if not loaded
-    if (tabId === 'departments' && this.departments().length === 0) {
+
+    // Refresh data when tab becomes active to ensure up-to-date info
+    if (tabId === 'departments') {
         this.loadDepartments();
-    } else if (tabId === 'positions' && this.positions().length === 0) {
+    } else if (tabId === 'positions') {
         this.loadPositions();
+    } else if (tabId === 'company-info') {
+        this.loadCompanyInfo();
     }
   }
 
@@ -103,7 +105,7 @@ export class StructureComponent extends BaseComponent implements OnInit {
   company = signal<Company | null>(null);
   loadingCompany = signal(false);
   savingCompany = signal(false);
-  
+
   // Company Form Data
   companyFormData = {
     name: '',
@@ -231,16 +233,57 @@ export class StructureComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Start with loading company info
+    // Watch for user changes to reload data when companyId becomes available
+    this.subscribe(
+      this.auth.currentUser$,
+      (user) => {
+        if (user && (user.companyId || user.company_id)) {
+          // If we haven't loaded data yet, or if user changed, load/reload
+          // This handles both initial load (if auth is async) and updates
+          // Use a flag or check if data is empty to avoid double loading on init if both ngOnInit calls and subscription fires
+
+          // But actually, ngOnInit calls below might fail if user is not ready.
+          // This subscription ensures we retry when user IS ready.
+
+          // Only reload if we are on that tab and haven't loaded successfully?
+          // Or just call the load methods, they handle "if companyId exists" check.
+
+          // Let's just trigger load for active tab + company info
+          this.loadCompanyInfo();
+
+          if (this.activeTab() === 'departments') {
+             this.loadDepartments();
+          } else if (this.activeTab() === 'positions') {
+             this.loadPositions();
+          }
+          // Note: The previous direct calls in ngOnInit might have failed if user wasn't ready.
+          // This ensures they run when user becomes available.
+        }
+      }
+    );
+
+    // Initial attempt (in case user is already synchronously available)
     this.loadCompanyInfo();
+    this.loadDepartments();
+    this.loadPositions();
+  }
+
+  private getCompanyId(): string | undefined {
+    const user = this.auth.currentUser();
+    return (
+      user?.companyId?.toString() ||
+      user?.company_id ||
+      user?.user_metadata?.['company_id'] ||
+      user?.userMetadata?.['company_id']
+    );
   }
 
   // --- Company Methods ---
 
   loadCompanyInfo(): void {
     this.loadingCompany.set(true);
-    const companyId = this.auth.currentUser()?.companyId || this.auth.currentUser()?.company_id;
-    
+    const companyId = this.getCompanyId();
+
     if (!companyId) {
         console.warn('No company ID found for current user');
         this.loadingCompany.set(false);
@@ -253,7 +296,7 @@ export class StructureComponent extends BaseComponent implements OnInit {
             // Handle both wrapped response and direct object
             const companyData = (response.data || response) as Company;
             this.company.set(companyData);
-            
+
             // Try to parse company_info if it's JSON
             let additionalInfo: any = {};
             try {
@@ -283,7 +326,7 @@ export class StructureComponent extends BaseComponent implements OnInit {
   }
 
   saveCompanyInfo(): void {
-    const companyId = this.auth.currentUser()?.companyId || this.auth.currentUser()?.company_id;
+    const companyId = this.getCompanyId();
     if (!companyId) return;
 
     this.savingCompany.set(true);
@@ -325,7 +368,7 @@ export class StructureComponent extends BaseComponent implements OnInit {
    * Load departments for current company
    */
   loadDepartments(): void {
-    const companyId = this.auth.currentUser()?.companyId || this.auth.currentUser()?.company_id;
+    const companyId = this.getCompanyId();
     if (!companyId) return;
 
     // ✅ Auto-unsubscribe on component destroy
@@ -376,7 +419,7 @@ export class StructureComponent extends BaseComponent implements OnInit {
   saveDepartment(): void {
     this.savingDept.set(true);
 
-    const companyId = this.auth.currentUser()?.companyId || this.auth.currentUser()?.company_id;
+    const companyId = this.getCompanyId();
     if (!companyId) {
       this.savingDept.set(false);
       return;
@@ -412,9 +455,12 @@ export class StructureComponent extends BaseComponent implements OnInit {
   deleteDepartment(dept: Department): void {
     if (!confirm(`Delete department ${dept.th_name || dept.eng_name}?`)) return;
 
+    const companyId = this.getCompanyId();
+    if (!companyId) return;
+
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
-      this.departmentService.delete(dept.department_id),
+      this.departmentService.deleteWithCompanyId(dept.department_id, String(companyId)),
       () => {
         this.loadDepartments();
       },
@@ -425,9 +471,9 @@ export class StructureComponent extends BaseComponent implements OnInit {
   }
 
   // --- Position Methods ---
-  
+
   loadPositions(): void {
-    const companyId = this.auth.currentUser()?.companyId || this.auth.currentUser()?.company_id;
+    const companyId = this.getCompanyId();
     if (!companyId) return;
 
     // ✅ Auto-unsubscribe on component destroy
@@ -478,7 +524,7 @@ export class StructureComponent extends BaseComponent implements OnInit {
   savePosition(): void {
     this.savingPos.set(true);
 
-    const companyId = this.auth.currentUser()?.companyId || this.auth.currentUser()?.company_id;
+    const companyId = this.getCompanyId();
     if (!companyId) {
       this.savingPos.set(false);
       return;
@@ -514,9 +560,12 @@ export class StructureComponent extends BaseComponent implements OnInit {
   deletePosition(pos: Position): void {
     if (!confirm(`Delete position ${pos.th_name || pos.eng_name}?`)) return;
 
+    const companyId = this.getCompanyId();
+    if (!companyId) return;
+
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
-      this.positionService.delete(pos.position_id),
+      this.positionService.deleteWithCompanyId(pos.position_id, String(companyId)),
       () => {
         this.loadPositions();
       },

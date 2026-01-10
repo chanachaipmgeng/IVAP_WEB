@@ -66,7 +66,12 @@ export class AuthService {
     const roles = rawUser.roles || [];
     const permissions = rawUser.permissions || [];
 
-    return {
+    // Extract company info from user_metadata if available
+    const userMetadata = rawUser.user_metadata || rawUser.userMetadata || {};
+    const companyIdFromMetadata = userMetadata.company_id || userMetadata.companyId;
+    const companyNameFromMetadata = userMetadata.company_name || userMetadata.companyName;
+
+    const normalizedUser = {
       // Required fields from Member
       memberId,
       member_id: rawUser.member_id || memberId,
@@ -79,11 +84,11 @@ export class AuthService {
       status,
       roles,
       permissions,
-      // Optional ields from Member
+      // Optional fields from Member
       phone_number: rawUser.phone_number || rawUser.phoneNumber,
       member_type: rawUser.member_type || rawUser.memberType,
       picture: rawUser.picture,
-      user_metadata: rawUser.user_metadata || rawUser.userMetadata,
+      user_metadata: userMetadata,
       last_login_at: rawUser.last_login_at || rawUser.lastLoginAt,
       created_at: rawUser.created_at || rawUser.createdAt || new Date().toISOString(),
       updated_at: rawUser.updated_at || rawUser.updatedAt || new Date().toISOString(),
@@ -93,12 +98,14 @@ export class AuthService {
       id: rawUser.id || memberId,
 
       // Additional fields
-      companyId: rawUser.companyId || rawUser.company_id,
-      company_id: rawUser.company_id || rawUser.companyId,
-      companyName: rawUser.companyName,
+      companyId: rawUser.companyId || rawUser.company_id || companyIdFromMetadata,
+      company_id: rawUser.company_id || rawUser.companyId || companyIdFromMetadata,
+      companyName: rawUser.companyName || companyNameFromMetadata,
       fullName: rawUser.fullName || `${firstName} ${lastName}`.trim(),
       password: rawUser.password // For form data
     };
+
+    return normalizedUser;
   }
 
   public login(credentials: LoginCredentials): Observable<AuthResponse> {

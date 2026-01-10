@@ -30,6 +30,30 @@ export class PositionService extends BaseCrudService<Position, PositionCreate, P
   }
 
   /**
+   * Update position
+   * Backend: PUT /api/v1/positions/{id}?company_id={companyId}
+   */
+  override update(id: string, data: PositionUpdate): Observable<Position> {
+    const options = { skipTransform: true };
+    const params = { company_id: data.company_id };
+    return this.api.put<any>(`${this.baseEndpoint}/${id}`, data, params, options).pipe(
+      map((response: any) => {
+        return (response.data || response) as Position;
+      })
+    );
+  }
+
+  /**
+   * Delete position with company_id
+   * Backend: DELETE /api/v1/positions/{id}?company_id={companyId}
+   */
+  deleteWithCompanyId(id: string, companyId: string): Observable<void> {
+    const options = { skipTransform: true };
+    const params = { company_id: companyId };
+    return this.api.delete<void>(`${this.baseEndpoint}/${id}`, params, undefined, options);
+  }
+
+  /**
    * Get positions by company ID
    * Backend: GET /api/v1/positions/company/{company_id}
    */

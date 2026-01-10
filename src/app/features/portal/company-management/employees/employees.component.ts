@@ -96,6 +96,7 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
 
   // Face Enrollment
   faceImageFile: File | null = null;
+  profileImageFile: File | null = null;
 
   // Form
   employeeForm: FormGroup;
@@ -118,6 +119,13 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
     const startDateControl = this.employeeForm.get('start_date');
 
     return [
+      {
+        key: 'picture',
+        label: 'รูปโปรไฟล์',
+        type: 'file',
+        accept: 'image/*',
+        fullWidth: true
+      },
       {
         key: 'first_name',
         label: 'ชื่อ',
@@ -479,6 +487,7 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
 
   openAddModal(): void {
     this.editingEmployee.set(null);
+    this.profileImageFile = null;
     this.employeeForm.reset({
       first_name: '',
       last_name: '',
@@ -510,6 +519,7 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
     }
 
     this.editingEmployee.set(employee);
+    this.profileImageFile = null;
     this.employeeForm.patchValue({
       first_name: employee.first_name || '',
       last_name: employee.last_name || '',
@@ -540,6 +550,11 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
    * Handle form submission from ModalFormComponent
    */
   onFormSubmitted(formData: Record<string, any>): void {
+    // Handle file upload if present
+    if (formData['picture'] instanceof File) {
+      this.profileImageFile = formData['picture'];
+    }
+
     // Helper to convert empty string to undefined for optional fields
     const toUndefinedIfEmpty = (value: any): any => {
       if (value === '' || value === 'undefined' || value === 'null') return undefined;
@@ -597,6 +612,28 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
 
     this.saving.set(true);
     this.errorMessage.set('');
+
+    // If profile image is selected, upload it first
+    if (this.profileImageFile) {
+      this.subscribe(
+        this.apiService.upload<{ path: string }>('/files/upload-image', this.profileImageFile),
+        (response: any) => { // Type assertion for response
+          const imagePath = response.path || response.data?.path || response.url;
+          this.performSave(imagePath);
+        },
+        (error) => {
+          this.errorHandler.handleApiError(error);
+          this.errorMessage.set('ไม่สามารถอัปโหลดรูปภาพได้');
+          this.saving.set(false);
+        }
+      );
+    } else {
+      this.performSave();
+    }
+  }
+
+  private performSave(picturePath?: string): void {
+    const employee = this.editingEmployee();
     const formValue = this.employeeForm.value;
 
     // Convert form data to backend format
@@ -608,7 +645,7 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
           email: formValue.email,
           first_name: formValue.first_name,
           last_name: formValue.last_name,
-          picture: undefined // Can be updated separately
+          picture: picturePath // Update picture if uploaded
         },
         position: formValue.position_id ? {
           position_id: formValue.position_id,
@@ -649,7 +686,7 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
           email: formValue.email,
           first_name: formValue.first_name,
           last_name: formValue.last_name,
-          picture: undefined
+          picture: picturePath
         },
         position: formValue.position_id ? {
           position_id: formValue.position_id,

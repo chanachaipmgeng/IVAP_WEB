@@ -30,6 +30,30 @@ export class DepartmentService extends BaseCrudService<Department, DepartmentCre
   }
 
   /**
+   * Update department
+   * Backend: PUT /api/v1/departments/{id}?company_id={companyId}
+   */
+  override update(id: string, data: DepartmentUpdate): Observable<Department> {
+    const options = { skipTransform: true };
+    const params = { company_id: data.company_id };
+    return this.api.put<any>(`${this.baseEndpoint}/${id}`, data, params, options).pipe(
+      map((response: any) => {
+        return (response.data || response) as Department;
+      })
+    );
+  }
+
+  /**
+   * Delete department with company_id
+   * Backend: DELETE /api/v1/departments/{id}?company_id={companyId}
+   */
+  deleteWithCompanyId(id: string, companyId: string): Observable<void> {
+    const options = { skipTransform: true };
+    const params = { company_id: companyId };
+    return this.api.delete<void>(`${this.baseEndpoint}/${id}`, params, undefined, options);
+  }
+
+  /**
    * Get departments by company ID
    * Backend: GET /api/v1/departments/company/{company_id}
    */
