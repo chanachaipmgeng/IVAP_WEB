@@ -44,7 +44,13 @@ export function memberToUser(member: Member): User {
     updated_at: member.updated_at,
     lastLoginAt: member.last_login_at,
     last_login_at: member.last_login_at,
-    fullName: `${member.first_name} ${member.last_name}`.trim()
+    fullName: `${member.first_name} ${member.last_name}`.trim(),
+
+    // Additional compatibility fields
+    companyId: member.user_metadata?.['company_id'] || member.user_metadata?.['companyId'],
+    company_id: member.user_metadata?.['company_id'],
+    companyName: member.user_metadata?.['company_name'] || member.user_metadata?.['companyName'],
+    company_name: member.user_metadata?.['company_name'], // Add snake_case support
   } as User;
 }
 

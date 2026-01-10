@@ -22,10 +22,24 @@ export interface User extends Member {
   id?: string;  // UUID as string (alias for member_id, for backward compatibility)
   memberId?: string;  // UUID as string (camelCase alias, for backward compatibility)
   
+  // Backward compatibility - aliases for other fields (mapped in memberToUser util)
+  firstName?: string;
+  lastName?: string;
+  phoneNumber?: string;
+  actorType?: any;
+  memberType?: any;
+  isActive?: boolean;
+  isVerified?: boolean;
+  userMetadata?: any;
+  createdAt?: string;
+  updatedAt?: string;
+  lastLoginAt?: string;
+
   // Company information (from JWT token or join data, not in Member schema)
   companyId?: string | number;  // Can be string (UUID) or number
   company_id?: string;  // snake_case version (from backend/JWT)
   companyName?: string;  // Optional company name (for display)
+  company_name?: string; // snake_case version (from backend join)
   
   // UI convenience fields
   fullName?: string;  // Computed full name (for display) - `${first_name} ${last_name}`

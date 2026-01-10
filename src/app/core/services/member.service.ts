@@ -267,5 +267,16 @@ export class MemberService extends BaseCrudService<Member, MemberCreate, MemberU
     const options = { skipTransform: true, responseType: 'blob' as const };
     return this.api.get<Blob>(`${this.baseEndpoint}/export`, { ...filters, format }, options);
   }
+
+  /**
+   * Assign member to company
+   * Backend: POST /api/v1/employees/
+   * Calls register_member in backend
+   */
+  assignCompany(memberId: string, companyId: string, memberData: any): Observable<any> {
+    const options = { skipTransform: true };
+    const queryParams = { company_id: companyId };
+    return this.api.post<any>('/employees', memberData, queryParams, options);
+  }
 }
 
