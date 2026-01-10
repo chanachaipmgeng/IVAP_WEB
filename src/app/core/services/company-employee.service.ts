@@ -1,6 +1,6 @@
 /**
  * Company Employee Service
- * 
+ *
  * Service for managing company employees
  * Uses BaseCrudService and snake_case models to match backend
  * All endpoints match backend API: /api/v1/employees
@@ -45,27 +45,27 @@ export class CompanyEmployeeService extends BaseCrudService<CompanyEmployee, Com
 
   /**
    * Get employees with filters and pagination
-   * Backend: GET /api/v1/employees/
+   * Backend: GET /api/v1/employees
    * Returns: PaginatedResponse<CompanyEmployeeResponse>
    */
   getEmployees(filters?: EmployeeFilters): Observable<PaginatedApiResponse<EmployeeDisplay>> {
     this.loading.set(true);
     const options = { skipTransform: true };
-    
-    // Backend route requires trailing slash for GET list
-    return this.api.get<any>(`${this.baseEndpoint}/`, filters, options).pipe(
+
+    // Backend route does NOT require trailing slash for GET list
+    return this.api.get<any>(`${this.baseEndpoint}`, filters, options).pipe(
       map((response: any) => {
         // Backend returns PaginatedResponse with items array
         const items = response.items || response.data || [];
         const companyEmployees = items as CompanyEmployee[];
-        
+
         // Convert to EmployeeDisplay
         const employees = companyEmployees.map(ce => companyEmployeeToDisplay(ce));
-        
+
         // Update local state
         this.employees.set(employees);
         this.loading.set(false);
-        
+
         return {
           total: response.total || employees.length,
           data: employees,
@@ -96,8 +96,8 @@ export class CompanyEmployeeService extends BaseCrudService<CompanyEmployee, Com
    */
   createEmployee(data: CompanyEmployeeCreate): Observable<EmployeeDisplay> {
     const options = { skipTransform: true };
-    // Backend route requires trailing slash for POST
-    return this.api.post<CompanyEmployee>(`${this.baseEndpoint}/`, data, undefined, options).pipe(
+    // Backend route does NOT require trailing slash for POST
+    return this.api.post<CompanyEmployee>(`${this.baseEndpoint}`, data, undefined, options).pipe(
       map(companyEmployee => companyEmployeeToDisplay(companyEmployee)),
       tap((employee) => {
         // Update local state
@@ -154,7 +154,7 @@ export class CompanyEmployeeService extends BaseCrudService<CompanyEmployee, Com
         const items = response.items || response.data || [];
         const companyEmployees = items as CompanyEmployee[];
         const employees = companyEmployees.map(ce => companyEmployeeToDisplay(ce));
-        
+
         return {
           total: response.total || employees.length,
           data: employees,

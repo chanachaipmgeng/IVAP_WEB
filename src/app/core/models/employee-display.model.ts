@@ -34,10 +34,10 @@ export interface EmployeeDisplay {
   last_name: string;
   phone_number?: string;
   picture?: string;
-  actor_type: string;
+  actor_type?: string;
   member_type?: string;
-  roles: string[];
-  permissions: string[];
+  roles?: string[];
+  permissions?: string[];
 
   // From Position (nested in CompanyEmployee)
   position_id?: UUID;
@@ -218,7 +218,7 @@ export function companyEmployeeToDisplay(companyEmployee: CompanyEmployee, optio
     last_name: member.last_name || '',
     phone_number: member.phone_number,
     picture: member.picture,
-    actor_type: member.actor_type,
+    actor_type: member.actor_type || 'member', // Add fallback
     member_type: member.member_type,
     roles: member.roles || [],
     permissions: member.permissions || [],
