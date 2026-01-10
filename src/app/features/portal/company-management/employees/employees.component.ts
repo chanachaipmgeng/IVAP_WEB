@@ -100,16 +100,23 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
 
   // Form
   employeeForm: FormGroup;
+  // Signals to track form state for computed fields
+  formValue = signal<any>({});
+  formStatus = signal<string>('VALID');
 
   // Form fields configuration for ModalFormComponent
   employeeFormFields = computed<FormFieldConfig[]>(() => {
     const employee = this.editingEmployee();
-    const formValue = this.employeeForm.value;
+    // Use formValue signal to trigger updates when form changes (including reset)
+    const formValue = this.formValue();
+    const status = this.formStatus(); // Track status changes
+
     const depts = this.departments();
     const pos = this.positions();
     const emps = this.employees();
 
     // Access form controls to check touched state for errors
+    // We rely on status signal to re-evaluate this when validation changes
     const firstNameControl = this.employeeForm.get('first_name');
     const lastNameControl = this.employeeForm.get('last_name');
     const emailControl = this.employeeForm.get('email');
@@ -124,7 +131,8 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
         label: 'รูปโปรไฟล์',
         type: 'file',
         accept: 'image/*',
-        fullWidth: true
+        fullWidth: true,
+        value: employee?.picture || formValue.picture // Preserve picture value
       },
       {
         key: 'first_name',
@@ -133,7 +141,7 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
         placeholder: 'ระบุชื่อ',
         required: true,
         value: employee?.first_name || formValue.first_name || '',
-        error: firstNameControl?.invalid && firstNameControl?.touched
+        error: firstNameControl?.invalid && (firstNameControl?.touched || firstNameControl?.dirty)
           ? this.validationService.getValidationErrorMessage(firstNameControl, 'ชื่อ')
           : undefined
       },
@@ -144,7 +152,7 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
         placeholder: 'ระบุนามสกุล',
         required: true,
         value: employee?.last_name || formValue.last_name || '',
-        error: lastNameControl?.invalid && lastNameControl?.touched
+        error: lastNameControl?.invalid && (lastNameControl?.touched || lastNameControl?.dirty)
           ? this.validationService.getValidationErrorMessage(lastNameControl, 'นามสกุล')
           : undefined
       },
@@ -155,7 +163,7 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
         placeholder: 'ระบุอีเมล',
         required: true,
         value: employee?.email || formValue.email || '',
-        error: emailControl?.invalid && emailControl?.touched
+        error: emailControl?.invalid && (emailControl?.touched || emailControl?.dirty)
           ? this.validationService.getValidationErrorMessage(emailControl, 'อีเมล')
           : undefined
       },
@@ -165,7 +173,7 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
         type: 'text',
         placeholder: 'ระบุเบอร์โทรศัพท์',
         value: employee?.phone_number || formValue.phone_number || '',
-        error: phoneControl?.invalid && phoneControl?.touched
+        error: phoneControl?.invalid && (phoneControl?.touched || phoneControl?.dirty)
           ? this.validationService.getValidationErrorMessage(phoneControl, 'เบอร์โทรศัพท์')
           : undefined
       },
@@ -175,7 +183,7 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
         type: 'text',
         placeholder: 'ระบุรหัสพนักงาน',
         value: employee?.employee_id || formValue.employee_id || '',
-        error: employeeIdControl?.invalid && employeeIdControl?.touched
+        error: employeeIdControl?.invalid && (employeeIdControl?.touched || employeeIdControl?.dirty)
           ? this.validationService.getValidationErrorMessage(employeeIdControl, 'รหัสพนักงาน')
           : undefined
       },
@@ -211,7 +219,7 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
         type: 'number',
         placeholder: '0',
         value: employee?.salary || formValue.salary || 0,
-        error: salaryControl?.invalid && salaryControl?.touched
+        error: salaryControl?.invalid && (salaryControl?.touched || salaryControl?.dirty)
           ? this.validationService.getValidationErrorMessage(salaryControl, 'เงินเดือน')
           : undefined
       },
@@ -258,7 +266,7 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
         type: 'date',
         required: true,
         value: employee?.start_date ? new Date(employee.start_date).toISOString().split('T')[0] : formValue.start_date || new Date().toISOString().split('T')[0],
-        error: startDateControl?.invalid && startDateControl?.touched
+        error: startDateControl?.invalid && (startDateControl?.touched || startDateControl?.dirty)
           ? this.validationService.getValidationErrorMessage(startDateControl, 'วันที่เริ่มงาน')
           : undefined
       }
@@ -332,6 +340,14 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
       emp_type: [EmpType.FULL_TIME, [Validators.required]],
       start_date: [new Date().toISOString().split('T')[0], [Validators.required]]
     });
+
+    // Initialize signals with current form state
+    this.formValue.set(this.employeeForm.value);
+    this.formStatus.set(this.employeeForm.status);
+
+    // Track form value and status changes to update computed signals
+    this.subscribe(this.employeeForm.valueChanges, (val) => this.formValue.set(val));
+    this.subscribe(this.employeeForm.statusChanges, (status) => this.formStatus.set(status));
 
     // ✅ Auto-unsubscribe on component destroy
     this.subscribe(
@@ -561,6 +577,8 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
       return value;
     };
 
+    console.log('📝 [Employees] Form Submitted Data:', formData);
+
     // Update FormGroup from ModalFormComponent (convert camelCase to snake_case if needed)
     this.employeeForm.patchValue({
       first_name: formData['first_name'] || formData['firstName'] || '',
@@ -576,6 +594,30 @@ export class EmployeesComponent extends BaseComponent implements OnInit {
       emp_type: formData['emp_type'] || formData['empType'] || EmpType.FULL_TIME,
       start_date: formData['start_date'] || formData['startDate'] || new Date().toISOString().split('T')[0]
     });
+
+    // Check for missing required fields
+    const missingFields = [];
+    if (!this.employeeForm.get('first_name')?.value) missingFields.push('first_name');
+    if (!this.employeeForm.get('last_name')?.value) missingFields.push('last_name');
+    if (!this.employeeForm.get('email')?.value) missingFields.push('email');
+    if (!this.employeeForm.get('company_role_type')?.value) missingFields.push('company_role_type');
+    if (!this.employeeForm.get('emp_type')?.value) missingFields.push('emp_type');
+    if (!this.employeeForm.get('start_date')?.value) missingFields.push('start_date');
+
+    if (missingFields.length > 0) {
+        console.warn('⚠️ [Employees] Missing required fields:', missingFields);
+    }
+
+    // Check form validity log
+    console.log('✅ [Employees] Form Status after patch:', this.employeeForm.status);
+    if (this.employeeForm.invalid) {
+        Object.keys(this.employeeForm.controls).forEach(key => {
+            const control = this.employeeForm.get(key);
+            if (control?.invalid) {
+                console.error(`❌ [Employees] Invalid Field: ${key}`, control.errors);
+            }
+        });
+    }
     // Mark all fields as touched to show validation errors
     this.employeeForm.markAllAsTouched();
     // Trigger change detection for computed signal

@@ -850,7 +850,8 @@ export class DataTableComponent implements AfterViewChecked {
       return this.getRowId(row);
     }
     // Default: use object reference or id property
-    return row.id || row.company_id || JSON.stringify(row);
+    // Prioritize specific IDs over generic ones like company_id which might be shared
+    return row.id || row.uuid || row.company_employee_id || row.member_id || row.company_id || JSON.stringify(row);
   }
 
   isRowSelected(row: any): boolean {
@@ -934,7 +935,8 @@ export class DataTableComponent implements AfterViewChecked {
     if (this.getRowId) {
       return this.getRowId(row);
     }
-    return row.id || row.company_id || index;
+    // Don't use company_id as fallback in trackBy as it's often shared across rows
+    return row.id || row.uuid || row.company_employee_id || row.member_id || index;
   }
 
   /**

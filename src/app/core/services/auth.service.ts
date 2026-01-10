@@ -235,21 +235,21 @@ export class AuthService {
 
     // Company Admin
     if (actorType === 'member' && (memberType === 'admin' || this.isCompanyAdmin())) {
-      return '/portal/dashboard';
+      return '/portal/company-dashboard';
     }
 
     // Regular Member/Employee
     if (actorType === 'member') {
-      return '/portal/dashboard';
+      return '/portal/company-dashboard';
     }
 
     // Guest
     if (actorType === 'guest') {
-      return '/portal/dashboard';
+      return '/portal/company-dashboard';
     }
 
     // Default
-    return '/portal/dashboard';
+    return '/portal/company-dashboard';
   }
 
   /**
