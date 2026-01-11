@@ -1,127 +1,141 @@
-<div class="face-recognition-container p-6 max-w-[1200px] mx-auto md:p-4" [class]="customClass || ''" role="group" [attr.aria-label]="ariaLabel || 'Face recognition'">
+<div class="face-recognition-container w-full h-full transition-all duration-300" [class]="customClass || ''" role="group" [attr.aria-label]="ariaLabel || 'Face recognition'">
   <!-- Header -->
-  <div class="header flex justify-between items-center mb-8 md:flex-col md:gap-4 md:text-center">
-    <h2 class="title text-3xl font-semibold text-white m-0">ระบบจดจำใบหน้า</h2>
-    <div class="status-indicator flex items-center gap-2 px-4 py-2 rounded-2xl bg-error-500/10 border border-error-500/20" [class.bg-success-500/10]="isInitialized" [class.border-success-500/20]="isInitialized" role="status" [attr.aria-live]="'polite'">
-      <span class="status-dot w-2 h-2 rounded-full bg-error-500 animate-pulse" [class.bg-success-500]="isInitialized" [attr.aria-hidden]="true"></span>
-      <span class="status-text text-sm font-medium text-gray-400">{{ isInitialized ? 'พร้อมใช้งาน' : 'กำลังโหลด...' }}</span>
+  <div class="header flex justify-between items-center mb-6 flex-wrap gap-4">
+    <h2 class="title text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-400 to-purple-500 m-0">
+      {{ t('face.system_title') || 'ระบบจดจำใบหน้า' }}
+    </h2>
+    <div class="status-indicator flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm shadow-sm" 
+         [class.bg-success-500/10]="isInitialized" 
+         [class.border-success-500/20]="isInitialized"
+         role="status" [attr.aria-live]="'polite'">
+      <span class="status-dot w-2.5 h-2.5 rounded-full bg-slate-500 animate-pulse" 
+            [class.bg-success-500]="isInitialized"
+            [class.bg-error-500]="!isInitialized && !isStreaming"
+            [attr.aria-hidden]="true"></span>
+      <span class="status-text text-sm font-medium text-slate-400" [class.text-success-400]="isInitialized">
+        {{ isInitialized ? (t('common.ready') || 'พร้อมใช้งาน') : (t('common.loading') || 'กำลังโหลด...') }}
+      </span>
     </div>
   </div>
 
-  <!-- Mode Selection -->
-  <div class="mode-selection flex gap-4 mb-8 justify-center md:flex-col">
-    <app-glass-button
-      [variant]="mode === 'camera' ? 'primary' : 'secondary'"
+  <!-- Mode Selection Tabs -->
+  <div class="mode-selection flex p-1 mb-8 bg-black/20 backdrop-blur-md rounded-xl border border-white/5 w-fit mx-auto">
+    <button 
       (click)="mode = 'camera'"
-      [disabled]="!isInitialized">
-      <i class="fas fa-camera"></i>
-      กล้อง
-    </app-glass-button>
-    <app-glass-button
-      [variant]="mode === 'upload' ? 'primary' : 'secondary'"
+      [disabled]="!isInitialized"
+      class="flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300"
+      [class]="mode === 'camera' ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/25' : 'text-slate-400 hover:text-white hover:bg-white/5'">
+      <mat-icon class="text-lg w-5 h-5">videocam</mat-icon>
+      {{ t('mode.camera') || 'กล้อง' }}
+    </button>
+    <button 
       (click)="mode = 'upload'"
-      [disabled]="!isInitialized">
-      <i class="fas fa-upload"></i>
-      อัปโหลดรูป
-    </app-glass-button>
+      [disabled]="!isInitialized"
+      class="flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300"
+      [class]="mode === 'upload' ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/25' : 'text-slate-400 hover:text-white hover:bg-white/5'">
+      <mat-icon class="text-lg w-5 h-5">cloud_upload</mat-icon>
+      {{ t('mode.upload') || 'อัปโหลดรูป' }}
+    </button>
   </div>
 
   <!-- Camera Mode -->
   @if (mode === 'camera') {
-    <div class="camera-section mb-8">
-      <app-glass-card class="camera-card">
+    <div class="camera-section mb-8 animate-fade-in">
+      <app-glass-card class="camera-card overflow-hidden !p-0 border border-white/10">
+        
+        <!-- Camera Controls Toolbar -->
         @if (showControls) {
-          <div class="camera-controls flex gap-4 mb-6 flex-wrap justify-center md:flex-col">
+          <div class="camera-controls flex flex-wrap gap-3 p-4 bg-black/40 border-b border-white/5 justify-center sticky top-0 z-20 backdrop-blur-md">
             <app-glass-button
               [variant]="isStreaming ? 'danger' : 'primary'"
+              size="sm"
               (click)="isStreaming ? stopCamera() : startCamera()"
               [disabled]="!isInitialized">
-              <i class="fas" [class.fa-stop]="isStreaming" [class.fa-play]="!isStreaming"></i>
-              {{ isStreaming ? 'หยุดกล้อง' : 'เริ่มกล้อง' }}
+              <mat-icon>{{ isStreaming ? 'videocam_off' : 'videocam' }}</mat-icon>
+              {{ isStreaming ? (t('camera.stop') || 'หยุดกล้อง') : (t('camera.start') || 'เริ่มกล้อง') }}
             </app-glass-button>
 
             <app-glass-button
               variant="secondary"
+              size="sm"
               (click)="toggleDetection()"
               [disabled]="!isStreaming">
-              <i class="fas" [class.fa-pause]="autoDetect" [class.fa-play]="!autoDetect"></i>
-              {{ autoDetect ? 'หยุดตรวจจับ' : 'เริ่มตรวจจับ' }}
+              <mat-icon>{{ autoDetect ? 'pause_circle' : 'play_circle' }}</mat-icon>
+              {{ autoDetect ? (t('detection.stop') || 'หยุดตรวจจับ') : (t('detection.start') || 'เริ่มตรวจจับ') }}
             </app-glass-button>
 
             <app-glass-button
               variant="secondary"
+              size="sm"
               (click)="detectFaces()"
               [disabled]="!isStreaming || isDetecting">
-              <i class="fas fa-search"></i>
-              ตรวจจับทันที
+              <mat-icon>search</mat-icon>
+              {{ t('detection.scan_now') || 'ตรวจจับทันที' }}
             </app-glass-button>
 
             <app-glass-button
               variant="secondary"
+              size="sm"
               (click)="showLandmarks = !showLandmarks"
               [disabled]="!isStreaming">
-              <i class="fas" [class.fa-eye]="showLandmarks" [class.fa-eye-slash]="!showLandmarks"></i>
-              {{ showLandmarks ? 'ซ่อน Landmarks' : 'แสดง Landmarks' }}
+              <mat-icon>{{ showLandmarks ? 'visibility_off' : 'visibility' }}</mat-icon>
+              {{ showLandmarks ? (t('camera.hide_landmarks') || 'ซ่อนจุดบนใบหน้า') : (t('camera.show_landmarks') || 'แสดงจุดบนใบหน้า') }}
             </app-glass-button>
           </div>
         }
 
-        <div class="video-container relative w-full max-w-[640px] mx-auto rounded-2xl overflow-hidden bg-gray-900">
+        <div class="video-container relative w-full h-full min-h-[75vh] mx-auto bg-black flex items-center justify-center group">
           <video
             #videoElement
-            class="video-element w-full h-auto block"
+            class="video-element w-full h-full object-contain"
             [class.hidden]="!isStreaming"
             autoplay
             muted
             playsinline>
           </video>
+          
+          <!-- Canvas Overlay -->
           <canvas
             #canvasElement
             class="canvas-overlay absolute top-0 left-0 w-full h-full pointer-events-none z-10"
             [class.hidden]="!isStreaming">
           </canvas>
+          
+          <!-- Placeholder State -->
           @if (!isStreaming) {
-            <div class="placeholder flex flex-col items-center justify-center p-12 text-gray-500 text-center">
-              <i class="fas fa-camera fa-3x mb-4 opacity-50"></i>
-              <p class="m-0 text-lg">กดปุ่ม "เริ่มกล้อง" เพื่อเริ่มใช้งาน</p>
+            <div class="placeholder flex flex-col items-center justify-center p-12 text-slate-500 text-center animate-pulse">
+              <div class="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mb-6 ring-1 ring-white/10">
+                <mat-icon class="text-5xl w-12 h-12 text-slate-600">videocam_off</mat-icon>
+              </div>
+              <p class="m-0 text-lg font-medium text-slate-400">{{ t('camera.placeholder') || 'กดปุ่ม "เริ่มกล้อง" เพื่อเริ่มใช้งาน' }}</p>
+            </div>
+          }
+
+          <!-- Scanning Animation Overlay -->
+          @if (isStreaming && autoDetect && isDetecting) {
+             <div class="absolute inset-0 pointer-events-none z-0 opacity-20 bg-gradient-to-b from-transparent via-primary-500/10 to-transparent animate-scan"></div>
+          }
+
+          <!-- Image Quality Feedback Toast -->
+          @if (showQualityFeedback && isStreaming) {
+            <div class="absolute bottom-4 right-4 max-w-sm bg-black/80 backdrop-blur-md rounded-xl p-4 border border-white/10 z-20 shadow-xl transition-all duration-300 animate-slide-up">
+              <div class="flex items-center gap-3 mb-2">
+                 <mat-icon [class]="getQualityStatusClass().includes('good') || getQualityStatusClass().includes('excellent') ? 'text-success-500' : 'text-warning-500'">
+                    {{ getQualityStatusClass().includes('good') || getQualityStatusClass().includes('excellent') ? 'check_circle' : 'warning' }}
+                 </mat-icon>
+                 <span class="font-semibold text-white">{{ getQualityStatusText() }}</span>
+              </div>
+              <p class="text-slate-400 text-sm m-0">{{ qualityFeedbackMessage }}</p>
             </div>
           }
         </div>
-
-        <!-- Image Quality Feedback -->
-        @if (showQualityFeedback && isStreaming) {
-          <div class="quality-feedback absolute top-4 right-4 max-w-[300px] bg-black/80 backdrop-blur-sm rounded-xl p-4 border border-white/10 z-10">
-            <div class="quality-status flex items-center gap-2 mb-3 font-semibold" [ngClass]="getQualityStatusClass()"
-              [class.text-success-500]="getQualityStatusClass().includes('excellent')"
-              [class.text-primary-500]="getQualityStatusClass().includes('good')"
-              [class.text-warning-500]="getQualityStatusClass().includes('fair')"
-              [class.text-error-500]="getQualityStatusClass().includes('poor')"
-              [class.text-gray-500]="getQualityStatusClass().includes('unknown')">
-              <i class="fas fa-info-circle text-base"></i>
-              <span class="quality-text text-sm">{{ getQualityStatusText() }}</span>
-            </div>
-            <div class="quality-message">
-              <p class="m-0 mb-2 text-gray-400 text-sm leading-relaxed">{{ qualityFeedbackMessage }}</p>
-              @if (qualityRecommendations.length > 0) {
-                <ul class="quality-recommendations list-none p-0 m-0">
-                  @for (recommendation of qualityRecommendations; track recommendation) {
-                    <li class="flex items-start gap-2 mb-1 text-gray-500 text-xs leading-snug">
-                      <i class="fas fa-lightbulb text-warning-500 text-xs mt-0.5 flex-shrink-0"></i>
-                      {{ recommendation }}
-                    </li>
-                  }
-                </ul>
-              }
-            </div>
-          </div>
-        }
       </app-glass-card>
     </div>
   }
 
   <!-- Upload Mode -->
   @if (mode === 'upload') {
-    <div class="upload-section mb-8">
+    <div class="upload-section mb-8 animate-fade-in">
       <app-glass-card class="upload-card">
         <div class="file-upload">
           <input
@@ -131,76 +145,39 @@
             (change)="onFileSelected($event)"
             class="file-input hidden">
 
-          <div class="upload-area border-2 border-dashed border-white/20 rounded-2xl p-12 text-center cursor-pointer transition-all bg-white/2 hover:border-white/40 hover:bg-white/5" (click)="fileInput.click()">
-            <i class="fas fa-cloud-upload-alt fa-3x text-gray-500 mb-4"></i>
-            <p class="m-0 mb-2 text-lg text-white">คลิกเพื่อเลือกไฟล์รูปภาพ</p>
-            <small class="text-gray-500 text-sm">รองรับไฟล์: JPG, PNG, GIF</small>
-          </div>
-
-          @if (previewImage) {
-            <div class="preview-container mt-6 text-center">
-              <img appImageOptimization [ngSrc]="previewImage" alt="Preview" class="preview-image max-w-full max-h-[400px] rounded-xl mb-4" loading="lazy">
-              <app-glass-button
-                variant="primary"
-                (click)="detectInImage()"
-                [disabled]="isDetecting">
-                <i class="fas fa-search"></i>
-                ตรวจจับใบหน้า
-              </app-glass-button>
+          @if (!previewImage) {
+            <div 
+              class="upload-area border-2 border-dashed border-slate-600 rounded-2xl p-16 text-center cursor-pointer transition-all duration-300 bg-white/2 hover:border-primary-500 hover:bg-primary-500/5 group" 
+              (click)="fileInput.click()">
+              <div class="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                <mat-icon class="text-4xl w-10 h-10 text-slate-400 group-hover:text-primary-400">cloud_upload</mat-icon>
+              </div>
+              <h3 class="text-xl font-semibold text-white mb-2">{{ t('upload.drag_drop') || 'คลิกเพื่อเลือกไฟล์รูปภาพ' }}</h3>
+              <p class="text-slate-500 text-sm">JPG, PNG, GIF (ขนาดสูงสุด 5MB)</p>
             </div>
           }
-        </div>
 
-        <div class="canvas-container mt-6 text-center">
-          <canvas #canvasElement class="result-canvas max-w-full rounded-xl"></canvas>
-        </div>
-      </app-glass-card>
-    </div>
-  }
+          @if (previewImage) {
+            <div class="preview-container mt-0 text-center relative rounded-2xl overflow-hidden bg-black/40 border border-white/10">
+              <img appImageOptimization [ngSrc]="previewImage" alt="Preview" class="preview-image max-w-full max-h-[600px] mx-auto object-contain" loading="lazy">
+              
+              <!-- Canvas for drawing detections on upload -->
+               <canvas #canvasElement class="absolute top-0 left-1/2 -translate-x-1/2 h-full w-auto pointer-events-none"></canvas>
 
-  <!-- Detection Results -->
-  @if (currentDetections.length > 0) {
-    <div class="detection-results mb-8">
-      <app-glass-card>
-        <h3 class="m-0 mb-6 text-white">ผลการตรวจจับ</h3>
-        <div class="detection-stats grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 mb-6 md:grid-cols-1">
-          <div class="stat-item flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/10">
-            <span class="stat-label text-gray-400 font-medium">จำนวนใบหน้า:</span>
-            <span class="stat-value text-white font-semibold text-lg">{{ currentDetections.length }}</span>
-          </div>
-          <div class="stat-item flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/10">
-            <span class="stat-label text-gray-400 font-medium">การจดจำสำเร็จ:</span>
-            <span class="stat-value text-white font-semibold text-lg">{{ detectionStats.successfulRecognitions }}</span>
-          </div>
-          <div class="stat-item flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/10">
-            <span class="stat-label text-gray-400 font-medium">ความแม่นยำเฉลี่ย:</span>
-            <span class="stat-value text-white font-semibold text-lg">{{ (detectionStats.averageConfidence * 100) | number:'1.1-1' }}%</span>
-          </div>
-        </div>
-
-        <div class="detection-list">
-          @for (detection of currentDetections; track detection; let i = $index) {
-            <div class="detection-item p-4 bg-white/2 rounded-xl border border-white/10 mb-4">
-              <div class="detection-info flex items-center gap-4">
-                <div class="face-box w-[60px] h-[60px] rounded-xl bg-white/10 border-2 border-white/20 relative overflow-hidden" [style]="getFaceBoxStyle(detection)"></div>
-                <div class="face-details flex-1">
-                  <div class="confidence flex items-center gap-2 mb-1 text-gray-400 text-sm">
-                    <i class="fas fa-eye w-4 text-center"></i>
-                    ความมั่นใจ: {{ (detection.confidence * 100) | number:'1.1-1' }}%
-                  </div>
-                  @if (currentRecognitions[i]?.isRecognized) {
-                    <div class="recognition flex items-center gap-2 text-success-500 font-medium">
-                      <i class="fas fa-user-check w-4 text-center"></i>
-                      {{ currentRecognitions[i].name }} ({{ (currentRecognitions[i].confidence * 100) | number:'1.1-1' }}%)
-                    </div>
-                  }
-                  @if (!currentRecognitions[i]?.isRecognized) {
-                    <div class="unknown flex items-center gap-2 text-error-500 font-medium">
-                      <i class="fas fa-user-question w-4 text-center"></i>
-                      ไม่รู้จัก
-                    </div>
-                  }
-                </div>
+              <div class="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/80 to-transparent flex justify-center gap-4">
+                 <app-glass-button
+                  variant="secondary"
+                  (click)="fileInput.click()">
+                  <mat-icon>refresh</mat-icon>
+                  {{ t('common.change_image') || 'เปลี่ยนรูป' }}
+                </app-glass-button>
+                <app-glass-button
+                  variant="primary"
+                  (click)="detectInImage()"
+                  [disabled]="isDetecting">
+                  <mat-icon>search</mat-icon>
+                  {{ t('detection.detect') || 'ตรวจจับใบหน้า' }}
+                </app-glass-button>
               </div>
             </div>
           }
@@ -209,102 +186,211 @@
     </div>
   }
 
+  <!-- Detection Results Dashboard -->
+  @if (currentDetections.length > 0) {
+    <div class="detection-results mb-8 animate-fade-in">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Stats Panel -->
+        <app-glass-card class="lg:col-span-1 h-fit">
+          <h3 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+            <mat-icon class="text-primary-400">analytics</mat-icon>
+            {{ t('stats.title') || 'ผลการวิเคราะห์' }}
+          </h3>
+          
+          <div class="space-y-4">
+            <div class="bg-white/5 rounded-xl p-4 border border-white/5">
+              <div class="text-slate-400 text-sm mb-1">{{ t('stats.faces_found') || 'จำนวนใบหน้า' }}</div>
+              <div class="text-2xl font-bold text-white">{{ currentDetections.length }} <span class="text-sm font-normal text-slate-500">{{ t('stats.faces_unit') || 'คน' }}</span></div>
+            </div>
+
+            <div class="bg-white/5 rounded-xl p-4 border border-white/5">
+              <div class="text-slate-400 text-sm mb-1">{{ t('stats.recognized') || 'จดจำสำเร็จ' }}</div>
+              <div class="text-2xl font-bold text-success-400">{{ detectionStats.successfulRecognitions }} <span class="text-sm font-normal text-slate-500">{{ t('stats.faces_unit') || 'คน' }}</span></div>
+            </div>
+
+            <div class="bg-white/5 rounded-xl p-4 border border-white/5">
+               <div class="text-slate-400 text-sm mb-1">{{ t('stats.avg_confidence') || 'ความมั่นใจเฉลี่ย' }}</div>
+               <div class="flex items-end gap-2">
+                  <div class="text-2xl font-bold text-primary-400">{{ (detectionStats.averageConfidence * 100) | number:'1.1-1' }}%</div>
+                  <div class="h-2 flex-1 bg-white/10 rounded-full mb-2 overflow-hidden">
+                    <div class="h-full bg-primary-500 rounded-full transition-all duration-500" [style.width.%]="detectionStats.averageConfidence * 100"></div>
+                  </div>
+               </div>
+            </div>
+          </div>
+        </app-glass-card>
+
+        <!-- Faces List -->
+        <div class="lg:col-span-2 space-y-4">
+          @for (detection of currentDetections; track detection; let i = $index) {
+            <app-glass-card class="flex flex-col sm:flex-row gap-4 hover:bg-white/5 transition-colors duration-200">
+               <!-- Face Crop Preview -->
+               <div class="relative shrink-0 mx-auto sm:mx-0">
+                  <div class="w-24 h-24 rounded-xl overflow-hidden ring-2 ring-white/20 bg-black">
+                     @if (detection.snapshot) {
+                       <img [src]="detection.snapshot" class="w-full h-full object-cover">
+                     } @else {
+                        <div class="w-full h-full flex items-center justify-center text-slate-600">
+                           <mat-icon>face</mat-icon>
+                        </div>
+                     }
+                  </div>
+                  <div class="absolute -bottom-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center border-2 border-black"
+                       [class]="currentRecognitions[i]?.isRecognized ? 'bg-success-500' : 'bg-slate-600'">
+                      <mat-icon class="text-white text-sm font-bold w-4 h-4">{{ currentRecognitions[i]?.isRecognized ? 'check' : 'question_mark' }}</mat-icon>
+                  </div>
+               </div>
+
+               <!-- Details -->
+               <div class="flex-1 text-center sm:text-left">
+                  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+                     <h4 class="text-lg font-bold text-white m-0">
+                        {{ currentRecognitions[i]?.isRecognized ? currentRecognitions[i].name : (t('common.unknown_person') || 'ไม่รู้จัก') }}
+                     </h4>
+                     <span class="px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-slate-300 w-fit mx-auto sm:mx-0">
+                        {{ t('common.id') || 'รหัส' }}: {{ currentRecognitions[i]?.id || '-' }}
+                     </span>
+                  </div>
+
+                  <div class="grid grid-cols-2 gap-x-8 gap-y-2 text-sm text-slate-400">
+                     <div class="flex items-center gap-2 justify-center sm:justify-start">
+                        <mat-icon class="text-primary-400 text-base w-4 h-4">verified</mat-icon>
+                        {{ t('stats.confidence') || 'ความมั่นใจ' }}: <span class="text-white">{{ (detection.confidence * 100) | number:'1.1-1' }}%</span>
+                     </div>
+                     @if (detection.age) {
+                        <div class="flex items-center gap-2 justify-center sm:justify-start">
+                           <mat-icon class="text-blue-400 text-base w-4 h-4">cake</mat-icon>
+                           {{ t('stats.age') || 'อายุ' }}: <span class="text-white">~{{ detection.age | number:'1.0-0' }}</span>
+                        </div>
+                     }
+                     @if (detection.gender) {
+                        <div class="flex items-center gap-2 justify-center sm:justify-start">
+                           <mat-icon class="text-pink-400 text-base w-4 h-4">{{ detection.gender === 'male' ? 'male' : 'female' }}</mat-icon>
+                           {{ t('stats.gender') || 'เพศ' }}: <span class="text-white capitalize">{{ detection.gender }}</span>
+                        </div>
+                     }
+                  </div>
+               </div>
+            </app-glass-card>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
   <!-- Enrollment Section -->
   @if (showEnrollment) {
-    <div class="enrollment-section">
+    <div class="enrollment-section animate-fade-in mt-8">
       <app-glass-card>
-        <div class="enrollment-header flex justify-between items-center mb-6 flex-wrap gap-4">
-          <h3 class="m-0 text-white">การลงทะเบียนใบหน้า</h3>
+        <div class="enrollment-header flex justify-between items-center mb-6">
+          <h3 class="text-xl font-bold text-white m-0 flex items-center gap-2">
+            <mat-icon class="text-primary-400">person_add</mat-icon>
+            {{ t('enrollment.title') || 'การลงทะเบียนใบหน้า' }}
+          </h3>
           <app-glass-button
             variant="primary"
             (click)="startEnrollment()"
             [disabled]="!isStreaming && !previewImage">
-            <i class="fas fa-user-plus"></i>
-            ลงทะเบียนใบหน้าใหม่
+            <mat-icon>add</mat-icon>
+            {{ t('enrollment.new') || 'ลงทะเบียนใหม่' }}
           </app-glass-button>
         </div>
 
         <!-- Enrollment Form -->
         @if (showEnrollmentForm) {
-          <div class="enrollment-form bg-white/2 rounded-xl p-6 border border-white/10 mb-6">
-            <div class="form-group mb-4">
-              <label class="block mb-2 text-gray-400 font-medium">ชื่อ:</label>
-              <app-glass-input
-                [(ngModel)]="enrollmentName"
-                placeholder="กรอกชื่อผู้ใช้"
-                [disabled]="isEnrolling">
-              </app-glass-input>
+          <div class="enrollment-form bg-white/5 rounded-2xl p-6 border border-white/10 mb-8 backdrop-blur-md animate-slide-down">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="form-group">
+                <label class="block mb-2 text-slate-300 font-medium">{{ t('common.name') || 'ชื่อ' }}</label>
+                <app-glass-input
+                  [(ngModel)]="enrollmentName"
+                  [placeholder]="t('enrollment.name_placeholder') || 'กรอกชื่อผู้ใช้'"
+                  [disabled]="isEnrolling">
+                </app-glass-input>
+              </div>
+              <div class="form-group">
+                <label class="block mb-2 text-slate-300 font-medium">{{ t('common.id') || 'รหัส (ไม่บังคับ)' }}</label>
+                <app-glass-input
+                  [(ngModel)]="enrollmentId"
+                  [placeholder]="t('enrollment.id_placeholder') || 'กรอกรหัสผู้ใช้'"
+                  [disabled]="isEnrolling">
+                </app-glass-input>
+              </div>
             </div>
-            <div class="form-group mb-4">
-              <label class="block mb-2 text-gray-400 font-medium">รหัส (ไม่บังคับ):</label>
-              <app-glass-input
-                [(ngModel)]="enrollmentId"
-                placeholder="กรอกรหัสผู้ใช้"
-                [disabled]="isEnrolling">
-              </app-glass-input>
-            </div>
-            <div class="form-actions flex gap-4 justify-end mt-6 md:flex-col">
-              <app-glass-button
-                variant="primary"
-                (click)="enrollFace()"
-                [disabled]="!enrollmentName.trim() || isEnrolling">
-                <i class="fas fa-save"></i>
-                {{ isEnrolling ? 'กำลังลงทะเบียน...' : 'บันทึก' }}
-              </app-glass-button>
+            
+            <div class="flex gap-4 justify-end mt-8">
               <app-glass-button
                 variant="secondary"
                 (click)="cancelEnrollment()"
                 [disabled]="isEnrolling">
-                <i class="fas fa-times"></i>
-                ยกเลิก
+                {{ t('common.cancel') || 'ยกเลิก' }}
+              </app-glass-button>
+              <app-glass-button
+                variant="primary"
+                (click)="enrollFace()"
+                [disabled]="!enrollmentName.trim() || isEnrolling">
+                @if (isEnrolling) {
+                  <mat-icon class="animate-spin">sync</mat-icon>
+                } @else {
+                  <mat-icon>save</mat-icon>
+                }
+                {{ isEnrolling ? (t('common.saving') || 'กำลังบันทึก...') : (t('common.save') || 'บันทึก') }}
               </app-glass-button>
             </div>
           </div>
         }
 
-        <!-- Enrolled Faces List -->
+        <!-- Enrolled Faces Grid -->
         @if (enrolledFaces.length > 0) {
           <div class="enrolled-faces">
-            <h4 class="m-0 mb-4 text-white">ใบหน้าที่ลงทะเบียนแล้ว ({{ enrolledFaces.length }})</h4>
-            <div class="faces-grid grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4 mb-6 md:grid-cols-1">
+            <h4 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+               <mat-icon class="text-slate-400">group</mat-icon>
+               {{ t('enrollment.registered_faces') || 'ใบหน้าที่ลงทะเบียนแล้ว' }} <span class="px-2 py-0.5 rounded-full bg-white/10 text-xs">{{ enrolledFaces.length }}</span>
+            </h4>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
               @for (face of enrolledFaces; track face) {
-                <div class="face-card bg-white/2 rounded-xl p-4 border border-white/10 relative">
-                  <img appImageOptimization [ngSrc]="face.imageData" [alt]="face.name" class="face-image w-full h-[120px] object-cover rounded-xl mb-3" loading="lazy">
-                  <div class="face-info">
-                    <h5 class="m-0 mb-2 text-white text-base">{{ face.name }}</h5>
-                    <p class="m-0 mb-1 text-gray-400 text-sm">ลงทะเบียน: {{ face.enrolledAt | date:'dd/MM/yyyy HH:mm' }}</p>
-                    <p class="m-0 text-gray-400 text-sm">จำนวนข้อมูล: {{ face.descriptors.length }}</p>
+                <div class="group relative bg-black/40 rounded-xl overflow-hidden border border-white/5 hover:border-primary-500/50 transition-all duration-300">
+                  <div class="aspect-square overflow-hidden">
+                     <img [src]="face.imageData" [alt]="face.name" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                   </div>
-                  <div class="face-actions absolute top-3 right-3">
-                    <app-glass-button
-                      variant="danger"
-                      size="sm"
-                      (click)="removeFace(face.id)">
-                      <i class="fas fa-trash"></i>
-                    </app-glass-button>
+                  
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-4 flex flex-col justify-end">
+                     <h5 class="text-white font-bold truncate">{{ face.name }}</h5>
+                     <p class="text-xs text-slate-400">{{ face.enrolledAt | date:'dd/MM/yyyy' }}</p>
                   </div>
+
+                  <button 
+                     (click)="removeFace(face.id)"
+                     class="absolute top-2 right-2 p-2 rounded-full bg-red-500/80 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600">
+                     <mat-icon class="text-lg w-5 h-5">delete</mat-icon>
+                  </button>
                 </div>
               }
             </div>
 
-            <div class="bulk-actions flex gap-4 justify-center flex-wrap md:flex-col">
+            <div class="flex gap-4 justify-center flex-wrap border-t border-white/10 pt-6">
               <app-glass-button
                 variant="secondary"
+                size="sm"
                 (click)="exportEnrollments()">
-                <i class="fas fa-download"></i>
-                ส่งออกข้อมูล
+                <mat-icon>download</mat-icon>
+                {{ t('common.export_json') || 'ส่งออก JSON' }}
               </app-glass-button>
               <app-glass-button
                 variant="secondary"
+                size="sm"
                 (click)="fileInput.click()">
-                <i class="fas fa-upload"></i>
-                นำเข้าข้อมูล
+                <mat-icon>upload</mat-icon>
+                {{ t('common.import_json') || 'นำเข้า JSON' }}
               </app-glass-button>
               <app-glass-button
                 variant="danger"
+                size="sm"
                 (click)="clearAllFaces()">
-                <i class="fas fa-trash-alt"></i>
-                ลบทั้งหมด
+                <mat-icon>delete_forever</mat-icon>
+                {{ t('common.clear_all') || 'ล้างทั้งหมด' }}
               </app-glass-button>
             </div>
           </div>

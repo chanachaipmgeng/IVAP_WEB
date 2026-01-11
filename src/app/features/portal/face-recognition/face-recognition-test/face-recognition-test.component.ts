@@ -8,14 +8,23 @@
 import { Component, signal, ViewChild, ElementRef, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GlassButtonComponent } from '../../../../shared/components/glass-button/glass-button.component';
+import { GlassCardComponent } from '../../../../shared/components/glass-card/glass-card.component';
 import { PageLayoutComponent } from '../../../../shared/components/page-layout/page-layout.component';
 import { FormsModule } from '@angular/forms';
 import { FaceService } from '../../../../core/services/face.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-face-recognition-test',
   standalone: true,
-  imports: [CommonModule, GlassButtonComponent, PageLayoutComponent, FormsModule],
+  imports: [
+    CommonModule, 
+    GlassButtonComponent, 
+    GlassCardComponent, 
+    PageLayoutComponent, 
+    FormsModule,
+    MatIconModule
+  ],
   templateUrl: './face-recognition-test.component.html',
   styleUrls: ['./face-recognition-test.component.scss']
 })
@@ -26,6 +35,7 @@ export class FaceRecognitionTestComponent implements OnDestroy {
   selectedFile: File | null = null;
   identificationResult: any = null;
   loading = signal(false);
+  isDragOver = signal(false);
 
   // Camera handling
   @ViewChild('videoElement') videoElement!: ElementRef<HTMLVideoElement>;
@@ -49,28 +59,60 @@ export class FaceRecognitionTestComponent implements OnDestroy {
 
   setInputType(type: 'upload' | 'camera'): void {
     this.inputType.set(type);
-    this.reset();
-
-    if (type === 'camera') {
-        this.startCamera();
-    } else {
-        this.stopCamera();
-    }
+    this.reset(); // Clear previous state
+    
+    // Slight delay to ensure DOM update
+    setTimeout(() => {
+        if (type === 'camera') {
+            this.startCamera();
+        } else {
+            this.stopCamera();
+        }
+    }, 50);
   }
 
-  // --- File Upload ---
+  // --- File Upload & Drag Drop ---
+
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver.set(true);
+  }
+
+  onDragLeave(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver.set(false);
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver.set(false);
+    
+    const files = event.dataTransfer?.files;
+    if (files && files.length > 0) {
+      this.handleFile(files[0]);
+    }
+  }
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
-      this.selectedFile = file;
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.selectedImage = e.target.result;
-        this.identificationResult = null; // Reset result
-      };
-      reader.readAsDataURL(file);
+      this.handleFile(file);
     }
+  }
+
+  private handleFile(file: File) {
+    if (!file.type.startsWith('image/')) return;
+
+    this.selectedFile = file;
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.selectedImage = e.target.result;
+      this.identificationResult = null; // Reset result
+    };
+    reader.readAsDataURL(file);
   }
 
   // --- Camera Logic ---

@@ -14,6 +14,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatIconModule } from '@angular/material/icon';
 import { FaceRecognitionComponent } from '../../../../shared/components/face-recognition/face-recognition.component';
 import { GroupFaceRecognitionComponent, GroupRecognitionResult } from '../../../../shared/components/group-face-recognition/group-face-recognition.component';
 import { GlassCardComponent } from '../../../../shared/components/glass-card/glass-card.component';
@@ -32,6 +33,7 @@ import { ImageOptimizationDirective } from '../../../../shared/directives/image-
     NgOptimizedImage,
     FormsModule,
     TranslateModule,
+    MatIconModule,
     FaceRecognitionComponent,
     GroupFaceRecognitionComponent,
     GlassCardComponent,
@@ -70,7 +72,8 @@ export class FaceRecognitionDemoComponent implements OnInit {
     enableSound: true,
     enableVibration: false,
     detectionThreshold: 0.6,
-    recognitionThreshold: 0.6
+    recognitionThreshold: 0.6,
+    onlineRecognition: true // Enable online recognition by default
   };
 
   // Group recognition data
@@ -283,13 +286,13 @@ export class FaceRecognitionDemoComponent implements OnInit {
   getActivityIcon(type: string): string {
     switch (type) {
       case 'detection':
-        return 'fas fa-eye';
+        return 'visibility';
       case 'recognition':
-        return 'fas fa-user-check';
+        return 'how_to_reg';
       case 'enrollment':
-        return 'fas fa-user-plus';
+        return 'person_add';
       default:
-        return 'fas fa-info-circle';
+        return 'info';
     }
   }
 

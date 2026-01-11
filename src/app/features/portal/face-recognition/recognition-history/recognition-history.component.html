@@ -1,128 +1,253 @@
-<div class="recognition-history-container h-full flex flex-col p-6 space-y-6">
+<div class="h-full flex flex-col p-4 md:p-6 space-y-4 md:space-y-6">
   <!-- Header -->
-  <div class="flex justify-between items-center">
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
     <div>
-      <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-secondary-600 dark:from-primary-400 dark:to-secondary-400">
+      <h1 class="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
+        <mat-icon class="text-primary-500">history</mat-icon>
         Recognition History
       </h1>
-      <p class="text-gray-500 dark:text-gray-400 mt-1">View logs of all face recognition events across cameras</p>
+      <p class="text-sm md:text-base text-gray-500 dark:text-gray-400 mt-1">View logs of all face recognition events</p>
     </div>
-    <div class="flex gap-2">
-      <app-glass-button variant="secondary" icon="download">
+    <div class="flex gap-2 w-full md:w-auto">
+      <app-glass-button variant="secondary" icon="download" class="w-full md:w-auto justify-center">
         Export CSV
       </app-glass-button>
     </div>
   </div>
 
-  <!-- Content -->
-  <app-glass-card class="flex-1 overflow-hidden flex flex-col">
-    <!-- Filters -->
-    <div class="p-4 border-b border-gray-200/50 dark:border-gray-700/50 flex flex-wrap gap-4 items-center bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm">
-      <div class="relative flex-1 min-w-[200px]">
-          <input type="text" [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)" 
-                 placeholder="Search person, camera, or location..." 
-                 class="w-full pl-10 pr-4 py-2.5 bg-white/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none text-sm transition-all hover:bg-white/80 dark:hover:bg-gray-900/80 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500">
-          <i class="fas fa-search absolute left-3 top-3 text-gray-400 dark:text-gray-500"></i>
+  <!-- Content Card -->
+  <app-glass-card class="flex-1 overflow-hidden flex flex-col relative shadow-xl">
+    
+    <!-- Loading Overlay -->
+    <div *ngIf="isLoading()" class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-white/60 dark:bg-gray-900/60 backdrop-blur-sm transition-all">
+      <div class="relative w-16 h-16 mb-4">
+        <div class="absolute inset-0 border-4 border-gray-200 dark:border-gray-700 rounded-full"></div>
+        <div class="absolute inset-0 border-4 border-primary-500 rounded-full border-t-transparent animate-spin"></div>
+      </div>
+      <p class="text-sm font-medium text-gray-600 dark:text-gray-300 animate-pulse">Loading history...</p>
+    </div>
+
+    <!-- Filters Toolbar -->
+    <div class="p-4 border-b border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50 flex flex-col md:flex-row gap-4">
+      <!-- Search -->
+      <div class="relative flex-1 group">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <mat-icon class="text-gray-400 group-focus-within:text-primary-500 transition-colors">search</mat-icon>
+          </div>
+          <input type="text" [value]="searchQuery()" (input)="onSearchInput($event)" 
+                 placeholder="Search by name, camera, or location..." 
+                 class="block w-full pl-10 pr-4 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all text-sm text-gray-900 dark:text-white placeholder-gray-400">
       </div>
       
-      <div>
-          <label class="sr-only">Date</label>
-          <input type="date" [ngModel]="selectedDate()" (ngModelChange)="selectedDate.set($event)"
-                 class="px-3 py-2.5 bg-white/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none text-sm transition-all hover:bg-white/80 dark:hover:bg-gray-900/80 cursor-pointer text-gray-900 dark:text-gray-100">
-      </div>
+      <div class="flex gap-4 overflow-x-auto pb-2 md:pb-0 no-scrollbar">
+          <!-- Date Filter -->
+          <div class="relative min-w-[160px]">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <mat-icon class="text-gray-400 text-sm !w-5 !h-5 !text-[20px]">calendar_today</mat-icon>
+            </div>
+            <input type="date" [ngModel]="selectedDate()" (ngModelChange)="selectedDate.set($event); onFilterChange()"
+                   class="block w-full pl-10 pr-3 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 text-sm text-gray-900 dark:text-white cursor-pointer transition-all">
+          </div>
 
-      <div class="relative min-w-[150px]">
-          <select [ngModel]="filterType()" (ngModelChange)="filterType.set($event)"
-                  class="w-full pl-3 pr-10 py-2.5 bg-white/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none text-sm appearance-none cursor-pointer transition-all hover:bg-white/80 dark:hover:bg-gray-900/80 text-gray-900 dark:text-gray-100">
-              <option value="All">All Types</option>
-              <option value="Employee">Employee</option>
-              <option value="Visitor">Visitor</option>
-              <option value="VIP">VIP</option>
-              <option value="Unknown">Unknown</option>
-          </select>
-          <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500 dark:text-gray-400">
-            <i class="fas fa-chevron-down text-xs"></i>
+          <!-- Type Filter -->
+          <div class="relative min-w-[140px]">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <mat-icon class="text-gray-400 text-sm !w-5 !h-5 !text-[20px]">filter_list</mat-icon>
+              </div>
+              <select [ngModel]="filterType()" (ngModelChange)="filterType.set($event); onFilterChange()"
+                      class="block w-full pl-10 pr-8 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 text-sm appearance-none cursor-pointer transition-all text-gray-900 dark:text-white">
+                  <option value="All">All Types</option>
+                  <option value="Employee">Employee</option>
+                  <option value="Visitor">Visitor</option>
+                  <option value="VIP">VIP</option>
+                  <option value="Unknown">Unknown</option>
+              </select>
+              <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
+                <mat-icon class="text-sm !w-4 !h-4 !text-[16px]">expand_more</mat-icon>
+              </div>
           </div>
       </div>
     </div>
 
-    <!-- Table -->
-    <div class="overflow-auto flex-1 custom-scrollbar">
-      <table class="min-w-full divide-y divide-gray-200/50 dark:divide-gray-700/50">
-        <thead class="bg-gray-50/50 dark:bg-gray-800/50 sticky top-0 backdrop-blur-sm z-10">
+    <!-- Data Display Area -->
+    <div class="flex-1 overflow-auto bg-white/30 dark:bg-gray-900/30 custom-scrollbar">
+      
+      <!-- Desktop View: Table -->
+      <table class="hidden md:table min-w-full divide-y divide-gray-200/50 dark:divide-gray-700/50">
+        <thead class="bg-gray-50/80 dark:bg-gray-800/80 sticky top-0 backdrop-blur-md z-10">
           <tr>
             <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Snapshot</th>
             <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Time</th>
-            <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Person Info</th>
+            <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Person</th>
             <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Match Score</th>
             <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Location</th>
             <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
           </tr>
         </thead>
-        <tbody class="bg-white/30 dark:bg-gray-800/30 divide-y divide-gray-200/50 dark:divide-gray-700/50">
+        <tbody class="divide-y divide-gray-200/50 dark:divide-gray-700/50">
           @for (log of filteredLogs; track $index) {
-            <tr class="hover:bg-white/60 dark:hover:bg-gray-700/60 transition-all duration-200 group">
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="h-12 w-12 rounded-xl bg-gray-100 dark:bg-gray-700 overflow-hidden border border-gray-200 dark:border-gray-600 shadow-sm ring-2 ring-white dark:ring-gray-800 cursor-pointer group-hover:scale-110 transition-transform duration-200">
+            <tr class="hover:bg-white/60 dark:hover:bg-gray-800/60 transition-colors duration-150 group">
+              <td class="px-6 py-3 whitespace-nowrap">
+                <div class="h-12 w-12 rounded-lg bg-gray-100 dark:bg-gray-700 overflow-hidden border border-gray-200 dark:border-gray-600 shadow-sm relative group-hover:scale-110 transition-transform">
                   <img [src]="log.snapshotUrl" alt="Snapshot" class="h-full w-full object-cover">
                 </div>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-                <div class="font-semibold text-primary-900 dark:text-primary-300">{{ log.timestamp | date:'HH:mm:ss' }}</div>
-                <div class="text-xs text-gray-500 dark:text-gray-400">{{ log.timestamp | date:'MMM d, y' }}</div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
+              <td class="px-6 py-3 whitespace-nowrap">
                 <div class="flex flex-col">
-                  <span class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ log.personName }}</span>
-                  <span class="text-xs text-gray-500 dark:text-gray-400 inline-flex items-center gap-1">
-                    {{ log.type }} 
-                    @if (log.personId) {
-                      <span class="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 font-mono text-[10px]">{{ log.personId }}</span>
-                    }
+                    <span class="text-sm font-semibold text-gray-900 dark:text-white">{{ log.timestamp | date:'HH:mm:ss' }}</span>
+                    <span class="text-xs text-gray-500 dark:text-gray-400">{{ log.timestamp | date:'MMM d, y' }}</span>
+                </div>
+              </td>
+              <td class="px-6 py-3 whitespace-nowrap">
+                <div class="flex items-center gap-3">
+                    <div class="flex flex-col">
+                        <span class="text-sm font-medium text-gray-900 dark:text-white">{{ log.personName }}</span>
+                        <div class="flex items-center gap-2 mt-0.5">
+                            <span class="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-600">
+                                {{ log.type }}
+                            </span>
+                            @if (log.personId) {
+                                <span class="text-xs text-gray-400 dark:text-gray-500 font-mono">#{{ log.personId }}</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+              </td>
+              <td class="px-6 py-3 whitespace-nowrap">
+                <div class="flex items-center gap-3">
+                  <div class="w-20 bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 overflow-hidden">
+                    <div class="h-full rounded-full transition-all duration-500" 
+                         [class.bg-emerald-500]="log.confidence >= 0.9"
+                         [class.bg-amber-500]="log.confidence >= 0.7 && log.confidence < 0.9"
+                         [class.bg-rose-500]="log.confidence < 0.7"
+                         [style.width.%]="log.confidence * 100"></div>
+                  </div>
+                  <span class="text-xs font-bold" 
+                        [class.text-emerald-600]="log.confidence >= 0.9"
+                        [class.dark:text-emerald-400]="log.confidence >= 0.9"
+                        [class.text-amber-600]="log.confidence >= 0.7 && log.confidence < 0.9"
+                        [class.dark:text-amber-400]="log.confidence >= 0.7 && log.confidence < 0.9"
+                        [class.text-rose-600]="log.confidence < 0.7"
+                        [class.dark:text-rose-400]="log.confidence < 0.7">
+                    {{ (log.confidence * 100).toFixed(0) }}%
                   </span>
                 </div>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="flex items-center">
-                  <div class="w-16 bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 mr-2 overflow-hidden">
-                    <div class="h-1.5 rounded-full transition-all duration-500" 
-                         [class.bg-green-500]="log.confidence >= 0.9"
-                         [class.bg-yellow-500]="log.confidence >= 0.7 && log.confidence < 0.9"
-                         [class.bg-red-500]="log.confidence < 0.7"
-                         [style.width.%]="log.confidence * 100"></div>
-                  </div>
-                  <span class="text-sm font-medium" [ngClass]="getConfidenceColor(log.confidence)">{{ (log.confidence * 100).toFixed(1) }}%</span>
+              <td class="px-6 py-3 whitespace-nowrap">
+                <div class="flex flex-col">
+                    <span class="text-sm text-gray-900 dark:text-white font-medium">{{ log.location }}</span>
+                    <div class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                        <mat-icon class="!w-3 !h-3 !text-[12px]">videocam</mat-icon>
+                        {{ log.cameraName }}
+                    </div>
                 </div>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900 dark:text-gray-100 font-medium">{{ log.location }}</div>
-                <div class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
-                  <i class="fas fa-video"></i>
-                  {{ log.cameraName }}
-                </div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <span [class]="'px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full border shadow-sm backdrop-blur-sm ' + getStatusBadge(log.status)">
+              <td class="px-6 py-3 whitespace-nowrap">
+                <span [class]="'px-2.5 py-1 inline-flex text-xs font-semibold rounded-full border ' + getStatusBadge(log.status)">
                   {{ log.status }}
                 </span>
               </td>
             </tr>
           }
-          @if (filteredLogs.length === 0) {
-            <tr>
-              <td colspan="6" class="px-6 py-16 text-center">
-                <div class="flex flex-col items-center justify-center">
-                  <div class="h-16 w-16 bg-gray-50 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
-                    <i class="fas fa-search text-2xl text-gray-300 dark:text-gray-600"></i>
-                  </div>
-                  <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100">No records found</h3>
-                  <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Try adjusting your search or filters.</p>
-                </div>
-              </td>
-            </tr>
-          }
         </tbody>
       </table>
+
+      <!-- Mobile View: Cards -->
+      <div class="md:hidden p-4 space-y-4">
+        @for (log of filteredLogs; track $index) {
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 relative overflow-hidden">
+                <!-- Status Line -->
+                <div class="absolute left-0 top-0 bottom-0 w-1" 
+                     [class.bg-emerald-500]="log.status === 'Allowed'"
+                     [class.bg-rose-500]="log.status === 'Denied'"
+                     [class.bg-amber-500]="log.status === 'Unknown'">
+                </div>
+
+                <div class="flex items-start gap-4">
+                    <!-- Snapshot -->
+                    <div class="h-16 w-16 rounded-lg bg-gray-100 dark:bg-gray-700 overflow-hidden border border-gray-200 dark:border-gray-600 flex-shrink-0">
+                        <img [src]="log.snapshotUrl" alt="Snapshot" class="h-full w-full object-cover">
+                    </div>
+
+                    <!-- Main Info -->
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-semibold text-gray-900 dark:text-white truncate">{{ log.personName }}</h3>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <span class="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-600">
+                                        {{ log.type }}
+                                    </span>
+                                    <span class="text-xs text-gray-500">{{ log.timestamp | date:'HH:mm' }}</span>
+                                </div>
+                            </div>
+                            <span [class]="'px-2 py-0.5 text-[10px] font-bold rounded-full border ' + getStatusBadge(log.status)">
+                                {{ log.status }}
+                            </span>
+                        </div>
+
+                        <!-- Details -->
+                        <div class="mt-3 grid grid-cols-2 gap-2 text-xs">
+                            <div class="flex items-center gap-1 text-gray-500 dark:text-gray-400">
+                                <mat-icon class="!w-3 !h-3 !text-[12px]">place</mat-icon>
+                                <span class="truncate">{{ log.location }}</span>
+                            </div>
+                            <div class="flex items-center gap-1 font-medium" 
+                                 [class.text-emerald-600]="log.confidence >= 0.9"
+                                 [class.text-amber-600]="log.confidence >= 0.7 && log.confidence < 0.9">
+                                <mat-icon class="!w-3 !h-3 !text-[12px]">analytics</mat-icon>
+                                {{ (log.confidence * 100).toFixed(0) }}% Match
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+      </div>
+
+      <!-- Empty State -->
+      @if (filteredLogs.length === 0 && !isLoading()) {
+        <div class="flex flex-col items-center justify-center py-16 px-4 text-center">
+            <div class="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
+                <mat-icon class="text-gray-400 !w-10 !h-10 !text-[40px]">search_off</mat-icon>
+            </div>
+            <h3 class="text-lg font-medium text-gray-900 dark:text-white">No records found</h3>
+            <p class="text-gray-500 dark:text-gray-400 mt-1 max-w-sm">
+                We couldn't find any recognition logs matching your search filters.
+            </p>
+            <button (click)="clearSearch()" 
+                    class="mt-4 px-4 py-2 text-sm text-primary-600 dark:text-primary-400 font-medium hover:underline">
+                Clear all filters
+            </button>
+        </div>
+      }
+    </div>
+
+    <!-- Pagination Footer -->
+    <div class="p-4 border-t border-gray-100 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="text-sm text-gray-500 dark:text-gray-400 text-center sm:text-left">
+        Showing <span class="font-bold text-gray-800 dark:text-gray-200">{{ (currentPage() - 1) * pageSize() + 1 }}</span> to <span class="font-bold text-gray-800 dark:text-gray-200">{{ Math.min(currentPage() * pageSize(), totalItems()) }}</span> of <span class="font-bold text-gray-800 dark:text-gray-200">{{ totalItems() }}</span> entries
+      </div>
+      
+      <div class="flex items-center gap-2">
+        <button 
+          [disabled]="currentPage() === 1"
+          (click)="onPageChange(currentPage() - 1)"
+          class="p-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        
+        <div class="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 shadow-sm min-w-[100px] text-center">
+            Page {{ currentPage() }} / {{ totalPages() }}
+        </div>
+
+        <button 
+          [disabled]="currentPage() === totalPages()"
+          (click)="onPageChange(currentPage() + 1)"
+          class="p-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
     </div>
   </app-glass-card>
 </div>

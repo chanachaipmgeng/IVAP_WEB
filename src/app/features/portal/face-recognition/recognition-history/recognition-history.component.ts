@@ -2,9 +2,10 @@ import { Component, OnInit, signal, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { VerificationService } from '../../../../core/services/verification.service';
-import { Subscription, interval } from 'rxjs';
-import { startWith, switchMap } from 'rxjs/operators';
+import { Subscription, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { environment } from '../../../../../environments/environment';
+import { MatIconModule } from '@angular/material/icon';
 
 interface RecognitionLog {
   id: string;
@@ -16,7 +17,7 @@ interface RecognitionLog {
   cameraName: string;
   location: string;
   snapshotUrl: string;
-  status: 'Verified' | 'Flagged' | 'Uncertain';
+  status: 'Allowed' | 'Denied' | 'Unknown';
 }
 
 import { GlassButtonComponent } from '../../../../shared/components/glass-button/glass-button.component';
@@ -25,7 +26,7 @@ import { GlassCardComponent } from '../../../../shared/components/glass-card/gla
 @Component({
   selector: 'app-recognition-history',
   standalone: true,
-  imports: [CommonModule, FormsModule, GlassButtonComponent, GlassCardComponent],
+  imports: [CommonModule, FormsModule, GlassButtonComponent, GlassCardComponent, MatIconModule],
   templateUrl: './recognition-history.component.html',
   styleUrls: ['./recognition-history.component.scss']
 })
@@ -35,25 +36,59 @@ export class RecognitionHistoryComponent implements OnInit, OnDestroy {
   searchQuery = signal<string>('');
   selectedDate = signal<string>(new Date().toISOString().split('T')[0]);
 
-  private refreshSubscription?: Subscription;
+  private searchSubject = new Subject<string>();
+  private searchSubscription?: Subscription;
   isLoading = signal<boolean>(false);
 
-  constructor(private verificationService: VerificationService) {}
+  // Pagination State
+  currentPage = signal<number>(1);
+  pageSize = signal<number>(20);
+  totalItems = signal<number>(0);
+  totalPages = signal<number>(1);
+
+  constructor(private verificationService: VerificationService) {
+    // Debounce search input
+    this.searchSubscription = this.searchSubject.pipe(
+      debounceTime(500),
+      distinctUntilChanged()
+    ).subscribe(query => {
+      this.searchQuery.set(query);
+      this.onFilterChange();
+    });
+  }
 
   ngOnInit() {
     this.loadHistory();
   }
 
   ngOnDestroy() {
-    // No subscription to unsubscribe for now as we removed interval
+    this.searchSubscription?.unsubscribe();
+  }
+
+  onSearchInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.searchSubject.next(input.value);
+  }
+
+  clearSearch() {
+    this.searchQuery.set('');
+    this.searchSubject.next('');
   }
 
   loadHistory() {
     this.isLoading.set(true);
-    this.verificationService.getHistory(50).subscribe({
+    this.verificationService.getHistory(
+        this.currentPage(),
+        this.pageSize(),
+        this.searchQuery(),
+        this.filterType(),
+        this.selectedDate()
+    ).subscribe({
       next: (response) => {
-        const mappedLogs = response.requests.map(req => this.mapToLog(req));
+        const mappedLogs = response.items.map(req => this.mapToLog(req));
         this.logs.set(mappedLogs);
+        this.totalItems.set(response.total);
+        this.totalPages.set(response.total_pages);
         this.isLoading.set(false);
       },
       error: (err) => {
@@ -63,31 +98,45 @@ export class RecognitionHistoryComponent implements OnInit, OnDestroy {
     });
   }
 
+  onFilterChange() {
+    this.currentPage.set(1);
+    this.loadHistory();
+  }
+
+  onPageChange(newPage: number) {
+    if (newPage >= 1 && newPage <= this.totalPages()) {
+        this.currentPage.set(newPage);
+        this.loadHistory();
+    }
+  }
+
   manualRefresh() {
     this.loadHistory();
   }
 
   private mapToLog(req: any): RecognitionLog {
     // Backend now returns enriched flat structure
-    const isSuccess = req.status === 'success';
+    const isSuccess = req.status === 'success' || req.status === 'Allowed'; // Adjust based on API
     const confidence = req.confidence || 0;
 
     // Determine type and status
     let type: 'Employee' | 'Visitor' | 'VIP' | 'Unknown' = 'Unknown';
-    let status: 'Verified' | 'Flagged' | 'Uncertain' = 'Uncertain';
+    let status: 'Allowed' | 'Denied' | 'Unknown' = 'Unknown';
 
-    if (isSuccess && req.user_id) {
+    if (req.user_id) {
         type = 'Employee';
-        status = 'Verified';
-    } else if (req.status === 'failed') {
+        status = 'Allowed';
+    } else {
         type = 'Unknown';
-        status = 'Uncertain';
+        status = 'Unknown'; // or Denied depending on logic
     }
+    
+    // Override if explicit status from API
+    if (req.status === 'success' || req.status === 'allowed') status = 'Allowed';
+    if (req.status === 'failed' || req.status === 'denied') status = 'Denied';
+
 
     // Extract metadata safely
-    // Note: Backend returns 'metadata' key in to_dict() for VerificationLog, but might return 'metadata_info' if raw model used.
-    // The JSON provided shows "metadata".
-    const metadata = req.metadata || req.metadata_info || {};
     const deviceId = req.device_id || 'Unknown Device';
 
     // Construct name
@@ -115,7 +164,6 @@ export class RecognitionHistoryComponent implements OnInit, OnDestroy {
 
     let snapshotUrl = 'assets/images/placeholder-face.jpg';
     if (req.snapshot_path) {
-        // Handle backend relative paths
         const path = req.snapshot_path;
         if (path.startsWith('http')) {
             snapshotUrl = path;
@@ -140,27 +188,25 @@ export class RecognitionHistoryComponent implements OnInit, OnDestroy {
     };
   }
 
+  // Helper for template
+  protected Math = Math;
+
   get filteredLogs() {
-    return this.logs().filter(log => {
-      const matchesType = this.filterType() === 'All' || log.type === this.filterType();
-      const matchesSearch = log.personName.toLowerCase().includes(this.searchQuery().toLowerCase()) ||
-                            log.location.toLowerCase().includes(this.searchQuery().toLowerCase());
-      return matchesType && matchesSearch;
-    });
+    return this.logs();
   }
 
   getConfidenceColor(score: number): string {
-    if (score >= 0.9) return 'text-green-600';
-    if (score >= 0.7) return 'text-yellow-600';
-    return 'text-red-600';
+    if (score >= 0.9) return 'text-emerald-600';
+    if (score >= 0.7) return 'text-amber-600';
+    return 'text-rose-600';
   }
 
   getStatusBadge(status: string): string {
     switch (status) {
-      case 'Verified': return 'bg-green-100 text-green-800';
-      case 'Flagged': return 'bg-red-100 text-red-800';
-      case 'Uncertain': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'Allowed': return 'bg-emerald-100 text-emerald-800 border-emerald-200';
+      case 'Denied': return 'bg-rose-100 text-rose-800 border-rose-200';
+      case 'Unknown': return 'bg-amber-100 text-amber-800 border-amber-200';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   }
 }

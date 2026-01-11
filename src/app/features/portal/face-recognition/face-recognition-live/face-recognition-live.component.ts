@@ -10,14 +10,16 @@
  * ```
  */
 
-import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, HostListener, NgZone, Inject, Optional } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatIconModule } from '@angular/material/icon';
 import { GlassCardComponent } from '../../../../shared/components/glass-card/glass-card.component';
 import { GlassButtonComponent } from '../../../../shared/components/glass-button/glass-button.component';
 import { FaceService, RecognizeManyFacesResponse } from '../../../../core/services/face.service';
 import { FaceDetectionService, FaceDetectionResult } from '../../../../core/services/face-detection.service';
+import { assessImageQuality, ImageQualityAssessment } from '../../../../core/utils/image-quality.utils';
 import { I18nService } from '../../../../core/services/i18n.service';
 import { BaseComponent } from '../../../../core/base/base.component';
 
@@ -56,9 +58,12 @@ interface VideoStream {
   deviceLabel: string; // ชื่อกล้อง
   currentDetections: Map<string, DetectionInfo>; // Deprecated: keeping for compatibility if needed, but should use trackedFaces
   trackedFaces: Map<string, TrackedFace>; // New tracking system
+  displayFaces: TrackedFace[]; // Array for HTML overlay rendering
   isLoading: boolean; // สถานะกำลังโหลด
   emptyFrames: number; // จำนวนเฟรมที่ไม่เจอหน้าต่อเนื่อง
   isFullscreen: boolean; // สถานะเต็มจอ
+  imageQuality: ImageQualityAssessment | null; // คุณภาพภาพของสตรีมนี้
+  showQualityWarning: boolean; // แสดงแจ้งเตือนคุณภาพภาพ
 }
 
 /**
@@ -98,6 +103,7 @@ interface DetectedFace {
     CommonModule,
     FormsModule,
     TranslateModule,
+    MatIconModule,
     GlassCardComponent,
     GlassButtonComponent
   ],
@@ -111,9 +117,9 @@ export class FaceRecognitionLiveComponent extends BaseComponent implements OnIni
 
   // Video streams
   videoStreams: VideoStream[] = [
-    { id: 1, videoElement: null, canvasElement: null, overlayCanvas: null, stream: null, isActive: false, isDetecting: false, showLandmarks: true, useMockCamera: false, mockCanvas: null, mockAnimationId: null, selectedDeviceId: null, deviceLabel: 'กล้อง #1', currentDetections: new Map(), trackedFaces: new Map(), isLoading: false, emptyFrames: 0, isFullscreen: false },
-    { id: 2, videoElement: null, canvasElement: null, overlayCanvas: null, stream: null, isActive: false, isDetecting: false, showLandmarks: true, useMockCamera: false, mockCanvas: null, mockAnimationId: null, selectedDeviceId: null, deviceLabel: 'กล้อง #2', currentDetections: new Map(), trackedFaces: new Map(), isLoading: false, emptyFrames: 0, isFullscreen: false },
-    { id: 3, videoElement: null, canvasElement: null, overlayCanvas: null, stream: null, isActive: false, isDetecting: false, showLandmarks: true, useMockCamera: false, mockCanvas: null, mockAnimationId: null, selectedDeviceId: null, deviceLabel: 'กล้อง #3', currentDetections: new Map(), trackedFaces: new Map(), isLoading: false, emptyFrames: 0, isFullscreen: false }
+    { id: 1, videoElement: null, canvasElement: null, overlayCanvas: null, stream: null, isActive: false, isDetecting: false, showLandmarks: true, useMockCamera: false, mockCanvas: null, mockAnimationId: null, selectedDeviceId: null, deviceLabel: 'กล้อง #1', currentDetections: new Map(), trackedFaces: new Map(), displayFaces: [], isLoading: false, emptyFrames: 0, isFullscreen: false, imageQuality: null, showQualityWarning: false },
+    { id: 2, videoElement: null, canvasElement: null, overlayCanvas: null, stream: null, isActive: false, isDetecting: false, showLandmarks: true, useMockCamera: false, mockCanvas: null, mockAnimationId: null, selectedDeviceId: null, deviceLabel: 'กล้อง #2', currentDetections: new Map(), trackedFaces: new Map(), displayFaces: [], isLoading: false, emptyFrames: 0, isFullscreen: false, imageQuality: null, showQualityWarning: false },
+    { id: 3, videoElement: null, canvasElement: null, overlayCanvas: null, stream: null, isActive: false, isDetecting: false, showLandmarks: true, useMockCamera: false, mockCanvas: null, mockAnimationId: null, selectedDeviceId: null, deviceLabel: 'กล้อง #3', currentDetections: new Map(), trackedFaces: new Map(), displayFaces: [], isLoading: false, emptyFrames: 0, isFullscreen: false, imageQuality: null, showQualityWarning: false }
   ];
 
   // Available camera devices
@@ -143,14 +149,52 @@ export class FaceRecognitionLiveComponent extends BaseComponent implements OnIni
 
   private detectionTimers: Map<number, any> = new Map();
   private processedFaces = new Set<string>(); // Track processed faces to avoid duplicates
+  private successSound: HTMLAudioElement | null = null; // Sound effect
 
   constructor(
     private faceService: FaceService,
     private faceDetectionService: FaceDetectionService,
     private cdr: ChangeDetectorRef,
-    public i18n: I18nService
+    public i18n: I18nService,
+    private ngZone: NgZone
   ) {
     super();
+    this.initializeSound();
+  }
+
+  /**
+   * Initialize sound effect
+   */
+  private initializeSound(): void {
+    // Try to use a local asset first, fallback to synthesized beep if needed
+    // Assuming we don't have a file yet, let's use Web Audio API for a simple pleasant chime
+  }
+
+  /**
+   * Play success chime
+   */
+  private playSuccessSound(): void {
+    try {
+      const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const oscillator = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+
+      oscillator.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+
+      // Nice "ding" sound
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(800, audioCtx.currentTime); // Start at 800Hz
+      oscillator.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1); // Ramp up to 1200Hz
+
+      gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+
+      oscillator.start();
+      oscillator.stop(audioCtx.currentTime + 0.5);
+    } catch (e) {
+      console.error('Failed to play sound:', e);
+    }
   }
 
   ngOnInit(): void {
@@ -405,7 +449,8 @@ export class FaceRecognitionLiveComponent extends BaseComponent implements OnIni
     stream.isActive = true;
     stream.isLoading = false; // Stop loading state
 
-    // Start animation
+    // Start animation loop outside angular to prevent CD thrashing
+    this.ngZone.runOutsideAngular(() => {
     let frame = 0;
     const animate = () => {
       if (!stream.isActive || !ctx) {
@@ -440,6 +485,23 @@ export class FaceRecognitionLiveComponent extends BaseComponent implements OnIni
         ctx.fill();
       }
 
+      // Assess Image Quality (Every 10 frames or so to save performance)
+      if (frame % 10 === 0 && ctx) {
+        try {
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const quality = assessImageQuality(imageData);
+
+            // Update quality info inside Angular zone to update UI
+            this.ngZone.run(() => {
+                stream.imageQuality = quality;
+                // Show warning only if quality is poor or fair
+                stream.showQualityWarning = quality.quality === 'poor' || quality.quality === 'fair';
+            });
+        } catch (err) {
+            console.warn('Quality assessment failed', err);
+        }
+      }
+
       // Draw text
       ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
       ctx.font = 'bold 24px Arial';
@@ -467,6 +529,7 @@ export class FaceRecognitionLiveComponent extends BaseComponent implements OnIni
     };
 
     stream.mockAnimationId = requestAnimationFrame(animate);
+    });
 
     // Start detection for this stream
     this.startDetection(streamIndex);
@@ -574,7 +637,7 @@ export class FaceRecognitionLiveComponent extends BaseComponent implements OnIni
       try {
         await this.performDetection(streamIndex);
         // Check if faces were found in the last detection
-        facesFound = stream.currentDetections.size > 0;
+        facesFound = stream.trackedFaces.size > 0;
 
         if (facesFound) {
           stream.emptyFrames = 0;
@@ -584,8 +647,6 @@ export class FaceRecognitionLiveComponent extends BaseComponent implements OnIni
       } catch (error) {
         console.error('Detection loop error:', error);
       }
-      
-      // ... rest of loop logic ...
 
       // Dynamic interval adjustment
       const processingTime = performance.now() - startTime;
@@ -601,13 +662,15 @@ export class FaceRecognitionLiveComponent extends BaseComponent implements OnIni
       const delay = Math.max(10, targetInterval - processingTime);
 
       if (stream.isActive) {
-        const timer = setTimeout(loop, delay);
+        const timer = setTimeout(() => {
+            this.ngZone.runOutsideAngular(() => loop());
+        }, delay);
         this.detectionTimers.set(streamIndex, timer);
       }
     };
 
-    // Start the loop
-    loop();
+    // Start the loop outside angular
+    this.ngZone.runOutsideAngular(() => loop());
   }
 
   /**
@@ -682,6 +745,24 @@ export class FaceRecognitionLiveComponent extends BaseComponent implements OnIni
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
       }
 
+      // 3. Assess Image Quality (Throttled)
+      // We can do this on the canvas we just drew
+      if (stream.canvasElement) {
+          // Check quality every ~2 seconds (every 10th check if interval is 200ms)
+          // Simplified: just check randomly with 10% chance
+          if (Math.random() < 0.1) {
+             const qualityCtx = stream.canvasElement.getContext('2d');
+             if (qualityCtx) {
+                 const imageData = qualityCtx.getImageData(0, 0, stream.canvasElement.width, stream.canvasElement.height);
+                 const quality = assessImageQuality(imageData);
+                 this.ngZone.run(() => {
+                     stream.imageQuality = quality;
+                     stream.showQualityWarning = quality.quality === 'poor';
+                 });
+             }
+          }
+      }
+
       // Detect faces using face-api.js
       // Use mockCanvas if using mock camera, otherwise use video element
       const detectionSource = stream.useMockCamera && stream.mockCanvas
@@ -751,11 +832,23 @@ export class FaceRecognitionLiveComponent extends BaseComponent implements OnIni
           const faceCtx = faceCanvas.getContext('2d');
 
           if (faceCtx) {
+            // Add padding for better recognition (20% padding)
+            const paddingX = box.width * 0.2;
+            const paddingY = box.height * 0.2;
+
+            // Calculate padded coordinates ensuring they stay within canvas bounds
+            const cropX = Math.max(0, box.x - paddingX);
+            const cropY = Math.max(0, box.y - paddingY);
+            const cropWidth = Math.min(canvas.width - cropX, box.width + (paddingX * 2));
+            const cropHeight = Math.min(canvas.height - cropY, box.height + (paddingY * 2));
+
+            if (cropWidth <= 0 || cropHeight <= 0) continue; // Skip invalid crops
+
             // Optimization: Resize large faces to save bandwidth
             const MAX_DIMENSION = 320;
-            let targetWidth = box.width;
-            let targetHeight = box.height;
-            const aspectRatio = box.width / box.height;
+            let targetWidth = cropWidth;
+            let targetHeight = cropHeight;
+            const aspectRatio = cropWidth / cropHeight;
 
             if (targetWidth > MAX_DIMENSION || targetHeight > MAX_DIMENSION) {
               if (targetWidth > targetHeight) {
@@ -769,14 +862,14 @@ export class FaceRecognitionLiveComponent extends BaseComponent implements OnIni
 
             faceCanvas.width = targetWidth;
             faceCanvas.height = targetHeight;
-            
+
             // Draw with smoothing for better quality downscaling
             faceCtx.imageSmoothingEnabled = true;
             faceCtx.imageSmoothingQuality = 'high';
-            
+
             faceCtx.drawImage(
               canvas,
-              box.x, box.y, box.width, box.height,
+              cropX, cropY, cropWidth, cropHeight,
               0, 0, targetWidth, targetHeight
             );
 
@@ -794,27 +887,40 @@ export class FaceRecognitionLiveComponent extends BaseComponent implements OnIni
               // ✅ Auto-unsubscribe on component destroy
               this.subscribe(
                 this.faceService.recognizeManyFaces(file),
-                (recognitionResults) => {
+                (recognitionResults: RecognizeManyFacesResponse[]) => {
+                  // Debug Log: Check Raw API Response
+                  console.log('API Response:', recognitionResults);
+
                   if (recognitionResults && recognitionResults.length > 0) {
                     const result = recognitionResults[0];
-                    // Update tracked face with recognition result
-                    if (result.first_name || result.last_name) {
-                      const newName = `${result.first_name || ''} ${result.last_name || ''}`.trim();
+                    console.log('Processing Face Result:', result); // Debug Log
+
+                    // Check if we have a valid member_id (Stronger check than name)
+                    if (result.member_id) {
+                      const firstName = result.first_name || '';
+                      const lastName = result.last_name || '';
+                      // Fallback to "Unknown Name" if both are empty but ID exists
+                      const newName = (firstName || lastName) ? `${firstName} ${lastName}`.trim() : 'Unknown Name';
+
+                      console.log('Recognized Name:', newName); // Debug Log
+
                       const employeeId = result.employee_id;
-                      
+
                       // Check if name changed or it's a new recognition
                       const nameChanged = trackedFace.name !== newName;
 
+                      // Update Tracked Face Object (Reference update)
                       trackedFace.name = newName;
                       trackedFace.confidence = result.confidence; // Use API confidence
                       trackedFace.recognized = true;
-                      
+
                       // Also store extra info if needed for UI
-                      // trackedFace.employeeId = employeeId; 
+                      // trackedFace.employeeId = employeeId;
 
                       // Only increment recognized count if we are logging
                       if (nameChanged || (now - trackedFace.lastLog > this.logCooldown)) {
                          this.stats.recognizedFaces++;
+                         this.playSuccessSound(); // Play sound!
                       }
 
                       // Log Logic (Throttled)
@@ -823,26 +929,43 @@ export class FaceRecognitionLiveComponent extends BaseComponent implements OnIni
                         trackedFace.lastLog = now;
                         this.addDetectedFace(trackedFace, streamIndex, faceImage);
                       }
+                    } else {
+                        // member_id missing, treat as unknown
+                         console.log('Member ID missing in result, treating as unknown'); // Debug Log
+                         const newName = 'ไม่รู้จัก';
+
+                         const nameChanged = trackedFace.name !== newName;
+                         trackedFace.name = newName;
+                         trackedFace.recognized = false;
+                         if (nameChanged || (now - trackedFace.lastLog > this.logCooldown)) {
+                             trackedFace.lastLog = now;
+                             this.addDetectedFace(trackedFace, streamIndex, faceImage);
+                         }
                     }
                   } else {
-                    // Not recognized - Log as Unknown
+                    // API returned empty array or null
+                    console.log('API returned no results'); // Debug Log
                     const newName = 'ไม่รู้จัก';
 
-                    // Check if name changed or it's a new recognition
                     const nameChanged = trackedFace.name !== newName;
 
                     trackedFace.name = newName;
                     trackedFace.recognized = false;
 
-                    // Log Logic (Throttled)
                     if (nameChanged || (now - trackedFace.lastLog > this.logCooldown)) {
                       trackedFace.lastLog = now;
                       this.addDetectedFace(trackedFace, streamIndex, faceImage);
                     }
                   }
-                  this.cdr.detectChanges();
+
+                  // Force UI Update
+                  this.ngZone.run(() => {
+                      // Update the display array specifically to trigger change detection
+                      stream.displayFaces = Array.from(stream.trackedFaces.values());
+                      this.cdr.detectChanges();
+                  });
                 },
-                (error) => {
+                (error: any) => {
                   console.warn('Face recognition failed:', error);
                   this.stats.totalErrors++;
                 }
@@ -864,17 +987,39 @@ export class FaceRecognitionLiveComponent extends BaseComponent implements OnIni
       // Sync for drawing
       this.updateCurrentDetectionsForDrawing(stream);
 
-      // Draw detections and landmarks on overlay canvas
+      // Draw landmarks ONLY on overlay canvas (Performance optimization)
+      // Bounding box and Info card will be handled by HTML overlay
       if (stream.overlayCanvas) {
-        this.drawDetectionsOnCanvas(stream, validDetections);
+        // Clear canvas first
+        const overlayCtx = stream.overlayCanvas.getContext('2d');
+        if (overlayCtx) {
+            overlayCtx.clearRect(0, 0, stream.overlayCanvas.width, stream.overlayCanvas.height);
+
+            // Draw landmarks only
+            if (stream.showLandmarks) {
+                validDetections.forEach(detection => {
+                    if (detection.landmarks) {
+                        this.drawLandmarks(overlayCtx, detection.landmarks);
+                    }
+                });
+            }
+        }
       }
 
       stream.isDetecting = false;
-      this.cdr.detectChanges();
+
+      // Manually trigger change detection only when necessary (e.g. faces found or lost)
+      // or simply run inside zone for the array update part
+      this.ngZone.run(() => {
+          // Update display array
+          stream.displayFaces = Array.from(stream.trackedFaces.values());
+          this.cdr.markForCheck();
+      });
+
     } catch (error: any) {
       console.error(`Error performing detection for stream ${streamIndex}:`, error);
       stream.isDetecting = false;
-      this.cdr.detectChanges();
+      // this.cdr.detectChanges(); // Removed, rely on manual markForCheck inside zone
     }
   }
 
@@ -882,6 +1027,7 @@ export class FaceRecognitionLiveComponent extends BaseComponent implements OnIni
    * Helper to sync tracked faces to the display map
    */
   private updateCurrentDetectionsForDrawing(stream: VideoStream): void {
+    // Deprecated but keeping map updated just in case logic depends on it
     stream.currentDetections.clear();
     stream.trackedFaces.forEach((face) => {
       stream.currentDetections.set(face.id, {
@@ -1086,202 +1232,84 @@ export class FaceRecognitionLiveComponent extends BaseComponent implements OnIni
 
 
   /**
+   * Helper function to get tracked faces for template
+   */
+  getTrackedFaces(stream: VideoStream): TrackedFace[] {
+    return stream.displayFaces || [];
+  }
+
+  /**
+   * Calculate style for bounding box
+   */
+  getFaceBoxStyle(face: TrackedFace, stream: VideoStream): any {
+    const video = stream.videoElement;
+    if (!video) return {};
+
+    // Get actual video source dimensions
+    const videoWidth = video.videoWidth || 640;
+    const videoHeight = video.videoHeight || 480;
+
+    // Get displayed video element dimensions
+    const rect = video.getBoundingClientRect();
+    const elementWidth = rect.width;
+    const elementHeight = rect.height;
+
+    if (!elementWidth || !elementHeight) return {};
+
+    // Calculate scaling to handle object-fit: contain
+    const videoAspect = videoWidth / videoHeight;
+    const elementAspect = elementWidth / elementHeight;
+
+    let renderWidth, renderHeight, offsetX, offsetY;
+
+    if (videoAspect > elementAspect) {
+        // Video is wider than container (fit width, black bars top/bottom)
+        renderWidth = elementWidth;
+        renderHeight = elementWidth / videoAspect;
+        offsetX = 0;
+        offsetY = (elementHeight - renderHeight) / 2;
+    } else {
+        // Video is taller than container (fit height, black bars left/right)
+        renderHeight = elementHeight;
+        renderWidth = elementHeight * videoAspect;
+        offsetX = (elementWidth - renderWidth) / 2;
+        offsetY = 0;
+    }
+
+    const scaleX = renderWidth / videoWidth;
+    const scaleY = renderHeight / videoHeight;
+
+    const { x, y, width, height } = face.bbox;
+
+    // Return pixel values for precise positioning
+    return {
+        'left.px': (x * scaleX) + offsetX,
+        'top.px': (y * scaleY) + offsetY,
+        'width.px': (width * scaleX),
+        'height.px': (height * scaleY)
+    };
+  }
+
+  /**
+   * Get class for face box based on status
+   */
+  getFaceBoxClass(face: TrackedFace): string {
+    if (face.recognized) return 'face-box-recognized';
+    if (face.name && face.name !== 'ไม่รู้จัก') return 'face-box-recognized';
+    if (face.name === 'ไม่รู้จัก') return 'face-box-unknown';
+    return 'face-box-detecting';
+  }
+
+  trackByFaceId(index: number, face: TrackedFace): string {
+    return face.id;
+  }
+
+  /**
    * Draw detections and landmarks on overlay canvas
    */
   private drawDetectionsOnCanvas(stream: VideoStream, detections: FaceDetectionResult[]): void {
-    if (!stream.overlayCanvas || !stream.videoElement) return;
-
-    const overlayCtx = stream.overlayCanvas.getContext('2d');
-    if (!overlayCtx) return;
-
-    const video = stream.videoElement;
-
-    // Get actual video dimensions
-    let videoWidth: number;
-    let videoHeight: number;
-
-    if (stream.useMockCamera && stream.mockCanvas) {
-      videoWidth = stream.mockCanvas.width;
-      videoHeight = stream.mockCanvas.height;
-    } else {
-      // Wait for video to have dimensions
-      if (video.videoWidth === 0 || video.videoHeight === 0) {
-        return;
-      }
-      videoWidth = video.videoWidth;
-      videoHeight = video.videoHeight;
-    }
-
-    // Set canvas size to match video exactly
-    if (stream.overlayCanvas.width !== videoWidth || stream.overlayCanvas.height !== videoHeight) {
-      stream.overlayCanvas.width = videoWidth;
-      stream.overlayCanvas.height = videoHeight;
-    }
-
-    // Clear canvas
-    overlayCtx.clearRect(0, 0, stream.overlayCanvas.width, stream.overlayCanvas.height);
-
-    // Common Styles
-    const colors = {
-      recognized: '#10B981', // Emerald 500
-      unknown: '#EF4444',    // Red 500
-      detecting: '#3B82F6',  // Blue 500
-      text: '#FFFFFF',
-      bg: 'rgba(17, 24, 39, 0.75)' // Gray 900 with opacity
-    };
-
-    // Draw scanning line animation (global time based)
-    const time = Date.now() / 1000;
-    const scanOffset = (time % 2) / 2; // 0.0 to 1.0
-
-    // Draw each detection
-    detections.forEach((detection, index) => {
-      const { x, y, width, height } = detection.boundingBox;
-
-      // Find detection info
-      let detectionInfo: DetectionInfo | undefined;
-      stream.currentDetections.forEach((info) => {
-        // Simple matching logic (could be improved with IoU)
-        if (!detectionInfo || info.timestamp > detectionInfo.timestamp) {
-          detectionInfo = info;
-        }
-      });
-
-      // Determine state
-      const isRecognized = detectionInfo?.recognized || false;
-      const name = detectionInfo?.name || (isRecognized ? 'Unknown' : 'Scanning...');
-      const color = isRecognized ? colors.recognized : (detectionInfo ? colors.unknown : colors.detecting);
-      
-      // 1. Draw Landmarks (Subtle)
-      if (stream.showLandmarks && detection.landmarks) {
-        overlayCtx.globalAlpha = 0.6;
-        this.drawLandmarks(overlayCtx, detection.landmarks);
-        overlayCtx.globalAlpha = 1.0;
-      }
-
-      // 2. Draw Bounding Box (Corners Only style)
-      overlayCtx.strokeStyle = color;
-      overlayCtx.lineWidth = 3;
-      overlayCtx.shadowColor = color;
-      overlayCtx.shadowBlur = 10;
-      
-      const cornerSize = Math.min(width, height) * 0.2;
-      
-      // Top-Left
-      overlayCtx.beginPath();
-      overlayCtx.moveTo(x, y + cornerSize);
-      overlayCtx.lineTo(x, y);
-      overlayCtx.lineTo(x + cornerSize, y);
-      overlayCtx.stroke();
-
-      // Top-Right
-      overlayCtx.beginPath();
-      overlayCtx.moveTo(x + width - cornerSize, y);
-      overlayCtx.lineTo(x + width, y);
-      overlayCtx.lineTo(x + width, y + cornerSize);
-      overlayCtx.stroke();
-
-      // Bottom-Right
-      overlayCtx.beginPath();
-      overlayCtx.moveTo(x + width, y + height - cornerSize);
-      overlayCtx.lineTo(x + width, y + height);
-      overlayCtx.lineTo(x + width - cornerSize, y + height);
-      overlayCtx.stroke();
-
-      // Bottom-Left
-      overlayCtx.beginPath();
-      overlayCtx.moveTo(x + cornerSize, y + height);
-      overlayCtx.lineTo(x, y + height);
-      overlayCtx.lineTo(x, y + height - cornerSize);
-      overlayCtx.stroke();
-
-      // Reset shadow
-      overlayCtx.shadowBlur = 0;
-
-      // 3. Scanning Line Effect
-      if (!isRecognized) {
-        const scanY = y + (height * scanOffset);
-        const gradient = overlayCtx.createLinearGradient(x, scanY, x + width, scanY);
-        gradient.addColorStop(0, 'rgba(59, 130, 246, 0)');
-        gradient.addColorStop(0.5, 'rgba(59, 130, 246, 0.8)');
-        gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
-        
-        overlayCtx.fillStyle = gradient;
-        overlayCtx.fillRect(x, scanY - 1, width, 2);
-      }
-
-      // 4. Info Card (Glassmorphism)
-      // Position: Top of the box, centered
-      const cardWidth = Math.max(160, width * 1.2); // Min width or slightly wider than face
-      const cardHeight = 55;
-      const cardX = x + (width - cardWidth) / 2;
-      const cardY = y - cardHeight - 15; // Above the face
-
-      // Draw Card Background
-      overlayCtx.fillStyle = colors.bg;
-      overlayCtx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-      overlayCtx.lineWidth = 1;
-      
-      // Rounded Rect helper
-      overlayCtx.beginPath();
-      const r = 8; // border radius
-      overlayCtx.moveTo(cardX + r, cardY);
-      overlayCtx.lineTo(cardX + cardWidth - r, cardY);
-      overlayCtx.quadraticCurveTo(cardX + cardWidth, cardY, cardX + cardWidth, cardY + r);
-      overlayCtx.lineTo(cardX + cardWidth, cardY + cardHeight - r);
-      overlayCtx.quadraticCurveTo(cardX + cardWidth, cardY + cardHeight, cardX + cardWidth - r, cardY + cardHeight);
-      overlayCtx.lineTo(cardX + r, cardY + cardHeight);
-      overlayCtx.quadraticCurveTo(cardX, cardY + cardHeight, cardX, cardY + cardHeight - r);
-      overlayCtx.lineTo(cardX, cardY + r);
-      overlayCtx.quadraticCurveTo(cardX, cardY, cardX + r, cardY);
-      overlayCtx.closePath();
-      
-      overlayCtx.fill();
-      overlayCtx.stroke();
-
-      // Connecting line from card to box
-      overlayCtx.beginPath();
-      overlayCtx.moveTo(x + width / 2, y);
-      overlayCtx.lineTo(x + width / 2, cardY + cardHeight);
-      overlayCtx.strokeStyle = color;
-      overlayCtx.lineWidth = 1;
-      overlayCtx.stroke();
-
-      // 5. Draw Text Content
-      overlayCtx.fillStyle = colors.text;
-      overlayCtx.textAlign = 'left';
-      overlayCtx.textBaseline = 'middle';
-
-      // Name (Bold)
-      overlayCtx.font = 'bold 14px "Sarabun", sans-serif';
-      overlayCtx.fillText(name, cardX + 12, cardY + 18);
-
-      // Details (Smaller)
-      overlayCtx.font = '12px "Sarabun", sans-serif';
-      overlayCtx.fillStyle = '#9CA3AF'; // Gray 400
-      
-      let details = `${Math.round(detection.confidence * 100)}%`;
-      if (detection.gender) {
-        const genderText = detection.gender.toLowerCase() === 'male' ? 'ชาย' : detection.gender.toLowerCase() === 'female' ? 'หญิง' : '';
-        if (genderText) details += ` • ${genderText}`;
-      }
-      if (detection.age) {
-        details += ` • ${Math.round(detection.age)} ปี`;
-      }
-      
-      overlayCtx.fillText(details, cardX + 12, cardY + 38);
-
-      // Status Indicator Dot
-      overlayCtx.beginPath();
-      overlayCtx.arc(cardX + cardWidth - 15, cardY + cardHeight / 2, 4, 0, Math.PI * 2);
-      overlayCtx.fillStyle = color;
-      overlayCtx.fill();
-      // Dot Glow
-      overlayCtx.shadowColor = color;
-      overlayCtx.shadowBlur = 8;
-      overlayCtx.stroke();
-      overlayCtx.shadowBlur = 0; // Reset
-    });
+    // Deprecated: Logic moved to HTML overlay for boxes/cards.
+    // This function is removed or replaced by simple landmark drawing.
   }
 
   /**

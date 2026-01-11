@@ -16,16 +16,15 @@
  */
 
 import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter, effect } from '@angular/core';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon'; // Import MatIconModule
 import { FaceDetectionService, FaceDetectionResult, FaceRecognitionResult } from '../../../core/services/face-detection.service';
 import { GlassButtonComponent } from '../glass-button/glass-button.component';
 import { GlassCardComponent } from '../glass-card/glass-card.component';
 import { assessImageQuality, ImageQualityAssessment, isImageQualitySufficientForGroup } from '../../../core/utils/image-quality.utils';
 import { I18nService } from '../../../core/services/i18n.service';
 import { BaseComponent } from '../../../core/base/base.component';
-
-import { ImageOptimizationDirective } from '../../directives/image-optimization.directive';
 
 /**
  * Group recognition result interface
@@ -48,11 +47,10 @@ export interface GroupRecognitionResult {
   standalone: true,
   imports: [
     CommonModule,
-    NgOptimizedImage,
     FormsModule,
+    MatIconModule, // Add MatIconModule
     GlassButtonComponent,
-    GlassCardComponent,
-    ImageOptimizationDirective
+    GlassCardComponent
   ],
   templateUrl: './group-face-recognition.component.html',
   styleUrls: ['./group-face-recognition.component.scss']
@@ -452,46 +450,86 @@ export class GroupFaceRecognitionComponent extends BaseComponent implements OnIn
     if (!ctx) return;
 
     // Set canvas size to match video
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+    if (canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+    }
 
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Draw video frame
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
     // Draw face detections
     detections.forEach((detection, index) => {
       const { x, y, width, height } = detection.boundingBox;
       const recognition = this.currentRecognitions[index];
+      const isConfident = recognition?.confidence > 0.7;
+      const color = isConfident ? '#10B981' : (recognition?.confidence > 0.5 ? '#F59E0B' : '#EF4444');
 
-      // Draw bounding box
-      ctx.strokeStyle = recognition?.confidence > 0.7 ? '#10B981' : '#EF4444';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(x, y, width, height);
+      // Draw Modern Bounding Box (Corners only style)
+      const lineLen = Math.min(width, height) * 0.2;
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = color;
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 10;
+
+      ctx.beginPath();
+      // Top Left
+      ctx.moveTo(x, y + lineLen);
+      ctx.lineTo(x, y);
+      ctx.lineTo(x + lineLen, y);
+      // Top Right
+      ctx.moveTo(x + width - lineLen, y);
+      ctx.lineTo(x + width, y);
+      ctx.lineTo(x + width, y + lineLen);
+      // Bottom Right
+      ctx.moveTo(x + width, y + height - lineLen);
+      ctx.lineTo(x + width, y + height);
+      ctx.lineTo(x + width - lineLen, y + height);
+      // Bottom Left
+      ctx.moveTo(x + lineLen, y + height);
+      ctx.lineTo(x, y + height);
+      ctx.lineTo(x, y + height - lineLen);
+      ctx.stroke();
+
+      // Reset shadow
+      ctx.shadowBlur = 0;
 
       // Draw landmarks if enabled
       if (this.showLandmarks && detection.landmarks) {
         this.drawLandmarks(ctx, detection.landmarks);
       }
 
-      // Draw confidence score
-      ctx.fillStyle = recognition?.confidence > 0.7 ? '#10B981' : '#EF4444';
-      ctx.font = '14px Arial';
-      ctx.fillText(
-        `${Math.round(detection.confidence * 100)}%`,
-        x,
-        y - 5
-      );
-
-      // Draw recognition info
+      // Draw Info Label
       if (recognition) {
-        ctx.fillText(
-          `${recognition.firstName} ${recognition.lastName} (${Math.round(recognition.confidence * 100)}%)`,
-          x,
-          y + height + 20
-        );
+        const padding = 8;
+        const fontSize = 14;
+        ctx.font = `bold ${fontSize}px 'Sarabun', sans-serif`;
+        
+        const nameText = `${recognition.firstName} ${recognition.lastName}`;
+        const confText = `${Math.round(recognition.confidence * 100)}%`;
+        
+        const nameWidth = ctx.measureText(nameText).width;
+        const confWidth = ctx.measureText(confText).width;
+        const boxWidth = Math.max(nameWidth, confWidth) + (padding * 2);
+        const boxHeight = (fontSize * 2) + (padding * 2.5);
+
+        // Background
+        ctx.fillStyle = isConfident ? 'rgba(16, 185, 129, 0.8)' : (recognition.confidence > 0.5 ? 'rgba(245, 158, 11, 0.8)' : 'rgba(239, 68, 68, 0.8)');
+        
+        // Position label above or below depending on space
+        const labelY = y - boxHeight - 5 > 0 ? y - boxHeight - 5 : y + height + 5;
+        
+        ctx.beginPath();
+        ctx.roundRect(x, labelY, boxWidth, boxHeight, 8);
+        ctx.fill();
+
+        // Text
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillText(nameText, x + padding, labelY + fontSize + padding);
+        
+        ctx.font = `${fontSize - 2}px 'Sarabun', sans-serif`;
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        ctx.fillText(confText, x + padding, labelY + (fontSize * 2) + (padding * 1.5));
       }
     });
   }

@@ -123,6 +123,12 @@ export class PortalLayoutComponent {
           label: 'Recognition History',
           route: '/portal/recognition-history',
           permission: 'report.view'
+        },
+        {
+          icon: '🧪',
+          label: 'System Demo',
+          route: '/portal/face-recognition-demo',
+          permission: 'face.recognition.view'
         }
       ]
     },

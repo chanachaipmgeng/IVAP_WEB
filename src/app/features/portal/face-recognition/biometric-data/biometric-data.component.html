@@ -1,199 +1,362 @@
-<app-page-layout
-  title="Biometric Data Management"
-  description="Manage biometric data such as face recognition, fingerprints, and iris scans."
-  icon="👤"
-  [actions]="pageActions()">
-
-  <!-- Statistics Cards -->
-  <app-statistics-grid [stats]="statisticsCards()" [columns]="4" />
-
-  <!-- Error Message -->
-  @if (errorMessage()) {
-    <div class="p-4 bg-red-50 border border-red-200 rounded-lg mb-6">
-      <p class="text-red-800 text-sm">{{ errorMessage() }}</p>
+<div class="h-full flex flex-col p-4 md:p-6 space-y-6">
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div>
+      <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-secondary-600 dark:from-primary-400 dark:to-secondary-400">
+        Biometric Management
+      </h1>
+      <p class="text-gray-500 dark:text-gray-400 mt-1">Manage face data and biometric enrollments</p>
     </div>
-  }
+    <div class="flex items-center gap-3 w-full md:w-auto">
+      <app-glass-button
+        variant="primary"
+        icon="add"
+        [fullWidth]="true"
+        (click)="openEnrollModal()">
+        Enroll New Face
+      </app-glass-button>
+    </div>
+  </div>
 
-  <!-- Filters -->
-  <app-filter-section
-    [fields]="filterFields()"
-    [columns]="3"
-    (filterChange)="onFilterChange($event)"
-  />
+  <!-- Content Card -->
+  <app-glass-card class="flex-1 flex flex-col overflow-hidden relative">
 
-  <!-- Biometric Data Table -->
-  <app-data-table
-    [columns]="columns"
-    [data]="filteredData()"
-    [actions]="actions"
-    [searchable]="false"
-  >
-    <!-- Custom Template for Image Preview -->
-    <ng-template #previewImage let-row>
-        @if (row.previewImage || (row.metadata && row.metadata['image_url'])) {
-            <div class="w-12 h-12 rounded-full overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-                <img [src]="row.previewImage || row.metadata['image_url']"
-                     alt="Biometric Preview"
-                     class="w-full h-full object-cover"
-                     onerror="this.style.display='none'">
-            </div>
-        } @else {
-            <div class="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400">
-                <span class="text-xs">No Img</span>
-            </div>
-        }
-    </ng-template>
-  </app-data-table>
+    <!-- Filters & Search -->
+    <div class="p-4 border-b border-gray-200/50 dark:border-gray-700/50 flex flex-col md:flex-row gap-4 items-center bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm justify-between">
 
-  <!-- Add/Edit Modal -->
-  <app-modal
-    [isOpen]="showModal()"
-    [title]="(selectedData() ? 'Edit Biometric Data' : 'Add Biometric Data') | translate"
-    [loading]="isLoading()"
-    (closed)="closeModal()"
-    (confirmed)="saveBiometricData()"
-    confirmText="Save Data"
-    confirmIcon="save"
-    cancelText="Cancel"
-  >
-    <form [formGroup]="biometricForm" class="space-y-6 px-8 py-2">
-
-        <!-- Employee Selection -->
-        <div>
-            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                Employee <span class="text-red-500">*</span>
-            </label>
-            <select formControlName="member_id"
-                class="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 transition-all">
-                <option value="" disabled>Select an employee</option>
-                @for (emp of employees(); track emp.member_id) {
-                    <option [value]="emp.member_id">
-                        {{ emp.full_name }} ({{ emp.employee_id || 'No ID' }}) - {{ emp.department_name || 'No Dept' }}
-                    </option>
-                }
-            </select>
-            @if (getFieldError('member_id')) {
-                <p class="mt-1 text-xs text-red-500">{{ getFieldError('member_id') }}</p>
-            }
+        <!-- Search -->
+        <div class="relative w-full md:w-96">
+            <input
+                type="text"
+                [ngModel]="searchTerm()"
+                (ngModelChange)="searchTerm.set($event); onSearch()"
+                placeholder="Search by name, ID, or department..."
+                class="w-full pl-10 pr-4 py-2.5 bg-white/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none text-sm transition-all hover:bg-white/80 dark:hover:bg-gray-900/80 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500">
+            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
         </div>
 
-        <!-- Biometric Type -->
-        <div>
-            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                Type <span class="text-red-500">*</span>
-            </label>
-            <select formControlName="biometric_type"
-                class="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 transition-all">
-                @for (type of biometricTypes(); track type) {
-                    <option [value]="type">
-                        {{ BIOMETRIC_TYPE_LABELS[type] }}
-                    </option>
+        <!-- Stats / Filter Badges (Optional) -->
+        <div class="flex gap-2 text-sm text-gray-500 dark:text-gray-400">
+            <span class="px-3 py-1 rounded-full bg-white/50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700">
+                Total: <strong class="text-gray-900 dark:text-white">{{ totalItems() }}</strong>
+            </span>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading()" class="absolute inset-0 z-20 flex items-center justify-center bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm">
+        <div class="animate-spin rounded-full h-10 w-10 border-4 border-primary-500 border-t-transparent shadow-lg"></div>
+    </div>
+
+    <!-- Table Container -->
+    <div class="flex-1 overflow-auto custom-scrollbar">
+        <table class="min-w-full divide-y divide-gray-200/50 dark:divide-gray-700/50">
+            <thead class="bg-gray-50/50 dark:bg-gray-800/50 sticky top-0 backdrop-blur-sm z-10">
+                <tr>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Employee Info</th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Department</th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Enrolled Date</th>
+                    <th scope="col" class="px-6 py-4 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white/30 dark:bg-gray-800/30 divide-y divide-gray-200/50 dark:divide-gray-700/50">
+                @for (row of filteredData(); track row.id) {
+                    <tr class="hover:bg-white/60 dark:hover:bg-gray-700/60 transition-all duration-200 group">
+                        <!-- Status / Face Icon -->
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                @if (row.biometric_type === 'face') {
+                                    <div class="h-10 w-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400 border border-green-200 dark:border-green-800/50 shadow-sm" title="Face Enrolled">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    <span class="ml-3 text-sm font-medium text-green-700 dark:text-green-400">Enrolled</span>
+                                } @else {
+                                    <div class="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800/50 shadow-sm">
+                                        <i class="fas fa-fingerprint"></i>
+                                    </div>
+                                    <span class="ml-3 text-sm font-medium text-blue-700 dark:text-blue-400">{{ row.biometric_type }}</span>
+                                }
+                            </div>
+                        </td>
+
+                        <!-- Employee Info -->
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex flex-col">
+                                <span class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ row.first_name }} {{ row.last_name }}</span>
+                                <span class="text-xs text-gray-500 dark:text-gray-400 font-mono mt-0.5">ID: {{ row.employee_id || row.member_id }}</span>
+                            </div>
+                        </td>
+
+                        <!-- Department -->
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            @if (row.department) {
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+                                    {{ row.department }}
+                                </span>
+                            } @else {
+                                <span class="text-sm text-gray-400">-</span>
+                            }
+                        </td>
+
+                        <!-- Date -->
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                            {{ row.created_at | date:'mediumDate' }}
+                            <div class="text-xs opacity-70">{{ row.created_at | date:'shortTime' }}</div>
+                        </td>
+
+                        <!-- Actions -->
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button (click)="editData(row)" class="p-2 text-primary-600 hover:text-primary-900 dark:text-primary-400 dark:hover:text-primary-300 transition-colors rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button (click)="deleteData(row)" class="p-2 text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 transition-colors rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20" title="Delete">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
                 }
-            </select>
+
+                <!-- Empty State -->
+                @if (filteredData().length === 0 && !isLoading()) {
+                    <tr>
+                        <td colspan="5" class="px-6 py-16 text-center">
+                            <div class="flex flex-col items-center justify-center">
+                                <div class="h-16 w-16 bg-gray-50 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4 text-gray-300 dark:text-gray-600">
+                                    <i class="fas fa-users-slash text-2xl"></i>
+                                </div>
+                                <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100">No biometric data found</h3>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Try adjusting your search or enroll a new person.</p>
+                                <button (click)="openEnrollModal()" class="mt-4 text-primary-600 hover:text-primary-700 text-sm font-medium">
+                                    Enroll New Face &rarr;
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="p-4 border-t border-gray-200/50 dark:border-gray-700/50 bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm flex items-center justify-between">
+        <div class="text-sm text-gray-500 dark:text-gray-400">
+            Showing {{ (currentPage - 1) * pageSize + 1 }} to {{ Math.min(currentPage * pageSize, totalItems()) }} of {{ totalItems() }} entries
+        </div>
+        <!-- Note: Pagination logic can be added here similar to Recognition History if needed -->
+    </div>
+  </app-glass-card>
+</div>
+
+<!-- Enroll/Edit Modal -->
+<!-- Note: Assuming app-modal or similar component exists, or using simple overlay -->
+<div *ngIf="showEnrollModal()" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" (click)="closeEnrollModal()"></div>
+
+    <!-- Modal Content -->
+    <div class="relative w-full max-w-2xl bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+        <!-- Header -->
+        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white">
+                {{ isEditing() ? 'Edit Biometric Data' : 'Enroll New Face' }}
+            </h3>
+            <button (click)="closeEnrollModal()" class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors">
+                <i class="fas fa-times text-xl"></i>
+            </button>
         </div>
 
-        <!-- Enrollment Section (Only for Face) -->
-        @if (biometricForm.get('biometric_type')?.value === BiometricType.FACE) {
-            <div class="space-y-4">
-                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                    Face Enrollment <span class="text-red-500">*</span>
-                </label>
+        <!-- Body -->
+        <div class="p-6 overflow-y-auto custom-scrollbar space-y-6">
 
-                <!-- Mode Switcher -->
-                <div class="flex space-x-2 mb-2">
-                    <button type="button" (click)="setEnrollmentMode('upload')"
-                        class="px-3 py-1 rounded text-sm transition-all border"
-                        [class.bg-primary-500]="enrollmentMode() === 'upload'"
-                        [class.text-white]="enrollmentMode() === 'upload'"
-                        [class.border-primary-500]="enrollmentMode() === 'upload'">
-                        📁 Upload
+            <!-- Employee Selection -->
+            <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Select Employee</label>
+                <div class="relative">
+                    <select
+                        [(ngModel)]="selectedMemberId"
+                        [disabled]="isEditing()"
+                        class="w-full pl-4 pr-10 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 appearance-none transition-shadow">
+                        <option [ngValue]="null" disabled>-- Choose an employee --</option>
+                        @for (member of members; track member.member_id) {
+                            <option [value]="member.member_id">
+                                {{ member.first_name }} {{ member.last_name }} ({{ member.employee_id || member.member_id }})
+                            </option>
+                        }
+                    </select>
+                    <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-500">
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Face Upload Area -->
+            <div class="space-y-3">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Face Image Enrollment</label>
+
+                <!-- Mode Toggle -->
+                <div class="flex p-1 bg-gray-100 dark:bg-gray-800 rounded-xl mb-4">
+                    <button
+                        (click)="setEnrollmentMode('upload')"
+                        [class]="enrollmentMode() === 'upload' ? 'bg-white dark:bg-gray-700 shadow-sm text-primary-600 dark:text-primary-400' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'"
+                        class="flex-1 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2">
+                        <i class="fas fa-cloud-upload-alt"></i> Upload Image
                     </button>
-                    <button type="button" (click)="setEnrollmentMode('camera')"
-                        class="px-3 py-1 rounded text-sm transition-all border"
-                        [class.bg-primary-500]="enrollmentMode() === 'camera'"
-                        [class.text-white]="enrollmentMode() === 'camera'"
-                        [class.border-primary-500]="enrollmentMode() === 'camera'">
-                        📷 Camera
+                    <button
+                        (click)="setEnrollmentMode('camera')"
+                        [class]="enrollmentMode() === 'camera' ? 'bg-white dark:bg-gray-700 shadow-sm text-primary-600 dark:text-primary-400' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'"
+                        class="flex-1 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2">
+                        <i class="fas fa-camera"></i> Take Photo
                     </button>
                 </div>
 
-                <!-- Upload UI -->
-                @if (enrollmentMode() === 'upload') {
-                    <div class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" (click)="fileInput.click()">
-                        <div class="text-4xl mb-2">📁</div>
-                        <p class="text-sm text-slate-500">Click to upload face images (Max 10)</p>
-                        <p class="text-xs text-slate-400 mt-1">Supports multiple files</p>
-                        <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" multiple class="hidden">
-                    </div>
-                }
+                <!-- Upload Mode -->
+                <div *ngIf="enrollmentMode() === 'upload'"
+                     class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-2xl p-8 flex flex-col items-center justify-center text-center transition-all hover:border-primary-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer relative group"
+                     (click)="fileInput.click()"
+                     (dragover)="$event.preventDefault(); $event.stopPropagation()"
+                     (drop)="onFileDrop($event)">
 
-                <!-- Camera UI -->
-                @if (enrollmentMode() === 'camera') {
-                    <div class="relative w-full aspect-video bg-black rounded-lg overflow-hidden">
-                        <video #videoElement autoplay playsinline class="w-full h-full object-cover"></video>
-                        <canvas #canvasElement class="hidden"></canvas>
+                    <input #fileInput type="file" accept="image/*" multiple class="hidden" (change)="onFileSelected($event)">
 
-                        <!-- Overlay -->
-                        <div class="absolute inset-0 border-2 border-primary-500/50 rounded-lg pointer-events-none">
-                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 border-2 border-white/50 rounded-lg"></div>
+                    @if (capturedImages().length > 0) {
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
+                            @for (img of capturedImages(); track img; let i = $index) {
+                                <div class="relative aspect-square rounded-xl overflow-hidden shadow-lg group">
+                                    <img [src]="img" class="w-full h-full object-cover">
+                                    <button (click)="removeImage(i); $event.stopPropagation()"
+                                            class="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <i class="fas fa-times text-xs"></i>
+                                    </button>
+                                </div>
+                            }
+                            <!-- Add More Button -->
+                            <div class="aspect-square rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-600 flex flex-col items-center justify-center text-gray-400 hover:text-primary-500 hover:border-primary-500 transition-colors"
+                                 (click)="fileInput.click(); $event.stopPropagation()">
+                                <i class="fas fa-plus text-2xl"></i>
+                                <span class="text-xs mt-1">Add More</span>
+                            </div>
                         </div>
-
-                        <div class="absolute bottom-4 left-0 right-0 flex justify-center">
-                            <button type="button" (click)="captureImage()" class="bg-white rounded-full p-4 shadow-lg hover:scale-105 transition-transform">
-                                <div class="w-4 h-4 bg-red-500 rounded-full"></div>
-                            </button>
+                        <p class="text-sm text-green-600 font-medium mt-4">{{ capturedImages().length }} images selected</p>
+                    } @else {
+                        <div class="w-16 h-16 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-cloud-upload-alt text-2xl"></i>
                         </div>
-                    </div>
-                }
+                        <p class="text-gray-900 dark:text-white font-medium">Click to upload or drag and drop</p>
+                        <p class="text-gray-500 dark:text-gray-400 text-xs mt-1">SVG, PNG, JPG or GIF (max. 5MB)</p>
+                    }
+                </div>
 
-                <!-- Gallery Preview -->
-                @if (capturedImages().length > 0) {
-                    <div class="grid grid-cols-3 gap-2 mt-4">
-                        @for (img of capturedImages(); track $index) {
-                            <div class="relative group">
-                                <img [src]="img" class="w-full h-24 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 object-cover">
-                                <button type="button" (click)="removeImage($index)" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 shadow-md hover:bg-red-600 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </button>
+                <!-- Camera Mode -->
+                <div *ngIf="enrollmentMode() === 'camera'" class="space-y-4">
+                    <!-- Progress Steps -->
+                    <div class="flex justify-between mb-4 px-2">
+                        @for (angle of captureAngles; track angle; let i = $index) {
+                            <div class="flex flex-col items-center gap-1 relative z-10">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all duration-300"
+                                     [ngClass]="{
+                                        'bg-green-500 border-green-500 text-white': i < currentAngleIndex(),
+                                        'bg-primary-500 border-primary-500 text-white scale-110 shadow-lg': i === currentAngleIndex(),
+                                        'bg-gray-100 border-gray-300 text-gray-400': i > currentAngleIndex()
+                                     }">
+                                    <i class="fas fa-check" *ngIf="i < currentAngleIndex()"></i>
+                                    <span *ngIf="i >= currentAngleIndex()">{{ i + 1 }}</span>
+                                </div>
+                                <span class="text-[10px] font-medium transition-colors"
+                                      [ngClass]="i === currentAngleIndex() ? 'text-primary-600 dark:text-primary-400' : 'text-gray-400'">
+                                    {{ angle }}
+                                </span>
+                            </div>
+                            <!-- Connector Line -->
+                            <div *ngIf="i < captureAngles.length - 1"
+                                 class="absolute h-0.5 bg-gray-200 dark:bg-gray-700 top-4 left-0 right-0 -z-0"
+                                 style="width: calc(100% / 4); left: calc(10% + (20% * {{i}}));">
                             </div>
                         }
                     </div>
-                    <div class="flex justify-end mt-2">
-                        <button type="button" (click)="clearImages()" class="text-xs text-red-500 hover:text-red-700">Clear All</button>
+
+                    <div class="relative rounded-2xl overflow-hidden bg-black aspect-video flex items-center justify-center group shadow-inner border border-gray-200 dark:border-gray-700">
+                        <!-- Video Stream -->
+                        <video #videoElement autoplay playsinline class="w-full h-full object-cover"></video>
+                        <canvas #canvasElement class="hidden"></canvas>
+
+                        <!-- Face Detection Overlay -->
+                        <div *ngIf="!facesFound()" class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-300">
+                            <div class="bg-red-500/20 text-white px-4 py-2 rounded-lg flex items-center gap-2 border border-red-500/50 backdrop-blur-md animate-pulse">
+                                <i class="fas fa-exclamation-triangle"></i> No Face Detected
+                            </div>
+                        </div>
+
+                        <!-- Guide Overlay -->
+                        <div class="absolute top-4 left-0 right-0 flex justify-center z-20 pointer-events-none">
+                            <div class="bg-black/60 backdrop-blur-md text-white px-6 py-2 rounded-full text-sm font-medium shadow-lg flex items-center gap-3">
+                                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                                {{ angleInstructions[currentAngleIndex()] }}
+                            </div>
+                        </div>
+
+                        <!-- Capture Button -->
+                        <div class="absolute bottom-6 left-0 right-0 flex justify-center gap-4 z-20">
+                            <button (click)="captureAngle()"
+                                    [disabled]="!facesFound()"
+                                    [class.opacity-50]="!facesFound()"
+                                    [class.cursor-not-allowed]="!facesFound()"
+                                    class="w-16 h-16 rounded-full bg-white border-4 flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-xl group/btn"
+                                    [ngClass]="facesFound() ? 'border-primary-500' : 'border-gray-400'">
+                                <div class="w-12 h-12 rounded-full transition-colors duration-300"
+                                     [ngClass]="facesFound() ? 'bg-red-500 group-hover/btn:bg-red-600' : 'bg-gray-400'"></div>
+                            </button>
+                        </div>
                     </div>
-                }
 
-                <input type="hidden" formControlName="biometric_value">
-                @if (getFieldError('biometric_value')) {
-                    <p class="mt-1 text-xs text-red-500">{{ getFieldError('biometric_value') }}</p>
-                }
+                    <!-- Camera Selection -->
+                    <div class="flex justify-between items-center text-xs text-gray-500">
+                        <span>{{ currentAngleIndex() + 1 }} of {{ captureAngles.length }} photos captured</span>
+                        <div *ngIf="videoDevices().length > 1">
+                            <select
+                                [ngModel]="selectedVideoDevice()"
+                                (ngModelChange)="selectedVideoDevice.set($event); startCamera()"
+                                class="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 border-none text-gray-600 dark:text-gray-300 focus:ring-0">
+                                @for (device of videoDevices(); track device.deviceId) {
+                                    <option [value]="device.deviceId">{{ device.label }}</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
-        }
 
-        <!-- Raw Value Input (For other types) -->
-        @if (biometricForm.get('biometric_type')?.value !== BiometricType.FACE) {
-            <div>
-                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                    Biometric Value (Base64) <span class="text-red-500">*</span>
-                </label>
-                <textarea formControlName="biometric_value" rows="3"
-                    class="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary-500 transition-all font-mono text-xs"></textarea>
+            <!-- Guidelines -->
+            <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl flex gap-3 items-start border border-blue-100 dark:border-blue-800/30">
+                <i class="fas fa-info-circle text-blue-500 mt-0.5"></i>
+                <div class="text-sm text-blue-800 dark:text-blue-200">
+                    <p class="font-medium mb-1">Requirements for best results:</p>
+                    <ul class="list-disc list-inside space-y-0.5 opacity-90 text-xs">
+                        <li>Face should be clearly visible and well-lit</li>
+                        <li>No sunglasses or heavy accessories</li>
+                        <li>Neutral expression looking at camera</li>
+                        <li>Single face in the photo</li>
+                    </ul>
+                </div>
             </div>
-        }
 
-        <!-- Is Primary -->
-        @if (biometricForm.get('biometric_type')?.value !== BiometricType.FACE) {
-            <div class="flex items-center">
-                <input type="checkbox" formControlName="is_primary" id="is_primary"
-                    class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
-                <label for="is_primary" class="ml-2 block text-sm text-slate-700 dark:text-slate-300">
-                    Set as Primary Biometric
-                </label>
-            </div>
-        }
+        </div>
 
-    </form>
-  </app-modal>
-</app-page-layout>
+        <!-- Footer -->
+        <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-3">
+            <button (click)="closeEnrollModal()"
+                    class="px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 font-medium text-sm transition-colors">
+                Cancel
+            </button>
+            <app-glass-button
+                variant="primary"
+                [disabled]="!selectedMemberId || (capturedImages().length === 0 && !isEditing())"
+                [loading]="isProcessing()"
+                (click)="saveBiometricData()">
+                {{ isEditing() ? 'Update Face' : 'Enroll Face' }}
+            </app-glass-button>
+        </div>
+    </div>
+</div>

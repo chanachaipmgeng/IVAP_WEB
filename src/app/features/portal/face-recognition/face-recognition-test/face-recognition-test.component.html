@@ -1,129 +1,227 @@
 <app-page-layout
-  title="Identification Test"
-  description="Test face recognition system by uploading photos or using camera."
-  icon="👁️"
+  title="System Test"
+  description="Test face recognition accuracy using photo upload or live camera."
 >
-  <!-- Mode Selection Tabs -->
-  <div class="flex space-x-4 mb-6">
-    <button (click)="setInputType('upload')"
-        class="px-4 py-2 rounded-lg transition-all"
-        [class.bg-primary-500]="inputType() === 'upload'"
-        [class.text-white]="inputType() === 'upload'"
-        [class.bg-white]="inputType() !== 'upload'"
-        [class.dark:bg-slate-800]="inputType() !== 'upload'">
-        📁 Upload Photo
-    </button>
-    <button (click)="setInputType('camera')"
-        class="px-4 py-2 rounded-lg transition-all"
-        [class.bg-primary-500]="inputType() === 'camera'"
-        [class.text-white]="inputType() === 'camera'"
-        [class.bg-white]="inputType() !== 'camera'"
-        [class.dark:bg-slate-800]="inputType() !== 'camera'">
-        📷 Use Camera
-    </button>
-  </div>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-    <!-- Input Section -->
-    <div class="glass-card p-6 flex flex-col items-center justify-center min-h-[400px] relative overflow-hidden">
-
-      <!-- MODE: UPLOAD (Default View) -->
-      <div *ngIf="inputType() === 'upload' && !selectedImage" class="text-center animate-fade-in">
-        <div class="mb-4 text-6xl">📁</div>
-        <p class="text-slate-500 dark:text-slate-400 mb-6">Upload a photo to test identification</p>
-
-        <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" class="hidden">
-
-        <app-glass-button (clicked)="fileInput.click()" variant="primary">
-          Select Photo
-        </app-glass-button>
-      </div>
-
-      <!-- MODE: CAMERA -->
-      <div *ngIf="inputType() === 'camera'" class="w-full h-full flex flex-col items-center animate-fade-in">
-
-        <!-- Device Selector -->
-        <div class="w-full mb-4 px-4" *ngIf="availableDevices().length > 0">
-            <select [ngModel]="selectedDeviceId()" (change)="onDeviceChange($event)"
-                class="w-full p-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-sm">
-                <option *ngFor="let device of availableDevices()" [value]="device.deviceId">
-                    {{ device.label || 'Camera ' + (availableDevices().indexOf(device) + 1) }}
-                </option>
-            </select>
-        </div>
-
-        <div class="relative w-full aspect-video bg-black rounded-lg overflow-hidden mb-4">
-            <video #videoElement autoplay playsinline class="w-full h-full object-cover"></video>
-
-            <!-- Scan Overlay -->
-            <div class="absolute inset-0 border-2 border-primary-500/50 rounded-lg pointer-events-none">
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 border-2 border-white/50 rounded-lg"></div>
+  <!-- Main Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
+    
+    <!-- LEFT COLUMN: Input Source (Span 2) -->
+    <div class="lg:col-span-2 space-y-6">
+      
+      <!-- Mode Selection & Input Card -->
+      <app-glass-card>
+        <!-- Header / Tabs -->
+        <div class="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+                <mat-icon class="text-primary-500">settings_input_antenna</mat-icon>
+                Input Source
+            </h3>
+            
+            <div class="flex bg-gray-100 dark:bg-gray-800 p-1 rounded-lg">
+                <button (click)="setInputType('upload')"
+                    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all"
+                    [class.bg-white]="inputType() === 'upload'"
+                    [class.text-primary-600]="inputType() === 'upload'"
+                    [class.shadow-sm]="inputType() === 'upload'"
+                    [class.text-gray-500]="inputType() !== 'upload'"
+                    [class.dark:bg-gray-700]="inputType() === 'upload'"
+                    [class.dark:text-primary-400]="inputType() === 'upload'">
+                    <mat-icon class="text-sm !w-5 !h-5 !text-[18px]">folder_open</mat-icon> Upload
+                </button>
+                <button (click)="setInputType('camera')"
+                    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all"
+                    [class.bg-white]="inputType() === 'camera'"
+                    [class.text-primary-600]="inputType() === 'camera'"
+                    [class.shadow-sm]="inputType() === 'camera'"
+                    [class.text-gray-500]="inputType() !== 'camera'"
+                    [class.dark:bg-gray-700]="inputType() === 'camera'"
+                    [class.dark:text-primary-400]="inputType() === 'camera'">
+                    <mat-icon class="text-sm !w-5 !h-5 !text-[18px]">videocam</mat-icon> Camera
+                </button>
             </div>
         </div>
 
-        <app-glass-button (clicked)="captureImage()" variant="primary" icon="📸">
-            Capture
-        </app-glass-button>
+        <!-- CONTENT AREA -->
+        <div class="relative min-h-[400px] flex flex-col">
 
-        <!-- Hidden Canvas for Capture -->
-        <canvas #canvasElement class="hidden"></canvas>
-      </div>
+            <!-- 1. UPLOAD MODE -->
+            <div *ngIf="inputType() === 'upload' && !selectedImage" 
+                 class="flex-1 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-2xl flex flex-col items-center justify-center p-8 transition-colors cursor-pointer group hover:border-primary-400 hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                 [class.border-primary-500]="isDragOver()"
+                 [class.bg-primary-50]="isDragOver()"
+                 (dragover)="onDragOver($event)"
+                 (dragleave)="onDragLeave($event)"
+                 (drop)="onDrop($event)"
+                 (click)="fileInput.click()">
+                
+                <div class="w-20 h-20 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <mat-icon class="!w-10 !h-10 !text-[40px] text-primary-500">cloud_upload</mat-icon>
+                </div>
+                <h4 class="text-xl font-medium text-gray-700 dark:text-gray-200 mb-2">Drop your image here</h4>
+                <p class="text-gray-500 dark:text-gray-400 mb-6 text-center max-w-sm">
+                    Supports JPG, PNG. High resolution recommended for better accuracy.
+                </p>
+                <app-glass-button variant="primary" (clicked)="$event.stopPropagation(); fileInput.click()">
+                    Browse Files
+                </app-glass-button>
+                <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" class="hidden">
+            </div>
 
+            <!-- 2. CAMERA MODE -->
+            <div *ngIf="inputType() === 'camera'" class="w-full h-full flex flex-col animate-fade-in">
+                <!-- Camera Controls -->
+                <div class="flex justify-between items-center mb-4" *ngIf="availableDevices().length > 1">
+                    <span class="text-xs text-gray-500 uppercase tracking-wider font-bold">Select Camera</span>
+                    <select [ngModel]="selectedDeviceId()" (change)="onDeviceChange($event)"
+                        class="px-3 py-1 rounded-lg bg-gray-100 dark:bg-gray-800 border-none text-sm focus:ring-2 focus:ring-primary-500">
+                        <option *ngFor="let device of availableDevices()" [value]="device.deviceId">
+                            {{ device.label || 'Camera ' + (availableDevices().indexOf(device) + 1) }}
+                        </option>
+                    </select>
+                </div>
 
-      <!-- RESULT: SELECTED IMAGE PREVIEW (Both modes end up here) -->
-      <div *ngIf="selectedImage && inputType() === 'upload'" class="relative w-full h-full flex flex-col items-center animate-fade-in">
-        <img [src]="selectedImage" class="max-h-[300px] rounded-lg shadow-lg mb-6 object-contain border border-white/20">
+                <div class="relative w-full aspect-video bg-black rounded-2xl overflow-hidden shadow-inner group">
+                    <video #videoElement autoplay playsinline class="w-full h-full object-cover"></video>
+                    
+                    <!-- Scanner Effect Overlay -->
+                    <div class="absolute inset-0 pointer-events-none">
+                        <!-- Corners -->
+                        <div class="absolute top-4 left-4 w-12 h-12 border-t-4 border-l-4 border-primary-500 rounded-tl-xl opacity-80"></div>
+                        <div class="absolute top-4 right-4 w-12 h-12 border-t-4 border-r-4 border-primary-500 rounded-tr-xl opacity-80"></div>
+                        <div class="absolute bottom-4 left-4 w-12 h-12 border-b-4 border-l-4 border-primary-500 rounded-bl-xl opacity-80"></div>
+                        <div class="absolute bottom-4 right-4 w-12 h-12 border-b-4 border-r-4 border-primary-500 rounded-br-xl opacity-80"></div>
+                        
+                        <!-- Center Focus -->
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 border border-white/30 rounded-full">
+                            <div class="absolute inset-0 bg-primary-500/10 rounded-full animate-pulse"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Capture Button Overlay -->
+                    <div class="absolute bottom-6 left-0 right-0 flex justify-center z-10">
+                        <button (click)="captureImage()" class="w-16 h-16 rounded-full bg-white border-4 border-gray-200 flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-xl">
+                            <div class="w-12 h-12 rounded-full bg-red-500"></div>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Hidden Canvas -->
+                <canvas #canvasElement class="hidden"></canvas>
+            </div>
 
-        <div class="flex gap-4">
-          <app-glass-button (clicked)="reset()" variant="danger">
-            Clear
-          </app-glass-button>
+            <!-- 3. PREVIEW MODE (Common for Upload & Captured) -->
+            <div *ngIf="selectedImage && inputType() === 'upload'" class="relative w-full h-full flex flex-col items-center justify-center animate-fade-in bg-black/5 dark:bg-black/20 rounded-2xl p-4">
+                <img [src]="selectedImage" class="max-h-[500px] w-auto max-w-full rounded-lg shadow-2xl object-contain">
+                
+                <!-- Action Bar -->
+                <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md px-6 py-3 rounded-full shadow-lg border border-white/20">
+                    <button (click)="reset()" class="w-10 h-10 rounded-full bg-gray-100 hover:bg-red-100 text-gray-600 hover:text-red-500 flex items-center justify-center transition-colors" title="Clear">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <div class="h-6 w-px bg-gray-300 dark:bg-gray-700 mx-1"></div>
+                    <app-glass-button (clicked)="identifyFace()" variant="primary" [loading]="loading()" icon="search">
+                        Identify Face
+                    </app-glass-button>
+                </div>
+            </div>
 
-          <app-glass-button (clicked)="identifyFace()" variant="primary" [loading]="loading()">
-            🔍 Identify
-          </app-glass-button>
         </div>
-      </div>
+      </app-glass-card>
     </div>
 
-    <!-- Result Section -->
-    <div class="glass-card p-6">
-      <h3 class="text-xl font-semibold mb-4 text-slate-800 dark:text-white">Identification Result</h3>
+    <!-- RIGHT COLUMN: Results (Span 1) -->
+    <div class="space-y-6">
+        <app-glass-card>
+            <div class="flex items-center gap-2 mb-6 text-gray-800 dark:text-gray-100">
+                <mat-icon class="text-primary-500">assignment_ind</mat-icon>
+                <h3 class="text-lg font-semibold">Analysis Results</h3>
+            </div>
 
-      <div *ngIf="loading()" class="flex flex-col items-center justify-center h-64">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mb-4"></div>
-        <p class="text-slate-500">Processing face recognition...</p>
-      </div>
+            <!-- Loading State -->
+            <div *ngIf="loading()" class="py-12 flex flex-col items-center text-center">
+                <div class="relative w-20 h-20 mb-6">
+                    <div class="absolute inset-0 border-4 border-gray-200 dark:border-gray-700 rounded-full"></div>
+                    <div class="absolute inset-0 border-4 border-primary-500 rounded-full border-t-transparent animate-spin"></div>
+                    <mat-icon class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-primary-500">face</mat-icon>
+                </div>
+                <h4 class="text-lg font-medium mb-1">Analyzing...</h4>
+                <p class="text-sm text-gray-500">Matching face patterns with database</p>
+            </div>
 
-      <div *ngIf="!loading() && !identificationResult" class="flex flex-col items-center justify-center h-64 text-slate-400">
-        <span class="text-4xl mb-2">❓</span>
-        <p>No result yet. Capture or upload a photo.</p>
-      </div>
+            <!-- Empty State -->
+            <div *ngIf="!loading() && !identificationResult" class="py-12 flex flex-col items-center text-center text-gray-400">
+                <div class="w-20 h-20 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-4">
+                    <mat-icon class="!w-10 !h-10 !text-[40px] opacity-50">search_off</mat-icon>
+                </div>
+                <p class="text-sm">No results to display.</p>
+                <p class="text-xs opacity-70 mt-1">Upload an image or take a photo to start.</p>
+            </div>
 
-      <div *ngIf="!loading() && identificationResult" class="animate-fade-in space-y-6">
-        <div class="flex items-center p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
-          <div class="text-4xl mr-4">✅</div>
-          <div>
-            <h4 class="text-lg font-bold text-green-700 dark:text-green-400">Match Found</h4>
-            <p class="text-sm text-green-600 dark:text-green-300">Confidence: {{ identificationResult.confidence * 100 | number:'1.0-2' }}%</p>
-          </div>
-        </div>
+            <!-- Result Card -->
+            <div *ngIf="!loading() && identificationResult" class="animate-fade-in">
+                <!-- Status Badge -->
+                <div class="flex items-center justify-between mb-6 p-4 rounded-xl bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200 dark:border-green-800">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white shadow-lg">
+                            <mat-icon>check</mat-icon>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-green-600 dark:text-green-400 uppercase tracking-wide">Match Found</div>
+                            <div class="text-sm text-gray-600 dark:text-gray-300">Face verified</div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-2xl font-bold text-green-600 dark:text-green-400">
+                            {{ identificationResult.confidence * 100 | number:'1.0-1' }}%
+                        </div>
+                        <div class="text-[10px] text-gray-500 uppercase">Confidence</div>
+                    </div>
+                </div>
 
-        <div class="space-y-4">
-          <div class="grid grid-cols-2 gap-4">
-            <div class="text-sm text-slate-500 dark:text-slate-400">Name</div>
-            <div class="font-medium text-slate-900 dark:text-white">{{ identificationResult.name }}</div>
+                <!-- Employee Details -->
+                <div class="space-y-4">
+                    <div class="group relative overflow-hidden rounded-xl bg-gray-50 dark:bg-gray-800/50 p-4 border border-gray-100 dark:border-gray-700 hover:border-primary-500/30 transition-colors">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-lg bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-2xl">
+                                👤
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">Full Name</div>
+                                <div class="font-semibold text-lg text-gray-800 dark:text-white">
+                                    {{ identificationResult.name }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-            <div class="text-sm text-slate-500 dark:text-slate-400">Employee ID</div>
-            <div class="font-medium text-slate-900 dark:text-white">{{ identificationResult.employeeId }}</div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="p-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700">
+                            <div class="text-xs text-gray-500 dark:text-gray-400 mb-1 flex items-center gap-1">
+                                <mat-icon class="!w-3 !h-3 !text-[12px]">badge</mat-icon> ID
+                            </div>
+                            <div class="font-medium text-gray-800 dark:text-white truncate" title="{{ identificationResult.employeeId }}">
+                                {{ identificationResult.employeeId }}
+                            </div>
+                        </div>
+                        <div class="p-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700">
+                            <div class="text-xs text-gray-500 dark:text-gray-400 mb-1 flex items-center gap-1">
+                                <mat-icon class="!w-3 !h-3 !text-[12px]">apartment</mat-icon> Dept
+                            </div>
+                            <div class="font-medium text-gray-800 dark:text-white truncate">
+                                {{ identificationResult.department }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="text-sm text-slate-500 dark:text-slate-400">Department</div>
-            <div class="font-medium text-slate-900 dark:text-white">{{ identificationResult.department }}</div>
-          </div>
-        </div>
-      </div>
+                <!-- Raw Data Toggle (Optional) -->
+                <div class="mt-6 pt-6 border-t border-gray-100 dark:border-gray-700">
+                    <p class="text-xs text-center text-gray-400">
+                        System Verification • {{ identificationResult.timestamp | date:'mediumTime' }}
+                    </p>
+                </div>
+            </div>
+        </app-glass-card>
     </div>
-
   </div>
 </app-page-layout>

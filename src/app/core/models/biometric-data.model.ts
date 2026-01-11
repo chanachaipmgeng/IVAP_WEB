@@ -14,6 +14,12 @@ export interface BiometricData {
   // Timestamps
   created_at: string;  // created_at from backend (datetime)
   updated_at: string;  // updated_at from backend (datetime)
+
+  // Frontend display properties (optional)
+  first_name?: string;
+  last_name?: string;
+  employee_id?: string;
+  department?: string;
 }
 
 export enum BiometricType {

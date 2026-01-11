@@ -22,10 +22,11 @@ export interface VerificationStatusResponse {
 }
 
 export interface VerificationHistoryResponse {
-  requests: any[]; // Changed to any to support enriched dictionary response
+  items: any[];
   total: number;
   page: number;
-  size: number;
+  page_size: number;
+  total_pages: number;
 }
 
 @Injectable({
@@ -36,11 +37,26 @@ export class VerificationService {
   constructor(private api: ApiService) { }
 
   /**
-   * Get verification history
-   * Backend: GET /api/v1/verification/history
+   * Get verification history with pagination and filters
+   * Backend: GET /api/v1/verifications/logs
    */
-  public getHistory(limit: number = 100): Observable<VerificationHistoryResponse> {
-    return this.api.get<VerificationHistoryResponse>(`/verifications/history?limit=${limit}`);
+  public getHistory(
+    page: number = 1, 
+    pageSize: number = 20, 
+    search: string = '', 
+    status: string = 'All',
+    date: string = ''
+  ): Observable<VerificationHistoryResponse> {
+    const params: any = {
+        page,
+        page_size: pageSize
+    };
+
+    if (search) params.search = search;
+    if (status && status !== 'All') params.status = status;
+    if (date) params.start_date = date; // Can be improved to range if needed
+
+    return this.api.get<VerificationHistoryResponse>('/verifications/logs', params);
   }
 }
 
