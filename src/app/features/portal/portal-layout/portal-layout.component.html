@@ -1,23 +1,46 @@
-<div class="portal-layout h-screen flex flex-col overflow-hidden bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
+<div class="portal-layout relative h-screen w-full flex flex-col overflow-hidden bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-500 ease-out">
+
+  <!-- Decorative Background Gradient (Subtle) -->
+  <div class="absolute inset-0 z-0 pointer-events-none opacity-40 dark:opacity-20 bg-gradient-to-br from-blue-50/50 via-slate-50/50 to-indigo-50/50 dark:from-slate-900 dark:via-slate-950 dark:to-indigo-950/30"></div>
+
   <!-- Animated Background Graphics handled globally -->
 
-  <app-header [sidebarOpen]="sidebarOpen()" (toggleSidebar)="toggleSidebar()" class="shrink-0 z-40 relative" />
+  <!-- Header -->
+  <app-header
+    [sidebarOpen]="sidebarOpen()"
+    (toggleSidebar)="toggleSidebar()"
+    class="shrink-0 z-30 relative shadow-sm dark:shadow-slate-900/50 transition-all duration-300"
+  />
 
   <!-- Mobile Overlay Backdrop -->
   @if (sidebarOpen()) {
-    <div class="fixed inset-0 bg-black/50 z-[35] lg:hidden transition-opacity backdrop-blur-sm"
-      (click)="closeSidebar()" style="pointer-events: auto;"></div>
+    <div
+      class="fixed inset-0 z-40 lg:hidden  transition-all duration-300 ease-in-out cursor-pointer"
+      (click)="closeSidebar()"
+      role="button"
+      aria-label="Close sidebar overlay">
+    </div>
   }
 
   <!-- Main Container: Flex Row -->
   <div class="flex flex-1 relative z-10 overflow-hidden">
-    
-    <!-- Sidebar: Fixed width (handled by component), Height 100% of this container -->
-    <app-sidebar [menuItems]="menuItems" [isOpen]="sidebarOpen()" (close)="closeSidebar()" class="h-full shrink-0" />
 
-    <!-- Content Area: Scrollable independently -->
-    <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto overflow-x-hidden relative scroll-smooth no-scrollbar-custom">
-      <router-outlet></router-outlet>
+    <!-- Sidebar -->
+    <app-sidebar
+      [menuItems]="menuItems"
+      [isOpen]="sidebarOpen()"
+      (close)="closeSidebar()"
+      class="h-full shrink-0 transition-transform duration-300 ease-in-out"
+    />
+
+    <!-- Content Area -->
+    <main class="flex-1 relative overflow-y-auto overflow-x-hidden scroll-smooth custom-scrollbar">
+      <!-- Inner Wrapper for consistent spacing -->
+      <div class="min-h-full p-4 md:p-6 lg:p-8 xl:p-10 transition-all duration-300">
+        <div class="max-w-[1920px] mx-auto w-full">
+           <router-outlet></router-outlet>
+        </div>
+      </div>
     </main>
   </div>
 
